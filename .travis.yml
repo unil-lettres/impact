@@ -18,6 +18,7 @@ install:
   - cp .env.testing .env
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
   - php artisan key:generate
+  - php artisan config:clear
   - php artisan config:cache
   - php artisan migrate
 before_script:

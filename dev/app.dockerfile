@@ -4,7 +4,7 @@ FROM php:7.3-fpm
 RUN apt-get update
 
 # Install PHP and composer dependencies
-RUN apt-get install -y git curl nano zlib1g-dev libpng-dev libxml2-dev supervisor ffmpeg ffmpeg2theora mediainfo curl cron git zip unzip
+RUN apt-get install -y git curl nano zlib1g-dev libpng-dev libxml2-dev libzip-dev supervisor ffmpeg ffmpeg2theora mediainfo curl cron git zip unzip
 
 # Install needed extensions
 # Here you can install any other extension that you need during the test and deployment process
@@ -24,7 +24,7 @@ RUN apt-get update &&\
 
 # Add impact-cron file in the cron directory
 ADD ./config/cron /etc/cron.d/impact
-RUN chmod 0644 /etc/cron.d/impact
+RUN chmod 777 /etc/cron.d/impact
 
 # Copy supervisor configuration file
 # docker exec <container-id> supervisorctl status
@@ -33,4 +33,4 @@ RUN chmod 0644 /etc/cron.d/impact
 # docker exec <container-id> supervisorctl restart php
 COPY ./config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-CMD ["/usr/bin/supervisord"]
+CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

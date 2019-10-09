@@ -2,3 +2,4 @@
 dev/.env
 dev/dbdata/*
 !dev/dbdata/.gitkeep
+site/supervisord*

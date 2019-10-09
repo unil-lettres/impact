@@ -1,7 +1,6 @@
 language: php
 dist: bionic
 php:
-  - '7.2'
   - '7.3'
 services:
   - redis-server
@@ -19,6 +18,7 @@ install:
   - cp .env.testing .env
   - travis_retry composer install --no-interaction --prefer-dist --no-suggest
   - php artisan key:generate
+  - php artisan config:cache
   - php artisan migrate
 before_script:
   - php artisan dusk:chrome-driver

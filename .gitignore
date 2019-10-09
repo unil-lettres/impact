@@ -1,2 +1,4 @@
 .idea
-.env
+dev/.env
+dev/dbdata/*
+!dev/dbdata/.gitkeep

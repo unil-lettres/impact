@@ -1,16 +1,15 @@
 FROM php:7.3-fpm
 
-# Update packages
+# Update repositories
 RUN apt-get update
 
-# Install PHP and composer dependencies
+# Install additional packages
 RUN apt-get install -y git curl nano zlib1g-dev libpng-dev libxml2-dev libzip-dev supervisor ffmpeg ffmpeg2theora mediainfo curl cron git zip unzip
 
-# Install needed extensions
-# Here you can install any other extension that you need during the test and deployment process
+# Install needed php extensions
 RUN apt-get clean; docker-php-ext-install pdo pdo_mysql zip gd bcmath tokenizer ctype json mbstring xml
 
-# Installs Composer to easily manage your PHP dependencies.
+# Install Composer
 RUN curl --silent --show-error https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install Node
@@ -22,11 +21,12 @@ RUN apt-get update &&\
   npm config set registry https://registry.npm.taobao.org --global &&\
   npm install --global gulp-cli
 
-# Add impact-cron file in the cron directory
-ADD ./config/cron /etc/cron.d/impact
-RUN chmod 777 /etc/cron.d/impact
+# Replace default crontab
+ADD ./config/crontab /etc/crontab
 
 # Copy supervisor configuration file
+# This is used to manage cron & php-fpm services
+#
 # docker exec <container-id> supervisorctl status
 # docker exec <container-id> supervisorctl tail -f php
 # docker exec <container-id> supervisorctl tail -f cron

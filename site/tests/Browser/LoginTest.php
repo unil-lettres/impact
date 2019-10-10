@@ -3,11 +3,12 @@
 namespace Tests\Browser;
 
 use Laravel\Dusk\Concerns\ProvidesBrowser;
+use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
-class ExampleTest extends DuskTestCase
+class LoginTest extends DuskTestCase
 {
     use ProvidesBrowser;
 
@@ -22,11 +23,13 @@ class ExampleTest extends DuskTestCase
      *
      * @return void
      */
-    public function testBasicExample()
+    public function testBasicLogin()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit('/')
-                    ->assertSee('Impact');
+            $browser->visit(new Login())
+                ->loginAsUser('first-user@example.com', 'password');
+
+            $browser->assertSee('Impact content');
         });
     }
 }

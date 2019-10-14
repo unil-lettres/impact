@@ -6,7 +6,7 @@
     </head>
     <body>
         <div id='app'>
-            @include('includes.header')
+            @include('includes.header.header')
             <div id="content" class="container">
                 <div class="page-title">
                     <h1>@yield('title')</h1>

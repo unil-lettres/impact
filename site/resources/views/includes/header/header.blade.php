@@ -6,25 +6,19 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbar-coll">
+            <!-- Navbar left side -->
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link1</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#">Link2</a>
-                </li>
+                @include('includes.header.menus')
             </ul>
-            <div class="my-2 my-md-0">
-                <span class="username">
-                    username
-                </span>
-                <span class="administration">
-                    admin
-                </span>
-                <span class="lang">
-                    lang
-                </span>
-            </div>
+
+            <!-- Navbar right side -->
+            <ul class="navbar-nav ml-auto">
+                <!-- Authentication links -->
+                @include('includes.header.auth')
+
+                <!-- Localization dropdown -->
+                @include('includes.header.lang')
+            </ul>
         </div>
     </div>
 </nav>

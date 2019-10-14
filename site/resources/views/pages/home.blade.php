@@ -2,6 +2,6 @@
 
 @section('content')
     <div class="container home-content">
-        Impact content
+        Impact content ({{ Helpers::currentLocal() }})
     </div>
 @stop

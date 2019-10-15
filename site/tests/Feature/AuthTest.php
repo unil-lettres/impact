@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -33,8 +34,11 @@ class AuthTest extends TestCase
         $user = factory(User::class)
             ->create();
 
-        $this->actingAs($user)->get('/admin')
-            ->assertResponseStatus(403);
+        try {
+            $this->actingAs($user)->get('/admin');
+        } catch (\Throwable $e) {
+            $this->assertEquals(new HttpException(403), $e);
+        }
     }
 
     /**

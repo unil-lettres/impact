@@ -37,7 +37,7 @@ class AuthTest extends TestCase
         $response = $this->actingAs($user)
             ->get('/admin');
 
-        $response->assertForbidden();
+        $response->assertUnauthorized();
     }
 
     /**

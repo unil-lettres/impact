@@ -13,13 +13,12 @@
 
 Auth::routes();
 
-Route::get('/', 'HomeController@index')->name('home');
-
 Route::get('lang/{locale}', 'LocalizationController@index');
 
-Route::group([
-    'name' => 'admin',
-    'prefix' => 'admin'
-], function () {
+Route::middleware(['auth'])->group(function () {
+    Route::get('/', 'HomeController@index')->name('home');
+});
+
+Route::group(['prefix' => 'admin',  'middleware' => 'auth'], function() {
     Route::get('/', 'AdminController@index')->name('admin');
 });

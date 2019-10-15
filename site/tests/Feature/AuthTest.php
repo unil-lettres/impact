@@ -21,7 +21,7 @@ class AuthTest extends TestCase
         $response = $this->actingAs($user)
             ->get('/');
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     /**
@@ -37,7 +37,7 @@ class AuthTest extends TestCase
         $response = $this->actingAs($user)
             ->get('/admin');
 
-        $response->assertStatus(403);
+        $response->assertForbidden();
     }
 
     /**
@@ -54,6 +54,6 @@ class AuthTest extends TestCase
         $response = $this->actingAs($user)
             ->get('/admin');
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 }

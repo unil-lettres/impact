@@ -16,3 +16,10 @@ Auth::routes();
 Route::get('/', 'HomeController@index')->name('home');
 
 Route::get('lang/{locale}', 'LocalizationController@index');
+
+Route::group([
+    'name' => 'admin',
+    'prefix' => 'admin'
+], function () {
+    Route::get('/', 'AdminController@index')->name('admin');
+});

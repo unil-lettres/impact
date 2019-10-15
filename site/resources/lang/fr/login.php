@@ -4,6 +4,7 @@ return [
 
     'login' => 'Se connecter',
     'register' => 'S\'enregistrer',
+    'admin' => 'Administration',
     'email' => 'E-Mail',
     'verify_email' => 'Vérifiez votre adresse email',
     'verification_link_sent' => 'Un nouveau lien de vérification a été envoyé à votre adresse e-mail.',

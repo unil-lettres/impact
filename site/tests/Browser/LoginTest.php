@@ -19,7 +19,7 @@ class LoginTest extends DuskTestCase
     }
 
     /**
-     * A basic browser test example.
+     * Test basic login.
      *
      * @return void
      */
@@ -30,6 +30,25 @@ class LoginTest extends DuskTestCase
                 ->loginAsUser('first-user@example.com', 'password');
 
             $browser->assertSee('Impact content');
+        });
+    }
+
+    /**
+     * Test basic admin login.
+     *
+     * @return void
+     */
+    public function testBasicAdminLogin()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->assertSee('Administration');
+
+            $browser->clickLink('Administration');
+
+            $browser->assertSee('Impact administration');
         });
     }
 }

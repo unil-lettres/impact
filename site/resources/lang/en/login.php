@@ -4,6 +4,7 @@ return [
 
     'login' => 'Login',
     'register' => 'Register',
+    'admin' => 'Administration',
     'email' => 'E-Mail',
     'verify_email' => 'Verify Your Email Address',
     'verification_link_sent' => 'A fresh verification link has been sent to your email address.',

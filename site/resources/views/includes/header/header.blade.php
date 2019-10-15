@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container">
-        <span class="navbar-brand"><a class="nav-link" href="{{ route('home') }}">Impact title</a></span>
+        <span class="navbar-brand"><a class="nav-link" href="{{ route('home') }}">Impact</a></span>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-coll" aria-controls="navbar-coll" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>

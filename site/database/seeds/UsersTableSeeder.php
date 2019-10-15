@@ -24,5 +24,15 @@ class UsersTableSeeder extends Seeder
           'created_at' => $now,
           'updated_at' => $now,
         ]);
+
+        DB::table('users')->insert([
+            'name' => 'Admin user',
+            'email' => 'admin-user@example.com',
+            'password' => bcrypt('password'),
+            'remember_token' => Str::random(10),
+            'created_at' => $now,
+            'updated_at' => $now,
+            'admin' => true,
+        ]);
     }
 }

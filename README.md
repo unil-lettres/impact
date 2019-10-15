@@ -74,8 +74,8 @@ To access the main application please use the following link.
 
 [http://impact.lan:8787](http://impact.lan:8787)
 
-login: first-user@example.com
-password: password
++ first-user@example.com / password
++ admin-user@example.com / password
 
 ### Telescope
 

@@ -18,10 +18,9 @@ class AuthTest extends TestCase
         $user = factory(User::class)
             ->create();
 
-        $response = $this->actingAs($user)
-            ->get('/');
-
-        $response->assertOk();
+        $this->actingAs($user)
+            ->get('/')
+            ->assertOk();
     }
 
     /**
@@ -34,10 +33,8 @@ class AuthTest extends TestCase
         $user = factory(User::class)
             ->create();
 
-        $response = $this->actingAs($user)
-            ->get('/admin');
-
-        $response->assertUnauthorized();
+        $this->actingAs($user)->get('/admin')
+            ->assertResponseStatus(403);
     }
 
     /**
@@ -51,9 +48,8 @@ class AuthTest extends TestCase
             ->states('admin')
             ->create();
 
-        $response = $this->actingAs($user)
-            ->get('/admin');
-
-        $response->assertOk();
+        $this->actingAs($user)
+            ->get('/admin')
+            ->assertOk();
     }
 }

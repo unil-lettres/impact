@@ -36,7 +36,7 @@ class AuthTest extends TestCase
 
         $this->actingAs($user)
             ->get('/admin')
-            ->assertSee('Vous n\'êtes pas autorisé à accéder à ce contenu.');
+            ->assertRedirect('/');
     }
 
     /**

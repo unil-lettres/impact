@@ -16,7 +16,6 @@ class IsDisabled
      */
     public function handle($request, Closure $next)
     {
-
         // Check if user is authenticated
         if(!Auth::user()) {
             return redirect('/');

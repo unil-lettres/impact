@@ -45,7 +45,7 @@ class LoginTest extends DuskTestCase
             $browser->assertSee('Administration');
 
             $browser->clickLink('Administration');
-            $browser->assertSee('Impact administration');
+            $browser->assertSee('Administration content');
         });
     }
 

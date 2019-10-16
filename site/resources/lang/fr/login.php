@@ -2,6 +2,10 @@
 
 return [
 
+    'local' => 'Connexion locale',
+    'local_info' => 'Pour les utilisateurs non-AAI qui ont reçu un compte local pour Impact.',
+    'aai' => 'Connexion avec SWITCHaai',
+    'aai_info' => 'Service de connexion pour les utilisateurs des hautes écoles qui sont <a href="https://www.switch.ch/aai/participants/homeorgs/" target="_blank">membres de la fédération SWITCHaai.</a>',
     'login' => 'Se connecter',
     'register' => 'S\'enregistrer',
     'admin' => 'Administration',

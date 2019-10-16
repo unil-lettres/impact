@@ -8,12 +8,12 @@
                 <img src="{{asset('images/lang/en.png')}}"> English
                 @break
                 @default
-                <img src="{{asset('images/lang/fr.png')}}"> French
+                <img src="{{asset('images/lang/fr.png')}}"> Français
             @endswitch
             <span class="caret"></span>
         </a>
         <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="lang/fr"><img src="{{asset('images/lang/fr.png')}}"> French</a>
+            <a class="dropdown-item" href="lang/fr"><img src="{{asset('images/lang/fr.png')}}"> Français</a>
             <a class="dropdown-item" href="lang/en"><img src="{{asset('images/lang/en.png')}}"> English</a>
         </div>
     </li>

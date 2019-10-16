@@ -1,13 +1,4 @@
-@guest
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('login') }}">{{ trans('login.login') }}</a>
-    </li>
-    @if (Route::has('register'))
-        <li class="nav-item">
-            <a class="nav-link" href="{{ route('register') }}">{{ trans('login.register') }}</a>
-        </li>
-    @endif
-@else
+@auth
     @if (Auth::user()->admin)
         <li class="nav-item">
             <a class="nav-link" href="{{ route('admin') }}">{{ trans('login.admin') }}</a>
@@ -29,4 +20,4 @@
             </form>
         </div>
     </li>
-@endguest
+@endauth

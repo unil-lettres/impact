@@ -2,12 +2,24 @@
 
 @section('content')
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
+    <div class="row justify-content-center login-forms">
+        <div class="col-md-6">
             <div class="card">
-                <div class="card-header">{{ trans('login.login') }}</div>
+                <div class="card-header">{{ trans('login.aai') }}</div>
 
                 <div class="card-body">
+                    <p class="text-secondary">{!! trans('login.aai_info') !!}</p>
+                    // TODO
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">{{ trans('login.local') }}</div>
+
+                <div class="card-body">
+                    <p class="text-secondary">{{ trans('login.local_info') }}</p>
+
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 

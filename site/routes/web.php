@@ -18,11 +18,11 @@ Auth::routes();
 Route::get('lang/{locale}', 'LocalizationController@index');
 
 // Standard routes
-Route::middleware(['auth'])->group(function () {
+Route::middleware(['auth', 'app'])->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
 });
 
 // Administration routes
-Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'is_admin']], function() {
+Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'app', 'is_admin']], function() {
     Route::get('/', 'AdminController@index')->name('admin');
 });

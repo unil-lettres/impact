@@ -1,7 +1,7 @@
 @extends('layouts.app-base')
 
 @section('content')
-    <div class="container home-content">
+    <div>
         Impact content ({{ Helpers::currentLocal() }})
     </div>
 @stop

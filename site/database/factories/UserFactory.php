@@ -31,3 +31,9 @@ $factory->state(User::class, 'admin', function() {
         'admin' => true,
     ];
 });
+
+$factory->state(User::class, 'disabled', function() {
+    return [
+        'disabled' => true,
+    ];
+});

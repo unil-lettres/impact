@@ -23,5 +23,6 @@ return [
     'forgot_password' => 'Forgot Your Password?',
     'logout' => 'Logout',
     'name' => 'Name',
+    'disabled' => 'This account is disabled',
 
 ];

@@ -16,16 +16,7 @@ class UsersTableSeeder extends Seeder
     {
         $now = Carbon\Carbon::now();
 
-        DB::table('users')->insert([
-          'name' => 'First user',
-          'email' => 'first-user@example.com',
-          'password' => bcrypt('password'),
-          'remember_token' => Str::random(10),
-          'created_at' => $now,
-          'updated_at' => $now,
-        ]);
-
-        DB::table('users')->insert([
+        $admin = DB::table('users')->insertGetId([
             'name' => 'Admin user',
             'email' => 'admin-user@example.com',
             'password' => bcrypt('password'),
@@ -33,6 +24,27 @@ class UsersTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'admin' => true,
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'First user',
+            'email' => 'first-user@example.com',
+            'password' => bcrypt('password'),
+            'remember_token' => Str::random(10),
+            'created_at' => $now,
+            'updated_at' => $now,
+            'creator_id' => $admin
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'Disabled user',
+            'email' => 'disabled-user@example.com',
+            'password' => bcrypt('password'),
+            'remember_token' => Str::random(10),
+            'created_at' => $now,
+            'updated_at' => $now,
+            'disabled' => true,
+            'creator_id' => $admin
         ]);
     }
 }

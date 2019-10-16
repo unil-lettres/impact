@@ -38,6 +38,10 @@ class Kernel extends HttpKernel
             \App\Http\Middleware\Localization::class,
         ],
 
+        'app' => [
+            'is_disabled' => \App\Http\Middleware\IsDisabled::class,
+        ],
+
         'api' => [
             'throttle:60,1',
             'bindings',

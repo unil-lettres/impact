@@ -8,19 +8,25 @@
         <div id='app'>
             @include('includes.header.header')
             <div id="content" class="container">
-                <div class="page-title">
-                    <h1>@yield('title')</h1>
+                <div class="container title-content">
+                    <div class="page-title">
+                        <h1>@yield('title')</h1>
+                    </div>
                 </div>
 
-                @include('includes.messages')
+                <div class="container messages-content">
+                    @include('includes.messages')
+                </div>
 
-                @yield('content')
+                <div class="container main-content">
+                    @yield('content')
+                </div>
 
-                <footer>
-                    <div class="container">
-                        @include('includes.footer')
-                    </div>
-                </footer>
+                <div class="container footer-content">
+                    <footer>
+                            @include('includes.footer')
+                    </footer>
+                </div>
             </div>
         </div>
         <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>

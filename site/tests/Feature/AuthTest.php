@@ -34,11 +34,9 @@ class AuthTest extends TestCase
         $user = factory(User::class)
             ->create();
 
-        try {
-            $this->actingAs($user)->get('/admin');
-        } catch (\Throwable $e) {
-            $this->assertEquals(new HttpException(403), $e);
-        }
+        $this->actingAs($user)
+            ->get('/admin')
+            ->assertSee('Vous n\'êtes pas autorisé à accéder à ce contenu.');
     }
 
     /**

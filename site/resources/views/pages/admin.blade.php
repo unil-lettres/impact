@@ -1,7 +1,11 @@
 @extends('layouts.app-base')
 
+@section('title')
+    {{ trans('login.admin') }}
+@stop
+
 @section('content')
-    <div class="container admin-content">
-        Impact administration ({{ Helpers::currentLocal() }})
+    <div>
+        Administration content ({{ Helpers::currentLocal() }})
     </div>
 @stop

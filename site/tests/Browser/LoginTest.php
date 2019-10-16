@@ -28,7 +28,6 @@ class LoginTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('first-user@example.com', 'password');
-
             $browser->assertSee('Impact content');
         });
     }
@@ -43,12 +42,24 @@ class LoginTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
-
             $browser->assertSee('Administration');
 
             $browser->clickLink('Administration');
-
             $browser->assertSee('Impact administration');
+        });
+    }
+
+    /**
+     * Test disabled user.
+     *
+     * @return void
+     */
+    public function testDisabledUser()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('disabled-user@example.com', 'password');
+            $browser->assertSee('Ce compte est désactivé');
         });
     }
 }

@@ -21,7 +21,7 @@ class ValidityTest extends TestCase
 
         $this->actingAs($user)
             ->get('/')
-            ->assertRedirect('/');
+            ->assertRedirect('/login');
     }
 
     /**
@@ -33,9 +33,8 @@ class ValidityTest extends TestCase
     {
         $user = factory(User::class)
             ->states('invalid')
-            ->create();
-
-        $user->extendValidity();
+            ->create()
+            ->extendValidity();
 
         $this->actingAs($user)
             ->get('/')

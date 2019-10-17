@@ -28,7 +28,7 @@ class IsValid
         }
 
         // Check if user account is still valid
-        $validity = Carbon::parse(auth()->user()->validity);
+        $validity = Carbon::instance(auth()->user()->validity);
         if($validity->isFuture()) {
             return $next($request);
         }

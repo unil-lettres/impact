@@ -6,51 +6,39 @@ use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
-class AuthTest extends TestCase
+class ValidityTest extends TestCase
 {
     /**
-     * Test basic auth.
+     * Test invalid user.
      *
      * @return void
      */
-    public function testBasicAuth()
+    public function testInvalidUser()
     {
         $user = factory(User::class)
+            ->states('invalid')
             ->create();
 
         $this->actingAs($user)
             ->get('/')
-            ->assertOk();
-    }
-
-    /**
-     * Test admin not authorized.
-     *
-     * @return void
-     */
-    public function testAdminNotAuthorized()
-    {
-        $user = factory(User::class)
-            ->create();
-
-        $this->actingAs($user)
-            ->get('/admin')
             ->assertRedirect('/');
     }
 
     /**
-     * Test admin authorized.
+     * Test extend user account validity.
      *
      * @return void
      */
-    public function testAdminAuthorized()
+    public function testExtendAccountValidity()
     {
         $user = factory(User::class)
-            ->states('admin')
+            ->states('invalid')
             ->create();
 
+        $user->extendValidity();
+
         $this->actingAs($user)
-            ->get('/admin')
+            ->get('/')
             ->assertOk();
     }
 }

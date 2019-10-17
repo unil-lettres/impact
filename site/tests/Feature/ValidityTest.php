@@ -38,6 +38,6 @@ class ValidityTest extends TestCase
 
         $this->actingAs($user)
             ->get('/')
-            ->assertOk();
+            ->assertRedirect('/admin');
     }
 }

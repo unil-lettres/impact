@@ -2,6 +2,7 @@
 
 namespace App;
 
+use DateTime;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -39,15 +40,13 @@ class User extends Authenticatable
         'validity' => 'datetime',
     ];
 
-    private $validity;
-
     /**
      * Extend the validity of the user account.
      * Default is 12 months.
      *
      * @param int $months
      *
-     * @return $this
+     * @return DateTime
      */
     public function extendValidity(int $months = 12)
     {
@@ -55,9 +54,8 @@ class User extends Authenticatable
             Carbon::now()->addMonths($months) :
             Carbon::instance($this->validity)->addMonths($months);
 
-        $this->validity = $validity;
-        $this->save();
+        $this->update([ 'validity' => $validity]);
 
-        return $this;
+        return $this->validity;
     }
 }

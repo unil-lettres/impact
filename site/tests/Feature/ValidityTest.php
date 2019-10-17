@@ -33,8 +33,9 @@ class ValidityTest extends TestCase
     {
         $user = factory(User::class)
             ->states('invalid')
-            ->create()
-            ->extendValidity();
+            ->create();
+
+        $user->extendValidity();
 
         $this->actingAs($user)
             ->get('/')

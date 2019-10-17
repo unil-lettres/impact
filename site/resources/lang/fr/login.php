@@ -23,6 +23,6 @@ return [
     'forgot_password' => 'Mot de passe oublié?',
     'logout' => 'Déconnexion',
     'name' => 'Nom',
-    'disabled' => 'Ce compte est désactivé',
+    'invalid' => 'Ce compte est désactivé',
 
 ];

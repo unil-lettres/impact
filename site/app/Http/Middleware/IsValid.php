@@ -4,8 +4,9 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Carbon;
 
-class IsDisabled
+class IsValid
 {
     /**
      * Handle an incoming request.
@@ -21,13 +22,19 @@ class IsDisabled
             return redirect('/');
         }
 
-        // Check if user account is active
-        if(!auth()->user()->disabled) {
+        // Check if user account has an expiration date
+        if(is_null(auth()->user()->validity)) {
+            return $next($request);
+        }
+
+        // Check if user account is still valid
+        $validity = Carbon::parse(auth()->user()->validity);
+        if($validity->isFuture()) {
             return $next($request);
         }
 
         auth()->logout();
         // Return to the app root with error message otherwise
-        return redirect()->route('login')->with('error', trans('login.disabled'));
+        return redirect()->route('login')->with('error', trans('login.invalid'));
     }
 }

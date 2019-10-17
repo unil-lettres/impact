@@ -3,7 +3,6 @@
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use Spatie\Permission\Models\Role;
 
 class UsersTableSeeder extends Seeder
 {
@@ -37,14 +36,14 @@ class UsersTableSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'name' => 'Disabled user',
-            'email' => 'disabled-user@example.com',
+            'name' => 'Invalid user',
+            'email' => 'invalid-user@example.com',
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
-            'disabled' => true,
-            'creator_id' => $admin
+            'creator_id' => $admin,
+            'validity' => $now->subDays(1)
         ]);
     }
 }

@@ -50,15 +50,15 @@ class LoginTest extends DuskTestCase
     }
 
     /**
-     * Test disabled user.
+     * Test invalid user.
      *
      * @return void
      */
-    public function testDisabledUser()
+    public function testInvalidUser()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('disabled-user@example.com', 'password');
+                ->loginAsUser('invalid-user@example.com', 'password');
             $browser->assertSee('Ce compte est désactivé');
         });
     }

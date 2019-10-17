@@ -32,8 +32,10 @@ $factory->state(User::class, 'admin', function() {
     ];
 });
 
-$factory->state(User::class, 'disabled', function() {
+$factory->state(User::class, 'invalid', function() {
+    $now = Carbon\Carbon::now();
+
     return [
-        'disabled' => true,
+        'validity' => $now->subDays(1),
     ];
 });

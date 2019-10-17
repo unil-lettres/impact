@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddDiabledFieldToUsersTable extends Migration
+class AddValidityFieldToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class AddDiabledFieldToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->boolean('disabled')->default(false);
+            $table->dateTime('validity')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddDiabledFieldToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('disabled');
+            $table->dropColumn('validity');
         });
     }
 }

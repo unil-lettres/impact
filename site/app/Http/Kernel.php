@@ -39,7 +39,7 @@ class Kernel extends HttpKernel
         ],
 
         'app' => [
-            'is_disabled' => \App\Http\Middleware\IsDisabled::class,
+            'is_valid' => \App\Http\Middleware\IsValid::class,
         ],
 
         'api' => [

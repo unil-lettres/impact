@@ -45,9 +45,9 @@ class LoginTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
-            $browser->assertSee('Administration');
+            $browser->assertSee('Admin');
 
-            $browser->clickLink('Administration');
+            $browser->clickLink('Admin');
             $browser->assertSee('Administration content');
         });
     }

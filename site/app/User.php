@@ -54,10 +54,7 @@ class User extends Authenticatable
             Carbon::now()->addMonths($months) :
             Carbon::instance($this->validity)->addMonths($months);
 
-        // Cannot add a validity to an admin account
-        $validity = $this->admin ? null : $validity;
-
-        $this->update([ 'validity' => $validity]);
+        $this->update([ 'validity' => $this->skipAdmins($validity)]);
 
         return $this->validity;
     }
@@ -71,11 +68,19 @@ class User extends Authenticatable
      */
     public function defineValidity(DateTime $validity)
     {
-        // Cannot add a validity to an admin account
-        $validity = $this->admin ? null : $validity;
-
-        $this->update([ 'validity' => $validity]);
+        $this->update([ 'validity' => $this->skipAdmins($validity)]);
 
         return $this->validity;
+    }
+
+    /**
+     * Avoid adding a validity to admin accounts.
+     *
+     * @param DateTime $validity
+     *
+     * @return DateTime|null
+     */
+    private function skipAdmins(DateTime $validity) {
+        return $this->admin ? null : $validity;
     }
 }

@@ -22,6 +22,11 @@ class IsValid
             return redirect('/');
         }
 
+        // Check if user is an admin
+        if(auth()->user()->admin) {
+            return $next($request);
+        }
+
         // Check if user account has an expiration date
         if(is_null(auth()->user()->validity)) {
             return $next($request);

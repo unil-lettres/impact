@@ -41,4 +41,21 @@ class ValidityTest extends TestCase
             ->get('/')
             ->assertOk();
     }
+
+    /**
+     * Test validity not applied to admins.
+     *
+     * @return void
+     */
+    public function testNoValidityForAdmins()
+    {
+        $user = factory(User::class)
+            ->states('invalid')
+            ->states('admin')
+            ->create();
+
+        $this->actingAs($user)
+            ->get('/')
+            ->assertOk();
+    }
 }

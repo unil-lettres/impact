@@ -15,12 +15,17 @@
         border-color: rgba(255, 255, 255, 0.6) !important;
     }
 
-    li.nav-item {
-        font-size: 1.1rem;
+    .nav-item {
+        font-size: 1rem;
 
         .nav-link {
             color: white;
-            font-weight: bold;
+        }
+
+        .breadcrumbs {
+            a {
+                color: white;
+            }
         }
     }
 }

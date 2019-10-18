@@ -8,7 +8,7 @@ return [
     'aai_info' => 'Service de connexion pour les utilisateurs des hautes écoles qui sont <a href="https://www.switch.ch/aai/participants/homeorgs/" target="_blank">membres de la fédération SWITCHaai.</a>',
     'login' => 'Se connecter',
     'register' => 'S\'enregistrer',
-    'admin' => 'Administration',
+    'admin' => 'Admin',
     'email' => 'E-Mail',
     'verify_email' => 'Vérifiez votre adresse email',
     'verification_link_sent' => 'Un nouveau lien de vérification a été envoyé à votre adresse e-mail.',

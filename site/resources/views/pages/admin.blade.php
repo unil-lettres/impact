@@ -1,7 +1,7 @@
 @extends('layouts.app-base')
 
-@section('title')
-    {{ trans('login.admin') }}
+@section('breadcrumbs')
+    <a href="/admin">Admin</a>
 @stop
 
 @section('content')

@@ -6,15 +6,23 @@
         </button>
 
         <div class="collapse navbar-collapse" id="navbar-coll">
-            <!-- Navbar left side -->
-            <ul class="navbar-nav mr-auto">
-                @include('includes.header.menus')
-            </ul>
+            @auth
+                <!-- Navbar left side -->
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <span class="breadcrumbs">
+                            @yield('breadcrumbs')
+                        </span>
+                    </li>
+                </ul>
+            @endauth
 
             <!-- Navbar right side -->
             <ul class="navbar-nav ml-auto">
-                <!-- Authentication links -->
-                @include('includes.header.auth')
+                @auth
+                    <!-- Authentication links -->
+                    @include('includes.header.auth')
+                @endauth
 
                 <!-- Localization dropdown -->
                 @include('includes.header.lang')

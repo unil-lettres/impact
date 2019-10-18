@@ -7,6 +7,7 @@ use Tests\Browser\Pages\Localization;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Throwable;
 
 class LocalizationTest extends DuskTestCase
 {
@@ -22,6 +23,7 @@ class LocalizationTest extends DuskTestCase
      * Test basic localization.
      *
      * @return void
+     * @throws Throwable
      */
     public function testBasicLocalization()
     {

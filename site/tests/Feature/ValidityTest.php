@@ -35,6 +35,10 @@ class ValidityTest extends TestCase
             ->states('invalid')
             ->create();
 
+        $this->actingAs($user)
+            ->get('/')
+            ->assertRedirect('/login');
+
         $user->extendValidity();
 
         $this->actingAs($user)

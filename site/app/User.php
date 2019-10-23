@@ -41,6 +41,14 @@ class User extends Authenticatable
     ];
 
     /**
+     * Get the invitations created by the user.
+     */
+    public function invitations()
+    {
+        return $this->hasMany('App\Invitation', 'creator_id');
+    }
+
+    /**
      * Extend the validity of the user account.
      * Default is 12 months.
      *

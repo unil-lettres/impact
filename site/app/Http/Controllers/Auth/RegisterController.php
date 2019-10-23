@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Invitation;
 use App\User;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -59,14 +61,33 @@ class RegisterController extends Controller
      * Create a new user instance after a valid registration.
      *
      * @param  array  $data
-     * @return \App\User
+     * @return User
      */
     protected function create(array $data)
     {
-        return User::create([
+        $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);
+
+
+        try {
+            // Try to find an invitation for this email address
+            $invitation = Invitation::where('email', $user->email)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            // Return the new user if no invitation is found
+            return $user;
+        }
+
+        // Update the invitation registered_at property
+        $invitation->registered_at = $user->created_at;
+        $invitation->update();
+
+        // Update the user creator_id property
+        $user->creator_id = $invitation->creator_id;
+        $user->update();
+
+        return $user;
     }
 }

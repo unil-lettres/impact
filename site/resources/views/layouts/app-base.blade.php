@@ -2,11 +2,13 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
     <head>
         @include('includes.head')
+
         @yield('styles')
     </head>
     <body>
         <div id='app'>
             @include('includes.header.header')
+
             <div id="content" class="container">
                 <div class="container title-content">
                     <div class="page-title">
@@ -29,7 +31,9 @@
                 </div>
             </div>
         </div>
+
         <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+        @include('layouts.app-js')
         @yield('scripts')
     </body>
 </html>

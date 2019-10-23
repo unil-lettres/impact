@@ -14,12 +14,17 @@
 // Authentication routes
 Auth::routes();
 
+// Register with an invitation
+Route::get('invitations/register', 'InvitationController@register')
+    ->middleware('has_invitation');
+
 // Localization route
 Route::get('lang/{locale}', 'LocalizationController@index');
 
 // Standard routes
 Route::middleware(['auth', 'app'])->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
+    Route::resource('invitations', 'InvitationController');
 });
 
 // Administration routes

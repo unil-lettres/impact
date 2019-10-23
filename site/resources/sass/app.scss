@@ -11,6 +11,10 @@
 // Bootstrap
 @import '~bootstrap/scss/bootstrap';
 
+// Font Awesome
+@import '~@fortawesome/fontawesome-free/scss/fontawesome.scss';
+@import '~@fortawesome/fontawesome-free/scss/regular.scss';
+
 // --------------
 // App stylesheets
 // --------------
@@ -23,3 +27,6 @@
 
 // Login views
 @import 'login';
+
+// Invitation views
+@import 'invitations';

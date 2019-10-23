@@ -7,5 +7,6 @@ return [
     'invitation.deleted' => 'Invitation deleted.',
     'invitation.wrong.token' => 'Wrong invitation token.',
     'invitation.already.used' => 'The invitation link has already been used.',
+    'invitation.sent' => 'Invitation mail sent to :mail.',
 
 ];

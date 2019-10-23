@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class StoreInvitation extends AbstractRequest
+class SendInvitationMail extends AbstractRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -14,6 +14,8 @@ class StoreInvitation extends AbstractRequest
         return true;
     }
 
+    protected $routeParametersToValidate = ['id' => 'id'];
+
     /**
      * Get the validation rules that apply to the request.
      *
@@ -22,7 +24,7 @@ class StoreInvitation extends AbstractRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|unique:invitations|unique:users'
+            'id' => 'integer|exists:invitations'
         ];
     }
 }

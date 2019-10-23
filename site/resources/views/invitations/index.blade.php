@@ -18,7 +18,6 @@
                         <tr>
                             <th>{{ trans('invitations.email') }}</th>
                             <th>{{ trans('invitations.created_at') }}</th>
-                            <th>{{ trans('invitations.link') }}</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -28,19 +27,32 @@
                                 <tr>
                                     <td>{{ $invitation->email }}</td>
                                     <td>{{ $invitation->created_at }}</td>
-                                    <td>
-                                        <kbd>{{ $invitation->getLink() }}</kbd>
-                                    </td>
-                                    <td>
-                                        @can('delete', $invitation)
-                                            <form class="with-delete-confirm" method="post"
-                                                  action="{{ route('invitations.destroy', $invitation->id) }}">
-                                                @method('DELETE')
-                                                @csrf
-                                                <button type="submit" class="btn btn-danger">
-                                                    <i class="far fa-trash-alt"></i>
+                                    <td class="actions">
+                                        @can('view', $invitation)
+                                            <span>
+                                                <button type="button" class="btn btn-primary base-popover" data-toggle="popover" title="{{ trans('invitations.link') }}" data-content="<em>{{ $invitation->getLink() }}</em>">
+                                                    <i class="far fa-share-square"></i>
                                                 </button>
-                                            </form>
+                                            </span>
+                                        @endcan
+                                        @can('mail', $invitation)
+                                            <span>
+                                                <a href="{{ route('sendInvite', $invitation->id) }}" class="btn btn-primary" title="{{ trans('invitations.send') }}">
+                                                    <i class="far fa-paper-plane"></i>
+                                                </a>
+                                            </span>
+                                        @endcan
+                                        @can('delete', $invitation)
+                                            <span>
+                                                <form class="with-delete-confirm" method="post"
+                                                      action="{{ route('invitations.destroy', $invitation->id) }}">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <button type="submit" class="btn btn-danger" title="{{ trans('invitations.delete') }}">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                            </span>
                                         @endcan
                                     </td>
                                 </tr>

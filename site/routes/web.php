@@ -24,7 +24,9 @@ Route::get('lang/{locale}', 'LocalizationController@index');
 // Standard routes
 Route::middleware(['auth', 'app'])->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
+
     Route::resource('invitations', 'InvitationController');
+    Route::get('invitations/{id}/mail', 'InvitationController@mail')->name('sendInvite');
 });
 
 // Administration routes

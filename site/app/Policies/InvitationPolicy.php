@@ -15,6 +15,7 @@ class InvitationPolicy
      *
      * @param $user
      * @param $ability
+     *
      * @return bool
      */
     public function before($user, $ability)
@@ -30,6 +31,7 @@ class InvitationPolicy
      * Determine whether the user can view any invitations.
      *
      * @param  User  $user
+     *
      * @return mixed
      */
     public function viewAny(User $user)
@@ -42,6 +44,7 @@ class InvitationPolicy
      *
      * @param  User  $user
      * @param  Invitation  $invitation
+     *
      * @return mixed
      */
     public function view(User $user, Invitation $invitation)
@@ -53,6 +56,7 @@ class InvitationPolicy
      * Determine whether the user can create invitations.
      *
      * @param  User  $user
+     *
      * @return mixed
      */
     public function create(User $user)
@@ -65,6 +69,7 @@ class InvitationPolicy
      *
      * @param  User  $user
      * @param  Invitation  $invitation
+     *
      * @return mixed
      */
     public function update(User $user, Invitation $invitation)
@@ -77,6 +82,7 @@ class InvitationPolicy
      *
      * @param  User  $user
      * @param  Invitation  $invitation
+     *
      * @return mixed
      */
     public function delete(User $user, Invitation $invitation)
@@ -89,6 +95,7 @@ class InvitationPolicy
      *
      * @param  User  $user
      * @param  Invitation  $invitation
+     *
      * @return mixed
      */
     public function restore(User $user, Invitation $invitation)
@@ -101,6 +108,7 @@ class InvitationPolicy
      *
      * @param  User  $user
      * @param  Invitation  $invitation
+     *
      * @return mixed
      */
     public function forceDelete(User $user, Invitation $invitation)
@@ -116,5 +124,18 @@ class InvitationPolicy
     public function register()
     {
         return true;
+    }
+
+    /**
+     * Determine whether the user can send the invitation mail.
+     *
+     * @param  User  $user
+     * @param  Invitation  $invitation
+     *
+     * @return mixed
+     */
+    public function mail(User $user, Invitation $invitation)
+    {
+        return $user->id === $invitation->creator_id;
     }
 }

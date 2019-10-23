@@ -7,5 +7,6 @@ return [
     'invitation.deleted' => 'Invitation supprimée.',
     'invitation.wrong.token' => 'Mauvais jeton d\'invitation.',
     'invitation.already.used' => 'Le lien d\'invitation a déjà été utilisé.',
+    'invitation.sent' => 'Mail d\'invitation envoyé à :mail.',
 
 ];

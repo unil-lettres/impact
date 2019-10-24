@@ -51,7 +51,6 @@ class AuthTest extends TestCase
 
         $this->actingAs($user)
             ->get('/admin')
-            ->assertRedirect('/admin/users')
-            ->assertOk();
+            ->assertRedirect('/admin/users');
     }
 }

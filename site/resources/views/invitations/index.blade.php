@@ -8,11 +8,11 @@
     <div id="invitations">
         <div class="card">
             <div class="card-header">
-                <span class="title">{{ trans('invitations.pending') }} <span class="badge badge-secondary">{{ $count }}</span></span>
+                <span class="title">{{ trans('invitations.pending') }} <span class="badge badge-secondary">{{ $invitations->total() }}</span></span>
                 <a href="{{ route('invitations.create') }}" class="btn btn-primary float-right">{{ trans('invitations.create') }}</a>
             </div>
             <div class="card-body">
-                @if ($count > 0)
+                @if ($invitations->items())
                     <table class="table">
                         <thead>
                         <tr>
@@ -22,7 +22,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($invitations as $invitation)
+                        @foreach ($invitations->items() as $invitation)
                             @can('view', $invitation)
                                 <tr>
                                     <td>{{ $invitation->email }}</td>
@@ -60,6 +60,7 @@
                         @endforeach
                         </tbody>
                     </table>
+                    {{ $invitations->onEachSide(1)->links() }}
                 @else
                     <p class="text-secondary">{{ trans('invitations.not_found') }}</p>
                 @endif

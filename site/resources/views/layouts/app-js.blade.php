@@ -5,13 +5,16 @@
 
     $('.base-popover').popover({
         trigger: 'click',
-        placement: 'left',
+        placement: 'auto',
         html: true
     });
 
     $('body').on('click', function (e) {
         $(".popover").each(function() {
-            if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+            if (!$(this).is(e.target) &&
+                $(this).has(e.target).length === 0 &&
+                $('.popover').has(e.target).length === 0
+            ) {
                 $(this).prevAll('*:first').popover('hide');
             }
         });

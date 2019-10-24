@@ -1,6 +1,6 @@
 @if (Auth::user()->admin && !request()->routeIs('admin*'))
     <li class="nav-item">
-        <a class="nav-link" href="{{ route('admin') }}">{{ trans('login.admin') }}</a>
+        <a class="nav-link" href="{{ route('admin.index') }}">{{ trans('login.admin') }}</a>
     </li>
 @endif
 <li class="nav-item dropdown">

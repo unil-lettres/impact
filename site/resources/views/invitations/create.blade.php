@@ -1,8 +1,11 @@
 @extends('layouts.app-base')
 
-@section('title')
-    {{ trans('invitations.create') }}
-@stop
+@if (Route::is('admin.invitations.create'))
+    <!-- Add admin menu if we are in the admin namespace -->
+    @section('admin.menu')
+        @include('admin.menu')
+    @stop
+@endif
 
 @section('content')
     <div id="create-invitation">

@@ -15,12 +15,22 @@ class AdminController extends Controller
     {}
 
     /**
-     * Show the application dashboard.
+     * Show the admin index page.
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
     public function index()
     {
-        return view('pages.admin');
+        return redirect()->route('admin.users');
+    }
+
+    /**
+     * Show the users management page.
+     *
+     * @return \Illuminate\Contracts\Support\Renderable
+     */
+    public function users()
+    {
+        return view('admin.users');
     }
 }

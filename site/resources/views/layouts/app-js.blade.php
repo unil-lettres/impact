@@ -3,6 +3,10 @@
         return confirm('{{ trans('messages.confirm.delete') }}');
     });
 
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip()
+    });
+
     $('.base-popover').popover({
         trigger: 'click',
         placement: 'auto',

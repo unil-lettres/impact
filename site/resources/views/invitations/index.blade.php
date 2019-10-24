@@ -1,15 +1,18 @@
 @extends('layouts.app-base')
 
-@section('title')
-    {{ trans('invitations.manage') }}
-@stop
+@if (Route::is('admin.invitations.index'))
+    <!-- Add admin menu if we are in the admin namespace -->
+    @section('admin.menu')
+        @include('admin.menu')
+    @stop
+@endif
 
 @section('content')
     <div id="invitations">
         <div class="card">
             <div class="card-header">
                 <span class="title">{{ trans('invitations.pending') }} <span class="badge badge-secondary">{{ $invitations->total() }}</span></span>
-                <a href="{{ route('invitations.create') }}" class="btn btn-primary float-right">{{ trans('invitations.create') }}</a>
+                <a href="{{ Route::is('admin.invitations.index') ? route('admin.invitations.create') : route('invitations.create') }}" class="btn btn-primary float-right">{{ trans('invitations.create') }}</a>
             </div>
             <div class="card-body">
                 @if ($invitations->items())
@@ -37,7 +40,7 @@
                                         @endcan
                                         @can('mail', $invitation)
                                             <span>
-                                                <a href="{{ route('sendInvite', $invitation->id) }}" class="btn btn-primary" title="{{ trans('invitations.send') }}">
+                                                <a href="{{ route('sendInvite', $invitation->id) }}" data-toggle="tooltip" data-placement="top" class="btn btn-primary" title="{{ trans('invitations.send') }}">
                                                     <i class="far fa-paper-plane"></i>
                                                 </a>
                                             </span>
@@ -48,7 +51,7 @@
                                                       action="{{ route('invitations.destroy', $invitation->id) }}">
                                                     @method('DELETE')
                                                     @csrf
-                                                    <button type="submit" class="btn btn-danger" title="{{ trans('invitations.delete') }}">
+                                                    <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="{{ trans('invitations.delete') }}">
                                                         <i class="far fa-trash-alt"></i>
                                                     </button>
                                                 </form>

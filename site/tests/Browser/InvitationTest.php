@@ -112,7 +112,7 @@ class InvitationTest extends DuskTestCase
                 ->press('Créer une invitation');
             $browser->assertSee('Invitation créée. Un email à été envoyé au destinataire.');
 
-            $browser->clickLink('Invitations');
+            $browser->visit('/invitations');
             $browser->assertSee('test-new-invitation@example.com');
         });
     }
@@ -130,7 +130,7 @@ class InvitationTest extends DuskTestCase
                 ->loginAsUser('invitation-user@example.com', 'password');
 
             $browser->visit('/invitations');
-            $browser->click('#invitations tr:first li:nth-child(1) button');
+            $browser->click('#invitations table tbody tr:first-child .actions span:nth-child(1) button');
             $browser->assertSee('Lien de l\'invitation');
         });
     }
@@ -148,8 +148,8 @@ class InvitationTest extends DuskTestCase
                 ->loginAsUser('invitation-user@example.com', 'password');
 
             $browser->visit('/invitations');
-            $browser->click('#invitations tr:first li:nth-child(2) a');
-            $browser->assertSee('Mail d\'invitation envoyé à test-invitation-user@example.com.');
+            $browser->click('#invitations table tbody tr:first-child .actions span:nth-child(2) a');
+            $browser->assertSee('Mail d\'invitation envoyé à');
         });
     }
 
@@ -170,10 +170,10 @@ class InvitationTest extends DuskTestCase
 
             $browser->click('#invitations form.with-delete-confirm button');
             $browser->waitForDialog($seconds = null);
+            $browser->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?');
             $browser->acceptDialog();
 
             $browser->assertSee('Invitation supprimée.');
-            $browser->assertDontSee('test-invitation-user@example.com');
         });
     }
 }

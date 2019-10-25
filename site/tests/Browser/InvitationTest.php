@@ -111,7 +111,7 @@ class InvitationTest extends DuskTestCase
             $browser->type('email', 'test-new-invitation@example.com')
                 ->press('Créer une invitation')
                 ->waitForText('Invitation créée. Un email à été envoyé au destinataire.')
-                ->assertSee('Invitation créée. Un mail à été envoyé au destinataire.');
+                ->assertSee('Invitation créée. Un email à été envoyé au destinataire.');
 
             $browser->visit('/invitations');
             $browser->assertSee('test-new-invitation@example.com');

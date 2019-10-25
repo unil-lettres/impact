@@ -39,8 +39,7 @@ class EmailFailedTravisCIBuild extends Command
      */
     public function handle()
     {
-        // Please add the CI_FAILURE_RECIPIENT environment variable to your CI tool,
-        // or modify the MAIL_FROM_ADDRESS in your laravel .env file.
-        return Mail::to(env('CI_FAILURE_RECIPIENT', env('MAIL_FROM_ADDRESS')))->send(new DuskFailure());
+        return Mail::to('mailtrap@test.com')
+            ->send(new DuskFailure());
     }
 }

@@ -109,8 +109,9 @@ class InvitationTest extends DuskTestCase
 
             $browser->clickLink('Créer une invitation');
             $browser->type('email', 'test-new-invitation@example.com')
-                ->press('Créer une invitation');
-            $browser->assertSee('Invitation créée. Un email à été envoyé au destinataire.');
+                ->press('Créer une invitation')
+                ->waitForText('Invitation créée. Un email à été envoyé au destinataire.')
+                ->assertSee('Invitation créée. Un email à été envoyé au destinataire.');
 
             $browser->visit('/invitations');
             $browser->assertSee('test-new-invitation@example.com');
@@ -130,8 +131,9 @@ class InvitationTest extends DuskTestCase
                 ->loginAsUser('invitation-user@example.com', 'password');
 
             $browser->visit('/invitations');
-            $browser->click('#invitations table tbody tr:first-child .actions span:nth-child(1) button');
-            $browser->assertSee('Lien de l\'invitation');
+            $browser->click('#invitations table tbody tr:first-child .actions span:nth-child(1) button')
+                ->waitForText('Lien de l\'invitation')
+                ->assertSee('Lien de l\'invitation');
         });
     }
 
@@ -148,8 +150,9 @@ class InvitationTest extends DuskTestCase
                 ->loginAsUser('invitation-user@example.com', 'password');
 
             $browser->visit('/invitations');
-            $browser->click('#invitations table tbody tr:first-child .actions span:nth-child(2) a');
-            $browser->assertSee('Mail d\'invitation envoyé à');
+            $browser->click('#invitations table tbody tr:first-child .actions span:nth-child(2) a')
+                ->waitForText('Mail d\'invitation envoyé à')
+                ->assertSee('Mail d\'invitation envoyé à');
         });
     }
 
@@ -168,12 +171,12 @@ class InvitationTest extends DuskTestCase
             $browser->visit('/invitations');
             $browser->assertSee('test-invitation-user@example.com');
 
-            $browser->click('#invitations form.with-delete-confirm button');
-            $browser->waitForDialog($seconds = null);
-            $browser->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?');
-            $browser->acceptDialog();
-
-            $browser->assertSee('Invitation supprimée.');
+            $browser->click('#invitations form.with-delete-confirm button')
+                ->waitForDialog($seconds = null)
+                ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
+                ->acceptDialog()
+                ->waitForText('Invitation supprimée.')
+                ->assertSee('Invitation supprimée.');
         });
     }
 }

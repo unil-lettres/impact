@@ -169,7 +169,6 @@ class InvitationTest extends DuskTestCase
                 ->loginAsUser('invitation-user@example.com', 'password');
 
             $browser->visit('/invitations');
-            $browser->assertSee('test-invitation-user@example.com');
 
             $browser->click('#invitations form.with-delete-confirm button')
                 ->waitForDialog($seconds = null)
@@ -177,6 +176,67 @@ class InvitationTest extends DuskTestCase
                 ->acceptDialog()
                 ->waitForText('Invitation supprimée.')
                 ->assertSee('Invitation supprimée.');
+        });
+    }
+
+    /**
+     * Test invitation link with user already registered.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testInvitationLinkUserAlreadyRegistered()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(
+                '/invitations/register?token=544da5bd0f5fd72b880146fed9545cbe'
+            );
+
+            $browser->assertSee('Le lien d\'invitation a déjà été utilisé.')
+                ->assertPathIs('/login');
+        });
+    }
+
+    /**
+     * Test invitation link with an invalid token.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testInvitationLinkInvalidToken()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(
+                '/invitations/register?token=5c10872ae15b1f30d7db409bbf6983f4xxx'
+            );
+
+            $browser->assertSee('Mauvais jeton d\'invitation.')
+                ->assertPathIs('/login');
+        });
+    }
+
+    /**
+     * Test invitation link with user creation.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testInvitationLink()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(
+                '/invitations/register?token=5c10872ae15b1f30d7db409bbf6983f4'
+            );
+
+            $browser->assertSee('S\'enregistrer');
+
+            $browser->type('name', 'Test invitation link')
+                ->type('password', 'password')
+                ->type('password_confirmation', 'password')
+                ->press('S\'enregistrer')
+                ->waitForText('Test invitation link')
+                ->assertPathIs('/')
+                ->assertSee('Test invitation link');
         });
     }
 }

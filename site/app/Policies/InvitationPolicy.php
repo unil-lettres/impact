@@ -30,7 +30,7 @@ class InvitationPolicy
     /**
      * Determine whether the user can view any invitations.
      *
-     * @param  User  $user
+     * @param User $user
      *
      * @return mixed
      */
@@ -42,8 +42,8 @@ class InvitationPolicy
     /**
      * Determine whether the user can view the invitation.
      *
-     * @param  User  $user
-     * @param  Invitation  $invitation
+     * @param User $user
+     * @param Invitation $invitation
      *
      * @return mixed
      */
@@ -55,7 +55,7 @@ class InvitationPolicy
     /**
      * Determine whether the user can create invitations.
      *
-     * @param  User  $user
+     * @param User $user
      *
      * @return mixed
      */
@@ -67,8 +67,8 @@ class InvitationPolicy
     /**
      * Determine whether the user can update the invitation.
      *
-     * @param  User  $user
-     * @param  Invitation  $invitation
+     * @param User $user
+     * @param Invitation $invitation
      *
      * @return mixed
      */
@@ -80,8 +80,8 @@ class InvitationPolicy
     /**
      * Determine whether the user can delete the invitation.
      *
-     * @param  User  $user
-     * @param  Invitation  $invitation
+     * @param User $user
+     * @param Invitation $invitation
      *
      * @return mixed
      */
@@ -93,8 +93,8 @@ class InvitationPolicy
     /**
      * Determine whether the user can restore the invitation.
      *
-     * @param  User  $user
-     * @param  Invitation  $invitation
+     * @param User $user
+     * @param Invitation $invitation
      *
      * @return mixed
      */
@@ -106,8 +106,8 @@ class InvitationPolicy
     /**
      * Determine whether the user can permanently delete the invitation.
      *
-     * @param  User  $user
-     * @param  Invitation  $invitation
+     * @param User $user
+     * @param Invitation $invitation
      *
      * @return mixed
      */
@@ -119,9 +119,11 @@ class InvitationPolicy
     /**
      * Determine whether the user can register a new account.
      *
+     * @param User $user
+     *
      * @return mixed
      */
-    public function register()
+    public function register(?User $user)
     {
         return true;
     }
@@ -129,8 +131,8 @@ class InvitationPolicy
     /**
      * Determine whether the user can send the invitation mail.
      *
-     * @param  User  $user
-     * @param  Invitation  $invitation
+     * @param User $user
+     * @param Invitation $invitation
      *
      * @return mixed
      */

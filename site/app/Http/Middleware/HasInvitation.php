@@ -31,13 +31,13 @@ class HasInvitation
             $invitation = Invitation::where('invitation_token', $invitation_token)->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return redirect('/login')
-                ->with('error', trans('invitation.wrong.token'));
+                ->with('error', trans('messages.invitation.wrong.token'));
         }
 
         // Check if the invitation was already used
         if (!is_null($invitation->registered_at)) {
             return redirect('/login')
-                ->with('error', trans('invitation.already.used'));
+                ->with('error', trans('messages.invitation.already.used'));
         }
 
         return $next($request);

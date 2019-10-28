@@ -18,17 +18,14 @@ class HasInvitation
      */
     public function handle($request, Closure $next)
     {
-
         // Check for a token parameter
-        if (!$request->has('token')) {
+        if (!$request->input('token')) {
             return redirect('/login');
         }
 
-        $invitation_token = $request->get('token');
-
         // Check for a matching record in the db
         try {
-            $invitation = Invitation::where('invitation_token', $invitation_token)->firstOrFail();
+            $invitation = Invitation::where('invitation_token', $request->input('token'))->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return redirect('/login')
                 ->with('error', trans('messages.invitation.wrong.token'));

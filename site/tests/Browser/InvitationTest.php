@@ -234,9 +234,9 @@ class InvitationTest extends DuskTestCase
                 ->type('password', 'password')
                 ->type('password_confirmation', 'password')
                 ->press('S\'enregistrer')
-                ->waitForText('Test invitation link')
+                ->waitForText('Compte créé. Votre lien d\'invitation ne peut plus être utilisé.')
                 ->assertPathIs('/')
-                ->assertSee('Test invitation link');
+                ->assertSee('Compte créé. Votre lien d\'invitation ne peut plus être utilisé.');
         });
     }
 }

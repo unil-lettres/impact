@@ -8,8 +8,10 @@
                     <div class="card-header">{{ trans('login.register') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('register') }}">
+                        <form method="POST" action="{{ route('invitations.user.create') }}">
                             @csrf
+
+                            <input name="token" type="hidden" value="{{ $invitation->invitation_token }}">
 
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label text-md-right">{{ trans('login.name') }}</label>
@@ -29,8 +31,8 @@
                                 <label for="email" class="col-md-4 col-form-label text-md-right">{{ trans('login.email') }}</label>
 
                                 <div class="col-md-6">
-                                    <input type="email" class="form-control disabled" value="{{ $email }}" disabled>
-                                    <input id="email" type="hidden" class="form-control disabled" name="email" value="{{ $email }}">
+                                    <input type="email" class="form-control disabled" value="{{ $invitation->email }}" disabled>
+                                    <input name="email" type="hidden" value="{{ $invitation->email }}">
 
                                     @error('email')
                                         <span class="invalid-feedback" role="alert">

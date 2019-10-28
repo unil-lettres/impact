@@ -8,5 +8,7 @@ return [
     'invitation.wrong.token' => 'Mauvais jeton d\'invitation.',
     'invitation.already.used' => 'Le lien d\'invitation a déjà été utilisé.',
     'invitation.sent' => 'Mail d\'invitation envoyé à :mail.',
+    'invitation.user.created' => 'Compte créé. Votre lien d\'invitation ne peut plus être utilisé.',
+    'invitation.user.no.match' => 'Aucune invitation ne correspond à cette inscription.',
 
 ];

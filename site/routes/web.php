@@ -12,11 +12,13 @@
 */
 
 // Authentication routes
-Auth::routes();
+Auth::routes(['register' => false]);
 
 // Register with an invitation
-Route::get('invitations/register', 'InvitationController@register')
-    ->middleware('has_invitation');
+Route::middleware(['has_invitation'])->group(function () {
+    Route::get('invitations/register', 'InvitationController@register')->name('invitations.register');
+    Route::post('invitations/user/create', 'InvitationController@createInvitationUser')->name('invitations.user.create');
+});
 
 // Localization route
 Route::get('lang/{locale}', 'LocalizationController@index');
@@ -25,7 +27,7 @@ Route::get('lang/{locale}', 'LocalizationController@index');
 Route::middleware(['auth', 'app'])->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
     Route::resource('invitations', 'InvitationController');
-    Route::get('invitations/{id}/mail', 'InvitationController@mail')->name('sendInvite');
+    Route::get('invitations/{id}/mail', 'InvitationController@mail')->name('send.invite');
 });
 
 // Administration routes

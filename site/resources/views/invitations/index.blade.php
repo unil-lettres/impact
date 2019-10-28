@@ -40,7 +40,7 @@
                                         @endcan
                                         @can('mail', $invitation)
                                             <span>
-                                                <a href="{{ route('sendInvite', $invitation->id) }}" data-toggle="tooltip" data-placement="top" class="btn btn-primary" title="{{ trans('invitations.send') }}">
+                                                <a href="{{ route('send.invite', $invitation->id) }}" data-toggle="tooltip" data-placement="top" class="btn btn-primary" title="{{ trans('invitations.send') }}">
                                                     <i class="far fa-paper-plane"></i>
                                                 </a>
                                             </span>

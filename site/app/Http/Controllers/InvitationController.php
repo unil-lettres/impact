@@ -2,15 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateInvitationUser;
 use App\Http\Requests\SendInvitationMail;
 use App\Http\Requests\StoreInvitation;
 use App\Invitation;
 use App\Mail\InvitationCreated;
+use App\User;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 
 class InvitationController extends Controller
@@ -56,6 +60,7 @@ class InvitationController extends Controller
      * Store a newly created resource in storage.
      *
      * @param StoreInvitation $request
+     *
      * @return Response
      * @throws AuthorizationException
      */
@@ -80,6 +85,7 @@ class InvitationController extends Controller
      * Display the specified resource.
      *
      * @param  Invitation  $invitation
+     *
      * @return Response
      */
     public function show(Invitation $invitation)
@@ -91,6 +97,7 @@ class InvitationController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  Invitation  $invitation
+     *
      * @return Response
      */
     public function edit(Invitation $invitation)
@@ -102,6 +109,7 @@ class InvitationController extends Controller
      * Update the specified resource in storage.
      *
      * @param Request $request
+     *
      * @param  Invitation  $invitation
      * @return Response
      */
@@ -132,6 +140,7 @@ class InvitationController extends Controller
      * A valid invitation token is needed.
      *
      * @param  Request $request
+     *
      * @return Response
      * @throws AuthorizationException
      */
@@ -141,9 +150,52 @@ class InvitationController extends Controller
 
         $invitation_token = $request->get('token');
         $invitation = Invitation::where('invitation_token', $invitation_token)->firstOrFail();
-        $email = $invitation->email;
 
-        return view('invitations.register', compact('email'));
+        return view('invitations.register', [
+            'invitation' => $invitation
+        ]);
+    }
+
+    /**
+     * Create a new user instance after a valid invitation registration.
+     *
+     * @param CreateInvitationUser $request
+     *
+     * @return User
+     * @throws AuthorizationException
+     */
+    public function createInvitationUser(CreateInvitationUser $request)
+    {
+        $this->authorize('createInvitationUser', Invitation::class);
+
+        // Create new user
+        $user = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+        ]);
+
+        try {
+            // Try to find an invitation for this email address
+            $invitation = Invitation::where('email', $user->email)->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            return redirect()->back()
+                ->with('error', trans('messages.invitation.user.no.match'));
+        }
+
+        // Update the invitation registered_at property
+        $invitation->registered_at = $user->created_at;
+        $invitation->update();
+
+        // Update the user creator_id property
+        $user->creator_id = $invitation->creator_id;
+        $user->update();
+
+        // Login with created user
+        Auth::login($user);
+
+        return redirect()->route('home')
+            ->with('success', trans('messages.invitation.user.created'));
     }
 
     /**

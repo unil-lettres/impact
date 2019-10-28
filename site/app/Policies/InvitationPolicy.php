@@ -117,13 +117,25 @@ class InvitationPolicy
     }
 
     /**
-     * Determine whether the user can register a new account.
+     * Determine whether the user can view the register form.
      *
      * @param User $user
      *
      * @return mixed
      */
     public function register(?User $user)
+    {
+        return true;
+    }
+
+    /**
+     * Determine whether the user can register a new account.
+     *
+     * @param User $user
+     *
+     * @return mixed
+     */
+    public function createInvitationUser(?User $user)
     {
         return true;
     }

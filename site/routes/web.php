@@ -12,7 +12,7 @@
 */
 
 // Authentication routes
-Auth::routes(['register' => false]);
+Auth::routes();
 
 // Register with an invitation
 Route::middleware(['has_invitation'])->group(function () {

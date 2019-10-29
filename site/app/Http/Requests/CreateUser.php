@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class CreateInvitationUser extends AbstractRequest
+class CreateUser extends AbstractRequest
 {
     /**
      * Determine if the user is authorized to make this request.

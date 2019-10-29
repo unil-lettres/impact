@@ -23,9 +23,12 @@ class InvitationController extends Controller
      * Display a listing of the resource.
      *
      * @return Response
+     * @throws AuthorizationException
      */
     public function index()
     {
+        $this->authorize('viewAny', Invitation::class);
+
         if(Auth::user()->admin) {
             // If the user is an admin, show all pending records
             $invitations = Invitation::where('registered_at', null)

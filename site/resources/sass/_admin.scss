@@ -26,3 +26,22 @@
     border-bottom-right-radius: 10px;
     height: 50px;
 }
+
+#users,
+#invitations {
+    .card-header {
+        .title {
+            font-size: 1.5em;
+        }
+    }
+    table {
+        td.actions {
+            width: 10%;
+
+            span {
+                display: inherit;
+                padding: 2px;
+            }
+        }
+    }
+}

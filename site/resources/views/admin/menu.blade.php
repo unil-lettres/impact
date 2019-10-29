@@ -1,7 +1,7 @@
 <div class="admin-menu">
     <ul class="nav justify-content-center">
-        <li class="nav-item {{ Route::is('admin.users') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('admin.users') }}">{{ trans('admin.users') }}</a>
+        <li class="nav-item {{ Route::is('admin.users*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.users.index') }}">{{ trans('admin.users') }}</a>
         </li>
         <li class="nav-item {{ Route::is('admin.invitations*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.invitations.index') }}">{{ trans('admin.invitations') }}</a>

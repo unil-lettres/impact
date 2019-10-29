@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use Illuminate\Contracts\Support\Renderable;
 
 class AdminController extends Controller
 {
@@ -17,20 +17,20 @@ class AdminController extends Controller
     /**
      * Show the admin index page.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function index()
     {
-        return redirect()->route('admin.users');
+        return redirect()->route('admin.users.index');
     }
 
     /**
      * Show the users management page.
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @return Renderable
      */
     public function users()
     {
-        return view('admin.users');
+        return view('admin.users.index');
     }
 }

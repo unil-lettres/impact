@@ -14,26 +14,29 @@
 // Authentication routes
 Auth::routes();
 
+// Localization route
+Route::get('lang/{locale}', 'LocalizationController@index');
+
 // Register with an invitation
 Route::middleware(['has_invitation'])->group(function () {
     Route::get('invitations/register', 'InvitationController@register')->name('invitations.register');
     Route::post('invitations/user/create', 'InvitationController@createInvitationUser')->name('invitations.user.create');
 });
 
-// Localization route
-Route::get('lang/{locale}', 'LocalizationController@index');
-
 // Standard routes
 Route::middleware(['auth', 'app'])->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
+
     Route::resource('invitations', 'InvitationController');
     Route::get('invitations/{id}/mail', 'InvitationController@mail')->name('send.invite');
 });
 
 // Administration routes
-Route::group(['prefix' => 'admin',  'middleware' => ['auth', 'app', 'is_admin']], function() {
-    Route::get('/', 'AdminController@index')->name('admin.index');
-    Route::get('/users', 'AdminController@users')->name('admin.users');
-    Route::get('/invitations', 'InvitationController@index')->name('admin.invitations.index');
-    Route::get('/invitations/create', 'InvitationController@create')->name('admin.invitations.create');
+Route::group(['prefix' => 'admin',  'as' => 'admin.', 'middleware' => ['auth', 'app', 'is_admin']], function() {
+    Route::get('/', 'AdminController@index')->name('index');
+
+    Route::get('/invitations', 'InvitationController@index')->name('invitations.index');
+    Route::get('/invitations/create', 'InvitationController@create')->name('invitations.create');
+
+    Route::resource('users', 'UserController');
 });

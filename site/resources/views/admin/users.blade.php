@@ -15,35 +15,39 @@
                 @if ($users->items())
                     <table class="table">
                         <thead>
-                        <tr>
-                            <th>Email</th>
-                            <th>Date de création</th>
-                            <th></th>
-                        </tr>
+                            <tr>
+                                <th>Email</th>
+                                <th>Name</th>
+                                <th>Date de création</th>
+                                <th>Type</th>
+                                <th></th>
+                            </tr>
                         </thead>
                         <tbody>
-                        @foreach ($users->items() as $user)
-                            @can('view', $user)
-                                <tr>
-                                    <td>{{ $user->email }}</td>
-                                    <td>{{ $user->created_at }}</td>
-                                    <td class="actions">
-                                        @can('delete', $user)
-                                            <span>
-                                                <form class="with-delete-confirm" method="post"
-                                                      action="{{ route('admin.users.destroy', $user->id) }}">
-                                                    @method('DELETE')
-                                                    @csrf
-                                                    <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Supprimer l'utilisateur">
-                                                        <i class="far fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
-                                            </span>
-                                        @endcan
-                                    </td>
-                                </tr>
-                            @endcan
-                        @endforeach
+                            @foreach ($users->items() as $user)
+                                @can('view', $user)
+                                    <tr class="{{ Helpers::isUserValid($user) ? '' : 'invalid' }}">
+                                        <td>{{ $user->email }}</td>
+                                        <td>{{ $user->name }}</td>
+                                        <td>{{ $user->created_at }}</td>
+                                        <td>{{ $user->type }}</td>
+                                        <td class="actions">
+                                            @can('delete', $user)
+                                                <span>
+                                                    <form class="with-delete-confirm" method="post"
+                                                          action="{{ route('admin.users.destroy', $user->id) }}">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                        <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Supprimer l'utilisateur">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    </form>
+                                                </span>
+                                            @endcan
+                                        </td>
+                                    </tr>
+                                @endcan
+                            @endforeach
                         </tbody>
                     </table>
                     {{ $users->onEachSide(1)->links() }}

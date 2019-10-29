@@ -99,11 +99,19 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param User $user
+     *
      * @return Response
+     * @throws AuthorizationException
      */
-    public function destroy($id)
+    public function destroy(User $user)
     {
-        // TODO: user destroy
+        $this->authorize('delete', $user);
+
+        $user->delete();
+
+        // TODO: translation
+        return redirect()->back()
+            ->with('success', 'Utilisateur supprimé');
     }
 }

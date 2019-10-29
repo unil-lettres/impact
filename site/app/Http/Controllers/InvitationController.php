@@ -125,6 +125,7 @@ class InvitationController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Invitation $invitation
+     *
      * @return Response
      * @throws Exception
      */

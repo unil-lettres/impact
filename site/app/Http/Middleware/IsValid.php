@@ -2,17 +2,18 @@
 
 namespace App\Http\Middleware;
 
+use App\Helpers\Helpers;
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Carbon;
 
 class IsValid
 {
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param Request $request
+     * @param Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -22,19 +23,7 @@ class IsValid
             return redirect('/');
         }
 
-        // Check if user is an admin
-        if(auth()->user()->admin) {
-            return $next($request);
-        }
-
-        // Check if user account has an expiration date
-        if(is_null(auth()->user()->validity)) {
-            return $next($request);
-        }
-
-        // Check if user account is still valid
-        $validity = Carbon::instance(auth()->user()->validity);
-        if($validity->isFuture()) {
+        if(Helpers::isUserValid(auth()->user())) {
             return $next($request);
         }
 

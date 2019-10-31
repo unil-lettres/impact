@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\UserType;
 use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
@@ -47,6 +48,15 @@ class UsersTableSeeder extends Seeder
             'updated_at' => $now,
             'creator_id' => $admin,
             'validity' => Carbon::now()->subDays(1)
+        ]);
+
+        DB::table('users')->insert([
+            'name' => 'AAI user',
+            'email' => 'aai-user@example.com',
+            'remember_token' => Str::random(10),
+            'created_at' => $now,
+            'updated_at' => $now,
+            'type' => UserType::Aai
         ]);
     }
 }

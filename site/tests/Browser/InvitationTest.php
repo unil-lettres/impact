@@ -88,7 +88,7 @@ class InvitationTest extends DuskTestCase
                 ->loginAsUser('invitation-user@example.com', 'password');
 
             $browser->visit('/invitations');
-            $browser->assertDontSee('test-invitation@example.com');
+            $browser->assertDontSee('test-invitation-registered@example.com');
             $browser->assertSee('test-invitation-user@example.com');
         });
     }
@@ -228,12 +228,12 @@ class InvitationTest extends DuskTestCase
                 '/invitations/register?token=5c10872ae15b1f30d7db409bbf6983f4'
             );
 
-            $browser->assertSee('S\'enregistrer');
+            $browser->assertSee('Créer un nouvel utilisateur');
 
             $browser->type('name', 'Test invitation link')
                 ->type('password', 'password')
                 ->type('password_confirmation', 'password')
-                ->press('S\'enregistrer')
+                ->press('Créer un nouvel utilisateur')
                 ->waitForText('Compte créé. Votre lien d\'invitation ne peut plus être utilisé.')
                 ->assertPathIs('/')
                 ->assertSee('Compte créé. Votre lien d\'invitation ne peut plus être utilisé.');

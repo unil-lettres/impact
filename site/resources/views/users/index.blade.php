@@ -9,7 +9,10 @@
         <div class="card">
             <div class="card-header">
                 <span class="title">Géstion des utilisateurs <span class="badge badge-secondary">{{ $users->total() }}</span></span>
-                <a href="{{ route('admin.users.create') }}" class="btn btn-primary float-right">Créer un utilisateur</a>
+                <a href="{{ route('admin.users.create') }}"
+                   class="btn btn-primary float-right">
+                    Créer un utilisateur
+                </a>
             </div>
             <div class="card-body">
                 @if ($users->items())
@@ -29,16 +32,42 @@
                                     <tr class="{{ Helpers::isUserValid($user) ? '' : 'invalid' }}">
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->name }}</td>
-                                        <td>{{ $user->created_at }}</td>
+                                        <td>{{ $user->created_at->format('d/m/Y H:i:s') }}</td>
                                         <td>{{ $user->type }}</td>
                                         <td class="actions">
+                                            @can('update', $user)
+                                                <span>
+                                                    <a href="{{ route('admin.users.edit', $user->id) }}"
+                                                       data-toggle="tooltip"
+                                                       data-placement="top"
+                                                       class="btn btn-primary"
+                                                       title="Modifier l'utilisateur">
+                                                        <i class="far fa-edit"></i>
+                                                    </a>
+                                                </span>
+                                            @endcan
+                                            @can('extend', $user)
+                                                <span>
+                                                    <a href="{{ route('admin.users.extend', $user->id) }}"
+                                                       data-toggle="tooltip"
+                                                       data-placement="top"
+                                                       class="btn btn-primary"
+                                                       title="Extend validity ({{ App\User::DefaultValidity }} months)">
+                                                        <i class="far fa-clock"></i>
+                                                    </a>
+                                                </span>
+                                            @endcan
                                             @can('delete', $user)
                                                 <span>
                                                     <form class="with-delete-confirm" method="post"
                                                           action="{{ route('admin.users.destroy', $user->id) }}">
                                                         @method('DELETE')
                                                         @csrf
-                                                        <button type="submit" class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Supprimer l'utilisateur">
+                                                        <button type="submit"
+                                                                class="btn btn-danger"
+                                                                data-toggle="tooltip"
+                                                                data-placement="top"
+                                                                title="Supprimer l'utilisateur">
                                                             <i class="far fa-trash-alt"></i>
                                                         </button>
                                                     </form>
@@ -52,7 +81,9 @@
                     </table>
                     {{ $users->onEachSide(1)->links() }}
                 @else
-                    <p class="text-secondary">Aucun utilisateur</p>
+                    <p class="text-secondary">
+                        Aucun utilisateur
+                    </p>
                 @endif
             </div>
         </div>

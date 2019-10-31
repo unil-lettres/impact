@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Enums\UserType;
 use App\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
@@ -42,6 +43,22 @@ class Helpers {
         // Check if user account is still valid
         $validity = Carbon::instance($user->validity);
         if($validity->isFuture()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the user account type is local
+     *
+     * @param User $user
+     *
+     * @return boolean $isUserLocal
+     */
+    public static function isUserLocal(User $user) {
+        // Check if user has a local account type
+        if($user->type === UserType::Local) {
             return true;
         }
 

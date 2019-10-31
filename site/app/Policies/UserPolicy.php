@@ -2,29 +2,13 @@
 
 namespace App\Policies;
 
+use App\Enums\UserType;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class UserPolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * Authorize all actions for admins
-     *
-     * @param $user
-     * @param $ability
-     *
-     * @return bool
-     */
-    public function before($user, $ability)
-    {
-        if ($user->admin) {
-            return true;
-        }
-
-        return null;
-    }
 
     /**
      * Determine whether the user can view any models.
@@ -34,6 +18,10 @@ class UserPolicy
      */
     public function viewAny(User $user)
     {
+        if ($user->admin) {
+            return true;
+        }
+
         return false;
     }
 
@@ -46,7 +34,11 @@ class UserPolicy
      */
     public function view(User $user, User $model)
     {
-        return $user->id === $model->creator_id || $user->id === $model->id;
+        if ($user->admin) {
+            return true;
+        }
+
+        return $user->id === $model->id && $model->type === UserType::Local;
     }
 
     /**
@@ -57,6 +49,10 @@ class UserPolicy
      */
     public function create(User $user)
     {
+        if ($user->admin) {
+            return true;
+        }
+
         return false;
     }
 
@@ -69,7 +65,23 @@ class UserPolicy
      */
     public function update(User $user, User $model)
     {
-        return $user->id === $model->creator_id || $user->id === $model->id;
+        if ($user->admin) {
+            return true;
+        }
+
+        return $user->id === $model->id && $model->type === UserType::Local;
+    }
+
+    /**
+     * Determine whether the user can extend the validity of the model.
+     *
+     * @param  User  $user
+     * @param  User  $model
+     * @return mixed
+     */
+    public function extend(User $user, User $model)
+    {
+        return $user->admin && $model->type === UserType::Local;
     }
 
     /**
@@ -81,7 +93,11 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
-        return $user->id === $model->creator_id;
+        if ($user->admin) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -93,7 +109,11 @@ class UserPolicy
      */
     public function restore(User $user, User $model)
     {
-        return $user->id === $model->creator_id;
+        if ($user->admin) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -105,6 +125,10 @@ class UserPolicy
      */
     public function forceDelete(User $user, User $model)
     {
-        return $user->id === $model->creator_id;
+        if ($user->admin) {
+            return true;
+        }
+
+        return false;
     }
 }

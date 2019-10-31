@@ -12,6 +12,8 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    const DefaultValidity = 12;
+
     /**
      * The attributes that are mass assignable.
      *
@@ -56,7 +58,7 @@ class User extends Authenticatable
      *
      * @return DateTime
      */
-    public function extendValidity(int $months = 12)
+    public function extendValidity(int $months = User::DefaultValidity)
     {
         $validity = is_null($this->validity) ?
             Carbon::now()->addMonths($months) :

@@ -1,6 +1,8 @@
 <?php
 
+use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -13,7 +15,7 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        $now = Carbon\Carbon::now();
+        $now = Carbon::now();
 
         $admin = DB::table('users')->insertGetId([
             'name' => 'Admin user',
@@ -22,7 +24,7 @@ class UsersTableSeeder extends Seeder
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
-            'admin' => true,
+            'admin' => true
         ]);
 
         DB::table('users')->insert([
@@ -32,7 +34,8 @@ class UsersTableSeeder extends Seeder
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
-            'creator_id' => $admin
+            'creator_id' => $admin,
+            'validity' => $now->addMonths(User::DefaultValidity)
         ]);
 
         DB::table('users')->insert([

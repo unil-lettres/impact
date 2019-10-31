@@ -13,22 +13,6 @@ class InvitationsTableSeeder extends Seeder
     {
         $now = Carbon\Carbon::now();
 
-        DB::table('invitations')->insert([
-            'email' => 'test-invitation@example.com',
-            'invitation_token' => 'b9c757bc9e735ccb9597813cd905631b',
-            'registered_at' => null,
-            'created_at' => $now,
-            'updated_at' => $now
-        ]);
-
-        DB::table('invitations')->insert([
-            'email' => 'test-invitation-registered@example.com',
-            'invitation_token' => '544da5bd0f5fd72b880146fed9545cbe',
-            'registered_at' => $now,
-            'created_at' => $now,
-            'updated_at' => $now
-        ]);
-
         $user = DB::table('users')->insertGetId([
             'name' => 'Invitation user',
             'email' => 'invitation-user@example.com',
@@ -36,6 +20,24 @@ class InvitationsTableSeeder extends Seeder
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now
+        ]);
+
+        DB::table('invitations')->insert([
+            'email' => 'test-invitation@example.com',
+            'invitation_token' => 'b9c757bc9e735ccb9597813cd905631b',
+            'registered_at' => null,
+            'created_at' => $now,
+            'updated_at' => $now,
+            'creator_id' => $user
+        ]);
+
+        DB::table('invitations')->insert([
+            'email' => 'test-invitation-registered@example.com',
+            'invitation_token' => '544da5bd0f5fd72b880146fed9545cbe',
+            'registered_at' => $now,
+            'created_at' => $now,
+            'updated_at' => $now,
+            'creator_id' => $user
         ]);
 
         DB::table('invitations')->insert([

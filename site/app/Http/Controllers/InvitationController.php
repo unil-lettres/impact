@@ -8,6 +8,7 @@ use App\Http\Requests\StoreInvitation;
 use App\Invitation;
 use App\Mail\InvitationCreated;
 use App\User;
+use Illuminate\Support\Carbon;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -172,28 +173,28 @@ class InvitationController extends Controller
     {
         $this->authorize('createInvitationUser', Invitation::class);
 
-        // Create new user
-        $user = User::create([
-            'name' => $request->input('name'),
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-        ]);
-
         try {
             // Try to find an invitation for this email address
-            $invitation = Invitation::where('email', $user->email)->firstOrFail();
+            $invitation = Invitation::where('email', $request->input('email'))->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return redirect()->back()
                 ->with('error', trans('messages.invitation.user.no.match'));
         }
 
-        // Update the invitation registered_at property
-        $invitation->registered_at = $user->created_at;
-        $invitation->update();
+        // Create new user
+        $user = User::create([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => Hash::make($request->input('password')),
+            'creator_id' => $invitation->creator_id
+        ]);
 
-        // Update the user creator_id property
-        $user->creator_id = $invitation->creator_id;
-        $user->update();
+        // Add default validity for local accounts
+        $user->extendValidity();
+
+        // Update the invitation registered_at property
+        $invitation->registered_at = Carbon::now();
+        $invitation->update();
 
         // Login with created user
         Auth::login($user);

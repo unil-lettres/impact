@@ -18,17 +18,25 @@
                 </ul>
             </div><br />
         @endif
-        <form method="post" action="{{ route('invitations.store') }}">
+        <form method="post"
+              action="{{ route('invitations.store') }}">
             @csrf
             <div class="form-group">
                 <label for="email" class="control-label">{{ trans('invitations.email') }}</label>
-
                 <div>
-                    <input id="email" type="email" class="form-control" name="email" value="{{ old('email') }}" required autofocus>
+                    <input id="email"
+                           type="email"
+                           class="form-control"
+                           name="email"
+                           value="{{ old('email') }}" required autofocus
+                    >
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">{{ trans('invitations.create') }}</button>
+            <button type="submit"
+                    class="btn btn-primary">
+                {{ trans('invitations.create') }}
+            </button>
         </form>
     </div>
 @endsection

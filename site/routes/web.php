@@ -28,7 +28,7 @@ Route::middleware(['auth', 'app'])->group(function () {
     Route::get('/', 'HomeController@index')->name('home');
 
     Route::resource('invitations', 'InvitationController');
-    Route::get('invitations/{id}/mail', 'InvitationController@mail')->name('send.invite');
+    Route::get('invitations/{invitation}/mail', 'InvitationController@mail')->name('send.invite');
 });
 
 // Administration routes
@@ -39,4 +39,5 @@ Route::group(['prefix' => 'admin',  'as' => 'admin.', 'middleware' => ['auth', '
     Route::get('/invitations/create', 'InvitationController@create')->name('invitations.create');
 
     Route::resource('users', 'UserController');
+    Route::get('/users/{user}/extend', 'UserController@extend')->name('users.extend');
 });

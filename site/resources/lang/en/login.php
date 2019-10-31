@@ -7,7 +7,7 @@ return [
     'aai' => 'Connection with SWITCHaai',
     'aai_info' => 'Connection service for university users who are <a href="https://www.switch.ch/aai/participants/homeorgs/" target="_blank">members of the SWITCHaai federation.</a>',
     'login' => 'Login',
-    'register' => 'Register',
+    'register' => 'Create a new user',
     'admin' => 'Admin',
     'email' => 'E-Mail',
     'verify_email' => 'Verify Your Email Address',

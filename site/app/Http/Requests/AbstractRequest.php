@@ -6,25 +6,16 @@ use Illuminate\Foundation\Http\FormRequest;
 
 abstract class AbstractRequest extends FormRequest
 {
-    protected $routeParametersToValidate = [];
-    protected $queryParametersToValidate = [];
-
     /**
-     * Get the validation rules that apply to the request.
+     * Get data to be validated from the request.
      *
      * @return array
      */
-    abstract public function rules();
-
-    public function all($keys = null)
+    public function validationData()
     {
-        $data = parent::all();
-        foreach ($this->routeParametersToValidate as $validationDataKey => $routeParameter) {
-            $data[$validationDataKey] = $this->route($routeParameter);
-        }
-        foreach ($this->queryParametersToValidate as $validationDataKey => $queryParameter) {
-            $data[$validationDataKey] = $this->query($queryParameter);
-        }
-        return $data;
+        return array_replace_recursive(
+            parent::all(),
+            $this->route()->parameters()
+        );
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class SendInvitationMail extends AbstractRequest
+class UpdateUser extends AbstractRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,7 @@ class SendInvitationMail extends AbstractRequest
     public function rules()
     {
         return [
-            'invitation' => 'required|integer|exists:invitations,id'
+            'user' => 'required|integer|exists:users,id'
         ];
     }
 }

@@ -29,7 +29,7 @@
                         <tbody>
                             @foreach ($users->items() as $user)
                                 @can('view', $user)
-                                    <tr class="{{ Helpers::isUserValid($user) ? '' : 'invalid' }}">
+                                    <tr class="{{ $user->type }}{{ Helpers::isUserValid($user) ? '' : ' invalid' }}">
                                         <td>
                                             {{ $user->email }}
                                             <div>

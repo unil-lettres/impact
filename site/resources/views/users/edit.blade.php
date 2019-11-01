@@ -26,7 +26,7 @@
                     <a href="{{ route('admin.users.extend', $user->id) }}"
                        data-toggle="tooltip"
                        data-placement="top"
-                       class="btn btn-primary float-right"
+                       class="btn btn-primary float-right extend-validity"
                        title="{{ trans('users.validity.extend', ['months' => App\User::DefaultValidity]) }}">
                         <i class="far fa-clock"></i>
                     </a>

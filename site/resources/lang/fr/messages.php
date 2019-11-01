@@ -15,6 +15,6 @@ return [
     'user.edit.cannot.validate' => 'Impossible de valider les données de l\'utilisateur',
     'user.updated' => 'Compte utilisateur mis à jour: :email',
     'user.deleted' => 'Compte utilisateur supprimé: :email',
-    'user.validity.extended' => 'Prolongation de la validité du compte d\'utilisateur: :email',
+    'user.validity.extended' => 'Prolongation de la validité du compte de l\'utilisateur: :email',
 
 ];

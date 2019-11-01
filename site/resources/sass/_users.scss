@@ -9,6 +9,14 @@
 }
 
 #edit-user {
+    .card-header {
+        .title {
+            font-size: 1.5em;
+        }
+        .badge {
+            font-size: 1em;
+        }
+    }
     .account-expired {
         color: red;
     }

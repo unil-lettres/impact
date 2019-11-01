@@ -88,38 +88,47 @@ class InvitationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Invitation  $invitation
+     * @param Invitation $invitation
      *
      * @return Response
+     * @throws AuthorizationException
      */
     public function show(Invitation $invitation)
     {
         $this->authorize('view', $invitation);
+
+        return redirect()->back();
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Invitation  $invitation
+     * @param Invitation $invitation
      *
      * @return Response
+     * @throws AuthorizationException
      */
     public function edit(Invitation $invitation)
     {
         $this->authorize('update', $invitation);
+
+        return redirect()->back();
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
+     * @param Invitation $invitation
      *
-     * @param  Invitation  $invitation
      * @return Response
+     * @throws AuthorizationException
      */
     public function update(Request $request, Invitation $invitation)
     {
         $this->authorize('update', $invitation);
+
+        return redirect()->back();
     }
 
     /**

@@ -3,15 +3,15 @@
 @section('admin.menu')
     @include('admin.menu')
 @stop
-<!-- TODO: translations -->
+
 @section('admin.content')
     <div id="users">
         <div class="card">
             <div class="card-header">
-                <span class="title">Géstion des utilisateurs <span class="badge badge-secondary">{{ $users->total() }}</span></span>
+                <span class="title">{{ trans('users.manage') }} <span class="badge badge-secondary">{{ $users->total() }}</span></span>
                 <a href="{{ route('admin.users.create') }}"
                    class="btn btn-primary float-right">
-                    Créer un utilisateur
+                    {{ trans('users.create') }}
                 </a>
             </div>
             <div class="card-body">
@@ -19,10 +19,10 @@
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>Email</th>
-                                <th>Name</th>
-                                <th>Date de création</th>
-                                <th>Type</th>
+                                <th>{{ trans('users.email') }}</th>
+                                <th>{{ trans('users.name') }}</th>
+                                <th>{{ trans('users.created_at') }}</th>
+                                <th>{{ trans('users.type') }}</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -30,7 +30,17 @@
                             @foreach ($users->items() as $user)
                                 @can('view', $user)
                                     <tr class="{{ Helpers::isUserValid($user) ? '' : 'invalid' }}">
-                                        <td>{{ $user->email }}</td>
+                                        <td>
+                                            {{ $user->email }}
+                                            <div>
+                                                @if ($user->admin)
+                                                    <span class="badge badge-primary">{{ trans('users.admin') }}</span>
+                                                @endif
+                                                @unless (Helpers::isUserValid($user))
+                                                    <span class="badge badge-danger">{{ trans('users.expired') }}</span>
+                                                @endunless
+                                            </div>
+                                        </td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->created_at->format('d/m/Y H:i:s') }}</td>
                                         <td>{{ $user->type }}</td>
@@ -41,7 +51,7 @@
                                                        data-toggle="tooltip"
                                                        data-placement="top"
                                                        class="btn btn-primary"
-                                                       title="Modifier l'utilisateur">
+                                                       title="{{ trans('users.edit') }}">
                                                         <i class="far fa-edit"></i>
                                                     </a>
                                                 </span>
@@ -52,7 +62,7 @@
                                                        data-toggle="tooltip"
                                                        data-placement="top"
                                                        class="btn btn-primary"
-                                                       title="Extend validity ({{ App\User::DefaultValidity }} months)">
+                                                       title="{{ trans('users.validity.extend', ['months' => App\User::DefaultValidity]) }}">
                                                         <i class="far fa-clock"></i>
                                                     </a>
                                                 </span>
@@ -67,7 +77,7 @@
                                                                 class="btn btn-danger"
                                                                 data-toggle="tooltip"
                                                                 data-placement="top"
-                                                                title="Supprimer l'utilisateur">
+                                                                title="{{ trans('users.delete') }}">
                                                             <i class="far fa-trash-alt"></i>
                                                         </button>
                                                     </form>
@@ -82,7 +92,7 @@
                     {{ $users->onEachSide(1)->links() }}
                 @else
                     <p class="text-secondary">
-                        Aucun utilisateur
+                        {{ trans('users.not_found') }}
                     </p>
                 @endif
             </div>

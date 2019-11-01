@@ -10,5 +10,11 @@ return [
     'invitation.sent' => 'Mail d\'invitation envoyé à :mail.',
     'invitation.user.created' => 'Compte créé. Votre lien d\'invitation ne peut plus être utilisé.',
     'invitation.user.no.match' => 'Aucune invitation ne correspond à cette inscription.',
+    'user.created' => 'Compte utilisateur créé: :email',
+    'user.edit.wrong.password' => 'Vous avez entré le mauvais mot de passe',
+    'user.edit.cannot.validate' => 'Impossible de valider les données de l\'utilisateur',
+    'user.updated' => 'Compte utilisateur mis à jour: :email',
+    'user.deleted' => 'Compte utilisateur supprimé: :email',
+    'user.validity.extended' => 'Prolongation de la validité du compte d\'utilisateur: :email',
 
 ];

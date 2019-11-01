@@ -52,9 +52,12 @@ class UserController extends Controller
      * @param CreateUser $request
      *
      * @return Response
+     * @throws AuthorizationException
      */
     public function store(CreateUser $request)
     {
+        $this->authorize('create', User::class);
+
         $user = User::create([
             'name' => $request->input('name'),
             'email' => $request->input('email'),
@@ -63,20 +66,23 @@ class UserController extends Controller
 
         $user->extendValidity();
 
-        // TODO: translation
         return redirect()->route('admin.users.index')
-            ->with('success', "User created: " . $user->email);
+            ->with('success', trans('messages.user.created', ['email' => $user->email]));
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param User $user
+     *
      * @return Response
+     * @throws AuthorizationException
      */
-    public function show($id)
+    public function show(User $user)
     {
-        // TODO: user show
+        $this->authorize('view', $user);
+
+        return redirect()->back();
     }
 
     /**
@@ -131,8 +137,7 @@ class UserController extends Controller
                 // If the user entered an old password, check if it's matching the db
                 if(array_key_exists('old_password', $validated) &&
                     !Hash::check($validated['old_password'], $user->password)){
-                    // TODO: translation
-                    return back()->with('error','You have entered the wrong password');
+                    return back()->with('error', trans('messages.user.edit.wrong.password'));
                 }
 
                 // If the user entered a new password, replace the value by hashed version
@@ -149,8 +154,7 @@ class UserController extends Controller
                 ]);
                 break;
             default:
-                // TODO: translation
-                return back()->with('error','Cannot validate user data');
+                return back()->with('error', trans('messages.user.edit.cannot.validate'));
                 break;
         }
 
@@ -158,9 +162,8 @@ class UserController extends Controller
 
         $user->save();
 
-        // TODO: translation
         return redirect()->route('admin.users.index')
-            ->with('success', "User updated: " . $user->email);
+            ->with('success', trans('messages.user.updated', ['email' => $user->email]));
     }
 
     /**
@@ -175,11 +178,11 @@ class UserController extends Controller
     {
         $this->authorize('delete', $user);
 
+        $email = $user->email;
         $user->delete();
 
-        // TODO: translation
         return redirect()->back()
-            ->with('success', 'Utilisateur supprimé');
+            ->with('success', trans('messages.user.deleted', ['email' => $email]));
     }
 
     /**
@@ -199,8 +202,7 @@ class UserController extends Controller
 
         $user->extendValidity();
 
-        // TODO: translation
         return redirect()->route('admin.users.index')
-            ->with('success', "User account validity extended: " . $user->email);
+            ->with('success', trans('messages.user.validity.extended', ['email' => $user->email]));
     }
 }

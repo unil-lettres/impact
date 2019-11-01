@@ -35,6 +35,11 @@
         }
     }
     table {
+        tbody {
+            .badge {
+                font-size: 1em;
+            }
+        }
         td.actions {
             width: 10%;
 

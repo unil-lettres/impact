@@ -38,7 +38,8 @@ class UserPolicy
             return true;
         }
 
-        return $user->id === $model->id && $model->type === UserType::Local;
+        return $user->id === $model->id &&
+            $model->type === UserType::Local;
     }
 
     /**
@@ -69,7 +70,8 @@ class UserPolicy
             return true;
         }
 
-        return $user->id === $model->id && $model->type === UserType::Local;
+        return $user->id === $model->id &&
+            $model->type === UserType::Local;
     }
 
     /**
@@ -81,7 +83,9 @@ class UserPolicy
      */
     public function extend(User $user, User $model)
     {
-        return $user->admin && $model->type === UserType::Local;
+        return $user->admin &&
+            $model->type === UserType::Local &&
+            !$model->admin;
     }
 
     /**
@@ -93,6 +97,10 @@ class UserPolicy
      */
     public function delete(User $user, User $model)
     {
+        if ($user->id === $model->id) {
+            return false;
+        }
+
         if ($user->admin) {
             return true;
         }
@@ -109,6 +117,10 @@ class UserPolicy
      */
     public function restore(User $user, User $model)
     {
+        if ($user->id === $model->id) {
+            return false;
+        }
+
         if ($user->admin) {
             return true;
         }
@@ -125,6 +137,10 @@ class UserPolicy
      */
     public function forceDelete(User $user, User $model)
     {
+        if ($user->id === $model->id) {
+            return false;
+        }
+
         if ($user->admin) {
             return true;
         }

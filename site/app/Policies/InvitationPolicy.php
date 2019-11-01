@@ -49,6 +49,10 @@ class InvitationPolicy
      */
     public function view(User $user, Invitation $invitation)
     {
+        if($invitation->registered_at) {
+            return false;
+        }
+
         return $user->id === $invitation->creator_id;
     }
 
@@ -74,6 +78,10 @@ class InvitationPolicy
      */
     public function update(User $user, Invitation $invitation)
     {
+        if($invitation->registered_at) {
+            return false;
+        }
+
         return $user->id === $invitation->creator_id;
     }
 
@@ -87,6 +95,10 @@ class InvitationPolicy
      */
     public function delete(User $user, Invitation $invitation)
     {
+        if($invitation->registered_at) {
+            return false;
+        }
+
         return $user->id === $invitation->creator_id;
     }
 
@@ -100,6 +112,10 @@ class InvitationPolicy
      */
     public function restore(User $user, Invitation $invitation)
     {
+        if($invitation->registered_at) {
+            return false;
+        }
+
         return $user->id === $invitation->creator_id;
     }
 
@@ -113,6 +129,10 @@ class InvitationPolicy
      */
     public function forceDelete(User $user, Invitation $invitation)
     {
+        if($invitation->registered_at) {
+            return false;
+        }
+
         return $user->id === $invitation->creator_id;
     }
 
@@ -150,6 +170,10 @@ class InvitationPolicy
      */
     public function mail(User $user, Invitation $invitation)
     {
+        if($invitation->registered_at) {
+            return false;
+        }
+
         return $user->id === $invitation->creator_id;
     }
 }

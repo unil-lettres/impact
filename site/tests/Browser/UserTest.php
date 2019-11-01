@@ -64,7 +64,7 @@ class UserTest extends DuskTestCase
                 ->waitForText('Compte utilisateur créé: test-create-user@example.com')
                 ->assertSee('Compte utilisateur créé: test-create-user@example.com')
                 ->assertSee('Test create user')
-                ->assertUrlIs('/admin/users');
+                ->assertPathIs('/admin/users');
         });
     }
 
@@ -89,7 +89,7 @@ class UserTest extends DuskTestCase
                 ->press('Créer un nouvel utilisateur')
                 ->waitForText('Le champ de confirmation password ne correspond pas.')
                 ->assertSee('Le champ de confirmation password ne correspond pas.')
-                ->assertUrlIs('/admin/users/create');
+                ->assertPathIs('/admin/users/create');
         });
     }
 
@@ -118,7 +118,7 @@ class UserTest extends DuskTestCase
                 ->assertSee('Compte utilisateur mis à jour')
                 ->assertSee('test-update-user@example.com')
                 ->assertSee('Test update user')
-                ->assertUrlIs('/admin/users');
+                ->assertPathIs('/admin/users');
         });
     }
 
@@ -173,14 +173,13 @@ class UserTest extends DuskTestCase
             $browser->assertSee('Expiré');
 
             $browser->click('#users table tbody tr.invalid .actions span:nth-child(1) a')
-                ->waitForText('Invalid user')
-                ->assertSee('Invalid user')
+                ->waitForText('Expiré')
                 ->assertSee('Expiré')
-                ->click('#edit-user card card-header a.extend-validity')
-                ->waitForText('Prolongation de la validité du compte de l\'utilisateur: invalid-user@example.com')
-                ->assertSee('Prolongation de la validité du compte de l\'utilisateur: invalid-user@example.com')
+                ->click('#edit-user .card .card-header a.extend-validity')
+                ->waitForText('Prolongation de la validité du compte de l\'utilisateur')
+                ->assertSee('Prolongation de la validité du compte de l\'utilisateur')
                 ->assertDontSee('Expiré')
-                ->assertUrlIs('/admin/users');
+                ->assertPathIs('/admin/users');
         });
     }
 
@@ -199,8 +198,8 @@ class UserTest extends DuskTestCase
             $browser->visit('/admin/users');
 
             $browser->click('#users table tbody tr.aai .actions span:nth-child(1) a')
-                ->waitForText('aai')
-                ->assertSee('aai')
+                ->waitForText('Type')
+                ->assertInputValue('type', 'aai')
                 ->assertDontSee('Mot de passe actuel')
                 ->assertDontSee('Nouveau mot de passe')
                 ->assertDontSee('Confirmer le mot de passe');
@@ -222,8 +221,8 @@ class UserTest extends DuskTestCase
             $browser->visit('/admin/users');
 
             $browser->click('#users table tbody tr.local .actions span:nth-child(1) a')
-                ->waitForText('local')
-                ->assertSee('local')
+                ->waitForText('Type')
+                ->assertInputValue('type', 'local')
                 ->assertSee('Mot de passe actuel')
                 ->assertSee('Nouveau mot de passe')
                 ->assertSee('Confirmer le mot de passe');
@@ -250,7 +249,7 @@ class UserTest extends DuskTestCase
                 ->acceptDialog()
                 ->waitForText('Compte utilisateur supprimé')
                 ->assertSee('Compte utilisateur supprimé')
-                ->assertUrlIs('/admin/users');
+                ->assertPathIs('/admin/users');
         });
     }
 }

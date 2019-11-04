@@ -117,9 +117,10 @@ class UserTest extends DuskTestCase
                 ->press('Mettre à jour le compte')
                 ->waitForText('Compte utilisateur mis à jour')
                 ->assertSee('Compte utilisateur mis à jour')
-                ->assertSee('test-update-user@example.com')
                 ->assertSee('Test update user')
-                ->assertPathIs('/admin/users');
+                ->assertInputValue('name', 'Test update user')
+                ->assertInputValue('email', 'test-update-user@example.com');
+
         });
     }
 
@@ -199,7 +200,10 @@ class UserTest extends DuskTestCase
             $browser->visit('/admin/users');
 
             $browser->click('#users table tbody tr.aai .actions span:nth-child(1) a')
-                ->waitForText('Type')
+                ->waitForText('Nom')
+                ->assertSee('Nom')
+                ->assertSee('Email')
+                ->assertSee('Type')
                 ->assertInputValue('type', 'aai')
                 ->assertDontSee('Mot de passe actuel')
                 ->assertDontSee('Nouveau mot de passe')
@@ -299,50 +303,6 @@ class UserTest extends DuskTestCase
                 ->waitForText('Compte utilisateur mis à jour')
                 ->assertSee('Compte utilisateur mis à jour')
                 ->assertSee('First user updated');
-        });
-    }
-
-    /**
-     * Test aai user profile.
-     *
-     * @return void
-     * @throws Throwable
-     */
-    public function testAaiUserProfile()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
-                ->loginAsUser('aai-user@example.com', 'password');
-
-            $browser->visit(new Profile())
-                ->profile();
-
-            $browser->assertSee('Nom')
-                ->assertSee('Email')
-                ->assertSee('Type');
-        });
-    }
-
-    /**
-     * Test editing aai user profile.
-     *
-     * @return void
-     * @throws Throwable
-     */
-    public function testEditAaiUserProfile()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
-                ->loginAsUser('aai-user@example.com', 'password');
-
-            $browser->visit(new Profile())
-                ->profile();
-
-            $browser->type('name', 'AAI user updated')
-                ->press('Mettre à jour le compte')
-                ->waitForText('Compte utilisateur mis à jour')
-                ->assertSee('Compte utilisateur mis à jour')
-                ->assertSee('AAI user updated');
         });
     }
 }

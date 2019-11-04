@@ -46,7 +46,7 @@ class Profile extends Page
      */
     public function profile(Browser $browser)
     {
-        $browser->click('.navbar #navbarDropdownAuth')
-            ->click('Profil');
+        $browser->press(Auth::user()->name)
+            ->clickLink('Profil');
     }
 }

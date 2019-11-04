@@ -2,7 +2,6 @@
 
 namespace Tests\Browser\Pages;
 
-use Illuminate\Support\Facades\Auth;
 use Laravel\Dusk\Browser;
 
 class Profile extends Page
@@ -47,7 +46,7 @@ class Profile extends Page
      */
     public function profile(Browser $browser)
     {
-        $browser->press(Auth::user()->name)
+        $browser->click('.navbar ul li.auth')
             ->clickLink('Profil');
     }
 }

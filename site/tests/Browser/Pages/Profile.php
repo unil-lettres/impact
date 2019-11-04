@@ -2,6 +2,7 @@
 
 namespace Tests\Browser\Pages;
 
+use Illuminate\Support\Facades\Auth;
 use Laravel\Dusk\Browser;
 
 class Profile extends Page

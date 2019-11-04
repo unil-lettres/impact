@@ -38,8 +38,7 @@ class UserPolicy
             return true;
         }
 
-        return $user->id === $model->id &&
-            $model->type === UserType::Local;
+        return $user->id === $model->id;
     }
 
     /**
@@ -70,8 +69,7 @@ class UserPolicy
             return true;
         }
 
-        return $user->id === $model->id &&
-            $model->type === UserType::Local;
+        return $user->id === $model->id;
     }
 
     /**
@@ -84,7 +82,6 @@ class UserPolicy
     public function extend(User $user, User $model)
     {
         return $user->admin &&
-            $model->type === UserType::Local &&
             !$model->admin;
     }
 

@@ -4,6 +4,7 @@ namespace Tests\Browser;
 
 use Laravel\Dusk\Concerns\ProvidesBrowser;
 use Tests\Browser\Pages\Login;
+use Tests\Browser\Pages\Profile;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
@@ -250,6 +251,98 @@ class UserTest extends DuskTestCase
                 ->waitForText('Compte utilisateur supprimé')
                 ->assertSee('Compte utilisateur supprimé')
                 ->assertPathIs('/admin/users');
+        });
+    }
+
+    /**
+     * Test local user profile.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testLocalUserProfile()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('first-user@example.com', 'password');
+
+            $browser->visit(new Profile())
+                ->profile();
+
+            $browser->assertSee('Nom')
+                ->assertSee('Email')
+                ->assertSee('Type')
+                ->assertSee('Validité')
+                ->assertSee('Mot de passe actuel')
+                ->assertSee('Nouveau mot de passe')
+                ->assertSee('Confirmer le mot de passe');
+        });
+    }
+
+    /**
+     * Test editing local user profile.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testEditLocalUserProfile()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('first-user@example.com', 'password');
+
+            $browser->visit(new Profile())
+                ->profile();
+
+            $browser->type('name', 'First user updated')
+                ->press('Mettre à jour le compte')
+                ->waitForText('Compte utilisateur mis à jour')
+                ->assertSee('Compte utilisateur mis à jour')
+                ->assertSee('First user updated');
+        });
+    }
+
+    /**
+     * Test aai user profile.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testAaiUserProfile()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('aai-user@example.com', 'password');
+
+            $browser->visit(new Profile())
+                ->profile();
+
+            $browser->assertSee('Nom')
+                ->assertSee('Email')
+                ->assertSee('Type');
+        });
+    }
+
+    /**
+     * Test editing aai user profile.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testEditAaiUserProfile()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('aai-user@example.com', 'password');
+
+            $browser->visit(new Profile())
+                ->profile();
+
+            $browser->type('name', 'AAI user updated')
+                ->press('Mettre à jour le compte')
+                ->waitForText('Compte utilisateur mis à jour')
+                ->assertSee('Compte utilisateur mis à jour')
+                ->assertSee('AAI user updated');
         });
     }
 }

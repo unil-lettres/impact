@@ -15,6 +15,7 @@ return [
 
     'failed' => 'These credentials do not match our records.',
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
-    'not_authorized' => 'You are not authorized to access this content.'
+    'not_authorized' => 'You are not authorized to access this content.',
+    'profile' => 'Profile'
 
 ];

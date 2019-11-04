@@ -29,6 +29,9 @@ Route::middleware(['auth', 'app'])->group(function () {
 
     Route::resource('invitations', 'InvitationController');
     Route::get('invitations/{invitation}/mail', 'InvitationController@mail')->name('send.invite');
+
+    Route::get('users/{user}/profile', 'UserController@edit')->name('users.profile');
+    Route::put('users/{user}/update', 'UserController@update')->name('users.profile.update');
 });
 
 // Administration routes

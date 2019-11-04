@@ -1,10 +1,13 @@
-@extends('layouts.app-admin')
+@extends('layouts.app-base')
 
-@section('admin.menu')
-    @include('admin.menu')
-@stop
+@if (Route::is('admin.users.edit'))
+    <!-- Add admin menu if we are in the admin namespace -->
+    @section('admin.menu')
+        @include('admin.menu')
+    @stop
+@endif
 
-@section('admin.content')
+@section('content')
     <div id="edit-user">
         @if ($errors->any())
             <div class="alert alert-danger">
@@ -34,7 +37,7 @@
             </div>
             <div class="card-body">
                 <form method="post"
-                      action="{{ route('admin.users.update', $user->id) }}">
+                      action="{{ Route::is('admin.users.edit') ? route('admin.users.update', $user->id) : route('users.profile.update', $user->id) }}">
                     @csrf
                     @method('PUT')
 

@@ -154,7 +154,8 @@ class UserController extends Controller
                 ]);
                 break;
             default:
-                return back()->with('error', trans('messages.user.edit.cannot.validate'));
+                return redirect()->back()
+                    ->with('error', trans('messages.user.edit.cannot.validate'));
                 break;
         }
 
@@ -162,8 +163,8 @@ class UserController extends Controller
 
         $user->save();
 
-        return redirect()->route('admin.users.index')
-            ->with('success', trans('messages.user.updated', ['email' => $user->email]));
+        return redirect()->back()
+            ->with('success', trans('messages.user.updated'));
     }
 
     /**

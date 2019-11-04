@@ -13,7 +13,7 @@ return [
     'user.created' => 'User account created: :email',
     'user.edit.wrong.password' => 'You have entered the wrong password',
     'user.edit.cannot.validate' => 'Cannot validate user data',
-    'user.updated' => 'User account updated: :email',
+    'user.updated' => 'User account updated',
     'user.deleted' => 'User account deleted: :email',
     'user.validity.extended' => 'User account validity extended: :email',
 

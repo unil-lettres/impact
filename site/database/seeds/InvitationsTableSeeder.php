@@ -1,6 +1,10 @@
 <?php
 
+use App\User;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 class InvitationsTableSeeder extends Seeder
 {
@@ -11,7 +15,7 @@ class InvitationsTableSeeder extends Seeder
      */
     public function run()
     {
-        $now = Carbon\Carbon::now();
+        $now = Carbon::now();
 
         $user = DB::table('users')->insertGetId([
             'name' => 'Invitation user',
@@ -19,7 +23,8 @@ class InvitationsTableSeeder extends Seeder
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
-            'updated_at' => $now
+            'updated_at' => $now,
+            'validity' => Carbon::now()->addMonths(User::DefaultValidity)
         ]);
 
         DB::table('invitations')->insert([

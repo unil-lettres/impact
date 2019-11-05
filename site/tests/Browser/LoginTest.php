@@ -31,7 +31,8 @@ class LoginTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('first-user@example.com', 'password');
 
-            $browser->assertSee('Impact content');
+            $browser->assertSee('Impact content')
+                ->assertPathIs('/');
         });
     }
 
@@ -50,7 +51,8 @@ class LoginTest extends DuskTestCase
             $browser->assertSee('Admin');
 
             $browser->clickLink('Admin')
-                ->assertSee('Géstion des utilisateurs');
+                ->assertSee('Géstion des utilisateurs')
+                ->assertPathIs('/admin/users');
         });
     }
 
@@ -66,7 +68,9 @@ class LoginTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('invalid-user@example.com', 'password');
 
-            $browser->assertSee('Ce compte est désactivé');
+            $browser->assertSee('Ce compte est désactivé')
+                ->waitForText('Ce compte est désactivé')
+                ->assertPathIs('/login');
         });
     }
 
@@ -82,6 +86,7 @@ class LoginTest extends DuskTestCase
             $browser->visit('/');
 
             $browser->clickLink('SWITCHaai')
+                ->waitForText('Le processus d\'authentification a échoué.')
                 ->assertSee('Le processus d\'authentification a échoué.')
                 ->assertPathIs('/login');
         });

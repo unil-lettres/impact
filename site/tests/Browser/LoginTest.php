@@ -30,6 +30,7 @@ class LoginTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('first-user@example.com', 'password');
+
             $browser->assertSee('Impact content');
         });
     }
@@ -45,10 +46,11 @@ class LoginTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
+
             $browser->assertSee('Admin');
 
-            $browser->clickLink('Admin');
-            $browser->assertSee('Géstion des utilisateurs');
+            $browser->clickLink('Admin')
+                ->assertSee('Géstion des utilisateurs');
         });
     }
 
@@ -63,7 +65,25 @@ class LoginTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('invalid-user@example.com', 'password');
+
             $browser->assertSee('Ce compte est désactivé');
+        });
+    }
+
+    /**
+     * Test invalid aai authentication.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testInvalidAaiAuthentication()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit('/');
+
+            $browser->clickLink('SWITCHaai')
+                ->assertSee('Le processus d\'authentification a échoué.')
+                ->assertPathIs('/login');
         });
     }
 }

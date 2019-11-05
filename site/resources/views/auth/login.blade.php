@@ -12,7 +12,7 @@
                         <a target="_blank" href="https://www.switch.ch/aai/about/">{{ trans('login.aai.about') }}</a> |
                         <a target="_blank" href="https://www.switch.ch/aai/faq/">{{ trans('login.aai.faq') }}</a> |
                         <a target="_blank" href="https://www.switch.ch/aai/help/">{{ trans('login.aai.help') }}</a> |
-                        <a target="_blank" href="https://www.switch.ch/aai/privacy/">{{ trans('login.aai.privacy') }}</a> |
+                        <a target="_blank" href="https://www.switch.ch/aai/privacy/">{{ trans('login.aai.privacy') }}</a>
                     </div>
                     <hr>
                     <p class="text-secondary">{!! trans('login.aai_info') !!}</p>

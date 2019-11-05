@@ -73,22 +73,4 @@ class LoginTest extends DuskTestCase
                 ->assertPathIs('/login');
         });
     }
-
-    /**
-     * Test invalid aai authentication.
-     *
-     * @return void
-     * @throws Throwable
-     */
-    public function testInvalidAaiAuthentication()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit('/');
-
-            $browser->clickLink('SWITCHaai')
-                ->waitForText('Le processus d\'authentification a échoué.')
-                ->assertSee('Le processus d\'authentification a échoué.')
-                ->assertPathIs('/login');
-        });
-    }
 }

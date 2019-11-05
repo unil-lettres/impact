@@ -24,5 +24,9 @@ return [
     'logout' => 'Déconnexion',
     'name' => 'Nom',
     'invalid' => 'Ce compte est désactivé',
+    'aai.about' => 'À propos de l\'AAI',
+    'aai.faq' => 'FAQ',
+    'aai.help' => 'Aide',
+    'aai.privacy' => 'Vie privée',
 
 ];

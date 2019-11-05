@@ -7,7 +7,6 @@ use App\Http\Requests\CreateUser;
 use App\Http\Requests\EditUser;
 use App\Http\Requests\ExtendUser;
 use App\Http\Requests\UpdateUser;
-use App\Http\Requests\UpdateUserLocal;
 use App\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Response;

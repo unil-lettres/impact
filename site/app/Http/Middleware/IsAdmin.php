@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Closure;
 
@@ -10,8 +11,8 @@ class IsAdmin
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  Request  $request
+     * @param  Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -27,6 +28,7 @@ class IsAdmin
         }
 
         // Return to the app root with error message otherwise
-        return redirect('/')->with('error', trans('auth.not_authorized'));
+        return redirect('/')
+            ->with('error', trans('auth.not_authorized'));
     }
 }

@@ -14,6 +14,9 @@
 // Authentication routes
 Auth::routes();
 
+// SwitchAAI authentication route
+Route::get('aai', 'HomeController@index')->name('aai')->middleware('check_aai');
+
 // Localization route
 Route::get('lang/{locale}', 'LocalizationController@index');
 

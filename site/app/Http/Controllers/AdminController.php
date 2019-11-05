@@ -33,4 +33,14 @@ class AdminController extends Controller
     {
         return view('users.index');
     }
+
+    /**
+     * Show the invitations management page.
+     *
+     * @return Renderable
+     */
+    public function invitations()
+    {
+        return view('invitations.index');
+    }
 }

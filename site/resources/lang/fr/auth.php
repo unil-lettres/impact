@@ -16,6 +16,7 @@ return [
     'failed' => 'Ces identifiants ne correspondent pas à nos enregistrements',
     'throttle' => 'Tentatives de connexion trop nombreuses. Veuillez essayer de nouveau dans :seconds secondes.',
     'not_authorized' => 'Vous n\'êtes pas autorisé à accéder à ce contenu.',
-    'profile' => 'Profil'
+    'profile' => 'Profil',
+    'aai_failed' => 'Le processus d\'authentification a échoué.'
 
 ];

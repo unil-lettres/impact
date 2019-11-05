@@ -24,5 +24,9 @@ return [
     'logout' => 'Logout',
     'name' => 'Name',
     'invalid' => 'This account is disabled',
+    'aai.about' => 'About AAI',
+    'aai.faq' => 'FAQ',
+    'aai.help' => 'Help',
+    'aai.privacy' => 'Privacy',
 
 ];

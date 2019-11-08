@@ -5,7 +5,7 @@ namespace App\Http\Middleware;
 use App\Enums\UserType;
 use App\User;
 use Closure;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
 
 class CheckAai
@@ -25,13 +25,13 @@ class CheckAai
         }
 
         // Check if the user is authenticated by SwitchAAI
-        if($request->has('Shib-Identity-Provider')) {
+        if($this->getServerVariable('Shib-Identity-Provider')) {
             // Check if the user can be found in the database
-            $user = User::where('email', 'aai-user@example.com')->first();
+            $user = User::where('email', $this->getServerVariable('mail'))->first();
 
             if (!$user) {
                 // If the user cannot be found, create it
-                $user = $this->createAaiUser($request);
+                $user = $this->createAaiUser();
             }
 
             // Log the user
@@ -48,15 +48,35 @@ class CheckAai
     /**
      * Create a new aai user.
      *
-     * @param Request $request
      * @return User $user
      */
-    private function createAaiUser(Request $request): User
+    private function createAaiUser(): User
     {
         return User::create([
-            'name' => $request->input('uid'),
-            'email' => $request->input('email'),
+            'name' => $this->getServerVariable('givenName') . ' ' .
+                $this->getServerVariable('surname'),
+            'email' => $this->getServerVariable('mail'),
             'type' => UserType::Aai,
         ]);
+    }
+
+    /**
+     * Wrapper function for getting server variables.
+     *
+     * @param string $variableName
+     *
+     * @return string|null
+     */
+    private function getServerVariable(string $variableName)
+    {
+        $variable = null;
+
+        if(Request::server($variableName)) {
+            $variable = Request::server($variableName);
+        } elseif(Request::server('REDIRECT_' . $variableName)) {
+            $variable = Request::server('REDIRECT_' . $variableName);
+        }
+
+        return $variable;
     }
 }

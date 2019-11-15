@@ -1,9 +1,5 @@
 @extends('layouts.app-admin')
 
-@section('admin.menu')
-    @include('admin.menu')
-@stop
-
 @section('admin.content')
     <div id="users">
         <div class="card">

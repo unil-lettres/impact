@@ -1,13 +1,6 @@
-@extends('layouts.app-base')
+@extends(Route::is('admin.users.edit') ? 'layouts.app-admin' : 'layouts.app-base')
 
-@if (Route::is('admin.users.edit'))
-    <!-- Add admin menu if we are in the admin namespace -->
-    @section('admin.menu')
-        @include('admin.menu')
-    @stop
-@endif
-
-@section('content')
+@section(Route::is('admin.users.edit') ? 'admin.content' : 'content')
     <div id="edit-user">
         @if ($errors->any())
             <div class="alert alert-danger">

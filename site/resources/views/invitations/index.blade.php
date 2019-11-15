@@ -1,13 +1,6 @@
-@extends('layouts.app-base')
+@extends(Route::is('admin.invitations.index') ? 'layouts.app-admin' : 'layouts.app-base')
 
-@if (Route::is('admin.invitations.index'))
-    <!-- Add admin menu if we are in the admin namespace -->
-    @section('admin.menu')
-        @include('admin.menu')
-    @stop
-@endif
-
-@section('content')
+@section(Route::is('admin.invitations.index') ? 'admin.content' : 'content')
     <div id="invitations">
         <div class="card">
             <div class="card-header">

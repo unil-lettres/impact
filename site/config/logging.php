@@ -35,13 +35,13 @@ return [
     */
 
     'channels' => [
-        'flare' => [
-            'driver' => 'flare',
+        'bugsnag' => [
+            'driver' => 'bugsnag',
         ],
 
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['daily', 'flare'],
+            'channels' => ['daily', 'bugsnag'],
             'ignore_exceptions' => false,
         ],
 

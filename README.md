@@ -111,3 +111,7 @@ Run the following commands from the framework root directory (/site).
 
 ### Functional testing
 ``php artisan dusk``
+
+# Error tracker
+
+[https://www.bugsnag.com](https://www.bugsnag.com)

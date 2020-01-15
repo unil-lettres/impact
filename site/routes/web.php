@@ -35,6 +35,8 @@ Route::middleware(['auth', 'app'])->group(function () {
 
     Route::get('users/{user}/profile', 'UserController@edit')->name('users.profile');
     Route::put('users/{user}/update', 'UserController@update')->name('users.profile.update');
+
+    Route::resource('cards', 'CardController');
 });
 
 // Administration routes

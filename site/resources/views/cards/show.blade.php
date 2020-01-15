@@ -2,6 +2,7 @@
 
 @section('content')
     <div id="card">
-        Content of "{{ $card->title }}"
+        <div>Content of "{{ $card->title }}"</div>
+        <div>This card belongs to the "{{ $course->name }}"</div>
     </div>
 @endsection

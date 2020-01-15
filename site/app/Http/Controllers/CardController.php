@@ -55,7 +55,8 @@ class CardController extends Controller
     public function show(Card $card)
     {
         return view('cards.show', [
-            'card' => $card
+            'card' => $card,
+            'course' => $card->course
         ]);
     }
 

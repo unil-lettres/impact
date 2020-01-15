@@ -1,10 +1,11 @@
 language: php
+os: linux
 dist: bionic
 php:
   - '7.3'
   - '7.4'
 services:
-  - redis-server
+  - redis
 addons:
   chrome: stable
   mariadb: '10.3'

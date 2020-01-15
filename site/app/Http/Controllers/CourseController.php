@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Card;
+use App\Course;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
-class CardController extends Controller
+class CourseController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,11 +15,11 @@ class CardController extends Controller
      */
     public function index()
     {
-        $cards = Card::orderBy('created_at', 'desc')
+        $courses = Course::orderBy('created_at', 'desc')
             ->paginate(config('const.pagination.per'));
 
-        return view('cards.index', [
-            'cards' => $cards
+        return view('courses.index', [
+            'courses' => $courses
         ]);
     }
 
@@ -30,14 +30,13 @@ class CardController extends Controller
      */
     public function create()
     {
-        return view('cards.create');
+        return view('courses.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
-     *
      * @return Response
      */
     public function store(Request $request)
@@ -48,39 +47,38 @@ class CardController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Card $card
-     *
+     * @param Course $course
      * @return Response
      */
-    public function show(Card $card)
+    public function show(Course $course)
     {
-        return view('cards.show', [
-            'card' => $card,
-            'course' => $card->course
+        return view('courses.show', [
+            'course' => $course,
+            'cards' => $course->cards
         ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Card $card
-     *
+     * @param Course $course
      * @return Response
      */
-    public function edit(Card $card)
+    public function edit(Course $course)
     {
-        //
+        return view('courses.edit', [
+            'course' => $course
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
-     * @param Card $card
-     *
+     * @param Course $course
      * @return Response
      */
-    public function update(Request $request, Card $card)
+    public function update(Request $request, Course $course)
     {
         //
     }
@@ -88,11 +86,10 @@ class CardController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Card $card
-     *
+     * @param Course $course
      * @return Response
      */
-    public function destroy(Card $card)
+    public function destroy(Course $course)
     {
         //
     }

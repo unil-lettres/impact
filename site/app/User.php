@@ -47,7 +47,8 @@ class User extends Authenticatable
      */
     public function invitations()
     {
-        return $this->hasMany('App\Invitation', 'creator_id');
+        return $this->hasMany('App\Invitation', 'creator_id')
+            ->orderBy('created_at', 'desc');
     }
 
     /**

@@ -37,6 +37,8 @@ Route::middleware(['auth', 'app'])->group(function () {
     Route::put('users/{user}/update', 'UserController@update')->name('users.profile.update');
 
     Route::resource('cards', 'CardController');
+
+    Route::resource('courses', 'CourseController');
 });
 
 // Administration routes
@@ -48,4 +50,7 @@ Route::group(['prefix' => 'admin',  'as' => 'admin.', 'middleware' => ['auth', '
 
     Route::resource('users', 'UserController');
     Route::get('/users/{user}/extend', 'UserController@extend')->name('users.extend');
+
+    Route::get('/courses/create', 'CourseController@create')->name('courses.create');
+    Route::delete('/courses/{course}', 'CourseController@destroy')->name('courses.destroy');
 });

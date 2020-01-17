@@ -30,19 +30,30 @@ class InvitationController extends Controller
     {
         $this->authorize('viewAny', Invitation::class);
 
-        if(Auth::user()->admin) {
-            // If the user is an admin, show all pending records
-            $invitations = Invitation::where('registered_at', null)
-                ->orderBy('created_at', 'desc')
-                ->paginate(config('const.pagination.per'));
-        } else {
-            // If the user is not an admin, restrict the results to the records he created
-            $invitations = Invitation::where(['registered_at' => null, 'creator_id' => Auth::user()->id])
-                ->orderBy('created_at', 'desc')
-                ->paginate(config('const.pagination.per'));
-        }
+        $invitations = Invitation::where(['registered_at' => null, 'creator_id' => Auth::user()->id])
+            ->orderBy('created_at', 'desc')
+            ->paginate(config('const.pagination.per'));
 
         return view('invitations.index', [
+            'invitations' => $invitations
+        ]);
+    }
+
+    /**
+     * Display a listing of the resource in the admin panel.
+     *
+     * @return Response
+     * @throws AuthorizationException
+     */
+    public function manage()
+    {
+        $this->authorize('manage', Invitation::class);
+
+        $invitations = Invitation::where('registered_at', null)
+            ->orderBy('created_at', 'desc')
+            ->paginate(config('const.pagination.per'));
+
+        return view('invitations.manage', [
             'invitations' => $invitations
         ]);
     }

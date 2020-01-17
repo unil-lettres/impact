@@ -1,6 +1,6 @@
-@extends('layouts.app-base')
+@extends('layouts.app-admin')
 
-@section('content')
+@section('admin.content')
     <div id="edit-course">
         Edit the content of "{{ $course->name }}"
     </div>

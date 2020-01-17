@@ -3,8 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Http\Requests\DestroyCourse;
+use App\Http\Requests\EnableCourse;
+use App\Http\Requests\StoreCourse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Exception;
 
 class CourseController extends Controller
 {
@@ -15,10 +19,25 @@ class CourseController extends Controller
      */
     public function index()
     {
-        $courses = Course::orderBy('created_at', 'desc')
-            ->paginate(config('const.pagination.per'));
+        $courses = Course::orderBy('created_at', 'desc');
 
         return view('courses.index', [
+            'courses' => $courses
+        ]);
+    }
+
+    /**
+     * Display a listing of the resource in the admin panel.
+     *
+     * @return Response
+     */
+    public function manage()
+    {
+        $courses = Course::withTrashed()
+            ->orderBy('created_at', 'desc')
+            ->paginate(config('const.pagination.per'));
+
+        return view('courses.manage', [
             'courses' => $courses
         ]);
     }
@@ -36,18 +55,25 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param StoreCourse $request
+     *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(StoreCourse $request)
     {
-        //
+        // Create new course
+        $course = new Course($request->all());
+        $course->save();
+
+        return redirect()->route('admin.courses.manage')
+            ->with('success', trans('messages.course.created', ['name' => $course->name]));
     }
 
     /**
      * Display the specified resource.
      *
      * @param Course $course
+     *
      * @return Response
      */
     public function show(Course $course)
@@ -62,6 +88,7 @@ class CourseController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Course $course
+     *
      * @return Response
      */
     public function edit(Course $course)
@@ -72,10 +99,25 @@ class CourseController extends Controller
     }
 
     /**
+     * Configure the parameters of the specified resource.
+     *
+     * @param Course $course
+     *
+     * @return Response
+     */
+    public function configure(Course $course)
+    {
+        return view('courses.configure', [
+            'course' => $course
+        ]);
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param Request $request
      * @param Course $course
+     *
      * @return Response
      */
     public function update(Request $request, Course $course)
@@ -84,13 +126,56 @@ class CourseController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Enable the specified disabled resource.
+     *
+     * @param EnableCourse $request
+     * @param int $id
+     *
+     * @return Response
+     * @throws Exception
+     */
+    public function enable(EnableCourse $request, int $id)
+    {
+        $course = Course::withTrashed()->find($id);
+
+        $course->restore();
+
+        return redirect()->back()
+            ->with('success', trans('messages.course.enabled'));
+    }
+
+    /**
+     * Disable the specified resource (soft delete).
      *
      * @param Course $course
+     *
      * @return Response
+     * @throws Exception
      */
-    public function destroy(Course $course)
+    public function disable(Course $course)
     {
-        //
+        $course->delete();
+
+        return redirect()->back()
+            ->with('success', trans('messages.course.disabled'));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param DestroyCourse $request
+     * @param int $id
+     *
+     * @return Response
+     * @throws Exception
+     */
+    public function destroy(DestroyCourse $request, int $id)
+    {
+        $course = Course::withTrashed()->find($id);
+
+        $course->forceDelete();
+
+        return redirect()->back()
+            ->with('success', trans('messages.course.deleted'));
     }
 }

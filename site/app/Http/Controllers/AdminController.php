@@ -21,7 +21,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        return redirect()->route('admin.users.index');
+        return redirect()->route('admin.users.manage');
     }
 
     /**
@@ -31,7 +31,7 @@ class AdminController extends Controller
      */
     public function users()
     {
-        return view('users.index');
+        return view('users.manage');
     }
 
     /**
@@ -41,6 +41,16 @@ class AdminController extends Controller
      */
     public function invitations()
     {
-        return view('invitations.index');
+        return view('invitations.manage');
+    }
+
+    /**
+     * Show the courses management page.
+     *
+     * @return Renderable
+     */
+    public function courses()
+    {
+        return view('courses.manage');
     }
 }

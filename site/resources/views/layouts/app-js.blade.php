@@ -3,6 +3,10 @@
         return confirm('{{ trans('messages.confirm.delete') }}');
     });
 
+    $(".with-disable-confirm").on("submit", function(){
+        return confirm('{{ trans('messages.confirm.disable') }}');
+    });
+
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     });

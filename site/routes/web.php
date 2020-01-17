@@ -15,42 +15,53 @@
 Auth::routes();
 
 // SwitchAAI authentication route
-Route::get('aai', 'HomeController@index')->name('aai')->middleware('check_aai');
+Route::get('aai', 'CourseController@index')->name('aai')->middleware('check_aai');
 
 // Localization route
 Route::get('lang/{locale}', 'LocalizationController@index');
 
-// Register with an invitation
+// Register with an invitation routes
 Route::middleware(['has_invitation'])->group(function () {
     Route::get('invitations/register', 'InvitationController@register')->name('invitations.register');
     Route::post('invitations/user/create', 'InvitationController@createInvitationUser')->name('invitations.user.create');
 });
 
-// Standard routes
+// Standard routes for authenticated users
 Route::middleware(['auth', 'app'])->group(function () {
-    Route::get('/', 'HomeController@index')->name('home');
+    Route::get('/', 'CourseController@index')->name('home');
 
+    // Invitations
     Route::resource('invitations', 'InvitationController');
     Route::get('invitations/{invitation}/mail', 'InvitationController@mail')->name('send.invite');
 
+    // Users
     Route::get('users/{user}/profile', 'UserController@edit')->name('users.profile');
     Route::put('users/{user}/update', 'UserController@update')->name('users.profile.update');
 
+    // Cards
     Route::resource('cards', 'CardController');
 
-    Route::resource('courses', 'CourseController');
+    // Courses
+    Route::get('courses/{course}', 'CourseController@show')->name('courses.show');
+    Route::get('courses/{course}/configure', 'CourseController@configure')->name('courses.configure');
+    Route::delete('/courses/{course}/disable', 'CourseController@disable')->name('courses.disable');
 });
 
 // Administration routes
 Route::group(['prefix' => 'admin',  'as' => 'admin.', 'middleware' => ['auth', 'app', 'is_admin']], function() {
     Route::get('/', 'AdminController@index')->name('index');
 
-    Route::get('/invitations', 'InvitationController@index')->name('invitations.index');
+    // Invitations
+    Route::get('/invitations', 'InvitationController@manage')->name('invitations.manage');
     Route::get('/invitations/create', 'InvitationController@create')->name('invitations.create');
 
+    // Users
     Route::resource('users', 'UserController');
+    Route::get('/users', 'UserController@manage')->name('users.manage');
     Route::get('/users/{user}/extend', 'UserController@extend')->name('users.extend');
 
-    Route::get('/courses/create', 'CourseController@create')->name('courses.create');
-    Route::delete('/courses/{course}', 'CourseController@destroy')->name('courses.destroy');
+    // Courses
+    Route::resource('courses', 'CourseController');
+    Route::get('/courses', 'CourseController@manage')->name('courses.manage');
+    Route::get('/courses/{course}/enable', 'CourseController@enable')->name('courses.enable');
 });

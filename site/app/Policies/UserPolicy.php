@@ -26,6 +26,21 @@ class UserPolicy
     }
 
     /**
+     * Determine whether the user can view any invitations in the admin panel.
+     *
+     * @param  User  $user
+     * @return mixed
+     */
+    public function manage(User $user)
+    {
+        if ($user->admin) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Determine whether the user can view the model.
      *
      * @param  User  $user

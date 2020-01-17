@@ -3,6 +3,7 @@
 return [
 
     'confirm.delete' => 'Êtes-vous sûr de vouloir supprimer cet élément ?',
+    'confirm.disable' => 'Êtes-vous sûr de vouloir désactiver cet élément ?',
     'invitation.created' => 'Invitation créée. Un email à été envoyé au destinataire.',
     'invitation.deleted' => 'Invitation supprimée.',
     'invitation.wrong.token' => 'Mauvais jeton d\'invitation.',
@@ -16,5 +17,9 @@ return [
     'user.updated' => 'Compte utilisateur mis à jour',
     'user.deleted' => 'Compte utilisateur supprimé: :email',
     'user.validity.extended' => 'Prolongation de la validité du compte de l\'utilisateur: :email',
+    'course.created' => 'Espace créé: :name',
+    'course.disabled' => 'Espace désactivé.',
+    'course.enabled' => 'Espace activé.',
+    'course.deleted' => 'Espace supprimé.',
 
 ];

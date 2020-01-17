@@ -2,6 +2,6 @@
 
 @section('content')
     <div id="courses">
-        List of courses ({{ $courses->total() }})
+        List of spaces ({{ $courses->count() }})
     </div>
 @endsection

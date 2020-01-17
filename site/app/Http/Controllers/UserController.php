@@ -33,6 +33,24 @@ class UserController extends Controller
     }
 
     /**
+     * Display a listing of the resource in the admin panel.
+     *
+     * @return Response
+     * @throws AuthorizationException
+     */
+    public function manage()
+    {
+        $this->authorize('manage', User::class);
+
+        $users = User::orderBy('created_at', 'desc')
+            ->paginate(config('const.pagination.per'));
+
+        return view('users.manage', [
+            'users' => $users
+        ]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return Response
@@ -65,7 +83,7 @@ class UserController extends Controller
 
         $user->extendValidity();
 
-        return redirect()->route('admin.users.index')
+        return redirect()->route('admin.users.manage')
             ->with('success', trans('messages.user.created', ['email' => $user->email]));
     }
 
@@ -202,7 +220,7 @@ class UserController extends Controller
 
         $user->extendValidity();
 
-        return redirect()->route('admin.users.index')
+        return redirect()->route('admin.users.manage')
             ->with('success', trans('messages.user.validity.extended', ['email' => $user->email]));
     }
 }

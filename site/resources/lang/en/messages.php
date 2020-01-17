@@ -3,6 +3,7 @@
 return [
 
     'confirm.delete' => 'Are you sure you want to delete this item ?',
+    'confirm.disable' => 'Are you sure you want to disable this item ?',
     'invitation.created' => 'Invitation created. An email was sent to the recipient.',
     'invitation.deleted' => 'Invitation deleted.',
     'invitation.wrong.token' => 'Wrong invitation token.',
@@ -16,5 +17,9 @@ return [
     'user.updated' => 'User account updated',
     'user.deleted' => 'User account deleted: :email',
     'user.validity.extended' => 'User account validity extended: :email',
+    'course.created' => 'Space created: :name',
+    'course.disabled' => 'Space disabled.',
+    'course.enabled' => 'Space enabled.',
+    'course.deleted' => 'Space deleted.',
 
 ];

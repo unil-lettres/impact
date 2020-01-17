@@ -17,11 +17,15 @@ class CreateCoursesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name', 255);
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::table('cards', function (Blueprint $table) {
             $table->bigInteger('course_id')->unsigned();
-            $table->foreign('course_id')->references('id')->on('courses');
+            $table->foreign('course_id')
+                ->references('id')
+                ->on('courses')
+                ->onDelete('cascade');;
         });
     }
 

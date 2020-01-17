@@ -2,6 +2,12 @@
 
 @section('content')
     <div id="courses">
-        List of spaces ({{ $courses->count() }})
+        <div class="page-header">
+            <h2>{{ trans('courses.list') }}</h2>
+        </div>
+        <hr>
+        <div>
+            TODO: list all available spaces
+        </div>
     </div>
 @endsection

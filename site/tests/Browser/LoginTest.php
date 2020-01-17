@@ -31,7 +31,7 @@ class LoginTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('first-user@example.com', 'password');
 
-            $browser->assertSee('Impact content')
+            $browser->assertSee('Liste des espaces')
                 ->assertPathIs('/');
         });
     }

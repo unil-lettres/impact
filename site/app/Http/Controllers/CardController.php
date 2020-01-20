@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Card;
 use App\Course;
 use App\Http\Requests\CreateCard;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class CardController extends Controller
 {
@@ -36,7 +38,13 @@ class CardController extends Controller
     {
         // Retrieve the course of the card
         $courseId = $request->input('course');
-        $course = Course::find($courseId);
+        try {
+            $course = Course::findOrFail($courseId);
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+
+            return redirect()->back();
+        }
 
         return view('cards.create', [
             'course' => $course

@@ -94,7 +94,7 @@
                     {{ $courses->onEachSide(1)->links() }}
                 @else
                     <p class="text-secondary">
-                        {{ trans('$courses.not_found') }}
+                        {{ trans('courses.not_found') }}
                     </p>
                 @endif
             </div>

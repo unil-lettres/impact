@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Card;
+use App\Course;
+use App\Http\Requests\CreateCard;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -26,11 +28,19 @@ class CardController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * @param CreateCard $request
+^     *
      * @return Response
      */
-    public function create()
+    public function create(CreateCard $request)
     {
-        return view('cards.create');
+        // Retrieve the course of the card
+        $courseId = $request->input('course');
+        $course = Course::find($courseId);
+
+        return view('cards.create', [
+            'course' => $course
+        ]);
     }
 
     /**

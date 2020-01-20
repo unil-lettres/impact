@@ -36,6 +36,7 @@ class InvitationPolicy
      */
     public function viewAny(User $user)
     {
+        // TODO: return true only if the user is a manager of at least one course
         return true;
     }
 
@@ -77,6 +78,7 @@ class InvitationPolicy
      */
     public function create(User $user)
     {
+        // TODO: return true only if the user is a manager of at least one course
         return true;
     }
 

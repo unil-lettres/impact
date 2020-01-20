@@ -12,7 +12,7 @@
             <div id="content" class="container">
                 <div class="container title-content">
                     <div class="page-title">
-                        <h1>@yield('title')</h1>
+                        <h2>@yield('title')</h2>
                     </div>
                 </div>
 

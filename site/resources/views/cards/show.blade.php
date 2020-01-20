@@ -2,7 +2,10 @@
 
 @section('content')
     <div id="card">
-        <div>Content of "{{ $card->title }}"</div>
+        @section('title')
+            {{ $card->title }}
+        @endsection
+        <hr>
         <div>This card belongs to the "{{ $course->name }}"</div>
     </div>
 @endsection

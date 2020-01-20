@@ -6,6 +6,9 @@
             {{ $card->title }}
         @endsection
         <hr>
-        <div>This card belongs to the "{{ $course->name }}"</div>
+        <div>
+            Content of the card<br>
+            (This card belongs to the "{{ $course->name }}")
+        </div>
     </div>
 @endsection

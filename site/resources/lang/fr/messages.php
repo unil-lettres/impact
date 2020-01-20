@@ -22,5 +22,6 @@ return [
     'course.disabled' => 'Espace désactivé.',
     'course.enabled' => 'Espace activé.',
     'course.deleted' => 'Espace supprimé.',
+    'card.created' => 'Fiche créée: :title',
 
 ];

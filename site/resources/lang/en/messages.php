@@ -22,5 +22,6 @@ return [
     'course.disabled' => 'Space disabled.',
     'course.enabled' => 'Space enabled.',
     'course.deleted' => 'Space deleted.',
+    'card.created' => 'Card created: :title',
 
 ];

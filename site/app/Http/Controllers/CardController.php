@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Card;
 use App\Course;
 use App\Http\Requests\CreateCard;
+use App\Http\Requests\StoreCard;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -54,13 +55,18 @@ class CardController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param StoreCard $request
      *
      * @return Response
      */
-    public function store(Request $request)
+    public function store(StoreCard $request)
     {
-        //
+        // Create new course
+        $card = new Card($request->all());
+        $card->save();
+
+        return redirect()->route('courses.show', $request->input('course_id'))
+            ->with('success', trans('messages.card.created', ['title' => $card->title]));
     }
 
     /**

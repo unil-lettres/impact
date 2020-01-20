@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 
 class AdminController extends Controller
 {
@@ -17,7 +18,7 @@ class AdminController extends Controller
     /**
      * Show the admin index page.
      *
-     * @return Renderable
+     * @return RedirectResponse
      */
     public function index()
     {

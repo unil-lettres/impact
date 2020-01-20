@@ -8,12 +8,12 @@ use App\Http\Requests\StoreInvitation;
 use App\Invitation;
 use App\Mail\InvitationCreated;
 use App\User;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
-use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -23,7 +23,7 @@ class InvitationController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return Renderable
      * @throws AuthorizationException
      */
     public function index()
@@ -42,7 +42,7 @@ class InvitationController extends Controller
     /**
      * Display a listing of the resource in the admin panel.
      *
-     * @return Response
+     * @return Renderable
      * @throws AuthorizationException
      */
     public function manage()
@@ -61,7 +61,7 @@ class InvitationController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return Renderable
      * @throws AuthorizationException
      */
     public function create()
@@ -76,7 +76,7 @@ class InvitationController extends Controller
      *
      * @param StoreInvitation $request
      *
-     * @return Response
+     * @return RedirectResponse
      * @throws AuthorizationException
      */
     public function store(StoreInvitation $request)
@@ -101,7 +101,7 @@ class InvitationController extends Controller
      *
      * @param Invitation $invitation
      *
-     * @return Response
+     * @return RedirectResponse
      * @throws AuthorizationException
      */
     public function show(Invitation $invitation)
@@ -116,7 +116,7 @@ class InvitationController extends Controller
      *
      * @param Invitation $invitation
      *
-     * @return Response
+     * @return RedirectResponse
      * @throws AuthorizationException
      */
     public function edit(Invitation $invitation)
@@ -132,7 +132,7 @@ class InvitationController extends Controller
      * @param Request $request
      * @param Invitation $invitation
      *
-     * @return Response
+     * @return RedirectResponse
      * @throws AuthorizationException
      */
     public function update(Request $request, Invitation $invitation)
@@ -147,8 +147,8 @@ class InvitationController extends Controller
      *
      * @param Invitation $invitation
      *
-     * @return Response
-     * @throws Exception
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
     public function destroy(Invitation $invitation)
     {
@@ -166,7 +166,7 @@ class InvitationController extends Controller
      *
      * @param  Request $request
      *
-     * @return Response
+     * @return Renderable
      * @throws AuthorizationException
      */
     public function register(Request $request)
@@ -186,7 +186,7 @@ class InvitationController extends Controller
      *
      * @param CreateInvitationUser $request
      *
-     * @return User
+     * @return RedirectResponse
      * @throws AuthorizationException
      */
     public function createInvitationUser(CreateInvitationUser $request)
@@ -229,7 +229,7 @@ class InvitationController extends Controller
      * @param SendInvitationMail $request
      * @param int $id
      *
-     * @return Response
+     * @return RedirectResponse
      * @throws AuthorizationException
      */
     public function mail(SendInvitationMail $request, int $id)

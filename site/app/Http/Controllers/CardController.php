@@ -7,6 +7,8 @@ use App\Course;
 use App\Http\Requests\CreateCard;
 use App\Http\Requests\StoreCard;
 use Exception;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Log;
@@ -16,7 +18,7 @@ class CardController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return Renderable
      */
     public function index()
     {
@@ -33,7 +35,7 @@ class CardController extends Controller
      *
      * @param CreateCard $request
 ^     *
-     * @return Response
+     * @return RedirectResponse|Renderable
      */
     public function create(CreateCard $request)
     {
@@ -57,7 +59,7 @@ class CardController extends Controller
      *
      * @param StoreCard $request
      *
-     * @return Response
+     * @return RedirectResponse
      */
     public function store(StoreCard $request)
     {
@@ -74,7 +76,7 @@ class CardController extends Controller
      *
      * @param Card $card
      *
-     * @return Response
+     * @return Renderable
      */
     public function show(Card $card)
     {

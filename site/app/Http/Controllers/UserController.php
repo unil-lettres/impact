@@ -9,7 +9,8 @@ use App\Http\Requests\ExtendUser;
 use App\Http\Requests\UpdateUser;
 use App\User;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\Response;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -17,7 +18,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return Renderable
      * @throws AuthorizationException
      */
     public function index()
@@ -35,7 +36,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource in the admin panel.
      *
-     * @return Response
+     * @return Renderable
      * @throws AuthorizationException
      */
     public function manage()
@@ -53,7 +54,7 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return Renderable
      * @throws AuthorizationException
      */
     public function create()
@@ -68,7 +69,7 @@ class UserController extends Controller
      *
      * @param CreateUser $request
      *
-     * @return Response
+     * @return RedirectResponse
      * @throws AuthorizationException
      */
     public function store(CreateUser $request)
@@ -92,7 +93,7 @@ class UserController extends Controller
      *
      * @param User $user
      *
-     * @return Response
+     * @return RedirectResponse
      * @throws AuthorizationException
      */
     public function show(User $user)
@@ -108,7 +109,7 @@ class UserController extends Controller
      * @param EditUser $user
      * @param int $id
      *
-     * @return Response
+     * @return Renderable
      * @throws AuthorizationException
      */
     public function edit(EditUser $user, int $id)
@@ -128,7 +129,7 @@ class UserController extends Controller
      * @param UpdateUser $request
      * @param int $id
      *
-     * @return Response
+     * @return RedirectResponse
      * @throws AuthorizationException
      */
     public function update(UpdateUser $request, int $id)
@@ -189,7 +190,7 @@ class UserController extends Controller
      *
      * @param User $user
      *
-     * @return Response
+     * @return RedirectResponse
      * @throws AuthorizationException
      */
     public function destroy(User $user)
@@ -209,7 +210,7 @@ class UserController extends Controller
      * @param ExtendUser $user
      * @param int $id
      *
-     * @return Response
+     * @return RedirectResponse
      * @throws AuthorizationException
      */
     public function extend(ExtendUser $user, int $id)

@@ -6,6 +6,8 @@ use App\Course;
 use App\Http\Requests\DestroyCourse;
 use App\Http\Requests\EnableCourse;
 use App\Http\Requests\StoreCourse;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Exception;
@@ -15,7 +17,7 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return Renderable
      */
     public function index()
     {
@@ -30,7 +32,7 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource in the admin panel.
      *
-     * @return Response
+     * @return Renderable
      */
     public function manage()
     {
@@ -46,7 +48,7 @@ class CourseController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return Response
+     * @return Renderable
      */
     public function create()
     {
@@ -58,7 +60,7 @@ class CourseController extends Controller
      *
      * @param StoreCourse $request
      *
-     * @return Response
+     * @return RedirectResponse
      */
     public function store(StoreCourse $request)
     {
@@ -75,7 +77,7 @@ class CourseController extends Controller
      *
      * @param Course $course
      *
-     * @return Response
+     * @return Renderable
      */
     public function show(Course $course)
     {
@@ -90,7 +92,7 @@ class CourseController extends Controller
      *
      * @param Course $course
      *
-     * @return Response
+     * @return Renderable
      */
     public function edit(Course $course)
     {
@@ -104,7 +106,7 @@ class CourseController extends Controller
      *
      * @param Course $course
      *
-     * @return Response
+     * @return Renderable
      */
     public function configure(Course $course)
     {
@@ -132,7 +134,7 @@ class CourseController extends Controller
      * @param EnableCourse $request
      * @param int $id
      *
-     * @return Response
+     * @return RedirectResponse
      * @throws Exception
      */
     public function enable(EnableCourse $request, int $id)
@@ -150,7 +152,7 @@ class CourseController extends Controller
      *
      * @param Course $course
      *
-     * @return Response
+     * @return RedirectResponse
      * @throws Exception
      */
     public function disable(Course $course)
@@ -167,7 +169,7 @@ class CourseController extends Controller
      * @param DestroyCourse $request
      * @param int $id
      *
-     * @return Response
+     * @return RedirectResponse
      * @throws Exception
      */
     public function destroy(DestroyCourse $request, int $id)

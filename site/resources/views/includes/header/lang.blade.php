@@ -1,5 +1,6 @@
 <!-- Translation dropdown of the navbar -->
 @php $locale = session()->get('locale'); @endphp
+
 <li class="nav-item dropdown lang">
     <a id="navbarDropdownLang" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
         @switch($locale)

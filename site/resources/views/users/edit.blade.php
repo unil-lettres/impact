@@ -141,7 +141,9 @@
                                     {{ trans('enrollments.as_teacher') }}
                                     <ul>
                                         @foreach ($user->enrollmentsAsTeacher() as $enrollment)
-                                            <li><a href="{{ route('courses.show', $enrollment->course->id) }}">{{ $enrollment->course->name }}</a></li>
+                                            <li>
+                                                <a href="{{ route('courses.show', $enrollment->course->id) }}">{{ $enrollment->course->name }}</a>
+                                            </li>
                                         @endforeach
                                     </ul>
                                 @endif
@@ -149,7 +151,9 @@
                                     {{ trans('enrollments.as_student') }}
                                     <ul>
                                         @foreach ($user->enrollmentsAsStudent() as $enrollment)
-                                            <li><a href="{{ route('courses.show', $enrollment->course->id) }}">{{ $enrollment->course->name }}</a></li>
+                                            <li>
+                                                <a href="{{ route('courses.show', $enrollment->course->id) }}">{{ $enrollment->course->name }}</a>
+                                            </li>
                                         @endforeach
                                     </ul>
                                 @endif

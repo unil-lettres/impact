@@ -27,7 +27,9 @@
                 @unless ($cards->isEmpty())
                     <ul>
                         @foreach ($cards as $card)
-                            <li><a href="{{ route('cards.show', $card->id) }}">{{ $card->title }}</a></li>
+                            <li>
+                                <a href="{{ route('cards.show', $card->id) }}">{{ $card->title }}</a>
+                            </li>
                         @endforeach
                     </ul>
                 @else

@@ -60,7 +60,7 @@ class CoursePolicy
      */
     public function view(User $user, Course $course)
     {
-        // Return true if user is enrolled in the specific course. The role is not in this case
+        // Return true if user is enrolled in the specific course. The role is not relevant.
         if ($user->enrollments()->where('course_id', $course->id)->first()) {
             return true;
         }

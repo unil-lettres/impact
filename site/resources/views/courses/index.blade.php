@@ -11,7 +11,9 @@
                 <ul>
                     @foreach ($courses as $course)
                         @can('view', $course)
-                            <li><a href="{{ route('courses.show', $course->id) }}">{{ $course->name }}</a></li>
+                            <li>
+                                <a href="{{ route('courses.show', $course->id) }}">{{ $course->name }}</a>
+                            </li>
                         @endcan
                     @endforeach
                 </ul>

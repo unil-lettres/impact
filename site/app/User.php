@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Enums\EnrollmentRole;
 use DateTime;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -49,6 +50,37 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Invitation', 'creator_id')
             ->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Get the enrollments of this user.
+     */
+    public function enrollments()
+    {
+        return $this->hasMany('App\Enrollment', 'user_id')
+            ->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Get the enrollments with a teaching role.
+     */
+    public function enrollmentsAsTeacher()
+    {
+        return $this->enrollments()
+            ->where('role', EnrollmentRole::Teacher)
+            ->orderBy('created_at', 'desc')
+            ->get();
+    }
+
+    /**
+     * Get the enrollments with a student role.
+     */
+    public function enrollmentsAsStudent()
+    {
+        return $this->enrollments()
+            ->where('role', EnrollmentRole::Student)
+            ->orderBy('created_at', 'desc')
+            ->get();
     }
 
     /**

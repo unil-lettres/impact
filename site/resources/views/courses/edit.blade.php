@@ -2,6 +2,8 @@
 
 @section('admin.content')
     <div id="edit-course">
-        Edit the content of "{{ $course->name }}"
+        @can('update', $course)
+            Edit the content of "{{ $course->name }}"
+        @endcan
     </div>
 @stop

@@ -13,5 +13,6 @@ return [
     'delete' => 'Delete the space',
     'not_found' => 'No spaces found',
     'list' => 'List of spaces',
+    'configure' => 'Space configuration',
 
 ];

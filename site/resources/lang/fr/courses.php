@@ -13,5 +13,6 @@ return [
     'delete' => 'Supprimer l\'espace',
     'not_found' => 'Aucun espace trouvé',
     'list' => 'Liste des espaces',
+    'configure' => 'Configuration de l\'espace',
 
 ];

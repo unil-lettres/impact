@@ -5,5 +5,6 @@ return [
     'title' => 'Titre',
     'create' => 'Créer une fiche',
     'not_found' => 'Aucune fiche trouvée',
+    'my_cards' => 'Mes fiches',
 
 ];

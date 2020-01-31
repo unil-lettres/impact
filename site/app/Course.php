@@ -18,11 +18,35 @@ class Course extends Model
     ];
 
     /**
-     * Get the cards that belong to this course.
+     * Get the cards of this course.
      */
     public function cards()
     {
         return $this->hasMany('App\Card', 'course_id')
             ->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Get the enrollments of this course.
+     */
+    public function enrollments()
+    {
+        return $this->hasMany('App\Enrollment', 'course_id')
+            ->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Get the role for a specific user of this course.
+     *
+     * @param User $user
+     * @return mixed|null
+     */
+    public function userRole(User $user)
+    {
+        $enrollment = $this->enrollments()
+            ->where('user_id', $user->id)
+            ->first();
+
+        return $enrollment ? $enrollment->role : null;
     }
 }

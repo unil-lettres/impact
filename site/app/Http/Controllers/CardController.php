@@ -22,6 +22,8 @@ class CardController extends Controller
      */
     public function index()
     {
+        // TODO: add authorize
+
         $cards = Card::orderBy('created_at', 'desc')
             ->paginate(config('const.pagination.per'));
 
@@ -39,6 +41,8 @@ class CardController extends Controller
      */
     public function create(CreateCard $request)
     {
+        // TODO: add authorize
+
         // Retrieve the course of the card
         $courseId = $request->input('course');
         try {
@@ -63,6 +67,8 @@ class CardController extends Controller
      */
     public function store(StoreCard $request)
     {
+        // TODO: add authorize
+
         // Create new course
         $card = new Card($request->all());
         $card->save();
@@ -80,6 +86,8 @@ class CardController extends Controller
      */
     public function show(Card $card)
     {
+        // TODO: add authorize
+
         return view('cards.show', [
             'card' => $card,
             'course' => $card->course
@@ -95,7 +103,7 @@ class CardController extends Controller
      */
     public function edit(Card $card)
     {
-        //
+        // TODO: Show the form for editing the specified resource.
     }
 
     /**
@@ -108,7 +116,7 @@ class CardController extends Controller
      */
     public function update(Request $request, Card $card)
     {
-        //
+        // TODO: Update the specified resource in storage.
     }
 
     /**
@@ -120,6 +128,6 @@ class CardController extends Controller
      */
     public function destroy(Card $card)
     {
-        //
+        // TODO: Remove the specified resource from storage.
     }
 }

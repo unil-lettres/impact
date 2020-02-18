@@ -1,11 +1,9 @@
 @extends('layouts.app-base')
 
-<!-- TODO: translate -->
-
 @section('content')
     <div id="configure-card">
         @section('title')
-            Configurer "{{ $card->title }}"
+            {{ trans('cards.configure') }}
         @endsection
         <hr>
     </div>
@@ -19,10 +17,10 @@
             <div class="col-md-12 col-lg-8">
                 <div class="card">
                     <div class="card-header">
-                        Rédacteurs
+                        {{ trans('cards.editors') }}
                     </div>
                     <div class="card-body">
-                        <p>Vous pouvez choisir les rédacteurs de la fiche parmi les utilisateurs suivants.</p>
+                        <p>{{ trans('cards.choose_editors') }}</p>
 
                         @if ($students->isNotEmpty())
                             <div class="form-group">
@@ -34,7 +32,7 @@
                             </div>
                         @else
                             <p class="text-secondary">
-                                Aucun rédacteur disponible
+                                {{ trans('cards.editors.not_found') }}
                             </p>
                         @endif
                     </div>
@@ -46,7 +44,7 @@
                         Emails
                     </div>
                     <div class="card-body">
-                        <p>Par défaut, un email est envoyé à chaque changement d'état d'une fiche.</p>
+                        <p>{{ trans('cards.send_mails') }}</p>
                         <!-- TODO: add emails option -->
                     </div>
                 </div>
@@ -54,7 +52,7 @@
         </div>
 
         <button type="submit" class="btn btn-primary">
-            Mettre à jour
+            {{ trans('cards.update.configuration') }}
         </button>
     </form>
 @endsection

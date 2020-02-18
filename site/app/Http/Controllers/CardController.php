@@ -133,9 +133,8 @@ class CardController extends Controller
             $enrollment->updateCard($card, $editors);
         }
 
-        // TODO: translate
         return redirect()->route('cards.show', $card->id)
-            ->with('success', 'Configuration de la fiche mise à jour');
+            ->with('success', trans('messages.card.configuration.updated'));
     }
 
     /**

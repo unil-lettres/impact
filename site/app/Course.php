@@ -38,7 +38,7 @@ class Course extends Model
     }
 
     /**
-     * Get all the enrollments for a specific role of this course.
+     * Get all the enrollments for a specific role (EnrollmentRole) of this course.
      *
      * @param string $role
      *

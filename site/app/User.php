@@ -5,6 +5,7 @@ namespace App;
 use App\Enums\EnrollmentRole;
 use DateTime;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -63,6 +64,8 @@ class User extends Authenticatable
 
     /**
      * Get the enrollments with a teaching role.
+     *
+     * @return Collection
      */
     public function enrollmentsAsTeacher()
     {
@@ -74,6 +77,8 @@ class User extends Authenticatable
 
     /**
      * Get the enrollments with a student role.
+     *
+     * @return Collection
      */
     public function enrollmentsAsStudent()
     {
@@ -81,6 +86,20 @@ class User extends Authenticatable
             ->where('role', EnrollmentRole::Student)
             ->orderBy('created_at', 'desc')
             ->get();
+    }
+
+    /**
+     * Get the cards of the user.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function cards()
+    {
+        return $this->enrollmentsAsStudent()
+            ->map(function ($enrollment) {
+                return Card::findMany($enrollment->cards);
+            })
+            ->flatten();
     }
 
     /**

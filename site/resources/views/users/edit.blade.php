@@ -37,7 +37,9 @@
                             @method('PUT')
 
                             <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label">{{ trans('users.name') }}</label>
+                                <label for="name" class="col-md-4 col-form-label">
+                                    {{ trans('users.name') }}
+                                </label>
                                 <div class="col-md-8">
                                     <input id="name"
                                            type="text"
@@ -49,7 +51,9 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="email" class="col-md-4 col-form-label">{{ trans('users.email') }}</label>
+                                <label for="email" class="col-md-4 col-form-label">
+                                    {{ trans('users.email') }}
+                                </label>
                                 <div class="col-md-8">
                                     <input id="email"
                                            type="email"
@@ -62,7 +66,9 @@
                             </div>
 
                             <div class="form-group row">
-                                <label for="type" class="col-md-4 col-form-label">{{ trans('users.type') }}</label>
+                                <label for="type" class="col-md-4 col-form-label">
+                                    {{ trans('users.type') }}
+                                </label>
                                 <div class="col-md-8">
                                     <input id="type"
                                            type="text"
@@ -77,7 +83,9 @@
                             @if (Helpers::isUserLocal($user))
                                 @if ($user->validity)
                                     <div class="form-group row">
-                                        <label for="validity" class="col-md-4 col-form-label">{{ trans('users.validity') }}</label>
+                                        <label for="validity" class="col-md-4 col-form-label">
+                                            {{ trans('users.validity') }}
+                                        </label>
                                         <div class="col-md-8">
                                             <input id="type"
                                                    type="text"
@@ -91,7 +99,9 @@
                                 @endif
 
                                 <div class="form-group row">
-                                    <label for="old_password" class="col-md-4 col-form-label">{{ trans('users.password.current') }}</label>
+                                    <label for="old_password" class="col-md-4 col-form-label">
+                                        {{ trans('users.password.current') }}
+                                    </label>
                                     <div class="col-md-8">
                                         <input id="old_password"
                                                name="old_password"
@@ -101,7 +111,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="new_password" class="col-md-4 col-form-label">{{ trans('users.password.new') }}</label>
+                                    <label for="new_password" class="col-md-4 col-form-label">
+                                        {{ trans('users.password.new') }}
+                                    </label>
                                     <div class="col-md-8">
                                         <input id="new_password"
                                                name="new_password"
@@ -111,7 +123,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="password_confirm" class="col-md-4 col-form-label">{{ trans('users.password.confirm') }}</label>
+                                    <label for="password_confirm" class="col-md-4 col-form-label">
+                                        {{ trans('users.password.confirm') }}
+                                    </label>
                                     <div class="col-md-8">
                                         <input id="password_confirm"
                                                name="password_confirm"
@@ -130,50 +144,64 @@
                 </div>
             </div>
             <div class="col-md-12 col-lg-4">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <span class="title">{{ trans('enrollments.enrollments') }}</span>
-                        </div>
-                        <div class="card-body">
-                            @if ($user->enrollments()->count() > 0)
-                                @if ($user->enrollmentsAsTeacher()->isNotEmpty())
-                                    {{ trans('enrollments.as_teacher') }}
-                                    <ul>
-                                        @foreach ($user->enrollmentsAsTeacher() as $enrollment)
-                                            <li>
-                                                <a href="{{ route('courses.show', $enrollment->course->id) }}">{{ $enrollment->course->name }}</a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                @endif
-                                @if ($user->enrollmentsAsStudent()->isNotEmpty())
-                                    {{ trans('enrollments.as_student') }}
-                                    <ul>
-                                        @foreach ($user->enrollmentsAsStudent() as $enrollment)
-                                            <li>
-                                                <a href="{{ route('courses.show', $enrollment->course->id) }}">{{ $enrollment->course->name }}</a>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                @endif
-                            @else
-                                <p class="text-secondary">
-                                    {{ trans('enrollments.not_found') }}
-                                </p>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="title">{{ trans('enrollments.enrollments') }}</span>
+                    </div>
+                    <div class="card-body">
+                        @if ($user->enrollments()->count() > 0)
+                            @if ($user->enrollmentsAsTeacher()->isNotEmpty())
+                                {{ trans('enrollments.as_teacher') }}
+                                <ul>
+                                    @foreach ($user->enrollmentsAsTeacher() as $enrollment)
+                                        <li>
+                                            <a href="{{ route('courses.show', $enrollment->course->id) }}">
+                                                {{ $enrollment->course->name }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
                             @endif
-                        </div>
+                            @if ($user->enrollmentsAsStudent()->isNotEmpty())
+                                {{ trans('enrollments.as_student') }}
+                                <ul>
+                                    @foreach ($user->enrollmentsAsStudent() as $enrollment)
+                                        <li>
+                                            <a href="{{ route('courses.show', $enrollment->course->id) }}">
+                                                {{ $enrollment->course->name }}
+                                            </a>
+                                        </li>
+                                    @endforeach
+                                </ul>
+                            @endif
+                        @else
+                            <p class="text-secondary">
+                                {{ trans('enrollments.not_found') }}
+                            </p>
+                        @endif
                     </div>
                 </div>
 
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <span class="title">{{ trans('cards.my_cards') }}</span>
-                        </div>
-                        <div class="card-body">
-                            <!-- TODO: list all the cards owned by the user  -->
-                        </div>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="title">{{ trans('cards.my_cards') }}</span>
+                    </div>
+                    <div class="card-body">
+                        @if ($user->cards()->isNotEmpty())
+                            <ul>
+                                @foreach ($user->cards() as $card)
+                                    <li>
+                                        <a href="{{ route('cards.show', $card->id) }}">
+                                            {{ $card->title }}
+                                        </a>
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-secondary">
+                                {{ trans('cards.not_found') }}
+                            </p>
+                        @endif
                     </div>
                 </div>
             </div>

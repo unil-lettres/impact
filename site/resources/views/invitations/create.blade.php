@@ -31,5 +31,6 @@
                 {{ trans('invitations.create') }}
             </button>
         </form>
+        <!-- TODO: add possibility to choose the course attached to the invitation (list managed courses only) -->
     </div>
 @endsection

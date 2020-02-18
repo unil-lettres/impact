@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Card;
 use App\Course;
+use App\Enums\EnrollmentRole;
 use App\Http\Requests\CreateCard;
 use App\Http\Requests\StoreCard;
 use Exception;
@@ -99,11 +100,17 @@ class CardController extends Controller
      *
      * @param Card $card
      *
-     * @return Response
+     * @return Renderable
      */
     public function edit(Card $card)
     {
         // TODO: Show the form for editing the specified resource.
+
+        return view('cards.edit', [
+            'card' => $card,
+            'editors' => $card->editors(),
+            'students' => $card->course->students()
+        ]);
     }
 
     /**
@@ -112,11 +119,23 @@ class CardController extends Controller
      * @param Request $request
      * @param Card $card
      *
-     * @return Response
+     * @return RedirectResponse
      */
     public function update(Request $request, Card $card)
     {
         // TODO: Update the specified resource in storage.
+
+        $editors = json_decode($request->get('editors'));
+        $enrollments = $card->course->enrollmentsForRole(EnrollmentRole::Student);
+
+        // Update the cards of all the student role enrollments of this course
+        foreach ($enrollments as $enrollment) {
+            $enrollment->updateCard($card, $editors);
+        }
+
+        // TODO: translate
+        return redirect()->route('cards.show', $card->id)
+            ->with('success', 'Configuration de la fiche mise à jour');
     }
 
     /**

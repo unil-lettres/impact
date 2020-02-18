@@ -13,3 +13,5 @@ require('./bootstrap');
  */
 
 require('./components/MultiUserSelect');
+require('./components/MultiCourseTeacherSelect');
+require('./components/MultiCourseStudentSelect');

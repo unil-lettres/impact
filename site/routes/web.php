@@ -35,7 +35,7 @@ Route::middleware(['auth', 'app'])->group(function () {
     Route::get('invitations/{invitation}/mail', 'InvitationController@mail')->name('send.invite');
 
     // Users
-    Route::get('users/{user}/profile', 'UserController@edit')->name('users.profile');
+    Route::get('users/{user}/profile', 'UserController@profile')->name('users.profile');
     Route::put('users/{user}/update', 'UserController@update')->name('users.profile.update');
 
     // Cards

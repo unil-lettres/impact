@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
 use App\Enums\UserType;
 use App\Http\Requests\CreateUser;
 use App\Http\Requests\EditUser;
@@ -118,7 +119,40 @@ class UserController extends Controller
 
         $this->authorize('update', $user);
 
+        $coursesAsTeacher = $user->enrollmentsAsTeacher()
+            ->map(function ($enrollment) {
+                return $enrollment->course;
+            });
+
+        $coursesAsStudent = $user->enrollmentsAsStudent()
+            ->map(function ($enrollment) {
+                return $enrollment->course;
+            });
+
         return view('users.edit', [
+            'user' => $user,
+            'courses' => Course::all(),
+            'coursesAsTeacher' => $coursesAsTeacher,
+            'coursesAsStudent' => $coursesAsStudent,
+        ]);
+    }
+
+    /**
+     * Show the profile of the specified resource.
+     *
+     * @param EditUser $user
+     * @param int $id
+     *
+     * @return Renderable
+     * @throws AuthorizationException
+     */
+    public function profile(EditUser $user, int $id)
+    {
+        $user = User::find($id);
+
+        $this->authorize('update', $user);
+
+        return view('users.profile', [
             'user' => $user
         ]);
     }

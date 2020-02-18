@@ -125,12 +125,12 @@ class CardController extends Controller
     {
         // TODO: Update the specified resource in storage.
 
-        $editors = json_decode($request->get('editors'));
+        $editorsId = json_decode($request->get('editors'));
         $enrollments = $card->course->enrollmentsForRole(EnrollmentRole::Student);
 
         // Update the cards of all the student role enrollments of this course
         foreach ($enrollments as $enrollment) {
-            $enrollment->updateCard($card, $editors);
+            $enrollment->updateCard($card, $editorsId);
         }
 
         return redirect()->route('cards.show', $card->id)

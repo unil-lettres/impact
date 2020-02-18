@@ -101,19 +101,19 @@ class Enrollment extends Model
      * Remove card from the enrollment if the user is not part of the selected editors.
      *
      * @param Card $card
-     * @param array $editors
+     * @param array $editorsId
      *
      * @return bool
      */
-    public function updateCard($card, $editors)
+    public function updateCard($card, $editorsId)
     {
         // If editors is empty, remove the specified card from the enrollment cards
-        if (empty($editors)) {
+        if (empty($editorsId)) {
             return $this->removeCard($card);
         }
 
         // If the enrollment user is part of the selected editors, add the card to the enrollment cards
-        if (in_array($this->user_id, $editors)) {
+        if (in_array($this->user_id, $editorsId)) {
             return $this->addCard($card);
         }
 

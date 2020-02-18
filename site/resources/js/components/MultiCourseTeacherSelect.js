@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import MultiSelect from "./MultiSelect";
+import MultiSelect from './MultiSelect';
 
-export default class MultiUserSelect extends Component {
+export default class MultiCourseTeacherSelect extends Component {
     constructor(props){
         super(props);
 
@@ -34,9 +34,9 @@ export default class MultiUserSelect extends Component {
     }
 }
 
-const elementId = 'rct-multi-user-select';
+const elementId = 'rct-multi-course-teacher-select';
 if (document.getElementById(elementId)) {
     let data = document.getElementById(elementId).getAttribute('data');
     let ref = document.getElementById(elementId).getAttribute('ref');
-    ReactDOM.render(<MultiUserSelect data={ data } reference={ ref } />, document.getElementById(elementId));
+    ReactDOM.render(<MultiCourseTeacherSelect data={ data } reference={ ref } />, document.getElementById(elementId));
 }

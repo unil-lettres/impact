@@ -3,6 +3,7 @@
 return [
 
     'title' => 'Titre',
+    'cards' => 'Fiches',
     'create' => 'Créer une fiche',
     'not_found' => 'Aucune fiche trouvée',
     'my_cards' => 'Mes fiches',

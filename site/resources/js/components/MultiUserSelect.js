@@ -8,8 +8,9 @@ const animatedComponents = makeAnimated();
 export default class MultiUserSelect extends Component {
     constructor(props){
         super(props);
+
         let data = JSON.parse(this.props.data);
-        let allUsers = data.select;
+        let allUsers = data.options;
         let defaultUsers = data.default;
 
         this.state = {

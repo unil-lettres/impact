@@ -26,7 +26,7 @@
                             <div class="form-group">
                                 <input id="editors" name="editors" type="hidden" value="[]">
                                 <div id="rct-multi-user-select"
-                                     data='{{ json_encode(['select' => $students, 'default' => $editors]) }}'
+                                     data='{{ json_encode(['options' => $students, 'default' => $editors]) }}'
                                      ref='editors'
                                 ></div>
                             </div>

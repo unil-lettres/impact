@@ -31,7 +31,7 @@
                                             @endif
                                         </td>
                                         <td>
-                                            Cards: {{ $course->cards->count() }}
+                                            {{ trans('cards.cards') }}: {{ $course->cards->count() }}
                                         </td>
                                         <td class="actions">
                                             @can('update', $course)

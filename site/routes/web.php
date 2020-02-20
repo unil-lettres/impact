@@ -44,7 +44,7 @@ Route::middleware(['auth', 'app'])->group(function () {
     // Enrollments
     Route::get('enrollments', 'EnrollmentController@index');
     Route::post('enrollments', 'EnrollmentController@store');
-    Route::get('enrollments/{enrollment}', 'EnrollmentController@show');
+    Route::get('enrollments/find', 'EnrollmentController@find');
     Route::put('enrollments/cards', 'EnrollmentController@cards');
     Route::delete('enrollments/{enrollment}', 'EnrollmentController@destroy');
 

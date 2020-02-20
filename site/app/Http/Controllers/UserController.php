@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Enums\EnrollmentRole;
 use App\Enums\UserType;
 use App\Http\Requests\CreateUser;
 use App\Http\Requests\EditUser;
@@ -132,7 +133,9 @@ class UserController extends Controller
         return view('users.edit', [
             'user' => $user,
             'courses' => Course::all(),
+            'teacherRole' => EnrollmentRole::Teacher,
             'coursesAsTeacher' => $coursesAsTeacher,
+            'studentRole' => EnrollmentRole::Student,
             'coursesAsStudent' => $coursesAsStudent,
         ]);
     }

@@ -67,7 +67,6 @@ export default class MultiUserSelect extends Component {
     }
 
     render() {
-        const { inputValue } = this.state;
         return (
             <Select
                 isMulti

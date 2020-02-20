@@ -3,9 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Enrollment;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class EnrollmentController extends Controller
 {
@@ -27,54 +27,78 @@ class EnrollmentController extends Controller
      * Show the form for creating a new resource.
      */
     public function create()
-    {
-    }
+    {}
 
     /**
      * Store a newly created resource in storage.
      *
      * @param Request $request
+     *
      * @return JsonResponse
      */
     public function store(Request $request)
     {
         // TODO: add policy (auth()->user())
+
+        Enrollment::create([
+            'role' => $request->get('role'),
+            'course_id' => $request->get('course'),
+            'user_id' => $request->get('user'),
+        ]);
+
+        return response()->json([
+            'success' => true
+        ]);
     }
 
     /**
      * Display the specified resource.
      *
      * @param Enrollment $enrollment
-     * @return Response
      */
     public function show(Enrollment $enrollment)
+    {}
+
+    /**
+     * Find the specified resource.
+     *
+     * @param Request $request
+     *
+     * @return JsonResponse
+     */
+    public function find(Request $request)
     {
         // TODO: Display the specified resource.
+
+        $enrollment = Enrollment::where('course_id', $request->get('course'))
+            ->where('user_id', $request->get('user'))
+            ->where('role', $request->get('role'))
+            ->first();
+
+        return response()->json([
+            'enrollment' => $enrollment
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param Enrollment $enrollment
-     * @return Response
      */
     public function edit(Enrollment $enrollment)
-    {
-    }
+    {}
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
      * @param Enrollment $enrollment
-     * @return Response
      */
     public function update(Request $request, Enrollment $enrollment)
-    {
-    }
+    {}
 
     /**
-     * Update the cards of the resources identified by a course & by users.
+     * Update the cards of the resources in storage.
      *
      * @param Request $request
      *
@@ -95,7 +119,7 @@ class EnrollmentController extends Controller
             ->first();
 
         return response()->json([
-            'saved' => $enrollment->updateCard($cardId, $add, $remove)
+            'success' => $enrollment->updateCard($cardId, $add, $remove)
         ]);
     }
 
@@ -103,10 +127,16 @@ class EnrollmentController extends Controller
      * Remove the specified resource from storage.
      *
      * @param Enrollment $enrollment
-     * @return Response
+     *
+     * @return JsonResponse
+     * @throws Exception
      */
     public function destroy(Enrollment $enrollment)
     {
         // TODO: Remove the specified resource from storage.
+
+        return response()->json([
+            'success' => $enrollment->delete() ?? false
+        ]);
     }
 }

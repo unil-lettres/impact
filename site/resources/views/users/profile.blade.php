@@ -22,7 +22,6 @@
                               action="{{ route('users.profile.update', $user->id) }}">
                             @csrf
                             @method('PUT')
-
                             <div class="form-group row">
                                 <label for="name" class="col-md-4 col-form-label">
                                     {{ trans('users.name') }}
@@ -123,6 +122,7 @@
                                 </div>
                             @endif
 
+                            <hr>
                             <button type="submit" class="btn btn-primary">
                                 {{ trans('users.update') }}
                             </button>

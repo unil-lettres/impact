@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Enrollment extends Model
 {
     protected $fillable = [
-        'cards',
+        'role', 'course_id', 'user_id', 'cards',
     ];
 
     protected $casts = [

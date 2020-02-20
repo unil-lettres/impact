@@ -114,6 +114,7 @@ export default class MultiCourseSelect extends Component {
                 closeMenuOnSelect={ false }
                 escapeClearsValue={ false }
                 backspaceRemovesValue={ false }
+                isDisabled={ this.state.record.admin }
                 defaultValue={ this.state.defaults }
                 onChange={ this.handleChange }
                 options={ this.state.options }

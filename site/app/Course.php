@@ -44,7 +44,7 @@ class Course extends Model
      *
      * @return Collection
      */
-    public function enrollmentsForRole($role)
+    public function enrollmentsForRole(string $role)
     {
         return $this->enrollments()->get()
             ->filter(function ($enrollment) use ($role) {

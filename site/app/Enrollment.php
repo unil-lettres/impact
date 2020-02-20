@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class Enrollment extends Model
@@ -37,7 +38,7 @@ class Enrollment extends Model
      *
      * @return bool
      */
-    public function hasCard($card)
+    public function hasCard(Card $card)
     {
         return $this->cards ? in_array($card->id, $this->cards) : false;
     }
@@ -50,7 +51,7 @@ class Enrollment extends Model
      *
      * @return bool
      */
-    public function addCard($card)
+    public function addCard(Card $card)
     {
         if (!$this->hasCard($card)) {
             $cards = collect($this->cards);
@@ -58,7 +59,7 @@ class Enrollment extends Model
             $cards = $cards->push($card->id);
 
             $this->update([
-                'cards' => $cards->all()
+                'cards' => $cards->toArray()
             ]);
             $this->save();
 
@@ -76,7 +77,7 @@ class Enrollment extends Model
      *
      * @return bool
      */
-    public function removeCard($card)
+    public function removeCard(Card $card)
     {
         if ($this->hasCard($card)) {
             $cards = collect($this->cards);
@@ -86,7 +87,7 @@ class Enrollment extends Model
             });
 
             $this->update([
-                'cards' => $cards->all()
+                'cards' => $cards->toArray()
             ]);
             $this->save();
 
@@ -97,27 +98,27 @@ class Enrollment extends Model
     }
 
     /**
-     * Add card to the enrollment if the user is part of the selected editors.
-     * Remove card from the enrollment if the user is not part of the selected editors.
+     * Add card to the enrollment if provided.
+     * Remove card from the enrollment if provided.
      *
-     * @param Card $card
-     * @param array $editorsId
+     * @param int $cardId
+     * @param Collection $add
+     * @param Collection $remove
      *
      * @return bool
      */
-    public function updateCard($card, $editorsId)
+    public function updateCard(int $cardId, Collection $add, Collection $remove)
     {
-        // If editors is empty, remove the specified card from the enrollment cards
-        if (empty($editorsId)) {
-            return $this->removeCard($card);
-        }
+        $card = Card::findOrFail($cardId);
 
-        // If the enrollment user is part of the selected editors, add the card to the enrollment cards
-        if (in_array($this->user_id, $editorsId)) {
+        if($add->isNotEmpty()) {
             return $this->addCard($card);
         }
 
-        // Remove the specified card from the enrollment cards otherwise
-        return $this->removeCard($card);
+        if($remove->isNotEmpty()) {
+            return $this->removeCard($card);
+        }
+
+        return false;
     }
 }

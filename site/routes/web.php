@@ -41,6 +41,13 @@ Route::middleware(['auth', 'app'])->group(function () {
     // Cards
     Route::resource('cards', 'CardController');
 
+    // Enrollments
+    Route::get('enrollments', 'EnrollmentController@index');
+    Route::post('enrollments', 'EnrollmentController@store');
+    Route::get('enrollments/{enrollment}', 'EnrollmentController@show');
+    Route::put('enrollments/cards', 'EnrollmentController@cards');
+    Route::delete('enrollments/{enrollment}', 'EnrollmentController@destroy');
+
     // Courses
     Route::get('courses/{course}', 'CourseController@show')->name('courses.show');
     Route::get('courses/{course}/configure', 'CourseController@configure')->name('courses.configure');

@@ -24,10 +24,8 @@
 
                         @if ($students->isNotEmpty())
                             <div class="form-group">
-                                <input id="editors" name="editors" type="hidden" value="[]">
                                 <div id="rct-multi-user-select"
-                                     data='{{ json_encode(['options' => $students, 'default' => $editors]) }}'
-                                     ref='editors'
+                                     data='{{ json_encode(['record' => $card, 'options' => $students, 'defaults' => $editors]) }}'
                                 ></div>
                             </div>
                         @else

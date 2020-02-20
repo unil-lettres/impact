@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import MultiSelect from "./MultiSelect";
+import axios from "axios";
+import Select from "react-select";
+import makeAnimated from 'react-select/animated';
+
+const animatedComponents = makeAnimated();
 
 export default class MultiUserSelect extends Component {
     constructor(props){
@@ -9,26 +13,72 @@ export default class MultiUserSelect extends Component {
         let data = JSON.parse(this.props.data);
 
         this.state = {
-            records: [],
-            default: [],
-            reference: this.props.reference,
+            record: data.record,
+            options: [],
+            defaults: [],
+            selected: [],
         };
 
         Object.keys(data.options).forEach(key=>{
-            this.state.records.push({ value: data.options[key].id, label: data.options[key].name});
+            this.state.options.push({
+                value: data.options[key].id,
+                label: data.options[key].name
+            });
         });
 
-        Object.keys(data.default).forEach(key=>{
-            this.state.default.push({ value: data.default[key].id, label: data.default[key].name});
+        Object.keys(data.defaults).forEach(key=>{
+            this.state.defaults.push({
+                value: data.defaults[key].id,
+                label: data.defaults[key].name
+            });
+        });
+
+        this.state.selected = this.state.defaults;
+    }
+
+    handleChange = (selectedOptions, { action }) => {
+        let added = _.differenceWith(selectedOptions, this.state.selected, _.isEqual).map( user =>
+            user.value
+        );
+        let removed = _.differenceWith(this.state.selected, selectedOptions, _.isEqual).map( user =>
+            user.value
+        );
+
+        this.setState(
+            {
+                selected: selectedOptions
+            },
+            () => this.save(added, removed, action)
+        );
+    };
+
+    save(added, removed, action){
+        axios.put('/enrollments/cards', {
+            course: this.state.record.course.id,
+            card: this.state.record.id,
+            add: added,
+            remove: removed,
+            action: action
+        }).then(response => {
+            console.log(response);
+        }).catch(error => {
+            console.log(error)
         });
     }
 
     render() {
+        const { inputValue } = this.state;
         return (
-            <MultiSelect
-                records={ this.state.records }
-                default={ this.state.default }
-                reference={ this.state.reference }
+            <Select
+                isMulti
+                components={ animatedComponents }
+                isClearable={ false }
+                closeMenuOnSelect={ false }
+                escapeClearsValue={ false }
+                backspaceRemovesValue={ false }
+                defaultValue={ this.state.defaults }
+                onChange={ this.handleChange }
+                options={ this.state.options }
             />
         );
     }
@@ -37,6 +87,5 @@ export default class MultiUserSelect extends Component {
 const elementId = 'rct-multi-user-select';
 if (document.getElementById(elementId)) {
     let data = document.getElementById(elementId).getAttribute('data');
-    let ref = document.getElementById(elementId).getAttribute('ref');
-    ReactDOM.render(<MultiUserSelect data={ data } reference={ ref } />, document.getElementById(elementId));
+    ReactDOM.render(<MultiUserSelect data={ data } />, document.getElementById(elementId));
 }

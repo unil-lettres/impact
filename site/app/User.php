@@ -110,6 +110,10 @@ class User extends Authenticatable
      * @return bool
      */
     public function isEditor(Card $card) {
+        if($this->admin) {
+            return true;
+        }
+
         return $this->cards()
             ->contains('id', $card->id);
     }
@@ -122,6 +126,10 @@ class User extends Authenticatable
      * @return bool
      */
     public function isTeacher(Course $course) {
+        if($this->admin) {
+            return true;
+        }
+
         return $this->enrollmentsAsTeacher()
             ->contains('course_id', $course->id);
     }
@@ -134,6 +142,10 @@ class User extends Authenticatable
      * @return bool
      */
     public function isStudent(Course $course) {
+        if($this->admin) {
+            return true;
+        }
+
         return $this->enrollmentsAsStudent()
             ->contains('course_id', $course->id);
     }

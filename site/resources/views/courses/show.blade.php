@@ -6,9 +6,15 @@
             @section('title')
                 {{ $course->name }}
 
-                @unless (Auth::user()->isStudent($course))
+                @if (Auth::user()->isTeacher($course))
                     <div class="dropdown show float-right">
-                        <a class="btn btn-primary dropdown-toggle" href="#" role="button" id="dropdownCourseMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <a class="btn btn-primary dropdown-toggle"
+                           href="#"
+                           role="button"
+                           id="dropdownCourseMenuLink"
+                           data-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false">
                             Actions
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownCourseMenuLink">
@@ -40,7 +46,11 @@
                                               action="{{ route('cards.destroy', $card->id) }}">
                                             @method('DELETE')
                                             @csrf
-                                            <button type="submit" class="btn btn-link" style="color: red; padding: 0;">({{ trans('cards.delete') }})</button>
+                                            <button type="submit"
+                                                    class="btn btn-link"
+                                                    style="color: red; padding: 0;">
+                                                ({{ trans('cards.delete') }})
+                                            </button>
                                         </form>
                                     @endcan
                                 </li>

@@ -53,7 +53,7 @@ export default class MultiCourseSelect extends Component {
         );
     };
 
-    save(added, removed, action){
+    save(added, removed, action) {
         if (added && added.length > 0) {
             this.createEnrollment(added[0], action);
         } else if(removed && removed.length > 0) {
@@ -67,8 +67,7 @@ export default class MultiCourseSelect extends Component {
         axios.post('/enrollments', {
             user: this.state.record.id,
             role: this.state.role,
-            course: course,
-            action: action
+            course: course
         }).then(response => {
             console.log(response);
         }).catch(error => {

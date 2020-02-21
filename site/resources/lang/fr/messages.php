@@ -23,6 +23,7 @@ return [
     'course.enabled' => 'Espace activé.',
     'course.deleted' => 'Espace supprimé.',
     'card.created' => 'Fiche créée: :title',
+    'card.deleted' => 'Fiche supprimée.',
     'card.configuration.updated' => 'Configuration de la fiche mise à jour',
 
 ];

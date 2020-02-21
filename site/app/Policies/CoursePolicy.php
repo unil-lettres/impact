@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Course;
-use App\Enums\EnrollmentRole;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -32,6 +31,7 @@ class CoursePolicy
      * Determine whether the user can view any courses.
      *
      * @param User $user
+     *
      * @return mixed
      */
     public function viewAny(User $user)
@@ -43,6 +43,7 @@ class CoursePolicy
      * Determine whether the user can view any courses in the admin panel.
      *
      * @param User $user
+     *
      * @return mixed
      */
     public function manage(User $user)
@@ -56,12 +57,13 @@ class CoursePolicy
      *
      * @param User $user
      * @param Course $course
+     *
      * @return mixed
      */
     public function view(User $user, Course $course)
     {
         // Return true if user is enrolled in the specific course. The role is not relevant.
-        if ($user->enrollments()->where('course_id', $course->id)->first()) {
+        if ($user->isTeacher($course) || $user->isStudent($course)) {
             return true;
         }
 
@@ -72,6 +74,7 @@ class CoursePolicy
      * Determine whether the user can create courses.
      *
      * @param User $user
+     *
      * @return mixed
      */
     public function create(User $user)
@@ -85,6 +88,7 @@ class CoursePolicy
      *
      * @param User $user
      * @param Course $course
+     *
      * @return mixed
      */
     public function update(User $user, Course $course)
@@ -98,12 +102,13 @@ class CoursePolicy
      *
      * @param User $user
      * @param Course $course
+     *
      * @return mixed
      */
     public function configure(User $user, Course $course)
     {
-        // Only admin & teachers can configure courses
-        if ($course->userRole($user) === EnrollmentRole::Teacher) {
+        // Only admins & teachers can configure courses
+        if ($user->isTeacher($course)) {
             return true;
         }
 
@@ -114,6 +119,7 @@ class CoursePolicy
      * Determine whether the user can enable the course.
      *
      * @param User $user
+     *
      * @return mixed
      */
     public function enable(User $user)
@@ -127,12 +133,13 @@ class CoursePolicy
      *
      * @param User $user
      * @param Course $course
+     *
      * @return mixed
      */
     public function disable(User $user, Course $course)
     {
-        // Only admin & teachers can disable courses
-        if ($course->userRole($user) === EnrollmentRole::Teacher) {
+        // Only admins & teachers can disable courses
+        if ($user->isTeacher($course)) {
             return true;
         }
 
@@ -144,6 +151,7 @@ class CoursePolicy
      *
      * @param User $user
      * @param Course $course
+     *
      * @return mixed
      */
     public function restore(User $user, Course $course)
@@ -156,11 +164,12 @@ class CoursePolicy
      * Determine whether the user can permanently delete the course.
      *
      * @param User $user
+     *
      * @return mixed
      */
     public function forceDelete(User $user)
     {
-        // Only admins can delete courses
+        // Only admins can delete permanently courses
         return false;
     }
 }

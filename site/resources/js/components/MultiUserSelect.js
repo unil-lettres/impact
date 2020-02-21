@@ -52,7 +52,7 @@ export default class MultiUserSelect extends Component {
         );
     };
 
-    save(added, removed, action){
+    save(added, removed, action) {
         axios.put('/enrollments/cards', {
             course: this.state.record.course.id,
             card: this.state.record.id,

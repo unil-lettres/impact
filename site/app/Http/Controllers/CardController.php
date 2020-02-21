@@ -4,55 +4,44 @@ namespace App\Http\Controllers;
 
 use App\Card;
 use App\Course;
-use App\Enums\EnrollmentRole;
 use App\Http\Requests\CreateCard;
+use App\Http\Requests\DestroyCard;
 use App\Http\Requests\StoreCard;
-use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
 
 class CardController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Renderable
+     * @return void
+     * @throws AuthorizationException
      */
     public function index()
     {
-        // TODO: add authorize
-
-        $cards = Card::orderBy('created_at', 'desc')
-            ->paginate(config('const.pagination.per'));
-
-        return view('cards.index', [
-            'cards' => $cards
-        ]);
+        $this->authorize('viewAny', Card::class);
     }
 
     /**
      * Show the form for creating a new resource.
      *
      * @param CreateCard $request
-^     *
+     *
      * @return RedirectResponse|Renderable
+     * @throws AuthorizationException
      */
     public function create(CreateCard $request)
     {
-        // TODO: add authorize
-
         // Retrieve the course of the card
-        $courseId = $request->input('course');
-        try {
-            $course = Course::findOrFail($courseId);
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
+        $course = Course::find($request->input('course'));
 
-            return redirect()->back();
-        }
+        $this->authorize('create', [
+            Card::class,
+            $course
+        ]);
 
         return view('cards.create', [
             'course' => $course
@@ -65,10 +54,14 @@ class CardController extends Controller
      * @param StoreCard $request
      *
      * @return RedirectResponse
+     * @throws AuthorizationException
      */
     public function store(StoreCard $request)
     {
-        // TODO: add authorize
+        $this->authorize('create', [
+            Card::class,
+            Course::find($request->input('course_id'))
+        ]);
 
         // Create new course
         $card = new Card($request->all());
@@ -84,10 +77,11 @@ class CardController extends Controller
      * @param Card $card
      *
      * @return Renderable
+     * @throws AuthorizationException
      */
     public function show(Card $card)
     {
-        // TODO: add authorize
+        $this->authorize('view', $card);
 
         return view('cards.show', [
             'card' => $card,
@@ -101,10 +95,11 @@ class CardController extends Controller
      * @param Card $card
      *
      * @return Renderable
+     * @throws AuthorizationException
      */
     public function edit(Card $card)
     {
-        // TODO: Show the form for editing the specified resource.
+        $this->authorize('update', $card);
 
         return view('cards.edit', [
             'card' => $card,
@@ -120,10 +115,11 @@ class CardController extends Controller
      * @param Card $card
      *
      * @return RedirectResponse
+     * @throws AuthorizationException
      */
     public function update(Request $request, Card $card)
     {
-        // TODO: Update the specified resource in storage.
+        $this->authorize('update', $card);
 
         return redirect()->route('cards.show', $card->id)
             ->with('success', trans('messages.card.configuration.updated'));
@@ -132,12 +128,22 @@ class CardController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Card $card
+     * @param DestroyCard $request
+     * @param int $id
      *
-     * @return Response
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function destroy(Card $card)
+    public function destroy(DestroyCard $request, int $id)
     {
-        // TODO: Remove the specified resource from storage.
+        $card = Card::find($id);
+        $course = $card->course;
+
+        $this->authorize('delete', $card);
+
+        $card->delete();
+
+        return redirect()->route('courses.show', $course->id)
+            ->with('success', trans('messages.card.deleted'));
     }
 }

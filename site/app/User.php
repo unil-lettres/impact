@@ -63,7 +63,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the enrollments with a teaching role.
+     * Get the user enrollments with a teaching role.
      *
      * @return Collection
      */
@@ -76,7 +76,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the enrollments with a student role.
+     * Get the user enrollments with a student role.
      *
      * @return Collection
      */
@@ -89,7 +89,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the cards of the user.
+     * Get the cards with editing rights for the user.
      *
      * @return \Illuminate\Support\Collection
      */
@@ -100,6 +100,42 @@ class User extends Authenticatable
                 return Card::findMany($enrollment->cards);
             })
             ->flatten();
+    }
+
+    /**
+     * Check if the user is an editor of the given card.
+     *
+     * @param Card $card
+     *
+     * @return bool
+     */
+    public function isEditor(Card $card) {
+        return $this->cards()
+            ->contains('id', $card->id);
+    }
+
+    /**
+     * Check if the user is a teacher of the given course.
+     *
+     * @param Course $course
+     *
+     * @return bool
+     */
+    public function isTeacher(Course $course) {
+        return $this->enrollmentsAsTeacher()
+            ->contains('course_id', $course->id);
+    }
+
+    /**
+     * Check if the user is a student of the given course.
+     *
+     * @param Course $course
+     *
+     * @return bool
+     */
+    public function isStudent(Course $course) {
+        return $this->enrollmentsAsStudent()
+            ->contains('course_id', $course->id);
     }
 
     /**

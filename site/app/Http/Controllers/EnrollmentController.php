@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Enrollment;
 use Exception;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -13,10 +14,11 @@ class EnrollmentController extends Controller
      * Display a listing of the resource.
      *
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function index()
     {
-        // TODO: add policy (auth()->user())
+        $this->authorize('viewAny', Enrollment::class);
 
         return response()->json([
             'enrollments' => auth()->user()->enrollments()->get(),
@@ -25,9 +27,13 @@ class EnrollmentController extends Controller
 
     /**
      * Show the form for creating a new resource.
+     *
+     * @throws AuthorizationException
      */
     public function create()
-    {}
+    {
+        $this->authorize('create', Enrollment::class);
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -35,10 +41,14 @@ class EnrollmentController extends Controller
      * @param Request $request
      *
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function store(Request $request)
     {
-        // TODO: add policy (auth()->user())
+        // TODO: Add unique validation rule in the request -> https://stackoverflow.com/a/58028505
+        // TODO: Add custom validation rule to check if the user of the new enrollment is not an admin
+
+        $this->authorize('create', Enrollment::class);
 
         Enrollment::create([
             'role' => $request->get('role'),
@@ -55,9 +65,12 @@ class EnrollmentController extends Controller
      * Display the specified resource.
      *
      * @param Enrollment $enrollment
+     * @throws AuthorizationException
      */
     public function show(Enrollment $enrollment)
-    {}
+    {
+        $this->authorize('view', Enrollment::class);
+    }
 
     /**
      * Find the specified resource.
@@ -65,10 +78,11 @@ class EnrollmentController extends Controller
      * @param Request $request
      *
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function find(Request $request)
     {
-        // TODO: Display the specified resource.
+        $this->authorize('find', Enrollment::class);
 
         $enrollment = Enrollment::where('course_id', $request->get('course'))
             ->where('user_id', $request->get('user'))
@@ -84,18 +98,26 @@ class EnrollmentController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Enrollment $enrollment
+     *
+     * @throws AuthorizationException
      */
     public function edit(Enrollment $enrollment)
-    {}
+    {
+        $this->authorize('update', $enrollment);
+    }
 
     /**
      * Update the specified resource in storage.
      *
      * @param Request $request
      * @param Enrollment $enrollment
+     *
+     * @throws AuthorizationException
      */
     public function update(Request $request, Enrollment $enrollment)
-    {}
+    {
+        $this->authorize('update', $enrollment);
+    }
 
     /**
      * Update the cards of the resources in storage.
@@ -103,11 +125,10 @@ class EnrollmentController extends Controller
      * @param Request $request
      *
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function cards(Request $request)
     {
-        // TODO: Update the cards of the resource in storage.
-
         $courseId = $request->get('course');
         $cardId = $request->get('card');
         $add = collect($request->get('add'));
@@ -117,6 +138,8 @@ class EnrollmentController extends Controller
         $enrollment = Enrollment::where('course_id', $courseId)
             ->where('user_id', $userId)
             ->first();
+
+        $this->authorize('cards', $enrollment);
 
         return response()->json([
             'success' => $enrollment->updateCard($cardId, $add, $remove)
@@ -133,7 +156,7 @@ class EnrollmentController extends Controller
      */
     public function destroy(Enrollment $enrollment)
     {
-        // TODO: Remove the specified resource from storage.
+        $this->authorize('delete', $enrollment);
 
         return response()->json([
             'success' => $enrollment->delete() ?? false

@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Enrollment;
+use App\Enums\EnrollmentRole;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -19,7 +20,7 @@ class EnrollmentPolicy
      */
     public function viewAny(User $user)
     {
-        // TODO: add policy
+        return true;
     }
 
     /**
@@ -32,7 +33,19 @@ class EnrollmentPolicy
      */
     public function view(User $user, Enrollment $enrollment)
     {
-        // TODO: add policy
+        return false;
+    }
+
+    /**
+     * Determine whether the user can view the enrollment.
+     *
+     * @param User $user
+     *
+     * @return mixed
+     */
+    public function find(User $user)
+    {
+        return $user->admin;
     }
 
     /**
@@ -44,7 +57,9 @@ class EnrollmentPolicy
      */
     public function create(User $user)
     {
-        // TODO: add policy
+        // TODO: update for invitations & mass enrollments
+
+        return $user->admin;
     }
 
     /**
@@ -57,7 +72,27 @@ class EnrollmentPolicy
      */
     public function update(User $user, Enrollment $enrollment)
     {
-        // TODO: add policy
+        return false;
+    }
+
+    /**
+     * Determine whether the user can update the enrollment.
+     *
+     * @param User $user
+     * @param Enrollment $enrollment
+     *
+     * @return mixed
+     */
+    public function cards(User $user, Enrollment $enrollment)
+    {
+        // TODO: update for invitations & mass enrollment
+
+        // Cannot edit the cards of an enrollment with a teacher role
+        if($enrollment->role === EnrollmentRole::Teacher) {
+            return false;
+        }
+
+        return $user->isTeacher($enrollment->course);
     }
 
     /**
@@ -70,32 +105,6 @@ class EnrollmentPolicy
      */
     public function delete(User $user, Enrollment $enrollment)
     {
-        // TODO: add policy
-    }
-
-    /**
-     * Determine whether the user can restore the enrollment.
-     *
-     * @param User $user
-     * @param Enrollment $enrollment
-     *
-     * @return mixed
-     */
-    public function restore(User $user, Enrollment $enrollment)
-    {
-        // TODO: add policy
-    }
-
-    /**
-     * Determine whether the user can permanently delete the enrollment.
-     *
-     * @param User $user
-     * @param Enrollment $enrollment
-     *
-     * @return mixed
-     */
-    public function forceDelete(User $user, Enrollment $enrollment)
-    {
-        // TODO: add policy
+        return $user->admin;
     }
 }

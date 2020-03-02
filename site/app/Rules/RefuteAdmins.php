@@ -44,6 +44,6 @@ class RefuteAdmins implements Rule
      */
     public function message()
     {
-        return 'Admins cannot enroll in a course.';
+        return 'Operation not permitted for this admin user.';
     }
 }

@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\RefuteAdmins;
+
 class ExtendUser extends AbstractRequest
 {
     /**
@@ -22,7 +24,12 @@ class ExtendUser extends AbstractRequest
     public function rules()
     {
         return [
-            'user' => 'required|integer|exists:users,id'
+            'user' => [
+                'required',
+                'integer',
+                'exists:users,id',
+                new RefuteAdmins()
+            ]
         ];
     }
 }

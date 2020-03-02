@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Enrollment;
-use Exception;
+use App\Enums\EnrollmentRole;
+use App\Http\Requests\DestroyEnrollment;
+use App\Http\Requests\FindEnrollment;
+use App\Http\Requests\StoreEnrollment;
+use App\Http\Requests\UpdateEnrollmentCards;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -38,16 +42,13 @@ class EnrollmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
+     * @param StoreEnrollment $request
      *
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function store(Request $request)
+    public function store(StoreEnrollment $request)
     {
-        // TODO: Add unique validation rule in the request -> https://stackoverflow.com/a/58028505
-        // TODO: Add custom validation rule to check if the user of the new enrollment is not an admin
-
         $this->authorize('create', Enrollment::class);
 
         Enrollment::create([
@@ -75,12 +76,12 @@ class EnrollmentController extends Controller
     /**
      * Find the specified resource.
      *
-     * @param Request $request
+     * @param FindEnrollment $request
      *
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function find(Request $request)
+    public function find(FindEnrollment $request)
     {
         $this->authorize('find', Enrollment::class);
 
@@ -122,12 +123,12 @@ class EnrollmentController extends Controller
     /**
      * Update the cards of the resources in storage.
      *
-     * @param Request $request
+     * @param UpdateEnrollmentCards $request
      *
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function cards(Request $request)
+    public function cards(UpdateEnrollmentCards $request)
     {
         $courseId = $request->get('course');
         $cardId = $request->get('card');
@@ -137,6 +138,7 @@ class EnrollmentController extends Controller
 
         $enrollment = Enrollment::where('course_id', $courseId)
             ->where('user_id', $userId)
+            ->where('role', EnrollmentRole::Student)
             ->first();
 
         $this->authorize('cards', $enrollment);
@@ -149,13 +151,16 @@ class EnrollmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Enrollment $enrollment
+     * @param DestroyEnrollment $request
+     * @param int $id
      *
      * @return JsonResponse
-     * @throws Exception
+     * @throws AuthorizationException
      */
-    public function destroy(Enrollment $enrollment)
+    public function destroy(DestroyEnrollment $request, int $id)
     {
+        $enrollment = Enrollment::find($id);
+
         $this->authorize('delete', $enrollment);
 
         return response()->json([

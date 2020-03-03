@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
 use App\Http\Requests\CreateInvitationUser;
 use App\Http\Requests\SendInvitationMail;
 use App\Http\Requests\StoreInvitation;
@@ -68,7 +69,18 @@ class InvitationController extends Controller
     {
         $this->authorize('create', Invitation::class);
 
-        return view('invitations.create');
+        $coursesAsTeacher = Auth::user()->enrollmentsAsTeacher()
+            ->map(function ($enrollment) {
+                return $enrollment->course;
+            });
+
+        if(Auth::user()->admin) {
+            $coursesAsTeacher = Course::all();
+        }
+
+        return view('invitations.create', [
+            'courses' => $coursesAsTeacher
+        ]);
     }
 
     /**
@@ -82,6 +94,9 @@ class InvitationController extends Controller
     public function store(StoreInvitation $request)
     {
         $this->authorize('create', Invitation::class);
+
+        // TODO: add course_id column to invitation table
+        // TODO: retrieve course_id & add it to the created invitation
 
         // Create new invitation
         $invitation = new Invitation($request->all());
@@ -211,6 +226,8 @@ class InvitationController extends Controller
 
         // Add default validity for local accounts
         $user->extendValidity();
+
+        // TODO: create a new student enrollment
 
         // Update the invitation registered_at property
         $invitation->registered_at = Carbon::now();

@@ -14,3 +14,4 @@ require('./bootstrap');
 
 require('./components/MultiUserSelect');
 require('./components/MultiCourseSelect');
+require('./components/SingleCourseSelect');

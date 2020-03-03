@@ -2,7 +2,7 @@
     <div class="card">
         <div class="card-header">
             <span class="title">{{ trans('invitations.pending') }} <span class="badge badge-secondary">{{ $invitations->total() }}</span></span>
-            <a href="{{ Route::is('admin.invitations.index') ? route('admin.invitations.create') : route('invitations.create') }}"
+            <a href="{{ Route::is('admin.invitations.manage') ? route('admin.invitations.create') : route('invitations.create') }}"
                class="btn btn-primary float-right">
                 {{ trans('invitations.create') }}
             </a>

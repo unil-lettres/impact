@@ -13,6 +13,12 @@
             {{ trans('auth.profile') }}
         </a>
 
+        @can('viewAny', \App\Invitation::class)
+            <a class="dropdown-item invitations" href="{{ route('invitations.index') }}">
+                {{ trans('invitations.manage') }}
+            </a>
+        @endcan
+
         <a class="dropdown-item logout" href="{{ route('logout') }}"
            onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
             {{ trans('login.logout') }}

@@ -14,15 +14,26 @@
         <form method="post"
               action="{{ route('invitations.store') }}">
             @csrf
-            <div class="form-group">
-                <label for="email" class="control-label">{{ trans('invitations.email') }}</label>
-                <div>
-                    <input id="email"
-                           type="email"
-                           class="form-control"
-                           name="email"
-                           value="{{ old('email') }}" required autofocus
-                    >
+            <div class="row">
+                <div class="form-group col-md-12 col-lg-7">
+                    <label for="email" class="control-label">{{ trans('invitations.email') }}</label>
+                    <div>
+                        <input id="email"
+                               type="email"
+                               class="form-control"
+                               name="email"
+                               value="{{ old('email') }}" required autofocus
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group col-md-12 col-lg-5">
+                    <label for="course" class="control-label">{{ trans('invitations.select_space') }}</label>
+                    <input id="course" name="course" type="hidden" value="">
+                    <div id="rct-single-course-select"
+                         reference="course"
+                         data='{{ json_encode(['options' => $courses]) }}'
+                    ></div>
                 </div>
             </div>
 
@@ -31,6 +42,5 @@
                 {{ trans('invitations.create') }}
             </button>
         </form>
-        <!-- TODO: add possibility to choose the course attached to the invitation (list managed courses only) -->
     </div>
 @endsection

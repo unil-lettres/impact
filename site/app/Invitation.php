@@ -19,6 +19,14 @@ class Invitation extends Model
     }
 
     /**
+     * Get the course linked to the invitation.
+     */
+    public function course()
+    {
+        return $this->hasOne('App\Course', 'id', 'course_id');
+    }
+
+    /**
      * Generate an invitation token.
      *
      * @return string

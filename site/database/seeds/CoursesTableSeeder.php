@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
 
 class CoursesTableSeeder extends Seeder

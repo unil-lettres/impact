@@ -6,12 +6,13 @@ use App\Enums\UserType;
 use App\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Str;
 
 class Helpers {
     /**
      * Return current local
      *
-     * @return string $local
+     * @return string
      */
     public static function currentLocal() {
 
@@ -27,7 +28,7 @@ class Helpers {
      *
      * @param User $user
      *
-     * @return boolean $validity
+     * @return boolean
      */
     public static function isUserValid(User $user) {
         // Check if user is an admin
@@ -54,7 +55,7 @@ class Helpers {
      *
      * @param User $user
      *
-     * @return boolean $isUserLocal
+     * @return boolean
      */
     public static function isUserLocal(User $user) {
         // Check if user has a local account type
@@ -63,5 +64,17 @@ class Helpers {
         }
 
         return false;
+    }
+
+    /**
+     * Truncate string
+     *
+     * @param string $string
+     * @param int $limit
+     *
+     * @return string
+     */
+    public static function truncate($string, $limit = 50) {
+        return Str::limit($string, $limit, $end = '...');
     }
 }

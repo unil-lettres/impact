@@ -14,6 +14,7 @@
                     <tr>
                         <th>{{ trans('invitations.email') }}</th>
                         <th>{{ trans('invitations.created_at') }}</th>
+                        <th>{{ trans('courses.course') }}</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -23,6 +24,7 @@
                             <tr>
                                 <td>{{ $invitation->email }}</td>
                                 <td>{{ $invitation->created_at->format('d/m/Y H:i:s') }}</td>
+                                <td>{{ Helpers::truncate($invitation->course->name) }}</td>
                                 <td class="actions">
                                     @can('view', $invitation)
                                         <span>

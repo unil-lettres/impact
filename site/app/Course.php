@@ -38,6 +38,15 @@ class Course extends Model
     }
 
     /**
+     * Get the invitations of this course.
+     */
+    public function invitations()
+    {
+        return $this->hasMany('App\Invitation', 'course_id')
+            ->orderBy('created_at', 'desc');
+    }
+
+    /**
      * Get all the enrollments for a specific role (EnrollmentRole) of this course.
      *
      * @param string $role

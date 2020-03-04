@@ -22,7 +22,8 @@ class StoreInvitation extends AbstractRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|unique:invitations|unique:users'
+            'email' => 'required|email|unique:invitations|unique:users',
+            'course' => 'required|integer|exists:courses,id'
         ];
     }
 }

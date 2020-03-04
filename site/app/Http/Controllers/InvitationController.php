@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Enrollment;
+use App\Enums\EnrollmentRole;
 use App\Http\Requests\CreateInvitationUser;
 use App\Http\Requests\SendInvitationMail;
 use App\Http\Requests\StoreInvitation;
@@ -95,13 +97,12 @@ class InvitationController extends Controller
     {
         $this->authorize('create', Invitation::class);
 
-        // TODO: add course_id column to invitation table
-        // TODO: retrieve course_id & add it to the created invitation
-
         // Create new invitation
-        $invitation = new Invitation($request->all());
+        $invitation = new Invitation();
+        $invitation->email = $request->get('email');
         $invitation->invitation_token = $invitation->generateInvitationToken();
         $invitation->creator_id = Auth::user()->id;
+        $invitation->course_id = $request->get('course');
         $invitation->save();
 
         // Send invitation mail to the recipient
@@ -223,11 +224,15 @@ class InvitationController extends Controller
             'password' => Hash::make($request->input('password')),
             'creator_id' => $invitation->creator_id
         ]);
-
-        // Add default validity for local accounts
+        // Add default validity for the new user
         $user->extendValidity();
 
-        // TODO: create a new student enrollment
+        // Create a student enrollment for the new user
+        Enrollment::create([
+            'role' => EnrollmentRole::Student,
+            'course_id' => $invitation->course_id,
+            'user_id' => $user->id
+        ]);
 
         // Update the invitation registered_at property
         $invitation->registered_at = Carbon::now();

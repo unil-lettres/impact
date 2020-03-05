@@ -25,7 +25,7 @@ class InvitationTest extends DuskTestCase
      * @return void
      * @throws Throwable
      */
-    public function testListInvitations()
+    public function testAdminListInvitations()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -46,7 +46,7 @@ class InvitationTest extends DuskTestCase
      * @return void
      * @throws Throwable
      */
-    public function testNotListRegisteredInvitations()
+    public function testAdminCannotListRegisteredInvitations()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -81,15 +81,38 @@ class InvitationTest extends DuskTestCase
      * @return void
      * @throws Throwable
      */
-    public function testUserViewOwnInvitations()
+    public function testTeacherViewOwnInvitations()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('invitation-user@example.com', 'password');
+                ->loginAsUser('invitation-user-teacher@example.com', 'password');
 
-            $browser->visit('/invitations');
+            $browser->visit(new Invitations())
+                ->invitations();
+            $browser->assertSee('Invitations en attente');
             $browser->assertDontSee('test-invitation-registered@example.com');
             $browser->assertSee('test-invitation-user@example.com');
+        });
+    }
+
+    /**
+     * Test list invitations.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testStudentCannotListInvitations()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('invitation-user-student@example.com', 'password');
+
+            $browser->click('.navbar ul li.auth')
+                ->assertDontSee('Gérer les invitations');
+
+            $browser->visit('/invitations')
+                ->assertDontSee('Invitations en attente');
+
         });
     }
 
@@ -103,7 +126,7 @@ class InvitationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('invitation-user@example.com', 'password');
+                ->loginAsUser('invitation-user-teacher@example.com', 'password');
 
             $browser->visit(new Invitations())
                 ->invitations();
@@ -134,7 +157,7 @@ class InvitationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('invitation-user@example.com', 'password');
+                ->loginAsUser('invitation-user-teacher@example.com', 'password');
 
             $browser->visit(new Invitations())
                 ->invitations();
@@ -155,7 +178,7 @@ class InvitationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('invitation-user@example.com', 'password');
+                ->loginAsUser('invitation-user-teacher@example.com', 'password');
 
             $browser->visit(new Invitations())
                 ->invitations();
@@ -176,7 +199,7 @@ class InvitationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('invitation-user@example.com', 'password');
+                ->loginAsUser('invitation-user-teacher@example.com', 'password');
 
             $browser->visit(new Invitations())
                 ->invitations();

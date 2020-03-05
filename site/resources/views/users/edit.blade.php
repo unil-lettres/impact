@@ -134,6 +134,21 @@
                                     </div>
                                 </div>
                             @endif
+                            @can('delete', $user)
+                                <div class="form-group row">
+                                    <label for="admin" class="col-md-4 col-form-label">
+                                        {{ trans('users.admin') }}
+                                    </label>
+                                    <div class="col-md-8">
+                                        <input id="admin"
+                                               type="checkbox"
+                                               name="admin"
+                                               {{ old('admin', $user->admin) ? 'checked' : '' }}
+                                               class="form-control"
+                                        >
+                                    </div>
+                                </div>
+                            @endcan
 
                             <hr>
                             <button type="submit" class="btn btn-primary">

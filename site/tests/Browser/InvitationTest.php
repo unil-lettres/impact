@@ -109,11 +109,12 @@ class InvitationTest extends DuskTestCase
                 ->invitations();
 
             $browser->clickLink('Créer une invitation');
-            $browser->type('email', 'test-new-invitation@example.com')
-                ->click('#rct-single-course-select')
+
+            $browser->type('email', 'test-new-invitation@example.com');
+            $browser->click('#rct-single-course-select')
                 ->waitForText('Invitation space')
-                ->click('#react-select-2-option-0')
-                ->press('Créer une invitation')
+                ->click('#react-select-2-option-0');
+            $browser->press('Créer une invitation')
                 ->waitForText('Invitation créée. Un email à été envoyé au destinataire.')
                 ->assertSee('Invitation créée. Un email à été envoyé au destinataire.');
 

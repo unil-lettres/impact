@@ -40,7 +40,7 @@ class Login extends Page
     /**
      * Login as a specific user.
      *
-     * @param  \Laravel\Dusk\Browser  $browser
+     * @param Browser $browser
      * @param  string  $login
      * @param  string  $password
      *

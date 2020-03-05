@@ -3,10 +3,10 @@
 namespace Tests\Browser;
 
 use Laravel\Dusk\Concerns\ProvidesBrowser;
+use Tests\Browser\Pages\Invitations;
 use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Throwable;
 
 class InvitationTest extends DuskTestCase
@@ -105,15 +105,20 @@ class InvitationTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('invitation-user@example.com', 'password');
 
-            $browser->visit('/invitations');
+            $browser->visit(new Invitations())
+                ->invitations();
 
             $browser->clickLink('Créer une invitation');
             $browser->type('email', 'test-new-invitation@example.com')
+                ->click('#rct-single-course-select')
+                ->waitForText('Invitation space')
+                ->clickLink('Invitation space', 'div')
                 ->press('Créer une invitation')
                 ->waitForText('Invitation créée. Un email à été envoyé au destinataire.')
                 ->assertSee('Invitation créée. Un email à été envoyé au destinataire.');
 
-            $browser->visit('/invitations');
+            $browser->visit(new Invitations())
+                ->invitations();
             $browser->assertSee('test-new-invitation@example.com');
         });
     }
@@ -130,7 +135,9 @@ class InvitationTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('invitation-user@example.com', 'password');
 
-            $browser->visit('/invitations');
+            $browser->visit(new Invitations())
+                ->invitations();
+
             $browser->click('#invitations table tbody tr:first-child .actions span:nth-child(1) button')
                 ->waitForText('Lien de l\'invitation')
                 ->assertSee('Lien de l\'invitation');
@@ -149,7 +156,9 @@ class InvitationTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('invitation-user@example.com', 'password');
 
-            $browser->visit('/invitations');
+            $browser->visit(new Invitations())
+                ->invitations();
+
             $browser->click('#invitations table tbody tr:first-child .actions span:nth-child(2) a')
                 ->waitForText('Mail d\'invitation envoyé à')
                 ->assertSee('Mail d\'invitation envoyé à');
@@ -168,7 +177,8 @@ class InvitationTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('invitation-user@example.com', 'password');
 
-            $browser->visit('/invitations');
+            $browser->visit(new Invitations())
+                ->invitations();
 
             $browser->click('#invitations form.with-delete-confirm button')
                 ->waitForDialog($seconds = null)

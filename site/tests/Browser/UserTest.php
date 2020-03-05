@@ -7,7 +7,6 @@ use Tests\Browser\Pages\Login;
 use Tests\Browser\Pages\Profile;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Throwable;
 
 class UserTest extends DuskTestCase

@@ -4,7 +4,7 @@ namespace Tests\Browser\Pages;
 
 use Laravel\Dusk\Browser;
 
-class Profile extends Page
+class Invitations extends Page
 {
     /**
      * Get the URL for the page.
@@ -44,9 +44,9 @@ class Profile extends Page
      *
      * @return void
      */
-    public function profile(Browser $browser)
+    public function invitations(Browser $browser)
     {
         $browser->click('.navbar ul li.auth')
-            ->clickLink('Gérer mon profil');
+            ->clickLink('Gérer les invitations');
     }
 }

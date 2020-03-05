@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\EnrollmentRole;
 use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
@@ -17,6 +18,7 @@ class InvitationsTableSeeder extends Seeder
     {
         $now = Carbon::now();
 
+        // Create user to test invitations
         $user = DB::table('users')->insertGetId([
             'name' => 'Invitation user',
             'email' => 'invitation-user@example.com',
@@ -27,11 +29,19 @@ class InvitationsTableSeeder extends Seeder
             'validity' => Carbon::now()->addMonths(User::DefaultValidity)
         ]);
 
+        // Create course to test invitations
         $course = DB::table('courses')->insertGetId([
             'name' => 'Invitation space',
             'created_at' => $now,
             'updated_at' => $now,
             'deleted_at' => null
+        ]);
+
+        // Create enrollment to test invitations
+        DB::table('enrollments')->insert([
+            'role' => EnrollmentRole::Teacher,
+            'course_id' => $course,
+            'user_id' => $user
         ]);
 
         DB::table('invitations')->insert([

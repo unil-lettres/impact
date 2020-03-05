@@ -6,7 +6,6 @@ use Laravel\Dusk\Concerns\ProvidesBrowser;
 use Tests\Browser\Pages\Localization;
 use Tests\DuskTestCase;
 use Laravel\Dusk\Browser;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Throwable;
 
 class LocalizationTest extends DuskTestCase

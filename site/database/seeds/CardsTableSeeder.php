@@ -19,6 +19,7 @@ class CardsTableSeeder extends Seeder
     {
         $now = Carbon::now();
 
+        $firstCourse = Course::where('name', 'First space')->first();
         $secondCourse = Course::where('name', 'Second space')->first();
         $studentUser = User::where('email', 'student-user@example.com')->first();
         $enrollment = Enrollment::where('course_id', $secondCourse->id)
@@ -27,17 +28,24 @@ class CardsTableSeeder extends Seeder
             ->first();
 
         $testCard = DB::table('cards')->insertGetId([
-            'title' => 'Test card',
+            'title' => 'Test card second space',
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id
         ]);
 
         DB::table('cards')->insertGetId([
-            'title' => 'Test card not assigned',
+            'title' => 'Test card second space not assigned',
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id
+        ]);
+
+        DB::table('cards')->insertGetId([
+            'title' => 'Test card first space',
+            'created_at' => $now,
+            'updated_at' => $now,
+            'course_id' => $firstCourse->id
         ]);
 
         $enrollment->addCard(Card::find($testCard));

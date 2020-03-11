@@ -1,5 +1,6 @@
 <?php
 
+use App\Card;
 use App\Course;
 use App\Enrollment;
 use App\Enums\EnrollmentRole;
@@ -25,13 +26,20 @@ class CardsTableSeeder extends Seeder
             ->where('role', EnrollmentRole::Student)
             ->first();
 
-        $firstCard = DB::table('cards')->insertGetId([
+        $testCard = DB::table('cards')->insertGetId([
             'title' => 'Test card',
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id
         ]);
 
-        $enrollment->addCard(Enrollment::find($firstCard));
+        DB::table('cards')->insertGetId([
+            'title' => 'Test card not assigned',
+            'created_at' => $now,
+            'updated_at' => $now,
+            'course_id' => $secondCourse->id
+        ]);
+
+        $enrollment->addCard(Card::find($testCard));
     }
 }

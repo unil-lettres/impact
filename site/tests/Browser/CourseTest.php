@@ -75,7 +75,8 @@ class CourseTest extends DuskTestCase
             $browser->assertSee('First space')
                 ->clickLink('First space');
 
-            $browser->assertSee('Actions');
+            $browser->assertSee('Configuration de l\'espace')
+                ->assertSee('Créer une fiche');
         });
     }
 
@@ -94,7 +95,8 @@ class CourseTest extends DuskTestCase
             $browser->assertSee('Second space')
                 ->clickLink('Second space');
 
-            $browser->assertDontSee('Actions');
+            $browser->assertDontSee('Configuration de l\'espace')
+                ->assertDontSee('Créer une fiche');
         });
     }
 }

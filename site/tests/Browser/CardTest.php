@@ -85,4 +85,28 @@ class CardTest extends DuskTestCase
                 ->assertSee('Configuration de la fiche');
         });
     }
+
+    /**
+     * Test create card as a teacher.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testCreateCardAsTeacher()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('teacher-user@example.com', 'password');
+
+            $browser->clickLink('First space');
+
+            $browser->clickLink('Créer une fiche');
+
+            $browser->type('title', 'My new card')
+                ->press('Créer une fiche')
+                ->waitForText('Fiche créée: My new card')
+                ->assertSee('Fiche créée: My new card')
+                ->assertSee('My new card');
+        });
+    }
 }

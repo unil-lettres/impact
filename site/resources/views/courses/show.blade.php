@@ -6,32 +6,19 @@
             @section('title')
                 {{ $course->name }}
 
-                @if (Auth::user()->isTeacher($course))
-                    <div class="dropdown show float-right">
-                        <a class="btn btn-primary dropdown-toggle"
-                           href="#"
-                           role="button"
-                           id="dropdownCourseMenuLink"
-                           data-toggle="dropdown"
-                           aria-haspopup="true"
-                           aria-expanded="false">
-                            Actions
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownCourseMenuLink">
-                            @can('create', [\App\Card::class, $course])
-                                <a class="dropdown-item" href="{{ route('cards.create', ['course' => $course->id]) }}">
-                                    {{ trans('cards.create') }}
-                                </a>
-                            @endcan
+                @can('create', [\App\Card::class, $course])
+                    <a href="{{ route('cards.create', ['course' => $course->id]) }}"
+                       class="btn btn-primary float-right">
+                        {{ trans('cards.create') }}
+                    </a>
+                @endcan
 
-                            @can('configure', $course)
-                                <a class="dropdown-item" href="{{ route('courses.configure', $course->id) }}">
-                                    {{ trans('courses.configure') }}
-                                </a>
-                            @endcan
-                        </div>
-                    </div>
-                @endunless
+                @can('configure', $course)
+                    <a href="{{ route('courses.configure', $course->id) }}"
+                       class="btn btn-primary float-right mr-1">
+                        {{ trans('courses.configure') }}
+                    </a>
+                @endcan
             @endsection
             <hr>
             <div>

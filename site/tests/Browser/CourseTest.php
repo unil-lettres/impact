@@ -75,7 +75,8 @@ class CourseTest extends DuskTestCase
             $browser->assertSee('First space')
                 ->clickLink('First space');
 
-            $browser->assertSee('Actions');
+            $browser->assertSee('Configuration de l\'espace')
+                ->assertSee('Créer une fiche');
         });
     }
 
@@ -94,7 +95,81 @@ class CourseTest extends DuskTestCase
             $browser->assertSee('Second space')
                 ->clickLink('Second space');
 
-            $browser->assertDontSee('Actions');
+            $browser->assertDontSee('Configuration de l\'espace')
+                ->assertDontSee('Créer une fiche');
+        });
+    }
+
+    /**
+     * Test create a course.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testCreateCourse()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->visit('/admin/courses');
+
+            $browser->clickLink('Créer un espace');
+
+            $browser->type('name', 'My new space')
+                ->press('Créer un espace')
+                ->waitForText('Espace créé: My new space')
+                ->assertSee('Espace créé: My new space')
+                ->assertSee('My new space');
+        });
+    }
+
+    /**
+     * Test disable a course.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testDisableCourse()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->visit('/admin/courses');
+
+            $browser->click('#courses table tbody tr:first-child .actions form.with-disable-confirm button')
+                ->waitForDialog($seconds = null)
+                ->assertDialogOpened('Êtes-vous sûr de vouloir désactiver cet élément ?')
+                ->acceptDialog()
+                ->waitForText('Espace désactivé.')
+                ->assertSee('Espace désactivé.')
+                ->assertSee('Désactivé')
+                ->assertPathIs('/admin/courses');
+        });
+    }
+
+    /**
+     * Test delete a course.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testDeleteCourse()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->visit('/admin/courses');
+
+            $browser->click('#courses table tbody tr:first-child .actions form.with-delete-confirm button')
+                ->waitForDialog($seconds = null)
+                ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
+                ->acceptDialog()
+                ->waitForText('Espace supprimé.')
+                ->assertSee('Espace supprimé.')
+                ->assertPathIs('/admin/courses');
         });
     }
 }

@@ -7,5 +7,6 @@ return [
     'spaces' => 'Espaces',
     'to_delete' => 'À supprimer',
     'mail_managers' => 'Envoyer mail responsables',
+    'filters' => 'Filtres',
 
 ];

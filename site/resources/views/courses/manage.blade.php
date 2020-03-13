@@ -9,6 +9,35 @@
                    class="btn btn-primary float-right">
                     {{ trans('courses.create') }}
                 </a>
+
+                <div class="dropdown show float-right mr-1">
+                    <a class="btn btn-primary dropdown-toggle"
+                       href="#"
+                       role="button"
+                       id="dropdownCoursesFiltersLink"
+                       data-toggle="dropdown"
+                       aria-haspopup="true"
+                       aria-expanded="false">
+                        {{ trans('admin.filters') }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownCoursesFiltersLink">
+                        <a class="dropdown-item" href="{{ route('admin.courses.manage') }}">
+                            -
+                        </a>
+                        <a class="dropdown-item"
+                           href="{{ route('admin.courses.manage', ['filter' => \App\Enums\CoursesFilter::Disabled]) }}">
+                            {{ trans('courses.disabled') }}
+                        </a>
+                        <a class="dropdown-item"
+                           href="{{ route('admin.courses.manage', ['filter' => \App\Enums\CoursesFilter::External]) }}">
+                            {{ trans('courses.external') }}
+                        </a>
+                        <a class="dropdown-item"
+                           href="{{ route('admin.courses.manage', ['filter' => \App\Enums\CoursesFilter::Local]) }}">
+                            {{ trans('courses.local') }}
+                        </a>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 @if ($courses->items())
@@ -16,6 +45,7 @@
                         <thead>
                             <tr>
                                 <th>{{ trans('courses.name') }}</th>
+                                <th>{{ trans('courses.type') }}</th>
                                 <th>{{ trans('courses.details') }}</th>
                                 <th></th>
                             </tr>
@@ -29,6 +59,9 @@
                                             @if ($course->deleted_at)
                                                 <span class="badge badge-danger">{{ trans('courses.disabled') }}</span>
                                             @endif
+                                        </td>
+                                        <td>
+                                            {{ Helpers::courseType($course->type) }}
                                         </td>
                                         <td>
                                             <div>{{ trans('cards.cards') }}: {{ $course->cards->count() }}</div>

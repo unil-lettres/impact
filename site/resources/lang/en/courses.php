@@ -15,5 +15,8 @@ return [
     'not_found' => 'No spaces found',
     'list' => 'List of spaces',
     'configure' => 'Space configuration',
+    'type' => 'Type',
+    'external' => 'External',
+    'local' => 'Local',
 
 ];

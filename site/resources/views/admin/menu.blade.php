@@ -10,9 +10,6 @@
             <a class="nav-link" href="{{ route('admin.courses.manage') }}">{{ trans('admin.spaces') }}</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link disabled" href="#">{{ trans('admin.to_delete') }}</a>
-        </li>
-        <li class="nav-item">
             <a class="nav-link disabled" href="#">{{ trans('admin.mail_managers') }}</a>
         </li>
     </ul>

@@ -26,6 +26,9 @@
                 </div>
             </div>
 
+            <!-- TODO: add description field -->
+            <!-- TODO: add external id field -->
+
             <button type="submit"
                     class="btn btn-primary">
                 {{ trans('courses.create') }}

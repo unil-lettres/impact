@@ -3,11 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Enums\CoursesFilter;
+use App\Enums\CourseType;
 use App\Http\Requests\DestroyCourse;
 use App\Http\Requests\EnableCourse;
+use App\Http\Requests\ManageCourses;
 use App\Http\Requests\StoreCourse;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -36,19 +40,24 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource in the admin panel.
      *
+     * @param ManageCourses $request
+     *
      * @return Renderable
      * @throws AuthorizationException
      */
-    public function manage()
+    public function manage(ManageCourses $request)
     {
         $this->authorize('manage', Course::class);
 
-        $courses = Course::withTrashed()
-            ->orderBy('created_at', 'desc')
-            ->paginate(config('const.pagination.per'));
+        if($request->get('filter')) {
+            $courses = $this->filter($request->get('filter'));
+        } else {
+            $courses = Course::withTrashed();
+        }
 
         return view('courses.manage', [
-            'courses' => $courses
+            'courses' => $courses->orderBy('created_at', 'desc')
+                ->paginate(config('const.pagination.per'))
         ]);
     }
 
@@ -76,6 +85,9 @@ class CourseController extends Controller
     public function store(StoreCourse $request)
     {
         $this->authorize('create', Course::class);
+
+        // TODO: retrieve description field
+        // TODO: retrieve external id field & create course with external type
 
         // Create new course
         $course = new Course($request->all());
@@ -211,5 +223,27 @@ class CourseController extends Controller
 
         return redirect()->back()
             ->with('success', trans('messages.course.deleted'));
+    }
+
+    /**
+     * Filter courses by parameter
+     *
+     * @param string $filter
+     *
+     * @return Course|Builder|\Illuminate\Database\Query\Builder
+     */
+    private function filter(string $filter) {
+        switch ($filter) {
+            case CoursesFilter::Disabled:
+                return Course::onlyTrashed();
+            case CoursesFilter::External:
+                return Course::withTrashed()
+                    ->where('type', CourseType::External);
+            case CoursesFilter::Local:
+                return Course::withTrashed()
+                    ->where('type', CourseType::Local);
+            default:
+                return Course::withTrashed();
+        }
     }
 }

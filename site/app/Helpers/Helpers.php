@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Enums\CourseType;
 use App\Enums\UserType;
 use App\User;
 use Illuminate\Support\Carbon;
@@ -76,5 +77,22 @@ class Helpers {
      */
     public static function truncate($string, $limit = 50) {
         return Str::limit($string, $limit, $end = '...');
+    }
+
+    /**
+     * Course type
+     *
+     * @param string $type
+     *
+     * @return string
+     */
+    public static function courseType(string $type) {
+        switch ($type) {
+            case CourseType::External:
+                return trans('courses.external');
+            case CourseType::Local:
+            default:
+                return trans('courses.local');
+        }
     }
 }

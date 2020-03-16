@@ -5,6 +5,7 @@ return [
     'course' => 'Espace',
     'manage' => 'Géstion des espaces',
     'name' => 'Nom',
+    'description' => 'Description',
     'details' => 'Détails',
     'create' => 'Créer un espace',
     'edit' => 'Modifier l\'espace',
@@ -17,6 +18,8 @@ return [
     'configure' => 'Configuration de l\'espace',
     'type' => 'Type',
     'external' => 'Externe',
+    'external.help' => 'Si vous avez un identifiant de cours Moodle, vous pouvez l\'utiliser pour créer un nouveau cours Impact. Les utilisateurs seront également synchronisés.',
+    'create_from_moodle' => 'Créer à partir de Moodle',
     'local' => 'Local',
 
 ];

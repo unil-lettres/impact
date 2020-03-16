@@ -86,11 +86,25 @@ class CourseController extends Controller
     {
         $this->authorize('create', Course::class);
 
-        // TODO: retrieve description field
-        // TODO: retrieve external id field & create course with external type
+        if($request->get('external_id')) {
+            // Create new external course
+            // TODO: retrieve data from the specified Moodle course if it exists
+            // TODO: create student & teacher enrollments
+            $course = Course::create([
+                'name' => 'Retrieved name from Moodle',
+                'description' => 'Retrieved description from Moodle',
+                'type' => CourseType::External,
+                'external_id' => $request->get('external_id')
+            ]);
+        } else {
+            // Create new local course
+            $course = Course::create([
+                'name' => $request->input('name'),
+                'description' => $request->input('description')
+            ]);
+        }
 
-        // Create new course
-        $course = new Course($request->all());
+        // Save created course
         $course->save();
 
         return redirect()->route('admin.courses.manage')

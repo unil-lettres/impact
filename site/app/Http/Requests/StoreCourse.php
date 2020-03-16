@@ -22,7 +22,9 @@ class StoreCourse extends AbstractRequest
     public function rules()
     {
         return [
-            'name' => 'required|string|max:255'
+            'name' => 'string|required_if:external_id,null|max:255',
+            'description' => 'string|max:3000|nullable',
+            'external_id' => 'integer|min:0|nullable'
         ];
     }
 }

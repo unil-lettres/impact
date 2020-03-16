@@ -12,7 +12,7 @@ class Course extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name',
+        'name', 'description', 'type', 'external_id'
     ];
 
     protected $dates = [

@@ -8,6 +8,7 @@ return [
     'description' => 'Description',
     'details' => 'Détails',
     'create' => 'Créer un espace',
+    'update' => 'Mettre à jour l\'espace',
     'edit' => 'Modifier l\'espace',
     'disable' => 'Désactiver l\'espace',
     'enable' => 'Activer l\'espace',
@@ -20,6 +21,7 @@ return [
     'external' => 'Externe',
     'external.help' => 'Si vous avez un identifiant de cours Moodle, vous pouvez l\'utiliser pour créer un nouveau cours Impact. Les utilisateurs seront également synchronisés.',
     'create_from_moodle' => 'Créer à partir de Moodle',
+    'moodle_id' => 'Identifiant Moodle: :id',
     'local' => 'Local',
 
 ];

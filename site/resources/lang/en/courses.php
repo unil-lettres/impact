@@ -8,6 +8,7 @@ return [
     'description' => 'Description',
     'details' => 'Details',
     'create' => 'Create a space',
+    'update' => 'Update the space',
     'edit' => 'Edit the space',
     'disable' => 'Disable the space',
     'enable' => 'Enable the space',
@@ -20,6 +21,7 @@ return [
     'external' => 'External',
     'external.help' => 'If you have a Moodle course ID, you can use it to create a new Impact course. Users will be synced as well.',
     'create_from_moodle' => 'Create from Moodle',
+    'moodle_id' => 'Moodle ID: :id',
     'local' => 'Local',
 
 ];

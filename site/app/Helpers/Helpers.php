@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Course;
 use App\Enums\CourseType;
 use App\Enums\UserType;
 use App\User;
@@ -61,6 +62,22 @@ class Helpers {
     public static function isUserLocal(User $user) {
         // Check if user has a local account type
         if($user->type === UserType::Local) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Check if the course type is local
+     *
+     * @param Course $course
+     *
+     * @return boolean
+     */
+    public static function isCourseLocal(Course $course) {
+        // Check if course has a local type
+        if($course->type === CourseType::Local) {
             return true;
         }
 

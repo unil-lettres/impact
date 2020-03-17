@@ -139,7 +139,7 @@ class CourseTest extends DuskTestCase
 
             $browser->visit('/admin/courses');
 
-            $browser->click('#courses table tbody tr.local:first-child .actions span:nth-child(1) a')
+            $browser->click('#courses table tbody tr.local .actions span:nth-child(1) a')
                 ->assertDontSee('Identifiant Moodle')
                 ->type('name', 'My new space updated')
                 ->type('description', 'My new space description updated')
@@ -166,7 +166,7 @@ class CourseTest extends DuskTestCase
 
             $browser->visit('/admin/courses');
 
-            $browser->click('#courses table tbody tr.external:first-child .actions span:nth-child(1) a')
+            $browser->click('#courses table tbody tr.external .actions span:nth-child(1) a')
                 ->assertSee('Identifiant Moodle')
                 ->type('name', 'External space updated')
                 ->type('description', 'External space description updated')

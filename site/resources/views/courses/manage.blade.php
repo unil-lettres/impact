@@ -53,7 +53,7 @@
                         <tbody>
                             @foreach ($courses->items() as $course)
                                 @can('view', $course)
-                                    <tr class="{{ $course->deleted_at ? 'invalid' : '' }}">
+                                    <tr class="{{ $course->type }}{{ $course->deleted_at ? ' invalid' : '' }}">
                                         <td>
                                             {{ $course->name }}
                                             @if ($course->deleted_at)

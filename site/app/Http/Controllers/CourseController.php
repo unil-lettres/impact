@@ -9,6 +9,7 @@ use App\Http\Requests\DestroyCourse;
 use App\Http\Requests\EnableCourse;
 use App\Http\Requests\ManageCourses;
 use App\Http\Requests\StoreCourse;
+use App\Http\Requests\UpdateCourse;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Builder;
@@ -166,17 +167,25 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Course $course
+     * @param UpdateCourse $request
+     * @param int $id
      *
-     * @return Response
+     * @return RedirectResponse
      * @throws AuthorizationException
      */
-    public function update(Request $request, Course $course)
+    public function update(UpdateCourse $request, int $id)
     {
+        $course = Course::find($id);
+
         $this->authorize('update', $course);
 
-        // TODO: update specified course
+        $course->update([
+            'name' => $request->get('name'),
+            'description' => $request->get('description')
+        ]);
+
+        return redirect()->back()
+            ->with('success', trans('messages.course.updated'));
     }
 
     /**

@@ -117,10 +117,65 @@ class CourseTest extends DuskTestCase
             $browser->clickLink('Créer un espace');
 
             $browser->type('name', 'My new space')
+                ->type('description', 'My new space description')
                 ->press('Créer un espace')
                 ->waitForText('Espace créé: My new space')
                 ->assertSee('Espace créé: My new space')
                 ->assertSee('My new space');
+        });
+    }
+
+    /**
+     * Test edit a local course.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testEditLocalCourse()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->visit('/admin/courses');
+
+            $browser->click('#courses table tbody tr.local:first-child .actions span:nth-child(1) a')
+                ->assertDontSee('Identifiant Moodle')
+                ->type('name', 'My new space updated')
+                ->type('description', 'My new space description updated')
+                ->press('Mettre à jour l\'espace')
+                ->waitForText('Espace mis à jour.')
+                ->assertSee('Espace mis à jour.')
+                ->assertSee('My new space updated')
+                ->assertInputValue('name', 'My new space updated')
+                ->assertInputValue('description', 'My new space description updated');
+        });
+    }
+
+    /**
+     * Test edit an external course.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testEditExternalCourse()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->visit('/admin/courses');
+
+            $browser->click('#courses table tbody tr.external:first-child .actions span:nth-child(1) a')
+                ->assertSee('Identifiant Moodle')
+                ->type('name', 'External space updated')
+                ->type('description', 'External space description updated')
+                ->press('Mettre à jour l\'espace')
+                ->waitForText('Espace mis à jour.')
+                ->assertSee('Espace mis à jour.')
+                ->assertSee('External space updated')
+                ->assertInputValue('name', 'External space updated')
+                ->assertInputValue('description', 'External space description updated');
         });
     }
 

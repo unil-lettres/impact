@@ -1,5 +1,6 @@
 <?php
 
+use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
@@ -34,6 +35,15 @@ class CoursesTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'deleted_at' => $now
+        ]);
+
+        DB::table('courses')->insertGetId([
+            'name' => 'External space',
+            'type' => CourseType::External,
+            'external_id' => 12345678,
+            'created_at' => $now,
+            'updated_at' => $now,
+            'deleted_at' => null,
         ]);
 
         $teacherUser = DB::table('users')->insertGetId([

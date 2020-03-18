@@ -9,7 +9,6 @@
                    class="btn btn-primary float-right">
                     {{ trans('courses.create') }}
                 </a>
-
                 <div class="dropdown show float-right mr-1">
                     <a class="btn btn-primary dropdown-toggle"
                        href="#"

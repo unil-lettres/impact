@@ -4,15 +4,19 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\Enums\EnrollmentRole;
+use App\Enums\UsersFilter;
 use App\Enums\UserType;
 use App\Http\Requests\CreateUser;
 use App\Http\Requests\EditUser;
 use App\Http\Requests\ExtendUser;
+use App\Http\Requests\ManageUsers;
 use App\Http\Requests\UpdateUser;
 use App\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -38,18 +42,22 @@ class UserController extends Controller
     /**
      * Display a listing of the resource in the admin panel.
      *
+     * @param ManageUsers $request
+     *
      * @return Renderable
      * @throws AuthorizationException
      */
-    public function manage()
+    public function manage(ManageUsers $request)
     {
         $this->authorize('manage', User::class);
 
-        $users = User::orderBy('created_at', 'desc')
-            ->paginate(config('const.pagination.per'));
+        $users = $request->get('filter') ?
+            $this->filter($request->get('filter')) :
+            User::select('users.*');
 
         return view('users.manage', [
-            'users' => $users
+            'users' => $users->orderBy('created_at', 'desc')
+                ->paginate(config('const.pagination.per'))
         ]);
     }
 
@@ -265,5 +273,25 @@ class UserController extends Controller
 
         return redirect()->route('admin.users.manage')
             ->with('success', trans('messages.user.validity.extended', ['email' => $user->email]));
+    }
+
+    /**
+     * Filter users by parameter
+     *
+     * @param string $filter
+     *
+     * @return User[]|Collection
+     */
+    private function filter(string $filter) {
+        switch ($filter) {
+            case UsersFilter::Expired:
+                return User::whereDate('validity', "<=", Carbon::now());
+            case UsersFilter::Aai:
+                return User::where('type', UserType::Aai);
+            case UsersFilter::Local:
+                return User::where('type', UserType::Local);
+            default:
+                return User::select('users.*');
+        }
     }
 }

@@ -9,6 +9,8 @@ return [
     'type' => 'Type',
     'admin' => 'Admin',
     'expired' => 'Expiré',
+    'aai' => 'Aai',
+    'local' => 'Local',
     'create' => 'Créer un utilisateur',
     'edit' => 'Modifier l\'utilisateur',
     'validity.extend' => 'Prolonger la validité (:months mois)',

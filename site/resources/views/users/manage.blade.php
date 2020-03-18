@@ -9,6 +9,34 @@
                    class="btn btn-primary float-right">
                     {{ trans('users.create') }}
                 </a>
+                <div class="dropdown show float-right mr-1">
+                    <a class="btn btn-primary dropdown-toggle"
+                       href="#"
+                       role="button"
+                       id="dropdownUsersFiltersLink"
+                       data-toggle="dropdown"
+                       aria-haspopup="true"
+                       aria-expanded="false">
+                        {{ trans('admin.filters') }}
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="dropdownUsersFiltersLink">
+                        <a class="dropdown-item" href="{{ route('admin.users.manage') }}">
+                            -
+                        </a>
+                        <a class="dropdown-item"
+                           href="{{ route('admin.users.manage', ['filter' => \App\Enums\UsersFilter::Expired]) }}">
+                            {{ trans('users.expired') }}
+                        </a>
+                        <a class="dropdown-item"
+                           href="{{ route('admin.users.manage', ['filter' => \App\Enums\UsersFilter::Aai]) }}">
+                            {{ trans('users.aai') }}
+                        </a>
+                        <a class="dropdown-item"
+                           href="{{ route('admin.users.manage', ['filter' => \App\Enums\UsersFilter::Local]) }}">
+                            {{ trans('users.local') }}
+                        </a>
+                    </div>
+                </div>
             </div>
             <div class="card-body">
                 @if ($users->items())

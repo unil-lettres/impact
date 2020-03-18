@@ -2,7 +2,7 @@
 
 return [
 
-    'manage' => 'Géstion des utilisateurs',
+    'manage' => 'Gestion des utilisateurs',
     'email' => 'Email',
     'name' => 'Nom',
     'created_at' => 'Date de création',

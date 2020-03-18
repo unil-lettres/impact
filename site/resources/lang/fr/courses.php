@@ -3,7 +3,7 @@
 return [
 
     'course' => 'Espace',
-    'manage' => 'Géstion des espaces',
+    'manage' => 'Gestion des espaces',
     'name' => 'Nom',
     'description' => 'Description',
     'details' => 'Détails',

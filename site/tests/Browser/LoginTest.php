@@ -50,7 +50,7 @@ class LoginTest extends DuskTestCase
             $browser->assertSee('Admin');
 
             $browser->clickLink('Admin')
-                ->assertSee('Géstion des utilisateurs')
+                ->assertSee('Gestion des utilisateurs')
                 ->assertPathIs('/admin/users');
         });
     }

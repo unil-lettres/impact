@@ -33,7 +33,7 @@ class UserTest extends DuskTestCase
 
             $browser->clickLink('Admin');
 
-            $browser->assertSee('Géstion des utilisateurs');
+            $browser->assertSee('Gestion des utilisateurs');
             $browser->assertSee('first-user@example.com');
             $browser->assertSee('admin-user@example.com');
         });

@@ -172,4 +172,18 @@ class CoursePolicy
         // Only admins can delete permanently courses
         return false;
     }
+
+    /**
+     * Determine whether the user can send the mail to confirm the deletion of the course.
+     *
+     * @param User $user
+     * @param Course $course
+     *
+     * @return mixed
+     */
+    public function mailConfirmDelete(User $user, Course $course)
+    {
+        // Only admins can send the mail to confirm the deletion of the course
+        return false;
+    }
 }

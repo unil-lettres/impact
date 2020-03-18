@@ -12,6 +12,7 @@ return [
     'edit' => 'Modifier l\'espace',
     'disable' => 'Désactiver l\'espace',
     'enable' => 'Activer l\'espace',
+    'send_confirm_delete' => 'Envoyer un mail aux responsables de cet espace afin de confirmer sa suppression',
     'disabled' => 'Désactivé',
     'delete' => 'Supprimer l\'espace',
     'not_found' => 'Aucun espace trouvé',
@@ -23,5 +24,6 @@ return [
     'create_from_moodle' => 'Créer à partir de Moodle',
     'moodle_id' => 'Identifiant Moodle: :id',
     'local' => 'Local',
+    'mail.confirm_delete.subject' => '[Impact] Demande de confirmation - suppression d\'un espace'
 
 ];

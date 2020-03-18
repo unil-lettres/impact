@@ -12,6 +12,7 @@ return [
     'edit' => 'Edit the space',
     'disable' => 'Disable the space',
     'enable' => 'Enable the space',
+    'send_confirm_delete' => 'Send an email to the managers of this space in order to confirm its deletion',
     'disabled' => 'Disabled',
     'delete' => 'Delete the space',
     'not_found' => 'No spaces found',
@@ -23,5 +24,6 @@ return [
     'create_from_moodle' => 'Create from Moodle',
     'moodle_id' => 'Moodle ID: :id',
     'local' => 'Local',
+    'mail.confirm_delete.subject' => '[Impact] Confirmation request - deletion of a space'
 
 ];

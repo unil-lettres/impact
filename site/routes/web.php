@@ -71,4 +71,5 @@ Route::group(['prefix' => 'admin',  'as' => 'admin.', 'middleware' => ['auth', '
     Route::resource('courses', 'CourseController');
     Route::get('/courses', 'CourseController@manage')->name('courses.manage');
     Route::get('/courses/{course}/enable', 'CourseController@enable')->name('courses.enable');
+    Route::get('/courses/{course}/mailConfirmDelete', 'CourseController@mailConfirmDelete')->name('courses.send.confirm.delete');
 });

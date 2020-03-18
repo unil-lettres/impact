@@ -8,15 +8,16 @@ use App\Enums\CourseType;
 use App\Http\Requests\DestroyCourse;
 use App\Http\Requests\EnableCourse;
 use App\Http\Requests\ManageCourses;
+use App\Http\Requests\SendCourseDeleteConfirmMail;
 use App\Http\Requests\StoreCourse;
 use App\Http\Requests\UpdateCourse;
+use App\Mail\CourseConfirmDelete;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use Exception;
+use Illuminate\Support\Facades\Mail;
 
 class CourseController extends Controller
 {
@@ -246,6 +247,32 @@ class CourseController extends Controller
 
         return redirect()->back()
             ->with('success', trans('messages.course.deleted'));
+    }
+
+    /**
+     * Send the confirmation mail to delete the resource.
+     *
+     * @param SendCourseDeleteConfirmMail $request
+     * @param int $id
+     *
+     * @return RedirectResponse
+     * @throws AuthorizationException
+     */
+    public function mailConfirmDelete(SendCourseDeleteConfirmMail $request, int $id)
+    {
+        $course = Course::withTrashed()->find($id);
+
+        $this->authorize('mailConfirmDelete', $course);
+
+        // Send the confirmation mail to delete the resource
+        Mail::to(
+            $course->teachers()->map(function ($user) {
+                return $user->email;
+            })
+        )->send(new CourseConfirmDelete($course));
+
+        return redirect()->back()
+            ->with('success', trans('messages.course.delete_confirm.sent'));
     }
 
     /**

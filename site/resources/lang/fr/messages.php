@@ -23,6 +23,7 @@ return [
     'course.enabled' => 'Espace activé.',
     'course.deleted' => 'Espace supprimé.',
     'course.updated' => 'Espace mis à jour.',
+    'course.delete_confirm.sent' => 'Mail de demande de confirmation envoyé aux responsables.',
     'card.created' => 'Fiche créée: :title',
     'card.deleted' => 'Fiche supprimée.',
     'card.configuration.updated' => 'Configuration de la fiche mise à jour',

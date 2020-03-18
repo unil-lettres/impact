@@ -82,6 +82,17 @@
                                             @endcan
 
                                             @if ($course->deleted_at)
+                                                @can('mailConfirmDelete', $course)
+                                                    <span>
+                                                        <a href="{{ route('admin.courses.send.confirm.delete', $course->id) }}"
+                                                           data-toggle="tooltip"
+                                                           data-placement="top"
+                                                           class="btn btn-primary{{ $course->teachers()->count() > 0 ? '' : ' disabled' }}"
+                                                           title="{{ trans('courses.send_confirm_delete') }}">
+                                                            <i class="far fa-paper-plane"></i>
+                                                        </a>
+                                                    </span>
+                                                @endcan
                                                 @can('enable', $course)
                                                     <span>
                                                         <a href="{{ route('admin.courses.enable', $course->id) }}"

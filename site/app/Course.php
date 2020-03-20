@@ -20,6 +20,16 @@ class Course extends Model
     ];
 
     /**
+     * Get method override for the name attribute
+     *
+     * @return string
+     */
+    public function getNameAttribute()
+    {
+        return $this->attributes['name'] ? $this->attributes['name'] : 'No name';
+    }
+
+    /**
      * Get the cards of this course.
      */
     public function cards()

@@ -264,7 +264,7 @@ class CourseController extends Controller
 
         $this->authorize('mailConfirmDelete', $course);
 
-        // Send the confirmation mail to delete the resource
+        // Send the confirmation mail to the teachers of the course
         Mail::to(
             $course->teachers()->map(function ($user) {
                 return $user->email;

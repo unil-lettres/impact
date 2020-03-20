@@ -7,6 +7,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Auth;
 
 class CourseConfirmDelete extends Mailable
 {
@@ -37,6 +38,7 @@ class CourseConfirmDelete extends Mailable
     public function build()
     {
         return $this->subject(trans('courses.mail.confirm_delete.subject'))
+            ->from(Auth::user()->email)
             ->view('mails.courses.confirm_delete');
     }
 }

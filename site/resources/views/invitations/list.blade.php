@@ -24,7 +24,12 @@
                             <tr>
                                 <td>{{ $invitation->email }}</td>
                                 <td>{{ $invitation->created_at->format('d/m/Y H:i:s') }}</td>
-                                <td>{{ Helpers::truncate($invitation->course->name) }}</td>
+                                <td>
+                                    {{ Helpers::truncate($invitation->course->name) }}
+                                    @if ($invitation->course->deleted_at)
+                                        <span class="badge badge-danger">{{ trans('courses.disabled') }}</span>
+                                    @endif
+                                </td>
                                 <td class="actions">
                                     @can('view', $invitation)
                                         <span>

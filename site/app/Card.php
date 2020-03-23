@@ -16,7 +16,8 @@ class Card extends Model
      */
     public function course()
     {
-        return $this->hasOne('App\Course', 'id', 'course_id');
+        return $this->hasOne('App\Course', 'id', 'course_id')
+            ->withTrashed();
     }
 
     /**

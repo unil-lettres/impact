@@ -266,8 +266,8 @@ class CourseController extends Controller
 
         // Send the confirmation mail to the teachers of the course
         Mail::to(
-            $course->teachers()->map(function ($user) {
-                return $user->email;
+            $course->teachers()->map(function ($teacher) {
+                return $teacher->email;
             })
         )->send(new CourseConfirmDelete($course));
 

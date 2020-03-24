@@ -26,9 +26,9 @@
                                 <td>{{ $invitation->created_at->format('d/m/Y H:i:s') }}</td>
                                 <td>
                                     {{ Helpers::truncate($invitation->course->name) }}
-                                    @if ($invitation->course->deleted_at)
+                                    @unless ($invitation->course->isActive())
                                         <span class="badge badge-danger">{{ trans('courses.disabled') }}</span>
-                                    @endif
+                                    @endunless
                                 </td>
                                 <td class="actions">
                                     @can('view', $invitation)

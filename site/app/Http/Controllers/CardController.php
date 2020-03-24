@@ -36,7 +36,7 @@ class CardController extends Controller
     public function create(CreateCard $request)
     {
         // Retrieve the course of the card
-        $course = Course::find($request->input('course'));
+        $course = Course::findOrFail($request->input('course'));
 
         $this->authorize('create', [
             Card::class,
@@ -60,7 +60,7 @@ class CardController extends Controller
     {
         $this->authorize('create', [
             Card::class,
-            Course::find($request->input('course_id'))
+            Course::findOrFail($request->input('course_id'))
         ]);
 
         // Create new course

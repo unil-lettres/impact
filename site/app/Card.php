@@ -36,4 +36,13 @@ class Card extends Model
             return $enrollment->user;
         });
     }
+
+    /**
+     * Check whether the current card is part of an active course or not
+     *
+     * @return boolean
+     */
+    public function isActive() {
+        return $this->course->deleted_at ? false : true;
+    }
 }

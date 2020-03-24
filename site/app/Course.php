@@ -112,4 +112,13 @@ class Course extends Model
 
         return $enrollment ? $enrollment->role : null;
     }
+
+    /**
+     * Check whether the current course is active or not
+     *
+     * @return boolean
+     */
+    public function isActive() {
+        return $this->deleted_at ? false : true;
+    }
 }

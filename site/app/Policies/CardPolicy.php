@@ -12,23 +12,6 @@ class CardPolicy
     use HandlesAuthorization;
 
     /**
-     * Authorize all actions for admins
-     *
-     * @param $user
-     * @param $ability
-     *
-     * @return bool
-     */
-    public function before($user, $ability)
-    {
-        if ($user->admin) {
-            return true;
-        }
-
-        return null;
-    }
-
-    /**
      * Determine whether the user can view any cards.
      *
      * @param User $user
@@ -37,6 +20,10 @@ class CardPolicy
      */
     public function viewAny(User $user)
     {
+        if ($user->admin) {
+            return true;
+        }
+
         return false;
     }
 
@@ -52,7 +39,16 @@ class CardPolicy
     {
         // TODO: update policy when states are added to the card
 
-        // Only admins, teachers of the course & editors of the card can view the card
+        // Only cards within an active course can be accessed
+        if(!$card->isActive()) {
+            return false;
+        }
+
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers of the course & editors can view the card
         if ($user->isTeacher($card->course) || $user->isEditor($card)) {
             return true;
         }
@@ -70,7 +66,11 @@ class CardPolicy
      */
     public function create(User $user, Course $course)
     {
-        // Only admins & teachers of the course can create new cards
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers of the course can create new cards
         if ($user->isTeacher($course)) {
             return true;
         }
@@ -90,7 +90,16 @@ class CardPolicy
     {
         // TODO: update policy when states are added to the card
 
-        // Only admins & teachers of the course can update cards
+        // Only cards within an active course can be accessed
+        if(!$card->isActive()) {
+            return false;
+        }
+
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers of the course can update cards
         if ($user->isTeacher($card->course)) {
             return true;
         }
@@ -108,7 +117,11 @@ class CardPolicy
      */
     public function delete(User $user, Card $card)
     {
-        // Only admins & teachers can delete cards
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers can delete cards
         if ($user->isTeacher($card->course)) {
             return true;
         }
@@ -126,7 +139,10 @@ class CardPolicy
      */
     public function forceDelete(User $user, Card $card)
     {
-        // Only admins can delete permanently cards
+        if ($user->admin) {
+            return true;
+        }
+
         return false;
     }
 }

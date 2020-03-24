@@ -52,12 +52,12 @@
                         <tbody>
                             @foreach ($courses->items() as $course)
                                 @can('view', $course)
-                                    <tr class="{{ $course->type }}{{ $course->deleted_at ? ' invalid' : '' }}">
+                                    <tr class="{{ $course->type }}{{ !$course->isActive() ? ' invalid' : '' }}">
                                         <td>
                                             {{ $course->name }}
-                                            @if ($course->deleted_at)
+                                            @unless ($course->isActive())
                                                 <span class="badge badge-danger">{{ trans('courses.disabled') }}</span>
-                                            @endif
+                                            @endunless
                                         </td>
                                         <td>
                                             {{ Helpers::courseType($course->type) }}
@@ -68,7 +68,7 @@
                                         </td>
                                         <td class="actions">
                                             @can('update', $course)
-                                                @unless ($course->deleted_at)
+                                                @if ($course->isActive())
                                                     <span>
                                                         <a href="{{ route('admin.courses.edit', $course->id) }}"
                                                            data-toggle="tooltip"
@@ -78,10 +78,10 @@
                                                             <i class="far fa-edit"></i>
                                                         </a>
                                                     </span>
-                                                @endunless
+                                                @endif
                                             @endcan
 
-                                            @if ($course->deleted_at)
+                                            @unless ($course->isActive())
                                                 @can('mailConfirmDelete', $course)
                                                     <span>
                                                         <a href="{{ route('admin.courses.send.confirm.delete', $course->id) }}"
@@ -121,7 +121,7 @@
                                                         </form>
                                                     </span>
                                                 @endcan
-                                            @endif
+                                            @endunless
 
                                             @can('forceDelete', $course)
                                                 <span>

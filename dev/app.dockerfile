@@ -1,10 +1,10 @@
-FROM php:7.3-fpm
+FROM php:7.4-fpm
 
 # Update repositories
 RUN apt-get update
 
 # Install additional packages
-RUN apt-get install -y git curl nano zlib1g-dev libpng-dev libxml2-dev libzip-dev supervisor ffmpeg ffmpeg2theora mediainfo curl cron git zip unzip
+RUN apt-get install -y git curl nano zlib1g-dev libpng-dev libxml2-dev libzip-dev libonig-dev supervisor ffmpeg ffmpeg2theora mediainfo curl cron git zip unzip
 
 # Install needed php extensions
 RUN apt-get clean; docker-php-ext-install pdo pdo_mysql zip gd bcmath tokenizer ctype json mbstring xml

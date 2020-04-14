@@ -57,6 +57,15 @@ class Course extends Model
     }
 
     /**
+     * Get the folders of this course.
+     */
+    public function folders()
+    {
+        return $this->hasMany('App\Folder', 'course_id')
+            ->orderBy('created_at', 'desc');
+    }
+
+    /**
      * Get all the enrollments for a specific role (EnrollmentRole) of this course.
      *
      * @param string $role

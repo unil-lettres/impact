@@ -2,15 +2,22 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
 use App\Folder;
+use App\Http\Requests\CreateFolder;
+use App\Http\Requests\StoreFolder;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class FolderController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
     public function index()
     {
@@ -20,40 +27,78 @@ class FolderController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param CreateFolder $request
+     *
+     * @return Renderable
+     * @throws AuthorizationException
      */
-    public function create()
+    public function create(CreateFolder $request)
     {
-        // TODO: add controller logic for create()
+        // Retrieve the course of the folder
+        $course = Course::findOrFail($request->input('course'));
+
+        $this->authorize('create', [
+            Folder::class,
+            $course
+        ]);
+
+        return view('folders.create', [
+            'course' => $course,
+            'folders' => $course
+                ->folders()
+                ->get()
+        ]);
     }
 
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @param StoreFolder $request
+     *
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function store(Request $request)
+    public function store(StoreFolder $request)
     {
-        // TODO: add controller logic for store()
+        $this->authorize('create', [
+            Folder::class,
+            Course::findOrFail($request->input('course_id'))
+        ]);
+
+        // Create new folder
+        $card = new Folder($request->all());
+        $card->save();
+
+        // TODO: add translation
+        return redirect()->route('courses.show', $request->input('course_id'))
+            ->with('success', 'Dossier créé.');
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Folder  $folder
-     * @return \Illuminate\Http\Response
+     * @param Folder $folder
+     *
+     * @return Renderable
+     * @throws AuthorizationException
      */
     public function show(Folder $folder)
     {
-        // TODO: add controller logic for show()
+        $this->authorize('view', $folder);
+
+        return view('folders.show', [
+            'folder' => $folder,
+            'children' => $folder
+                ->children()
+                ->get()
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Folder  $folder
-     * @return \Illuminate\Http\Response
+     * @param Folder $folder
+     * @return Response
      */
     public function edit(Folder $folder)
     {
@@ -63,9 +108,9 @@ class FolderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Folder  $folder
-     * @return \Illuminate\Http\Response
+     * @param Request $request
+     * @param Folder $folder
+     * @return Response
      */
     public function update(Request $request, Folder $folder)
     {
@@ -75,8 +120,8 @@ class FolderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Folder  $folder
-     * @return \Illuminate\Http\Response
+     * @param Folder $folder
+     * @return Response
      */
     public function destroy(Folder $folder)
     {

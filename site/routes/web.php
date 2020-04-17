@@ -41,6 +41,9 @@ Route::middleware(['auth', 'app'])->group(function () {
     // Cards
     Route::resource('cards', 'CardController');
 
+    // Folders
+    Route::resource('folders', 'FolderController');
+
     // Enrollments
     Route::get('enrollments', 'EnrollmentController@index');
     Route::post('enrollments', 'EnrollmentController@store');

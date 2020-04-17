@@ -35,4 +35,13 @@ class Folder extends Model
         return $this->hasMany('App\Folder', 'parent_id')
             ->orderBy('created_at', 'desc');
     }
+
+    /**
+     * Get the cards of this folder.
+     */
+    public function cards()
+    {
+        return $this->hasMany('App\Card', 'folder_id')
+            ->orderBy('created_at', 'desc');
+    }
 }

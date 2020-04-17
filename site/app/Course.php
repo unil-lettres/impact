@@ -130,4 +130,24 @@ class Course extends Model
     public function isActive() {
         return $this->deleted_at ? false : true;
     }
+
+    /**
+     * Get the root folders of this course
+     *
+     * @return Collection
+     */
+    public function rootFolders() {
+        return $this->folders()->where('parent_id', null)
+            ->get();
+    }
+
+    /**
+     * Get the root cards of this course
+     *
+     * @return Collection
+     */
+    public function rootCards() {
+        return $this->cards()->where('folder_id', null)
+            ->get();
+    }
 }

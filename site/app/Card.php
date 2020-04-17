@@ -21,6 +21,14 @@ class Card extends Model
     }
 
     /**
+     * Get the folder of this card.
+     */
+    public function folder()
+    {
+        return $this->hasOne('App\Folder', 'id', 'folder_id');
+    }
+
+    /**
      * Get the editors of this card.
      *
      * @return Collection

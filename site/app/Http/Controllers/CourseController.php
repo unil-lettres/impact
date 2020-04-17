@@ -127,7 +127,8 @@ class CourseController extends Controller
 
         return view('courses.show', [
             'course' => $course,
-            'cards' => $course->cards
+            'cards' => $course->rootCards(),
+            'folders' => $course->rootFolders()
         ]);
     }
 

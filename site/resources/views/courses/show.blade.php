@@ -13,6 +13,13 @@
                     </a>
                 @endcan
 
+                @can('create', [\App\Folder::class, $course])
+                    <a href="{{ route('folders.create', ['course' => $course->id]) }}"
+                       class="btn btn-primary float-right mr-1">
+                        Créer un dossier
+                    </a>
+                @endcan
+
                 @can('configure', $course)
                     <a href="{{ route('courses.configure', $course->id) }}"
                        class="btn btn-primary float-right mr-1">
@@ -22,6 +29,15 @@
             @endsection
             <hr>
             <div>
+                @unless ($folders->isEmpty())
+                    <ul>
+                        @foreach ($folders as $folder)
+                            <li>
+                                <a href="{{ route('folders.show', $folder->id) }}">[-]{{ $folder->title }}</a>
+                            </li>
+                        @endforeach
+                    </ul>
+                @endunless
                 @unless ($cards->isEmpty())
                     <ul>
                         @foreach ($cards as $card)

@@ -4,9 +4,13 @@ namespace App\Providers;
 
 use App\Card;
 use App\Course;
+use App\Enrollment;
+use App\Folder;
 use App\Invitation;
 use App\Policies\CardPolicy;
 use App\Policies\CoursePolicy;
+use App\Policies\EnrollmentPolicy;
+use App\Policies\FolderPolicy;
 use App\Policies\InvitationPolicy;
 use App\Policies\UserPolicy;
 use App\User;
@@ -24,6 +28,8 @@ class AuthServiceProvider extends ServiceProvider
         User::class => UserPolicy::class,
         Course::class => CoursePolicy::class,
         Card::class => CardPolicy::class,
+        Enrollment::class => EnrollmentPolicy::class,
+        Folder::class => FolderPolicy::class,
     ];
 
     /**

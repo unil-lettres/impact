@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Course;
 use App\Folder;
 use App\Http\Requests\CreateFolder;
+use App\Http\Requests\DestroyFolder;
 use App\Http\Requests\StoreFolder;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
@@ -88,7 +89,10 @@ class FolderController extends Controller
 
         return view('folders.show', [
             'folder' => $folder,
-            'children' => $folder
+            'cards' => $folder
+                ->cards()
+                ->get(),
+            'folders' => $folder
                 ->children()
                 ->get()
         ]);
@@ -120,11 +124,23 @@ class FolderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Folder $folder
-     * @return Response
+     * @param DestroyFolder $request
+     * @param int $id
+     *
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function destroy(Folder $folder)
+    public function destroy(DestroyFolder $request, int $id)
     {
-        // TODO: add controller logic for destroy()
+        $folder = Folder::find($id);
+        $course = $folder->course;
+
+        $this->authorize('delete', $folder);
+
+        $folder->delete();
+
+        // TODO: add translation
+        return redirect()->route('courses.show', $course->id)
+            ->with('success', 'Dossier supprimé.');
     }
 }

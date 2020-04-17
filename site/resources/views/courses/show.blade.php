@@ -29,42 +29,8 @@
             @endsection
             <hr>
             <div>
-                @unless ($folders->isEmpty())
-                    <ul>
-                        @foreach ($folders as $folder)
-                            <li>
-                                <a href="{{ route('folders.show', $folder->id) }}">[-]{{ $folder->title }}</a>
-                            </li>
-                        @endforeach
-                    </ul>
-                @endunless
-                @unless ($cards->isEmpty())
-                    <ul>
-                        @foreach ($cards as $card)
-                            @can('view', $card)
-                                <li>
-                                    <a href="{{ route('cards.show', $card->id) }}">{{ $card->title }}</a>
-                                    @can('delete', $card)
-                                        <form class="with-delete-confirm" method="post" style="display: inline;"
-                                              action="{{ route('cards.destroy', $card->id) }}">
-                                            @method('DELETE')
-                                            @csrf
-                                            <button type="submit"
-                                                    class="btn btn-link"
-                                                    style="color: red; padding: 0;">
-                                                ({{ trans('cards.delete') }})
-                                            </button>
-                                        </form>
-                                    @endcan
-                                </li>
-                            @endcan
-                        @endforeach
-                    </ul>
-                @else
-                    <p class="text-secondary">
-                        {{ trans('cards.not_found') }}
-                    </p>
-                @endunless
+                @include('shared.folders')
+                @include('shared.cards')
             </div>
         @endcan
     </div>

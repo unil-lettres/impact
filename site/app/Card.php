@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Card extends Model
 {
     protected $fillable = [
-        'title', 'course_id',
+        'title', 'course_id', 'folder_id'
     ];
 
     /**

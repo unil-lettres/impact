@@ -64,6 +64,7 @@ class FolderPolicy
      */
     public function create(User $user, Course $course)
     {
+        // Only folders within an active course can be accessed
         if($course->trashed()) {
             return false;
         }
@@ -127,6 +128,39 @@ class FolderPolicy
         }
 
         // Only teachers of the course can delete folders
+        if ($user->isTeacher($folder->course)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can select the folder.
+     *
+     * @param User $user
+     * @param Folder $folder
+     * @param Course $course
+     *
+     * @return mixed
+     */
+    public function select(User $user, Folder $folder, Course $course)
+    {
+        // Only folders within an active course can be accessed
+        if(!$folder->isActive()) {
+            return false;
+        }
+
+        // Only folders within the course can be selected
+        if($folder->course->id !== $course->id) {
+            return false;
+        }
+
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers of the course can select a folder
         if ($user->isTeacher($folder->course)) {
             return true;
         }

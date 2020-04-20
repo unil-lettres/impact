@@ -5,7 +5,7 @@ import makeAnimated from 'react-select/animated';
 
 const animatedComponents = makeAnimated();
 
-export default class SingleParentSelect extends Component {
+export default class SingleFolderSelect extends Component {
     constructor(props){
         super(props);
 
@@ -54,9 +54,9 @@ export default class SingleParentSelect extends Component {
     }
 }
 
-const elementId = 'rct-single-parent-select';
+const elementId = 'rct-single-folder-select';
 if (document.getElementById(elementId)) {
     let data = document.getElementById(elementId).getAttribute('data');
     let reference = document.getElementById(elementId).getAttribute('reference');
-    ReactDOM.render(<SingleParentSelect data={ data } reference={ reference } />, document.getElementById(elementId));
+    ReactDOM.render(<SingleFolderSelect data={ data } reference={ reference } />, document.getElementById(elementId));
 }

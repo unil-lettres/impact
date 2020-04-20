@@ -61,18 +61,28 @@ class FolderController extends Controller
      */
     public function store(StoreFolder $request)
     {
+        $course = Course::findOrFail($request->input('course_id'));
+
         $this->authorize('create', [
             Folder::class,
-            Course::findOrFail($request->input('course_id'))
+            $course
         ]);
 
-        // Create new folder
-        $card = new Folder($request->all());
-        $card->save();
+        // Check also folder select policy if a parent folder is selected
+        if($request->input('parent_id')) {
+            $this->authorize('select', [
+                Folder::class,
+                Folder::findOrFail($request->input('parent_id')),
+                $course
+            ]);
+        }
 
-        // TODO: add translation
+        // Create new folder
+        $folder = new Folder($request->all());
+        $folder->save();
+
         return redirect()->route('courses.show', $request->input('course_id'))
-            ->with('success', 'Dossier créé.');
+            ->with('success', trans('messages.folder.created', ['title' => $folder->title]));
     }
 
     /**
@@ -147,8 +157,7 @@ class FolderController extends Controller
 
         $folder->delete();
 
-        // TODO: add translation
         return redirect()->route('courses.show', $course->id)
-            ->with('success', 'Dossier supprimé.');
+            ->with('success', trans('messages.folder.deleted'));
     }
 }

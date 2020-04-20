@@ -1,7 +1,7 @@
 @extends('layouts.app-base')
 
 @section('content')
-    <div id="create-invitation">
+    <div id="create-folder">
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul>
@@ -16,8 +16,7 @@
             @csrf
             <div class="row">
                 <div class="form-group col-md-12 col-lg-7">
-                    <!-- // TODO: add translation -->
-                    <label for="title" class="control-label">Titre</label>
+                    <label for="title" class="control-label">{{ trans('folders.title') }}</label>
                     <div>
                         <input id="title"
                                type="text"
@@ -29,10 +28,9 @@
                 </div>
 
                 <div class="form-group col-md-12 col-lg-5">
-                    <!-- // TODO: add translation -->
-                    <label for="parent_id" class="control-label">Emplacement</label>
+                    <label for="parent_id" class="control-label">{{ trans('folders.location') }}</label>
                     <input id="parent_id" name="parent_id" type="hidden" value="">
-                    <div id="rct-single-parent-select"
+                    <div id="rct-single-folder-select"
                          reference="parent_id"
                          data='{{ json_encode(['options' => $folders]) }}'
                     ></div>
@@ -43,8 +41,7 @@
 
             <button type="submit"
                     class="btn btn-primary">
-                <!-- // TODO: add translation -->
-                Créer un dossier
+                {{ trans('folders.create') }}
             </button>
         </form>
     </div>

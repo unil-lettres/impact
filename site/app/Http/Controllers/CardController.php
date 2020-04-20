@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Card;
 use App\Course;
+use App\Folder;
 use App\Http\Requests\CreateCard;
 use App\Http\Requests\DestroyCard;
 use App\Http\Requests\StoreCard;
@@ -44,7 +45,10 @@ class CardController extends Controller
         ]);
 
         return view('cards.create', [
-            'course' => $course
+            'course' => $course,
+            'folders' => $course
+                ->folders()
+                ->get()
         ]);
     }
 
@@ -58,12 +62,23 @@ class CardController extends Controller
      */
     public function store(StoreCard $request)
     {
+        $course = Course::findOrFail($request->input('course_id'));
+
         $this->authorize('create', [
             Card::class,
-            Course::findOrFail($request->input('course_id'))
+            $course
         ]);
 
-        // Create new course
+        // Check also folder select policy if a folder is selected
+        if($request->input('folder_id')) {
+            $this->authorize('select', [
+                Folder::class,
+                Folder::findOrFail($request->input('folder_id')),
+                $course
+            ]);
+        }
+
+        // Create new card
         $card = new Card($request->all());
         $card->save();
 

@@ -20,8 +20,11 @@ class FolderPolicy
      */
     public function viewAny(User $user)
     {
-        // TODO: add policy checks
-        return true;
+        if ($user->admin) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -34,8 +37,21 @@ class FolderPolicy
      */
     public function view(User $user, Folder $folder)
     {
-        // TODO: add policy checks
-        return true;
+        // Only folders within an active course can be accessed
+        if(!$folder->isActive()) {
+            return false;
+        }
+
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers or students of the course can view the folder
+        if ($user->isTeacher($folder->course) || $user->isStudent($folder->course)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -48,8 +64,20 @@ class FolderPolicy
      */
     public function create(User $user, Course $course)
     {
-        // TODO: add policy checks
-        return true;
+        if($course->trashed()) {
+            return false;
+        }
+
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers of the course can create new folders
+        if ($user->isTeacher($course)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -62,8 +90,21 @@ class FolderPolicy
      */
     public function update(User $user, Folder $folder)
     {
-        // TODO: add policy checks
-        return true;
+        // Only folders within an active course can be accessed
+        if(!$folder->isActive()) {
+            return false;
+        }
+
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers of the course can update folders
+        if ($user->isTeacher($folder->course)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -76,35 +117,20 @@ class FolderPolicy
      */
     public function delete(User $user, Folder $folder)
     {
-        // TODO: add policy checks
-        return true;
-    }
+        // Only folders within an active course can be accessed
+        if(!$folder->isActive()) {
+            return false;
+        }
 
-    /**
-     * Determine whether the user can restore the folder.
-     *
-     * @param User $user
-     * @param Folder $folder
-     *
-     * @return mixed
-     */
-    public function restore(User $user, Folder $folder)
-    {
-        // TODO: add policy checks
-        return true;
-    }
+        if ($user->admin) {
+            return true;
+        }
 
-    /**
-     * Determine whether the user can permanently delete the folder.
-     *
-     * @param User $user
-     * @param Folder $folder
-     *
-     * @return mixed
-     */
-    public function forceDelete(User $user, Folder $folder)
-    {
-        // TODO: add policy checks
-        return true;
+        // Only teachers of the course can delete folders
+        if ($user->isTeacher($folder->course)) {
+            return true;
+        }
+
+        return false;
     }
 }

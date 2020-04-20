@@ -66,6 +66,11 @@ class CardPolicy
      */
     public function create(User $user, Course $course)
     {
+        // Only cards within an active course can be accessed
+        if($course->trashed()) {
+            return false;
+        }
+
         if ($user->admin) {
             return true;
         }
@@ -117,29 +122,17 @@ class CardPolicy
      */
     public function delete(User $user, Card $card)
     {
+        // Only cards within an active course can be accessed
+        if(!$card->isActive()) {
+            return false;
+        }
+
         if ($user->admin) {
             return true;
         }
 
-        // Only teachers can delete cards
+        // Only teachers of the course can delete cards
         if ($user->isTeacher($card->course)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the card.
-     *
-     * @param User $user
-     * @param Card $card
-     *
-     * @return mixed
-     */
-    public function forceDelete(User $user, Card $card)
-    {
-        if ($user->admin) {
             return true;
         }
 

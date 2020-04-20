@@ -44,4 +44,13 @@ class Folder extends Model
         return $this->hasMany('App\Card', 'folder_id')
             ->orderBy('created_at', 'desc');
     }
+
+    /**
+     * Check whether the current folder is part of an active course or not
+     *
+     * @return boolean
+     */
+    public function isActive() {
+        return $this->course->trashed() ? false : true;
+    }
 }

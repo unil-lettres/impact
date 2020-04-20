@@ -11,18 +11,18 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 
 class FolderController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @return void
+     * @throws AuthorizationException
      */
     public function index()
     {
-        // TODO: add controller logic for index()
+        $this->authorize('viewAny', Folder::class);
     }
 
     /**
@@ -102,10 +102,14 @@ class FolderController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param Folder $folder
-     * @return Response
+     *
+     * @return void
+     * @throws AuthorizationException
      */
     public function edit(Folder $folder)
     {
+        $this->authorize('update', $folder);
+
         // TODO: add controller logic for edit()
     }
 
@@ -114,10 +118,14 @@ class FolderController extends Controller
      *
      * @param Request $request
      * @param Folder $folder
-     * @return Response
+     *
+     * @return void
+     * @throws AuthorizationException
      */
     public function update(Request $request, Folder $folder)
     {
+        $this->authorize('update', $folder);
+
         // TODO: add controller logic for update()
     }
 

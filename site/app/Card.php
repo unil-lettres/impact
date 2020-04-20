@@ -51,6 +51,6 @@ class Card extends Model
      * @return boolean
      */
     public function isActive() {
-        return $this->course->deleted_at ? false : true;
+        return $this->course->trashed() ? false : true;
     }
 }

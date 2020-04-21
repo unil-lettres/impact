@@ -128,7 +128,7 @@ class Course extends Model
      * @return boolean
      */
     public function isActive() {
-        return $this->deleted_at ? false : true;
+        return $this->trashed() ? false : true;
     }
 
     /**

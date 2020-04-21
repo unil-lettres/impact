@@ -11,8 +11,7 @@
                         <button type="submit"
                                 class="btn btn-link"
                                 style="color: red; padding: 0;">
-                            <!-- // TODO: add translation -->
-                            (supprimer)
+                            ({{ trans('folders.delete') }})
                         </button>
                     </form>
                 @endcan
@@ -21,7 +20,6 @@
     </ul>
 @else
     <p class="text-secondary">
-        <!-- // TODO: add translation -->
-        Aucun dossier trouvé
+        {{ trans('folders.not_found') }}
     </p>
 @endunless

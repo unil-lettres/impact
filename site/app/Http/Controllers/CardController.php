@@ -46,6 +46,8 @@ class CardController extends Controller
 
         return view('cards.create', [
             'course' => $course,
+            'breadcrumbs' => $course
+                ->breadcrumbs(true),
             'folders' => $course
                 ->folders()
                 ->get()
@@ -121,6 +123,8 @@ class CardController extends Controller
 
         return view('cards.edit', [
             'card' => $card,
+            'breadcrumbs' => $card
+                ->breadcrumbs(true),
             'editors' => $card
                 ->editors(),
             'students' => $card->course

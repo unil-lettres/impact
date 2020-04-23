@@ -86,7 +86,7 @@ class Helpers {
     }
 
     /**
-     * Truncate string
+     * Truncate a string
      *
      * @param string $string
      * @param int $limit
@@ -98,7 +98,7 @@ class Helpers {
     }
 
     /**
-     * Course type
+     * Get the translated course type
      *
      * @param string $type
      *

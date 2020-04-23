@@ -45,6 +45,8 @@ class FolderController extends Controller
 
         return view('folders.create', [
             'course' => $course,
+            'breadcrumbs' => $course
+                ->breadcrumbs(true),
             'folders' => $course
                 ->folders()
                 ->get()

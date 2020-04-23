@@ -168,7 +168,9 @@ class CourseController extends Controller
         $this->authorize('configure', $course);
 
         return view('courses.configure', [
-            'course' => $course
+            'course' => $course,
+            'breadcrumbs' => $course
+                ->breadcrumbs(true),
         ]);
     }
 

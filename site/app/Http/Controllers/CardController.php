@@ -82,7 +82,8 @@ class CardController extends Controller
         $card = new Card($request->all());
         $card->save();
 
-        return redirect()->route('courses.show', $request->input('course_id'))
+        return redirect()
+            ->route('courses.show', $request->input('course_id'))
             ->with('success', trans('messages.card.created', ['title' => $card->title]));
     }
 
@@ -100,6 +101,8 @@ class CardController extends Controller
 
         return view('cards.show', [
             'card' => $card,
+            'breadcrumbs' => $card
+                ->breadcrumbs(),
             'course' => $card->course
         ]);
     }
@@ -118,8 +121,10 @@ class CardController extends Controller
 
         return view('cards.edit', [
             'card' => $card,
-            'editors' => $card->editors(),
-            'students' => $card->course->students()
+            'editors' => $card
+                ->editors(),
+            'students' => $card->course
+                ->students()
         ]);
     }
 
@@ -136,7 +141,8 @@ class CardController extends Controller
     {
         $this->authorize('update', $card);
 
-        return redirect()->route('cards.show', $card->id)
+        return redirect()
+            ->route('cards.show', $card->id)
             ->with('success', trans('messages.card.configuration.updated'));
     }
 
@@ -158,7 +164,8 @@ class CardController extends Controller
 
         $card->delete();
 
-        return redirect()->route('courses.show', $course->id)
+        return redirect()
+            ->route('courses.show', $course->id)
             ->with('success', trans('messages.card.deleted'));
     }
 }

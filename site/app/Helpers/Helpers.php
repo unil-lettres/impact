@@ -7,6 +7,7 @@ use App\Enums\CourseType;
 use App\Enums\UserType;
 use App\User;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 
@@ -111,5 +112,27 @@ class Helpers {
             default:
                 return trans('courses.local');
         }
+    }
+
+    /**
+     * Generate HTML for given breadcrumbs
+     *
+     * The breadcrumbs parameter should be a Collection and should
+     * contain a path as the key, and a name as the value.
+     * @param Collection $breadcrumbs
+     *
+     * @return string
+     */
+    public static function breadcrumbsHtml(Collection $breadcrumbs) {
+        $html = "";
+        foreach ($breadcrumbs as $path => $name) {
+            $html .= "<a href=\"" . $path . "\">" . Helpers::truncate($name, 25) . "</a>";
+
+            if ($breadcrumbs->last() !== $name) {
+                $html .= "<span> / </span>";
+            }
+        }
+
+        return $html;
     }
 }

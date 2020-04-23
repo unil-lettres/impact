@@ -58,7 +58,8 @@ class CourseController extends Controller
         }
 
         return view('courses.manage', [
-            'courses' => $courses->orderBy('created_at', 'desc')
+            'courses' => $courses
+                ->orderBy('created_at', 'desc')
                 ->paginate(config('const.pagination.per'))
         ]);
     }
@@ -109,7 +110,8 @@ class CourseController extends Controller
         // Save created course
         $course->save();
 
-        return redirect()->route('admin.courses.manage')
+        return redirect()
+            ->route('admin.courses.manage')
             ->with('success', trans('messages.course.created', ['name' => $course->name]));
     }
 
@@ -127,8 +129,12 @@ class CourseController extends Controller
 
         return view('courses.show', [
             'course' => $course,
-            'cards' => $course->rootCards(),
-            'folders' => $course->rootFolders()
+            'breadcrumbs' => $course
+                ->breadcrumbs(),
+            'cards' => $course
+                ->rootCards(),
+            'folders' => $course
+                ->rootFolders()
         ]);
     }
 
@@ -186,7 +192,8 @@ class CourseController extends Controller
             'description' => $request->get('description')
         ]);
 
-        return redirect()->back()
+        return redirect()
+            ->back()
             ->with('success', trans('messages.course.updated'));
     }
 
@@ -207,7 +214,8 @@ class CourseController extends Controller
 
         $course->restore();
 
-        return redirect()->back()
+        return redirect()
+            ->back()
             ->with('success', trans('messages.course.enabled'));
     }
 
@@ -225,7 +233,8 @@ class CourseController extends Controller
 
         $course->delete();
 
-        return redirect()->back()
+        return redirect()
+            ->back()
             ->with('success', trans('messages.course.disabled'));
     }
 
@@ -246,7 +255,8 @@ class CourseController extends Controller
 
         $course->forceDelete();
 
-        return redirect()->back()
+        return redirect()
+            ->back()
             ->with('success', trans('messages.course.deleted'));
     }
 
@@ -272,7 +282,8 @@ class CourseController extends Controller
             })
         )->send(new CourseConfirmDelete($course));
 
-        return redirect()->back()
+        return redirect()
+            ->back()
             ->with('success', trans('messages.course.delete_confirm.sent'));
     }
 

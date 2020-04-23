@@ -11,7 +11,9 @@
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <span class="breadcrumbs">
-                            @yield('breadcrumbs')
+                            @isset($breadcrumbs)
+                                {!! \App\Helpers\Helpers::breadcrumbsHtml($breadcrumbs) !!}
+                            @endisset
                         </span>
                     </li>
                 </ul>

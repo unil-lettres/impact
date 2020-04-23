@@ -53,4 +53,37 @@ class Card extends Model
     public function isActive() {
         return $this->course->trashed() ? false : true;
     }
+
+    /**
+     * Get the breadcrumbs for this card
+     *
+     * Define if the breadcrumbs should contain the current card
+     * @param bool $self
+     *
+     * This function will return a Collection and should contain
+     * a path as the key, and a name as the value.
+     * @return \Illuminate\Support\Collection
+     */
+    public function breadcrumbs(bool $self = false) {
+        if($this->folder()->get()->isEmpty()) {
+            // If the card has no folder, only return the course breadcrumbs
+            $breadcrumbs = $this->course
+                ->breadcrumbs(true);
+        } else {
+            // If the card has a folder, return the folder breadcrumbs
+            $breadcrumbs = $this
+                ->folder()
+                ->first()
+                ->breadcrumbs(true);
+        }
+
+        if($self) {
+            // Add the current card to the breadcrumbs
+            $breadcrumbs->put(
+                route('cards.show', $this->id), $this->title
+            );
+        }
+
+        return $breadcrumbs;
+    }
 }

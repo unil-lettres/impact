@@ -81,7 +81,8 @@ class FolderController extends Controller
         $folder = new Folder($request->all());
         $folder->save();
 
-        return redirect()->route('courses.show', $request->input('course_id'))
+        return redirect()
+            ->route('courses.show', $request->input('course_id'))
             ->with('success', trans('messages.folder.created', ['title' => $folder->title]));
     }
 
@@ -99,6 +100,8 @@ class FolderController extends Controller
 
         return view('folders.show', [
             'folder' => $folder,
+            'breadcrumbs' => $folder
+                ->breadcrumbs(),
             'cards' => $folder
                 ->cards()
                 ->get(),
@@ -157,7 +160,8 @@ class FolderController extends Controller
 
         $folder->delete();
 
-        return redirect()->route('courses.show', $course->id)
+        return redirect()
+            ->route('courses.show', $course->id)
             ->with('success', trans('messages.folder.deleted'));
     }
 }

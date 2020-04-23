@@ -150,4 +150,29 @@ class Course extends Model
         return $this->cards()->where('folder_id', null)
             ->get();
     }
+
+    /**
+     * Get the breadcrumbs for this course
+     *
+     * Define if the breadcrumbs should contain the current course
+     * @param bool $self
+     *
+     * This function will return a Collection and should contain
+     * a path as the key, and a name as the value.
+     * @return \Illuminate\Support\Collection
+     */
+    public function breadcrumbs(bool $self = false) {
+        $breadcrumbs = collect([
+            route('home') => trans('courses.list')
+        ]);
+
+        if($self) {
+            // Add the current course to the breadcrumbs
+            $breadcrumbs->put(
+                route('courses.show', $this->id), $this->name
+            );
+        }
+
+        return $breadcrumbs;
+    }
 }

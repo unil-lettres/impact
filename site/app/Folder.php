@@ -53,4 +53,39 @@ class Folder extends Model
     public function isActive() {
         return $this->course->trashed() ? false : true;
     }
+
+    /**
+     * Get the breadcrumbs for this folder
+     *
+     * Define if the breadcrumbs should contain the current folder
+     * @param bool $self
+     *
+     * This function will return a Collection and should contain
+     * a path as the key, and a name as the value.
+     * @return \Illuminate\Support\Collection
+     */
+    public function breadcrumbs(bool $self = false) {
+        $breadcrumbs = $this->course
+            ->breadcrumbs(true);
+
+        if($this->parent()->get()->isNotEmpty()) {
+            // Iterate through hierarchical parents while a parent exists
+            $parent = $this->parent();
+            while($parent->get()->isNotEmpty()) {
+                $breadcrumbs->put(
+                    route('folders.show', $parent->first()->id), $parent->first()->title
+                );
+                $parent = $parent->first()->parent();
+            }
+        }
+
+        if($self) {
+            // Add the current folder to the breadcrumbs
+            $breadcrumbs->put(
+                route('folders.show', $this->id), $this->title
+            );
+        }
+
+        return $breadcrumbs;
+    }
 }

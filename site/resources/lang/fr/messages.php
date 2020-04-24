@@ -29,5 +29,6 @@ return [
     'card.configuration.updated' => 'Configuration de la fiche mise à jour.',
     'folder.created' => 'Dossier créé: :title',
     'folder.deleted' => 'Dossier supprimé.',
+    'folder.updated' => 'Dossier mis à jour.',
 
 ];

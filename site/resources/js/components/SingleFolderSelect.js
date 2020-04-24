@@ -11,11 +11,10 @@ export default class SingleFolderSelect extends Component {
 
         let data = JSON.parse(this.props.data);
 
-        console.log(data.options);
-
         this.state = {
             options: [],
-            selected: null,
+            default: [],
+            selected: [],
         };
 
         Object.keys(data.options).forEach(key=>{
@@ -24,6 +23,15 @@ export default class SingleFolderSelect extends Component {
                 label: data.options[key].title
             });
         });
+
+        if(data.default) {
+            this.state.default.push({
+                value: data.default.id,
+                label: data.default.title
+            });
+        }
+
+        this.state.selected = this.state.default;
     }
 
     handleChange = (selectedOption, { action }) => {
@@ -38,6 +46,9 @@ export default class SingleFolderSelect extends Component {
     save(action) {
         if(this.state.selected) {
             document.getElementById(this.props.reference).value = this.state.selected.value;
+        } else {
+            // Clear selected data
+            document.getElementById(this.props.reference).value = '';
         }
     }
 
@@ -45,8 +56,9 @@ export default class SingleFolderSelect extends Component {
         return (
             <Select
                 components={ animatedComponents }
-                isClearable={ false }
+                isClearable={ true }
                 closeMenuOnSelect={ true }
+                defaultValue={ this.state.default }
                 onChange={ this.handleChange }
                 options={ this.state.options }
             />

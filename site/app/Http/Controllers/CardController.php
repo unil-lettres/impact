@@ -75,8 +75,8 @@ class CardController extends Controller
         if($request->input('folder_id')) {
             $this->authorize('select', [
                 Folder::class,
-                Folder::findOrFail($request->input('folder_id')),
-                $course
+                $course,
+                Folder::findOrFail($request->input('folder_id'))
             ]);
         }
 

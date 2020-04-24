@@ -139,21 +139,29 @@ class FolderPolicy
      * Determine whether the user can select the folder.
      *
      * @param User $user
-     * @param Folder $folder
      * @param Course $course
+     * @param Folder $selected
+     * @param Folder $folder
      *
      * @return mixed
      */
-    public function select(User $user, Folder $folder, Course $course)
+    public function select(User $user, Course $course, Folder $selected, Folder $folder = null)
     {
-        // Only folders within an active course can be accessed
-        if(!$folder->isActive()) {
+        // Only folders within an active course can be selected
+        if(!$selected->isActive()) {
             return false;
         }
 
         // Only folders within the course can be selected
-        if($folder->course->id !== $course->id) {
+        if($selected->course->id !== $course->id) {
             return false;
+        }
+
+        if($folder) {
+            // Cannot select own folder as parent
+            if($folder->id === $selected->id) {
+                return false;
+            }
         }
 
         if ($user->admin) {
@@ -161,7 +169,7 @@ class FolderPolicy
         }
 
         // Only teachers of the course can select a folder
-        if ($user->isTeacher($folder->course)) {
+        if ($user->isTeacher($selected->course)) {
             return true;
         }
 

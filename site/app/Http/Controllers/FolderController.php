@@ -7,10 +7,10 @@ use App\Folder;
 use App\Http\Requests\CreateFolder;
 use App\Http\Requests\DestroyFolder;
 use App\Http\Requests\StoreFolder;
+use App\Http\Requests\UpdateFolder;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class FolderController extends Controller
 {
@@ -74,8 +74,8 @@ class FolderController extends Controller
         if($request->input('parent_id')) {
             $this->authorize('select', [
                 Folder::class,
-                Folder::findOrFail($request->input('parent_id')),
-                $course
+                $course,
+                Folder::findOrFail($request->input('parent_id'))
             ]);
         }
 
@@ -118,30 +118,63 @@ class FolderController extends Controller
      *
      * @param Folder $folder
      *
-     * @return void
+     * @return Renderable
      * @throws AuthorizationException
      */
     public function edit(Folder $folder)
     {
         $this->authorize('update', $folder);
 
-        // TODO: add controller logic for edit()
+        // Remove current folder from course folders list
+        $folders = $folder->course
+            ->folders()
+            ->get()
+            ->reject(function ($courseFolder) use ($folder) {
+                return $courseFolder->id === $folder->id;
+            });
+
+        return view('folders.edit', [
+            'folder' => $folder,
+            'folders' => $folders,
+            'parent' => $folder->parent,
+            'breadcrumbs' => $folder
+                ->breadcrumbs(true)
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Folder $folder
+     * @param UpdateFolder $request
+     * @param int $id
      *
-     * @return void
+     * @return RedirectResponse
      * @throws AuthorizationException
      */
-    public function update(Request $request, Folder $folder)
+    public function update(UpdateFolder $request, int $id)
     {
+        $folder = Folder::find($id);
+
         $this->authorize('update', $folder);
 
-        // TODO: add controller logic for update()
+        // Check also folder select policy if a parent folder is selected
+        if($request->input('parent_id')) {
+            $this->authorize('select', [
+                Folder::class,
+                $folder->course,
+                Folder::findOrFail($request->input('parent_id')),
+                $folder
+            ]);
+        }
+
+        $folder->update([
+            'title' => $request->get('title'),
+            'parent_id' => $request->get('parent_id')
+        ]);
+
+        return redirect()
+            ->back()
+            ->with('success', trans('messages.folder.updated'));
     }
 
     /**

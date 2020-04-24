@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class StoreFolder extends AbstractRequest
+class UpdateFolder extends AbstractRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,8 +22,9 @@ class StoreFolder extends AbstractRequest
     public function rules()
     {
         return [
+            'folder' => 'required|integer|exists:folders,id',
             'title' => 'required|string|max:200',
-            'parent_id' => 'integer|exists:folders,id|nullable'
+            'parent_id' => 'integer|exists:folders,id|nullable',
         ];
     }
 }

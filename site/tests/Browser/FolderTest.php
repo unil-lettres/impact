@@ -102,7 +102,7 @@ class FolderTest extends DuskTestCase
                 ->press('Modifier le dossier');
 
             $browser->type('title', 'Test folder updated')
-                ->press('Modifier le dossier')
+                ->clickLink('Modifier le dossier')
                 ->waitForText('Dossier mis à jour.')
                 ->assertSee('Dossier mis à jour.')
                 ->assertSee('Test folder updated');

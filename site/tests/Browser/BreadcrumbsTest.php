@@ -44,7 +44,7 @@ class BreadcrumbsTest extends DuskTestCase
             $browser->clickLink('Test child folder')
                 ->assertSee('Liste des espaces / Second space / Test folder');
 
-            $browser->press('Modifier le dossier')
+            $browser->clickLink('Modifier le dossier')
                 ->assertSee('Liste des espaces / Second space / Test folder / Test child folder');
         });
     }

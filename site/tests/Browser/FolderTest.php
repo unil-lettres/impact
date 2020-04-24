@@ -99,10 +99,10 @@ class FolderTest extends DuskTestCase
             $browser->clickLink('Second space');
 
             $browser->clickLink('Test folder')
-                ->press('Modifier le dossier');
+                ->clickLink('Modifier le dossier');
 
             $browser->type('title', 'Test folder updated')
-                ->clickLink('Modifier le dossier')
+                ->press('Modifier le dossier')
                 ->waitForText('Dossier mis à jour.')
                 ->assertSee('Dossier mis à jour.')
                 ->assertSee('Test folder updated');

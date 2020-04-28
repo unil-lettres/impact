@@ -109,4 +109,30 @@ class CardTest extends DuskTestCase
                 ->assertSee('My new card');
         });
     }
+
+    /**
+     * Test create card into a specific folder.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testCreateCardIntoFolder()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->clickLink('Second space');
+
+            $browser->clickLink('Créer une fiche');
+
+            $browser->type('title', 'My new card in folder');
+            $browser->click('#rct-single-folder-select')
+                ->waitForText('Test folder')
+                ->click('#react-select-2-option-0');
+            $browser->press('Créer une fiche')
+                ->waitForText('Fiche créée: My new card in folder')
+                ->assertSee('Fiche créée: My new card in folder');
+        });
+    }
 }

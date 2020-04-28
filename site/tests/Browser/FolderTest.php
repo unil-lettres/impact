@@ -61,12 +61,12 @@ class FolderTest extends DuskTestCase
     }
 
     /**
-     * Test create folder as a teacher.
+     * Test create folders as a teacher.
      *
      * @return void
      * @throws Throwable
      */
-    public function testCreateFolderAsTeacher()
+    public function testCreateFoldersAsTeacher()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -74,13 +74,23 @@ class FolderTest extends DuskTestCase
 
             $browser->clickLink('First space');
 
+            // Create the root folder
             $browser->clickLink('Créer un dossier');
-
             $browser->type('title', 'My new folder')
                 ->press('Créer un dossier')
                 ->waitForText('Dossier créé: My new folder')
                 ->assertSee('Dossier créé: My new folder')
                 ->assertSee('My new folder');
+
+            // Create the child folder
+            $browser->clickLink('Créer un dossier');
+            $browser->type('title', 'My new child folder');
+            $browser->click('#rct-single-folder-select')
+                ->waitForText('My new folder')
+                ->click('#react-select-2-option-0');
+            $browser->press('Créer un dossier')
+                ->waitForText('Dossier créé: My new child folder')
+                ->assertSee('Dossier créé: My new child folder');
         });
     }
 

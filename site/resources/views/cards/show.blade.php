@@ -15,8 +15,9 @@
             @endsection
             <hr>
             <div>
-                Content of the card<br>
-                (This card belongs to the "{{ $course->name }}")
+                <div id="rct-uploader"
+                     data='{{ json_encode(['locale' => \App\Helpers\Helpers::currentLocal()]) }}'
+                ></div>
             </div>
         @endcan
     </div>

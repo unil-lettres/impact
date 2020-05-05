@@ -16,3 +16,4 @@ require('./components/MultiUserSelect');
 require('./components/MultiCourseSelect');
 require('./components/SingleCourseSelect');
 require('./components/SingleFolderSelect');
+require('./components/Uploader');

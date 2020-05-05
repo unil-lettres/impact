@@ -1,0 +1,111 @@
+import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
+import Uppy from '@uppy/core'
+import French from '@uppy/locales/lib/fr_FR'
+import English from '@uppy/locales/lib/en_US'
+import XHRUpload from '@uppy/xhr-upload';
+import { DashboardModal } from '@uppy/react'
+
+
+export default class Uploader extends Component {
+    constructor (props) {
+        super(props)
+
+        let data = JSON.parse(this.props.data);
+
+        this.state = {
+            modalOpen: false
+        }
+
+        this.handleOpen = this.handleOpen.bind(this)
+        this.handleClose = this.handleClose.bind(this)
+
+        this.initVariables(data);
+        this.initLocale();
+        this.initUppy();
+    }
+
+    initVariables(data) {
+        this.locale = data.locale ?? 'fr';
+        this.maxFileSize = data.maxFileSize ?? 100000000;
+        this.maxNumberOfFiles = data.maxNumberOfFiles ?? 1;
+        this.allowedFileTypes = data.allowedFileTypes ?? ['image/*', 'video/*'];
+    }
+
+    initLocale () {
+        switch(this.locale) {
+            case 'fr':
+                this.locale = French
+                break;
+            case 'en':
+                this.locale = English
+                break;
+            default:
+                this.locale = French
+        }
+    }
+
+    initUppy () {
+        this.uppy = Uppy({
+            debug: true,
+            locale: this.locale,
+            autoProceed: true,
+            restrictions: {
+                maxFileSize: this.maxFileSize,
+                minNumberOfFiles: 1,
+                maxNumberOfFiles: this.maxNumberOfFiles,
+                allowedFileTypes: this.allowedFileTypes
+            }
+        }).use(XHRUpload, {
+            limit: 1,
+            endpoint: '/file/upload',
+            formData: true,
+            fieldName: 'file',
+            headers: {
+                'X-CSRF-TOKEN': document
+                    .querySelector('meta[name="csrf-token"]')
+                    .getAttribute('content')
+            }
+        });
+
+        this.uppy.on('complete', (result) => {
+            console.log(result);
+            if(result.successful[0] !== undefined) {
+                console.log(result.successful[0].response.body.path);
+            }
+        });
+    }
+
+    handleOpen () {
+        this.setState({
+            modalOpen: true
+        })
+    }
+
+    handleClose () {
+        this.setState({
+            modalOpen: false
+        })
+    }
+
+    render () {
+        return (
+            <div>
+                <button onClick={this.handleOpen}>Media upload</button>
+                <DashboardModal
+                    uppy={this.uppy}
+                    closeModalOnClickOutside
+                    open={this.state.modalOpen}
+                    onRequestClose={this.handleClose}
+                    proudlyDisplayPoweredByUppy={false}
+                />
+            </div>
+        );
+    }
+}
+
+const elementId = 'rct-uploader';
+if (document.getElementById(elementId)) {
+    let data = document.getElementById(elementId).getAttribute('data');
+    ReactDOM.render(<Uploader data={ data } />, document.getElementById(elementId));
+}

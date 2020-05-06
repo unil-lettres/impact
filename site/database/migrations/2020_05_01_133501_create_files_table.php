@@ -18,7 +18,7 @@ class CreateFilesTable extends Migration
             $table->string('name', 255);
             $table->string('filename', 100)
                 ->nullable();
-            $table->enum('status', ['processing', 'failed', 'ready'])
+            $table->enum('status', ['processing', 'transcoding', 'failed', 'ready'])
                 ->default('processing');
             $table->enum('type', ['other', 'document', 'image', 'video', 'audio'])
                 ->default('other');

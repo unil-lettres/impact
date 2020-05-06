@@ -16,7 +16,7 @@
             <hr>
             <div>
                 <div id="rct-uploader"
-                     data='{{ json_encode(['locale' => \App\Helpers\Helpers::currentLocal()]) }}'
+                     data='{{ json_encode(['locale' => \App\Helpers\Helpers::currentLocal(), 'maxFileSize' => 1000000000]) }}'
                 ></div>
             </div>
         @endcan

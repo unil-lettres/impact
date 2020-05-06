@@ -29,7 +29,7 @@ export default class Uploader extends Component {
         this.locale = data.locale ?? 'fr';
         this.maxFileSize = data.maxFileSize ?? 100000000;
         this.maxNumberOfFiles = data.maxNumberOfFiles ?? 1;
-        this.allowedFileTypes = data.allowedFileTypes ?? ['image/*', 'video/*'];
+        this.allowedFileTypes = data.allowedFileTypes ?? ['audio/*', 'video/*'];
     }
 
     initLocale () {
@@ -58,7 +58,7 @@ export default class Uploader extends Component {
             }
         }).use(XHRUpload, {
             limit: 1,
-            endpoint: '/file/upload',
+            endpoint: '/files/upload',
             formData: true,
             fieldName: 'file',
             headers: {
@@ -69,9 +69,8 @@ export default class Uploader extends Component {
         });
 
         this.uppy.on('complete', (result) => {
-            console.log(result);
             if(result.successful[0] !== undefined) {
-                console.log(result.successful[0].response.body.path);
+                console.log(result.successful[0].response.body);
             }
         });
     }

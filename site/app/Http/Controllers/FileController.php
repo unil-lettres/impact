@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\FileStatus;
 use App\File;
+use App\Jobs\ProcessFile;
+use App\Services\FileUploadProcessor;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class FileController extends Controller
@@ -81,5 +85,47 @@ class FileController extends Controller
     public function destroy(File $file)
     {
         //
+    }
+
+    /**
+     * File upload endpoint.
+     *
+     * @param Request $request
+     * @param FileUploadProcessor $fileUploadProcessor
+     *
+     * @return JsonResponse
+     */
+    public function upload(Request $request, FileUploadProcessor $fileUploadProcessor)
+    {
+        // Move file to temp storage
+        $path = $fileUploadProcessor
+            ->moveFileToStoragePath(
+                $request->file('file'),
+                true
+            );
+
+        // Get file basic infos
+        $mimeType = $request->file('file')->getMimeType();
+        $filename = $request->file('file')->getClientOriginalName();
+        $size = $request->file('file')->getSize();
+
+        // Create file draft with basic infos
+        $file = File::create([
+            'name' => $fileUploadProcessor
+                ->getFileName($filename),
+            'filename' => $fileUploadProcessor
+                ->getBaseName($path),
+            'status' => FileStatus::Processing,
+            'type' => $fileUploadProcessor
+                ->fileType($mimeType),
+            'size' => $size
+        ]);
+
+        // Dispatch created file for async processing
+        ProcessFile::dispatch($file);
+
+        return response()->json([
+            'success' => $file->id
+        ], 200);
     }
 }

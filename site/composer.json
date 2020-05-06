@@ -16,7 +16,8 @@
         "guzzlehttp/guzzle": "^6.4",
         "laravel/framework": "^7.0",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^2.0"
+        "laravel/ui": "^2.0",
+        "php-ffmpeg/php-ffmpeg": "^0.16.0"
     },
     "require-dev": {
         "fzaninotto/faker": "^1.4",

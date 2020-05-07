@@ -44,8 +44,7 @@ Route::middleware(['auth', 'app'])->group(function () {
     // Folders
     Route::resource('folders', 'FolderController');
 
-    // Files
-    Route::post('files', 'FileController@store');
+    // Uploads
     Route::post('files/upload', 'FileController@upload');
 
     // Enrollments
@@ -79,4 +78,7 @@ Route::group(['prefix' => 'admin',  'as' => 'admin.', 'middleware' => ['auth', '
     Route::get('/courses', 'CourseController@manage')->name('courses.manage');
     Route::get('/courses/{course}/enable', 'CourseController@enable')->name('courses.enable');
     Route::get('/courses/{course}/mailConfirmDelete', 'CourseController@mailConfirmDelete')->name('courses.send.confirm.delete');
+
+    // Files
+    Route::post('files', 'FileController@store');
 });

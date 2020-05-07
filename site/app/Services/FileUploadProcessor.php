@@ -115,7 +115,8 @@ class FileUploadProcessor
 
         return Storage::disk('public')
             ->move(
-                $this->tempFileStoragePath() . '/' . $cleanedFilename, $this->standardFileStoragePath() . '/' . $cleanedFilename
+                $this->tempFileStoragePath() . '/' . $cleanedFilename,
+                $this->standardFileStoragePath() . '/' . $cleanedFilename
             );
     }
 

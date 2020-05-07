@@ -47,9 +47,9 @@ export default class Uploader extends Component {
 
     initUppy () {
         this.uppy = Uppy({
-            debug: true,
+            debug: false,
             locale: this.locale,
-            autoProceed: true,
+            autoProceed: false,
             restrictions: {
                 maxFileSize: this.maxFileSize,
                 minNumberOfFiles: 1,

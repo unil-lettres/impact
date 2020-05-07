@@ -26,8 +26,8 @@ class ProcessFile implements ShouldQueue
 
     protected File $file;
     protected FileUploadProcessor $fileUploadProcessor;
-    protected string $tempPath;
-    protected string $standardPath;
+    protected string $fullTempPath;
+    protected string $fullStandardPath;
 
     /**
      * Create a new job instance.
@@ -40,9 +40,9 @@ class ProcessFile implements ShouldQueue
     {
         $this->file = $file;
         $this->fileUploadProcessor = new FileUploadProcessor();
-        $this->tempPath = Storage::disk('public')
+        $this->fullTempPath = Storage::disk('public')
             ->path('uploads/tmp/');
-        $this->standardPath = Storage::disk('public')
+        $this->fullStandardPath = Storage::disk('public')
             ->path('uploads/files/');
     }
 
@@ -129,7 +129,7 @@ class ProcessFile implements ShouldQueue
     }
 
     /**
-     * Transcode an audio/video file with FFmpeg.
+     * Transcode a media file with FFmpeg.
      *
      * @param string $type
      */
@@ -160,13 +160,13 @@ class ProcessFile implements ShouldQueue
     protected function transcodeVideo() {
         $ffmpeg = FFMpeg::create();
         $ffprobe = FFProbe::create();
-        $openFrom = $this->tempPath . $this->file->filename;
-        $saveTo = $this->standardPath . $this->fileUploadProcessor
+        $openFromPathname = $this->fullTempPath . $this->file->filename;
+        $saveToPathname = $this->fullStandardPath . $this->fileUploadProcessor
                 ->getFileName($this->file->filename) . '.mp4';
 
         // Transcode to MP4/X264 with FFmpeg
         $video = $ffmpeg
-            ->open($openFrom);
+            ->open($openFromPathname);
         $video
             ->filters()
             ->resize(
@@ -177,7 +177,7 @@ class ProcessFile implements ShouldQueue
         $video
             ->save(
                 new X264(),
-                $saveTo,
+                $saveToPathname,
             );
 
         // Remove uploaded file from temp storage
@@ -186,11 +186,13 @@ class ProcessFile implements ShouldQueue
 
         // Update file properties in database
         $videoStream = $ffprobe
-            ->streams($saveTo)
+            ->streams($saveToPathname)
             ->videos()
             ->first();
         if($videoStream) {
             $this->file->update([
+                'filename' => $this->fileUploadProcessor
+                    ->getBaseName($saveToPathname),
                 'length' => (int)$videoStream
                     ->get('duration'),
                 'width' => $videoStream
@@ -210,17 +212,17 @@ class ProcessFile implements ShouldQueue
     protected function transcodeAudio() {
         $ffmpeg = FFMpeg::create();
         $ffprobe = FFProbe::create();
-        $openFrom = $this->tempPath . $this->file->filename;
-        $saveTo = $this->standardPath . $this->fileUploadProcessor
+        $openFromPathname = $this->fullTempPath . $this->file->filename;
+        $saveToPathname = $this->fullStandardPath . $this->fileUploadProcessor
                 ->getFileName($this->file->filename) . '.mp3';
 
         // Transcode to MP3 with FFmpeg
         $audio = $ffmpeg
-            ->open($openFrom);
+            ->open($openFromPathname);
         $audio
             ->save(
                 new Mp3(),
-                $saveTo,
+                $saveToPathname,
             );
 
         // Remove uploaded file from temp storage
@@ -229,13 +231,13 @@ class ProcessFile implements ShouldQueue
 
         // Update file properties in database
         $audioStream = $ffprobe
-            ->streams($saveTo)
+            ->streams($saveToPathname)
             ->audios()
             ->first();
         if($audioStream) {
             $this->file->update([
                 'filename' => $this->fileUploadProcessor
-                    ->getBaseName($saveTo),
+                    ->getBaseName($saveToPathname),
                 'length' => (int)$audioStream
                     ->get('duration')
             ]);

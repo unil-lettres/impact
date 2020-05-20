@@ -26,7 +26,7 @@ class InvitationsTableSeeder extends Seeder
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
-            'validity' => Carbon::now()->addMonths(User::DefaultValidity)
+            'validity' => Carbon::now()->addMonths(config('const.users.validity'))
         ]);
 
         // Create user with student enrollment to test invitations
@@ -37,7 +37,7 @@ class InvitationsTableSeeder extends Seeder
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
-            'validity' => Carbon::now()->addMonths(User::DefaultValidity)
+            'validity' => Carbon::now()->addMonths(config('const.users.validity'))
         ]);
 
         // Create course to test invitations

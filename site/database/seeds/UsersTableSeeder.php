@@ -36,7 +36,7 @@ class UsersTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'creator_id' => $admin,
-            'validity' => Carbon::now()->addMonths(User::DefaultValidity)
+            'validity' => Carbon::now()->addMonths(config('const.users.validity'))
         ]);
 
         DB::table('users')->insert([

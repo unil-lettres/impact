@@ -86,7 +86,7 @@
                                                        data-toggle="tooltip"
                                                        data-placement="top"
                                                        class="btn btn-primary"
-                                                       title="{{ trans('users.validity.extend', ['months' => App\User::DefaultValidity]) }}">
+                                                       title="{{ trans('users.validity.extend', ['months' => config('const.users.validity')]) }}">
                                                         <i class="far fa-clock"></i>
                                                     </a>
                                                 </span>

@@ -162,7 +162,7 @@ class ProcessFile implements ShouldQueue
         $ffprobe = FFProbe::create();
         $openFromPathname = $this->fullTempPath . $this->file->filename;
         $saveToPathname = $this->fullStandardPath . $this->fileUploadProcessor
-                ->getFileName($this->file->filename) . '.mp4';
+                ->getFileName($this->file->filename) . '.' . config('const.files.video.extension');
 
         // Transcode to MP4/X264 with FFmpeg
         $video = $ffmpeg
@@ -170,7 +170,10 @@ class ProcessFile implements ShouldQueue
         $video
             ->filters()
             ->resize(
-                new Dimension(640, 480),
+                new Dimension(
+                    config('const.files.video.width'),
+                    config('const.files.video.height')
+                ),
                 ResizeFilter::RESIZEMODE_SCALE_WIDTH
             )
             ->synchronize();
@@ -214,7 +217,7 @@ class ProcessFile implements ShouldQueue
         $ffprobe = FFProbe::create();
         $openFromPathname = $this->fullTempPath . $this->file->filename;
         $saveToPathname = $this->fullStandardPath . $this->fileUploadProcessor
-                ->getFileName($this->file->filename) . '.mp3';
+                ->getFileName($this->file->filename) . '.' . config('const.files.audio.extension');
 
         // Transcode to MP3 with FFmpeg
         $audio = $ffmpeg

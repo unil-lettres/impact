@@ -9,6 +9,9 @@
         <li class="nav-item {{ Route::is('admin.courses*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.courses.manage') }}">{{ trans('admin.spaces') }}</a>
         </li>
+        <li class="nav-item {{ Route::is('admin.files*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.files.manage') }}">{{ trans('admin.files') }}</a>
+        </li>
         <li class="nav-item">
             <a class="nav-link disabled" href="#">{{ trans('admin.mail_managers') }}</a>
         </li>

@@ -6,6 +6,7 @@ use App\Enums\FileStatus;
 use App\File;
 use App\Jobs\ProcessFile;
 use App\Services\FileUploadProcessor;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -18,7 +19,25 @@ class FileController extends Controller
      */
     public function index()
     {
-        //
+        // TODO: add policy
+        // TODO: add logic
+    }
+
+    /**
+     * Display a listing of the resource in the admin panel.
+     *
+     * @return Renderable
+     */
+    public function manage()
+    {
+        // TODO: add policy
+
+        $files = File::orderBy('created_at', 'desc')
+            ->paginate(config('const.pagination.per'));
+
+        return view('files.manage', [
+            'files' => $files
+        ]);
     }
 
     /**
@@ -28,7 +47,8 @@ class FileController extends Controller
      */
     public function create()
     {
-        //
+        // TODO: add policy
+        // TODO: add logic
     }
 
     /**
@@ -39,7 +59,8 @@ class FileController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // TODO: add policy
+        // TODO: add logic
     }
 
     /**
@@ -50,7 +71,8 @@ class FileController extends Controller
      */
     public function show(File $file)
     {
-        //
+        // TODO: add policy
+        // TODO: add logic
     }
 
     /**
@@ -61,7 +83,8 @@ class FileController extends Controller
      */
     public function edit(File $file)
     {
-        //
+        // TODO: add policy
+        // TODO: add logic
     }
 
     /**
@@ -73,7 +96,8 @@ class FileController extends Controller
      */
     public function update(Request $request, File $file)
     {
-        //
+        // TODO: add policy
+        // TODO: add logic
     }
 
     /**
@@ -84,7 +108,8 @@ class FileController extends Controller
      */
     public function destroy(File $file)
     {
-        //
+        // TODO: add policy
+        // TODO: add logic
     }
 
     /**
@@ -97,6 +122,8 @@ class FileController extends Controller
      */
     public function upload(Request $request, FileUploadProcessor $fileUploadProcessor)
     {
+        // TODO: add policy
+
         // Move file to temp storage
         $path = $fileUploadProcessor
             ->moveFileToStoragePath(

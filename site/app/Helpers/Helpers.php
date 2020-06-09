@@ -115,6 +115,17 @@ class Helpers {
     }
 
     /**
+     * Get file url for given filename
+     *
+     * @param string $filename
+     *
+     * @return string
+     */
+    public static function fileUrl(string $filename) {
+        return asset('storage/uploads/files/' . $filename);
+    }
+
+    /**
      * Generate HTML for given breadcrumbs
      *
      * The breadcrumbs parameter should be a Collection and should

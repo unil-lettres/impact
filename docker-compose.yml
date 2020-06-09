@@ -23,9 +23,7 @@ services:
       - impact-net
     container_name: impact-web
   impact-app:
-    build:
-      context: ./dev/
-      dockerfile: app.dockerfile
+    image: unillett/impact:v1.0
     env_file:
       - ./dev/.env
     working_dir: /var/www

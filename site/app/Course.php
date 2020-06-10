@@ -66,6 +66,15 @@ class Course extends Model
     }
 
     /**
+     * Get the files of this course.
+     */
+    public function files()
+    {
+        return $this->hasMany('App\File', 'course_id')
+            ->orderBy('created_at', 'desc');
+    }
+
+    /**
      * Get all the enrollments for a specific role (EnrollmentRole) of this course.
      *
      * @param string $role

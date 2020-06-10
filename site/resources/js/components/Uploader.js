@@ -5,6 +5,7 @@ import French from '@uppy/locales/lib/fr_FR'
 import English from '@uppy/locales/lib/en_US'
 import XHRUpload from '@uppy/xhr-upload';
 import { DashboardModal } from '@uppy/react'
+import DashboardComponent from "@uppy/react/src/Dashboard";
 
 
 export default class Uploader extends Component {
@@ -30,6 +31,7 @@ export default class Uploader extends Component {
         this.maxFileSize = data.maxFileSize ?? 100000000;
         this.maxNumberOfFiles = data.maxNumberOfFiles ?? 1;
         this.allowedFileTypes = data.allowedFileTypes ?? ['audio/*', 'video/*'];
+        this.modal = data.modal ?? false;
     }
 
     initLocale () {
@@ -68,6 +70,18 @@ export default class Uploader extends Component {
             }
         });
 
+        this.uppy.on('upload', (data) => {
+            let course = document.getElementById('course_id').value || null;
+            let card = document.getElementById('card_id').value || null;
+
+            this.uppy.setOptions({
+                meta: {
+                    course: course,
+                    card: card
+                }
+            });
+        });
+
         this.uppy.on('complete', (result) => {
             if(result.successful[0] !== undefined) {
                 console.log(result.successful[0].response.body);
@@ -88,18 +102,30 @@ export default class Uploader extends Component {
     }
 
     render () {
-        return (
-            <div>
-                <button onClick={this.handleOpen}>Media upload</button>
-                <DashboardModal
-                    uppy={this.uppy}
-                    closeModalOnClickOutside
-                    open={this.state.modalOpen}
-                    onRequestClose={this.handleClose}
-                    proudlyDisplayPoweredByUppy={false}
-                />
-            </div>
-        );
+        if(this.modal) {
+            return (
+                <div>
+                    <button onClick={this.handleOpen}>Media upload</button>
+                    <DashboardModal
+                        uppy={this.uppy}
+                        closeModalOnClickOutside
+                        open={this.state.modalOpen}
+                        onRequestClose={this.handleClose}
+                        proudlyDisplayPoweredByUppy={false}
+                    />
+                </div>
+            );
+        } else {
+            return (
+                <div>
+                    <DashboardComponent
+                        uppy={this.uppy}
+                        proudlyDisplayPoweredByUppy={false}
+                        height={250}
+                    />
+                </div>
+            );
+        }
     }
 }
 

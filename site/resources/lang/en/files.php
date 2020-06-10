@@ -2,6 +2,8 @@
 
 return [
 
+    'create' => 'Send files',
+    'select_space' => 'Select the space (optional)',
     'files' => 'Files',
     'name' => 'Name',
     'type' => 'Type',

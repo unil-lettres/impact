@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Card;
+use App\Course;
 use App\Enums\FileStatus;
 use App\File;
 use App\Jobs\ProcessFile;
@@ -43,12 +45,17 @@ class FileController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return Renderable
      */
     public function create()
     {
         // TODO: add policy
-        // TODO: add logic
+
+        $courses = Course::all();
+
+        return view('files.create', [
+            'courses' => $courses
+        ]);
     }
 
     /**
@@ -122,6 +129,11 @@ class FileController extends Controller
      */
     public function upload(Request $request, FileUploadProcessor $fileUploadProcessor)
     {
+        $course = $request->get('course') ?
+            Course::find($request->get('course')) : null;
+        $card = $request->get('card') ?
+            Card::find($request->get('card')) : null;
+
         // TODO: add policy
 
         // Move file to temp storage
@@ -131,22 +143,18 @@ class FileController extends Controller
                 true
             );
 
-        // Get file basic infos
-        $mimeType = $request->file('file')->getMimeType();
-        $filename = $request->file('file')->getClientOriginalName();
-        $size = $request->file('file')->getSize();
+        // Create file draft
+        $file = $this->createFileDraft(
+            $fileUploadProcessor,
+            $request,
+            $path,
+            $course
+        );
 
-        // Create file draft with basic infos
-        $file = File::create([
-            'name' => $fileUploadProcessor
-                ->getFileName($filename),
-            'filename' => $fileUploadProcessor
-                ->getBaseName($path),
-            'status' => FileStatus::Processing,
-            'type' => $fileUploadProcessor
-                ->fileType($mimeType),
-            'size' => $size
-        ]);
+        if($card) {
+            // Optionally link the file to a card
+            $this->updateCard($file, $card);
+        }
 
         // Dispatch created file for async processing
         ProcessFile::dispatch($file);
@@ -154,5 +162,49 @@ class FileController extends Controller
         return response()->json([
             'success' => $file->id
         ], 200);
+    }
+
+    /**
+     * Create file draft with basic infos
+     *
+     * @param FileUploadProcessor $fileUploadProcessor
+     * @param Request $request
+     * @param string $path
+     * @param Course|null $course
+     *
+     * @return File $file
+     */
+    private function createFileDraft(FileUploadProcessor $fileUploadProcessor, Request $request, string $path, ?Course $course) {
+        // Get file basic infos
+        $mimeType = $request->file('file')->getMimeType();
+        $filename = $request->file('file')->getClientOriginalName();
+        $size = $request->file('file')->getSize();
+
+        return File::create([
+            'name' => $fileUploadProcessor
+                ->getFileName($filename),
+            'filename' => $fileUploadProcessor
+                ->getBaseName($path),
+            'status' => FileStatus::Processing,
+            'type' => $fileUploadProcessor
+                ->fileType($mimeType),
+            'size' => $size,
+            'course_id' => $course->id
+        ]);
+    }
+
+    /**
+     * Link the file to a card
+     *
+     * @param File $file
+     * @param Card $card
+     *
+     * @return void
+     */
+    private function updateCard(File $file, Card $card) {
+        $card->update([
+            'file_id' => $file->id
+        ]);
+        $card->save();
     }
 }

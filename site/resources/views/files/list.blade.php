@@ -2,6 +2,10 @@
     <div class="card">
         <div class="card-header">
             <span class="title">{{ trans('files.files') }} <span class="badge badge-secondary">{{ $files->total() }}</span></span>
+            <a href="{{ route('admin.files.create') }}"
+               class="btn btn-primary float-right">
+                {{ trans('files.create') }}
+            </a>
         </div>
         <div class="card-body">
             @if ($files->items())

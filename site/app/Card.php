@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Card extends Model
 {
     protected $fillable = [
-        'title', 'course_id', 'folder_id'
+        'title', 'course_id', 'folder_id', 'file_id'
     ];
 
     /**
@@ -26,6 +26,14 @@ class Card extends Model
     public function folder()
     {
         return $this->hasOne('App\Folder', 'id', 'folder_id');
+    }
+
+    /**
+     * Get the file of this card.
+     */
+    public function file()
+    {
+        return $this->hasOne('App\File', 'id', 'file_id');
     }
 
     /**

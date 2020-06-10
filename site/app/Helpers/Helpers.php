@@ -4,6 +4,8 @@ namespace App\Helpers;
 
 use App\Course;
 use App\Enums\CourseType;
+use App\Enums\FileStatus;
+use App\Enums\FileType;
 use App\Enums\UserType;
 use App\User;
 use Illuminate\Support\Carbon;
@@ -111,6 +113,69 @@ class Helpers {
             case CourseType::Local:
             default:
                 return trans('courses.local');
+        }
+    }
+
+    /**
+     * Get the translated file type
+     *
+     * @param string $type
+     *
+     * @return string
+     */
+    public static function fileType(string $type) {
+        switch ($type) {
+            case FileType::Video:
+                return trans('files.video');
+            case FileType::Audio:
+                return trans('files.audio');
+            case FileType::Document:
+                return trans('files.document');
+            case FileType::Image:
+                return trans('files.image');
+            default:
+                return trans('files.other');
+        }
+    }
+
+    /**
+     * Get the translated file status
+     *
+     * @param string $status
+     *
+     * @return string
+     */
+    public static function fileStatus(string $status) {
+        switch ($status) {
+            case FileStatus::Transcoding:
+                return trans('files.transcoding');
+            case FileStatus::Ready:
+                return trans('files.ready');
+            case FileStatus::Failed:
+                return trans('files.failed');
+            case FileStatus::Processing:
+            default:
+                return trans('files.processing');
+        }
+    }
+
+    /**
+     * Get the file status html badge
+     *
+     * @param string $status
+     *
+     * @return string
+     */
+    public static function fileStatusBadge(string $status) {
+        switch ($status) {
+            case FileStatus::Ready:
+                return '<span class="badge badge-success">' . Helpers::fileStatus($status) . '</span>';
+            case FileStatus::Failed:
+                return '<span class="badge badge-danger">' . Helpers::fileStatus($status) . '</span>';
+            case FileStatus::Transcoding:
+            case FileStatus::Processing:
+            default:
+                return '<span class="badge badge-warning">' . Helpers::fileStatus($status) . '</span>';
         }
     }
 

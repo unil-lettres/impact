@@ -38,31 +38,9 @@ Build & run all the containers for this project.
 
 ``docker-compose up -d``
 
-Install php dependencies.
+Run the setup script.
 
-``docker exec impact-app composer install``
-
-Update the Laravel .env file.
-
-``docker exec impact-app cp .env.example .env``
-
-Update the application key.
-
-``docker exec impact-app php artisan key:generate``
-
-Install js dependencies.
-
-``docker exec impact-app npm install``
-
-``docker exec impact-app npm run dev``
-
-Run migrations.
-
-``docker exec impact-app php artisan migrate --no-interaction --force``
-
-Seeding first user.
-
-``docker exec impact-app php artisan db:seed`` 
+``docker exec impact-app ./setup.sh``
 
 This is only needed when you launch the project for the first time. After that you can simply use the following command from the project root directory.
 
@@ -74,7 +52,6 @@ To access the main application please use the following link.
 
 [http://impact.lan:8787](http://impact.lan:8787)
 
-+ first-user@example.com / password
 + admin-user@example.com / password
 
 ### Telescope
@@ -89,8 +66,9 @@ To access the database please use the following link.
 
 [http://impact.lan:9898](http://impact.lan:9898)
 
-Username: user
-Password: password
++ Server: database
++ Username: user
++ Password: password
 
 ### MailHog
 

@@ -7,6 +7,7 @@ use App\Course;
 use App\Enums\FileStatus;
 use App\File;
 use App\Http\Requests\DestroyFile;
+use App\Http\Requests\EditFile;
 use App\Jobs\ProcessFile;
 use App\Services\FileUploadProcessor;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -76,7 +77,7 @@ class FileController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\File  $file
+     * @param File $file
      * @return \Illuminate\Http\Response
      */
     public function show(File $file)
@@ -88,20 +89,30 @@ class FileController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\File  $file
-     * @return \Illuminate\Http\Response
+     * @param EditFile $user
+     * @param int $id
+     *
+     * @return Renderable
      */
-    public function edit(File $file)
+    public function edit(EditFile $user, int $id)
     {
+        $file = File::find($id);
+
         // TODO: add policy
-        // TODO: add logic
+
+        $courses = Course::all();
+
+        return view('files.edit', [
+            'file' => $file,
+            'courses' => $courses
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\File  $file
+     * @param File $file
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, File $file)

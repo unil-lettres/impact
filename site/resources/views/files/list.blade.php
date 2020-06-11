@@ -23,11 +23,7 @@
                     <tbody>
                     @foreach ($files->items() as $file)
                         <tr>
-                            <td>
-                                <a href="{{ Helpers::fileUrl($file->filename) }}" target="_blank">
-                                    {{ Helpers::truncate($file->name) }}
-                                </a>
-                            </td>
+                            <td>{{ Helpers::truncate($file->name) }}</td>
                             <td>{{ Helpers::fileType($file->type) }}</td>
                             <td>{!! Helpers::fileStatusBadge($file->status) !!}</td>
                             <td>{{ $file->course ? Helpers::truncate($file->course->name) : '-' }}</td>
@@ -42,6 +38,18 @@
                                         <i class="far fa-edit"></i>
                                     </a>
                                 </span>
+                                @if(Helpers::isFileReady($file))
+                                    <span>
+                                        <a href="{{ Helpers::fileUrl($file->filename) }}"
+                                           target="_blank"
+                                           data-toggle="tooltip"
+                                           data-placement="top"
+                                           class="btn btn-primary"
+                                           title="{{ trans('files.url') }}">
+                                            <i class="far fa-share-square"></i>
+                                        </a>
+                                    </span>
+                                @endif
                                 @can('delete', $file)
                                     <span>
                                         <form class="with-delete-confirm" method="post"

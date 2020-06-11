@@ -196,6 +196,8 @@ class ProcessFile implements ShouldQueue
             $this->file->update([
                 'filename' => $this->fileUploadProcessor
                     ->getBaseName($saveToPathname),
+                'size' => $this->fileUploadProcessor
+                    ->getFileSize($saveToPathname),
                 'length' => (int)$videoStream
                     ->get('duration'),
                 'width' => $videoStream
@@ -241,6 +243,8 @@ class ProcessFile implements ShouldQueue
             $this->file->update([
                 'filename' => $this->fileUploadProcessor
                     ->getBaseName($saveToPathname),
+                'size' => $this->fileUploadProcessor
+                    ->getFileSize($saveToPathname),
                 'length' => (int)$audioStream
                     ->get('duration')
             ]);

@@ -7,6 +7,7 @@ use App\Enums\CourseType;
 use App\Enums\FileStatus;
 use App\Enums\FileType;
 use App\Enums\UserType;
+use App\File;
 use App\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -188,6 +189,21 @@ class Helpers {
      */
     public static function fileUrl(string $filename) {
         return asset('storage/uploads/files/' . $filename);
+    }
+
+    /**
+     * Check whether the file is processed and ready
+     *
+     * @param File $file
+     *
+     * @return bool
+     */
+    public static function isFileReady(File $file) {
+        if($file->status === FileStatus::Ready) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

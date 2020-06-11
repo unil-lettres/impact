@@ -121,6 +121,27 @@ class FileUploadProcessor
     }
 
     /**
+     * Get the size of a file.
+     *
+     * @param string $filename
+     * @param bool $isTemp
+     *
+     * @return int
+     */
+    public function getFileSize(string $filename, $isTemp = false)
+    {
+        // Clean filename to keep only the name of the file
+        $cleanedFilename = $this->getBaseName($filename);
+
+        $path = $isTemp ? $this->tempFileStoragePath() : $this->standardFileStoragePath();
+
+        return Storage::disk('public')
+            ->size(
+                $path . '/' . $cleanedFilename
+            );
+    }
+
+    /**
      * Remove file from temp storage.
      *
      * @param string $filename

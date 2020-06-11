@@ -13,7 +13,9 @@ export default class SingleCourseSelect extends Component {
 
         this.state = {
             options: [],
-            selected: null,
+            default: [],
+            selected: [],
+            clearable: false,
         };
 
         Object.keys(data.options).forEach(key=>{
@@ -22,6 +24,16 @@ export default class SingleCourseSelect extends Component {
                 label: data.options[key].name
             });
         });
+
+        if(data.default) {
+            this.state.default.push({
+                value: data.default.id,
+                label: data.default.name
+            });
+        }
+
+        this.state.selected = this.state.default;
+        this.state.clearable = data.clearable ? data.clearable : false;
     }
 
     handleChange = (selectedOption, { action }) => {
@@ -36,6 +48,9 @@ export default class SingleCourseSelect extends Component {
     save(action) {
         if(this.state.selected) {
             document.getElementById(this.props.reference).value = this.state.selected.value;
+        } else {
+            // Clear selected data
+            document.getElementById(this.props.reference).value = '';
         }
     }
 
@@ -43,8 +58,9 @@ export default class SingleCourseSelect extends Component {
         return (
             <Select
                 components={ animatedComponents }
-                isClearable={ false }
+                isClearable={ this.state.clearable }
                 closeMenuOnSelect={ true }
+                defaultValue={ this.state.default }
                 onChange={ this.handleChange }
                 options={ this.state.options }
             />

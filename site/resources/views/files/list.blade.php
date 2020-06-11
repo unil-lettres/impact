@@ -15,6 +15,7 @@
                         <th>{{ trans('files.name') }}</th>
                         <th>{{ trans('files.type') }}</th>
                         <th>{{ trans('files.status') }}</th>
+                        <th>{{ trans('files.space') }}</th>
                         <th>{{ trans('files.created_at') }}</th>
                         <th></th>
                     </tr>
@@ -29,6 +30,7 @@
                             </td>
                             <td>{{ Helpers::fileType($file->type) }}</td>
                             <td>{!! Helpers::fileStatusBadge($file->status) !!}</td>
+                            <td>{{ $file->course ? Helpers::truncate($file->course->name) : '-' }}</td>
                             <td>{{ $file->created_at->format('d/m/Y H:i:s') }}</td>
                             <td class="actions">
                                 <span>
@@ -40,20 +42,22 @@
                                         <i class="far fa-edit"></i>
                                     </a>
                                 </span>
-                                <span>
-                                    <form class="with-delete-confirm" method="post"
-                                          action="{{ route('admin.files.destroy', $file->id) }}">
-                                        @method('DELETE')
-                                        @csrf
-                                        <button type="submit"
-                                                class="btn btn-danger"
-                                                data-toggle="tooltip"
-                                                data-placement="top"
-                                                title="{{ trans('files.delete') }}">
-                                            <i class="far fa-trash-alt"></i>
-                                        </button>
-                                    </form>
-                                </span>
+                                @can('delete', $file)
+                                    <span>
+                                        <form class="with-delete-confirm" method="post"
+                                              action="{{ route('admin.files.destroy', $file->id) }}">
+                                            @method('DELETE')
+                                            @csrf
+                                            <button type="submit"
+                                                    class="btn btn-danger"
+                                                    data-toggle="tooltip"
+                                                    data-placement="top"
+                                                    title="{{ trans('files.delete') }}">
+                                                <i class="far fa-trash-alt"></i>
+                                            </button>
+                                        </form>
+                                    </span>
+                                @endcan
                             </td>
                         </tr>
                     @endforeach

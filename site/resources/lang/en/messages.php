@@ -30,5 +30,6 @@ return [
     'folder.created' => 'Folder created: :title',
     'folder.deleted' => 'Folder deleted.',
     'folder.updated' => 'Folder updated.',
+    'file.deleted' => 'File deleted.',
 
 ];

@@ -137,4 +137,22 @@ class FileUploadProcessor
                 $this->tempFileStoragePath() . '/' . $cleanedFilename
             );
     }
+
+    /**
+     * Remove file from standard storage.
+     *
+     * @param string $filename
+     *
+     * @return boolean
+     */
+    public function removeFileFromStandardStorage(string $filename)
+    {
+        // Clean filename to keep only the name of the file
+        $cleanedFilename = $this->getBaseName($filename);
+
+        return Storage::disk('public')
+            ->delete(
+                $this->standardFileStoragePath() . '/' . $cleanedFilename
+            );
+    }
 }

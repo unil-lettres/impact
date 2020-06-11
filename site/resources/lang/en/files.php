@@ -8,6 +8,7 @@ return [
     'name' => 'Name',
     'type' => 'Type',
     'status' => 'Status',
+    'space' => 'Space',
     'created_at' => 'Creation date',
     'edit' => 'Edit the file',
     'delete' => 'Delete the file',

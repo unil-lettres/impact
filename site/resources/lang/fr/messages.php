@@ -30,5 +30,6 @@ return [
     'folder.created' => 'Dossier créé: :title',
     'folder.deleted' => 'Dossier supprimé.',
     'folder.updated' => 'Dossier mis à jour.',
+    'file.deleted' => 'Fichier supprimé.',
 
 ];

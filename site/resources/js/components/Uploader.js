@@ -71,8 +71,10 @@ export default class Uploader extends Component {
         });
 
         this.uppy.on('upload', (data) => {
-            let course = document.getElementById('course_id').value || null;
-            let card = document.getElementById('card_id').value || null;
+            let course = document.getElementById('course_id') ?
+                document.getElementById('course_id').value : null;
+            let card = document.getElementById('card_id') ?
+                document.getElementById('card_id').value : null;
 
             this.uppy.setOptions({
                 meta: {
@@ -121,7 +123,7 @@ export default class Uploader extends Component {
                     <DashboardComponent
                         uppy={this.uppy}
                         proudlyDisplayPoweredByUppy={false}
-                        height={250}
+                        height={360}
                     />
                 </div>
             );

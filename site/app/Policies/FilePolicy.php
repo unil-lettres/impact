@@ -82,6 +82,21 @@ class FilePolicy
      */
     public function delete(User $user, File $file)
     {
-        // TODO: add logic
+        // The file cannot be deleted if linked to a card
+        if ($file->cards->isNotEmpty()) {
+            return false;
+        }
+
+        if ($user->admin) {
+            return true;
+        }
+
+        // If the file is linked to a course, then only
+        // the teachers of the course can delete the file
+        if ($file->course && $user->isTeacher($file->course)) {
+            return true;
+        }
+
+        return false;
     }
 }

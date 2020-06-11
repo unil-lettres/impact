@@ -6,10 +6,13 @@ use App\Card;
 use App\Course;
 use App\Enums\FileStatus;
 use App\File;
+use App\Http\Requests\DestroyFile;
 use App\Jobs\ProcessFile;
 use App\Services\FileUploadProcessor;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class FileController extends Controller
@@ -110,13 +113,26 @@ class FileController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\File  $file
-     * @return \Illuminate\Http\Response
+     * @param DestroyFile $request
+     * @param int $id
+     *
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function destroy(File $file)
+    public function destroy(DestroyFile $request, int $id)
     {
-        // TODO: add policy
-        // TODO: add logic
+        $file = File::find($id);
+
+        $this->authorize('delete', $file);
+
+        // Delete the record
+        $file->delete();
+
+        // Then the binary file will be deleted in the FileObserver "deleted" event
+
+        return redirect()
+            ->back()
+            ->with('success', trans('messages.file.deleted'));
     }
 
     /**
@@ -156,7 +172,7 @@ class FileController extends Controller
             $this->updateCard($file, $card);
         }
 
-        // Dispatch created file for async processing
+        // Dispatch record for async file processing
         ProcessFile::dispatch($file);
 
         return response()->json([
@@ -180,6 +196,8 @@ class FileController extends Controller
         $filename = $request->file('file')->getClientOriginalName();
         $size = $request->file('file')->getSize();
 
+        $course_id = $course ? $course->id : null;
+
         return File::create([
             'name' => $fileUploadProcessor
                 ->getFileName($filename),
@@ -189,7 +207,7 @@ class FileController extends Controller
             'type' => $fileUploadProcessor
                 ->fileType($mimeType),
             'size' => $size,
-            'course_id' => $course->id
+            'course_id' => $course_id
         ]);
     }
 

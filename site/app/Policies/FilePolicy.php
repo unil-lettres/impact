@@ -2,9 +2,11 @@
 
 namespace App\Policies;
 
+use App\Enums\FileStatus;
 use App\File;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use Illuminate\Support\Str;
 
 class FilePolicy
 {
@@ -84,6 +86,11 @@ class FilePolicy
     {
         // The file cannot be deleted if linked to a card
         if ($file->cards->isNotEmpty()) {
+            return false;
+        }
+
+        // The file cannot be deleted if status is "processing" or "transcoding"
+        if (Str::contains($file->status, [FileStatus::Processing, FileStatus::Transcoding])) {
             return false;
         }
 

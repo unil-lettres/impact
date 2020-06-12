@@ -26,9 +26,6 @@
                                 <td>{{ $invitation->created_at->format('d/m/Y H:i:s') }}</td>
                                 <td>
                                     {{ Helpers::truncate($invitation->course->name) }}
-                                    @unless ($invitation->course->isActive())
-                                        <span class="badge badge-danger">{{ trans('courses.disabled') }}</span>
-                                    @endunless
                                 </td>
                                 <td class="actions">
                                     @can('view', $invitation)
@@ -53,7 +50,7 @@
                                                 </a>
                                             </span>
                                     @endcan
-                                    @can('delete', $invitation)
+                                    @can('forceDelete', $invitation)
                                         <span>
                                                 <form class="with-delete-confirm" method="post"
                                                       action="{{ route('invitations.destroy', $invitation->id) }}">

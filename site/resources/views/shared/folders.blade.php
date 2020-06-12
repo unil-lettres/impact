@@ -3,7 +3,7 @@
         @foreach ($folders as $folder)
             <li>
                 <a href="{{ route('folders.show', $folder->id) }}">[-]{{ $folder->title }}</a>
-                @can('delete', $folder)
+                @can('forceDelete', $folder)
                     <form class="with-delete-confirm" method="post" style="display: inline;"
                           action="{{ route('folders.destroy', $folder->id) }}">
                         @method('DELETE')

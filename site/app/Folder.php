@@ -3,11 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Folder extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'title', 'position', 'course_id', 'parent_id'
+    ];
+
+    protected $dates = [
+        'deleted_at'
     ];
 
     /**
@@ -15,8 +22,7 @@ class Folder extends Model
      */
     public function course()
     {
-        return $this->hasOne('App\Course', 'id', 'course_id')
-            ->withTrashed();
+        return $this->hasOne('App\Course', 'id', 'course_id');
     }
 
     /**
@@ -43,15 +49,6 @@ class Folder extends Model
     {
         return $this->hasMany('App\Card', 'folder_id')
             ->orderBy('created_at', 'desc');
-    }
-
-    /**
-     * Check whether the current folder is part of an active course or not
-     *
-     * @return boolean
-     */
-    public function isActive() {
-        return $this->course->trashed() ? false : true;
     }
 
     /**

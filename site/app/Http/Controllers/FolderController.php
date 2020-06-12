@@ -192,9 +192,9 @@ class FolderController extends Controller
         $folder = Folder::find($id);
         $course = $folder->course;
 
-        $this->authorize('delete', $folder);
+        $this->authorize('forceDelete', $folder);
 
-        $folder->delete();
+        $folder->forceDelete();
 
         return redirect()
             ->route('courses.show', $course->id)

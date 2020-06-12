@@ -127,46 +127,4 @@ class UserPolicy
 
         return false;
     }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param  User  $user
-     * @param  User  $model
-     *
-     * @return mixed
-     */
-    public function restore(User $user, User $model)
-    {
-        if ($user->id === $model->id) {
-            return false;
-        }
-
-        if ($user->admin) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param  User  $user
-     * @param  User  $model
-     *
-     * @return mixed
-     */
-    public function forceDelete(User $user, User $model)
-    {
-        if ($user->id === $model->id) {
-            return false;
-        }
-
-        if ($user->admin) {
-            return true;
-        }
-
-        return false;
-    }
 }

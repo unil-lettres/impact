@@ -136,16 +136,18 @@
                             @endif
                             @can('delete', $user)
                                 <div class="form-group row">
-                                    <label for="admin" class="col-md-4 col-form-label">
+                                    <label for="admin" class="col-md-4">
                                         {{ trans('users.admin') }}
                                     </label>
                                     <div class="col-md-8">
-                                        <input id="admin"
-                                               type="checkbox"
-                                               name="admin"
-                                               {{ old('admin', $user->admin) ? 'checked' : '' }}
-                                               class="form-control"
-                                        >
+                                        <div class="form-check">
+                                            <input id="admin"
+                                                   type="checkbox"
+                                                   name="admin"
+                                                   {{ old('admin', $user->admin) ? 'checked' : '' }}
+                                                   class="form-check-input"
+                                            >
+                                        </div>
                                     </div>
                                 </div>
                             @endcan

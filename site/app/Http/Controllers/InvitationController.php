@@ -168,9 +168,9 @@ class InvitationController extends Controller
      */
     public function destroy(Invitation $invitation)
     {
-        $this->authorize('delete', $invitation);
+        $this->authorize('forceDelete', $invitation);
 
-        $invitation->delete();
+        $invitation->forceDelete();
 
         return redirect()->back()
             ->with('success', trans('messages.invitation.deleted'));

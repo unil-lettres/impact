@@ -25,7 +25,14 @@ class HasInvitation
 
         // Check for a matching record in the db
         try {
-            $invitation = Invitation::where('invitation_token', $request->input('token'))->firstOrFail();
+            $invitation = Invitation::withTrashed()
+                ->where('invitation_token', $request->input('token'))
+                ->firstOrFail();
+
+            if($invitation->trashed()) {
+                return redirect('/login')
+                    ->with('error', trans('messages.invitation.disabled.course'));
+            }
         } catch (ModelNotFoundException $e) {
             return redirect('/login')
                 ->with('error', trans('messages.invitation.wrong.token'));

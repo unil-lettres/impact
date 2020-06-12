@@ -16,7 +16,11 @@ class FileObserver
      */
     public function deleted(File $file)
     {
-        $fileUploadProcessor = new FileUploadProcessor();
-        $fileUploadProcessor->removeFileFromStandardStorage($file->filename);
+        if($file->isForceDeleting()) {
+            // Remove the binary file associated with the file record
+            $fileUploadProcessor = new FileUploadProcessor();
+            $fileUploadProcessor
+                ->removeFileFromStandardStorage($file->filename);
+        }
     }
 }

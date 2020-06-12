@@ -4,11 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Card extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'title', 'course_id', 'folder_id', 'file_id'
+    ];
+
+    protected $dates = [
+        'deleted_at'
     ];
 
     /**
@@ -16,8 +23,7 @@ class Card extends Model
      */
     public function course()
     {
-        return $this->hasOne('App\Course', 'id', 'course_id')
-            ->withTrashed();
+        return $this->hasOne('App\Course', 'id', 'course_id');
     }
 
     /**
@@ -51,15 +57,6 @@ class Card extends Model
         return $enrollments->map(function ($enrollment) {
             return $enrollment->user;
         });
-    }
-
-    /**
-     * Check whether the current card is part of an active course or not
-     *
-     * @return boolean
-     */
-    public function isActive() {
-        return $this->course->trashed() ? false : true;
     }
 
     /**

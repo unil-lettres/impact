@@ -2,11 +2,14 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 class Enrollment extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'role', 'course_id', 'user_id', 'cards',
     ];
@@ -15,13 +18,16 @@ class Enrollment extends Model
         'cards' => 'array',
     ];
 
+    protected $dates = [
+        'deleted_at'
+    ];
+
     /**
      * Get the course of this enrollment.
      */
     public function course()
     {
-        return $this->hasOne('App\Course', 'id', 'course_id')
-            ->withTrashed();
+        return $this->hasOne('App\Course', 'id', 'course_id');
     }
 
     /**

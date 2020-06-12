@@ -135,10 +135,10 @@ class FileController extends Controller
     {
         $file = File::find($id);
 
-        $this->authorize('delete', $file);
+        $this->authorize('forceDelete', $file);
 
         // Delete the record
-        $file->delete();
+        $file->forceDelete();
 
         // Then the binary file will be deleted in the FileObserver "deleted" event
 

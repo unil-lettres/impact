@@ -161,10 +161,10 @@ class EnrollmentController extends Controller
     {
         $enrollment = Enrollment::find($id);
 
-        $this->authorize('delete', $enrollment);
+        $this->authorize('forceDelete', $enrollment);
 
         return response()->json([
-            'success' => $enrollment->delete() ?? false
+            'success' => $enrollment->forceDelete() ?? false
         ]);
     }
 }

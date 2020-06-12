@@ -39,11 +39,6 @@ class CardPolicy
     {
         // TODO: update policy when states are added to the card
 
-        // Only cards within an active course can be accessed
-        if(!$card->isActive()) {
-            return false;
-        }
-
         if ($user->admin) {
             return true;
         }
@@ -66,11 +61,6 @@ class CardPolicy
      */
     public function create(User $user, Course $course)
     {
-        // Only cards within an active course can be accessed
-        if($course->trashed()) {
-            return false;
-        }
-
         if ($user->admin) {
             return true;
         }
@@ -95,11 +85,6 @@ class CardPolicy
     {
         // TODO: update policy when states are added to the card
 
-        // Only cards within an active course can be accessed
-        if(!$card->isActive()) {
-            return false;
-        }
-
         if ($user->admin) {
             return true;
         }
@@ -113,20 +98,15 @@ class CardPolicy
     }
 
     /**
-     * Determine whether the user can delete the card.
+     * Determine whether the user can forceDelete the card.
      *
      * @param User $user
      * @param Card $card
      *
      * @return mixed
      */
-    public function delete(User $user, Card $card)
+    public function forceDelete(User $user, Card $card)
     {
-        // Only cards within an active course can be accessed
-        if(!$card->isActive()) {
-            return false;
-        }
-
         if ($user->admin) {
             return true;
         }
@@ -149,11 +129,6 @@ class CardPolicy
      */
     public function unlinkFile(User $user, Card $card)
     {
-        // Only cards within an active course can be accessed
-        if(!$card->isActive()) {
-            return false;
-        }
-
         if ($user->admin) {
             return true;
         }

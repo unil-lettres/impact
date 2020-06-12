@@ -50,7 +50,7 @@
                                         </a>
                                     </span>
                                 @endif
-                                @can('delete', $file)
+                                @can('forceDelete', $file)
                                     <span>
                                         <form class="with-delete-confirm" method="post"
                                               action="{{ route('admin.files.destroy', $file->id) }}">

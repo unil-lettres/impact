@@ -3,11 +3,18 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Invitation extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'email', 'invitation_token', 'registered_at',
+    ];
+
+    protected $dates = [
+        'deleted_at'
     ];
 
     /**
@@ -23,8 +30,7 @@ class Invitation extends Model
      */
     public function course()
     {
-        return $this->hasOne('App\Course', 'id', 'course_id')
-            ->withTrashed();
+        return $this->hasOne('App\Course', 'id', 'course_id');
     }
 
     /**

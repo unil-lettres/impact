@@ -7,6 +7,7 @@ return [
     'confirm.unlink' => 'Are you sure you want to dissociate this item ?',
     'invitation.created' => 'Invitation created. An email was sent to the recipient.',
     'invitation.deleted' => 'Invitation deleted.',
+    'invitation.disabled.course' => 'The space associated with your invitation is disabled.',
     'invitation.wrong.token' => 'Wrong invitation token.',
     'invitation.already.used' => 'The invitation link has already been used.',
     'invitation.sent' => 'Invitation mail sent to :mail',

@@ -37,11 +37,6 @@ class FolderPolicy
      */
     public function view(User $user, Folder $folder)
     {
-        // Only folders within an active course can be accessed
-        if(!$folder->isActive()) {
-            return false;
-        }
-
         if ($user->admin) {
             return true;
         }
@@ -64,11 +59,6 @@ class FolderPolicy
      */
     public function create(User $user, Course $course)
     {
-        // Only folders within an active course can be accessed
-        if($course->trashed()) {
-            return false;
-        }
-
         if ($user->admin) {
             return true;
         }
@@ -91,11 +81,6 @@ class FolderPolicy
      */
     public function update(User $user, Folder $folder)
     {
-        // Only folders within an active course can be accessed
-        if(!$folder->isActive()) {
-            return false;
-        }
-
         if ($user->admin) {
             return true;
         }
@@ -109,20 +94,15 @@ class FolderPolicy
     }
 
     /**
-     * Determine whether the user can delete the folder.
+     * Determine whether the user can forceDelete the folder.
      *
      * @param User $user
      * @param Folder $folder
      *
      * @return mixed
      */
-    public function delete(User $user, Folder $folder)
+    public function forceDelete(User $user, Folder $folder)
     {
-        // Only folders within an active course can be accessed
-        if(!$folder->isActive()) {
-            return false;
-        }
-
         if ($user->admin) {
             return true;
         }
@@ -147,11 +127,6 @@ class FolderPolicy
      */
     public function select(User $user, Course $course, Folder $selected, Folder $folder = null)
     {
-        // Only folders within an active course can be selected
-        if(!$selected->isActive()) {
-            return false;
-        }
-
         // Only folders within the course can be selected
         if($selected->course->id !== $course->id) {
             return false;

@@ -4,7 +4,7 @@
             @can('view', $card)
                 <li>
                     <a href="{{ route('cards.show', $card->id) }}">{{ $card->title }}</a>
-                    @can('delete', $card)
+                    @can('forceDelete', $card)
                         <form class="with-delete-confirm" method="post" style="display: inline;"
                               action="{{ route('cards.destroy', $card->id) }}">
                             @method('DELETE')

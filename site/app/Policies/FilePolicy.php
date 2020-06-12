@@ -73,14 +73,14 @@ class FilePolicy
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * Determine whether the user can forceDelete the model.
      *
      * @param User $user
      * @param File $file
      *
      * @return mixed
      */
-    public function delete(User $user, File $file)
+    public function forceDelete(User $user, File $file)
     {
         // The file cannot be deleted if linked to a card
         if ($file->cards->isNotEmpty()) {

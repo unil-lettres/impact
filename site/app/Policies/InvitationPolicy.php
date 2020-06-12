@@ -106,40 +106,6 @@ class InvitationPolicy
     }
 
     /**
-     * Determine whether the user can delete the invitation.
-     *
-     * @param User $user
-     * @param Invitation $invitation
-     *
-     * @return mixed
-     */
-    public function delete(User $user, Invitation $invitation)
-    {
-        if($invitation->registered_at) {
-            return false;
-        }
-
-        return $user->id === $invitation->creator_id;
-    }
-
-    /**
-     * Determine whether the user can restore the invitation.
-     *
-     * @param User $user
-     * @param Invitation $invitation
-     *
-     * @return mixed
-     */
-    public function restore(User $user, Invitation $invitation)
-    {
-        if($invitation->registered_at) {
-            return false;
-        }
-
-        return $user->id === $invitation->creator_id;
-    }
-
-    /**
      * Determine whether the user can permanently delete the invitation.
      *
      * @param User $user

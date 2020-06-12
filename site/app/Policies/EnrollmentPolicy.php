@@ -96,14 +96,14 @@ class EnrollmentPolicy
     }
 
     /**
-     * Determine whether the user can delete the enrollment.
+     * Determine whether the user can forceDelete the enrollment.
      *
      * @param User $user
      * @param Enrollment $enrollment
      *
      * @return mixed
      */
-    public function delete(User $user, Enrollment $enrollment)
+    public function forceDelete(User $user, Enrollment $enrollment)
     {
         return $user->admin;
     }

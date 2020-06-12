@@ -164,9 +164,9 @@ class CardController extends Controller
         $card = Card::find($id);
         $course = $card->course;
 
-        $this->authorize('delete', $card);
+        $this->authorize('forceDelete', $card);
 
-        $card->delete();
+        $card->forceDelete();
 
         return redirect()
             ->route('courses.show', $course->id)

@@ -6,6 +6,7 @@ return [
     'cards' => 'Fiches',
     'create' => 'Créer une fiche',
     'delete' => 'supprimer',
+    'unlink' => 'dissocier',
     'not_found' => 'Aucune fiche trouvée',
     'my_cards' => 'Mes fiches',
     'editors' => 'Rédacteurs',

@@ -193,6 +193,7 @@ class CourseController extends Controller
             'name' => $request->get('name'),
             'description' => $request->get('description')
         ]);
+        $course->save();
 
         return redirect()
             ->back()

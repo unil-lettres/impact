@@ -4,6 +4,7 @@ return [
 
     'confirm.delete' => 'Êtes-vous sûr de vouloir supprimer cet élément ?',
     'confirm.disable' => 'Êtes-vous sûr de vouloir désactiver cet élément ?',
+    'confirm.unlink' => 'Êtes-vous sûr de vouloir dissocier cet élément ?',
     'invitation.created' => 'Invitation créée. Un email à été envoyé au destinataire.',
     'invitation.deleted' => 'Invitation supprimée.',
     'invitation.wrong.token' => 'Mauvais jeton d\'invitation.',
@@ -26,6 +27,7 @@ return [
     'course.delete_confirm.sent' => 'Mail de demande de confirmation envoyé aux responsables.',
     'card.created' => 'Fiche créée: :title',
     'card.deleted' => 'Fiche supprimée.',
+    'card.unlinked' => 'Card dissociée.',
     'card.configuration.updated' => 'Configuration de la fiche mise à jour.',
     'folder.created' => 'Dossier créé: :title',
     'folder.deleted' => 'Dossier supprimé.',

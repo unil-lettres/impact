@@ -164,7 +164,10 @@ class User extends Authenticatable
             Carbon::now()->addMonths($months) :
             Carbon::instance($this->validity)->addMonths($months);
 
-        $this->update([ 'validity' => $this->skipAdmins($validity)]);
+        $this->update([
+            'validity' => $this->skipAdmins($validity)
+        ]);
+        $this->save();
 
         return $this->validity;
     }
@@ -178,7 +181,10 @@ class User extends Authenticatable
      */
     public function defineValidity(DateTime $validity)
     {
-        $this->update([ 'validity' => $this->skipAdmins($validity)]);
+        $this->update([
+            'validity' => $this->skipAdmins($validity)]
+        );
+        $this->save();
 
         return $this->validity;
     }

@@ -7,6 +7,10 @@
         return confirm('{{ trans('messages.confirm.disable') }}');
     });
 
+    $(".with-unlink-confirm").on("submit", function(){
+        return confirm('{{ trans('messages.confirm.unlink') }}');
+    });
+
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     });

@@ -3,7 +3,7 @@
 @section('admin.content')
     <div id="edit-file">
         <div class="row">
-            <div class="col-md-12 col-lg-7">
+            <div class="col-md-12 col-lg-8">
                 @if ($errors->any())
                     <div class="alert alert-danger">
                         <ul>
@@ -55,7 +55,7 @@
                                     <input id="course_id" name="course" type="hidden" value="{{ $file->course ? $file->course->id : '' }}">
                                     <div id="rct-single-course-select"
                                          reference="course_id"
-                                         data='{{ json_encode(['options' => $courses, 'default' => $file->course, 'clearable' => true]) }}'
+                                         data='{{ json_encode(['options' => $courses, 'default' => $file->course, 'clearable' => true, 'disabled' => $cards->isNotEmpty()]) }}'
                                     ></div>
                                 </div>
                             </div>
@@ -183,13 +183,40 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-12 col-lg-5">
+            <div class="col-md-12 col-lg-4">
                 <div class="card">
                     <div class="card-header">
-                        <span class="title">Fiches</span>
+                        <span class="title">{{ trans('cards.cards') }}</span>
                     </div>
                     <div class="card-body">
-                        <!-- TODO: manage linked cards -->
+                        @if($cards->isNotEmpty())
+                            <ul>
+                                @foreach ($cards as $card)
+                                    <li>
+                                        <a href="{{ route('cards.show', $card->id) }}">
+                                            {{ $card->title }}
+                                        </a>
+
+                                        @can('unlinkFile', $card)
+                                            <form class="with-unlink-confirm" method="post" style="display: inline;"
+                                                  action="{{ route('cards.unlink.file', $card->id) }}">
+                                                @method('PUT')
+                                                @csrf
+                                                <button type="submit"
+                                                        class="btn btn-link"
+                                                        style="color: red; padding: 0;">
+                                                    ({{ trans('cards.unlink') }})
+                                                </button>
+                                            </form>
+                                        @endcan
+                                    </li>
+                                @endforeach
+                            </ul>
+                        @else
+                            <p class="text-secondary">
+                                {{ trans('cards.not_found') }}
+                            </p>
+                        @endif
                     </div>
                 </div>
             </div>

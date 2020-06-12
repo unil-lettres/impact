@@ -100,11 +100,12 @@ class FileController extends Controller
 
         // TODO: add policy
 
-        $courses = Course::all();
-
         return view('files.edit', [
             'file' => $file,
-            'courses' => $courses
+            'courses' => Course::all(),
+            'cards' => $file
+                ->cards()
+                ->get()
         ]);
     }
 

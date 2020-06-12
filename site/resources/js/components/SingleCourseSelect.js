@@ -15,7 +15,10 @@ export default class SingleCourseSelect extends Component {
             options: [],
             default: [],
             selected: [],
-            clearable: false,
+            clearable: data.clearable ?
+                data.clearable : false,
+            disabled: data.disabled ?
+                data.disabled : false,
         };
 
         Object.keys(data.options).forEach(key=>{
@@ -60,6 +63,7 @@ export default class SingleCourseSelect extends Component {
                 components={ animatedComponents }
                 isClearable={ this.state.clearable }
                 closeMenuOnSelect={ true }
+                isDisabled={ this.state.disabled }
                 defaultValue={ this.state.default }
                 onChange={ this.handleChange }
                 options={ this.state.options }

@@ -40,6 +40,7 @@ Route::middleware(['auth', 'app'])->group(function () {
 
     // Cards
     Route::resource('cards', 'CardController');
+    Route::put('cards/{card}/unlink/file', 'CardController@unlinkFile')->name('cards.unlink.file');
 
     // Folders
     Route::resource('folders', 'FolderController');

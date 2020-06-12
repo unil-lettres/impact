@@ -6,6 +6,7 @@ return [
     'cards' => 'Cards',
     'create' => 'Create a card',
     'delete' => 'delete',
+    'unlink' => 'dissociate',
     'not_found' => 'No cards found',
     'my_cards' => 'My cards',
     'configure' => 'Card configuration',

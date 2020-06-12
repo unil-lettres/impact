@@ -4,6 +4,7 @@ return [
 
     'confirm.delete' => 'Are you sure you want to delete this item ?',
     'confirm.disable' => 'Are you sure you want to disable this item ?',
+    'confirm.unlink' => 'Are you sure you want to dissociate this item ?',
     'invitation.created' => 'Invitation created. An email was sent to the recipient.',
     'invitation.deleted' => 'Invitation deleted.',
     'invitation.wrong.token' => 'Wrong invitation token.',
@@ -26,6 +27,7 @@ return [
     'course.delete_confirm.sent' => 'Confirmation request mail sent to the managers.',
     'card.created' => 'Card created: :title',
     'card.deleted' => 'Card deleted.',
+    'card.unlinked' => 'Card dissociated.',
     'card.configuration.updated' => 'Card configuration updated',
     'folder.created' => 'Folder created: :title',
     'folder.deleted' => 'Folder deleted.',

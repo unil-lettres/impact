@@ -172,4 +172,26 @@ class CardController extends Controller
             ->route('courses.show', $course->id)
             ->with('success', trans('messages.card.deleted'));
     }
+
+    /**
+     * Unlink file from the specified resource.
+     *
+     * @param Card $card
+     *
+     * @return RedirectResponse
+     * @throws AuthorizationException
+     */
+    public function unlinkFile(Card $card)
+    {
+        $this->authorize('unlinkFile', $card);
+
+        $card->update([
+            'file_id' => null
+        ]);
+        $card->save();
+
+        return redirect()
+            ->back()
+            ->with('success', trans('messages.card.unlinked'));
+    }
 }

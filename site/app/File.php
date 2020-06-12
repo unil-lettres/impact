@@ -32,4 +32,13 @@ class File extends Model
         return $this->hasMany('App\Card', 'file_id')
             ->orderBy('created_at', 'desc');
     }
+
+    /**
+     * Check whether the current file is part of an active course or not
+     *
+     * @return boolean
+     */
+    public function isActive() {
+        return $this->course->trashed() ? false : true;
+    }
 }

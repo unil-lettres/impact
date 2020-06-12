@@ -138,4 +138,31 @@ class CardPolicy
 
         return false;
     }
+
+    /**
+     * Determine whether the user can unlink a file from the card
+     *
+     * @param User $user
+     * @param Card $card
+     *
+     * @return mixed
+     */
+    public function unlinkFile(User $user, Card $card)
+    {
+        // Only cards within an active course can be accessed
+        if(!$card->isActive()) {
+            return false;
+        }
+
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers of the course can unlink files
+        if ($user->isTeacher($card->course)) {
+            return true;
+        }
+
+        return false;
+    }
 }

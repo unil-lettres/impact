@@ -8,6 +8,7 @@ use App\Enums\FileStatus;
 use App\File;
 use App\Http\Requests\DestroyFile;
 use App\Http\Requests\EditFile;
+use App\Http\Requests\UpdateFile;
 use App\Jobs\ProcessFile;
 use App\Services\FileUploadProcessor;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -25,7 +26,8 @@ class FileController extends Controller
      */
     public function index()
     {
-        // TODO: add policy
+        $this->authorize('viewAny', File::class);
+
         // TODO: add logic
     }
 
@@ -33,16 +35,18 @@ class FileController extends Controller
      * Display a listing of the resource in the admin panel.
      *
      * @return Renderable
+     * @throws AuthorizationException
      */
     public function manage()
     {
-        // TODO: add policy
+        $this->authorize('manage', File::class);
 
         $files = File::orderBy('created_at', 'desc')
             ->paginate(config('const.pagination.per'));
 
         return view('files.manage', [
-            'files' => $files
+            'files' => $files,
+            'course' => null
         ]);
     }
 
@@ -50,40 +54,23 @@ class FileController extends Controller
      * Show the form for creating a new resource.
      *
      * @return Renderable
+     * @throws AuthorizationException
      */
     public function create()
     {
-        // TODO: add policy
+        // TODO: update logic & expand to teachers
+
+        $this->authorize('create', [
+            File::class,
+            null
+        ]);
 
         $courses = Course::all();
 
         return view('files.create', [
-            'courses' => $courses
+            'courses' => $courses,
+            'course' => null
         ]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        // TODO: add policy
-        // TODO: add logic
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param File $file
-     * @return \Illuminate\Http\Response
-     */
-    public function show(File $file)
-    {
-        // TODO: add policy
-        // TODO: add logic
     }
 
     /**
@@ -93,12 +80,13 @@ class FileController extends Controller
      * @param int $id
      *
      * @return Renderable
+     * @throws AuthorizationException
      */
     public function edit(EditFile $user, int $id)
     {
         $file = File::find($id);
 
-        // TODO: add policy
+        $this->authorize('update', $file);
 
         return view('files.edit', [
             'file' => $file,
@@ -112,14 +100,49 @@ class FileController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param File $file
-     * @return \Illuminate\Http\Response
+     * @param UpdateFile $request
+     * @param int $id
+     *
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function update(Request $request, File $file)
+    public function update(UpdateFile $request, int $id)
     {
-        // TODO: add policy
-        // TODO: add logic
+        $file = File::find($id);
+
+        $this->authorize('update', $file);
+
+        $file->update([
+            'name' => $request->get('name'),
+        ]);
+
+        // The file can be linked to a(nother) course only
+        // if not already linked to card(s)
+        if($file->cards->isEmpty()) {
+            $course = $request->get('course') ?
+                Course::findOrFail($request->get('course')) : null;
+
+            if($course) {
+                // Determine whether the user can move the file to a specific course
+                $this->authorize('move', [
+                    File::class,
+                    $file,
+                    $course,
+                ]);
+
+                $course = $course->id;
+            }
+
+            $file->update([
+                'course_id' => $course
+            ]);
+        }
+
+        $file->save();
+
+        return redirect()
+            ->back()
+            ->with('success', trans('messages.file.updated'));
     }
 
     /**
@@ -154,6 +177,7 @@ class FileController extends Controller
      * @param FileUploadProcessor $fileUploadProcessor
      *
      * @return JsonResponse
+     * @throws AuthorizationException
      */
     public function upload(Request $request, FileUploadProcessor $fileUploadProcessor)
     {
@@ -162,7 +186,11 @@ class FileController extends Controller
         $card = $request->get('card') ?
             Card::find($request->get('card')) : null;
 
-        // TODO: add policy
+        $this->authorize('upload', [
+            File::class,
+            $course,
+            $card
+        ]);
 
         // Move file to temp storage
         $path = $fileUploadProcessor

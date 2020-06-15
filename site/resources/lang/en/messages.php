@@ -34,5 +34,6 @@ return [
     'folder.deleted' => 'Folder deleted.',
     'folder.updated' => 'Folder updated.',
     'file.deleted' => 'File deleted.',
+    'file.updated' => 'File updated.',
 
 ];

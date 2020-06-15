@@ -34,5 +34,6 @@ return [
     'folder.deleted' => 'Dossier supprimé.',
     'folder.updated' => 'Dossier mis à jour.',
     'file.deleted' => 'Fichier supprimé.',
+    'file.updated' => 'Fichier mis à jour.',
 
 ];

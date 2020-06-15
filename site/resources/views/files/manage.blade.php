@@ -1,5 +1,7 @@
 @extends('layouts.app-admin')
 
 @section('admin.content')
-    @include('files.list')
+    @can('manage', \App\File::class)
+        @include('files.list')
+    @endcan
 @endsection

@@ -9,5 +9,15 @@
             font-size: 1em;
             margin-bottom: 20px;
         }
+        .ready {
+            color: green !important;
+        }
+        .processing,
+        .transcoding {
+            color: orange;
+        }
+        .error {
+            color: red;
+        }
     }
 }

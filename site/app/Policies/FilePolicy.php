@@ -2,6 +2,8 @@
 
 namespace App\Policies;
 
+use App\Card;
+use App\Course;
 use App\Enums\FileStatus;
 use App\File;
 use App\User;
@@ -16,12 +18,27 @@ class FilePolicy
      * Determine whether the user can view any models.
      *
      * @param User $user
+     * @param Course $course
      *
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user, Course $course)
     {
-        // TODO: add logic
+        if ($user->admin) {
+            return true;
+        }
+
+        // The listing of the files cannot be viewed if not within a course
+        if (!$course) {
+            return false;
+        }
+
+        // Only the teachers of the course can view the listing of the files
+        if ($user->isTeacher($course)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -33,7 +50,11 @@ class FilePolicy
      */
     public function manage(User $user)
     {
-        // TODO: add logic
+        if ($user->admin) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -46,19 +67,48 @@ class FilePolicy
      */
     public function view(User $user, File $file)
     {
-        // TODO: add logic
+        if ($user->admin) {
+            return true;
+        }
+
+        // The file cannot be viewed if not linked to a course
+        if (!$file->course) {
+            return false;
+        }
+
+        // Only the teachers of the linked course can view the file
+        if ($user->isTeacher($file->course)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can view the file create form.
      *
      * @param User $user
+     * @param Course|null $course
      *
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, ?Course $course)
     {
-        // TODO: add logic
+        if ($user->admin) {
+            return true;
+        }
+
+        // The file create form cannot be viewed if not within a course
+        if (!$course) {
+            return false;
+        }
+
+        // Only the teachers of the course can view the file create form
+        if ($user->isTeacher($course)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -71,7 +121,21 @@ class FilePolicy
      */
     public function update(User $user, File $file)
     {
-        // TODO: add logic
+        if ($user->admin) {
+            return true;
+        }
+
+        // The file cannot be updated if not linked to a course
+        if (!$file->course) {
+            return false;
+        }
+
+        // Only the teachers of the linked course can updated the file
+        if ($user->isTeacher($file->course)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -98,9 +162,68 @@ class FilePolicy
             return true;
         }
 
-        // If the file is linked to a course, then only
-        // the teachers of the course can delete the file
-        if ($file->course && $user->isTeacher($file->course)) {
+        // The file cannot be deleted if not linked to a course
+        if (!$file->course) {
+            return false;
+        }
+
+        // Only the teachers of the linked course can deleted the file
+        if ($user->isTeacher($file->course)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can upload a file.
+     *
+     * @param User $user
+     * @param Course|null $course
+     * @param Card|null $card
+     *
+     * @return mixed
+     */
+    public function upload(User $user, ?Course $course, ?Card $card) {
+        if ($user->admin) {
+            return true;
+        }
+
+        // Teachers can upload a file within a course
+        if ($course && $user->isTeacher($course)) {
+            return true;
+        }
+
+        // Editors can upload a file within a card
+        if ($card && $user->isEditor($card)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can move the model to a specific course.
+     *
+     * @param User $user
+     * @param File $file
+     * @param Course $course
+     *
+     * @return mixed
+     */
+    public function move(User $user, File $file, Course $course)
+    {
+        // The file cannot be moved if linked to a card
+        if ($file->cards->isNotEmpty()) {
+            return false;
+        }
+
+        if ($user->admin) {
+            return true;
+        }
+
+        // The file can only be moved to a course that the user teaches
+        if ($user->isTeacher($course)) {
             return true;
         }
 

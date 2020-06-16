@@ -5,7 +5,9 @@
         @can('view', $card)
             @section('title')
                 {{ $card->title }}
+            @endsection
 
+            @section('actions')
                 @can('update', $card)
                     <a href="{{ route('cards.edit', $card->id) }}"
                        class="btn btn-primary float-right">

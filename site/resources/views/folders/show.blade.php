@@ -5,7 +5,9 @@
         @can('view', $folder)
             @section('title')
                 {{ $folder->title }}
+            @endsection
 
+            @section('actions')
                 @can('update', $folder)
                     <a href="{{ route('folders.edit', $folder->id) }}"
                        class="btn btn-primary float-right mr-1">

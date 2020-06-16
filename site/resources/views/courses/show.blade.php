@@ -5,7 +5,9 @@
         @can('view', $course)
             @section('title')
                 {{ $course->name }}
+            @endsection
 
+            @section('actions')
                 @can('create', [\App\Card::class, $course])
                     <a href="{{ route('cards.create', ['course' => $course->id]) }}"
                        class="btn btn-primary float-right">

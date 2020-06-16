@@ -11,9 +11,11 @@
 
             <div id="content" class="container">
                 <div class="container title-content">
-                    <div class="page-title">
-                        <h2>@yield('title')</h2>
-                    </div>
+                    <span class="page-title h2">
+                        @yield('title')
+                    </span>
+
+                    @yield('actions')
                 </div>
 
                 <div class="container messages-content">

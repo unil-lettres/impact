@@ -117,7 +117,7 @@ class FileController extends Controller
         ]);
 
         // The file can be linked to a(nother) course only
-        // if not already linked to card(s)
+        // if no card(s) are already linked to the file
         if($file->cards->isEmpty()) {
             $course = $request->get('course') ?
                 Course::findOrFail($request->get('course')) : null;

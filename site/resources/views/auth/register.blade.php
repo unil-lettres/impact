@@ -1,9 +1,5 @@
 @extends('layouts.app-admin')
 
-@section('admin.menu')
-    @include('admin.menu')
-@stop
-
 @section('admin.content')
     <div class="container">
         <div class="row justify-content-start">

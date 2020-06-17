@@ -227,4 +227,21 @@ class Helpers {
 
         return $html;
     }
+
+    /**
+     * Generate HTML to list all the cards of a file
+     *
+     * @param File $file
+     *
+     * @return string
+     */
+    public static function fileCards(File $file) {
+        $html = '';
+
+        foreach ($file->cards as $card) {
+            $html .= '<div><a href="' . route('cards.show', $card->id) . '">' . $card->title . '</a></div>';
+        }
+
+        return $html;
+    }
 }

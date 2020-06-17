@@ -4,6 +4,7 @@ return [
 
     'title' => 'Title',
     'cards' => 'Cards',
+    'card(s)' => '{0} -|{1} :count card|{2,*} :count cards',
     'create' => 'Create a card',
     'delete' => 'delete',
     'unlink' => 'dissociate',

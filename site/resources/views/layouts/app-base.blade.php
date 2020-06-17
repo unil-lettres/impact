@@ -10,6 +10,8 @@
             @include('includes.header.header')
 
             <div id="content" class="container">
+                @yield('menu')
+
                 <div class="container title-content">
                     <span class="page-title h2">
                         @yield('title')

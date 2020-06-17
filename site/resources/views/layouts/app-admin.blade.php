@@ -1,6 +1,6 @@
 @extends('layouts.app-base')
 
-@section('admin.menu')
+@section('menu')
     @include('admin.menu')
 @stop
 

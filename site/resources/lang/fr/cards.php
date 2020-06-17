@@ -4,6 +4,7 @@ return [
 
     'title' => 'Titre',
     'cards' => 'Fiches',
+    'card(s)' => '{0} -|{1} :count fiche|{2,*} :count fiches',
     'create' => 'Créer une fiche',
     'delete' => 'supprimer',
     'unlink' => 'dissocier',

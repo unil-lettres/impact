@@ -1,9 +1,11 @@
 @extends('layouts.app-base')
 
+@section('menu')
+    @include('courses.menu')
+@stop
+
 @section('content')
     <div id="configure-course">
-        @can('configure', $course)
-            Configure the parameters of "{{ $course->name }}"
-        @endcan
+        // TODO: add course global settings
     </div>
 @endsection

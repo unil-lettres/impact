@@ -23,7 +23,7 @@
                                    target="_blank"
                                    data-toggle="tooltip"
                                    data-placement="top"
-                                   class="btn btn-primary float-right extend-validity"
+                                   class="btn btn-primary float-right"
                                    title="{{ trans('files.url') }}">
                                     <i class="far fa-share-square"></i>
                                 </a>

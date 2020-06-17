@@ -22,13 +22,25 @@ class FileController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @param Course $course
+     *
+     * @return Renderable
+     * @throws AuthorizationException
      */
-    public function index()
+    public function index(Course $course)
     {
-        $this->authorize('viewAny', File::class);
+        $this->authorize('viewAny', [File::class, $course]);
 
-        // TODO: add logic
+        $files = File::where('course_id', $course->id)
+            ->orderBy('created_at', 'desc')
+            ->paginate(config('const.pagination.per'));
+
+        return view('files.index', [
+            'files' => $files,
+            'course' => $course,
+            'breadcrumbs' => $course
+                ->breadcrumbs(true)
+        ]);
     }
 
     /**
@@ -45,8 +57,7 @@ class FileController extends Controller
             ->paginate(config('const.pagination.per'));
 
         return view('files.manage', [
-            'files' => $files,
-            'course' => null
+            'files' => $files
         ]);
     }
 
@@ -58,8 +69,6 @@ class FileController extends Controller
      */
     public function create()
     {
-        // TODO: update logic & expand to teachers
-
         $this->authorize('create', [
             File::class,
             null
@@ -68,8 +77,7 @@ class FileController extends Controller
         $courses = Course::all();
 
         return view('files.create', [
-            'courses' => $courses,
-            'course' => null
+            'courses' => $courses
         ]);
     }
 

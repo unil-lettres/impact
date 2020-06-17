@@ -29,5 +29,6 @@ return [
     'ready' => 'Prêt',
     'failed' => 'Erreur',
     'url' => 'Url du fichier',
+    'used' => 'Utilisé par',
 
 ];

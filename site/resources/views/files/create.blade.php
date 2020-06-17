@@ -2,7 +2,7 @@
 
 @section('admin.content')
     <div id="create-file">
-        @can('create', [\App\File::class, $course])
+        @can('create', \App\File::class)
             @section('title')
                 {{ trans('files.create') }}
             @endsection
@@ -17,7 +17,7 @@
                 </div><br />
             @endif
             <div class="row">
-                @can('upload', [\App\File::class, $course, null])
+                @can('upload', [\App\File::class, null, null])
                     <div class="col-md-12 col-lg-7">
                         <div id="rct-uploader"
                              data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxFileSize' => 2000000000, 'maxNumberOfFiles' => 10]) }}'

@@ -88,23 +88,12 @@ class FilePolicy
      * Determine whether the user can view the file create form.
      *
      * @param User $user
-     * @param Course|null $course
      *
      * @return mixed
      */
-    public function create(User $user, ?Course $course)
+    public function create(User $user)
     {
         if ($user->admin) {
-            return true;
-        }
-
-        // The file create form cannot be viewed if not within a course
-        if (!$course) {
-            return false;
-        }
-
-        // Only the teachers of the course can view the file create form
-        if ($user->isTeacher($course)) {
             return true;
         }
 
@@ -122,16 +111,6 @@ class FilePolicy
     public function update(User $user, File $file)
     {
         if ($user->admin) {
-            return true;
-        }
-
-        // The file cannot be updated if not linked to a course
-        if (!$file->course) {
-            return false;
-        }
-
-        // Only the teachers of the linked course can updated the file
-        if ($user->isTeacher($file->course)) {
             return true;
         }
 

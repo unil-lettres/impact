@@ -46,7 +46,7 @@ Route::middleware(['auth', 'app'])->group(function () {
     Route::resource('folders', 'FolderController');
 
     // Files
-    Route::resource('files', 'FileController');
+    Route::resource('files', 'FileController')->only(['index', 'destroy']);
     Route::post('files/upload', 'FileController@upload');
 
     // Enrollments
@@ -59,6 +59,7 @@ Route::middleware(['auth', 'app'])->group(function () {
     // Courses
     Route::get('courses/{course}', 'CourseController@show')->name('courses.show');
     Route::get('courses/{course}/configure', 'CourseController@configure')->name('courses.configure');
+    Route::get('courses/{course}/configure/files', 'FileController@index')->name('courses.configure.files');
     Route::delete('/courses/{course}/disable', 'CourseController@disable')->name('courses.disable');
 });
 

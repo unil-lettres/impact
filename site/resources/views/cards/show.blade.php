@@ -22,9 +22,24 @@
                     <input id="course_id" name="course_id" type="hidden" value="{{ $course->id }}">
 
                     <div id="rct-uploader"
-                         data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxFileSize' => 1000000000, 'modal' => true]) }}'
+                         data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxFileSize' => 1000000000, 'modal' => true, 'label' => trans('files.create')]) }}'
                     ></div>
                 @endcan
+                @if($card->file && Helpers::isFileReady($card->file))
+                    <div class="mt-2">
+                        @if($card->file->type === 'video')
+                            <video width="{{ $card->file->width }}" height="{{ $card->file->height }}" controls>
+                                <source src="{{ Helpers::fileUrl($card->file->filename) }}" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        @elseif($card->file->type === 'audio')
+                            <audio controls>
+                                <source src="{{ Helpers::fileUrl($card->file->filename) }}" type="audio/mpeg">
+                                Your browser does not support the audio element.
+                            </audio>
+                        @endif
+                    </div>
+                @endif
             </div>
         @endcan
     </div>

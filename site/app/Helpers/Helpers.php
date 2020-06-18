@@ -89,6 +89,22 @@ class Helpers {
     }
 
     /**
+     * Check if the course type is external
+     *
+     * @param Course $course
+     *
+     * @return boolean
+     */
+    public static function isCourseExternal(Course $course) {
+        // Check if course has an external type
+        if($course->type === CourseType::External) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Truncate a string
      *
      * @param string $string

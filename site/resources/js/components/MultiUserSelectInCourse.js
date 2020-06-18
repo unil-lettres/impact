@@ -6,7 +6,7 @@ import makeAnimated from 'react-select/animated';
 
 const animatedComponents = makeAnimated();
 
-export default class MultiCourseSelect extends Component {
+export default class MultiUserSelectInCourse extends Component {
     constructor(props){
         super(props);
 
@@ -80,9 +80,9 @@ export default class MultiCourseSelect extends Component {
         this.findEnrollment(course).then(function (response) {
             if(response != null && response.data.hasOwnProperty("enrollment")) {
                 axios.delete("/enrollments/" + response.data.enrollment.id)
-                .then(function (response) {
-                    console.log(response);
-                }).catch(function (error) {
+                    .then(function (response) {
+                        console.log(response);
+                    }).catch(function (error) {
                     console.log(error);
                 });
             }
@@ -123,14 +123,14 @@ export default class MultiCourseSelect extends Component {
     }
 }
 
-const elementIdSdt = 'rct-multi-course-teacher-select';
+const elementIdSdt = 'rct-multi-user-teacher-select';
 if (document.getElementById(elementIdSdt)) {
     let data = document.getElementById(elementIdSdt).getAttribute('data');
-    ReactDOM.render(<MultiCourseSelect data={ data } />, document.getElementById(elementIdSdt));
+    ReactDOM.render(<MultiUserSelectInCourse data={ data } />, document.getElementById(elementIdSdt));
 }
 
-const elementIdThr = 'rct-multi-course-student-select';
+const elementIdThr = 'rct-multi-user-student-select';
 if (document.getElementById(elementIdThr)) {
     let data = document.getElementById(elementIdThr).getAttribute('data');
-    ReactDOM.render(<MultiCourseSelect data={ data } />, document.getElementById(elementIdThr));
+    ReactDOM.render(<MultiUserSelectInCourse data={ data } />, document.getElementById(elementIdThr));
 }

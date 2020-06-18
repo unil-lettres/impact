@@ -5,6 +5,7 @@ namespace App;
 use App\Enums\EnrollmentRole;
 use DateTime;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -42,6 +43,30 @@ class User extends Authenticatable
         'validity' => 'datetime',
         'admin' => 'boolean'
     ];
+
+    /**
+     * Scope a query to only include valid users.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeValid($query)
+    {
+        return $query->where('validity', null)
+            ->orWhere('validity', '>=', Carbon::now())
+            ->orWhere('admin', true);
+    }
+
+    /**
+     * Scope a query to exclude admin users.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeWithoutAdmins($query)
+    {
+        return $query->where('admin', false);
+    }
 
     /**
      * Get the invitations created by the user.

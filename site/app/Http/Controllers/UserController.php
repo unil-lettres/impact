@@ -140,7 +140,8 @@ class UserController extends Controller
 
         return view('users.edit', [
             'user' => $user,
-            'courses' => Course::all(),
+            'courses' => Course::local()
+                ->get(),
             'teacherRole' => EnrollmentRole::Teacher,
             'coursesAsTeacher' => $coursesAsTeacher,
             'studentRole' => EnrollmentRole::Student,

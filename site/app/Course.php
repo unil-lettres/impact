@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Enums\EnrollmentRole;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -27,6 +28,17 @@ class Course extends Model
     public function getNameAttribute()
     {
         return $this->attributes['name'] ? $this->attributes['name'] : 'No name';
+    }
+
+    /**
+     * Scope a query to only include local courses.
+     *
+     * @param  Builder  $query
+     * @return Builder
+     */
+    public function scopeLocal($query)
+    {
+        return $query->where('type', 'local');
     }
 
     /**

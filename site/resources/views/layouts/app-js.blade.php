@@ -11,6 +11,10 @@
         return confirm('{{ trans('messages.confirm.unlink') }}');
     });
 
+    $(".with-archive-confirm").on("submit", function(){
+        return confirm('{{ trans('messages.confirm.archive') }}');
+    });
+
     $(function () {
         $('[data-toggle="tooltip"]').tooltip()
     });

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Enums\EnrollmentRole;
+use App\Scopes\ValidityScope;
 use DateTime;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
@@ -45,16 +46,13 @@ class User extends Authenticatable
     ];
 
     /**
-     * Scope a query to only include valid users.
+     * The "booted" method of the model.
      *
-     * @param  Builder  $query
-     * @return Builder
+     * @return void
      */
-    public function scopeValid($query)
+    protected static function booted()
     {
-        return $query->where('validity', null)
-            ->orWhere('validity', '>=', Carbon::now())
-            ->orWhere('admin', true);
+        static::addGlobalScope(new ValidityScope());
     }
 
     /**

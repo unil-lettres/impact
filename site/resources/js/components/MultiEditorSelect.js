@@ -6,7 +6,7 @@ import makeAnimated from 'react-select/animated';
 
 const animatedComponents = makeAnimated();
 
-export default class MultiUserSelect extends Component {
+export default class MultiEditorSelect extends Component {
     constructor(props){
         super(props);
 
@@ -83,8 +83,8 @@ export default class MultiUserSelect extends Component {
     }
 }
 
-const elementId = 'rct-multi-user-select';
+const elementId = 'rct-multi-editor-select';
 if (document.getElementById(elementId)) {
     let data = document.getElementById(elementId).getAttribute('data');
-    ReactDOM.render(<MultiUserSelect data={ data } />, document.getElementById(elementId));
+    ReactDOM.render(<MultiEditorSelect data={ data } />, document.getElementById(elementId));
 }

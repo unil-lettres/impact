@@ -129,6 +129,24 @@ class CoursePolicy
     }
 
     /**
+     * Determine whether the user can archive the course.
+     *
+     * @param User $user
+     * @param Course $course
+     *
+     * @return mixed
+     */
+    public function archive(User $user, Course $course)
+    {
+        // Only admins & teachers can archive courses
+        if ($user->isTeacher($course)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Determine whether the user can disable the course (soft delete).
      *
      * @param User $user

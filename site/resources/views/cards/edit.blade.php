@@ -43,7 +43,7 @@
 
                             @if ($students->isNotEmpty())
                                 <div class="form-group">
-                                    <div id="rct-multi-user-select"
+                                    <div id="rct-multi-editor-select"
                                          data='{{ json_encode(['record' => $card, 'options' => $students, 'defaults' => $editors]) }}'
                                     ></div>
                                 </div>

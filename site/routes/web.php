@@ -60,6 +60,7 @@ Route::middleware(['auth', 'app'])->group(function () {
     Route::get('courses/{course}', 'CourseController@show')->name('courses.show');
     Route::get('courses/{course}/configure', 'CourseController@configure')->name('courses.configure');
     Route::get('courses/{course}/configure/files', 'FileController@index')->name('courses.configure.files');
+    Route::put('/courses/{course}/archive', 'CourseController@archive')->name('courses.archive');
     Route::delete('/courses/{course}/disable', 'CourseController@disable')->name('courses.disable');
 });
 

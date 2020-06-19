@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
 use App\Enrollment;
 use App\Enums\EnrollmentRole;
 use App\Http\Requests\DestroyEnrollment;
 use App\Http\Requests\FindEnrollment;
 use App\Http\Requests\StoreEnrollment;
 use App\Http\Requests\UpdateEnrollmentCards;
+use App\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -49,12 +51,19 @@ class EnrollmentController extends Controller
      */
     public function store(StoreEnrollment $request)
     {
-        $this->authorize('create', Enrollment::class);
+        $course = Course::findOrFail($request->get('course'));
+        $user = User::findOrFail($request->get('user'));
+
+        $this->authorize('create', [
+            Enrollment::class,
+            $course,
+            $user
+        ]);
 
         Enrollment::create([
             'role' => $request->get('role'),
-            'course_id' => $request->get('course'),
-            'user_id' => $request->get('user'),
+            'course_id' => $course->id,
+            'user_id' => $user->id,
         ]);
 
         return response()->json([
@@ -83,12 +92,12 @@ class EnrollmentController extends Controller
      */
     public function find(FindEnrollment $request)
     {
-        $this->authorize('find', Enrollment::class);
-
         $enrollment = Enrollment::where('course_id', $request->get('course'))
             ->where('user_id', $request->get('user'))
             ->where('role', $request->get('role'))
             ->first();
+
+        $this->authorize('find', $enrollment);
 
         return response()->json([
             'enrollment' => $enrollment

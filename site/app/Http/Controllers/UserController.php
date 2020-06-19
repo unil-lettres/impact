@@ -7,10 +7,12 @@ use App\Enums\EnrollmentRole;
 use App\Enums\UsersFilter;
 use App\Enums\UserType;
 use App\Http\Requests\CreateUser;
+use App\Http\Requests\DestroyUser;
 use App\Http\Requests\EditUser;
 use App\Http\Requests\ExtendUser;
 use App\Http\Requests\ManageUsers;
 use App\Http\Requests\UpdateUser;
+use App\Scopes\ValidityScope;
 use App\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
@@ -24,19 +26,14 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Renderable
+     * @return RedirectResponse
      * @throws AuthorizationException
      */
     public function index()
     {
         $this->authorize('viewAny', User::class);
 
-        $users = User::orderBy('created_at', 'desc')
-            ->paginate(config('const.pagination.per'));
-
-        return view('users.index', [
-            'users' => $users
-        ]);
+        return redirect()->back();
     }
 
     /**
@@ -53,7 +50,8 @@ class UserController extends Controller
 
         $users = $request->get('filter') ?
             $this->filter($request->get('filter')) :
-            User::select('users.*');
+            User::withoutGlobalScope(ValidityScope::class)
+                ->select('users.*');
 
         return view('users.manage', [
             'users' => $users->orderBy('created_at', 'desc')
@@ -124,7 +122,8 @@ class UserController extends Controller
      */
     public function edit(EditUser $user, int $id)
     {
-        $user = User::find($id);
+        $user = User::withoutGlobalScope(ValidityScope::class)
+            ->find($id);
 
         $this->authorize('update', $user);
 
@@ -180,7 +179,8 @@ class UserController extends Controller
      */
     public function update(UpdateUser $request, int $id)
     {
-        $user = User::find($id);
+        $user = User::withoutGlobalScope(ValidityScope::class)
+            ->find($id);
 
         $this->authorize('update', $user);
 
@@ -239,13 +239,17 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param User $user
+     * @param DestroyUser $request
+     * @param int $id
      *
      * @return RedirectResponse
      * @throws AuthorizationException
      */
-    public function destroy(User $user)
+    public function destroy(DestroyUser $request, int $id)
     {
+        $user = User::withoutGlobalScope(ValidityScope::class)
+            ->find($id);
+
         $this->authorize('delete', $user);
 
         $email = $user->email;
@@ -258,15 +262,16 @@ class UserController extends Controller
     /**
      * Extend the user account validity.
      *
-     * @param ExtendUser $user
+     * @param ExtendUser $request
      * @param int $id
      *
      * @return RedirectResponse
      * @throws AuthorizationException
      */
-    public function extend(ExtendUser $user, int $id)
+    public function extend(ExtendUser $request, int $id)
     {
-        $user = User::find($id);
+        $user = User::withoutGlobalScope(ValidityScope::class)
+            ->find($id);
 
         $this->authorize('extend', $user);
 
@@ -286,13 +291,17 @@ class UserController extends Controller
     private function filter(string $filter) {
         switch ($filter) {
             case UsersFilter::Expired:
-                return User::whereDate('validity', "<=", Carbon::now());
+                return User::withoutGlobalScope(ValidityScope::class)
+                    ->whereDate('validity', "<=", Carbon::now());
             case UsersFilter::Aai:
-                return User::where('type', UserType::Aai);
+                return User::withoutGlobalScope(ValidityScope::class)
+                    ->where('type', UserType::Aai);
             case UsersFilter::Local:
-                return User::where('type', UserType::Local);
+                return User::withoutGlobalScope(ValidityScope::class)
+                    ->where('type', UserType::Local);
             default:
-                return User::select('users.*');
+                return User::withoutGlobalScope(ValidityScope::class)
+                    ->select('users.*');
         }
     }
 }

@@ -2,8 +2,10 @@
 
 namespace App\Policies;
 
+use App\Course;
 use App\Enrollment;
 use App\Enums\EnrollmentRole;
+use App\Helpers\Helpers;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -37,29 +39,65 @@ class EnrollmentPolicy
     }
 
     /**
-     * Determine whether the user can view the enrollment.
+     * Determine whether the user can find an enrollment.
      *
      * @param User $user
+     * @param Enrollment $enrollment
      *
      * @return mixed
      */
-    public function find(User $user)
+    public function find(User $user, Enrollment $enrollment)
     {
-        return $user->admin;
+        if($user->admin) {
+            return true;
+        }
+
+        // Only teachers can find enrollments
+        if ($user->isTeacher($enrollment->course)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Determine whether the user can create enrollments.
      *
      * @param User $user
+     * @param Course $enrolledCourse
+     * @param User $enrolledUser
      *
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, Course $enrolledCourse, User $enrolledUser)
     {
         // TODO: update for invitations & mass enrollments
 
-        return $user->admin;
+        // Enrolled course should be active
+        if(!$enrolledCourse->isActive()) {
+            return false;
+        }
+
+        // Enrolled user should be valid
+        if(!Helpers::isUserValid($enrolledUser)) {
+            return false;
+        }
+
+        // Enrolled user cannot be an admin
+        if($enrolledUser->admin) {
+            return false;
+        }
+
+        if($user->admin) {
+            return true;
+        }
+
+        // Only teachers can create enrollments
+        if ($user->isTeacher($enrolledCourse)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -76,7 +114,7 @@ class EnrollmentPolicy
     }
 
     /**
-     * Determine whether the user can update the enrollment.
+     * Determine whether the user can update the cards of the enrollment.
      *
      * @param User $user
      * @param Enrollment $enrollment
@@ -92,7 +130,16 @@ class EnrollmentPolicy
             return false;
         }
 
-        return $user->isTeacher($enrollment->course);
+        if($user->admin) {
+            return true;
+        }
+
+        // Only teachers can update the cards of an enrollment
+        if ($user->isTeacher($enrollment->course)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -105,6 +152,20 @@ class EnrollmentPolicy
      */
     public function forceDelete(User $user, Enrollment $enrollment)
     {
-        return $user->admin;
+        // User cannot delete own enrollment
+        if($user->id === $enrollment->user->id) {
+            return false;
+        }
+
+        if($user->admin) {
+            return true;
+        }
+
+        // Only teachers can delete enrollments
+        if ($user->isTeacher($enrollment->course)) {
+            return true;
+        }
+
+        return false;
     }
 }

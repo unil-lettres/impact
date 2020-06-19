@@ -12,9 +12,9 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-require('./components/MultiUserSelect');
-require('./components/MultiUserSelectInCourse');
-require('./components/MultiCourseSelect');
+require('./components/MultiEditorSelect');
+require('./components/MultiUserEnrollment');
+require('./components/MultiCourseEnrollment');
 require('./components/SingleCourseSelect');
 require('./components/SingleFolderSelect');
 require('./components/Uploader');

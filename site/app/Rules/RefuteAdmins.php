@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Scopes\ValidityScope;
 use App\User;
 use Illuminate\Contracts\Validation\Rule;
 
@@ -26,7 +27,8 @@ class RefuteAdmins implements Rule
      */
     public function passes($attribute, $value)
     {
-        $user = User::find($value);
+        $user = User::withoutGlobalScope(ValidityScope::class)
+            ->find($value);
 
         if(!$user) {
             return false;

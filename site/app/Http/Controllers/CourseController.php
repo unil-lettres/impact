@@ -154,8 +154,7 @@ class CourseController extends Controller
 
         return view('courses.edit', [
             'course' => $course,
-            'users' => User::valid()
-                ->withoutAdmins()
+            'users' => User::withoutAdmins()
                 ->get(),
             'teacherRole' => EnrollmentRole::Teacher,
             'usersAsTeacher' => $course->teachers(),
@@ -180,6 +179,12 @@ class CourseController extends Controller
             'course' => $course,
             'breadcrumbs' => $course
                 ->breadcrumbs(true),
+            'users' => User::withoutAdmins()
+                ->get(),
+            'teacherRole' => EnrollmentRole::Teacher,
+            'usersAsTeacher' => $course->teachers(),
+            'studentRole' => EnrollmentRole::Student,
+            'usersAsStudent' => $course->students(),
         ]);
     }
 
@@ -229,6 +234,25 @@ class CourseController extends Controller
         return redirect()
             ->back()
             ->with('success', trans('messages.course.enabled'));
+    }
+
+    /**
+     * Archive the specified resource.
+     *
+     * @param Course $course
+     *
+     * @return RedirectResponse
+     * @throws Exception
+     */
+    public function archive(Course $course)
+    {
+        $this->authorize('archive', $course);
+
+        // TODO: add logic
+
+        return redirect()
+            ->back()
+            ->with('success', trans('messages.course.archived'));
     }
 
     /**

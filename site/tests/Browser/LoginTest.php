@@ -67,8 +67,7 @@ class LoginTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('invalid-user@example.com', 'password');
 
-            $browser->assertSee('Ce compte est désactivé')
-                ->waitForText('Ce compte est désactivé')
+            $browser->assertSee('Ces identifiants ne correspondent pas à nos enregistrements')
                 ->assertPathIs('/login');
         });
     }

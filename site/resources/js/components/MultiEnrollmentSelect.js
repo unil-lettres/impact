@@ -1,18 +1,18 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
 import axios from "axios";
 import Select from "react-select";
 import makeAnimated from 'react-select/animated';
 
 const animatedComponents = makeAnimated();
 
-export default class MultiUserSelectInCourse extends Component {
+export default class MultiEnrollmentSelect extends Component {
     constructor(props){
         super(props);
 
         let data = JSON.parse(this.props.data);
 
         this.state = {
+            context: this.props.context,
             record: data.record,
             role: data.role,
             options: [],
@@ -64,11 +64,11 @@ export default class MultiUserSelectInCourse extends Component {
         }
     }
 
-    createEnrollment(course, action) {
+    createEnrollment(item, action) {
         axios.post('/enrollments', {
-            user: this.state.record.id,
-            role: this.state.role,
-            course: course
+            user: this.getUserId(item),
+            course: this.getCourseId(item),
+            role: this.state.role
         }).then(response => {
             console.log(response);
         }).catch(error => {
@@ -76,8 +76,8 @@ export default class MultiUserSelectInCourse extends Component {
         });
     }
 
-    deleteEnrollment(course, action) {
-        this.findEnrollment(course).then(function (response) {
+    deleteEnrollment(item, action) {
+        this.findEnrollment(item).then(function (response) {
             if(response != null && response.data.hasOwnProperty("enrollment")) {
                 axios.delete("/enrollments/" + response.data.enrollment.id)
                     .then(function (response) {
@@ -91,11 +91,11 @@ export default class MultiUserSelectInCourse extends Component {
         });
     }
 
-    findEnrollment(course) {
+    findEnrollment(item) {
         return axios.get('/enrollments/find', {
             params: {
-                user: this.state.record.id,
-                course: course,
+                user: this.getUserId(item),
+                course: this.getCourseId(item),
                 role: this.state.role
             }
         }).then(function (response) {
@@ -103,6 +103,16 @@ export default class MultiUserSelectInCourse extends Component {
         }).catch(function (error) {
             console.log(error);
         });
+    }
+
+    getUserId(item) {
+        return this.state.context === 'user' ?
+            this.state.record.id : item;
+    }
+
+    getCourseId(item) {
+        return this.state.context === 'course' ?
+            this.state.record.id : item;
     }
 
     render() {
@@ -121,16 +131,4 @@ export default class MultiUserSelectInCourse extends Component {
             />
         );
     }
-}
-
-const elementIdSdt = 'rct-multi-user-teacher-select';
-if (document.getElementById(elementIdSdt)) {
-    let data = document.getElementById(elementIdSdt).getAttribute('data');
-    ReactDOM.render(<MultiUserSelectInCourse data={ data } />, document.getElementById(elementIdSdt));
-}
-
-const elementIdThr = 'rct-multi-user-student-select';
-if (document.getElementById(elementIdThr)) {
-    let data = document.getElementById(elementIdThr).getAttribute('data');
-    ReactDOM.render(<MultiUserSelectInCourse data={ data } />, document.getElementById(elementIdThr));
 }

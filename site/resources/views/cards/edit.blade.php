@@ -7,6 +7,7 @@
                 {{ trans('cards.configure') }}
             @endsection
             <hr>
+
             <div class="row">
                 <div class="col-md-12 col-lg-5">
                         <div class="card">

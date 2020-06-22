@@ -2,10 +2,10 @@
 
 @section('menu')
     @include('admin.menu')
-@stop
+@endsection
 
 @section('content')
     <div class="admin-content">
         @yield('admin.content')
     </div>
-@stop
+@endsection

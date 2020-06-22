@@ -4,4 +4,4 @@
     <div>
         Impact content ({{ Helpers::currentLocal() }})
     </div>
-@stop
+@endsection

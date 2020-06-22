@@ -224,4 +224,4 @@
             </div>
         @endcan
     </div>
-@stop
+@endsection

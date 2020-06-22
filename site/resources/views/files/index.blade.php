@@ -2,7 +2,7 @@
 
 @section('menu')
     @include('courses.menu')
-@stop
+@endsection
 
 @section('content')
     @can('viewAny', [\App\File::class, $course])

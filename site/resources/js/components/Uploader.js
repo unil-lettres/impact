@@ -7,7 +7,6 @@ import XHRUpload from '@uppy/xhr-upload';
 import { DashboardModal } from '@uppy/react'
 import DashboardComponent from "@uppy/react/src/Dashboard";
 
-
 export default class Uploader extends Component {
     constructor (props) {
         super(props)

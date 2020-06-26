@@ -20,7 +20,7 @@
                 @can('upload', [\App\File::class, null, null])
                     <div class="col-md-12 col-lg-7">
                         <div id="rct-uploader"
-                             data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxFileSize' => 2000000000, 'maxNumberOfFiles' => 10]) }}'
+                             data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxNumberOfFiles' => 10]) }}'
                         ></div>
                     </div>
                 @endcan

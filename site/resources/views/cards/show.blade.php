@@ -22,7 +22,7 @@
                     <input id="course_id" name="course_id" type="hidden" value="{{ $course->id }}">
 
                     <div id="rct-uploader"
-                         data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxFileSize' => 1000000000, 'modal' => true, 'label' => trans('files.create')]) }}'
+                         data='{{ json_encode(['locale' => Helpers::currentLocal(), 'modal' => true, 'label' => trans('files.create')]) }}'
                     ></div>
                 @endcan
                 @if($card->file && Helpers::isFileReady($card->file))

@@ -16,7 +16,7 @@
 
                     <div id="rct-uploader"
                          class="float-right"
-                         data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxFileSize' => 1000000000, 'maxNumberOfFiles' => 5, 'modal' => true, 'label' => trans('files.create')]) }}'
+                         data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxNumberOfFiles' => 5, 'modal' => true, 'label' => trans('files.create')]) }}'
                     ></div>
                 @endcan
             @endsection

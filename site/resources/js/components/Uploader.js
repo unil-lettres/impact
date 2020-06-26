@@ -28,7 +28,7 @@ export default class Uploader extends Component {
     initVariables(data) {
         this.locale = data.locale ?? 'fr';
         this.label = data.label ?? 'Send file(s)'
-        this.maxFileSize = data.maxFileSize ?? 100000000;
+        this.maxFileSize = data.maxFileSize ?? 500000000;
         this.maxNumberOfFiles = data.maxNumberOfFiles ?? 1;
         this.allowedFileTypes = data.allowedFileTypes ?? ['audio/*', 'video/*'];
         this.modal = data.modal ?? false;

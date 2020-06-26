@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\Enrollment;
+use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
 use App\Http\Requests\CreateInvitationUser;
 use App\Http\Requests\SendInvitationMail;
@@ -71,17 +72,21 @@ class InvitationController extends Controller
     {
         $this->authorize('create', Invitation::class);
 
-        $coursesAsTeacher = Auth::user()->enrollmentsAsTeacher()
-            ->map(function ($enrollment) {
-                return $enrollment->course;
-            });
-
         if(Auth::user()->admin) {
-            $coursesAsTeacher = Course::all();
+            $courses = Course::local()
+                ->get();
+        } else {
+            $courses = Auth::user()->enrollmentsAsTeacher()
+                ->filter(function ($enrollment) {
+                    return $enrollment->course->type === CourseType::Local;
+                })
+                ->map(function ($enrollment) {
+                    return $enrollment->course;
+                });
         }
 
         return view('invitations.create', [
-            'courses' => $coursesAsTeacher
+            'courses' => $courses
         ]);
     }
 

@@ -179,7 +179,7 @@ class ProcessFile implements ShouldQueue
             ->synchronize();
         $video
             ->save(
-                new X264(),
+                new X264('libmp3lame', 'libx264'),
                 $saveToPathname,
             );
 

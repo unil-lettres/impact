@@ -20,6 +20,9 @@ return [
         ],
         'audio' => [
             'extension' => env('AUDIO_EXTENSION', 'mp3'),
+        ],
+        'ffmpeg' => [
+            'timeout' => env('FILE_TIMEOUT', 3600),
         ]
     ],
 

@@ -158,7 +158,11 @@ class ProcessFile implements ShouldQueue
      * Transcode a video file.
      */
     protected function transcodeVideo() {
-        $ffmpeg = FFMpeg::create();
+        $ffmpeg = FFMpeg::create(
+            array(
+                'timeout' => config('const.files.ffmpeg.timeout'),
+            )
+        );
         $ffprobe = FFProbe::create();
         $openFromPathname = $this->fullTempPath . $this->file->filename;
         $saveToPathname = $this->fullStandardPath . $this->fileUploadProcessor
@@ -215,7 +219,11 @@ class ProcessFile implements ShouldQueue
      * Transcode an audio file.
      */
     protected function transcodeAudio() {
-        $ffmpeg = FFMpeg::create();
+        $ffmpeg = FFMpeg::create(
+            array(
+                'timeout' => config('const.files.ffmpeg.timeout'),
+            )
+        );
         $ffprobe = FFProbe::create();
         $openFromPathname = $this->fullTempPath . $this->file->filename;
         $saveToPathname = $this->fullStandardPath . $this->fileUploadProcessor

@@ -16,7 +16,7 @@ use App\Scopes\ValidityScope;
 use App\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
@@ -48,10 +48,12 @@ class UserController extends Controller
     {
         $this->authorize('manage', User::class);
 
-        $users = $request->get('filter') ?
-            $this->filter($request->get('filter')) :
-            User::withoutGlobalScope(ValidityScope::class)
+        if($request->get('filter')) {
+            $users = $this->filter($request->get('filter'));
+        } else {
+            $users = User::withoutGlobalScope(ValidityScope::class)
                 ->select('users.*');
+        }
 
         return view('users.manage', [
             'users' => $users->orderBy('created_at', 'desc')
@@ -286,22 +288,31 @@ class UserController extends Controller
      *
      * @param string $filter
      *
-     * @return User[]|Collection
+     * @return Builder
      */
     private function filter(string $filter) {
+        $filters = User::query();
+
+        $filters->withoutGlobalScope(ValidityScope::class);
+
         switch ($filter) {
             case UsersFilter::Expired:
-                return User::withoutGlobalScope(ValidityScope::class)
+                $filters
                     ->whereDate('validity', "<=", Carbon::now());
+                break;
             case UsersFilter::Aai:
-                return User::withoutGlobalScope(ValidityScope::class)
+                $filters
                     ->where('type', UserType::Aai);
+                break;
             case UsersFilter::Local:
-                return User::withoutGlobalScope(ValidityScope::class)
+                $filters
                     ->where('type', UserType::Local);
+                break;
             default:
-                return User::withoutGlobalScope(ValidityScope::class)
+                $filters
                     ->select('users.*');
         }
+
+        return $filters;
     }
 }

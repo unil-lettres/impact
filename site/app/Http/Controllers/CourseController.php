@@ -328,20 +328,27 @@ class CourseController extends Controller
      *
      * @param string $filter
      *
-     * @return Course|Builder|\Illuminate\Database\Query\Builder
+     * @return Builder
      */
     private function filter(string $filter) {
+        $filters = Course::query();
+
         switch ($filter) {
             case CoursesFilter::Disabled:
-                return Course::onlyTrashed();
+                $filters->onlyTrashed();
+                break;
             case CoursesFilter::External:
-                return Course::withTrashed()
+                $filters->withTrashed()
                     ->where('type', CourseType::External);
+                break;
             case CoursesFilter::Local:
-                return Course::withTrashed()
+                $filters->withTrashed()
                     ->where('type', CourseType::Local);
+                break;
             default:
-                return Course::withTrashed();
+                $filters->withTrashed();
         }
+
+        return $filters;
     }
 }

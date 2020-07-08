@@ -173,7 +173,9 @@ class FileTest extends DuskTestCase
 
             $browser->click('#files table tbody tr.used .actions span:nth-child(1) a')
                 ->assertSee('Test card with file')
-                ->assertSourceHas('"disabled":true');
+                ->click('#rct-single-course-select')
+                ->waitForText('Second space', 1)
+                ->assertDontSee('Second space');
         });
     }
 
@@ -201,27 +203,6 @@ class FileTest extends DuskTestCase
     }
 
     /**
-     * Test cannot delete a used file.
-     *
-     * @return void
-     * @throws Throwable
-     */
-    public function testCannotDeleteUsedFile()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
-                ->loginAsUser('admin-user@example.com', 'password');
-
-            $browser->clickLink('Admin')
-                ->clickLink('Fichiers');
-
-            $browser->with('#files table tbody tr.used', function ($used) {
-                $used->assertSourceMissing('Supprimer le fichier');
-            });
-        });
-    }
-
-    /**
      * Test can delete an unused file.
      *
      * @return void
@@ -236,8 +217,13 @@ class FileTest extends DuskTestCase
             $browser->clickLink('Admin')
                 ->clickLink('Fichiers');
 
-            $browser->with('#files table tbody tr.unused', function ($used) {
-                $used->assertSourceHas('Supprimer le fichier');
+            $browser->with('#files table tbody tr.unused', function ($unused) {
+                $unused->click('form.with-delete-confirm button')
+                    ->waitForDialog($seconds = null)
+                    ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
+                    ->acceptDialog()
+                    ->waitForText('Fichier supprimé.')
+                    ->assertSee('Fichier supprimé.');
             });
         });
     }

@@ -83,7 +83,7 @@ class FilesTableSeeder extends Seeder
         $usedFile = DB::table('files')->insertGetId([
             'name' => 'Used file',
             'filename' => 'jesuisunfichierdetest5.mp4',
-            'status' => FileStatus::Transcoding,
+            'status' => FileStatus::Ready,
             'type' => FileType::Video,
             'size' => 4519413,
             'width' => 854,

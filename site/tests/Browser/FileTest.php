@@ -66,12 +66,12 @@ class FileTest extends DuskTestCase
     }
 
     /**
-     * Test edit file as admin.
+     * Test edit file.
      *
      * @return void
      * @throws Throwable
      */
-    public function testEditFileAsAdmin()
+    public function testEditFile()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -94,7 +94,7 @@ class FileTest extends DuskTestCase
     }
 
     /**
-     * Test can play ready file.
+     * Test can play a file with the ready status.
      *
      * @return void
      * @throws Throwable
@@ -115,7 +115,7 @@ class FileTest extends DuskTestCase
     }
 
     /**
-     * Test cannot play failed file.
+     * Test cannot play a file with the failed status.
      *
      * @return void
      * @throws Throwable
@@ -136,7 +136,7 @@ class FileTest extends DuskTestCase
     }
 
     /**
-     * Test cannot play transcoding file.
+     * Test cannot play a file with the transcoding status.
      *
      * @return void
      * @throws Throwable

@@ -39,7 +39,7 @@
                             <tbody>
                                 @foreach ($files->items() as $file)
                                     @can('view', $file)
-                                        <tr>
+                                        <tr class="{{ $file->type }} {{ $file->status }}">
                                             <td>{{ Helpers::truncate($file->name) }}</td>
                                             <td>{{ Helpers::fileType($file->type) }}</td>
                                             <td>{!! Helpers::fileStatusBadge($file->status) !!}</td>

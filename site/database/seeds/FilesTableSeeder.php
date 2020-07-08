@@ -17,6 +17,7 @@ class FilesTableSeeder extends Seeder
     {
         $now = Carbon::now();
 
+        $firstCourse = Course::where('name', 'First space')->first();
         $secondCourse = Course::where('name', 'Second space')->first();
 
         DB::table('files')->insert([
@@ -45,7 +46,7 @@ class FilesTableSeeder extends Seeder
             'length' => 10,
             'created_at' => $now,
             'updated_at' => $now,
-            'course_id' => $secondCourse->id,
+            'course_id' => $firstCourse->id,
             'deleted_at' => null
         ]);
 
@@ -79,25 +80,10 @@ class FilesTableSeeder extends Seeder
             'deleted_at' => null
         ]);
 
-        DB::table('files')->insert([
-            'name' => 'Transcoding file',
-            'filename' => 'jesuisunfichierdetest5.mp4',
-            'status' => FileStatus::Transcoding,
-            'type' => FileType::Video,
-            'size' => 4519413,
-            'width' => 854,
-            'height' => 480,
-            'length' => 30,
-            'created_at' => $now,
-            'updated_at' => $now,
-            'course_id' => $secondCourse->id,
-            'deleted_at' => null
-        ]);
-
         $usedFile = DB::table('files')->insertGetId([
             'name' => 'Used file',
             'filename' => 'jesuisunfichierdetest6.mp4',
-            'status' => FileStatus::Ready,
+            'status' => FileStatus::Transcoding,
             'type' => FileType::Video,
             'size' => 4519413,
             'width' => 854,

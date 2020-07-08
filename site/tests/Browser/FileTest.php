@@ -19,20 +19,19 @@ class FileTest extends DuskTestCase
     }
 
     /**
-     * Test view folders.
+     * Test list files as admin.
      *
      * @return void
      * @throws Throwable
      */
-    public function testViewFilesAsAdmin()
+    public function testListFilesAsAdmin()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->clickLink('Admin');
-
-            $browser->clickLink('Fichiers');
+            $browser->clickLink('Admin')
+                ->clickLink('Fichiers');
 
             $browser->assertSee('Test video file')
                 ->assertSee('Test audio file')
@@ -40,6 +39,101 @@ class FileTest extends DuskTestCase
                 ->assertSee('Transcoding file')
                 ->assertSee('Used file')
                 ->assertDontSee('Deactivated file');
+        });
+    }
+
+    /**
+     * Test list files as teacher.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testListFilesAsTeacher()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('teacher-user@example.com', 'password');
+
+            $browser->clickLink('Second space')
+                ->clickLink('Configuration de l\'espace')
+                ->clickLink('Fichiers');
+
+            $browser->assertSee('Test video file')
+                ->assertDontSee('Test audio file')
+                ->assertSee('Failed file')
+                ->assertSee('Transcoding file')
+                ->assertSee('Used file')
+                ->assertDontSee('Deactivated file');
+        });
+    }
+
+    /**
+     * Test edit file as admin.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testEditFileAsAdmin()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->clickLink('Admin')
+                ->clickLink('Fichiers');
+
+            $browser->click('#files table tbody tr.ready .actions span:nth-child(1) a')
+                ->type('name', 'Test file updated')
+                ->click('#rct-single-course-select')
+                ->waitForText('Second space')
+                ->assertSee('Second space')
+                ->assertDontSee('Deactivated space')
+                ->click('#react-select-2-option-0')
+                ->press('Mettre à jour le fichier')
+                ->waitForText('Fichier mis à jour.')
+                ->assertSee('Fichier mis à jour.');
+        });
+    }
+
+    /**
+     * Test can play ready file.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testCanPlayReadyFile()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->clickLink('Admin')
+                ->clickLink('Fichiers');
+
+            $browser->click('#files table tbody tr.ready .actions span:nth-child(1) a')
+                ->assertSee('ready')
+                ->assertSourceHas('Url du fichier');
+        });
+    }
+
+    /**
+     * Test cannot play failed file.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testCannotPlayFailedFile()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->clickLink('Admin')
+                ->clickLink('Fichiers');
+
+            $browser->click('#files table tbody tr.failed .actions span:nth-child(1) a')
+                ->assertSee('failed')
+                ->assertSourceMissing('Url du fichier');
         });
     }
 }

@@ -95,11 +95,13 @@ class FilesTableSeeder extends Seeder
             'deleted_at' => null
         ]);
 
-        // Link file to a card
-        $card = Course::where('title', 'Test card second space')->first();
-        $card->update([
+        // Link a new card to a file
+        DB::table('cards')->insert([
+            'title' => 'Test card with file',
+            'created_at' => $now,
+            'updated_at' => $now,
+            'course_id' => $secondCourse->id,
             'file_id' => $usedFile
         ]);
-        $card->save();
     }
 }

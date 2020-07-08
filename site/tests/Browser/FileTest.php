@@ -174,7 +174,6 @@ class FileTest extends DuskTestCase
             $browser->click('#files table tbody tr.used .actions span:nth-child(1) a')
                 ->assertSee('Test card with file')
                 ->click('#rct-single-course-select')
-                ->waitForText('First space', 1)
                 ->assertDontSee('First space');
         });
     }

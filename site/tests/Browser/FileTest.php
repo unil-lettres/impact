@@ -83,8 +83,8 @@ class FileTest extends DuskTestCase
             $browser->click('#files table tbody tr.ready .actions span:nth-child(1) a')
                 ->type('name', 'Test file updated')
                 ->click('#rct-single-course-select')
-                ->waitForText('Second space')
-                ->assertSee('Second space')
+                ->waitForText('First space')
+                ->assertSee('First space')
                 ->assertDontSee('Deactivated space')
                 ->click('#react-select-2-option-0')
                 ->press('Mettre à jour le fichier')
@@ -174,8 +174,8 @@ class FileTest extends DuskTestCase
             $browser->click('#files table tbody tr.used .actions span:nth-child(1) a')
                 ->assertSee('Test card with file')
                 ->click('#rct-single-course-select')
-                ->waitForText('Second space', 1)
-                ->assertDontSee('Second space');
+                ->waitForText('First space', 1)
+                ->assertDontSee('First space');
         });
     }
 
@@ -197,8 +197,8 @@ class FileTest extends DuskTestCase
             $browser->click('#files table tbody tr.unused .actions span:nth-child(1) a')
                 ->assertSee('Aucune fiche trouvée')
                 ->click('#rct-single-course-select')
-                ->waitForText('Second space')
-                ->assertSee('Second space');
+                ->waitForText('First space')
+                ->assertSee('First space');
         });
     }
 
@@ -221,10 +221,10 @@ class FileTest extends DuskTestCase
                 $unused->click('form.with-delete-confirm button')
                     ->waitForDialog($seconds = null)
                     ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
-                    ->acceptDialog()
-                    ->waitForText('Fichier supprimé.')
-                    ->assertSee('Fichier supprimé.');
+                    ->acceptDialog();
             });
+            $browser->waitForText('Fichier supprimé.')
+                ->assertSee('Fichier supprimé.');
         });
     }
 }

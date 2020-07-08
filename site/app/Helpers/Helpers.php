@@ -260,4 +260,16 @@ class Helpers {
 
         return $html;
     }
+
+    /**
+     * Return the "used" string if the file is liked to card(s) or
+     * return the "unused" string if the file is not linked to card(s).
+     *
+     * @param File $file
+     *
+     * @return string
+     */
+    public static function fileState(File $file) {
+        return $file->cards->isEmpty() ? 'unused' : 'used';
+    }
 }

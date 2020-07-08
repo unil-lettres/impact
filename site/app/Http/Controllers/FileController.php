@@ -62,17 +62,14 @@ class FileController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Show the form for creating a new resource in administration.
      *
      * @return Renderable
      * @throws AuthorizationException
      */
     public function create()
     {
-        $this->authorize('create', [
-            File::class,
-            null
-        ]);
+        $this->authorize('create', File::class);
 
         $courses = Course::all();
 

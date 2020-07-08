@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Course;
 use App\Invitation;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -36,6 +37,7 @@ class InvitationPolicy
      */
     public function viewAny(User $user)
     {
+        // Only teachers of a course can view invitations
         if($user->enrollmentsAsTeacher()->isNotEmpty()) {
             return true;
         }
@@ -76,12 +78,19 @@ class InvitationPolicy
      * Determine whether the user can create invitations.
      *
      * @param User $user
+     * @param Course|null $course
      *
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, ?Course $course)
     {
-        if($user->enrollmentsAsTeacher()->isNotEmpty()) {
+        // Only teachers of a course can view the invitation creation form
+        if (!$course && $user->enrollmentsAsTeacher()->isNotEmpty()) {
+            return true;
+        }
+
+        // Only teachers of the course can store new invitations
+        if ($course && $user->isTeacher($course)) {
             return true;
         }
 

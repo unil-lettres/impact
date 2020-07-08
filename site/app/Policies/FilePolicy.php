@@ -85,7 +85,7 @@ class FilePolicy
     }
 
     /**
-     * Determine whether the user can view the file create form.
+     * Determine whether the user can view the file create form in administration.
      *
      * @param User $user
      *

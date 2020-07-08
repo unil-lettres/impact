@@ -70,7 +70,10 @@ class InvitationController extends Controller
      */
     public function create()
     {
-        $this->authorize('create', Invitation::class);
+        $this->authorize('create', [
+            Invitation::class,
+            null
+        ]);
 
         if(Auth::user()->admin) {
             $courses = Course::local()
@@ -100,14 +103,19 @@ class InvitationController extends Controller
      */
     public function store(StoreInvitation $request)
     {
-        $this->authorize('create', Invitation::class);
+        $course = Course::findOrFail($request->input('course'));
+
+        $this->authorize('create', [
+            Invitation::class,
+            $course
+        ]);
 
         // Create new invitation
         $invitation = new Invitation();
         $invitation->email = $request->get('email');
         $invitation->invitation_token = $invitation->generateInvitationToken();
         $invitation->creator_id = Auth::user()->id;
-        $invitation->course_id = $request->get('course');
+        $invitation->course_id = $course->id;
         $invitation->save();
 
         // Send invitation mail to the recipient

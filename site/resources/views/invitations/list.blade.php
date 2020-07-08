@@ -2,10 +2,13 @@
     <div class="card">
         <div class="card-header">
             <span class="title">{{ trans('invitations.pending') }} <span class="badge badge-secondary">{{ $invitations->total() }}</span></span>
-            <a href="{{ Route::is('admin.invitations.manage') ? route('admin.invitations.create') : route('invitations.create') }}"
-               class="btn btn-primary float-right">
-                {{ trans('invitations.create') }}
-            </a>
+
+            @can('create', [\App\Invitation::class, null])
+                <a href="{{ Route::is('admin.invitations.manage') ? route('admin.invitations.create') : route('invitations.create') }}"
+                   class="btn btn-primary float-right">
+                    {{ trans('invitations.create') }}
+                </a>
+            @endcan
         </div>
         <div class="card-body">
             @if ($invitations->items())

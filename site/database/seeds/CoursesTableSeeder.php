@@ -71,6 +71,12 @@ class CoursesTableSeeder extends Seeder
         ]);
 
         DB::table('enrollments')->insert([
+            'role' => EnrollmentRole::Teacher,
+            'course_id' => $secondCourse,
+            'user_id' => $teacherUser
+        ]);
+
+        DB::table('enrollments')->insert([
             'role' => EnrollmentRole::Student,
             'course_id' => $secondCourse,
             'user_id' => $studentUser

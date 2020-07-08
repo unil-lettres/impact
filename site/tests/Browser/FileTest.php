@@ -36,7 +36,6 @@ class FileTest extends DuskTestCase
             $browser->assertSee('Test video file')
                 ->assertSee('Test audio file')
                 ->assertSee('Failed file')
-                ->assertSee('Transcoding file')
                 ->assertSee('Used file')
                 ->assertDontSee('Deactivated file');
         });
@@ -61,7 +60,6 @@ class FileTest extends DuskTestCase
             $browser->assertSee('Test video file')
                 ->assertDontSee('Test audio file')
                 ->assertSee('Failed file')
-                ->assertSee('Transcoding file')
                 ->assertSee('Used file')
                 ->assertDontSee('Deactivated file');
         });
@@ -111,7 +109,7 @@ class FileTest extends DuskTestCase
                 ->clickLink('Fichiers');
 
             $browser->click('#files table tbody tr.ready .actions span:nth-child(1) a')
-                ->assertSee('ready')
+                ->assertInputValue('status', 'ready')
                 ->assertSourceHas('Url du fichier');
         });
     }
@@ -132,8 +130,73 @@ class FileTest extends DuskTestCase
                 ->clickLink('Fichiers');
 
             $browser->click('#files table tbody tr.failed .actions span:nth-child(1) a')
-                ->assertSee('failed')
+                ->assertInputValue('status', 'failed')
                 ->assertSourceMissing('Url du fichier');
+        });
+    }
+
+    /**
+     * Test cannot play transcoding file.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testCannotPlayTranscodingFile()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->clickLink('Admin')
+                ->clickLink('Fichiers');
+
+            $browser->click('#files table tbody tr.transcoding .actions span:nth-child(1) a')
+                ->assertInputValue('status', 'transcoding')
+                ->assertSourceMissing('Url du fichier');
+        });
+    }
+
+    /**
+     * Test cannot edit the course of a used file.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testCannotEditCourseOfUsedFile()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->clickLink('Admin')
+                ->clickLink('Fichiers');
+
+            $browser->click('#files table tbody tr.used .actions span:nth-child(1) a')
+                ->assertDontSee('Aucune fiche trouvée')
+                ->assertSourceHas('"disabled":true');
+        });
+    }
+
+    /**
+     * Test can edit the course of an unused file.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testCanEditCourseOfUnusedFile()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->clickLink('Admin')
+                ->clickLink('Fichiers');
+
+            $browser->click('#files table tbody tr.unused .actions span:nth-child(1) a')
+                ->assertSee('Aucune fiche trouvée')
+                ->click('#rct-single-course-select')
+                ->waitForText('Second space')
+                ->assertSee('Second space');
         });
     }
 }

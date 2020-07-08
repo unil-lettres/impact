@@ -38,7 +38,7 @@ class FilesTableSeeder extends Seeder
         DB::table('files')->insert([
             'name' => 'Test audio file',
             'filename' => 'jesuisunfichierdetest2.mp3',
-            'status' => FileStatus::Ready,
+            'status' => FileStatus::Transcoding,
             'type' => FileType::Audio,
             'size' => 4519413,
             'width' => null,
@@ -82,7 +82,7 @@ class FilesTableSeeder extends Seeder
 
         $usedFile = DB::table('files')->insertGetId([
             'name' => 'Used file',
-            'filename' => 'jesuisunfichierdetest6.mp4',
+            'filename' => 'jesuisunfichierdetest5.mp4',
             'status' => FileStatus::Transcoding,
             'type' => FileType::Video,
             'size' => 4519413,

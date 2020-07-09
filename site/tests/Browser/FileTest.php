@@ -19,7 +19,7 @@ class FileTest extends DuskTestCase
     }
 
     /**
-     * Test list files as admin.
+     * Test list files as an admin.
      *
      * @return void
      * @throws Throwable
@@ -42,7 +42,7 @@ class FileTest extends DuskTestCase
     }
 
     /**
-     * Test list files as teacher.
+     * Test list files as a teacher.
      *
      * @return void
      * @throws Throwable
@@ -62,6 +62,31 @@ class FileTest extends DuskTestCase
                 ->assertSee('Failed file')
                 ->assertSee('Used file')
                 ->assertDontSee('Deactivated file');
+        });
+    }
+
+    /**
+     * Test show linked card as a teacher
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testShowLinkedCardAsTeacher()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('teacher-user@example.com', 'password');
+
+            $browser->clickLink('Second space')
+                ->clickLink('Configuration de l\'espace')
+                ->clickLink('Fichiers');
+
+            $browser->with('#files table tbody tr.used', function ($used) {
+                $used->click('span.base-popover');
+            });
+            $browser->assertSee('Test card with file')
+                ->clickLink('Test card with file')
+                ->assertSee('Test card with file');
         });
     }
 

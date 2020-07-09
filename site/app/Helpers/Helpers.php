@@ -270,6 +270,6 @@ class Helpers {
      * @return string
      */
     public static function fileState(File $file) {
-        return $file->cards->isEmpty() ? 'unused' : 'used';
+        return $file->isUsed() ? 'used' : 'unused';
     }
 }

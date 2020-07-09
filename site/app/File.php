@@ -38,4 +38,13 @@ class File extends Model
         return $this->hasMany('App\Card', 'file_id')
             ->orderBy('created_at', 'desc');
     }
+
+    /**
+     * Check if the file is used by card(s)
+     *
+     * @return boolean
+     */
+    public function isUsed() {
+        return $this->cards->isNotEmpty();
+    }
 }

@@ -28,7 +28,7 @@ You can replace the values if needed, but the default ones should work.
 
 ## Edit hosts file
 
-Edit hosts file to point **impact.lan** to you docker host.
+Edit hosts file to point **impact.lan** to your docker host.
 
 ## Environment installation & configuration
 
@@ -82,13 +82,17 @@ Or to get the messages in JSON format.
 
 ## Testing
 
-Run the following commands from the framework root directory (/site).
+Run the following commands from the framework root directory (/site). Check environment file for requirements.
 
-### Unit testing
-``./vendor/bin/phpunit``
+### Launch local testing environment 
 
-### Functional testing
-``php artisan dusk``
+``php artisan serve --env=dusk.local``
+
+### Run functional tests
+
+Run all tests: ``php artisan dusk``
+
+Run specific tests: ``php artisan dusk --filter UserTest``
 
 # Error tracker
 

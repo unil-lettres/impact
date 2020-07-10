@@ -17,6 +17,7 @@
                           action="{{ route('courses.disable', $course->id) }}">
                         @method('DELETE')
                         @csrf
+                        <input id="redirect" name="redirect" type="hidden" value="home">
                         <button type="submit"
                                 class="btn btn-danger"
                                 data-toggle="tooltip"

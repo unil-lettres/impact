@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
 use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
@@ -11,6 +12,18 @@ use Throwable;
 class FileTest extends DuskTestCase
 {
     use ProvidesBrowser;
+
+    protected static bool $migrated = false;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        if (!static::$migrated) {
+            Artisan::call('migrate:fresh --seed');
+            static::$migrated = true;
+        }
+    }
 
     public function tearDown(): void
     {
@@ -84,7 +97,8 @@ class FileTest extends DuskTestCase
             $browser->with('#files table tbody tr.used', function ($used) {
                 $used->click('span.base-popover');
             });
-            $browser->assertSee('Test card with file')
+            $browser->waitForText('Test card with file')
+                ->assertSee('Test card with file')
                 ->clickLink('Test card with file')
                 ->assertSee('Test card with file');
         });

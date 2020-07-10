@@ -7,6 +7,7 @@ use App\Enums\CoursesFilter;
 use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
 use App\Http\Requests\DestroyCourse;
+use App\Http\Requests\DisableCourse;
 use App\Http\Requests\EnableCourse;
 use App\Http\Requests\ManageCourses;
 use App\Http\Requests\SendCourseDeleteConfirmMail;
@@ -258,19 +259,22 @@ class CourseController extends Controller
     /**
      * Disable the specified resource (soft delete).
      *
-     * @param Course $course
+     * @param DisableCourse $request
+     * @param int $id
      *
      * @return RedirectResponse
-     * @throws Exception
+     * @throws AuthorizationException
      */
-    public function disable(Course $course)
+    public function disable(DisableCourse $request, int $id)
     {
+        $course = Course::find($id);
+
         $this->authorize('disable', $course);
 
         $course->delete();
 
         return redirect()
-            ->back()
+            ->route($request->get('redirect'))
             ->with('success', trans('messages.course.disabled'));
     }
 

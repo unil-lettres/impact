@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
 use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
@@ -11,6 +12,18 @@ use Throwable;
 class LoginTest extends DuskTestCase
 {
     use ProvidesBrowser;
+
+    protected static bool $migrated = false;
+
+    public function setUp(): void
+    {
+        parent::setUp();
+
+        if (!static::$migrated) {
+            Artisan::call('migrate:fresh --seed');
+            static::$migrated = true;
+        }
+    }
 
     public function tearDown(): void
     {

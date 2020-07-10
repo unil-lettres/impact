@@ -22,9 +22,6 @@ class CourseObserver
             // Soft delete all related files
             $course->files()->delete();
 
-            // Soft delete all related enrollments
-            $course->enrollments()->delete();
-
             // Soft delete all related folders
             $course->folders()->delete();
 
@@ -50,11 +47,6 @@ class CourseObserver
         // Restore all related files
         foreach ($course->files()->withTrashed()->get() as $file) {
             $file->restore();
-        }
-
-        // Restore all related enrollments
-        foreach ($course->enrollments()->withTrashed()->get() as $enrollment) {
-            $enrollment->restore();
         }
 
         // Restore all related folders

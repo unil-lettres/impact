@@ -97,7 +97,8 @@ class FileTest extends DuskTestCase
             $browser->with('#files table tbody tr.used', function ($used) {
                 $used->click('span.base-popover');
             });
-            $browser->assertSee('Test card with file')
+            $browser->waitForText('Test card with file')
+                ->assertSee('Test card with file')
                 ->clickLink('Test card with file')
                 ->assertSee('Test card with file');
         });

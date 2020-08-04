@@ -72,7 +72,7 @@ To access the database please use the following link.
 
 ### MailHog
 
-To access the mail server please use the following link.
+To access mails please use the following link.
 
 [http://impact.lan:8026](http://impact.lan:8026)
 

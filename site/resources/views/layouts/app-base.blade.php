@@ -4,6 +4,7 @@
         @include('includes.head')
 
         @yield('styles')
+        @yield('scripts-head')
     </head>
     <body>
         <div id='app'>
@@ -38,6 +39,6 @@
 
         <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
         @include('layouts.app-js')
-        @yield('scripts')
+        @yield('scripts-footer')
     </body>
 </html>

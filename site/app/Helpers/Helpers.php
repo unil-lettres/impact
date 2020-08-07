@@ -223,6 +223,21 @@ class Helpers {
     }
 
     /**
+     * Check whether the file has the failed status
+     *
+     * @param File $file
+     *
+     * @return bool
+     */
+    public static function isFileFailed(File $file) {
+        if($file->status === FileStatus::Failed) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Generate HTML for given breadcrumbs
      *
      * The breadcrumbs parameter should be a Collection and should

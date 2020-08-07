@@ -18,3 +18,4 @@ require('./components/MultiCourseEnrollment');
 require('./components/SingleCourseSelect');
 require('./components/SingleFolderSelect');
 require('./components/Uploader');
+require('./components/Editor');

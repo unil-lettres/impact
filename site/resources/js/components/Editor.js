@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
+import axios from "axios";
+
 import CKEditor from '@ckeditor/ckeditor5-react';
 import BalloonEditor from '@ckeditor/ckeditor5-editor-balloon/src/ballooneditor';
 
@@ -107,7 +109,8 @@ export default class Editor extends Component {
     initVariables(data) {
         this.editor = BalloonEditor;
         this.config = editorConfiguration;
-        this.html = data.html ?? '';
+        this.card = data.card;
+        this.html = data.card[this.props.reference];
         this.disabled = data.disabled ?? true;
         this.editButtonId = 'edit-' + this.props.reference;
         this.editorId = 'rct-editor-' + this.props.reference;
@@ -139,8 +142,7 @@ export default class Editor extends Component {
         switch (this.editor.isReadOnly) {
             case false:
                 this.editor.isReadOnly = true;
-
-                // TODO: save text to database here with axios
+                this.save();
                 break;
             case true:
             default:
@@ -148,6 +150,17 @@ export default class Editor extends Component {
         }
 
         this.updateButton(this.editor.isReadOnly);
+    }
+
+    save() {
+        axios.put('/cards/' + this.card.id + '/editor', {
+            html: this.editor.getData(),
+            box: this.props.reference
+        }).then(response => {
+            console.log(response);
+        }).catch(error => {
+            console.log(error)
+        });
     }
 
     render() {
@@ -160,18 +173,17 @@ export default class Editor extends Component {
                     onInit={ editor => {
                         this.editor = editor
                         //console.log(Array.from( editor.ui.componentFactory.names() ));
-                        //console.log( 'Editor is ready to use!', this.editor );
                     } }
                     disabled={ this.disabled }
                     onChange={ ( event, editor ) => {
-                        const data = editor.getData();
-                        console.log( { event, editor, data } );
+                        //const data = editor.getData();
+                        //console.log( { event, editor, data } );
                     } }
                     onBlur={ ( event, editor ) => {
-                        console.log( 'Blur.', editor );
+                        //console.log( 'Blur.', editor );
                     } }
                     onFocus={ ( event, editor ) => {
-                        console.log( 'Focus.', editor );
+                        //console.log( 'Focus.', editor );
                     } }
                 />
             </div>

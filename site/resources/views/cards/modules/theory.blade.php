@@ -9,7 +9,7 @@
     </div>
     <div class="card-body">
         <div id="rct-editor-box3"
-             data='{{ json_encode(['html' => '<p>Hello World</p>Box3', 'locale' => Helpers::currentLocal(), 'editLabel' => 'Éditer', 'saveLabel' => 'Sauver']) }}'
+             data='{{ json_encode(['card' => $card, 'locale' => Helpers::currentLocal(), 'editLabel' => 'Éditer', 'saveLabel' => 'Sauver']) }}'
              reference='box3'
         ></div>
     </div>

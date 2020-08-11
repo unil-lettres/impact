@@ -140,4 +140,26 @@ class CardPolicy
 
         return false;
     }
+
+    /**
+     * Determine whether the user can update the editor html from the card
+     *
+     * @param User $user
+     * @param Card $card
+     *
+     * @return mixed
+     */
+    public function editor(User $user, Card $card)
+    {
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers of the course & editors can update the editor html from the card
+        if ($user->isTeacher($card->course) || $user->isEditor($card)) {
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -11,7 +11,7 @@ class Card extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'title', 'course_id', 'folder_id', 'file_id'
+        'title', 'box3', 'box4', 'course_id', 'folder_id', 'file_id'
     ];
 
     protected $dates = [

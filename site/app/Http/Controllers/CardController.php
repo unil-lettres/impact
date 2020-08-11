@@ -8,8 +8,10 @@ use App\Folder;
 use App\Http\Requests\CreateCard;
 use App\Http\Requests\DestroyCard;
 use App\Http\Requests\StoreCard;
+use App\Http\Requests\UpdateCardEditor;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -193,5 +195,33 @@ class CardController extends Controller
         return redirect()
             ->back()
             ->with('success', trans('messages.card.unlinked'));
+    }
+
+    /**
+     * Update the editor html from the specified resource.
+     *
+     * @param UpdateCardEditor $request
+     * @param int $id
+     *
+     * @return JsonResponse
+     * @throws AuthorizationException
+     */
+    public function editor(UpdateCardEditor $request, int $id)
+    {
+        $card = Card::find($id);
+
+        $this->authorize('editor', $card);
+
+        $html = $request->get('html');
+        $box = $request->get('box');
+
+        $card->update([
+            $box => $html
+        ]);
+        $card->save();
+
+        return response()->json([
+            'success' => $id
+        ], 200);
     }
 }

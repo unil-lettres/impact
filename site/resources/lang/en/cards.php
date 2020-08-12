@@ -16,5 +16,9 @@ return [
     'editors.not_found' => 'No editor available',
     'send_mails' => 'By default, an email is sent whenever the status of a card changes.',
     'update.configuration' => 'Update configuration',
+    'theory' => 'Theory',
+    'exemplification' => 'Exemplification',
+    'edit' => 'Edit',
+    'save' => 'Save'
 
 ];

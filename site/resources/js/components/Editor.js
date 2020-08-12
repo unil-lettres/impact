@@ -114,6 +114,7 @@ export default class Editor extends Component {
         this.disabled = data.disabled ?? true;
         this.editButtonId = 'edit-' + this.props.reference;
         this.editorId = 'rct-editor-' + this.props.reference;
+        this.editorErrorMsgId = 'edit-failed-' + this.props.reference;
         this.editLabel = data.editLabel ?? 'Edit';
         this.saveLabel = data.saveLabel ?? 'Save';
     }
@@ -121,6 +122,7 @@ export default class Editor extends Component {
     updateButton(isReadOnly) {
         let button = document.getElementById(this.editButtonId);
         let editor = document.getElementById(this.editorId);
+        let editorErrorMsgId = document.getElementById(this.editorErrorMsgId);
 
         switch (isReadOnly) {
             case true:
@@ -131,6 +133,7 @@ export default class Editor extends Component {
                 break;
             case false:
             default:
+                editorErrorMsgId.classList.add('d-none');
                 editor.classList.add('editing');
                 button.classList.remove("btn-primary");
                 button.classList.add('btn-success');
@@ -160,6 +163,10 @@ export default class Editor extends Component {
             console.log(response);
         }).catch(error => {
             console.log(error)
+            // Display an error message to the user
+            document.getElementById(this.editorErrorMsgId)
+                .classList
+                .remove("d-none");
         });
     }
 

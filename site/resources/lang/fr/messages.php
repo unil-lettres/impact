@@ -34,6 +34,7 @@ return [
     'card.deleted' => 'Fiche supprimée.',
     'card.unlinked' => 'Card dissociée.',
     'card.configuration.updated' => 'Configuration de la fiche mise à jour.',
+    'card.editor.failed' => 'Erreur - échec de la mise à jour',
     'folder.created' => 'Dossier créé: :title',
     'folder.deleted' => 'Dossier supprimé.',
     'folder.updated' => 'Dossier mis à jour.',

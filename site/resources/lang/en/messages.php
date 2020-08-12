@@ -34,6 +34,7 @@ return [
     'card.deleted' => 'Card deleted.',
     'card.unlinked' => 'Card dissociated.',
     'card.configuration.updated' => 'Card configuration updated',
+    'card.editor.failed' => 'Error - update failure',
     'folder.created' => 'Folder created: :title',
     'folder.deleted' => 'Folder deleted.',
     'folder.updated' => 'Folder updated.',

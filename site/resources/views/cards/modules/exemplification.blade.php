@@ -2,10 +2,12 @@
     <div class="card-header">
         <span class="font-weight-bolder">4. {{ trans('cards.exemplification') }}</span>
         <span class="d-none" id="edit-failed-box4">[ {{ trans('messages.card.editor.failed') }} ]</span>
-        <button class="btn btn-primary float-right"
-                id="edit-box4">
-            {{ trans('cards.edit') }}
-        </button>
+        @can('editor', $card)
+            <button class="btn btn-primary float-right"
+                    id="edit-box4">
+                {{ trans('cards.edit') }}
+            </button>
+        @endcan
     </div>
     <div class="card-body">
         <div id="rct-editor-box4"

@@ -98,8 +98,9 @@ export default class Editor extends Component {
     }
 
     componentDidMount() {
-        document.getElementById(this.editButtonId)
-            .addEventListener('click', this.edit, false);
+        if(this.button) {
+            this.button.addEventListener('click', this.edit, false);
+        }
     }
 
     updateEditorConfiguration(data) {
@@ -113,6 +114,7 @@ export default class Editor extends Component {
         this.html = data.card[this.props.reference];
         this.disabled = data.disabled ?? true;
         this.editButtonId = 'edit-' + this.props.reference;
+        this.button = document.getElementById(this.editButtonId);
         this.editorId = 'rct-editor-' + this.props.reference;
         this.editorErrorMsgId = 'edit-failed-' + this.props.reference;
         this.editLabel = data.editLabel ?? 'Edit';
@@ -120,24 +122,25 @@ export default class Editor extends Component {
     }
 
     updateButton(isReadOnly) {
-        let button = document.getElementById(this.editButtonId);
         let editor = document.getElementById(this.editorId);
         let editorErrorMsgId = document.getElementById(this.editorErrorMsgId);
 
-        switch (isReadOnly) {
-            case true:
-                editor.classList.remove("editing");
-                button.classList.remove("btn-success");
-                button.classList.add('btn-primary');
-                button.textContent = this.editLabel;
-                break;
-            case false:
-            default:
-                editorErrorMsgId.classList.add('d-none');
-                editor.classList.add('editing');
-                button.classList.remove("btn-primary");
-                button.classList.add('btn-success');
-                button.innerText = this.saveLabel;
+        if(this.button) {
+            switch (isReadOnly) {
+                case true:
+                    editor.classList.remove("editing");
+                    this.button.classList.remove("btn-success");
+                    this.button.classList.add('btn-primary');
+                    this.button.textContent = this.editLabel;
+                    break;
+                case false:
+                default:
+                    editorErrorMsgId.classList.add('d-none');
+                    editor.classList.add('editing');
+                    this.button.classList.remove("btn-primary");
+                    this.button.classList.add('btn-success');
+                    this.button.innerText = this.saveLabel;
+            }
         }
     }
 

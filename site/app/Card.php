@@ -11,11 +11,43 @@ class Card extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'title', 'box3', 'box4', 'course_id', 'folder_id', 'file_id'
+        'title', 'box3', 'box4', 'course_id', 'folder_id', 'file_id', 'options'
     ];
 
     protected $dates = [
         'deleted_at'
+    ];
+
+    protected $casts = [
+        'options' => 'array'
+    ];
+
+    protected $attributes = [
+        'options' => '{
+            "emails": true,
+            "box1": {
+                "hidden": false,
+                "start": null,
+                "end": null
+            },
+            "box2": {
+                "hidden": false,
+                "sync": true
+            },
+            "box3": {
+                "hidden": false,
+                "title": null,
+                "fixed": false
+            },
+            "box4": {
+                "hidden": false,
+                "title": null,
+                "fixed": false
+            },
+            "box5": {
+                "hidden": false
+            }
+        }'
     ];
 
     /**

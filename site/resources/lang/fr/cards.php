@@ -18,6 +18,7 @@ return [
     'update.configuration' => 'Mettre à jour la configuration',
     'theory' => 'Théorie',
     'exemplification' => 'Exemplification',
+    'source' => 'Source',
     'edit' => 'Éditer',
     'save' => 'Sauver'
 

@@ -18,6 +18,7 @@ return [
     'update.configuration' => 'Update configuration',
     'theory' => 'Theory',
     'exemplification' => 'Exemplification',
+    'source' => 'Source',
     'edit' => 'Edit',
     'save' => 'Save'
 

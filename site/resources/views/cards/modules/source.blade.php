@@ -1,7 +1,6 @@
-<!-- TODO: translations -->
 <div class="card">
     <div class="card-header">
-        <span class="font-weight-bolder">1. Source</span>
+        <span class="font-weight-bolder">1. {{ trans('cards.source') }}</span>
 
         @can('upload', [\App\File::class, $course, $card])
             <input id="card_id" name="card_id" type="hidden" value="{{ $card->id }}">
@@ -15,31 +14,21 @@
     <div class="card-body p-0">
         @if($card->file)
             @if(Helpers::isFileReady($card->file))
-                <div class="mt-2">
-                    @if($card->file->type === 'video')
-                        <video width="100%" height="100%" controls>
-                            <source src="{{ Helpers::fileUrl($card->file->filename) }}" type="video/mp4">
-                            Your browser does not support the video tag.
-                        </video>
-                    @elseif($card->file->type === 'audio')
-                        <audio controls>
-                            <source src="{{ Helpers::fileUrl($card->file->filename) }}" type="audio/mpeg">
-                            Your browser does not support the audio element.
-                        </audio>
-                    @endif
-                </div>
+                <div id="rct-player"
+                     data='{{ json_encode(['file' => $card->file, 'url' => Helpers::fileUrl($card->file->filename)]) }}'
+                ></div>
             @elseif(Helpers::isFileFailed($card->file))
                 <p class="text-danger text-center p-3">
-                    The processing of the file failed, please try to send it again, or contact an administrator.
+                    {{ trans('messages.card.media.failed') }}
                 </p>
             @else
                 <p class="text-primary text-center p-3">
-                    The media is processing, please wait.
+                    {{ trans('messages.card.media.processing') }}
                 </p>
             @endif
         @else
             <p class="text-secondary text-center p-3">
-                No media selected.
+                {{ trans('messages.card.media.not.selected') }}
             </p>
         @endif
     </div>

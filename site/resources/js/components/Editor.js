@@ -144,7 +144,7 @@ export default class Editor extends Component {
         }
     }
 
-    edit(event){
+    edit(e){
         switch (this.editor.isReadOnly) {
             case false:
                 this.editor.isReadOnly = true;

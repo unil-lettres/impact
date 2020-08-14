@@ -19,13 +19,13 @@
             <div>
                 <div class="row">
                     <div class="col-xl-5 col-lg-5 col-md-5 col-sm-12">
-                        @include('cards.modules.source')
-                        @include('cards.modules.theory')
-                        @include('cards.modules.documents')
+                        @include('cards.show.box1', ['reference' => 'box1'])
+                        @include('cards.show.box3', ['reference' => 'box3'])
+                        @include('cards.show.box5', ['reference' => 'box5'])
                     </div>
                     <div class="col-xl-7 col-lg-7 col-md-7 col-sm-12">
-                        @include('cards.modules.transcript')
-                        @include('cards.modules.exemplification')
+                        @include('cards.show.box2', ['reference' => 'box2'])
+                        @include('cards.show.box4', ['reference' => 'box4'])
                     </div>
                 </div>
             </div>

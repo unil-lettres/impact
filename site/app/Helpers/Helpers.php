@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Card;
 use App\Course;
 use App\Enums\CourseType;
 use App\Enums\FileStatus;
@@ -241,7 +242,7 @@ class Helpers {
      * Generate HTML for given breadcrumbs
      *
      * The breadcrumbs parameter should be a Collection and should
-     * contain a path as the key, and a name as the value.
+     * contain a path as the key, and a name as the value
      * @param Collection $breadcrumbs
      *
      * @return string
@@ -278,7 +279,7 @@ class Helpers {
 
     /**
      * Return the "used" string if the file is liked to card(s) or
-     * return the "unused" string if the file is not linked to card(s).
+     * return the "unused" string if the file is not linked to card(s)
      *
      * @param File $file
      *
@@ -286,5 +287,49 @@ class Helpers {
      */
     public static function fileState(File $file) {
         return $file->isUsed() ? 'used' : 'unused';
+    }
+
+    /**
+     * Return whether the card has an external media link
+     *
+     * @param Card $card
+     *
+     * @return boolean
+     */
+    public static function hasExternalLink(Card $card) {
+        return empty(trim($card['options']['box1']['link'])) ? false : true;
+    }
+
+    /**
+     * Return whether the card has an external media link
+     *
+     * @param Card $card
+     *
+     * @return string|null
+     */
+    public static function getExternalLink(Card $card) {
+        if(!Helpers::hasExternalLink($card)) {
+            return null;
+        }
+
+        return trim($card['options']['box1']['link']);
+    }
+
+    /**
+     * Return whether the card has a internal or external media source
+     *
+     * @param Card $card
+     * @return boolean
+     */
+    public static function hasSource(Card $card) {
+        if($card->file) {
+            return true;
+        }
+
+        if(Helpers::hasExternalLink($card)) {
+            return true;
+        }
+
+        return false;
     }
 }

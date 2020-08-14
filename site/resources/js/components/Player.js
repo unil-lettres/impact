@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import Plyr from 'plyr';
 import 'plyr/dist/plyr.css'
+import MimeType from 'mime-types/index';
 
 const playerConfiguration = {
     controls: [
@@ -25,41 +26,73 @@ export default class Player extends Component {
     }
 
     initVariables(data) {
+        this.card = data.card
+        this.type = this.card.file ? this.card.file.type : this.guessMediaType(data.url);
+        this.mime = this.mediaMimeType(data.url);
         this.config = playerConfiguration;
         this.source = {
-            type: data.file.type,
+            type: this.type,
             sources: [
                 {
                     src: data.url,
-                    type: this.sourceType(data.file.type),
+                    type: this.mime,
                 },
             ],
         };
     }
 
     componentDidMount() {
-        this.player = new Plyr('.js-plyr', this.config);
-        this.player.source = this.source;
+        if(this.isMediaReachable()) {
+            this.player = new Plyr('.js-plyr', this.config);
+            this.player.source = this.source;
+            this.player.speed = 1;
+        }
     }
 
     componentWillUnmount() {
         this.player.destroy()
     }
 
-    sourceType(type) {
-        switch (type) {
-            case 'video':
-                return 'video/mp4';
-            case 'audio':
-            default:
-                return 'audio/mpeg';
-        }
+    mediaMimeType(path) {
+        return this.getMimeType(path) ?? null;
     }
 
+    guessMediaType(path) {
+        let mimeType = this.getMimeType(path);
+
+        if(!mimeType) {
+            return null;
+        }
+
+        if(mimeType.startsWith("video")) {
+            return 'video';
+        }
+
+        if(mimeType.startsWith("audio")) {
+            return 'audio';
+        }
+
+        return null;
+    }
+
+    getMimeType(path) {
+        return MimeType.lookup(path);
+    }
+
+    isMediaReachable() {
+        return !!this.mime;
+    }
+
+
     render() {
+        const isMediaReachable = this.isMediaReachable();
         return (
-            <video className="js-plyr plyr">
-            </video>
+            <div>
+                { isMediaReachable
+                    ? <video className="js-plyr plyr"></video>
+                    : <p className="text-danger text-center p-3">Cannot load the media</p>
+                }
+            </div>
         )
     }
 }

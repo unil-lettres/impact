@@ -1,25 +1,12 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
-import Select from "react-select";
-import makeAnimated from 'react-select/animated';
+import SingleSelect from "./SingleSelect";
 
-const animatedComponents = makeAnimated();
-
-export default class SingleCourseSelect extends Component {
+export default class SingleCourseSelect extends SingleSelect {
     constructor(props){
         super(props);
 
         let data = JSON.parse(this.props.data);
-
-        this.state = {
-            options: [],
-            default: [],
-            selected: [],
-            clearable: data.clearable ?
-                data.clearable : false,
-            disabled: data.disabled ?
-                data.disabled : false,
-        };
 
         Object.keys(data.options).forEach(key=>{
             this.state.options.push({
@@ -34,41 +21,6 @@ export default class SingleCourseSelect extends Component {
                 label: data.default.name
             });
         }
-
-        this.state.selected = this.state.default;
-        this.state.clearable = data.clearable ? data.clearable : false;
-    }
-
-    handleChange = (selectedOption, { action }) => {
-        this.setState(
-            {
-                selected: selectedOption
-            },
-            () => this.save(action)
-        );
-    };
-
-    save(action) {
-        if(this.state.selected) {
-            document.getElementById(this.props.reference).value = this.state.selected.value;
-        } else {
-            // Clear selected data
-            document.getElementById(this.props.reference).value = '';
-        }
-    }
-
-    render() {
-        return (
-            <Select
-                components={ animatedComponents }
-                isClearable={ this.state.clearable }
-                closeMenuOnSelect={ true }
-                isDisabled={ this.state.disabled }
-                defaultValue={ this.state.default }
-                onChange={ this.handleChange }
-                options={ this.state.options }
-            />
-        );
     }
 }
 

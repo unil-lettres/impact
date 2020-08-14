@@ -42,6 +42,7 @@
         "jquery": "^3.5.1",
         "laravel-mix": "^5.0.4",
         "lodash": "^4.17.13",
+        "mime-types": "^2.1.27",
         "plyr": "^3.6.2",
         "popper.js": "^1.16.1",
         "raw-loader": "^4.0.0",

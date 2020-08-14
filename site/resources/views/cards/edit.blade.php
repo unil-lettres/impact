@@ -8,55 +8,30 @@
             @endsection
             <hr>
 
-            <div class="row">
-                <div class="col-md-12 col-lg-5">
-                        <div class="card">
-                            <div class="card-header">
-                                Emails
-                            </div>
-                            <div class="card-body">
-                                <form method="post"
-                                      action="{{ route('cards.update', $card->id) }}">
-                                    @csrf
-                                    @method('PUT')
-                                    <p>{{ trans('cards.send_mails') }}</p>
-                                    <p>
-                                        <!-- TODO: add emails option & translate -->
-                                        <i>[Add email option radio button here]</i>
-                                    </p>
+            <form method="post"
+                  action="{{ route('cards.update', $card->id) }}">
+                @csrf
+                @method('PUT')
 
-                                    <hr>
-                                    <button type="submit" class="btn btn-primary">
-                                        {{ trans('cards.update.configuration') }}
-                                    </button>
-                                </form>
-                            </div>
-                        </div>
-                </div>
 
-                <div class="col-md-12 col-lg-7">
-                    <div class="card">
-                        <div class="card-header">
-                            {{ trans('cards.editors') }}
-                        </div>
-                        <div class="card-body">
-                            <p>{{ trans('cards.choose_editors') }}</p>
-
-                            @if ($students->isNotEmpty())
-                                <div class="form-group">
-                                    <div id="rct-multi-editor-select"
-                                         data='{{ json_encode(['record' => $card, 'options' => $students, 'defaults' => $editors]) }}'
-                                    ></div>
-                                </div>
-                            @else
-                                <p class="text-secondary">
-                                    {{ trans('cards.editors.not_found') }}
-                                </p>
-                            @endif
-                        </div>
+                <div class="row">
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                        @include('cards.edit.box1', ['reference' => 'box1'])
+                        @include('cards.edit.box2', ['reference' => 'box2'])
+                        @include('cards.edit.box3', ['reference' => 'box3'])
+                        @include('cards.edit.box4', ['reference' => 'box4'])
+                        @include('cards.edit.box5', ['reference' => 'box5'])
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                        @include('cards.edit.editors')
+                        @include('cards.edit.settings')
                     </div>
                 </div>
-            </div>
+
+                <button type="submit" class="btn btn-primary">
+                    {{ trans('cards.update.configuration') }}
+                </button>
+            </form>
         @endcan
     </div>
 @endsection

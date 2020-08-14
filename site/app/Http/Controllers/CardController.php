@@ -130,7 +130,9 @@ class CardController extends Controller
             'editors' => $card
                 ->editors(),
             'students' => $card->course
-                ->students()
+                ->students(),
+            'files' => $card->course
+                ->files
         ]);
     }
 
@@ -146,6 +148,8 @@ class CardController extends Controller
     public function update(Request $request, Card $card)
     {
         $this->authorize('update', $card);
+
+        // TODO: update model in database
 
         return redirect()
             ->route('cards.show', $card->id)

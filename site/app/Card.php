@@ -27,6 +27,7 @@ class Card extends Model
             "emails": true,
             "box1": {
                 "hidden": false,
+                "link": null,
                 "start": null,
                 "end": null
             },
@@ -36,12 +37,12 @@ class Card extends Model
             },
             "box3": {
                 "hidden": false,
-                "title": null,
+                "title": "Théorie",
                 "fixed": false
             },
             "box4": {
                 "hidden": false,
-                "title": null,
+                "title": "Exemplification",
                 "fixed": false
             },
             "box5": {

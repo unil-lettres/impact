@@ -50,6 +50,19 @@ object-assign
  * Date: 2020-05-04T22:49Z
  */
 
+/*!
+ * mime-db
+ * Copyright(c) 2014 Jonathan Ong
+ * MIT Licensed
+ */
+
+/*!
+ * mime-types
+ * Copyright(c) 2014 Jonathan Ong
+ * Copyright(c) 2015 Douglas Christopher Wilson
+ * MIT Licensed
+ */
+
 /**
    * Takes a string with placeholder variables like `%{smart_count} file selected`
    * and replaces it with values from options `{smart_count: 5}`

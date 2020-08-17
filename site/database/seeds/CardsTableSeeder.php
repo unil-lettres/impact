@@ -33,7 +33,8 @@ class CardsTableSeeder extends Seeder
             'title' => 'Test card second space',
             'created_at' => $now,
             'updated_at' => $now,
-            'course_id' => $secondCourse->id
+            'course_id' => $secondCourse->id,
+            'options' => Card::OPTIONS
         ]);
 
         $testCardInFolder = DB::table('cards')->insertGetId([
@@ -41,6 +42,7 @@ class CardsTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
+            'options' => Card::OPTIONS,
             'folder_id' => $testFolder->id
         ]);
 
@@ -48,14 +50,16 @@ class CardsTableSeeder extends Seeder
             'title' => 'Test card second space not assigned',
             'created_at' => $now,
             'updated_at' => $now,
-            'course_id' => $secondCourse->id
+            'course_id' => $secondCourse->id,
+            'options' => Card::OPTIONS
         ]);
 
         DB::table('cards')->insert([
             'title' => 'Test card first space',
             'created_at' => $now,
             'updated_at' => $now,
-            'course_id' => $firstCourse->id
+            'course_id' => $firstCourse->id,
+            'options' => Card::OPTIONS
         ]);
 
         $enrollment->addCard(Card::find($testCard));

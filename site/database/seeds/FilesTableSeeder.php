@@ -1,5 +1,6 @@
 <?php
 
+use App\Card;
 use App\Course;
 use App\Enums\FileStatus;
 use App\Enums\FileType;
@@ -101,6 +102,7 @@ class FilesTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
+            'options' => Card::OPTIONS,
             'file_id' => $usedFile
         ]);
     }

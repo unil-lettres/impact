@@ -20,6 +20,7 @@
         "php-ffmpeg/php-ffmpeg": "^0.16.0"
     },
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.4",
         "fzaninotto/faker": "^1.4",
         "laravel/dusk": "^6.4",
         "laravel/telescope": "^3.0",

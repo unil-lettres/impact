@@ -71,7 +71,7 @@ class CardTest extends DuskTestCase
                 ->clickLink('Test card second space');
 
             $browser->assertSee('Test card second space')
-                ->assertDontSee('Configuration de la fiche');
+                ->assertSee('Configuration de la fiche');
         });
     }
 

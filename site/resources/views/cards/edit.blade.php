@@ -8,6 +8,8 @@
             @endsection
             <hr>
 
+            <!-- TODO: add form validation errors -->
+
             <form method="post"
                   action="{{ route('cards.update', $card->id) }}">
                 @csrf

@@ -90,7 +90,7 @@ class CardPolicy
         }
 
         // Only teachers of the course can update cards
-        if ($user->isTeacher($card->course)) {
+        if ($user->isTeacher($card->course) || $user->isEditor($card)) {
             return true;
         }
 

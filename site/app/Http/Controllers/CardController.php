@@ -8,6 +8,7 @@ use App\Folder;
 use App\Http\Requests\CreateCard;
 use App\Http\Requests\DestroyCard;
 use App\Http\Requests\StoreCard;
+use App\Http\Requests\UpdateCard;
 use App\Http\Requests\UpdateCardEditor;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
@@ -139,17 +140,35 @@ class CardController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Card $card
+     * @param UpdateCard $request
+     * @param int $id
      *
      * @return RedirectResponse
      * @throws AuthorizationException
      */
-    public function update(Request $request, Card $card)
+    public function update(UpdateCard $request, int $id)
     {
+        $card = Card::find($id);
+
         $this->authorize('update', $card);
 
-        // TODO: update model in database
+        $options = $card->options;
+        $options['box1']['hidden'] = $request->get('box1-hidden') ? true : false;
+        $options['box1']['link'] = $request->get('box1-link');
+        $options['box2']['hidden'] = $request->get('box2-hidden') ? true : false;
+        $options['box2']['sync'] = $request->get('box2-sync') ? true : false;
+        $options['box3']['hidden'] = $request->get('box3-hidden') ? true : false;
+        $options['box3']['title'] = $request->get('box3-title');
+        $options['box4']['hidden'] = $request->get('box4-hidden') ? true : false;
+        $options['box4']['title'] = $request->get('box4-title');
+        $options['box5']['hidden'] = $request->get('box5-hidden') ? true : false;
+        $options['emails'] = $request->get('emails') ? true : false;
+
+        $card->update([
+            'file_id' => $request->get('box1-file'),
+            'options' => $options
+        ]);
+        $card->save();
 
         return redirect()
             ->route('cards.show', $card->id)

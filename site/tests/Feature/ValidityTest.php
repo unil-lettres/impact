@@ -17,7 +17,7 @@ class ValidityTest extends TestCase
     {
         $user = User::factory()
             ->invalid()
-            ->make();
+            ->create();
 
         $this->actingAs($user)
             ->get('/')
@@ -33,7 +33,7 @@ class ValidityTest extends TestCase
     {
         $user = User::factory()
             ->invalid()
-            ->make();
+            ->create();
 
         $this->actingAs($user)
             ->get('/')
@@ -54,8 +54,9 @@ class ValidityTest extends TestCase
     public function testNoValidityForAdmins()
     {
         $user = User::factory()
+            ->admin()
             ->invalid()
-            ->make();
+            ->create();
 
         $this->actingAs($user)
             ->get('/')

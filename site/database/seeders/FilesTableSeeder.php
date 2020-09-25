@@ -8,6 +8,7 @@ use App\Enums\FileStatus;
 use App\Enums\FileType;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class FilesTableSeeder extends Seeder
 {

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use App\Course;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class FoldersTableSeeder extends Seeder
 {

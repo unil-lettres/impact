@@ -6,6 +6,7 @@ use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CoursesTableSeeder extends Seeder
 {

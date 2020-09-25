@@ -10,6 +10,7 @@ use App\Folder;
 use App\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CardsTableSeeder extends Seeder
 {

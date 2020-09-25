@@ -15,8 +15,8 @@ class AuthTest extends TestCase
      */
     public function testBasicAuth()
     {
-        $user = factory(User::class)
-            ->create();
+        $user = User::factory()
+            ->make();
 
         $this->actingAs($user)
             ->get('/')
@@ -30,8 +30,8 @@ class AuthTest extends TestCase
      */
     public function testAdminNotAuthorized()
     {
-        $user = factory(User::class)
-            ->create();
+        $user = User::factory()
+            ->make();
 
         $this->actingAs($user)
             ->get('/admin')
@@ -45,9 +45,9 @@ class AuthTest extends TestCase
      */
     public function testAdminAuthorized()
     {
-        $user = factory(User::class)
-            ->states('admin')
-            ->create();
+        $user = User::factory()
+            ->admin()
+            ->make();
 
         $this->actingAs($user)
             ->get('/admin')

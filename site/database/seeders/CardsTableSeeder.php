@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Card;
 use App\Course;
 use App\Enrollment;

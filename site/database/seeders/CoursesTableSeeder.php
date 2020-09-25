@@ -1,5 +1,7 @@
 <?php
 
+namespace Database\Seeders;
+
 use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
 use Illuminate\Support\Carbon;

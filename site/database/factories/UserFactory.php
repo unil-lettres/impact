@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -52,7 +53,7 @@ class UserFactory extends Factory
      */
     public function invalid()
     {
-        $now = Carbon\Carbon::now();
+        $now = Carbon::now();
 
         return $this->state(function (array $attributes) use ($now) {
             return [

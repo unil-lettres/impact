@@ -6,6 +6,7 @@ use App\Course;
 use App\File;
 use App\Observers\CourseObserver;
 use App\Observers\FileObserver;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -31,5 +32,6 @@ class AppServiceProvider extends ServiceProvider
     {
         File::observe(FileObserver::class);
         Course::observe(CourseObserver::class);
+        Paginator::useBootstrap();
     }
 }

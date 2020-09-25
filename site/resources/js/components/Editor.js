@@ -13,7 +13,7 @@ import UnderlinePlugin from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import StrikethroughPlugin from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
 import HighlightPlugin from '@ckeditor/ckeditor5-highlight/src/highlight';
 import BlockQuotePlugin from '@ckeditor/ckeditor5-block-quote/src/blockquote';
-import ListPlugin from '@ckeditor/ckeditor5-list/src/list';
+import ListStyle from '@ckeditor/ckeditor5-list/src/liststyle';
 import LinkPlugin from '@ckeditor/ckeditor5-link/src/link';
 import AlignmentPlugin from '@ckeditor/ckeditor5-alignment/src/alignment';
 import MediaEmbedPlugin from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
@@ -37,7 +37,7 @@ const editorConfiguration = {
         UnderlinePlugin,
         StrikethroughPlugin,
         BlockQuotePlugin,
-        ListPlugin,
+        ListStyle,
         LinkPlugin,
         AlignmentPlugin,
         MediaEmbedPlugin,
@@ -75,6 +75,11 @@ const editorConfiguration = {
         "imageUpload"
     ],
     image: {
+        upload: {
+            panel: {
+                items: [ 'insertImageViaUrl' ]
+            }
+        },
         toolbar: [
             'imageStyle:full',
             'imageStyle:side',

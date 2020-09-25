@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 class Folder extends Model
 {
@@ -59,7 +60,7 @@ class Folder extends Model
      *
      * This function will return a Collection and should contain
      * a path as the key, and a name as the value.
-     * @return \Illuminate\Support\Collection
+     * @return Collection
      */
     public function breadcrumbs(bool $self = false) {
         $breadcrumbs = $this->course

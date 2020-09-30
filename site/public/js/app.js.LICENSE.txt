@@ -4,8 +4,6 @@ object-assign
 @license MIT
 */
 
-/* @cc_on!@ */
-
 /*!
   * Bootstrap v4.5.2 (https://getbootstrap.com/)
   * Copyright 2011-2020 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
@@ -17,6 +15,10 @@ object-assign
   Licensed under the MIT License (MIT), see
   http://jedwatson.github.io/classnames
 */
+
+/*!
+ * Programatically add the following
+ */
 
 /*!
  * Sizzle CSS Selector Engine v2.3.5
@@ -63,6 +65,12 @@ object-assign
  * MIT Licensed
  */
 
+/*! @name @videojs/vhs-utils @version 1.3.0 @license MIT */
+
+/*! @name m3u8-parser @version 4.4.0 @license Apache-2.0 */
+
+/*! @name videojs-offset @version 2.1.2 @license MIT */
+
 /**
    * Takes a string with placeholder variables like `%{smart_count} file selected`
    * and replaces it with values from options `{smart_count: 5}`
@@ -92,6 +100,13 @@ object-assign
 /**
  * @license Copyright (c) 2003-2020, CKSource - Frederico Knabben. All rights reserved.
  * For licensing, see LICENSE.md.
+ */
+
+/**
+ * @videojs/http-streaming
+ * @version 1.13.2
+ * @copyright 2020 Brightcove, Inc
+ * @license Apache-2.0
  */
 
 /** @license React v0.19.1

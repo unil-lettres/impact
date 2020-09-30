@@ -43,7 +43,6 @@
         "laravel-mix": "^5.0.5",
         "lodash": "^4.17.20",
         "mime-types": "^2.1.27",
-        "plyr": "^3.6.2",
         "popper.js": "^1.16.1",
         "raw-loader": "^4.0.0",
         "react": "^16.13.1",
@@ -51,6 +50,8 @@
         "react-select": "^3.1.0",
         "resolve-url-loader": "^3.1.1",
         "sass": "^1.26.11",
-        "sass-loader": "^10.0.2"
+        "sass-loader": "^10.0.2",
+        "video.js": "^7.8.4",
+        "videojs-offset": "^2.1.2"
     }
 }

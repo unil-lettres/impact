@@ -15,12 +15,12 @@
         @if(Helpers::hasSource($card))
             @if(Helpers::hasExternalLink($card))
                 <div id="rct-player"
-                     data='{{ json_encode(['card' => $card, 'url' => Helpers::getExternalLink($card)]) }}'
+                     data='{{ json_encode(['locale' => Helpers::currentLocal(), 'card' => $card, 'url' => Helpers::getExternalLink($card)]) }}'
                 ></div>
             @elseif($card->file)
                 @if(Helpers::isFileReady($card->file))
                     <div id="rct-player"
-                         data='{{ json_encode(['card' => $card, 'url' => Helpers::fileUrl($card->file->filename)]) }}'
+                         data='{{ json_encode(['locale' => Helpers::currentLocal(), 'card' => $card, 'url' => Helpers::fileUrl($card->file->filename)]) }}'
                     ></div>
                 @elseif(Helpers::isFileFailed($card->file))
                     <p class="text-danger text-center p-3">

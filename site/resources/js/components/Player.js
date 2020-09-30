@@ -1,20 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
-import Plyr from 'plyr';
-import 'plyr/dist/plyr.css'
-import MimeType from 'mime-types/index';
+import VideoPlayer from './Video';
+import French from 'video.js/dist/lang/fr.json';
 
-const playerConfiguration = {
-    controls: [
-        'play',
-        'progress',
-        'mute',
-        'volume',
-        'pip',
-        'fullscreen',
-    ]
-};
+import MimeType from 'mime-types/index';
 
 export default class Player extends Component {
     constructor (props) {
@@ -26,31 +16,60 @@ export default class Player extends Component {
     }
 
     initVariables(data) {
-        this.card = data.card
-        this.type = this.card.file ? this.card.file.type : this.guessMediaType(data.url);
+        this.card = data.card;
+        this.file = this.card.file ?? null;
+        this.locale = data.locale ?? 'fr';
+        this.type = this.file ? this.card.file.type : this.guessMediaType(data.url);
         this.mime = this.mediaMimeType(data.url);
-        this.config = playerConfiguration;
-        this.source = {
-            type: this.type,
-            sources: [
-                {
-                    src: data.url,
-                    type: this.mime,
-                },
-            ],
-        };
-    }
 
-    componentDidMount() {
-        if(this.isMediaReachable()) {
-            this.player = new Plyr('.js-plyr', this.config);
-            this.player.source = this.source;
-            this.player.speed = 1;
+        this.options = {
+            autoplay: false,
+            controls: true,
+            fluid: true,
+            preload: 'auto',
+            language: this.locale,
+            languages: {
+                fr: French
+            },
+            sources: [{
+                src: data.url,
+                type: this.mime
+            }]
+        }
+
+        this.offset = {
+            start: this.card.options.box1.start,
+            end: this.card.options.box1.end
         }
     }
 
-    componentWillUnmount() {
-        this.player.destroy()
+    onPlayerReady(player){
+        //console.log("Player is ready: ", player);
+        this.player = player;
+    }
+
+    onVideoPlay(duration){
+        //console.log("Video played at: ", duration);
+    }
+
+    onVideoPause(duration){
+        //console.log("Video paused at: ", duration);
+    }
+
+    onVideoTimeUpdate(duration){
+        //console.log("Time updated: ", duration);
+    }
+
+    onVideoSeeking(duration){
+        //console.log("Video seeking: ", duration);
+    }
+
+    onVideoSeeked(from, to){
+        //console.log(`Video seeked from ${from} to ${to}`);
+    }
+
+    onVideoEnd(){
+        //console.log("Video ended");
     }
 
     mediaMimeType(path) {
@@ -83,13 +102,22 @@ export default class Player extends Component {
         return !!this.mime;
     }
 
-
     render() {
         const isMediaReachable = this.isMediaReachable();
         return (
             <div>
                 { isMediaReachable
-                    ? <video className="js-plyr plyr"></video>
+                    ? <VideoPlayer
+                        onReady={this.onPlayerReady.bind(this)}
+                        onPlay={this.onVideoPlay.bind(this)}
+                        onPause={this.onVideoPause.bind(this)}
+                        onTimeUpdate={this.onVideoTimeUpdate.bind(this)}
+                        onSeeking={this.onVideoSeeking.bind(this)}
+                        onSeeked={this.onVideoSeeked.bind(this)}
+                        onEnd={this.onVideoEnd.bind(this)}
+                        offset={this.offset}
+                        { ...this.options }
+                    />
                     : <p className="text-danger text-center p-3">Cannot load the media</p>
                 }
             </div>

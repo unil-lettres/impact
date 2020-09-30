@@ -31,6 +31,8 @@ class UpdateCard extends AbstractRequest
             ],
             'box1-file' => 'integer|exists:files,id|nullable',
             'box1-link' => 'url|nullable',
+            'box1-start' => 'integer|nullable',
+            'box1-end' => 'integer|nullable',
             'box2-hidden' => [
                 'sometimes',
                 Rule::in([ 'on' ])

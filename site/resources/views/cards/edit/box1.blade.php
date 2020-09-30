@@ -46,5 +46,34 @@
                 >
             </div>
         </div>
+
+        <div class="form-group row">
+            <label class="col-md-4 col-form-label">
+                Extrait
+                <i class="far fa-question-circle"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title="Si vous ne souhaitez présenter qu'un extrait du media sélectionné, veuillez définir un début et une fin (en seconde)">
+                </i>
+            </label>
+            <div class="col-md-4">
+                <input id="box1-start"
+                       type="text"
+                       name="box1-start"
+                       placeholder="Début"
+                       value="{{ old('box1-start', $card->options['box1']['start']) }}"
+                       class="form-control"
+                >
+            </div>
+            <div class="col-md-4">
+                <input id="box1-end"
+                       type="text"
+                       name="box1-end"
+                       placeholder="Fin"
+                       value="{{ old('box1-end', $card->options['box1']['end']) }}"
+                       class="form-control"
+                >
+            </div>
+        </div>
     </div>
 </div>

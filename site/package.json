@@ -51,7 +51,7 @@
         "resolve-url-loader": "^3.1.1",
         "sass": "^1.26.11",
         "sass-loader": "^10.0.2",
-        "video.js": "^7.8.4",
+        "video.js": "^7.9.5",
         "videojs-offset": "^2.1.2"
     }
 }

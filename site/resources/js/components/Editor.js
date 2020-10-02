@@ -76,6 +76,7 @@ const editorConfiguration = {
     ],
     image: {
         upload: {
+            types: [ 'png', 'jpeg' ],
             panel: {
                 items: [ 'insertImageViaUrl' ]
             }

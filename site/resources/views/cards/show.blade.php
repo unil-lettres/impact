@@ -14,6 +14,16 @@
                         {{ trans('cards.configure') }}
                     </a>
                 @endcan
+                @can('hide', $card)
+                    <button type="submit"
+                            id="btn-hide-boxes"
+                            class="btn btn-danger float-right mr-1"
+                            data-toggle="tooltip"
+                            data-placement="top"
+                            title="{{ trans('cards.hide_boxes') }}">
+                        <i class="far fa-eye-slash"></i>
+                    </button>
+                @endcan
             @endsection
             <hr>
             <div>
@@ -35,4 +45,15 @@
 
 @section('scripts-head')
     <script type="text/javascript" src="{{ asset('js/vendor/@ckeditor/translations/en.js') }}"></script>
+@endsection
+
+@section('scripts-footer')
+    <script type="text/javascript">
+        // Hide or show boxes on button click
+        $('#btn-hide-boxes').on('click', function() {
+            $(this).toggleClass(['btn-danger', 'btn-success']);
+            $(this).find('i').toggleClass(['fa-eye-slash', 'fa-eye']);
+            $('.hidden').toggle();
+        });
+    </script>
 @endsection

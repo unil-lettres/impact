@@ -148,4 +148,38 @@ class CardTest extends DuskTestCase
                 ->assertSee('Fiche créée: My new card in folder');
         });
     }
+
+    /**
+     * Test view card as an editor.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testHideCardBoxes()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->assertSee('Second space')
+                ->clickLink('Second space');
+
+            $browser->assertSee('Test card hidden boxes')
+                ->clickLink('Test card hidden boxes');
+
+            $browser->click('#btn-hide-boxes')
+                ->assertDontSee('Source')
+                ->assertDontSee('Transcription')
+                ->assertDontSee('Documents')
+                ->assertSee('Théorie')
+                ->assertSee('Exemplification');
+
+            $browser->click('#btn-hide-boxes')
+                ->assertSee('Source')
+                ->assertSee('Transcription')
+                ->assertSee('Documents')
+                ->assertSee('Théorie')
+                ->assertSee('Exemplification');
+        });
+    }
 }

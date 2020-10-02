@@ -20,6 +20,7 @@ return [
     'exemplification' => 'Exemplification',
     'source' => 'Source',
     'edit' => 'Éditer',
-    'save' => 'Sauver'
+    'save' => 'Sauver',
+    'hide_boxes' => 'Masquer/afficher les cases indiquées comme cachées'
 
 ];

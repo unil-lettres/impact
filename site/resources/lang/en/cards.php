@@ -20,6 +20,7 @@ return [
     'exemplification' => 'Exemplification',
     'source' => 'Source',
     'edit' => 'Edit',
-    'save' => 'Save'
+    'save' => 'Save',
+    'hide_boxes' => 'Hide/show boxes marked as hidden'
 
 ];

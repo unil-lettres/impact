@@ -332,4 +332,29 @@ class Helpers {
 
         return false;
     }
+
+    /**
+     * Return whether the specified box should be hidden from the view
+     *
+     * @param Card $card
+     * @param string $box
+     * @return boolean|null
+     */
+    public static function isHidden(Card $card, string $box) {
+        $options = $card->options;
+
+        if (!array_key_exists($box, $options)) {
+            return null;
+        }
+
+        if (!is_array($options[$box])) {
+            return null;
+        }
+
+        if (!array_key_exists('hidden', $options[$box])) {
+            return null;
+        }
+
+        return $options[$box]['hidden'];
+    }
 }

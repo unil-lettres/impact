@@ -65,6 +65,39 @@ class CardsTableSeeder extends Seeder
             'options' => Card::OPTIONS
         ]);
 
+        DB::table('cards')->insert([
+            'title' => 'Test card hidden boxes',
+            'created_at' => $now,
+            'updated_at' => $now,
+            'course_id' => $secondCourse->id,
+            'options' => '{
+                "emails": true,
+                "box1": {
+                    "hidden": true,
+                    "link": null,
+                    "start": null,
+                    "end": null
+                },
+                "box2": {
+                    "hidden": true,
+                    "sync": true
+                },
+                "box3": {
+                    "hidden": false,
+                    "title": "Théorie",
+                    "fixed": false
+                },
+                "box4": {
+                    "hidden": false,
+                    "title": "Exemplification",
+                    "fixed": false
+                },
+                "box5": {
+                    "hidden": true
+                }
+            }'
+        ]);
+
         $enrollment->addCard(Card::find($testCard));
         $enrollment->addCard(Card::find($testCardInFolder));
     }

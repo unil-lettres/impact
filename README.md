@@ -88,6 +88,10 @@ Run the following commands from the framework root directory (/site). Check envi
 
 ``php artisan serve --env=dusk.local``
 
+### Install correct chrome driver if needed
+
+``php artisan dusk:chrome-driver xx``
+
 ### Run functional tests
 
 Run all tests: ``php artisan dusk``

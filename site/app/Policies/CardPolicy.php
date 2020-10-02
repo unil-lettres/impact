@@ -162,4 +162,26 @@ class CardPolicy
 
         return false;
     }
+
+    /**
+     * Determine whether the user can hide parts of the card
+     *
+     * @param User $user
+     * @param Card $card
+     *
+     * @return mixed
+     */
+    public function hide(User $user, Card $card)
+    {
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers of the course can hide parts of the card
+        if ($user->isTeacher($card->course)) {
+            return true;
+        }
+
+        return false;
+    }
 }

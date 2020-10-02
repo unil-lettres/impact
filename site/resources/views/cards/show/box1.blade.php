@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card {{ $reference }} {{ Helpers::isHidden($card, $reference) ? 'hidden' : '' }}">
     <div class="card-header">
         <span class="font-weight-bolder">1. {{ trans('cards.source') }}</span>
 

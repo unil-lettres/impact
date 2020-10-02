@@ -1,4 +1,4 @@
-<div class="card">
+<div class="card {{ $reference }} {{ Helpers::isHidden($card, $reference) ? 'hidden' : '' }}">
     <div class="card-header">
         <span class="font-weight-bolder">3. {{ $card->options[$reference]['title'] }}</span>
         <span class="d-none" id="edit-failed-{{ $reference }}">[ {{ trans('messages.card.editor.failed') }} ]</span>

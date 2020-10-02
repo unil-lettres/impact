@@ -150,7 +150,7 @@ class CardTest extends DuskTestCase
     }
 
     /**
-     * Test view card as an editor.
+     * Test hide/show card boxes.
      *
      * @return void
      * @throws Throwable

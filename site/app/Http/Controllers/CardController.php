@@ -167,6 +167,7 @@ class CardController extends Controller
         $options['emails'] = $request->get('emails') ? true : false;
 
         $card->update([
+            'title' => $request->get('title'),
             'file_id' => $request->get('box1-file'),
             'options' => $options
         ]);

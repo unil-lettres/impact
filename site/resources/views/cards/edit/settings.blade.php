@@ -5,23 +5,16 @@
     </div>
     <div class="card-body">
         <div class="form-group row">
-            <label for="emails" class="col-md-4">
-                Emails
-                <i class="far fa-question-circle"
-                   data-toggle="tooltip"
-                   data-placement="top"
-                   title="{{ trans('cards.send_mails') }}">
-                </i>
+            <label for="title" class="col-md-4 col-form-label">
+                Titre
             </label>
             <div class="col-md-8">
-                <div class="form-check">
-                    <input id="emails"
-                           type="checkbox"
-                           name="emails"
-                           {{ old('emails', $card->options['emails']) ? 'checked' : '' }}
-                    class="form-check-input"
-                    >
-                </div>
+                <input id="title"
+                       type="text"
+                       name="title"
+                       value="{{ old('title', $card->title) }}"
+                       class="form-control"
+                >
             </div>
         </div>
 
@@ -49,6 +42,27 @@
             </label>
             <div class="col-md-8">
                 // Tags input placeholder
+            </div>
+        </div>
+
+        <div class="form-group row">
+            <label for="emails" class="col-md-4">
+                Emails
+                <i class="far fa-question-circle"
+                   data-toggle="tooltip"
+                   data-placement="top"
+                   title="{{ trans('cards.send_mails') }}">
+                </i>
+            </label>
+            <div class="col-md-8">
+                <div class="form-check">
+                    <input id="emails"
+                           type="checkbox"
+                           name="emails"
+                           {{ old('emails', $card->options['emails']) ? 'checked' : '' }}
+                           class="form-check-input"
+                    >
+                </div>
             </div>
         </div>
     </div>

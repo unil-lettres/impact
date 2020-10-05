@@ -25,6 +25,7 @@ class UpdateCard extends AbstractRequest
     {
         return [
             'card' => 'required|integer|exists:cards,id',
+            'title' => 'required|string|max:255',
             'box1-hidden' => [
                 'sometimes',
                 Rule::in([ 'on' ])

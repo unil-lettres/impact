@@ -33,8 +33,8 @@
                         @include('cards.edit.box5', ['reference' => 'box5'])
                     </div>
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                        @include('cards.edit.editors')
                         @include('cards.edit.settings')
+                        @include('cards.edit.editors')
                     </div>
                 </div>
 

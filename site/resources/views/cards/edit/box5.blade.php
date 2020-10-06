@@ -1,12 +1,11 @@
-<!-- TODO: translations -->
 <div class="card">
     <div class="card-header">
-        Case 5 (Documents)
+        {{ trans('cards.box') }} 5 ({{ trans('cards.documents') }})
     </div>
     <div class="card-body">
         <div class="form-group row">
             <label for="box5-hidden" class="col-md-4">
-                Cacher
+                {{ trans('cards.hide') }}
             </label>
             <div class="col-md-8">
                 <div class="form-check">

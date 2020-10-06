@@ -1,12 +1,11 @@
-<!-- TODO: translations -->
 <div class="card">
     <div class="card-header">
-        Global settings
+        {{ trans('cards.global_settings') }}
     </div>
     <div class="card-body">
         <div class="form-group row">
             <label for="title" class="col-md-4 col-form-label">
-                Titre
+                {{ trans('cards.title') }}
             </label>
             <div class="col-md-8">
                 <input id="title"
@@ -20,7 +19,7 @@
 
         <div class="form-group row">
             <label for="state" class="col-md-4">
-                État
+                {{ trans('cards.state') }}
             </label>
             <div class="col-md-8">
                 // State input placeholder
@@ -29,7 +28,7 @@
 
         <div class="form-group row">
             <label for="date" class="col-md-4">
-                Date
+                {{ trans('cards.date') }}
             </label>
             <div class="col-md-8">
                 // Date input placeholder
@@ -38,7 +37,7 @@
 
         <div class="form-group row">
             <label for="tags" class="col-md-4">
-                Étiquettes
+                {{ trans('cards.tags') }}
             </label>
             <div class="col-md-8">
                 // Tags input placeholder
@@ -47,7 +46,7 @@
 
         <div class="form-group row">
             <label for="emails" class="col-md-4">
-                Emails
+                {{ trans('cards.emails') }}
                 <i class="far fa-question-circle"
                    data-toggle="tooltip"
                    data-placement="top"

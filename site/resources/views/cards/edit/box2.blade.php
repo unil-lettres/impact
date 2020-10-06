@@ -1,12 +1,11 @@
-<!-- TODO: translations -->
 <div class="card">
     <div class="card-header">
-        Case 2 (Transcription)
+        {{ trans('cards.box') }} 2 ({{ trans('cards.transcription') }})
     </div>
     <div class="card-body">
         <div class="form-group row">
             <label for="box2-hidden" class="col-md-5">
-                Cacher
+                {{ trans('cards.hide') }}
             </label>
             <div class="col-md-7">
                 <div class="form-check">
@@ -22,7 +21,7 @@
 
         <div class="form-group row">
             <label for="box2-sync" class="col-md-5">
-                Synchroniser avec source
+                {{ trans('cards.sync_with_source') }}
             </label>
             <div class="col-md-7">
                 <div class="form-check">

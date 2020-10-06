@@ -21,6 +21,22 @@ return [
     'source' => 'Source',
     'edit' => 'Éditer',
     'save' => 'Sauver',
-    'hide_boxes' => 'Masquer/afficher les cases indiquées comme cachées'
+    'hide_boxes' => 'Masquer/afficher les cases indiquées comme cachées',
+    'hide' => 'Cacher',
+    'select_source' => 'Sélection de la source',
+    'external_link' => 'Lien externe',
+    'extract' => 'Extrait',
+    'extract_help' => 'Si vous ne souhaitez présenter qu\'un extrait du media sélectionné, veuillez définir un début et une fin (en seconde)',
+    'start' => 'Début',
+    'end' => 'Fin',
+    'box' => 'Case',
+    'documents' => 'Documents',
+    'transcription' => 'Transcription',
+    'sync_with_source' => 'Synchroniser avec source',
+    'global_settings' => 'Paramètres globaux',
+    'state' => 'État',
+    'date' => 'Date',
+    'tags' => 'Étiquettes',
+    'emails' => 'Emails'
 
 ];

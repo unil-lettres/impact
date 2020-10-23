@@ -1,11 +1,39 @@
 #card {
-    .editing {
-        border: 1px dashed #80808059;
-    }
     .card-header {
         #edit-failed-box3,
         #edit-failed-box4 {
             color: red;
+        }
+    }
+
+    .box4 .editing,
+    .box3 .editing {
+        border: 1px dashed #80808059;
+    }
+
+    .box2 {
+        tbody tr {
+            font-size: 0.8rem;
+            font-family: courier, serif;
+            line-height: 1.2;
+
+            td.line,
+            td.speaker {
+                max-width: 35px;
+                min-width: 35px;
+            }
+        }
+    }
+
+    .box2 .editing {
+        tbody tr {
+            td.speaker {
+                background-color: #e3e3e3;
+            }
+
+            td.speech {
+                background-color: #c3c3c3;
+            }
         }
     }
 }

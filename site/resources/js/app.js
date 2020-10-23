@@ -21,3 +21,4 @@ require('./components/SingleFileSelect');
 require('./components/Uploader');
 require('./components/Editor');
 require('./components/Player');
+require('./components/Transcription');

@@ -46,6 +46,7 @@
         "popper.js": "^1.16.1",
         "raw-loader": "^4.0.0",
         "react": "^16.13.1",
+        "react-contenteditable": "^3.3.5",
         "react-dom": "^16.13.1",
         "react-select": "^3.1.0",
         "resolve-url-loader": "^3.1.1",

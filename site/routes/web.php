@@ -63,6 +63,8 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('cards.unlink.file');
     Route::put('cards/{card}/editor', [CardController::class, 'editor'])
         ->name('cards.editor');
+    Route::put('cards/{card}/transcription', [CardController::class, 'transcription'])
+        ->name('cards.transcription');
 
     // Folders
     Route::resource('folders', FolderController::class);

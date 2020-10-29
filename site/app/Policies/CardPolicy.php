@@ -164,6 +164,28 @@ class CardPolicy
     }
 
     /**
+     * Determine whether the user can update the transcription from the card
+     *
+     * @param User $user
+     * @param Card $card
+     *
+     * @return mixed
+     */
+    public function transcription(User $user, Card $card)
+    {
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers of the course & editors can update the transcription from the card
+        if ($user->isTeacher($card->course) || $user->isEditor($card)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Determine whether the user can hide parts of the card
      *
      * @param User $user

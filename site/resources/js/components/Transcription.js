@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 
 import ContentEditable from 'react-contenteditable'
+import axios from "axios";
 
 export default class Transcription extends Component {
     constructor (props) {
@@ -10,27 +11,8 @@ export default class Transcription extends Component {
         let data = JSON.parse(this.props.data);
         this.contentRef = React.createRef();
 
-        // TODO: replace static content with content from db
-        this.lines = [
-            {
-                "number" : "1",
-                "speaker" : "a",
-                "speech" : "There are some great matches and good"
-            },
-            {
-                "number" : "2",
-                "speaker" : "b",
-                "speech" : "There are some great matches. There are some great matches and good. It's a bad hobby. There are some great matches. There are some great matches and good. It's a bad hobby."
-            },
-            {
-                "number" : "3",
-                "speaker" : "a",
-                "speech" : "It's a bad hobby"
-            }
-        ];
-
         this.state = {
-            lines: this.lines,
+            lines: data.card.box2.data ?? [],
             editable: false
         };
 
@@ -44,8 +26,11 @@ export default class Transcription extends Component {
     initVariables(data) {
         this.editButtonId = 'edit-' + this.props.reference;
         this.button = document.getElementById(this.editButtonId);
+        this.card = data.card;
+        this.version = data.card.box2.version;
         this.disabled = data.disabled ?? true;
         this.editorId = 'rct-transcription';
+        this.editorErrorMsgId = 'edit-failed-' + this.props.reference;
         this.editLabel = data.editLabel ?? 'Edit';
         this.saveLabel = data.saveLabel ?? 'Save';
     }
@@ -58,6 +43,7 @@ export default class Transcription extends Component {
 
     updateButton(isReadOnly) {
         let editor = document.getElementById(this.editorId);
+        let editorErrorMsgId = document.getElementById(this.editorErrorMsgId);
 
         if(this.button) {
             switch (isReadOnly) {
@@ -69,6 +55,7 @@ export default class Transcription extends Component {
                     break;
                 case false:
                 default:
+                    editorErrorMsgId.classList.add('d-none');
                     editor.classList.add('editing');
                     this.button.classList.remove("btn-primary");
                     this.button.classList.add('btn-success');
@@ -96,9 +83,31 @@ export default class Transcription extends Component {
         this.updateButton(!this.state.editable);
     }
 
+    validate(lines) {
+        // Not valid if transcription is not an array or is empty
+        if (!Array.isArray(lines) || !lines.length) {
+            return false;
+        }
+
+        // Valid otherwise
+        return true;
+    }
+
     save() {
-        // TODO: save new content with axios
-        console.log('👉', this.state.lines)
+        const lines = this.validate(this.state.lines) ? this.state.lines : null;
+
+        axios.put('/cards/' + this.card.id + '/transcription', {
+            transcription: lines,
+            box: this.props.reference
+        }).then(response => {
+            console.log(response);
+        }).catch(error => {
+            console.log(error);
+            // Display an error message to the user
+            document.getElementById(this.editorErrorMsgId)
+                .classList
+                .remove("d-none");
+        });
     }
 
     addLine() {
@@ -130,18 +139,12 @@ export default class Transcription extends Component {
         }
     };
 
-    handleKeyUp = limit => (event) => {
-        let limit = limit || 1;
-
-        if(event.target.innerText.length > limit) {
-            event.target.innerText = event.target.innerText.substr(0, limit);
-        }
-    };
-
     render () {
         return (
             <div className="editor">
-                <input  type="submit" className="button" onClick={ this.addLine } value="Add Line"/>
+                {this.state.editable &&
+                <input  type="submit" className="button mb-2" onClick={ this.addLine } value="Add Line" />
+                }
                 <table>
                     <tbody ref={ this.contentRef }>
                         {
@@ -152,7 +155,7 @@ export default class Transcription extends Component {
                                     </td>
                                     <td className="speaker pr-2 align-top">
                                         <ContentEditable
-                                            html={ line.speaker }
+                                            html={ line.speaker ?? "" }
                                             tagName="span"
                                             disabled={ !this.state.editable }
                                             onChange={ this.handleChange({"index": index, "column": "speaker"}) }
@@ -160,7 +163,7 @@ export default class Transcription extends Component {
                                     </td>
                                     <td className="speech align-top">
                                         <ContentEditable
-                                            html={ line.speech }
+                                            html={ line.speech ?? "" }
                                             tagName="span"
                                             disabled={ !this.state.editable }
                                             onChange={ this.handleChange({"index": index, "column": "speech"}) }

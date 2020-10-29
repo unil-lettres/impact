@@ -10,7 +10,13 @@ class Card extends Model
 {
     use SoftDeletes;
 
+    const TRANSCRIPTION = '{
+            "version": 1,
+            "data": []
+        }';
+
     const OPTIONS = '{
+            "version": 1,
             "emails": true,
             "box1": {
                 "hidden": false,
@@ -38,7 +44,7 @@ class Card extends Model
         }';
 
     protected $fillable = [
-        'title', 'box3', 'box4', 'course_id', 'folder_id', 'file_id', 'options'
+        'title', 'box2', 'box3', 'box4', 'course_id', 'folder_id', 'file_id', 'options'
     ];
 
     protected $dates = [
@@ -46,10 +52,12 @@ class Card extends Model
     ];
 
     protected $casts = [
+        'box2' => 'array',
         'options' => 'array'
     ];
 
     protected $attributes = [
+        'box2' => Card::TRANSCRIPTION,
         'options' => Card::OPTIONS
     ];
 

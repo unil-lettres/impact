@@ -1,5 +1,6 @@
 #card {
     .card-header {
+        #edit-failed-box2,
         #edit-failed-box3,
         #edit-failed-box4 {
             color: red;
@@ -33,6 +34,7 @@
 
             td.speech {
                 background-color: #c3c3c3;
+                width: 100%;
             }
         }
     }

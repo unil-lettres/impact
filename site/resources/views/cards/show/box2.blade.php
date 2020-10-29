@@ -1,6 +1,7 @@
 <div class="card {{ $reference }} {{ Helpers::isHidden($card, $reference) ? 'hidden' : '' }}">
     <div class="card-header">
         <span class="font-weight-bolder">2. {{ trans('cards.transcription') }}</span>
+        <span class="d-none" id="edit-failed-{{ $reference }}">[ {{ trans('messages.card.editor.failed') }} ]</span>
         @can('editor', $card)
             <button class="btn btn-primary float-right"
                     id="edit-{{ $reference }}">

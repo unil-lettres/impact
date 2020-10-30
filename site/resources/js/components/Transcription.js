@@ -4,31 +4,48 @@ import ReactDOM from 'react-dom';
 import ContentEditable from 'react-contenteditable'
 import axios from "axios";
 
+class Line {
+    constructor(number, speaker, speech) {
+        this.number = number;
+        this.speaker = speaker;
+        this.speech = speech;
+    }
+
+    toJSON() {
+        return {
+            number: this.number,
+            speaker: this.speaker,
+            speech: this.speech
+        };
+    }
+}
+
 export default class Transcription extends Component {
     constructor (props) {
         super(props)
 
-        let data = JSON.parse(this.props.data);
+        const data = JSON.parse(this.props.data);
+        const disabled = data.disabled ?? true;
         this.contentRef = React.createRef();
 
         this.state = {
             lines: data.card.box2.data ?? [],
-            editable: false
+            editable: !disabled
         };
 
         this.edit = this.edit.bind(this);
         this.addLine = this.addLine.bind(this);
+        this.deleteLine = this.deleteLine.bind(this);
+        this.deleteTranscription = this.deleteTranscription.bind(this);
 
         this.initVariables(data);
-        this.updateButton(this.disabled);
+        this.updateButton();
     }
 
     initVariables(data) {
-        this.editButtonId = 'edit-' + this.props.reference;
-        this.button = document.getElementById(this.editButtonId);
+        this.editButton = document.getElementById('edit-' + this.props.reference);
         this.card = data.card;
         this.version = data.card.box2.version;
-        this.disabled = data.disabled ?? true;
         this.editorId = 'rct-transcription';
         this.editorErrorMsgId = 'edit-failed-' + this.props.reference;
         this.editLabel = data.editLabel ?? 'Edit';
@@ -36,30 +53,35 @@ export default class Transcription extends Component {
     }
 
     componentDidMount() {
-        if(this.button) {
-            this.button.addEventListener('click', this.edit, false);
+        if(this.editButton) {
+            this.editButton.addEventListener('click', this.edit, false);
         }
     }
 
-    updateButton(isReadOnly) {
+    updateButton() {
         let editor = document.getElementById(this.editorId);
         let editorErrorMsgId = document.getElementById(this.editorErrorMsgId);
 
-        if(this.button) {
-            switch (isReadOnly) {
+        if(this.editButton) {
+            switch (this.state.editable) {
                 case true:
-                    editor.classList.remove("editing");
-                    this.button.classList.remove("btn-success");
-                    this.button.classList.add('btn-primary');
-                    this.button.textContent = this.editLabel;
+                    editorErrorMsgId.classList.add('d-none');
+                    editor.classList.add('editing');
+                    this.editButton.classList.remove("btn-primary");
+                    this.editButton.classList.add('btn-success');
+                    this.editButton.innerText = this.saveLabel;
+
+                    // If transcription is empty, then add the first line
+                    if(!this.validate(this.state.lines)) {
+                        this.addLine()
+                    }
                     break;
                 case false:
                 default:
-                    editorErrorMsgId.classList.add('d-none');
-                    editor.classList.add('editing');
-                    this.button.classList.remove("btn-primary");
-                    this.button.classList.add('btn-success');
-                    this.button.innerText = this.saveLabel;
+                    editor.classList.remove("editing");
+                    this.editButton.classList.remove("btn-success");
+                    this.editButton.classList.add('btn-primary');
+                    this.editButton.textContent = this.editLabel;
             }
         }
     }
@@ -115,15 +137,33 @@ export default class Transcription extends Component {
 
         const number = this.state.lines.length ? this.state.lines.length + 1 : 1;
 
-        const newLine = {
-            "number" : number.toString(),
-            "speaker" : "",
-            "speech" : ""
-        }
-
         this.setState({
-            lines: [...this.state.lines, newLine]
-        })
+            lines: [
+                ...this.state.lines,
+                new Line(
+                    number.toString(),
+                    "",
+                    ""
+                ).toJSON()
+            ]
+        });
+    }
+
+    deleteLine() {
+        // TODO: add logic to delete specific line
+        console.log("delete line");
+    }
+
+    deleteTranscription() {
+        this.setState({
+            lines: [
+                new Line(
+                    "1",
+                    "",
+                    ""
+                ).toJSON()
+            ]
+        });
     }
 
     handleChange = params => (event) => {
@@ -143,7 +183,13 @@ export default class Transcription extends Component {
         return (
             <div className="editor">
                 {this.state.editable &&
-                <input  type="submit" className="button mb-2" onClick={ this.addLine } value="Add Line" />
+                    <input  type="submit" className="button mb-2 mr-2" onClick={ this.addLine } value="Add Line" />
+                }
+                {this.state.editable &&
+                    <input  type="submit" className="button mb-2 mr-2" onClick={ this.deleteLine } value="Delete Line" />
+                }
+                {this.state.editable &&
+                    <input  type="submit" className="button mb-2" onClick={ this.deleteTranscription } value="Delete text" />
                 }
                 <table>
                     <tbody ref={ this.contentRef }>

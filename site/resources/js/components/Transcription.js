@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 
 import ContentEditable from 'react-contenteditable'
 import axios from "axios";
+import sanitizeHtml from 'sanitize-html';
 
 class Line {
     constructor(number, speaker, speech) {
@@ -35,6 +36,8 @@ export default class Transcription extends Component {
 
         this.edit = this.edit.bind(this);
         this.addLine = this.addLine.bind(this);
+        this.hideActions = this.hideActions.bind(this);
+        this.showActions = this.showActions.bind(this);
         this.deleteLine = this.deleteLine.bind(this);
         this.deleteTranscription = this.deleteTranscription.bind(this);
 
@@ -86,7 +89,7 @@ export default class Transcription extends Component {
         }
     }
 
-    edit(e){
+    edit(){
         switch (!this.state.editable) {
             case false:
                 this.setState({
@@ -103,16 +106,6 @@ export default class Transcription extends Component {
         }
 
         this.updateButton(!this.state.editable);
-    }
-
-    validate(lines) {
-        // Not valid if transcription is not an array or is empty
-        if (!Array.isArray(lines) || !lines.length) {
-            return false;
-        }
-
-        // Valid otherwise
-        return true;
     }
 
     save() {
@@ -132,8 +125,25 @@ export default class Transcription extends Component {
         });
     }
 
+    validate(lines) {
+        // Not valid if transcription is not an array or is empty
+        if (!Array.isArray(lines) || !lines.length) {
+            return false;
+        }
+
+        // Valid otherwise
+        return true;
+    }
+
+    sanitize(html) {
+        return sanitizeHtml(html, {
+            allowedTags: [ 'br' ]
+        });
+    }
+
     addLine() {
         // TODO: create new line on keypress (enter)
+        // TODO: refactor logic for new line number
 
         const number = this.state.lines.length ? this.state.lines.length + 1 : 1;
 
@@ -149,11 +159,6 @@ export default class Transcription extends Component {
         });
     }
 
-    deleteLine() {
-        // TODO: add logic to delete specific line
-        console.log("delete line");
-    }
-
     deleteTranscription() {
         this.setState({
             lines: [
@@ -166,14 +171,39 @@ export default class Transcription extends Component {
         });
     }
 
+    showActions = index => (event) => {
+        if(this.state.editable) {
+            const row = document.getElementById('actions-'+index);
+            row.classList.remove("d-none");
+        }
+    }
+
+    hideActions = index => (event) => {
+        if(this.state.editable) {
+            const row = document.getElementById('actions-'+index);
+            row.classList.add("d-none");
+        }
+    }
+
+    deleteLine = index => (event) => {
+        if(this.state.lines[index]) {
+            // Remove line at specific index
+            this.state.lines.splice(index, 1)
+
+            this.setState({
+                lines: this.state.lines
+            });
+        }
+    }
+
     handleChange = params => (event) => {
         if(this.state.lines[params.index]) {
             switch (params.column) {
                 case "speaker":
-                    this.state.lines[params.index].speaker = event.target.value;
+                    this.state.lines[params.index].speaker = this.sanitize(event.target.value);
                     break;
                 case "speech":
-                    this.state.lines[params.index].speech = event.target.value;
+                    this.state.lines[params.index].speech = this.sanitize(event.target.value);
                     break;
             }
         }
@@ -186,20 +216,19 @@ export default class Transcription extends Component {
                     <input  type="submit" className="button mb-2 mr-2" onClick={ this.addLine } value="Add Line" />
                 }
                 {this.state.editable &&
-                    <input  type="submit" className="button mb-2 mr-2" onClick={ this.deleteLine } value="Delete Line" />
-                }
-                {this.state.editable &&
                     <input  type="submit" className="button mb-2" onClick={ this.deleteTranscription } value="Delete text" />
                 }
                 <table>
                     <tbody ref={ this.contentRef }>
                         {
                             this.state.lines.map((line, index) => (
-                                <tr key={ index }>
-                                    <td className="line pr-2 align-top">
+                                <tr key={ index }
+                                    onMouseEnter={ this.showActions(index) }
+                                    onMouseLeave={ this.hideActions(index) } >
+                                    <td id={'line-'+index} className="line pr-2 align-top">
                                         { line.number }
                                     </td>
-                                    <td className="speaker pr-2 align-top">
+                                    <td id={'speaker-'+index} className="speaker pr-2 align-top">
                                         <ContentEditable
                                             html={ line.speaker ?? "" }
                                             tagName="span"
@@ -207,13 +236,18 @@ export default class Transcription extends Component {
                                             onChange={ this.handleChange({"index": index, "column": "speaker"}) }
                                         />
                                     </td>
-                                    <td className="speech align-top">
+                                    <td id={'speech-'+index} className="speech align-top">
                                         <ContentEditable
                                             html={ line.speech ?? "" }
                                             tagName="span"
                                             disabled={ !this.state.editable }
                                             onChange={ this.handleChange({"index": index, "column": "speech"}) }
                                         />
+                                    </td>
+                                    <td id={'actions-'+index} className="actions d-none">
+                                        <span onClick={ this.deleteLine(index) }>
+                                            <i className="far fa-times-circle"></i>
+                                        </span>
                                     </td>
                                 </tr>
                             ))

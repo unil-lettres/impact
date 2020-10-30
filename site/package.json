@@ -50,6 +50,7 @@
         "react-dom": "^16.13.1",
         "react-select": "^3.1.0",
         "resolve-url-loader": "^3.1.1",
+        "sanitize-html": "^2.1.1",
         "sass": "^1.26.11",
         "sass-loader": "^10.0.2",
         "video.js": "^7.9.5",

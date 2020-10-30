@@ -10,6 +10,7 @@
     "require": {
         "php": "^7.4",
         "ext-json": "*",
+        "beberlei/assert": "^3.2",
         "bugsnag/bugsnag-laravel": "^2.0",
         "facade/ignition": "^2.3.6",
         "fideloper/proxy": "^4.0",

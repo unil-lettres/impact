@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Enums\CardBox;
+use App\Rules\Transcription;
 use Illuminate\Validation\Rule;
 
 class UpdateCardTranscription extends AbstractRequest
@@ -26,7 +27,11 @@ class UpdateCardTranscription extends AbstractRequest
     {
         return [
             'card' => 'required|integer|exists:cards,id',
-            'transcription' => 'nullable|array',
+            'transcription' => [
+                'nullable',
+                'array',
+                new Transcription
+            ],
             'box' => [
                 'required',
                 'string',

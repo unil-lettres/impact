@@ -23,6 +23,11 @@
                 max-width: 35px;
                 min-width: 35px;
             }
+
+            td.actions {
+                max-width: 15px;
+                min-width: 15px;
+            }
         }
     }
 
@@ -35,6 +40,11 @@
             td.speech {
                 background-color: #c3c3c3;
                 width: 100%;
+            }
+
+            td.actions {
+                background-color: #c3c3c3;
+                cursor: pointer;
             }
         }
     }

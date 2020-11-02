@@ -35,7 +35,7 @@ export default class Transcription extends Component {
         };
 
         this.edit = this.edit.bind(this);
-        this.addLine = this.addLine.bind(this);
+        this.addRow = this.addRow.bind(this);
         this.hideActions = this.hideActions.bind(this);
         this.showActions = this.showActions.bind(this);
         this.deleteLine = this.deleteLine.bind(this);
@@ -76,7 +76,7 @@ export default class Transcription extends Component {
 
                     // If transcription is empty, then add the first line
                     if(!this.validate(this.state.lines)) {
-                        this.addLine()
+                        this.addRow()
                     }
                     break;
                 case false:
@@ -141,21 +141,30 @@ export default class Transcription extends Component {
         });
     }
 
-    addLine() {
+    addRow() {
         // TODO: create new line on keypress (enter)
-        // TODO: refactor logic for new line number
-
-        const number = this.state.lines.length ? this.state.lines.length + 1 : 1;
 
         this.setState({
-            lines: [
-                ...this.state.lines,
-                new Line(
-                    number.toString(),
-                    "",
-                    ""
-                ).toJSON()
-            ]
+                lines: [
+                    ...this.state.lines,
+                    new Line(
+                        "",
+                        "",
+                        ""
+                    ).toJSON()
+                ]
+            },
+            () => this.fixNumbers()
+        );
+    }
+
+    fixNumbers() {
+        this.state.lines.forEach(function (row, index) {
+            row.number = index + 1;
+        });
+
+        this.setState({
+            lines: this.state.lines
         });
     }
 
@@ -173,15 +182,29 @@ export default class Transcription extends Component {
 
     showActions = index => (event) => {
         if(this.state.editable) {
-            const row = document.getElementById('actions-'+index);
-            row.classList.remove("d-none");
+            const actions = document.getElementById('actions-'+index);
+
+            if (actions.hasChildNodes()) {
+                let children = actions.childNodes;
+
+                for (let i = 0; i < children.length; i++) {
+                    children[i].classList.remove("d-none");
+                }
+            }
         }
     }
 
     hideActions = index => (event) => {
         if(this.state.editable) {
-            const row = document.getElementById('actions-'+index);
-            row.classList.add("d-none");
+            const actions = document.getElementById('actions-'+index);
+
+            if (actions.hasChildNodes()) {
+                let children = actions.childNodes;
+
+                for (let i = 0; i < children.length; i++) {
+                    children[i].classList.add("d-none");
+                }
+            }
         }
     }
 
@@ -191,8 +214,10 @@ export default class Transcription extends Component {
             this.state.lines.splice(index, 1)
 
             this.setState({
-                lines: this.state.lines
-            });
+                    lines: this.state.lines
+                },
+                () => this.fixNumbers()
+            );
         }
     }
 
@@ -213,7 +238,7 @@ export default class Transcription extends Component {
         return (
             <div className="editor">
                 {this.state.editable &&
-                    <input  type="submit" className="button mb-2 mr-2" onClick={ this.addLine } value="Add Line" />
+                    <input  type="submit" className="button mb-2 mr-2" onClick={ this.addRow } value="Add Line" />
                 }
                 {this.state.editable &&
                     <input  type="submit" className="button mb-2" onClick={ this.deleteTranscription } value="Delete text" />
@@ -244,8 +269,8 @@ export default class Transcription extends Component {
                                             onChange={ this.handleChange({"index": index, "column": "speech"}) }
                                         />
                                     </td>
-                                    <td id={'actions-'+index} className="actions d-none">
-                                        <span onClick={ this.deleteLine(index) }>
+                                    <td id={'actions-'+index} className="actions">
+                                        <span className="action d-none" onClick={ this.deleteLine(index) }>
                                             <i className="far fa-times-circle"></i>
                                         </span>
                                     </td>

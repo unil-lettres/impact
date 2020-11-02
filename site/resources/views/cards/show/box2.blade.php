@@ -7,6 +7,10 @@
                     id="edit-{{ $reference }}">
                 {{ trans('cards.edit') }}
             </button>
+            <button class="btn btn-secondary d-none float-right mr-2"
+                    id="cancel-{{ $reference }}">
+                {{ trans('cards.cancel') }}
+            </button>
         @endcan
     </div>
     <div class="card-body">

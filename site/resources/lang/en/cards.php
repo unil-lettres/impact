@@ -20,6 +20,7 @@ return [
     'exemplification' => 'Exemplification',
     'source' => 'Source',
     'edit' => 'Edit',
+    'cancel' => 'Cancel',
     'save' => 'Save',
     'hide_boxes' => 'Hide/show boxes marked as hidden',
     'hide' => 'Hide',

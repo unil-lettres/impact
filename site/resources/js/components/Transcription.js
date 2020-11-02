@@ -26,15 +26,18 @@ export default class Transcription extends Component {
         super(props)
 
         const data = JSON.parse(this.props.data);
+        const transcription = data.card.box2.data ?? [];
         const disabled = data.disabled ?? true;
         this.contentRef = React.createRef();
 
         this.state = {
-            lines: data.card.box2.data ?? [],
+            original: Object.assign([], _.cloneDeep(transcription)),
+            lines: Object.assign([], _.cloneDeep(transcription)),
             editable: !disabled
         };
 
         this.edit = this.edit.bind(this);
+        this.cancel = this.cancel.bind(this);
         this.addRow = this.addRow.bind(this);
         this.hideActions = this.hideActions.bind(this);
         this.showActions = this.showActions.bind(this);
@@ -47,6 +50,7 @@ export default class Transcription extends Component {
 
     initVariables(data) {
         this.editButton = document.getElementById('edit-' + this.props.reference);
+        this.cancelButton = document.getElementById('cancel-' + this.props.reference);
         this.card = data.card;
         this.version = data.card.box2.version;
         this.editorId = 'rct-transcription';
@@ -58,6 +62,10 @@ export default class Transcription extends Component {
     componentDidMount() {
         if(this.editButton) {
             this.editButton.addEventListener('click', this.edit, false);
+        }
+
+        if(this.cancelButton) {
+            this.cancelButton.addEventListener('click', this.cancel, false);
         }
     }
 
@@ -73,6 +81,7 @@ export default class Transcription extends Component {
                     this.editButton.classList.remove("btn-primary");
                     this.editButton.classList.add('btn-success');
                     this.editButton.innerText = this.saveLabel;
+                    this.cancelButton.classList.remove("d-none");
 
                     // If transcription is empty, then add the first line
                     if(!this.validate(this.state.lines)) {
@@ -85,11 +94,12 @@ export default class Transcription extends Component {
                     this.editButton.classList.remove("btn-success");
                     this.editButton.classList.add('btn-primary');
                     this.editButton.textContent = this.editLabel;
+                    this.cancelButton.classList.add("d-none");
             }
         }
     }
 
-    edit(){
+    edit() {
         switch (!this.state.editable) {
             case false:
                 this.setState({
@@ -105,7 +115,21 @@ export default class Transcription extends Component {
                 })
         }
 
-        this.updateButton(!this.state.editable);
+        this.updateButton();
+    }
+
+    cancel() {
+        if(this.state.editable) {
+            this.setState({
+                    // We restore the transcription initially loaded from the db
+                    // We use cloneDeep to avoid a reference
+                    lines: _.cloneDeep(this.state.original),
+                    // We disable the edition mode
+                    editable: false
+                },
+                () => this.updateButton()
+            )
+        }
     }
 
     save() {
@@ -116,6 +140,11 @@ export default class Transcription extends Component {
             box: this.props.reference
         }).then(response => {
             console.log(response);
+            this.setState({
+                // We copy the saved content to the original state
+                // We use cloneDeep to avoid a reference
+                original: _.cloneDeep(this.state.lines)
+            });
         }).catch(error => {
             console.log(error);
             // Display an error message to the user

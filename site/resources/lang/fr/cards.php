@@ -20,6 +20,7 @@ return [
     'exemplification' => 'Exemplification',
     'source' => 'Source',
     'edit' => 'Éditer',
+    'cancel' => 'Annuler',
     'save' => 'Sauver',
     'hide_boxes' => 'Masquer/afficher les cases indiquées comme cachées',
     'hide' => 'Cacher',

@@ -14,7 +14,7 @@
 
     .box2 {
         tbody tr {
-            font-size: 0.8rem;
+            font-size: 12px;
             font-family: courier, serif;
             line-height: 1.2;
 
@@ -25,8 +25,9 @@
             }
 
             td.actions {
-                max-width: 15px;
-                min-width: 15px;
+                max-width: 25px;
+                min-width: 25px;
+                text-align: center;
             }
         }
     }

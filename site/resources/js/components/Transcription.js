@@ -31,8 +31,8 @@ export default class Transcription extends Component {
         this.contentRef = React.createRef();
 
         this.state = {
-            original: Object.assign([], _.cloneDeep(transcription)),
-            lines: Object.assign([], _.cloneDeep(transcription)),
+            original: _.cloneDeep(transcription),
+            lines: _.cloneDeep(transcription),
             editable: !disabled
         };
 

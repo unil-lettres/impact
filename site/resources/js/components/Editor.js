@@ -94,18 +94,32 @@ export default class Editor extends Component {
     constructor (props) {
         super(props)
 
-        let data = JSON.parse(this.props.data);
+        const data = JSON.parse(this.props.data);
+        const html = data.card[this.props.reference];
+        const disabled = data.disabled ?? true;
+
+        this.state = {
+            original: _.cloneDeep(html),
+            html: _.cloneDeep(html),
+            editable: !disabled
+        };
 
         this.edit = this.edit.bind(this)
+        this.cancel = this.cancel.bind(this);
+        this.onEditorChange = this.onEditorChange.bind(this);
 
         this.updateEditorConfiguration(data);
         this.initVariables(data);
-        this.updateButton(this.disabled);
+        this.updateButton();
     }
 
     componentDidMount() {
-        if(this.button) {
-            this.button.addEventListener('click', this.edit, false);
+        if(this.editButton) {
+            this.editButton.addEventListener('click', this.edit, false);
+        }
+
+        if(this.cancelButton) {
+            this.cancelButton.addEventListener('click', this.cancel, false);
         }
     }
 
@@ -117,48 +131,55 @@ export default class Editor extends Component {
         this.editor = BalloonEditor;
         this.config = editorConfiguration;
         this.card = data.card;
-        this.html = data.card[this.props.reference];
-        this.disabled = data.disabled ?? true;
         this.editButtonId = 'edit-' + this.props.reference;
-        this.button = document.getElementById(this.editButtonId);
+        this.editButton = document.getElementById(this.editButtonId);
+        this.cancelButtonId = 'cancel-' + this.props.reference;
+        this.cancelButton = document.getElementById(this.cancelButtonId);
         this.editorId = 'rct-editor-' + this.props.reference;
         this.editorErrorMsgId = 'edit-failed-' + this.props.reference;
         this.editLabel = data.editLabel ?? 'Edit';
         this.saveLabel = data.saveLabel ?? 'Save';
     }
 
-    updateButton(isReadOnly) {
+    updateButton() {
         let editor = document.getElementById(this.editorId);
         let editorErrorMsgId = document.getElementById(this.editorErrorMsgId);
 
-        if(this.button) {
-            switch (isReadOnly) {
+        if(this.editButton) {
+            switch (this.state.editable) {
                 case true:
-                    editor.classList.remove("editing");
-                    this.button.classList.remove("btn-success");
-                    this.button.classList.add('btn-primary');
-                    this.button.textContent = this.editLabel;
+                    editorErrorMsgId.classList.add('d-none');
+                    editor.classList.add('editing');
+                    this.editButton.classList.remove("btn-primary");
+                    this.editButton.classList.add('btn-success');
+                    this.editButton.innerText = this.saveLabel;
+                    this.cancelButton.classList.remove("d-none");
                     break;
                 case false:
                 default:
-                    editorErrorMsgId.classList.add('d-none');
-                    editor.classList.add('editing');
-                    this.button.classList.remove("btn-primary");
-                    this.button.classList.add('btn-success');
-                    this.button.innerText = this.saveLabel;
+                    editor.classList.remove("editing");
+                    this.editButton.classList.remove("btn-success");
+                    this.editButton.classList.add('btn-primary');
+                    this.editButton.textContent = this.editLabel;
+                    this.cancelButton.classList.add("d-none");
             }
         }
     }
 
-    edit(e){
-        switch (this.editor.isReadOnly) {
+    edit() {
+        switch (!this.state.editable) {
             case false:
-                this.editor.isReadOnly = true;
+                this.setState({
+                    editable: false
+                })
+
                 this.save();
                 break;
             case true:
             default:
-                this.editor.isReadOnly = false;
+                this.setState({
+                    editable: true
+                })
         }
 
         this.updateButton(this.editor.isReadOnly);
@@ -166,10 +187,15 @@ export default class Editor extends Component {
 
     save() {
         axios.put('/cards/' + this.card.id + '/editor', {
-            html: this.editor.getData(),
+            html: this.state.html,
             box: this.props.reference
         }).then(response => {
             console.log(response);
+            this.setState({
+                // We copy the saved html to the original state
+                // We use cloneDeep to avoid a reference
+                original: _.cloneDeep(this.state.html)
+            });
         }).catch(error => {
             console.log(error)
             // Display an error message to the user
@@ -179,22 +205,39 @@ export default class Editor extends Component {
         });
     }
 
+    cancel() {
+        if(this.state.editable) {
+            this.setState({
+                    // We restore the html initially loaded from the db
+                    // We use cloneDeep to avoid a reference
+                    html: _.cloneDeep(this.state.original),
+                    // We disable the edition mode
+                    editable: false
+                },
+                () => this.updateButton()
+            )
+        }
+    }
+
+    onEditorChange() {
+        this.setState( {
+            html: this.editor.getData()
+        });
+    }
+
     render() {
         return (
             <div>
                 <CKEditor
                     editor={ this.editor }
-                    data={ this.html }
+                    data={ this.state.html }
                     config={ this.config }
                     onInit={ editor => {
                         this.editor = editor
                         //console.log(Array.from( editor.ui.componentFactory.names() ));
                     } }
-                    disabled={ this.disabled }
-                    onChange={ ( event, editor ) => {
-                        //const data = editor.getData();
-                        //console.log( { event, editor, data } );
-                    } }
+                    disabled={ !this.state.editable }
+                    onChange={ this.onEditorChange }
                     onBlur={ ( event, editor ) => {
                         //console.log( 'Blur.', editor );
                     } }

@@ -33,6 +33,8 @@ return [
     'box' => 'Box',
     'documents' => 'Documents',
     'transcription' => 'Transcription',
+    'clear_transcription' => 'Clear text',
+    'export' => 'Export transcription',
     'sync_with_source' => 'Synchronize with source',
     'global_settings' => 'Global settings',
     'state' => 'State',

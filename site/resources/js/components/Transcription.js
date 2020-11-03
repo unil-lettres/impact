@@ -43,6 +43,8 @@ export default class Transcription extends Component {
         this.showActions = this.showActions.bind(this);
         this.deleteLine = this.deleteLine.bind(this);
         this.deleteTranscription = this.deleteTranscription.bind(this);
+        this.export = this.export.bind(this);
+        this.handleKeyDown = this.handleKeyDown.bind(this);
 
         this.initVariables(data);
         this.updateButton();
@@ -51,6 +53,8 @@ export default class Transcription extends Component {
     initVariables(data) {
         this.editButton = document.getElementById('edit-' + this.props.reference);
         this.cancelButton = document.getElementById('cancel-' + this.props.reference);
+        this.exportButton = document.getElementById('export-' + this.props.reference);
+        this.deleteButton = document.getElementById('clear-' + this.props.reference);
         this.card = data.card;
         this.version = data.card.box2.version;
         this.editorId = 'rct-transcription';
@@ -67,6 +71,14 @@ export default class Transcription extends Component {
         if(this.cancelButton) {
             this.cancelButton.addEventListener('click', this.cancel, false);
         }
+
+        if(this.exportButton) {
+            this.exportButton.addEventListener('click', this.export, false);
+        }
+
+        if(this.deleteButton) {
+            this.deleteButton.addEventListener('click', this.deleteTranscription, false);
+        }
     }
 
     updateButton() {
@@ -82,6 +94,8 @@ export default class Transcription extends Component {
                     this.editButton.classList.add('btn-success');
                     this.editButton.innerText = this.saveLabel;
                     this.cancelButton.classList.remove("d-none");
+                    this.deleteButton.classList.remove("d-none");
+                    this.exportButton.classList.add("d-none");
 
                     // If transcription is empty, then add the first line
                     if(!this.validate(this.state.lines)) {
@@ -95,6 +109,8 @@ export default class Transcription extends Component {
                     this.editButton.classList.add('btn-primary');
                     this.editButton.textContent = this.editLabel;
                     this.cancelButton.classList.add("d-none");
+                    this.deleteButton.classList.add("d-none");
+                    this.exportButton.classList.remove("d-none");
             }
         }
     }
@@ -170,9 +186,21 @@ export default class Transcription extends Component {
         });
     }
 
-    addRow() {
-        // TODO: create new line on keypress (enter)
+    isLastRow(index) {
+        return this.state.lines.length === index + 1
+    }
 
+    fixNumbers() {
+        this.state.lines.forEach(function (row, index) {
+            row.number = index + 1;
+        });
+
+        this.setState({
+            lines: this.state.lines
+        });
+    }
+
+    addRow() {
         this.setState({
                 lines: [
                     ...this.state.lines,
@@ -185,16 +213,6 @@ export default class Transcription extends Component {
             },
             () => this.fixNumbers()
         );
-    }
-
-    fixNumbers() {
-        this.state.lines.forEach(function (row, index) {
-            row.number = index + 1;
-        });
-
-        this.setState({
-            lines: this.state.lines
-        });
     }
 
     deleteTranscription() {
@@ -250,6 +268,23 @@ export default class Transcription extends Component {
         }
     }
 
+    export() {
+        let header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
+            "xmlns:w='urn:schemas-microsoft-com:office:word' "+
+            "xmlns='http://www.w3.org/TR/REC-html40'>"+
+            "<head><meta charset='utf-8'><title>" + this.card.title + "</title></head><body>";
+        let footer = "</body></html>";
+        let sourceHTML = header+document.getElementById("transcription-content").innerHTML+footer;
+
+        let source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
+        let fileDownload = document.createElement("a");
+        document.body.appendChild(fileDownload);
+        fileDownload.href = source;
+        fileDownload.download = 'export.doc';
+        fileDownload.click();
+        document.body.removeChild(fileDownload);
+    }
+
     handleChange = params => (event) => {
         if(this.state.lines[params.index]) {
             switch (params.column) {
@@ -263,15 +298,15 @@ export default class Transcription extends Component {
         }
     };
 
+    handleKeyDown = index => (event) => {
+        if(event.key === 'Tab' && this.isLastRow(index) ) {
+            this.addRow();
+        }
+    }
+
     render () {
         return (
-            <div className="editor">
-                {this.state.editable &&
-                    <input  type="submit" className="button mb-2 mr-2" onClick={ this.addRow } value="Add Line" />
-                }
-                {this.state.editable &&
-                    <input  type="submit" className="button mb-2" onClick={ this.deleteTranscription } value="Delete text" />
-                }
+            <div id="transcription-content">
                 <table>
                     <tbody ref={ this.contentRef }>
                         {
@@ -296,6 +331,7 @@ export default class Transcription extends Component {
                                             tagName="span"
                                             disabled={ !this.state.editable }
                                             onChange={ this.handleChange({"index": index, "column": "speech"}) }
+                                            onKeyDown={ this.handleKeyDown(index) }
                                         />
                                     </td>
                                     <td id={'actions-'+index} className="actions">

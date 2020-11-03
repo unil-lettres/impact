@@ -33,6 +33,8 @@ return [
     'box' => 'Case',
     'documents' => 'Documents',
     'transcription' => 'Transcription',
+    'clear_transcription' => 'Effacer texte',
+    'export' => 'Exporter la transcription',
     'sync_with_source' => 'Synchroniser avec source',
     'global_settings' => 'Paramètres globaux',
     'state' => 'État',

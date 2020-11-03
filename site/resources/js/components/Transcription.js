@@ -115,6 +115,36 @@ export default class Transcription extends Component {
         }
     }
 
+    validate(lines) {
+        // Not valid if transcription is not an array or is empty
+        if (!Array.isArray(lines) || !lines.length) {
+            return false;
+        }
+
+        // Valid otherwise
+        return true;
+    }
+
+    sanitize(html) {
+        return sanitizeHtml(html, {
+            allowedTags: [ 'br' ]
+        });
+    }
+
+    isLastRow(index) {
+        return this.state.lines.length === index + 1
+    }
+
+    fixNumbers() {
+        this.state.lines.forEach(function (row, index) {
+            row.number = index + 1;
+        });
+
+        this.setState({
+            lines: this.state.lines
+        });
+    }
+
     edit() {
         switch (!this.state.editable) {
             case false:
@@ -167,36 +197,6 @@ export default class Transcription extends Component {
             document.getElementById(this.editorErrorMsgId)
                 .classList
                 .remove("d-none");
-        });
-    }
-
-    validate(lines) {
-        // Not valid if transcription is not an array or is empty
-        if (!Array.isArray(lines) || !lines.length) {
-            return false;
-        }
-
-        // Valid otherwise
-        return true;
-    }
-
-    sanitize(html) {
-        return sanitizeHtml(html, {
-            allowedTags: [ 'br' ]
-        });
-    }
-
-    isLastRow(index) {
-        return this.state.lines.length === index + 1
-    }
-
-    fixNumbers() {
-        this.state.lines.forEach(function (row, index) {
-            row.number = index + 1;
-        });
-
-        this.setState({
-            lines: this.state.lines
         });
     }
 
@@ -269,6 +269,7 @@ export default class Transcription extends Component {
     }
 
     export() {
+        // TODO: more work is needed, this is a basic poc for export
         let header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
             "xmlns:w='urn:schemas-microsoft-com:office:word' "+
             "xmlns='http://www.w3.org/TR/REC-html40'>"+

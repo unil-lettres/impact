@@ -61,7 +61,7 @@ class ExportCardBox
      * Export the transcription content
      *
      * @param array $data
-     * @return string|null
+     * @return boolean
      * @throws Exception
      */
     private function transcription(array $data) {
@@ -77,7 +77,7 @@ class ExportCardBox
      * Create a Word document with the transcription content
      *
      * @param array $data
-     * @return string
+     * @return boolean
      * @throws Exception
      */
     private function transcriptionToDocx(array $data) {

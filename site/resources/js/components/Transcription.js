@@ -269,21 +269,24 @@ export default class Transcription extends Component {
     }
 
     export() {
-        // TODO: more work is needed, this is a basic poc for export
-        let header = "<html xmlns:o='urn:schemas-microsoft-com:office:office' "+
-            "xmlns:w='urn:schemas-microsoft-com:office:word' "+
-            "xmlns='http://www.w3.org/TR/REC-html40'>"+
-            "<head><meta charset='utf-8'><title>" + this.card.title + "</title></head><body>";
-        let footer = "</body></html>";
-        let sourceHTML = header+document.getElementById("transcription-content").innerHTML+footer;
-
-        let source = 'data:application/vnd.ms-word;charset=utf-8,' + encodeURIComponent(sourceHTML);
-        let fileDownload = document.createElement("a");
-        document.body.appendChild(fileDownload);
-        fileDownload.href = source;
-        fileDownload.download = 'export.doc';
-        fileDownload.click();
-        document.body.removeChild(fileDownload);
+        axios({
+            method: 'post',
+            url: '/cards/' + this.card.id + '/export',
+            data: {
+                box: this.props.reference,
+                format: 'docx'
+            },
+            responseType: 'blob'
+        }).then(response => {
+            let fileURL = window.URL.createObjectURL(new Blob([response.data]));
+            let fileLink = document.createElement('a');
+            fileLink.href = fileURL;
+            fileLink.setAttribute('download', this.card.title + '.docx');
+            document.body.appendChild(fileLink);
+            fileLink.click();
+        }).catch(error => {
+            console.log(error);
+        });
     }
 
     handleChange = params => (event) => {
@@ -296,6 +299,10 @@ export default class Transcription extends Component {
                     this.state.lines[params.index].speech = this.sanitize(event.target.value);
                     break;
             }
+
+            this.setState({
+                lines: this.state.lines
+            });
         }
     };
 

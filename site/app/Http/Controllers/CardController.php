@@ -6,15 +6,19 @@ use App\Card;
 use App\Course;
 use App\Folder;
 use App\Http\Requests\CreateCard;
+use App\Http\Requests\CreateCardExport;
 use App\Http\Requests\DestroyCard;
 use App\Http\Requests\StoreCard;
 use App\Http\Requests\UpdateCard;
 use App\Http\Requests\UpdateCardEditor;
 use App\Http\Requests\UpdateCardTranscription;
+use App\Services\ExportCardBox;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use PhpOffice\PhpWord\Exception\Exception;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class CardController extends Controller
 {
@@ -279,5 +283,32 @@ class CardController extends Controller
         return response()->json([
             'success' => $id
         ], 200);
+    }
+
+    /**
+     * Create an export of a box from the specified resource.
+     *
+     * @param CreateCardExport $request
+     * @param int $id
+     *
+     * @return BinaryFileResponse
+     * @throws AuthorizationException|Exception
+     */
+    public function export(CreateCardExport $request, int $id)
+    {
+        $card = Card::find($id);
+
+        $this->authorize('export', $card);
+
+        $format = $request->get('format');
+        $box = $request->get('box');
+
+        $service = new ExportCardBox($card, $box, $format);
+
+        return response()
+            ->download(
+                $service->export()
+            )
+            ->deleteFileAfterSend();
     }
 }

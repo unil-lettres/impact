@@ -65,6 +65,8 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('cards.editor');
     Route::put('cards/{card}/transcription', [CardController::class, 'transcription'])
         ->name('cards.transcription');
+    Route::post('cards/{card}/export', [CardController::class, 'export'])
+        ->name('cards.export');
 
     // Folders
     Route::resource('folders', FolderController::class);

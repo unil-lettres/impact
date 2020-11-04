@@ -186,6 +186,28 @@ class CardPolicy
     }
 
     /**
+     * Determine whether the user can create an export from the card
+     *
+     * @param User $user
+     * @param Card $card
+     *
+     * @return mixed
+     */
+    public function export(User $user, Card $card)
+    {
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers of the course & editors can create an export from the card
+        if ($user->isTeacher($card->course) || $user->isEditor($card)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Determine whether the user can hide parts of the card
      *
      * @param User $user

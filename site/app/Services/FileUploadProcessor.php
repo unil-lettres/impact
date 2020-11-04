@@ -3,30 +3,19 @@
 namespace App\Services;
 
 use App\Enums\FileType;
+use App\Enums\StoragePath;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class FileUploadProcessor
 {
-    /**
-     * Return path to main file storage.
-     *
-     * @return string
-     */
-    public function standardFileStoragePath()
-    {
-        return '/uploads/files';
-    }
+    public function __construct() {
+        Storage::disk('public')
+            ->makeDirectory(StoragePath::UploadStandard);
 
-    /**
-     * Return path to temporary file storage.
-     *
-     * @return string
-     */
-    public function tempFileStoragePath()
-    {
-        return '/uploads/tmp';
+        Storage::disk('public')
+            ->makeDirectory(StoragePath::UploadTemp);
     }
 
     /**
@@ -94,7 +83,7 @@ class FileUploadProcessor
      */
     public function moveFileToStoragePath(UploadedFile $file, $isTemp = false)
     {
-        $path = $isTemp ? $this->tempFileStoragePath() : $this->standardFileStoragePath();
+        $path = $isTemp ? StoragePath::UploadTemp : StoragePath::UploadStandard;
 
         return $file->store(
             $path, 'public'
@@ -115,8 +104,8 @@ class FileUploadProcessor
 
         return Storage::disk('public')
             ->move(
-                $this->tempFileStoragePath() . '/' . $cleanedFilename,
-                $this->standardFileStoragePath() . '/' . $cleanedFilename
+                StoragePath::UploadTemp . '/' . $cleanedFilename,
+                StoragePath::UploadStandard . '/' . $cleanedFilename
             );
     }
 
@@ -133,7 +122,7 @@ class FileUploadProcessor
         // Clean filename to keep only the name of the file
         $cleanedFilename = $this->getBaseName($filename);
 
-        $path = $isTemp ? $this->tempFileStoragePath() : $this->standardFileStoragePath();
+        $path = $isTemp ? StoragePath::UploadTemp : StoragePath::UploadStandard;
 
         return Storage::disk('public')
             ->size(
@@ -155,7 +144,7 @@ class FileUploadProcessor
 
         return Storage::disk('public')
             ->delete(
-                $this->tempFileStoragePath() . '/' . $cleanedFilename
+                StoragePath::UploadTemp . '/' . $cleanedFilename
             );
     }
 
@@ -173,7 +162,7 @@ class FileUploadProcessor
 
         return Storage::disk('public')
             ->delete(
-                $this->standardFileStoragePath() . '/' . $cleanedFilename
+                StoragePath::UploadStandard . '/' . $cleanedFilename
             );
     }
 }

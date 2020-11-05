@@ -17,9 +17,9 @@ export default class Player extends Component {
 
     initVariables(data) {
         this.card = data.card;
-        this.file = this.card.file ?? null;
+        this.isLocal = data.isLocal ?? true;
         this.locale = data.locale ?? 'fr';
-        this.type = this.file ? this.card.file.type : this.guessMediaType(data.url);
+        this.type = this.isLocal ? this.card.file.type : this.guessMediaType(data.url);
         this.mime = this.mediaMimeType(data.url);
 
         this.options = {
@@ -38,38 +38,9 @@ export default class Player extends Component {
         }
 
         this.offset = {
-            start: this.card.options.box1.start,
-            end: this.card.options.box1.end
+            start: this.isLocal ? this.card.options.box1.start : null,
+            end: this.isLocal ? this.card.options.box1.end : null
         }
-    }
-
-    onPlayerReady(player){
-        //console.log("Player is ready: ", player);
-        this.player = player;
-    }
-
-    onVideoPlay(duration){
-        //console.log("Video played at: ", duration);
-    }
-
-    onVideoPause(duration){
-        //console.log("Video paused at: ", duration);
-    }
-
-    onVideoTimeUpdate(duration){
-        //console.log("Time updated: ", duration);
-    }
-
-    onVideoSeeking(duration){
-        //console.log("Video seeking: ", duration);
-    }
-
-    onVideoSeeked(from, to){
-        //console.log(`Video seeked from ${from} to ${to}`);
-    }
-
-    onVideoEnd(){
-        //console.log("Video ended");
     }
 
     mediaMimeType(path) {
@@ -100,6 +71,46 @@ export default class Player extends Component {
 
     isMediaReachable() {
         return !!this.mime;
+    }
+
+    onPlayerReady(player){
+        //console.log("Player is ready: ", player);
+        this.player = player;
+    }
+
+    onVideoPlay(duration){
+        //console.log("Video played at: ", duration);
+    }
+
+    onVideoPause(duration){
+        // On pause we get back a little bit to facilitate the transcription process
+        const OFFSET = 1.0;
+        if ( this.player.currentTime() > OFFSET ) {
+            this.player.currentTime(this.player.currentTime() - OFFSET);
+        } else {
+            this.player.currentTime(0);
+        }
+    }
+
+    onVideoTimeUpdate(duration){
+        if(this.isLocal && this.card.options.box2.sync) {
+            // keep the transcription in sync with the media player
+            let view = document.getElementById("transcription-viewer");
+            view.scrollTop =
+                (view.scrollHeight * this.player.currentTime() / this.player.duration()) - (view.clientHeight / 2);
+        }
+    }
+
+    onVideoSeeking(duration){
+        //console.log("Video seeking: ", duration);
+    }
+
+    onVideoSeeked(from, to){
+        //console.log(`Video seeked from ${from} to ${to}`);
+    }
+
+    onVideoEnd(){
+        //console.log("Video ended");
     }
 
     render() {

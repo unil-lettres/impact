@@ -15,7 +15,10 @@
     .box2 {
         .card-body {
             padding: 1rem !important;
+            height: 31.9em;
+            overflow-y: scroll;
         }
+
         tbody tr {
             font-size: 12px;
             font-family: courier, serif;

@@ -45,3 +45,26 @@
         @endcan
     </div>
 @endsection
+
+@section('scripts-footer')
+    <script type="text/javascript">
+        const externalLinkField = $('#box1-link');
+        const externalLinkFieldValue = externalLinkField.val();
+
+        if(externalLinkFieldValue.trim().length) {
+            // Disable some fields if a media external link is present
+            disableFields(externalLinkFieldValue);
+        }
+
+        externalLinkField.on('input', function() {
+            // Disable some fields if a media external link is present
+            disableFields(this.value);
+        });
+
+        function disableFields(element) {
+            $('#box1-start').prop('disabled', element.trim().length);
+            $('#box1-end').prop('disabled', element.trim().length);
+            $('#box2-sync').prop('disabled', element.trim().length);
+        }
+    </script>
+@endsection

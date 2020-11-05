@@ -13,10 +13,14 @@
     }
 
     .box2 {
+        .card-body {
+            padding: 1rem !important;
+        }
         tbody tr {
             font-size: 12px;
             font-family: courier, serif;
             line-height: 1.2;
+            height: 20px;
 
             td.line,
             td.speaker {
@@ -25,8 +29,8 @@
             }
 
             td.actions {
-                max-width: 25px;
-                min-width: 25px;
+                max-width: 35px;
+                min-width: 35px;
                 text-align: center;
             }
         }
@@ -45,7 +49,10 @@
 
             td.actions {
                 background-color: #c3c3c3;
-                cursor: pointer;
+
+                .action {
+                    cursor: pointer;
+                }
             }
         }
     }

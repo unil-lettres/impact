@@ -17,6 +17,7 @@
             </button>
             <button class="btn btn-primary float-right mr-2"
                     id="export-{{ $reference }}"
+                    format="docx"
                     data-toggle="tooltip"
                     data-placement="top"
                     title="{{ trans('cards.export') }}">
@@ -26,7 +27,7 @@
     </div>
     <div class="card-body">
         <div id="rct-transcription"
-             data='{{ json_encode(['card' => $card, 'locale' => Helpers::currentLocal(), 'editLabel' => trans('cards.edit'), 'saveLabel' => trans('cards.save')]) }}'
+             data='{{ json_encode(['card' => $card, 'editLabel' => trans('cards.edit'), 'saveLabel' => trans('cards.save'), 'deleteLineActionLabel' => trans('cards.delete_line_action'), 'toggleNumberActionLabel' => trans('cards.toggle_number_action')]) }}'
              reference='{{ $reference }}'
         ></div>
     </div>

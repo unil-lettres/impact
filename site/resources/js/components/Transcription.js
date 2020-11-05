@@ -42,6 +42,7 @@ export default class Transcription extends Component {
         this.hideActions = this.hideActions.bind(this);
         this.showActions = this.showActions.bind(this);
         this.deleteLine = this.deleteLine.bind(this);
+        this.toggleNumber = this.toggleNumber.bind(this);
         this.deleteTranscription = this.deleteTranscription.bind(this);
         this.export = this.export.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
@@ -61,6 +62,8 @@ export default class Transcription extends Component {
         this.editorErrorMsgId = 'edit-failed-' + this.props.reference;
         this.editLabel = data.editLabel ?? 'Edit';
         this.saveLabel = data.saveLabel ?? 'Save';
+        this.deleteLineActionLabel = data.deleteLineActionLabel ?? 'Delete the line';
+        this.toggleNumberActionLabel = data.toggleNumberActionLabel ?? 'Visibility of the numbering';
     }
 
     componentDidMount() {
@@ -136,8 +139,12 @@ export default class Transcription extends Component {
     }
 
     fixNumbers() {
-        this.state.lines.forEach(function (row, index) {
-            row.number = index + 1;
+        let i = 1;
+        this.state.lines.forEach(function (row) {
+            // Fix the row number if is present or is an empty string
+            if(row.number || row.number === "") {
+                row.number = i++;
+            }
         });
 
         this.setState({
@@ -201,18 +208,17 @@ export default class Transcription extends Component {
     }
 
     addRow() {
-        this.setState({
-                lines: [
-                    ...this.state.lines,
-                    new Line(
-                        "",
-                        "",
-                        ""
-                    ).toJSON()
-                ]
-            },
-            () => this.fixNumbers()
-        );
+        this.state.lines = [
+            ...this.state.lines,
+            new Line(
+                "",
+                "",
+                ""
+            ).toJSON()
+        ]
+
+        // Fix the number of each row
+        this.fixNumbers();
     }
 
     deleteTranscription() {
@@ -260,28 +266,40 @@ export default class Transcription extends Component {
             // Remove line at specific index
             this.state.lines.splice(index, 1)
 
-            this.setState({
-                    lines: this.state.lines
-                },
-                () => this.fixNumbers()
-            );
+            // Fix the number of each row
+            this.fixNumbers();
         }
     }
 
-    export() {
+    toggleNumber = index => (event) => {
+        if(this.state.lines[index]) {
+            // Remove or add a number to the row
+            this.state.lines[index].number = this.state.lines[index].number ? null : "";
+
+            // Fix the number of each row
+            this.fixNumbers();
+        }
+    }
+
+    export(event) {
+        // Get the export format from the button attribute
+        const format = event.currentTarget
+            .getAttribute('format');
+
         axios({
             method: 'post',
             url: '/cards/' + this.card.id + '/export',
             data: {
                 box: this.props.reference,
-                format: 'docx'
+                format: format
             },
             responseType: 'blob'
         }).then(response => {
+            // Trigger the download of the response data
             let fileURL = window.URL.createObjectURL(new Blob([response.data]));
             let fileLink = document.createElement('a');
             fileLink.href = fileURL;
-            fileLink.setAttribute('download', this.card.title + '.docx');
+            fileLink.setAttribute('download', this.card.title + '.' + format);
             document.body.appendChild(fileLink);
             fileLink.click();
         }).catch(error => {
@@ -343,8 +361,15 @@ export default class Transcription extends Component {
                                         />
                                     </td>
                                     <td id={'actions-'+index} className="actions">
-                                        <span className="action d-none" onClick={ this.deleteLine(index) }>
+                                        <span className="action delete-line mr-1 d-none"
+                                              onClick={ this.deleteLine(index) }
+                                              title={ this.deleteLineActionLabel }>
                                             <i className="far fa-times-circle"></i>
+                                        </span>
+                                        <span className="action delete-number d-none"
+                                              onClick={ this.toggleNumber(index) }
+                                              title={ this.toggleNumberActionLabel }>
+                                            <i className={`far ${line.number ? "fa-minus-square" : "fa-plus-square"}`}></i>
                                         </span>
                                     </td>
                                 </tr>

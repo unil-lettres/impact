@@ -34,6 +34,8 @@ return [
     'documents' => 'Documents',
     'transcription' => 'Transcription',
     'clear_transcription' => 'Clear text',
+    'delete_line_action' => 'Delete the line',
+    'toggle_number_action' => 'Visibility of the numbering',
     'export' => 'Export transcription',
     'sync_with_source' => 'Synchronize with source',
     'global_settings' => 'Global settings',

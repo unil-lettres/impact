@@ -334,6 +334,20 @@ class Helpers {
     }
 
     /**
+     * Return whether the card has a transcription
+     *
+     * @param Card $card
+     * @return boolean
+     */
+    public static function hasTranscription(Card $card) {
+        if($card->box2['data']) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Return whether the specified box should be hidden from the view
      *
      * @param Card $card

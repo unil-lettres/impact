@@ -7,9 +7,15 @@
         }
     }
 
-    .box4 .editing,
-    .box3 .editing {
-        border: 1px dashed #80808059;
+    .box4,
+    .box3 {
+        .card-body {
+            padding: 1rem !important;
+        }
+
+        .editing {
+            border: 1px dashed #80808059;
+        }
     }
 
     .box2 {

@@ -6,11 +6,13 @@ use App\Card;
 use App\Enums\CardBox;
 use App\Enums\ExportFormat;
 use App\Enums\StoragePath;
+use App\Helpers\Helpers;
 use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpWord\Exception\Exception;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\SimpleType\JcTable;
+use PhpOffice\PhpWord\Style\Language;
 use PhpOffice\PhpWord\Style\Table;
 
 class ExportCardBox
@@ -81,7 +83,8 @@ class ExportCardBox
      * @throws Exception
      */
     private function transcriptionToDocx(array $data) {
-        $phpWord = new PhpWord();
+        $phpWord = $this->initPhpWord();
+
         $fontStyleName = 'transcription';
         $phpWord->addFontStyle(
             $fontStyleName,
@@ -92,6 +95,7 @@ class ExportCardBox
                 'bold' => false
             )
         );
+
         $section = $phpWord->addSection();
 
         $tableStyle = [
@@ -124,5 +128,34 @@ class ExportCardBox
         $objWriter->save($this->file);
 
         return true;
+    }
+
+    /**
+     * Initialize an instance of PHPWord
+     *
+     * @return PhpWord
+     */
+    private function initPhpWord() {
+        $phpWord = new PhpWord();
+
+        switch (Helpers::currentLocal()) {
+            case 'fr':
+                $locale = Language::FR_FR;
+                break;
+            case 'en':
+            default:
+                $locale = Language::EN_US;
+        }
+
+        $phpWord->getSettings()->setThemeFontLang(
+            new Language(
+                $locale
+            )
+        );
+        $phpWord->getDocInfo()->setCreator('Impact');
+        $phpWord->getDocInfo()->setTitle($this->card->title);
+        $phpWord->getDocInfo()->setDescription(trans('general.created_with_impact'));
+
+        return $phpWord;
     }
 }

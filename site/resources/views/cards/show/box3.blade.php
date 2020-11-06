@@ -14,6 +14,10 @@
         @endcan
     </div>
     <div class="card-body">
+        <p id="empty-{{ $reference }}"
+           class="text-secondary text-center d-none p-3">
+            {{ trans('messages.card.empty') }}
+        </p>
         <div id="rct-editor-{{ $reference }}"
              data='{{ json_encode(['card' => $card, 'locale' => Helpers::currentLocal(), 'editLabel' => trans('cards.edit'), 'saveLabel' => trans('cards.save')]) }}'
              reference='{{ $reference }}'

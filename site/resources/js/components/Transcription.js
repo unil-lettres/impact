@@ -48,7 +48,7 @@ export default class Transcription extends Component {
         this.handleKeyDown = this.handleKeyDown.bind(this);
 
         this.initVariables(data);
-        this.updateButton();
+        this.updateUi();
     }
 
     initVariables(data) {
@@ -60,6 +60,7 @@ export default class Transcription extends Component {
         this.version = data.card.box2.version;
         this.editorId = 'rct-transcription';
         this.editorErrorMsgId = 'edit-failed-' + this.props.reference;
+        this.editorEmptyTranscriptionMsgId = 'empty-' + this.props.reference;
         this.editLabel = data.editLabel ?? 'Edit';
         this.saveLabel = data.saveLabel ?? 'Save';
         this.deleteLineActionLabel = data.deleteLineActionLabel ?? 'Delete the line';
@@ -84,14 +85,16 @@ export default class Transcription extends Component {
         }
     }
 
-    updateButton() {
+    updateUi() {
         let editor = document.getElementById(this.editorId);
-        let editorErrorMsgId = document.getElementById(this.editorErrorMsgId);
+        let editorErrorMsg = document.getElementById(this.editorErrorMsgId);
+        let editorEmptyTranscriptionMsg = document.getElementById(this.editorEmptyTranscriptionMsgId);
 
         if(this.editButton) {
             switch (this.state.editable) {
                 case true:
-                    editorErrorMsgId.classList.add('d-none');
+                    editorErrorMsg.classList.add('d-none');
+                    editorEmptyTranscriptionMsg.classList.add('d-none');
                     editor.classList.add('editing');
                     this.editButton.classList.remove("btn-primary");
                     this.editButton.classList.add('btn-success');
@@ -114,6 +117,11 @@ export default class Transcription extends Component {
                     this.cancelButton.classList.add("d-none");
                     this.deleteButton.classList.add("d-none");
                     this.exportButton.classList.remove("d-none");
+
+                    // If transcription is empty, then add the empty message
+                    if(!this.validate(this.state.lines)) {
+                        editorEmptyTranscriptionMsg.classList.remove('d-none');
+                    }
             }
         }
     }
@@ -168,7 +176,7 @@ export default class Transcription extends Component {
                 })
         }
 
-        this.updateButton();
+        this.updateUi();
     }
 
     cancel() {
@@ -180,7 +188,7 @@ export default class Transcription extends Component {
                     // We disable the edition mode
                     editable: false
                 },
-                () => this.updateButton()
+                () => this.updateUi()
             )
         }
     }

@@ -110,7 +110,7 @@ export default class Editor extends Component {
 
         this.updateEditorConfiguration(data);
         this.initVariables(data);
-        this.updateButton();
+        this.updateUi();
     }
 
     componentDidMount() {
@@ -137,18 +137,21 @@ export default class Editor extends Component {
         this.cancelButton = document.getElementById(this.cancelButtonId);
         this.editorId = 'rct-editor-' + this.props.reference;
         this.editorErrorMsgId = 'edit-failed-' + this.props.reference;
+        this.editorEmptyTranscriptionMsgId = 'empty-' + this.props.reference;
         this.editLabel = data.editLabel ?? 'Edit';
         this.saveLabel = data.saveLabel ?? 'Save';
     }
 
-    updateButton() {
+    updateUi() {
         let editor = document.getElementById(this.editorId);
         let editorErrorMsgId = document.getElementById(this.editorErrorMsgId);
+        let editorEmptyTranscriptionMsg = document.getElementById(this.editorEmptyTranscriptionMsgId);
 
         if(this.editButton) {
             switch (this.state.editable) {
                 case true:
                     editorErrorMsgId.classList.add('d-none');
+                    editorEmptyTranscriptionMsg.classList.add('d-none');
                     editor.classList.add('editing');
                     this.editButton.classList.remove("btn-primary");
                     this.editButton.classList.add('btn-success');
@@ -162,6 +165,11 @@ export default class Editor extends Component {
                     this.editButton.classList.add('btn-primary');
                     this.editButton.textContent = this.editLabel;
                     this.cancelButton.classList.add("d-none");
+
+                    // If editor is empty, then add the empty message
+                    if(!this.state.html) {
+                        editorEmptyTranscriptionMsg.classList.remove('d-none');
+                    }
             }
         }
     }
@@ -182,7 +190,7 @@ export default class Editor extends Component {
                 })
         }
 
-        this.updateButton(this.editor.isReadOnly);
+        this.updateUi(this.editor.isReadOnly);
     }
 
     save() {
@@ -214,7 +222,7 @@ export default class Editor extends Component {
                     // We disable the edition mode
                     editable: false
                 },
-                () => this.updateButton()
+                () => this.updateUi()
             )
         }
     }

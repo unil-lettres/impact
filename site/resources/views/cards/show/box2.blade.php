@@ -26,6 +26,10 @@
         @endcan
     </div>
     <div id="transcription-viewer" class="card-body">
+        <p id="empty-{{ $reference }}"
+           class="text-secondary text-center d-none p-3">
+            {{ trans('messages.card.no.transcription') }}
+        </p>
         <div id="rct-transcription"
              data='{{ json_encode(['card' => $card, 'editLabel' => trans('cards.edit'), 'saveLabel' => trans('cards.save'), 'deleteLineActionLabel' => trans('cards.delete_line_action'), 'toggleNumberActionLabel' => trans('cards.toggle_number_action')]) }}'
              reference='{{ $reference }}'

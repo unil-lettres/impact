@@ -33,7 +33,7 @@
                 @endif
             @endif
         @else
-            <p class="text-secondary text-center p-3">
+            <p class="text-secondary text-center p-4">
                 {{ trans('messages.card.media.not.selected') }}
             </p>
         @endif

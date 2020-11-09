@@ -113,6 +113,34 @@ class User extends Authenticatable
     }
 
     /**
+     * Retrieve all the users with a teacher role
+     *
+     * @return Collection
+     */
+    public static function teachers()
+    {
+        return Enrollment::where('role', EnrollmentRole::Teacher)->get()
+            ->map(function ($enrollment) {
+                return $enrollment->user;
+            })
+            ->unique();
+    }
+
+    /**
+     * Retrieve all the users with a student role
+     *
+     * @return Collection
+     */
+    public static function students()
+    {
+        return Enrollment::where('role', EnrollmentRole::Student)->get()
+            ->map(function ($enrollment) {
+                return $enrollment->user;
+            })
+            ->unique();
+    }
+
+    /**
      * Get the cards with editing rights for the user.
      *
      * @return \Illuminate\Support\Collection
@@ -177,7 +205,7 @@ class User extends Authenticatable
     /**
      * Extend the validity of the user account.
      *
-     * @param int $months
+     * @param int|null $months
      *
      * @return DateTime
      */

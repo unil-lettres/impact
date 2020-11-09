@@ -12,8 +12,8 @@
         <li class="nav-item {{ Route::is('admin.files*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('admin.files.manage') }}">{{ trans('admin.files') }}</a>
         </li>
-        <li class="nav-item">
-            <a class="nav-link disabled" href="#">{{ trans('admin.mail_managers') }}</a>
+        <li class="nav-item {{ Route::is('admin.mailing*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('admin.mailing') }}">{{ trans('admin.mailing') }}</a>
         </li>
     </ul>
 </div>

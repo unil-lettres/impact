@@ -13,7 +13,7 @@ return [
     'disable' => 'Disable the space',
     'enable' => 'Enable the space',
     'archive' => 'Archive the space',
-    'send_confirm_delete' => 'Send an email to the managers of this space in order to confirm its deletion',
+    'send_confirm_delete' => 'Send an email to the teachers of this space in order to confirm its deletion',
     'disabled' => 'Disabled',
     'delete' => 'Delete the space',
     'not_found' => 'No spaces found',

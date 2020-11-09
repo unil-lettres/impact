@@ -45,5 +45,6 @@ return [
     'folder.updated' => 'Dossier mis à jour.',
     'file.deleted' => 'Fichier supprimé.',
     'file.updated' => 'Fichier mis à jour.',
+    'mailing.sent' => 'Le message a été envoyé aux responsables.',
 
 ];

@@ -130,4 +130,10 @@ Route::group(['prefix' => 'admin',  'as' => 'admin.', 'middleware' => ['auth', '
     Route::resource('files', FileController::class);
     Route::get('/files', [FileController::class, 'manage'])
         ->name('files.manage');
+
+    // Mailing
+    Route::get('/mailing', [AdminController::class, 'mailing'])
+        ->name('mailing');
+    Route::post('/mailing/send', [AdminController::class, 'mailMailing'])
+        ->name('mailing.send');
 });

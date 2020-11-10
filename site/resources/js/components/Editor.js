@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 
 import axios from "axios";
 
-import CKEditor from '@ckeditor/ckeditor5-react';
+import { CKEditor } from '@ckeditor/ckeditor5-react';
 import BalloonEditor from '@ckeditor/ckeditor5-editor-balloon/src/ballooneditor';
 
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
@@ -21,7 +21,7 @@ import ImagePlugin from '@ckeditor/ckeditor5-image/src/image';
 import ImageCaptionPlugin from '@ckeditor/ckeditor5-image/src/imagecaption';
 import ImageStylePlugin from '@ckeditor/ckeditor5-image/src/imagestyle';
 import ImageToolbarPlugin from '@ckeditor/ckeditor5-image/src/imagetoolbar';
-import ImageUploadPlugin from '@ckeditor/ckeditor5-image/src/imageupload';
+import ImageInsertPlugin from '@ckeditor/ckeditor5-image/src/imageInsert';
 import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
 import FontColorPlugin from '@ckeditor/ckeditor5-font/src/fontcolor';
 import FontSizePlugin from '@ckeditor/ckeditor5-font/src/fontsize';
@@ -45,7 +45,7 @@ const editorConfiguration = {
         ImageCaptionPlugin,
         ImageStylePlugin,
         ImageToolbarPlugin,
-        ImageUploadPlugin,
+        ImageInsertPlugin,
         Base64UploadAdapter,
         FontColorPlugin,
         FontSizePlugin,
@@ -240,7 +240,7 @@ export default class Editor extends Component {
                     editor={ this.editor }
                     data={ this.state.html }
                     config={ this.config }
-                    onInit={ editor => {
+                    onReady={ editor => {
                         this.editor = editor
                         //console.log(Array.from( editor.ui.componentFactory.names() ));
                     } }

@@ -7,6 +7,17 @@ use App\Course;
 class CourseObserver
 {
     /**
+     * Handle the course "created" event.
+     *
+     * @param Course $course
+     * @return void
+     */
+    public function created(Course $course)
+    {
+        // TODO: add default states for this course (open & public)
+    }
+
+    /**
      * Handle the course "deleting" event.
      *
      * @param Course $course
@@ -27,6 +38,9 @@ class CourseObserver
 
             // Soft delete all related invitations
             $course->invitations()->delete();
+
+            // Soft delete all related states
+            $course->states()->delete();
         }
     }
 
@@ -57,6 +71,11 @@ class CourseObserver
         // Restore all related invitations
         foreach ($course->invitations()->withTrashed()->get() as $invitation) {
             $invitation->restore();
+        }
+
+        // Restore all related states
+        foreach ($course->states()->withTrashed()->get() as $state) {
+            $state->restore();
         }
     }
 }

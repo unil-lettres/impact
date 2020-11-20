@@ -86,6 +86,14 @@ class Card extends Model
     }
 
     /**
+     * Get the state of this card.
+     */
+    public function state()
+    {
+        return $this->hasOne('App\State', 'id', 'state_id');
+    }
+
+    /**
      * Get the editors of this card.
      *
      * @return Collection

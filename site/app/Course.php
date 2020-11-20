@@ -87,6 +87,15 @@ class Course extends Model
     }
 
     /**
+     * Get the states of this course.
+     */
+    public function states()
+    {
+        return $this->hasMany('App\State', 'course_id')
+            ->orderBy('created_at', 'desc');
+    }
+
+    /**
      * Get all the enrollments for a specific role (EnrollmentRole) of this course.
      *
      * @param string $role

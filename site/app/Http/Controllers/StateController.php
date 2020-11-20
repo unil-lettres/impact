@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
 use App\State;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -11,11 +14,24 @@ class StateController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Response
+     * @param Course $course
+     *
+     * @return Renderable
+     * @throws AuthorizationException
      */
-    public function index()
+    public function index(Course $course)
     {
-        //
+        $this->authorize('viewAny', [State::class, $course]);
+
+        $states = State::where('course_id', $course->id)
+            ->orderBy('created_at', 'desc');
+
+        return view('states.index', [
+            'states' => $states,
+            'course' => $course,
+            'breadcrumbs' => $course
+                ->breadcrumbs(true)
+        ]);
     }
 
     /**
@@ -25,7 +41,7 @@ class StateController extends Controller
      */
     public function create()
     {
-        //
+        // TODO: add controller logic
     }
 
     /**
@@ -36,7 +52,7 @@ class StateController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // TODO: add controller logic
     }
 
     /**
@@ -47,7 +63,7 @@ class StateController extends Controller
      */
     public function show(State $state)
     {
-        //
+        // TODO: add controller logic
     }
 
     /**
@@ -58,7 +74,7 @@ class StateController extends Controller
      */
     public function edit(State $state)
     {
-        //
+        // TODO: add controller logic
     }
 
     /**
@@ -70,7 +86,7 @@ class StateController extends Controller
      */
     public function update(Request $request, State $state)
     {
-        //
+        // TODO: add controller logic
     }
 
     /**
@@ -81,6 +97,6 @@ class StateController extends Controller
      */
     public function destroy(State $state)
     {
-        //
+        // TODO: add controller logic
     }
 }

@@ -19,6 +19,7 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LocalizationController;
+use App\Http\Controllers\StateController;
 use App\Http\Controllers\UserController;
 
 // Authentication routes
@@ -92,6 +93,8 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('courses.configure');
     Route::get('courses/{course}/configure/files', [FileController::class, 'index'])
         ->name('courses.configure.files');
+    Route::get('courses/{course}/configure/state', [StateController::class, 'index'])
+        ->name('courses.configure.states');
     Route::put('/courses/{course}/archive', [CourseController::class, 'archive'])
         ->name('courses.archive');
     Route::delete('/courses/{course}/disable', [CourseController::class, 'disable'])

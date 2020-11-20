@@ -21,7 +21,7 @@ class State extends Model
         }';
 
     protected $fillable = [
-        'name', 'description', 'position', 'permissions', 'course_id'
+        'name', 'description', 'position', 'permissions'
     ];
 
     protected $dates = [

@@ -36,7 +36,7 @@
         "@uppy/locales": "^1.16.10",
         "@uppy/react": "^1.10.11",
         "@uppy/xhr-upload": "^1.6.7",
-        "axios": "^0.21.0",
+        "axios": "^0.21.1",
         "bootstrap": "^4.5.3",
         "cross-env": "^7.0.3",
         "jquery": "^3.5.1",

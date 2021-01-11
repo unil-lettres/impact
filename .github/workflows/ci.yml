@@ -6,6 +6,7 @@ jobs:
 
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_WEBHOOK_URL }}
+      CI: gha
 
     services:
       mariadb:

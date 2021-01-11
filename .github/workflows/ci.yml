@@ -6,6 +6,8 @@ jobs:
 
     env:
       SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_WEBHOOK_URL }}
+      MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+      MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
       CI: gha
 
     services:
@@ -50,7 +52,7 @@ jobs:
         working-directory: ./site
         run: ./setup.sh
 
-      - name: Prepare & serve
+      - name: Serve
         working-directory: ./site
         run: |
           php artisan dusk:chrome-driver

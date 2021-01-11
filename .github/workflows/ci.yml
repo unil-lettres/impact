@@ -1,0 +1,75 @@
+name: ci
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-18.04
+
+    env:
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_WEBHOOK_URL }}
+
+    services:
+      mariadb:
+        image: mariadb:10.3
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: impact_test
+        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=5
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: PHP Setup
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '7.4'
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
+          coverage: none
+
+      - name: Cache composer
+        uses: actions/cache@v2
+        with:
+          path: ~/.cache/composer
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+      - name: Setup problem matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Mysql configuration
+        run: mysql --protocol=tcp --user=root --execute='SET GLOBAL sql_mode = "";'
+
+      - name: Build app
+        id: app-build
+        working-directory: ./site
+        run: ./setup.sh
+
+      - name: Prepare & serve
+        working-directory: ./site
+        run: |
+          php artisan dusk:chrome-driver
+          google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+          php artisan serve &
+
+      - name: Execute functional tests
+        id: app-test-functional
+        working-directory: ./site
+        run: php artisan dusk
+
+      - name: Execute unit tests
+        id: app-test-unit
+        working-directory: ./site
+        run: vendor/bin/phpunit
+
+      - name: Notify Slack
+        uses: act10ns/slack@v1
+        with:
+          status: ${{ job.status }}
+          steps: ${{ toJson(steps) }}
+          channel: '#-bot-ci'
+        if: always()

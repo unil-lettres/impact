@@ -66,6 +66,11 @@ jobs:
         working-directory: ./site
         run: vendor/bin/phpunit
 
+      - name: Expose failed tests
+        if: ${{ failure() }}
+        working-directory: ./site
+        run: php artisan email:failure
+
       - name: Notify Slack
         uses: act10ns/slack@v1
         with:

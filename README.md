@@ -1,9 +1,9 @@
 Master:
-[![Build Status](https://travis-ci.com/unil-lettres/impact.svg?token=T7puWy4nJeaNtH7s3vRB&branch=master)](https://travis-ci.com/unil-lettres/impact)
+![ci](https://github.com/unil-lettres/impact/workflows/ci/badge.svg?branch=master)
 [![CodeFactor](https://www.codefactor.io/repository/github/unil-lettres/impact/badge/master?s=dffd5ac63798e7b5abe4e58cf290ee52fbea6418)](https://www.codefactor.io/repository/github/unil-lettres/impact/overview/master)
 
 Development:
-[![Build Status](https://travis-ci.com/unil-lettres/impact.svg?token=T7puWy4nJeaNtH7s3vRB&branch=development)](https://travis-ci.com/unil-lettres/impact)
+![ci](https://github.com/unil-lettres/impact/workflows/ci/badge.svg?branch=development)
 [![CodeFactor](https://www.codefactor.io/repository/github/unil-lettres/impact/badge/development?s=dffd5ac63798e7b5abe4e58cf290ee52fbea6418)](https://www.codefactor.io/repository/github/unil-lettres/impact/overview/development)
 
 # Introduction

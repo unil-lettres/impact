@@ -46,7 +46,7 @@ class CardTest extends DuskTestCase
             $browser->assertSee('Second space')
                 ->clickLink('Second space');
 
-            $browser->assertSee('Test card second space')
+            $browser->assertSee('Test card second spaceDDDDD')
                 ->assertDontSee('Test card second space not assigned');
         });
     }

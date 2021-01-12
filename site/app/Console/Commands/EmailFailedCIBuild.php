@@ -6,7 +6,7 @@ use App\Mail\DuskFailure;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Mail;
 
-class EmailFailedTravisCIBuild extends Command
+class EmailFailedCIBuild extends Command
 {
     /**
      * The name and signature of the console command.

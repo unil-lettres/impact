@@ -10,7 +10,7 @@
     "require": {
         "php": "^7.4",
         "ext-json": "*",
-        "beberlei/assert": "^3.2",
+        "beberlei/assert": "3.3.0",
         "bugsnag/bugsnag-laravel": "^2.0",
         "facade/ignition": "^2.3.6",
         "fideloper/proxy": "^4.0",
@@ -18,7 +18,7 @@
         "laravel/framework": "^8.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
-        "php-ffmpeg/php-ffmpeg": "^0.16.0",
+        "php-ffmpeg/php-ffmpeg": "^0.17.0",
         "phpoffice/phpword": "^0.17.0"
     },
     "require-dev": {

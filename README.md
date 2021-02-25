@@ -18,11 +18,11 @@ A Laravel 8 app with react components.
 
 A working [Docker](https://docs.docker.com/engine/installation/) installation is mandatory.
 
-## Docker environment variables file
+## Docker environment file
 
 Please make sure to copy & rename the **example.env** file to **.env**.
 
-``cp dev/env.example dev/.env``
+``cp dev/example.env dev/.env``
 
 You can replace the values if needed, but the default ones should work.
 
@@ -36,7 +36,7 @@ Run the following docker commands from the project root directory.
 
 Build & run all the containers for this project.
 
-``docker-compose up -d``
+``docker-compose up``
 
 Run the setup script.
 

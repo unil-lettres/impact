@@ -20,6 +20,12 @@ jobs:
           MYSQL_DATABASE: impact_test
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=5
 
+    strategy:
+      matrix:
+        php-versions: [ '7.4','8.0' ]
+
+    name: PHP${{ matrix.php-versions }}
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -27,7 +33,7 @@ jobs:
       - name: PHP Setup
         uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: ${{ matrix.php-versions }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
           coverage: none
 

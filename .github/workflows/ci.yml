@@ -37,6 +37,10 @@ jobs:
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
           coverage: none
 
+      - name: Show PHP version
+        id: php${{ matrix.php-versions }}
+        run: php -v
+
       - name: Cache composer
         uses: actions/cache@v2
         with:

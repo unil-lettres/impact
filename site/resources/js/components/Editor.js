@@ -28,6 +28,7 @@ import FontSizePlugin from '@ckeditor/ckeditor5-font/src/fontsize';
 import TablePlugin from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbarPlugin from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import HorizontalLinePlugin from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
+import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
 
 const editorConfiguration = {
     plugins: [
@@ -52,7 +53,8 @@ const editorConfiguration = {
         TablePlugin,
         TableToolbarPlugin,
         HighlightPlugin,
-        HorizontalLinePlugin
+        HorizontalLinePlugin,
+        ParagraphPlugin
     ],
     toolbar: [
         "fontSize",
@@ -72,7 +74,7 @@ const editorConfiguration = {
         "|",
         "link",
         "mediaEmbed",
-        "imageUpload"
+        "uploadImage"
     ],
     image: {
         upload: {

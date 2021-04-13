@@ -21,7 +21,7 @@ class State extends Model
         }';
 
     protected $fillable = [
-        'name', 'description', 'position', 'permissions'
+        'name', 'description', 'position', 'permissions', 'course_id'
     ];
 
     protected $dates = [
@@ -51,5 +51,42 @@ class State extends Model
     {
         return $this->hasMany('App\Card', 'state_id')
             ->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Update the permission of a specific box
+     *
+     * @param string $box
+     * @param int $permission (App\Enums\StatePermission)
+     */
+    public function updatePermission(string $box, int $permission)
+    {
+        $permissions = $this->permissions;
+        $permissions[$box] = $permission;
+
+        $this->update([
+            'permissions' => $permissions
+        ]);
+        $this->save();
+    }
+
+    /**
+     * Update the permission of all boxes
+     *
+     * @param int $permission (App\Enums\StatePermission)
+     */
+    public function updatePermissions(int $permission)
+    {
+        $permissions = $this->permissions;
+        $permissions['box1'] = $permission;
+        $permissions['box2'] = $permission;
+        $permissions['box3'] = $permission;
+        $permissions['box4'] = $permission;
+        $permissions['box5'] = $permission;
+
+        $this->update([
+            'permissions' => $permissions
+        ]);
+        $this->save();
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Observers;
 
 use App\Course;
+use App\Enums\StatePermission;
+use App\State;
 
 class CourseObserver
 {
@@ -14,7 +16,46 @@ class CourseObserver
      */
     public function created(Course $course)
     {
-        // TODO: add default states for this course (open & public)
+        // Create the "private" state
+        State::create([
+            'name' => 'privé',
+            'description' => 'La fiche n\'est visible et éditable que par le-s rédacteur-s.',
+            'position' => 0,
+            'course_id' => $course->id
+        ]);
+
+        // Create the "open" state
+        $openState = State::create([
+            'name' => 'ouvert',
+            'description' => 'La fiche est visible par le-s rédacteur-s et le-s responsable-s, mais pas par les autres utilisateurs de cet espace.',
+            'position' => 1,
+            'course_id' => $course->id
+        ]);
+        $openState->updatePermissions(
+            StatePermission::TeachersAndEditorsCanShowAndEdit
+        );
+
+        // Create the "public" state
+        $publicState = State::create([
+            'name' => 'public',
+            'description' => 'La fiche est visible par tous les utilisateurs de cet espace.',
+            'position' => 2,
+            'course_id' => $course->id
+        ]);
+        $publicState->updatePermissions(
+            StatePermission::AllCanShowTeachersAndEditorsCanEdit
+        );
+
+        // Create the "archived" state
+        $privateState = State::create([
+            'name' => 'archivé',
+            'description' => 'La fiche n\'est plus éditable par le-s rédacteur-s.',
+            'position' => 1000,
+            'course_id' => $course->id
+        ]);
+        $privateState->updatePermissions(
+            StatePermission::TeachersCanShowAndEditEditorsCanShow
+        );
     }
 
     /**

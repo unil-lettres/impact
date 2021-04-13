@@ -5,11 +5,10 @@ namespace App\Enums;
 final class StatePermission
 {
     const None = 0;
-    const EditorsCanShow = 1; // Private State
-    const TeachersCanShowAndEditEditorsCanShow = 2; // Archived state
-    const EditorsCanShowAndEdit = 3;
-    const TeachersAndEditorsCanShowAndEdit = 4;
-    const AllCanShowTeachersAndEditorsCanEdit = 5;
-    const AllCanShowTeachersCanEdit = 6;
-    const TeachersCanShowAndEdit = 7;
+    const TeachersCanShowAndEditEditorsCanShow = 1; // "Archived" state
+    const EditorsCanShowAndEdit = 2; // "Private" State & default state
+    const TeachersAndEditorsCanShowAndEdit = 3; // "Open" state
+    const AllCanShowTeachersAndEditorsCanEdit = 4; // "Public" state
+    const AllCanShowTeachersCanEdit = 5;
+    const TeachersCanShowAndEdit = 6;
 }

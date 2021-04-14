@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Http\Requests\IndexState;
 use App\State;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
@@ -14,22 +15,29 @@ class StateController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param Course $course
+     * @param IndexState $request
+     * @param int $id
      *
      * @return Renderable
      * @throws AuthorizationException
      */
-    public function index(Course $course)
+    public function index(IndexState $request, int $id): Renderable
     {
+        $course = Course::find($id);
+
         $this->authorize('viewAny', [State::class, $course]);
 
         $states = State::where('course_id', $course->id)
             ->orderBy('position', 'asc')
             ->get();
 
+        $activeState = $request->input('state') ?
+            $states->where('id', $request->input('state'))->first() :
+            $states->firstWhere('read_only', false);
+
         return view('states.index', [
             'states' => $states,
-            'activeState' => $states->firstWhere('read_only', false),
+            'activeState' => $activeState,
             'course' => $course,
             'breadcrumbs' => $course
                 ->breadcrumbs(true)

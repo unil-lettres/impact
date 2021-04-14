@@ -12,7 +12,6 @@ class State extends Model
 
     const PERMISSIONS = '{
             "version": 1,
-            "teachers_only": false,
             "box1": '. StatePermission::EditorsCanShowAndEdit .',
             "box2": '. StatePermission::EditorsCanShowAndEdit .',
             "box3": '. StatePermission::EditorsCanShowAndEdit .',
@@ -21,7 +20,7 @@ class State extends Model
         }';
 
     protected $fillable = [
-        'name', 'description', 'position', 'permissions', 'course_id', 'read_only'
+        'name', 'description', 'position', 'permissions', 'course_id', 'read_only', 'teachers_only'
     ];
 
     protected $dates = [

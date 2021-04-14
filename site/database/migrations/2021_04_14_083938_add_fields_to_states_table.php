@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddReadOnlyFieldToStatesTable extends Migration
+class AddFieldsToStatesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -15,6 +15,7 @@ class AddReadOnlyFieldToStatesTable extends Migration
     {
         Schema::table('states', function (Blueprint $table) {
             $table->boolean('read_only')->after('position')->default(false);
+            $table->boolean('teachers_only')->after('position')->default(false);
         });
     }
 
@@ -27,6 +28,7 @@ class AddReadOnlyFieldToStatesTable extends Migration
     {
         Schema::table('states', function (Blueprint $table) {
             $table->dropColumn('read_only');
+            $table->dropColumn('teachers_only');
         });
     }
 }

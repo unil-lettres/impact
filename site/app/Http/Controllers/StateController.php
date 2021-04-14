@@ -24,10 +24,12 @@ class StateController extends Controller
         $this->authorize('viewAny', [State::class, $course]);
 
         $states = State::where('course_id', $course->id)
-            ->orderBy('created_at', 'desc');
+            ->orderBy('position', 'asc')
+            ->get();
 
         return view('states.index', [
             'states' => $states,
+            'activeState' => $states->firstWhere('read_only', false),
             'course' => $course,
             'breadcrumbs' => $course
                 ->breadcrumbs(true)

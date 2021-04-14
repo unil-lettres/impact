@@ -21,6 +21,7 @@ class CourseObserver
             'name' => 'privé',
             'description' => 'La fiche n\'est visible et éditable que par le-s rédacteur-s.',
             'position' => 0,
+            'read_only' => true,
             'course_id' => $course->id
         ]);
 
@@ -51,6 +52,7 @@ class CourseObserver
             'name' => 'archivé',
             'description' => 'La fiche n\'est plus éditable par le-s rédacteur-s.',
             'position' => 1000,
+            'read_only' => true,
             'course_id' => $course->id
         ]);
         $privateState->updatePermissions(

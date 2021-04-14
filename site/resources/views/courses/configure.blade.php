@@ -69,7 +69,7 @@
                     </div>
                     <div class="card-body">
                         <p>{{ trans('courses.tags.help') }}</p>
-                        // TODO: add tags
+                        <!-- TODO: add tags -->
                     </div>
                 </div>
                 <div class="card">
@@ -80,7 +80,7 @@
                     </div>
                     <div class="card-body">
                         <p>{{ trans('courses.transcription.type.help') }}</p>
-                        // TODO: add transcription type
+                        <!-- TODO: add transcription type -->
                     </div>
                 </div>
             </div>

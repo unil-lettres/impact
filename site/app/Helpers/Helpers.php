@@ -7,6 +7,7 @@ use App\Course;
 use App\Enums\CourseType;
 use App\Enums\FileStatus;
 use App\Enums\FileType;
+use App\Enums\StatePermission;
 use App\Enums\UserType;
 use App\File;
 use App\User;
@@ -370,5 +371,32 @@ class Helpers {
         }
 
         return $options[$box]['hidden'];
+    }
+
+    /**
+     * Return the permission label
+     *
+     * @param int $permission (App\Enums\StatePermission)
+     * @return string
+     */
+    public static function permissionLabel(int $permission): string
+    {
+        switch ($permission) {
+            case StatePermission::TeachersCanShowAndEditEditorsCanShow:
+                return 'Visible par le(s) rédacteur(s) et les responsables, modifiable par les responsables seulement';
+            case StatePermission::EditorsCanShowAndEdit:
+                return 'Visible et modifiable par le(s) rédacteur(s) seulement';
+            case StatePermission::TeachersAndEditorsCanShowAndEdit:
+                return 'Visible et modifiable par le(s) rédacteur(s) et les responsables';
+            case StatePermission::AllCanShowTeachersAndEditorsCanEdit:
+                return 'Visible par tous et modifiable par le(s) rédacteur(s) et les responsables';
+            case StatePermission::AllCanShowTeachersCanEdit:
+                return 'Visible par tous et modifiable par les responsables seulement';
+            case StatePermission::TeachersCanShowAndEdit:
+                return 'Visible et modifiable par les responsables seulement';
+            case StatePermission::None:
+            default:
+                return 'No permission defined';
+        }
     }
 }

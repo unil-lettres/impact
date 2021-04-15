@@ -385,20 +385,20 @@ class Helpers {
     {
         switch ($permission) {
             case StatePermission::TeachersCanShowAndEditEditorsCanShow:
-                return 'Visible par le(s) rédacteur(s) et les responsables, modifiable par les responsables seulement';
+                return trans('states.permission1');
             case StatePermission::EditorsCanShowAndEdit:
-                return 'Visible et modifiable par le(s) rédacteur(s) seulement';
+                return trans('states.permission2');
             case StatePermission::TeachersAndEditorsCanShowAndEdit:
-                return 'Visible et modifiable par le(s) rédacteur(s) et les responsables';
+                return trans('states.permission3');
             case StatePermission::AllCanShowTeachersAndEditorsCanEdit:
-                return 'Visible par tous et modifiable par le(s) rédacteur(s) et les responsables';
+                return trans('states.permission4');
             case StatePermission::AllCanShowTeachersCanEdit:
-                return 'Visible par tous et modifiable par les responsables seulement';
+                return trans('states.permission5');
             case StatePermission::TeachersCanShowAndEdit:
-                return 'Visible et modifiable par les responsables seulement';
+                return trans('states.permission6');
             case StatePermission::None:
             default:
-                return 'No permission defined';
+                return trans('states.permission0');
         }
     }
 

@@ -12,5 +12,12 @@ return [
     'archived' => 'archivé',
     'archived_description' => 'La fiche n\'est plus éditable par le-s rédacteur-s.',
     'new_state' => 'nouvel état',
+    'permission0' => 'Aucune permission définie',
+    'permission1' => 'Visible par le(s) rédacteur(s) et le(s) responsable(s), modifiable par le(s) responsable(s) seulement',
+    'permission2' => 'Visible et modifiable par le(s) rédacteur(s) seulement',
+    'permission3' => 'Visible et modifiable par le(s) rédacteur(s) et le(s) responsable(s)',
+    'permission4' => 'Visible par tous, modifiable par le(s) rédacteur(s) et le(s) responsable(s)',
+    'permission5' => 'Visible par tous, modifiable par les responsable(s) seulement',
+    'permission6' => 'Visible et modifiable par le(s) responsable(s) seulement',
 
 ];

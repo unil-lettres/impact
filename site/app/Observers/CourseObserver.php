@@ -49,14 +49,14 @@ class CourseObserver
         );
 
         // Create the "archived" state
-        $privateState = State::create([
+        $archivedState = State::create([
             'name' => trans('states.archived'),
             'description' => trans('states.archived_description'),
             'position' => 1000,
             'type' => StateType::Archived,
             'course_id' => $course->id
         ]);
-        $privateState->updatePermissions(
+        $archivedState->updatePermissions(
             StatePermission::TeachersCanShowAndEditEditorsCanShow
         );
     }

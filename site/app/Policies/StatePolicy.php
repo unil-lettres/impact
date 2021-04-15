@@ -12,6 +12,23 @@ class StatePolicy
     use HandlesAuthorization;
 
     /**
+     * Authorize all actions for admins
+     *
+     * @param $user
+     * @param $ability
+     *
+     * @return bool
+     */
+    public function before($user, $ability)
+    {
+        if ($user->admin) {
+            return true;
+        }
+
+        return null;
+    }
+
+    /**
      * Determine whether the user can view any models.
      *
      * @param User $user
@@ -21,10 +38,6 @@ class StatePolicy
      */
     public function viewAny(User $user, Course $course)
     {
-        if ($user->admin) {
-            return true;
-        }
-
         // The listing of the states cannot be viewed if not within a course
         if (!$course) {
             return false;
@@ -47,7 +60,22 @@ class StatePolicy
      */
     public function view(User $user, State $state)
     {
-        // TODO: add policy logic
+        // A state cannot be viewed if not within a course
+        if (!$state->course) {
+            return false;
+        }
+
+        // Teachers of the course can view a state
+        if ($user->isTeacher($state->course)) {
+            return true;
+        }
+
+        // Editors of the course can view a non teacher_only state
+        if ($user->isEditor($state->course) && !$state->teachers_only) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -56,9 +84,19 @@ class StatePolicy
      * @param User $user
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user, Course $course)
     {
-        // TODO: add policy logic
+        // A state cannot be created if not within a course
+        if (!$course) {
+            return false;
+        }
+
+        // Only the teachers of the course can create states
+        if ($user->isTeacher($course)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

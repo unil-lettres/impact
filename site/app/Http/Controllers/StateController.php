@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\Http\Requests\IndexState;
+use App\Http\Requests\StoreState;
 use App\State;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -45,24 +47,34 @@ class StateController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return Response
-     */
-    public function create()
-    {
-        // TODO: add controller logic
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
-     * @param Request $request
-     * @return Response
+     * @param StoreState $request
+     * @param int $id
+     *
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function store(Request $request)
+    public function store(StoreState $request, int $id)
     {
-        // TODO: add controller logic
+        $course = Course::find($id);
+
+        $this->authorize('create', [State::class, $course]);
+
+        $positionMax = State::where('course_id', $course->id)
+            ->where('read_only', false)
+            ->max('position');
+
+        $state = State::create([
+            'name' => trans('states.new_state'),
+            'position' => $positionMax + 1,
+            'read_only' => false,
+            'course_id' => $course->id
+        ]);
+
+        return redirect()
+            ->route('courses.configure.states', [$course->id, 'state' => $state->id])
+            ->with('success', trans('messages.state.created'));
     }
 
     /**

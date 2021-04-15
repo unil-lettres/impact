@@ -6,7 +6,7 @@
         <li class="nav-item {{ Route::is('courses.configure.files*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('courses.configure.files', $course->id) }}">{{ trans('files.files') }}</a>
         </li>
-        <li class="nav-item {{ Route::is('courses.configure.state*') ? 'active' : '' }}">
+        <li class="nav-item {{ Route::is('courses.configure.states*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('courses.configure.states', $course->id) }}">{{ trans('states.states') }}</a>
         </li>
     </ul>

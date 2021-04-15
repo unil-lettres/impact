@@ -93,8 +93,10 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('courses.configure');
     Route::get('courses/{course}/configure/files', [FileController::class, 'index'])
         ->name('courses.configure.files');
-    Route::get('courses/{course}/configure/state', [StateController::class, 'index'])
+    Route::get('courses/{course}/configure/states', [StateController::class, 'index'])
         ->name('courses.configure.states');
+    Route::post('courses/{course}/create/state', [StateController::class, 'store'])
+        ->name('courses.create.state');
     Route::put('/courses/{course}/archive', [CourseController::class, 'archive'])
         ->name('courses.archive');
     Route::delete('/courses/{course}/disable', [CourseController::class, 'disable'])

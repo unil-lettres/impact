@@ -42,7 +42,7 @@
                             <ul>
                                 @foreach ($states as $state)
                                     @can('view', [\App\State::class, $state])
-                                        @if ($state->read_only)
+                                        @if (Helpers::isStateReadOnly($state))
                                             <li class="text-muted">
                                                 {{ $state->name }}
                                             </li>

@@ -20,7 +20,7 @@ class State extends Model
         }';
 
     protected $fillable = [
-        'name', 'description', 'position', 'permissions', 'course_id', 'read_only', 'teachers_only'
+        'name', 'description', 'position', 'permissions', 'course_id', 'type', 'teachers_only'
     ];
 
     protected $dates = [

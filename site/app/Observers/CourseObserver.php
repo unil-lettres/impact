@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\Course;
 use App\Enums\StatePermission;
+use App\Enums\StateType;
 use App\State;
 
 class CourseObserver
@@ -18,17 +19,17 @@ class CourseObserver
     {
         // Create the "private" state
         State::create([
-            'name' => 'privé',
-            'description' => 'La fiche n\'est visible et éditable que par le-s rédacteur-s.',
+            'name' => trans('states.private'),
+            'description' => trans('states.private_description'),
             'position' => 0,
-            'read_only' => true,
+            'type' => StateType::Private,
             'course_id' => $course->id
         ]);
 
         // Create the "open" state
         $openState = State::create([
-            'name' => 'ouvert',
-            'description' => 'La fiche est visible par le-s rédacteur-s et le-s responsable-s, mais pas par les autres utilisateurs de cet espace.',
+            'name' => trans('states.open'),
+            'description' => trans('states.open_description'),
             'position' => 1,
             'course_id' => $course->id
         ]);
@@ -38,8 +39,8 @@ class CourseObserver
 
         // Create the "public" state
         $publicState = State::create([
-            'name' => 'public',
-            'description' => 'La fiche est visible par tous les utilisateurs de cet espace.',
+            'name' => trans('states.public'),
+            'description' => trans('states.public_description'),
             'position' => 2,
             'course_id' => $course->id
         ]);
@@ -49,10 +50,10 @@ class CourseObserver
 
         // Create the "archived" state
         $privateState = State::create([
-            'name' => 'archivé',
-            'description' => 'La fiche n\'est plus éditable par le-s rédacteur-s.',
+            'name' => trans('states.archived'),
+            'description' => trans('states.archived_description'),
             'position' => 1000,
-            'read_only' => true,
+            'type' => StateType::Archived,
             'course_id' => $course->id
         ]);
         $privateState->updatePermissions(

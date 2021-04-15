@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Enums\StateType;
 use App\Http\Requests\IndexState;
 use App\Http\Requests\StoreState;
 use App\State;
@@ -35,7 +36,7 @@ class StateController extends Controller
 
         $activeState = $request->input('state') ?
             $states->where('id', $request->input('state'))->first() :
-            $states->firstWhere('read_only', false);
+            $states->firstWhere('type', StateType::Custom);
 
         return view('states.index', [
             'states' => $states,
@@ -62,13 +63,12 @@ class StateController extends Controller
         $this->authorize('create', [State::class, $course]);
 
         $positionMax = State::where('course_id', $course->id)
-            ->where('read_only', false)
+            ->where('type', StateType::Custom)
             ->max('position');
 
         $state = State::create([
             'name' => trans('states.new_state'),
             'position' => $positionMax + 1,
-            'read_only' => false,
             'course_id' => $course->id
         ]);
 

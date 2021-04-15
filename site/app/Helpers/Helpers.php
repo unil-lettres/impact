@@ -8,8 +8,10 @@ use App\Enums\CourseType;
 use App\Enums\FileStatus;
 use App\Enums\FileType;
 use App\Enums\StatePermission;
+use App\Enums\StateType;
 use App\Enums\UserType;
 use App\File;
+use App\State;
 use App\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
@@ -397,6 +399,24 @@ class Helpers {
             case StatePermission::None:
             default:
                 return 'No permission defined';
+        }
+    }
+
+    /**
+     * Return whether the state type is considered read only or not
+     *
+     * @param State $state
+     * @return boolean
+     */
+    public static function isStateReadOnly(State $state): bool
+    {
+        switch ($state->type) {
+            case StateType::Archived:
+            case StateType::Private:
+                return true;
+            case StateType::Custom:
+            default:
+                return false;
         }
     }
 }

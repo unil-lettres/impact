@@ -159,8 +159,8 @@ class CardController extends Controller
         $options = $card->options;
         $options['box1']['hidden'] = (bool)$request->get('box1-hidden');
         $options['box1']['link'] = $request->get('box1-link');
-        $options['box1']['start'] = $request->get('box1-start');
-        $options['box1']['end'] = $request->get('box1-end');
+        $options['box1']['start'] = (int)$request->get('box1-start');
+        $options['box1']['end'] = (int)$request->get('box1-end');
         $options['box2']['hidden'] = (bool)$request->get('box2-hidden');
         $options['box2']['sync'] = (bool)$request->get('box2-sync');
         $options['box3']['hidden'] = (bool)$request->get('box3-hidden');

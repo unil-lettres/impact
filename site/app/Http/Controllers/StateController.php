@@ -96,7 +96,7 @@ class StateController extends Controller
         $state->update([
             'name' => $request->get('name'),
             'description' => $request->get('description'),
-            'teachers_only' => $request->get('teachers_only') ? true : false
+            'teachers_only' => (bool)$request->get('teachers_only')
         ]);
         $state->save();
 

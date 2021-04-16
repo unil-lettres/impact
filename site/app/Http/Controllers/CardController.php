@@ -157,18 +157,18 @@ class CardController extends Controller
         $this->authorize('update', $card);
 
         $options = $card->options;
-        $options['box1']['hidden'] = $request->get('box1-hidden') ? true : false;
+        $options['box1']['hidden'] = (bool)$request->get('box1-hidden');
         $options['box1']['link'] = $request->get('box1-link');
         $options['box1']['start'] = $request->get('box1-start');
         $options['box1']['end'] = $request->get('box1-end');
-        $options['box2']['hidden'] = $request->get('box2-hidden') ? true : false;
-        $options['box2']['sync'] = $request->get('box2-sync') ? true : false;
-        $options['box3']['hidden'] = $request->get('box3-hidden') ? true : false;
+        $options['box2']['hidden'] = (bool)$request->get('box2-hidden');
+        $options['box2']['sync'] = (bool)$request->get('box2-sync');
+        $options['box3']['hidden'] = (bool)$request->get('box3-hidden');
         $options['box3']['title'] = $request->get('box3-title');
-        $options['box4']['hidden'] = $request->get('box4-hidden') ? true : false;
+        $options['box4']['hidden'] = (bool)$request->get('box4-hidden');
         $options['box4']['title'] = $request->get('box4-title');
-        $options['box5']['hidden'] = $request->get('box5-hidden') ? true : false;
-        $options['emails'] = $request->get('emails') ? true : false;
+        $options['box5']['hidden'] = (bool)$request->get('box5-hidden');
+        $options['emails'] = (bool)$request->get('emails');
 
         $card->update([
             'title' => $request->get('title'),

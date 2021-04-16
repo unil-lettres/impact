@@ -227,9 +227,9 @@ class UserController extends Controller
 
         $user->name = $validated['name'];
 
-        // Allow change of the user admin parameter only the current user is already an admin
+        // Allow change of the user admin parameter only if the current user is already an admin
         if(auth()->user()->admin) {
-            $user->admin = $request->input('admin') ? true : false;
+            $user->admin = (bool)$request->input('admin');
         }
 
         $user->save();

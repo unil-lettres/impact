@@ -141,11 +141,61 @@
                                     </span>
                                 </div>
                                 <div class="card-body">
-                                    <div>box1: {{ Helpers::permissionLabel($activeState->permissions['box1']) }}</div>
-                                    <div>box2: {{ Helpers::permissionLabel($activeState->permissions['box2']) }}</div>
-                                    <div>box3: {{ Helpers::permissionLabel($activeState->permissions['box3']) }}</div>
-                                    <div>box4: {{ Helpers::permissionLabel($activeState->permissions['box4']) }}</div>
-                                    <div>box5: {{ Helpers::permissionLabel($activeState->permissions['box5']) }}</div>
+                                    <div class="form-group row">
+                                        <!-- TODO: add translation -->
+                                        <label for="box1" class="col-md-2 col-form-label">Box1</label>
+                                        <div class="col-md-10">
+                                            <select id="box1"
+                                                    name="box1"
+                                                    class="form-control" >
+                                                @include('states.include.permissions', ['box' => 'box1'])
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <!-- TODO: add translation -->
+                                        <label for="box2" class="col-md-2 col-form-label">Box2</label>
+                                        <div class="col-md-10">
+                                            <select id="box2"
+                                                    name="box2"
+                                                    class="form-control" >
+                                                @include('states.include.permissions', ['box' => 'box2'])
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <!-- TODO: add translation -->
+                                        <label for="box3" class="col-md-2 col-form-label">Box3</label>
+                                        <div class="col-md-10">
+                                            <select id="box3"
+                                                    name="box3"
+                                                    class="form-control" >
+                                                @include('states.include.permissions', ['box' => 'box3'])
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <!-- TODO: add translation -->
+                                        <label for="box4" class="col-md-2 col-form-label">Box4</label>
+                                        <div class="col-md-10">
+                                            <select id="box4"
+                                                    name="box4"
+                                                    class="form-control" >
+                                                @include('states.include.permissions', ['box' => 'box4'])
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group row">
+                                        <!-- TODO: add translation -->
+                                        <label for="box5" class="col-md-2 col-form-label">Box5</label>
+                                        <div class="col-md-10">
+                                            <select id="box5"
+                                                    name="box5"
+                                                    class="form-control" >
+                                                @include('states.include.permissions', ['box' => 'box5'])
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card">

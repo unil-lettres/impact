@@ -93,10 +93,18 @@ class StateController extends Controller
 
         $this->authorize('update', $state);
 
+        $permissions = $state->permissions;
+        $permissions['box1'] = $request->get('box1');
+        $permissions['box2'] = $request->get('box2');
+        $permissions['box3'] = $request->get('box3');
+        $permissions['box4'] = $request->get('box4');
+        $permissions['box5'] = $request->get('box5');
+
         $state->update([
             'name' => $request->get('name'),
             'description' => $request->get('description'),
-            'teachers_only' => (bool)$request->get('teachers_only')
+            'teachers_only' => (bool)$request->get('teachers_only'),
+            'permissions' => $permissions
         ]);
         $state->save();
 

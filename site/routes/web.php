@@ -91,16 +91,18 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('courses.show');
     Route::get('courses/{course}/configure', [CourseController::class, 'configure'])
         ->name('courses.configure');
+    Route::put('/courses/{course}/archive', [CourseController::class, 'archive'])
+        ->name('courses.archive');
+    Route::delete('/courses/{course}/disable', [CourseController::class, 'disable'])
+        ->name('courses.disable');
     Route::get('courses/{course}/configure/files', [FileController::class, 'index'])
         ->name('courses.configure.files');
     Route::get('courses/{course}/configure/states', [StateController::class, 'index'])
         ->name('courses.configure.states');
     Route::post('courses/{course}/create/state', [StateController::class, 'store'])
         ->name('courses.create.state');
-    Route::put('/courses/{course}/archive', [CourseController::class, 'archive'])
-        ->name('courses.archive');
-    Route::delete('/courses/{course}/disable', [CourseController::class, 'disable'])
-        ->name('courses.disable');
+    Route::put('courses/{course}/update/state/{state}', [StateController::class, 'update'])
+        ->name('courses.update.state');
 });
 
 // Administration routes

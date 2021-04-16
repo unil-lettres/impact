@@ -56,6 +56,7 @@ class StatePolicy
      *
      * @param User $user
      * @param State $state
+     *
      * @return mixed
      */
     public function view(User $user, State $state)
@@ -82,6 +83,8 @@ class StatePolicy
      * Determine whether the user can create models.
      *
      * @param User $user
+     * @param Course $course
+     *
      * @return mixed
      */
     public function create(User $user, Course $course)
@@ -104,11 +107,22 @@ class StatePolicy
      *
      * @param User $user
      * @param State $state
+     *
      * @return mixed
      */
     public function update(User $user, State $state)
     {
-        // TODO: add policy logic
+        // A state cannot be updated if not within a course
+        if (!$state->course) {
+            return false;
+        }
+
+        // Only the teachers of the course can update states
+        if ($user->isTeacher($state->course)) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
@@ -116,6 +130,7 @@ class StatePolicy
      *
      * @param User $user
      * @param State $state
+     *
      * @return mixed
      */
     public function delete(User $user, State $state)
@@ -128,6 +143,7 @@ class StatePolicy
      *
      * @param User $user
      * @param State $state
+     *
      * @return mixed
      */
     public function restore(User $user, State $state)
@@ -140,6 +156,7 @@ class StatePolicy
      *
      * @param User $user
      * @param State $state
+     *
      * @return mixed
      */
     public function forceDelete(User $user, State $state)

@@ -6,11 +6,11 @@ use App\Course;
 use App\Enums\StateType;
 use App\Http\Requests\IndexState;
 use App\Http\Requests\StoreState;
+use App\Http\Requests\UpdateState;
 use App\State;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class StateController extends Controller
@@ -56,7 +56,7 @@ class StateController extends Controller
      * @return RedirectResponse
      * @throws AuthorizationException
      */
-    public function store(StoreState $request, int $id)
+    public function store(StoreState $request, int $id): RedirectResponse
     {
         $course = Course::find($id);
 
@@ -78,37 +78,31 @@ class StateController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     * @param State $state
-     * @return Response
-     */
-    public function show(State $state)
-    {
-        // TODO: add controller logic
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param State $state
-     * @return Response
-     */
-    public function edit(State $state)
-    {
-        // TODO: add controller logic
-    }
-
-    /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param State $state
-     * @return Response
+     * @param UpdateState $request
+     * @param int $course_id
+     * @param int $state_id
+     *
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function update(Request $request, State $state)
+    public function update(UpdateState $request, int $course_id, int $state_id): RedirectResponse
     {
-        // TODO: add controller logic
+        $state = State::find($state_id);
+
+        $this->authorize('update', $state);
+
+        $state->update([
+            'name' => $request->get('name'),
+            'description' => $request->get('description'),
+            'teachers_only' => $request->get('teachers_only') ? true : false
+        ]);
+        $state->save();
+
+        return redirect()
+            ->route('courses.configure.states', [$course_id, 'state' => $state->id])
+            ->with('success', trans('messages.state.updated'));
     }
 
     /**

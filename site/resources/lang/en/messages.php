@@ -47,5 +47,6 @@ return [
     'file.updated' => 'File updated.',
     'mailing.sent' => 'The message has been sent to the teachers.',
     'state.created' => 'New state created.',
+    'state.updated' => 'State updated.',
 
 ];

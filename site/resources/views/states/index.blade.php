@@ -20,8 +20,7 @@
                             @csrf
                             <button type="submit"
                                     class="btn btn-primary">
-                                <!-- TODO: add translation -->
-                                Ajouter un état
+                                {{ trans('states.add') }}
                             </button>
                         </form>
                     </span>
@@ -43,8 +42,7 @@
                     <div class="card">
                         <div class="card-header">
                             <span class="title">
-                                <!-- TODO: add translation -->
-                                États
+                                {{ trans('states.states') }}
                             </span>
                         </div>
                         <div class="card-body">
@@ -78,15 +76,13 @@
                             <div class="card">
                                 <div class="card-header">
                                     <span class="title">
-                                        <!-- TODO: add translation -->
-                                        Général
+                                        {{ trans('states.general') }}
                                     </span>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group row">
                                         <label for="name" class="col-md-3 col-form-label">
-                                            <!-- TODO: add translation -->
-                                            Nom
+                                            {{ trans('states.name') }}
                                         </label>
                                         <div class="col-md-9">
                                             <input id="name"
@@ -99,8 +95,7 @@
                                     </div>
                                     <div class="form-group row">
                                         <label for="description" class="col-md-3 col-form-label">
-                                            <!-- TODO: add translation -->
-                                            Description
+                                            {{ trans('states.description') }}
                                         </label>
                                         <div class="col-md-9">
                                             <textarea class="form-control"
@@ -111,13 +106,11 @@
                                     </div>
                                     <div class="form-group row">
                                         <label for="teachers_only" class="col-md-3 col-form-label">
-                                            <!-- TODO: add translation -->
-                                            Responsables uniquement
+                                            {{ trans('states.teachers_only') }}
                                             <i class="far fa-question-circle"
                                                data-toggle="tooltip"
                                                data-placement="top"
-                                               title="Seuls les responsables peuvent choisir cet état.">
-                                                <!-- TODO: add translation -->
+                                               title="{{ trans('states.teachers_only_help') }}">
                                             </i>
                                         </label>
                                         <div class="col-md-9">
@@ -136,14 +129,12 @@
                             <div class="card">
                                 <div class="card-header">
                                     <span class="title">
-                                        <!-- TODO: add translation -->
-                                        Permissions
+                                        {{ trans('states.permissions') }}
                                     </span>
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group row">
-                                        <!-- TODO: add translation -->
-                                        <label for="box1" class="col-md-2 col-form-label">Box1</label>
+                                        <label for="box1" class="col-md-2 col-form-label">{{ trans('states.box1') }}</label>
                                         <div class="col-md-10">
                                             <select id="box1"
                                                     name="box1"
@@ -153,8 +144,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <!-- TODO: add translation -->
-                                        <label for="box2" class="col-md-2 col-form-label">Box2</label>
+                                        <label for="box2" class="col-md-2 col-form-label">{{ trans('states.box2') }}</label>
                                         <div class="col-md-10">
                                             <select id="box2"
                                                     name="box2"
@@ -164,8 +154,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <!-- TODO: add translation -->
-                                        <label for="box3" class="col-md-2 col-form-label">Box3</label>
+                                        <label for="box3" class="col-md-2 col-form-label">{{ trans('states.box3') }}</label>
                                         <div class="col-md-10">
                                             <select id="box3"
                                                     name="box3"
@@ -175,8 +164,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <!-- TODO: add translation -->
-                                        <label for="box4" class="col-md-2 col-form-label">Box4</label>
+                                        <label for="box4" class="col-md-2 col-form-label">{{ trans('states.box4') }}</label>
                                         <div class="col-md-10">
                                             <select id="box4"
                                                     name="box4"
@@ -186,8 +174,7 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <!-- TODO: add translation -->
-                                        <label for="box5" class="col-md-2 col-form-label">Box5</label>
+                                        <label for="box5" class="col-md-2 col-form-label">{{ trans('states.box5') }}</label>
                                         <div class="col-md-10">
                                             <select id="box5"
                                                     name="box5"
@@ -201,8 +188,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <span class="title">
-                                        <!-- TODO: add translation -->
-                                        Action
+                                        {{ trans('states.action') }}
                                     </span>
                                 </div>
                                 <div class="card-body">
@@ -213,8 +199,7 @@
                             @can('update', $activeState)
                                 <button type="submit"
                                         class="btn btn-primary">
-                                    <!-- TODO: add translation -->
-                                    Mettre à jour l'état
+                                    {{ trans('states.update') }}
                                 </button>
                             @endcan
                         </form>

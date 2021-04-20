@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Course;
 use App\Enums\StateType;
+use App\Http\Requests\DestroyState;
 use App\Http\Requests\IndexState;
 use App\Http\Requests\StoreState;
 use App\Http\Requests\UpdateState;
@@ -11,7 +12,6 @@ use App\State;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Response;
 
 class StateController extends Controller
 {
@@ -116,11 +116,24 @@ class StateController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param State $state
-     * @return Response
+     * @param DestroyState $request
+     * @param int $course_id
+     * @param int $state_id
+     *
+     * @return RedirectResponse
+     * @throws AuthorizationException
      */
-    public function destroy(State $state)
+    public function destroy(DestroyState $request, int $course_id, int $state_id)
     {
-        // TODO: add controller logic
+        $state = State::find($state_id);
+
+        $this->authorize('forceDelete', $state);
+
+        // Delete the record
+        $state->forceDelete();
+
+        return redirect()
+            ->route('courses.configure.states', $course_id)
+            ->with('success', trans('messages.state.deleted'));
     }
 }

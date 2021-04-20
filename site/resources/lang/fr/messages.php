@@ -48,5 +48,6 @@ return [
     'mailing.sent' => 'Le message a été envoyé aux responsables.',
     'state.created' => 'Nouvel état créé.',
     'state.updated' => 'État mis à jour.',
+    'state.deleted' => 'État supprimé.',
 
 ];

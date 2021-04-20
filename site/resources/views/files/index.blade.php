@@ -67,19 +67,19 @@
                                                 @endif
                                                 @can('forceDelete', $file)
                                                     <span>
-                                                    <form class="with-delete-confirm" method="post"
-                                                          action="{{ route('files.destroy', $file->id) }}">
-                                                        @method('DELETE')
-                                                        @csrf
-                                                        <button type="submit"
-                                                                class="btn btn-danger"
-                                                                data-toggle="tooltip"
-                                                                data-placement="top"
-                                                                title="{{ trans('files.delete') }}">
-                                                            <i class="far fa-trash-alt"></i>
-                                                        </button>
-                                                    </form>
-                                                </span>
+                                                        <form class="with-delete-confirm" method="post"
+                                                              action="{{ route('files.destroy', $file->id) }}">
+                                                            @method('DELETE')
+                                                            @csrf
+                                                            <button type="submit"
+                                                                    class="btn btn-danger"
+                                                                    data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="{{ trans('files.delete') }}">
+                                                                <i class="far fa-trash-alt"></i>
+                                                            </button>
+                                                        </form>
+                                                    </span>
                                                 @endcan
                                             </td>
                                         </tr>

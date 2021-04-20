@@ -126,32 +126,6 @@ class StatePolicy
     }
 
     /**
-     * Determine whether the user can delete the model.
-     *
-     * @param User $user
-     * @param State $state
-     *
-     * @return mixed
-     */
-    public function delete(User $user, State $state)
-    {
-        // TODO: add policy logic
-    }
-
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param User $user
-     * @param State $state
-     *
-     * @return mixed
-     */
-    public function restore(User $user, State $state)
-    {
-        // TODO: add policy logic
-    }
-
-    /**
      * Determine whether the user can permanently delete the model.
      *
      * @param User $user
@@ -161,6 +135,16 @@ class StatePolicy
      */
     public function forceDelete(User $user, State $state)
     {
-        // TODO: add policy logic
+        // A state cannot be deleted if not within a course
+        if (!$state->course) {
+            return false;
+        }
+
+        // Only the teachers of the course can delete states
+        if ($user->isTeacher($state->course)) {
+            return true;
+        }
+
+        return false;
     }
 }

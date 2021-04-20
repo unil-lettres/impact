@@ -99,10 +99,12 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('courses.configure.files');
     Route::get('courses/{course}/configure/states', [StateController::class, 'index'])
         ->name('courses.configure.states');
-    Route::post('courses/{course}/create/state', [StateController::class, 'store'])
+    Route::post('courses/{course}/state', [StateController::class, 'store'])
         ->name('courses.create.state');
-    Route::put('courses/{course}/update/state/{state}', [StateController::class, 'update'])
+    Route::put('courses/{course}/state/{state}', [StateController::class, 'update'])
         ->name('courses.update.state');
+    Route::delete('courses/{course}/state/{state}', [StateController::class, 'destroy'])
+        ->name('courses.destroy.state');
 });
 
 // Administration routes

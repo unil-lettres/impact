@@ -203,6 +203,18 @@
                                 </button>
                             @endcan
                         </form>
+
+                        @can('forceDelete', $activeState)
+                            <form class="with-delete-confirm" method="post"
+                                  action="{{ route('courses.destroy.state', [$course->id, $activeState->id]) }}">
+                                @method('DELETE')
+                                @csrf
+                                <button type="submit"
+                                        class="btn btn-danger">
+                                    {{ trans('states.delete') }}
+                                </button>
+                            </form>
+                        @endcan
                     @endif
                 </div>
             </div>

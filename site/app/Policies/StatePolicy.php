@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Course;
+use App\Enums\StateType;
 use App\State;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -117,6 +118,11 @@ class StatePolicy
             return false;
         }
 
+        // Only custom states can be updated
+        if ($state->type != StateType::Custom) {
+            return false;
+        }
+
         // Only the teachers of the course can update states
         if ($user->isTeacher($state->course)) {
             return true;
@@ -137,6 +143,11 @@ class StatePolicy
     {
         // A state cannot be deleted if not within a course
         if (!$state->course) {
+            return false;
+        }
+
+        // Only custom states can be deleted
+        if ($state->type != StateType::Custom) {
             return false;
         }
 

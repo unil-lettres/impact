@@ -13,23 +13,6 @@ class StatePolicy
     use HandlesAuthorization;
 
     /**
-     * Authorize all actions for admins
-     *
-     * @param $user
-     * @param $ability
-     *
-     * @return bool
-     */
-    public function before($user, $ability)
-    {
-        if ($user->admin) {
-            return true;
-        }
-
-        return null;
-    }
-
-    /**
      * Determine whether the user can view any models.
      *
      * @param User $user
@@ -44,8 +27,8 @@ class StatePolicy
             return false;
         }
 
-        // Only the teachers of the course can view the listing of the states
-        if ($user->isTeacher($course)) {
+        // Only the teachers of the course & admins can view the listing of the states
+        if ($user->isTeacher($course) || $user->admin) {
             return true;
         }
 
@@ -67,8 +50,8 @@ class StatePolicy
             return false;
         }
 
-        // Teachers of the course can view a state
-        if ($user->isTeacher($state->course)) {
+        // Teachers of the course & admins can view a state
+        if ($user->isTeacher($state->course) || $user->admin) {
             return true;
         }
 
@@ -95,8 +78,8 @@ class StatePolicy
             return false;
         }
 
-        // Only the teachers of the course can create states
-        if ($user->isTeacher($course)) {
+        // Only the teachers of the course & admins can create states
+        if ($user->isTeacher($course) || $user->admin) {
             return true;
         }
 
@@ -123,8 +106,8 @@ class StatePolicy
             return false;
         }
 
-        // Only the teachers of the course can update states
-        if ($user->isTeacher($state->course)) {
+        // Only the teachers of the course & admins can update states
+        if ($user->isTeacher($state->course) || $user->admin) {
             return true;
         }
 
@@ -151,8 +134,8 @@ class StatePolicy
             return false;
         }
 
-        // Only the teachers of the course can delete states
-        if ($user->isTeacher($state->course)) {
+        // Only the teachers of the course & admins can delete states
+        if ($user->isTeacher($state->course) || $user->admin) {
             return true;
         }
 

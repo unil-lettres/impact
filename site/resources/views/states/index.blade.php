@@ -46,24 +46,43 @@
                             </span>
                         </div>
                         <div class="card-body">
-                            <ul>
-                                @foreach ($states as $state)
-                                    @can('view', $state)
-                                        @if (Helpers::isStateReadOnly($state))
-                                            <li class="text-muted">
-                                                {{ $state->name }}
-                                            </li>
-                                        @else
-                                            <li>
-                                                <a href="{{ route('courses.configure.states', [$course->id, 'state' => $state->id]) }}"
-                                                   class="{{ $state->id == $activeState->id ? 'underline' : '' }}">
-                                                    {{ $state->name }}
-                                                </a>
-                                            </li>
-                                        @endif
-                                    @endcan
-                                @endforeach
-                            </ul>
+                            <table class="table">
+                                <tbody>
+                                    @foreach ($states as $state)
+                                        <tr class="{{ $state->id == $activeState->id ? 'selected-bg' : '' }}">
+                                            <td class="align-middle">
+                                                @can('view', $state)
+                                                    @if (Helpers::isStateReadOnly($state))
+                                                        <span class="text-muted">{{ $state->name }}</span>
+                                                    @else
+                                                        <a href="{{ route('courses.configure.states', [$course->id, 'state' => $state->id]) }}">
+                                                            {{ $state->name }}
+                                                        </a>
+                                                    @endif
+                                                @endcan
+                                            </td>
+                                            <td>
+                                                @can('forceDelete', $state)
+                                                    <span class="float-right">
+                                                        <form class="with-delete-confirm" method="post"
+                                                              action="{{ route('courses.destroy.state', [$course->id, $state->id]) }}">
+                                                            @method('DELETE')
+                                                            @csrf
+                                                            <button type="submit"
+                                                                    class="btn btn-danger"
+                                                                    data-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="{{ trans('states.delete') }}">
+                                                                <i class="far fa-trash-alt"></i>
+                                                            </button>
+                                                        </form>
+                                                    </span>
+                                                @endcan
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
@@ -203,18 +222,6 @@
                                 </button>
                             @endcan
                         </form>
-
-                        @can('forceDelete', $activeState)
-                            <form class="with-delete-confirm" method="post"
-                                  action="{{ route('courses.destroy.state', [$course->id, $activeState->id]) }}">
-                                @method('DELETE')
-                                @csrf
-                                <button type="submit"
-                                        class="btn btn-danger">
-                                    {{ trans('states.delete') }}
-                                </button>
-                            </form>
-                        @endcan
                     @endif
                 </div>
             </div>

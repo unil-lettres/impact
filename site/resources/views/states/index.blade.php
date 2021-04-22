@@ -69,7 +69,7 @@
                                                             @method('DELETE')
                                                             @csrf
                                                             <button type="submit"
-                                                                    class="btn btn-danger"
+                                                                    class="btn btn-sm btn-danger"
                                                                     data-toggle="tooltip"
                                                                     data-placement="top"
                                                                     title="{{ trans('states.delete') }}">

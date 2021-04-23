@@ -239,7 +239,7 @@ class CardTest extends DuskTestCase
             $browser->click('#rct-editor-box4 div.ck-content')
                 ->type('#rct-editor-box4 div.ck-content', 'This is a typing test. Is it working ?');
 
-            $browser->click('#edit-box4')
+            $browser->click('#cancel-box4')
                 ->assertDontSee('Is it working ?');
         });
     }

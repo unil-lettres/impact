@@ -98,6 +98,14 @@ class CardsTableSeeder extends Seeder
             }'
         ]);
 
+        DB::table('cards')->insert([
+            'title' => 'Test card features',
+            'created_at' => $now,
+            'updated_at' => $now,
+            'course_id' => $secondCourse->id,
+            'options' => Card::OPTIONS
+        ]);
+
         $enrollment->addCard(Card::find($testCard));
         $enrollment->addCard(Card::find($testCardInFolder));
     }

@@ -182,4 +182,63 @@ class CardTest extends DuskTestCase
                 ->assertSee('Exemplification');
         });
     }
+
+    /**
+     * Test saving some text in text editor
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testSaveTextInTextEditor()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->assertSee('Second space')
+                ->clickLink('Second space');
+
+            $browser->assertSee('Test card features')
+                ->clickLink('Test card features');
+
+            $browser->click('#edit-box3')
+                ->assertSee('Annuler')
+                ->assertSee('Sauver');
+
+            $browser->type('#rct-editor-box3', 'This is a text editor typing test');
+
+            $browser->click('#edit-box3')
+                ->assertSee('This is a text editor typing test')
+                ->assertDontSee('Erreur - échec de la mise à jour');
+        });
+    }
+
+    /**
+     * Test saving some text in text editor
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testCancelTextInTextEditor()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->assertSee('Second space')
+                ->clickLink('Second space');
+
+            $browser->assertSee('Test card features')
+                ->clickLink('Test card features');
+
+            $browser->click('#edit-box4')
+                ->assertSee('Annuler')
+                ->assertSee('Sauver');
+
+            $browser->type('#rct-editor-box4', 'This is a text editor typing test');
+
+            $browser->click('#edit-box4')
+                ->assertDontSee('This is a text editor typing test');
+        });
+    }
 }

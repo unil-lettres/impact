@@ -90,7 +90,7 @@ Run the following commands from the framework root directory (/site). Check envi
 
 ### Install correct chrome driver if needed
 
-``php artisan dusk:chrome-driver xx``
+``php artisan dusk:chrome-driver --detect``
 
 ### Run functional tests
 

@@ -205,10 +205,11 @@ class CardTest extends DuskTestCase
                 ->assertSee('Annuler')
                 ->assertSee('Sauver');
 
-            $browser->type('#rct-editor-box3 div.ck-content', 'This is a text editor typing test');
+            $browser->click('#rct-editor-box3 div.ck-content')
+                ->typeSlowly('#rct-editor-box3 div.ck-content', 'This is a typing test', 50);
 
             $browser->click('#edit-box3')
-                ->assertSee('This is a text editor typing test')
+                ->assertSee('This is a typing test')
                 ->assertDontSee('Erreur - échec de la mise à jour');
         });
     }
@@ -235,10 +236,11 @@ class CardTest extends DuskTestCase
                 ->assertSee('Annuler')
                 ->assertSee('Sauver');
 
-            $browser->type('#rct-editor-box4 div.ck-content', 'This is a text editor typing test');
+            $browser->click('#rct-editor-box4 div.ck-content')
+                ->typeSlowly('#rct-editor-box4 div.ck-content', 'This is a typing test', 50);
 
             $browser->click('#edit-box4')
-                ->assertDontSee('This is a text editor typing test');
+                ->assertDontSee('This is a typing test');
         });
     }
 }

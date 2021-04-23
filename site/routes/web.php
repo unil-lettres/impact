@@ -21,6 +21,8 @@ use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\UserController;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 // Authentication routes
 Auth::routes();

@@ -61,7 +61,7 @@ class CheckAai
     }
 
     /**
-     * Wrapper function for getting server variables.
+     * Wrapper function to be able to retrieve server variables.
      *
      * @param string $variableName
      *

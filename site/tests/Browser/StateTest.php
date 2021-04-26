@@ -77,4 +77,62 @@ class StateTest extends DuskTestCase
             $browser->assertDontSee('Configuration de l\'espace');
         });
     }
+
+    /**
+     * Test create new state.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testCreateNewState()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('states-teacher-user@example.com', 'password');
+
+            $browser->assertSee('Test states')
+                ->clickLink('Test states');
+
+            $browser->assertSee('Configuration de l\'espace')
+                ->clickLink('Configuration de l\'espace');
+
+            $browser->assertSee('États')
+                ->clickLink('États');
+
+            $browser->assertSee('Ajouter un état')
+                ->press('Ajouter un état')
+                ->waitForText('Nouvel état créé.')
+                ->assertSee('nouvel état');
+        });
+    }
+
+    /**
+     * Test update state.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testUpdateState()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('states-teacher-user@example.com', 'password');
+
+            $browser->assertSee('Test states')
+                ->clickLink('Test states');
+
+            $browser->assertSee('Configuration de l\'espace')
+                ->clickLink('Configuration de l\'espace');
+
+            $browser->assertSee('États')
+                ->clickLink('États');
+
+            $browser->type('name', 'Updated state')
+                ->type('description', 'Updated public description state')
+                ->press('Mettre à jour l\'état')
+                ->waitForText('État mis à jour.')
+                ->assertSee('Updated state')
+                ->assertSee('Updated public description state');
+        });
+    }
 }

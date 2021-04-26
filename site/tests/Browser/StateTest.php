@@ -135,4 +135,34 @@ class StateTest extends DuskTestCase
                 ->assertSee('Updated public description state');
         });
     }
+
+    /**
+     * Test delete state.
+     *
+     * @return void
+     * @throws Throwable
+     */
+    public function testDeleteState()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('states-teacher-user@example.com', 'password');
+
+            $browser->assertSee('Test states')
+                ->clickLink('Test states');
+
+            $browser->assertSee('Configuration de l\'espace')
+                ->clickLink('Configuration de l\'espace');
+
+            $browser->assertSee('États')
+                ->clickLink('États');
+
+            $browser->click('#states table tbody tr:nth-child(2) .actions form.with-delete-confirm button')
+                ->waitForDialog($seconds = null)
+                ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
+                ->acceptDialog()
+                ->waitForText('État supprimé.')
+                ->assertSee('État supprimé.');
+        });
+    }
 }

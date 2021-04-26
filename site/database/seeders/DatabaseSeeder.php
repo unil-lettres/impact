@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             FoldersTableSeeder::class,
             CardsTableSeeder::class,
             InvitationsTableSeeder::class,
-            FilesTableSeeder::class
+            FilesTableSeeder::class,
+            StatesTableSeeder::class
         ]);
     }
 }

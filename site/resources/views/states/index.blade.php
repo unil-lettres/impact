@@ -61,7 +61,7 @@
                                                     @endif
                                                 @endcan
                                             </td>
-                                            <td>
+                                            <td class="actions">
                                                 @can('forceDelete', $state)
                                                     <span class="float-right">
                                                         <form class="with-delete-confirm" method="post"

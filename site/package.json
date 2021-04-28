@@ -54,6 +54,7 @@
         "sanitize-html": "^2.3.3",
         "sass": "^1.32.8",
         "sass-loader": "^10.1.1",
+        "sortablejs": "^1.13.0",
         "video.js": "^7.11.4",
         "videojs-offset": "^2.1.3"
     }

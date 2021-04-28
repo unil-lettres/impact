@@ -46,43 +46,42 @@
                             </span>
                         </div>
                         <div class="card-body">
-                            <table class="table">
-                                <tbody>
-                                    @foreach ($states as $state)
-                                        <tr class="{{ $state->id == $activeState->id ? 'selected-bg' : '' }}">
-                                            <td class="align-middle">
-                                                @can('view', $state)
-                                                    @if (Helpers::isStateReadOnly($state))
-                                                        <span class="text-muted">{{ $state->name }}</span>
-                                                    @else
-                                                        <a href="{{ route('courses.configure.states', [$course->id, 'state' => $state->id]) }}">
-                                                            {{ $state->name }}
-                                                        </a>
-                                                    @endif
-                                                @endcan
-                                            </td>
-                                            <td class="actions">
-                                                @can('forceDelete', $state)
-                                                    <span class="float-right">
-                                                        <form class="with-delete-confirm" method="post"
-                                                              action="{{ route('courses.destroy.state', [$course->id, $state->id]) }}">
-                                                            @method('DELETE')
-                                                            @csrf
-                                                            <button type="submit"
-                                                                    class="btn btn-sm btn-danger"
-                                                                    data-toggle="tooltip"
-                                                                    data-placement="top"
-                                                                    title="{{ trans('states.delete') }}">
-                                                                <i class="far fa-trash-alt"></i>
-                                                            </button>
-                                                        </form>
-                                                    </span>
-                                                @endcan
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
+                            <div id="states-list" class="list-group">
+                                @foreach ($states as $state)
+                                    <div state-id="{{ $state->id }}"
+                                         class="list-group-item {{ $state->id == $activeState->id ? 'selected-bg ' : '' }} {{ !Helpers::isStateReadOnly($state) ? 'drag' : '' }}">
+                                        <span class="align-middle">
+                                            @can('view', $state)
+                                                @if (Helpers::isStateReadOnly($state))
+                                                    <span class="text-muted">{{ $state->name }}</span>
+                                                @else
+                                                    <a href="{{ route('courses.configure.states', [$course->id, 'state' => $state->id]) }}">
+                                                        {{ $state->name }}
+                                                    </a>
+                                                @endif
+                                            @endcan
+                                        </span>
+                                        <span class="actions">
+                                            @can('forceDelete', $state)
+                                                <span class="float-right">
+                                                    <form class="with-delete-confirm" method="post"
+                                                          action="{{ route('courses.destroy.state', [$course->id, $state->id]) }}">
+                                                        @method('DELETE')
+                                                        @csrf
+                                                        <button type="submit"
+                                                                class="btn btn-sm btn-danger"
+                                                                data-toggle="tooltip"
+                                                                data-placement="top"
+                                                                title="{{ trans('states.delete') }}">
+                                                            <i class="far fa-trash-alt"></i>
+                                                        </button>
+                                                    </form>
+                                                </span>
+                                            @endcan
+                                        </span>
+                                    </div>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -153,7 +152,9 @@
                                 </div>
                                 <div class="card-body">
                                     <div class="form-group row">
-                                        <label for="box1" class="col-md-2 col-form-label">{{ trans('states.box1') }}</label>
+                                        <label for="box1" class="col-md-2 col-form-label">
+                                            {{ trans('states.box1') }}
+                                        </label>
                                         <div class="col-md-10">
                                             <select id="box1"
                                                     name="box1"
@@ -163,7 +164,9 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="box2" class="col-md-2 col-form-label">{{ trans('states.box2') }}</label>
+                                        <label for="box2" class="col-md-2 col-form-label">
+                                            {{ trans('states.box2') }}
+                                        </label>
                                         <div class="col-md-10">
                                             <select id="box2"
                                                     name="box2"
@@ -173,7 +176,9 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="box3" class="col-md-2 col-form-label">{{ trans('states.box3') }}</label>
+                                        <label for="box3" class="col-md-2 col-form-label">
+                                            {{ trans('states.box3') }}
+                                        </label>
                                         <div class="col-md-10">
                                             <select id="box3"
                                                     name="box3"
@@ -183,7 +188,9 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="box4" class="col-md-2 col-form-label">{{ trans('states.box4') }}</label>
+                                        <label for="box4" class="col-md-2 col-form-label">
+                                            {{ trans('states.box4') }}
+                                        </label>
                                         <div class="col-md-10">
                                             <select id="box4"
                                                     name="box4"
@@ -193,7 +200,9 @@
                                         </div>
                                     </div>
                                     <div class="form-group row">
-                                        <label for="box5" class="col-md-2 col-form-label">{{ trans('states.box5') }}</label>
+                                        <label for="box5" class="col-md-2 col-form-label">
+                                            {{ trans('states.box5') }}
+                                        </label>
                                         <div class="col-md-10">
                                             <select id="box5"
                                                     name="box5"

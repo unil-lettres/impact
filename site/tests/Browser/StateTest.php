@@ -157,7 +157,7 @@ class StateTest extends DuskTestCase
             $browser->assertSee('États')
                 ->clickLink('États');
 
-            $browser->click('#states table tbody tr:nth-child(2) .actions form.with-delete-confirm button')
+            $browser->click('#states-list div:nth-child(2) .actions form.with-delete-confirm button')
                 ->waitForDialog($seconds = null)
                 ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
                 ->acceptDialog()

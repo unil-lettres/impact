@@ -141,4 +141,32 @@ class StatePolicy
 
         return false;
     }
+
+    /**
+     * Determine whether the user can permanently change the model position.
+     *
+     * @param User $user
+     * @param State $state
+     *
+     * @return mixed
+     */
+    public function position(User $user, State $state)
+    {
+        // A state position cannot be updated if not within a course
+        if (!$state->course) {
+            return false;
+        }
+
+        // Only custom states position can be updated
+        if ($state->type != StateType::Custom) {
+            return false;
+        }
+
+        // Only the teachers of the course & admins can change a state position
+        if ($user->isTeacher($state->course) || $user->admin) {
+            return true;
+        }
+
+        return false;
+    }
 }

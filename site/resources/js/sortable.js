@@ -1,17 +1,33 @@
 import Sortable from 'sortablejs';
+import axios from "axios";
 
 // States
-let states = document.getElementById('states-list');
-if(states) {
-    Sortable.create(states, {
+let statesList = document.getElementById('states-list');
+if(statesList) {
+    Sortable.create(statesList, {
         draggable: ".drag",
         animation: 150,
-        onUpdate: function(/**Event*/evt) {
-            let item = evt.item;
-            let stateId = parseInt(item.getAttribute('state-id'), 10);
-            console.log('State id: ' + stateId);
-            console.log('Old position: ' + evt.oldIndex);
-            console.log('New position: ' + evt.newIndex);
+        onUpdate: function(evt) {
+            let stateId = evt.item.getAttribute('state-id');
+            let courseId = statesList.getAttribute('course-id');
+            let states = Array.from(statesList.getElementsByClassName('drag'));
+            let route = '/courses/' + courseId + '/state/' + stateId + '/position';
+
+            let ids = states.map(state =>
+                state.getAttribute('state-id')
+            );
+
+            updatePosition(route, ids);
         }
+    });
+}
+
+function updatePosition(route, newOrder) {
+    axios.put(route, {
+        newOrder: newOrder
+    }).then(response => {
+        console.log(response);
+    }).catch(error => {
+        console.log(error)
     });
 }

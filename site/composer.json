@@ -19,7 +19,8 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "php-ffmpeg/php-ffmpeg": "^0.18.0",
-        "phpoffice/phpword": "^0.18.0"
+        "phpoffice/phpword": "^0.18.0",
+        "spatie/eloquent-sortable": "^3.11.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.4",

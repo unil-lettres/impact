@@ -46,7 +46,9 @@
                             </span>
                         </div>
                         <div class="card-body">
-                            <div id="states-list" class="list-group">
+                            <div id="states-list"
+                                 course-id="{{ $course->id }}"
+                                 class="list-group">
                                 @foreach ($states as $state)
                                     <div state-id="{{ $state->id }}"
                                          class="list-group-item {{ $state->id == $activeState->id ? 'selected-bg ' : '' }} {{ !Helpers::isStateReadOnly($state) ? 'drag' : '' }}">

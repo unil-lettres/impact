@@ -107,6 +107,8 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('courses.update.state');
     Route::delete('courses/{course}/state/{state}', [StateController::class, 'destroy'])
         ->name('courses.destroy.state');
+    Route::put('courses/{course}/state/{state}/position', [StateController::class, 'position'])
+        ->name('courses.update.state.position');
 });
 
 // Administration routes

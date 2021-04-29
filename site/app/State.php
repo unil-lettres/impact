@@ -5,10 +5,13 @@ namespace App;
 use App\Enums\StatePermission;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\EloquentSortable\Sortable;
+use Spatie\EloquentSortable\SortableTrait;
 
-class State extends Model
+class State extends Model implements Sortable
 {
     use SoftDeletes;
+    use SortableTrait;
 
     const PERMISSIONS = '{
             "version": 1,

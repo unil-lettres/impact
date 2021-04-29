@@ -55,6 +55,7 @@
                                                 @if (Helpers::isStateReadOnly($state))
                                                     <span class="text-muted">{{ $state->name }}</span>
                                                 @else
+                                                    <i class="far fa-circle fa-xs"></i>
                                                     <a href="{{ route('courses.configure.states', [$course->id, 'state' => $state->id]) }}">
                                                         {{ $state->name }}
                                                     </a>

@@ -73,10 +73,7 @@ mix.webpackConfig({
                 test: CKERegex.css,
                 use: [
                     {
-                        loader: 'style-loader',
-                        options: {
-                            singleton: true
-                        }
+                        loader: 'style-loader'
                     },
                     {
                         loader: 'postcss-loader',

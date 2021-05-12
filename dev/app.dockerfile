@@ -18,7 +18,6 @@ RUN apt-get update &&\
   curl -sL https://deb.nodesource.com/setup_12.x | bash - &&\
   apt-get update &&\
   apt-get install -y --no-install-recommends nodejs &&\
-  npm config set registry https://registry.npm.taobao.org --global &&\
   npm install --global gulp-cli
 
 # Replace default crontab

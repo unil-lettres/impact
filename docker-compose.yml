@@ -23,7 +23,7 @@ services:
       - impact-net
     container_name: impact-web
   impact-app:
-    image: unillett/impact:v1.4
+    image: unillett/impact:latest
     env_file:
       - ./dev/.env
     working_dir: /var/www

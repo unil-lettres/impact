@@ -20,6 +20,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -192,9 +193,9 @@ class UserController extends Controller
                 $validated = $request->validate([
                     'name' => 'required|string|max:255',
                     'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-                    'old_password'     => 'nullable|string|min:8',
-                    'new_password'     => 'nullable|string|min:8|different:old_password',
-                    'password_confirm' => 'nullable|same:new_password',
+                    'old_password'     => ['nullable', 'string'],
+                    'new_password'     => ['nullable', 'different:old_password', Password::defaults()],
+                    'password_confirm' => ['nullable', 'same:new_password'],
                 ]);
 
                 // Remove empty and null values from the array data

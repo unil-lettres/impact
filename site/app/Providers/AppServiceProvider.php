@@ -8,6 +8,7 @@ use App\Observers\CourseObserver;
 use App\Observers\FileObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -33,5 +34,16 @@ class AppServiceProvider extends ServiceProvider
         File::observe(FileObserver::class);
         Course::observe(CourseObserver::class);
         Paginator::useBootstrap();
+
+        // Define default password validation rules
+        Password::defaults(function () {
+            $rule = Password::min(8);
+
+            return $this->app->isProduction()
+                ? $rule->letters()
+                    ->numbers()
+                    ->uncompromised()
+                : $rule;
+        });
     }
 }

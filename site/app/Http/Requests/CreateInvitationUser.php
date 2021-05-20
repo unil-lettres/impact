@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rules\Password;
+
 class CreateInvitationUser extends AbstractRequest
 {
     /**
@@ -24,7 +26,7 @@ class CreateInvitationUser extends AbstractRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed']
+            'password' => ['required', 'confirmed', Password::defaults()]
         ];
     }
 }

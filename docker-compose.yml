@@ -9,8 +9,6 @@ services:
     image: nginx:1.17
     env_file:
       - ./dev/.env
-    links:
-      - impact-app:app
     working_dir: /var/www
     volumes:
       - ./dev/config/vhost.conf:/etc/nginx/conf.d/default.conf
@@ -32,9 +30,6 @@ services:
       - ./dev/config/php.ini:/usr/local/etc/php/conf.d/uploads.ini
     expose:
       - "9000"
-    links:
-      - impact-mariadb:database
-      - impact-mailhog:mail
     networks:
       - impact-net
     container_name: impact-app
@@ -54,8 +49,6 @@ services:
     image: phpmyadmin/phpmyadmin:latest
     env_file:
       - ./dev/.env
-    links:
-      - impact-mariadb:database
     ports:
       - "9898:80"
     networks:

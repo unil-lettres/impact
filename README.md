@@ -66,7 +66,7 @@ To access the database please use the following link.
 
 [http://impact.lan:9898](http://impact.lan:9898)
 
-+ Server: database
++ Server: impact-mariadb
 + Username: user
 + Password: password
 

@@ -48,7 +48,7 @@ export default class Uploader extends Component {
     }
 
     initUppy () {
-        this.uppy = Uppy({
+        this.uppy = new Uppy({
             debug: false,
             locale: this.locale,
             autoProceed: false,

@@ -72,7 +72,7 @@ object-assign
  * MIT Licensed
  */
 
-/*! @name @videojs/http-streaming @version 2.6.4 @license Apache-2.0 */
+/*! @name @videojs/http-streaming @version 2.10.2 @license Apache-2.0 */
 
 /*! @name aes-decrypter @version 3.1.2 @license Apache-2.0 */
 
@@ -91,7 +91,7 @@ object-assign
    *
    * @param {string} phrase that needs interpolation, with placeholders
    * @param {object} options with values that will be used to replace placeholders
-   * @returns {string} interpolated
+   * @returns {any[]} interpolated
    */
 
 /**
@@ -175,7 +175,7 @@ object-assign
  */
 
 /**!
- * Sortable 1.13.0
+ * Sortable 1.14.0
  * @author	RubaXa   <trash@rubaxa.org>
  * @author	owenm    <owen23355@gmail.com>
  * @license MIT

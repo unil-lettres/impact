@@ -22,6 +22,7 @@ import ImageCaptionPlugin from '@ckeditor/ckeditor5-image/src/imagecaption';
 import ImageStylePlugin from '@ckeditor/ckeditor5-image/src/imagestyle';
 import ImageToolbarPlugin from '@ckeditor/ckeditor5-image/src/imagetoolbar';
 import ImageInsertPlugin from '@ckeditor/ckeditor5-image/src/imageInsert';
+import ImageResizePlugin from '@ckeditor/ckeditor5-image/src/imageresize';
 import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
 import FontColorPlugin from '@ckeditor/ckeditor5-font/src/fontcolor';
 import FontSizePlugin from '@ckeditor/ckeditor5-font/src/fontsize';
@@ -47,6 +48,7 @@ const editorConfiguration = {
         ImageStylePlugin,
         ImageToolbarPlugin,
         ImageInsertPlugin,
+        ImageResizePlugin,
         Base64UploadAdapter,
         FontColorPlugin,
         FontSizePlugin,
@@ -84,9 +86,11 @@ const editorConfiguration = {
             }
         },
         toolbar: [
-            'imageStyle:full',
+            'imageStyle:inline',
+            'imageStyle:block',
             'imageStyle:side',
             '|',
+            'toggleImageCaption',
             'imageTextAlternative'
         ]
     }

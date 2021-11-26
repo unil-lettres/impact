@@ -34,7 +34,7 @@ services:
       - impact-net
     container_name: impact-app
   impact-mariadb:
-    image: mariadb:10.3
+    image: mariadb:10.4
     env_file:
       - ./dev/.env
     volumes:

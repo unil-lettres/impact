@@ -37,6 +37,7 @@ class CardsTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
+            'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS
         ]);
 
@@ -45,6 +46,7 @@ class CardsTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
+            'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS,
             'folder_id' => $testFolder->id
         ]);
@@ -54,6 +56,7 @@ class CardsTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
+            'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS
         ]);
 
@@ -62,6 +65,7 @@ class CardsTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $firstCourse->id,
+            'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS
         ]);
 
@@ -70,6 +74,7 @@ class CardsTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
+            'box2' => Card::TRANSCRIPTION,
             'options' => '{
                 "emails": true,
                 "box1": {
@@ -103,6 +108,7 @@ class CardsTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
+            'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS
         ]);
 

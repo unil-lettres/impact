@@ -105,6 +105,7 @@ class FilesTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
+            'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS,
             'file_id' => $usedFile
         ]);

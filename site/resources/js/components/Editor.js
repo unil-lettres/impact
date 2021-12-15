@@ -30,6 +30,7 @@ import TablePlugin from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbarPlugin from '@ckeditor/ckeditor5-table/src/tabletoolbar';
 import HorizontalLinePlugin from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
 import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
+import _ from "lodash";
 
 const editorConfiguration = {
     plugins: [

@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom';
 import ContentEditable from 'react-contenteditable'
 import axios from "axios";
 import sanitizeHtml from 'sanitize-html';
+import _ from "lodash";
 
 class Line {
     constructor(number, speaker, speech) {
@@ -372,12 +373,12 @@ export default class Transcription extends Component {
                                         <span className="action delete-line mr-1 d-none"
                                               onClick={ this.deleteLine(index) }
                                               title={ this.deleteLineActionLabel }>
-                                            <i className="far fa-times-circle"></i>
+                                            <i className="far fa-times-circle"/>
                                         </span>
                                         <span className="action delete-number d-none"
                                               onClick={ this.toggleNumber(index) }
                                               title={ this.toggleNumberActionLabel }>
-                                            <i className={`far ${line.number ? "fa-minus-square" : "fa-plus-square"}`}></i>
+                                            <i className={`far ${line.number ? "fa-minus-square" : "fa-plus-square"}`}/>
                                         </span>
                                     </td>
                                 </tr>

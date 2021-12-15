@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from "axios";
 import Select from "react-select";
 import makeAnimated from 'react-select/animated';
+import _ from "lodash";
 
 const animatedComponents = makeAnimated();
 

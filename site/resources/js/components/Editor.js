@@ -13,7 +13,7 @@ import UnderlinePlugin from '@ckeditor/ckeditor5-basic-styles/src/underline';
 import StrikethroughPlugin from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
 import HighlightPlugin from '@ckeditor/ckeditor5-highlight/src/highlight';
 import BlockQuotePlugin from '@ckeditor/ckeditor5-block-quote/src/blockquote';
-import ListStyle from '@ckeditor/ckeditor5-list/src/liststyle';
+import ListProperties from '@ckeditor/ckeditor5-list/src/listproperties';
 import LinkPlugin from '@ckeditor/ckeditor5-link/src/link';
 import AlignmentPlugin from '@ckeditor/ckeditor5-alignment/src/alignment';
 import MediaEmbedPlugin from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
@@ -40,7 +40,7 @@ const editorConfiguration = {
         UnderlinePlugin,
         StrikethroughPlugin,
         BlockQuotePlugin,
-        ListStyle,
+        ListProperties,
         LinkPlugin,
         AlignmentPlugin,
         MediaEmbedPlugin,

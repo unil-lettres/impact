@@ -10,7 +10,7 @@ else
 fi
 
 # Install php dependencies
-composer install --no-interaction --no-suggest
+composer install --no-interaction
 
 # Update the application key
 php artisan key:generate

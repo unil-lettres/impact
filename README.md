@@ -16,7 +16,7 @@ A Laravel 8 app with react components.
 
 ## Docker installation
 
-A working [Docker](https://docs.docker.com/engine/installation/) installation is mandatory.
+A working [Docker](https://docs.docker.com/engine/install/) installation is mandatory.
 
 ## Docker environment file
 

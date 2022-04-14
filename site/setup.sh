@@ -2,11 +2,11 @@
 
 # Create the Laravel .env file
 if [ -z "$CI" ]; then
-    # Not CI
-    cp .env.example .env
+  # Not CI
+  cp .env.example .env
 else
-    # CI
-    cp .env.testing .env
+  # CI
+  cp .env.testing .env
 fi
 
 # Install php dependencies
@@ -16,17 +16,17 @@ composer install --no-interaction
 php artisan key:generate
 
 if [ -z "$CI" ]; then
-    # Not CI
-    npm install
-    npm run dev
+  # Not CI
+  npm install
+  npm run dev
 else
-    # CI
-    php artisan config:clear
-    php artisan config:cache
+  # CI
+  php artisan config:clear
+  php artisan config:cache
 fi
 
 # Run migrations
-php artisan migrate --no-interaction --force
+php artisan migrate --force
 
 # Seeding dummy data
 php artisan db:seed

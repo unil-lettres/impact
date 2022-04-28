@@ -98,11 +98,6 @@ object-assign
  */
 
 /**
- * @license Copyright (c) 2003-2022, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md.
- */
-
-/**
  * Takes a string with placeholder variables like `%{smart_count} file selected`
  * and replaces it with values from options `{smart_count: 5}`
  *

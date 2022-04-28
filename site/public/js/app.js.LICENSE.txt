@@ -62,6 +62,7 @@ object-assign
 /*!
  * mime-db
  * Copyright(c) 2014 Jonathan Ong
+ * Copyright(c) 2015-2022 Douglas Christopher Wilson
  * MIT Licensed
  */
 
@@ -72,7 +73,7 @@ object-assign
  * MIT Licensed
  */
 
-/*! @name @videojs/http-streaming @version 2.12.0 @license Apache-2.0 */
+/*! @name @videojs/http-streaming @version 2.13.1 @license Apache-2.0 */
 
 /*! @name aes-decrypter @version 3.1.2 @license Apache-2.0 */
 
@@ -175,7 +176,7 @@ object-assign
  */
 
 /**!
- * Sortable 1.14.0
+ * Sortable 1.15.0
  * @author	RubaXa   <trash@rubaxa.org>
  * @author	owenm    <owen23355@gmail.com>
  * @license MIT

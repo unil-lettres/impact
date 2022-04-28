@@ -11,7 +11,8 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.react('resources/js/app.js', 'public/js')
+mix.js('resources/js/app.js', 'public/js')
+    .react()
     .sass('resources/sass/app.scss', 'public/css')
     .version()
     .sourceMaps();
@@ -20,39 +21,31 @@ mix.react('resources/js/app.js', 'public/js')
  |--------------------------------------------------------------------------
  | CKEditor webpack configuration below
  |--------------------------------------------------------------------------
- |
- | Documentation for this configuration:
- | - https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/advanced-setup.html#scenario-2-building-from-source
- | - https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/react.html#integrating-ckeditor-5-built-from-source
- | - https://github.com/ckeditor/ckeditor5-vue/issues/23
- |
  */
 
-const CKEditorWebpackPlugin = require( '@ckeditor/ckeditor5-dev-webpack-plugin' );
-const CKEStyles = require('@ckeditor/ckeditor5-dev-utils').styles;
-const CKERegex = {
-    svg: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/,
-    css: /ckeditor5-[^/\\]+[/\\]theme[/\\].+\.css/,
+const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin');
+const CKEditorStyles = require('@ckeditor/ckeditor5-dev-utils').styles;
+//Includes SVGs and CSS files from "node_modules/ckeditor5-*" and any other custom directories
+const CKEditorRegex = {
+    svg: /ckeditor5-[^/\\]+[/\\]theme[/\\]icons[/\\][^/\\]+\.svg$/, //If you have any custom plugins in your project with SVG icons, include their path in this regex as well.
+    css: /ckeditor5-[^/\\]+[/\\].+\.css$/,
 };
 
-Mix.listen('configReady', webpackConfig => {
-    const rules = webpackConfig.module.rules;
-    const targetSVG = /(\.(png|jpe?g|gif|webp)$|^((?!font).)*\.svg$)/;
-    const targetFont = /(\.(woff2?|ttf|eot|otf)$|font.*\.svg$)/;
-    const targetCSS = /\.css$/;
+//Exclude CKEditor regex from mix's default rules
+Mix.listen('configReady', config => {
+    const rules = config.module.rules;
+    const targetSVG = (/(\.(png|jpe?g|gif|webp|avif)$|^((?!font).)*\.svg$)/).toString();
+    const targetFont = (/(\.(woff2?|ttf|eot|otf)$|font.*\.svg$)/).toString();
+    const targetCSS = (/\.p?css$/).toString();
 
-    // Exclude CKEditor regex from mix's default rules
-    for (let rule of rules) {
-        if (rule.test.toString() === targetSVG.toString()) {
-            rule.exclude = CKERegex.svg;
+    rules.forEach(rule => {
+        let test = rule.test.toString();
+        if ([targetSVG, targetFont].includes(rule.test.toString())) {
+            rule.exclude = CKEditorRegex.svg;
+        } else if (test === targetCSS) {
+            rule.exclude = CKEditorRegex.css;
         }
-        else if (rule.test.toString() === targetFont.toString()) {
-            rule.exclude = CKERegex.svg;
-        }
-        else if (rule.test.toString() === targetCSS.toString()) {
-            rule.exclude = CKERegex.css;
-        }
-    }
+    });
 });
 
 mix.webpackConfig({
@@ -66,24 +59,33 @@ mix.webpackConfig({
     module: {
         rules: [
             {
-                test: CKERegex.svg,
-                use: [ 'raw-loader' ]
+                test: CKEditorRegex.svg,
+                use: ['raw-loader']
             },
             {
-                test: CKERegex.css,
+                test: CKEditorRegex.css,
                 use: [
                     {
-                        loader: 'style-loader'
+                        loader: 'style-loader',
+                        options: {
+                            injectType: 'singletonStyleTag',
+                            attributes: {
+                                'data-cke': true
+                            }
+                        }
                     },
+                    'css-loader',
                     {
                         loader: 'postcss-loader',
-                        options: CKEStyles.getPostCssConfig({
-                            themeImporter: {
-                                themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
-                            },
-                            minify: true
-                        })
-                    },
+                        options: {
+                            postcssOptions: CKEditorStyles.getPostCssConfig({
+                                themeImporter: {
+                                    themePath: require.resolve('@ckeditor/ckeditor5-theme-lark')
+                                },
+                                minify: true
+                            })
+                        }
+                    }
                 ]
             }
         ]

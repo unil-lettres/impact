@@ -12,10 +12,9 @@
         "ext-json": "*",
         "beberlei/assert": "^3.3.0",
         "bugsnag/bugsnag-laravel": "^2.0",
-        "facade/ignition": "^2.3.6",
-        "fideloper/proxy": "^4.0",
+        "spatie/laravel-ignition": "^1.0",
         "guzzlehttp/guzzle": "^7.0.1",
-        "laravel/framework": "^8.0",
+        "laravel/framework": "^9.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^3.0",
         "php-ffmpeg/php-ffmpeg": "^v1.0.1",
@@ -28,7 +27,7 @@
         "laravel/dusk": "^6.4",
         "laravel/telescope": "^4.0",
         "mockery/mockery": "^1.0",
-        "nunomaduro/collision": "^5.0",
+        "nunomaduro/collision": "^6.1",
         "phpunit/phpunit": "^9.2"
     },
     "config": {

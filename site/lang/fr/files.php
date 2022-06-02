@@ -3,7 +3,7 @@
 return [
 
     'create' => 'Envoyer des fichiers',
-    'select_space' => 'Sélectionner un espace (facultatif)',
+    'select_space' => 'Sélectionner un espace avant d\'envoyer le(s) fichier(s) (facultatif)',
     'files' => 'Fichiers',
     'name' => 'Nom',
     'filename' => 'Nom du fichier',

@@ -3,7 +3,7 @@
 return [
 
     'create' => 'Send files',
-    'select_space' => 'Select the space (optional)',
+    'select_space' => 'Select the space before sending the file(s) (optional)',
     'files' => 'Files',
     'name' => 'Name',
     'filename' => 'Filename',

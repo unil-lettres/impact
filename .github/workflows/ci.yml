@@ -69,7 +69,7 @@ jobs:
       - name: Check PHP code style
         id: app-php-style
         working-directory: ./site
-        run: ./vendor/bin/pint --test
+        run: ./vendor/bin/pint --test -v
         continue-on-error: true
 
       - name: Serve

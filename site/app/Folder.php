@@ -11,11 +11,11 @@ class Folder extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'title', 'position', 'course_id', 'parent_id'
+        'title', 'position', 'course_id', 'parent_id',
     ];
 
     protected $dates = [
-        'deleted_at'
+        'deleted_at',
     ];
 
     /**
@@ -62,14 +62,15 @@ class Folder extends Model
      * a path as the key, and a name as the value.
      * @return Collection
      */
-    public function breadcrumbs(bool $self = false) {
+    public function breadcrumbs(bool $self = false)
+    {
         $breadcrumbs = $this->course
             ->breadcrumbs(true);
 
-        if($this->parent()->get()->isNotEmpty()) {
+        if ($this->parent()->get()->isNotEmpty()) {
             // Iterate through hierarchical parents while a parent exists
             $parent = $this->parent();
-            while($parent->get()->isNotEmpty()) {
+            while ($parent->get()->isNotEmpty()) {
                 $breadcrumbs->put(
                     route('folders.show', $parent->first()->id), $parent->first()->title
                 );
@@ -77,7 +78,7 @@ class Folder extends Model
             }
         }
 
-        if($self) {
+        if ($self) {
             // Add the current folder to the breadcrumbs
             $breadcrumbs->put(
                 route('folders.show', $this->id), $this->title

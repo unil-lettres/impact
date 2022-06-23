@@ -3,10 +3,10 @@
 namespace Tests\Browser;
 
 use Illuminate\Support\Facades\Artisan;
+use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
 use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
 use Throwable;
 
 class LoginTest extends DuskTestCase
@@ -19,7 +19,7 @@ class LoginTest extends DuskTestCase
     {
         parent::setUp();
 
-        if (!static::$migrated) {
+        if (! static::$migrated) {
             Artisan::call('migrate:fresh --seed');
             static::$migrated = true;
         }

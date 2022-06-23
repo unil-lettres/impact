@@ -57,7 +57,7 @@ class EnrollmentController extends Controller
         $this->authorize('create', [
             Enrollment::class,
             $course,
-            $user
+            $user,
         ]);
 
         Enrollment::create([
@@ -67,7 +67,7 @@ class EnrollmentController extends Controller
         ]);
 
         return response()->json([
-            'success' => true
+            'success' => true,
         ]);
     }
 
@@ -100,7 +100,7 @@ class EnrollmentController extends Controller
         $this->authorize('find', $enrollment);
 
         return response()->json([
-            'enrollment' => $enrollment
+            'enrollment' => $enrollment,
         ]);
     }
 
@@ -153,7 +153,7 @@ class EnrollmentController extends Controller
         $this->authorize('cards', $enrollment);
 
         return response()->json([
-            'success' => $enrollment->updateCard($cardId, $add, $remove)
+            'success' => $enrollment->updateCard($cardId, $add, $remove),
         ]);
     }
 
@@ -173,7 +173,7 @@ class EnrollmentController extends Controller
         $this->authorize('forceDelete', $enrollment);
 
         return response()->json([
-            'success' => $enrollment->forceDelete() ?? false
+            'success' => $enrollment->forceDelete() ?? false,
         ]);
     }
 }

@@ -48,7 +48,7 @@ class EnrollmentPolicy
      */
     public function find(User $user, Enrollment $enrollment)
     {
-        if($user->admin) {
+        if ($user->admin) {
             return true;
         }
 
@@ -74,21 +74,21 @@ class EnrollmentPolicy
         // TODO: update for invitations & mass enrollments
 
         // Enrolled course should be active
-        if(!$enrolledCourse->isActive()) {
+        if (! $enrolledCourse->isActive()) {
             return false;
         }
 
         // Enrolled user should be valid
-        if(!Helpers::isUserValid($enrolledUser)) {
+        if (! Helpers::isUserValid($enrolledUser)) {
             return false;
         }
 
         // Enrolled user cannot be an admin
-        if($enrolledUser->admin) {
+        if ($enrolledUser->admin) {
             return false;
         }
 
-        if($user->admin) {
+        if ($user->admin) {
             return true;
         }
 
@@ -126,11 +126,11 @@ class EnrollmentPolicy
         // TODO: update for invitations & mass enrollment
 
         // Cannot edit the cards of an enrollment with a teacher role
-        if($enrollment->role === EnrollmentRole::Teacher) {
+        if ($enrollment->role === EnrollmentRole::Teacher) {
             return false;
         }
 
-        if($user->admin) {
+        if ($user->admin) {
             return true;
         }
 
@@ -153,11 +153,11 @@ class EnrollmentPolicy
     public function forceDelete(User $user, Enrollment $enrollment)
     {
         // User cannot delete own enrollment
-        if($user->id === $enrollment->user->id) {
+        if ($user->id === $enrollment->user->id) {
             return false;
         }
 
-        if($user->admin) {
+        if ($user->admin) {
             return true;
         }
 

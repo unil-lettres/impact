@@ -33,6 +33,6 @@ return [
     'mail.confirm_delete.subject' => '[Impact] Confirmation request - deletion of a space',
     'mail.confirm_delete.request' => 'We have just received a request regarding the deletion of the Impact space ":name".',
     'mail.confirm_delete.confirm' => 'If you really want to delete this space, please confirm it by answering this email.',
-    'mail.confirm_delete.destroyed' => 'Once this operation done, all the data will be deleted and the space will not be retrievable.'
+    'mail.confirm_delete.destroyed' => 'Once this operation done, all the data will be deleted and the space will not be retrievable.',
 
 ];

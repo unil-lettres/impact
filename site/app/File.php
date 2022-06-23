@@ -19,7 +19,7 @@ class File extends Model
     ];
 
     protected $dates = [
-        'deleted_at'
+        'deleted_at',
     ];
 
     /**
@@ -42,9 +42,10 @@ class File extends Model
     /**
      * Check if the file is used by card(s)
      *
-     * @return boolean
+     * @return bool
      */
-    public function isUsed() {
+    public function isUsed()
+    {
         return $this->cards->isNotEmpty();
     }
 }

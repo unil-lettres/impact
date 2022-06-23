@@ -18,18 +18,23 @@ use PhpOffice\PhpWord\Style\Table;
 class ExportCardBox
 {
     private Card $card;
+
     private string $box;
+
     private string $format;
+
     private string $filename;
+
     private string $file;
 
-    public function __construct(Card $card, string $box, string $format) {
+    public function __construct(Card $card, string $box, string $format)
+    {
         $this->card = $card;
         $this->box = $box;
         $this->format = $format;
-        $this->filename = $card->id . '.' . $format;
+        $this->filename = $card->id.'.'.$format;
         $this->file = Storage::disk('public')
-            ->path(StoragePath::ExportTemp . '/' . $this->filename);
+            ->path(StoragePath::ExportTemp.'/'.$this->filename);
 
         Storage::disk('public')
             ->makeDirectory(StoragePath::ExportTemp);
@@ -41,7 +46,8 @@ class ExportCardBox
      * @return string|null
      * @throws Exception
      */
-    public function export() {
+    public function export()
+    {
         $box = $this->box;
         $data = $this->card->$box;
         $exported = false;
@@ -52,7 +58,7 @@ class ExportCardBox
                 break;
         }
 
-        if (!$exported) {
+        if (! $exported) {
             return null;
         }
 
@@ -63,10 +69,11 @@ class ExportCardBox
      * Export the transcription content
      *
      * @param array $data
-     * @return boolean
+     * @return bool
      * @throws Exception
      */
-    private function transcription(array $data) {
+    private function transcription(array $data)
+    {
         switch ($this->format) {
             case ExportFormat::Docx:
                 return $this->transcriptionToDocx($data);
@@ -79,21 +86,22 @@ class ExportCardBox
      * Create a Word document with the transcription content
      *
      * @param array $data
-     * @return boolean
+     * @return bool
      * @throws Exception
      */
-    private function transcriptionToDocx(array $data) {
+    private function transcriptionToDocx(array $data)
+    {
         $phpWord = $this->initPhpWord();
 
         $fontStyleName = 'transcription';
         $phpWord->addFontStyle(
             $fontStyleName,
-            array(
+            [
                 'name' => 'Courier',
                 'size' => 10,
                 'color' => '000000',
-                'bold' => false
-            )
+                'bold' => false,
+            ]
         );
 
         $section = $phpWord->addSection();
@@ -103,22 +111,22 @@ class ExportCardBox
             'borderColor' => 'ffffff',
             'valign' => 'top',
             'alignment' => JcTable::START,
-            'layout' => Table::LAYOUT_FIXED
+            'layout' => Table::LAYOUT_FIXED,
         ];
 
         $table = $section->addTable($tableStyle);
         foreach ($data['data'] as $row) {
             $table->addRow();
 
-            $number = $row['number'] ? strval($row['number']) : "";
+            $number = $row['number'] ? strval($row['number']) : '';
             $table->addCell(400)->addText($number, $fontStyleName);
 
-            $speaker = $row['speaker'] ? $row['speaker'] : "";
+            $speaker = $row['speaker'] ? $row['speaker'] : '';
             $table->addCell(500)->addText($speaker, $fontStyleName);
 
-            $speech = $row['speech'] ? $row['speech'] : "";
+            $speech = $row['speech'] ? $row['speech'] : '';
             $cell = $table->addCell(8000);
-            $lines = explode("<br />", $speech);
+            $lines = explode('<br />', $speech);
             foreach ($lines as $line) {
                 $cell->addText($line, $fontStyleName);
             }
@@ -135,7 +143,8 @@ class ExportCardBox
      *
      * @return PhpWord
      */
-    private function initPhpWord() {
+    private function initPhpWord()
+    {
         $phpWord = new PhpWord();
 
         switch (Helpers::currentLocal()) {

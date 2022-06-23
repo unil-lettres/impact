@@ -23,7 +23,7 @@ class DestroyState extends AbstractRequest
     {
         return [
             'course' => 'required|integer|exists:courses,id',
-            'state' => 'required|integer|exists:states,id'
+            'state' => 'required|integer|exists:states,id',
         ];
     }
 }

@@ -22,7 +22,7 @@ class DestroyFolder extends AbstractRequest
     public function rules()
     {
         return [
-            'folder' => 'required|integer|exists:folders,id'
+            'folder' => 'required|integer|exists:folders,id',
         ];
     }
 }

@@ -18,14 +18,15 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Str;
 
-class Helpers {
+class Helpers
+{
     /**
      * Return current local
      *
      * @return string
      */
-    public static function currentLocal() {
-
+    public static function currentLocal()
+    {
         if (session()->has('locale')) {
             return session()->get('locale');
         }
@@ -38,22 +39,23 @@ class Helpers {
      *
      * @param User $user
      *
-     * @return boolean
+     * @return bool
      */
-    public static function isUserValid(User $user) {
+    public static function isUserValid(User $user)
+    {
         // Check if user is an admin
-        if($user->admin) {
+        if ($user->admin) {
             return true;
         }
 
         // Check if user account has an expiration date
-        if(is_null($user->validity)) {
+        if (is_null($user->validity)) {
             return true;
         }
 
         // Check if user account is still valid
         $validity = Carbon::instance($user->validity);
-        if($validity->isFuture()) {
+        if ($validity->isFuture()) {
             return true;
         }
 
@@ -65,11 +67,12 @@ class Helpers {
      *
      * @param User $user
      *
-     * @return boolean
+     * @return bool
      */
-    public static function isUserLocal(User $user) {
+    public static function isUserLocal(User $user)
+    {
         // Check if user has a local account type
-        if($user->type === UserType::Local) {
+        if ($user->type === UserType::Local) {
             return true;
         }
 
@@ -81,11 +84,12 @@ class Helpers {
      *
      * @param Course $course
      *
-     * @return boolean
+     * @return bool
      */
-    public static function isCourseLocal(Course $course) {
+    public static function isCourseLocal(Course $course)
+    {
         // Check if course has a local type
-        if($course->type === CourseType::Local) {
+        if ($course->type === CourseType::Local) {
             return true;
         }
 
@@ -97,11 +101,12 @@ class Helpers {
      *
      * @param Course $course
      *
-     * @return boolean
+     * @return bool
      */
-    public static function isCourseExternal(Course $course) {
+    public static function isCourseExternal(Course $course)
+    {
         // Check if course has an external type
-        if($course->type === CourseType::External) {
+        if ($course->type === CourseType::External) {
             return true;
         }
 
@@ -116,7 +121,8 @@ class Helpers {
      *
      * @return string
      */
-    public static function truncate($string, $limit = 50) {
+    public static function truncate($string, $limit = 50)
+    {
         return Str::limit($string, $limit, $end = '...');
     }
 
@@ -127,7 +133,8 @@ class Helpers {
      *
      * @return string
      */
-    public static function courseType(string $type) {
+    public static function courseType(string $type)
+    {
         switch ($type) {
             case CourseType::External:
                 return trans('courses.external');
@@ -144,7 +151,8 @@ class Helpers {
      *
      * @return string
      */
-    public static function fileType(string $type) {
+    public static function fileType(string $type)
+    {
         switch ($type) {
             case FileType::Video:
                 return trans('files.video');
@@ -166,7 +174,8 @@ class Helpers {
      *
      * @return string
      */
-    public static function fileStatus(string $status) {
+    public static function fileStatus(string $status)
+    {
         switch ($status) {
             case FileStatus::Transcoding:
                 return trans('files.transcoding');
@@ -187,16 +196,17 @@ class Helpers {
      *
      * @return string
      */
-    public static function fileStatusBadge(string $status) {
+    public static function fileStatusBadge(string $status)
+    {
         switch ($status) {
             case FileStatus::Ready:
-                return '<span class="badge badge-success">' . Helpers::fileStatus($status) . '</span>';
+                return '<span class="badge badge-success">'.self::fileStatus($status).'</span>';
             case FileStatus::Failed:
-                return '<span class="badge badge-danger">' . Helpers::fileStatus($status) . '</span>';
+                return '<span class="badge badge-danger">'.self::fileStatus($status).'</span>';
             case FileStatus::Transcoding:
             case FileStatus::Processing:
             default:
-                return '<span class="badge badge-warning">' . Helpers::fileStatus($status) . '</span>';
+                return '<span class="badge badge-warning">'.self::fileStatus($status).'</span>';
         }
     }
 
@@ -207,8 +217,9 @@ class Helpers {
      *
      * @return string
      */
-    public static function fileUrl(string $filename) {
-        return asset('storage/uploads/files/' . $filename);
+    public static function fileUrl(string $filename)
+    {
+        return asset('storage/uploads/files/'.$filename);
     }
 
     /**
@@ -218,8 +229,9 @@ class Helpers {
      *
      * @return bool
      */
-    public static function isFileReady(File $file) {
-        if($file->status === FileStatus::Ready) {
+    public static function isFileReady(File $file)
+    {
+        if ($file->status === FileStatus::Ready) {
             return true;
         }
 
@@ -233,8 +245,9 @@ class Helpers {
      *
      * @return bool
      */
-    public static function isFileFailed(File $file) {
-        if($file->status === FileStatus::Failed) {
+    public static function isFileFailed(File $file)
+    {
+        if ($file->status === FileStatus::Failed) {
             return true;
         }
 
@@ -250,13 +263,14 @@ class Helpers {
      *
      * @return string
      */
-    public static function breadcrumbsHtml(Collection $breadcrumbs) {
-        $html = "";
+    public static function breadcrumbsHtml(Collection $breadcrumbs)
+    {
+        $html = '';
         foreach ($breadcrumbs as $path => $name) {
-            $html .= "<a href=\"" . $path . "\">" . Helpers::truncate($name, 25) . "</a>";
+            $html .= '<a href="'.$path.'">'.self::truncate($name, 25).'</a>';
 
             if ($breadcrumbs->last() !== $name) {
-                $html .= "<span> / </span>";
+                $html .= '<span> / </span>';
             }
         }
 
@@ -270,11 +284,12 @@ class Helpers {
      *
      * @return string
      */
-    public static function fileCards(File $file) {
+    public static function fileCards(File $file)
+    {
         $html = '';
 
         foreach ($file->cards as $card) {
-            $html .= '<div><a href="' . route('cards.show', $card->id) . '">' . $card->title . '</a></div>';
+            $html .= '<div><a href="'.route('cards.show', $card->id).'">'.$card->title.'</a></div>';
         }
 
         return $html;
@@ -288,7 +303,8 @@ class Helpers {
      *
      * @return string
      */
-    public static function fileState(File $file) {
+    public static function fileState(File $file)
+    {
         return $file->isUsed() ? 'used' : 'unused';
     }
 
@@ -297,9 +313,10 @@ class Helpers {
      *
      * @param Card $card
      *
-     * @return boolean
+     * @return bool
      */
-    public static function hasExternalLink(Card $card) {
+    public static function hasExternalLink(Card $card)
+    {
         return empty(trim($card['options']['box1']['link'])) ? false : true;
     }
 
@@ -310,8 +327,9 @@ class Helpers {
      *
      * @return string|null
      */
-    public static function getExternalLink(Card $card) {
-        if(!Helpers::hasExternalLink($card)) {
+    public static function getExternalLink(Card $card)
+    {
+        if (! self::hasExternalLink($card)) {
             return null;
         }
 
@@ -322,14 +340,15 @@ class Helpers {
      * Return whether the card has a internal or external media source
      *
      * @param Card $card
-     * @return boolean
+     * @return bool
      */
-    public static function hasSource(Card $card) {
-        if($card->file) {
+    public static function hasSource(Card $card)
+    {
+        if ($card->file) {
             return true;
         }
 
-        if(Helpers::hasExternalLink($card)) {
+        if (self::hasExternalLink($card)) {
             return true;
         }
 
@@ -340,10 +359,11 @@ class Helpers {
      * Return whether the card has a transcription
      *
      * @param Card $card
-     * @return boolean
+     * @return bool
      */
-    public static function hasTranscription(Card $card) {
-        if($card->box2['data']) {
+    public static function hasTranscription(Card $card)
+    {
+        if ($card->box2['data']) {
             return true;
         }
 
@@ -355,20 +375,21 @@ class Helpers {
      *
      * @param Card $card
      * @param string $box
-     * @return boolean|null
+     * @return bool|null
      */
-    public static function isHidden(Card $card, string $box) {
+    public static function isHidden(Card $card, string $box)
+    {
         $options = $card->options;
 
-        if (!array_key_exists($box, $options)) {
+        if (! array_key_exists($box, $options)) {
             return null;
         }
 
-        if (!is_array($options[$box])) {
+        if (! is_array($options[$box])) {
             return null;
         }
 
-        if (!array_key_exists('hidden', $options[$box])) {
+        if (! array_key_exists('hidden', $options[$box])) {
             return null;
         }
 
@@ -406,7 +427,7 @@ class Helpers {
      * Return whether the state type is considered read only or not
      *
      * @param State $state
-     * @return boolean
+     * @return bool
      */
     public static function isStateReadOnly(State $state): bool
     {

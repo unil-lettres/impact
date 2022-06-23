@@ -3,11 +3,11 @@
 namespace Tests\Browser;
 
 use Illuminate\Support\Facades\Artisan;
+use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
 use Tests\Browser\Pages\Invitations;
 use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
-use Laravel\Dusk\Browser;
 use Throwable;
 
 class InvitationTest extends DuskTestCase
@@ -20,7 +20,7 @@ class InvitationTest extends DuskTestCase
     {
         parent::setUp();
 
-        if (!static::$migrated) {
+        if (! static::$migrated) {
             Artisan::call('migrate:fresh --seed');
             static::$migrated = true;
         }
@@ -125,7 +125,6 @@ class InvitationTest extends DuskTestCase
 
             $browser->visit('/invitations')
                 ->assertDontSee('Invitations en attente');
-
         });
     }
 

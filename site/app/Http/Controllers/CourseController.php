@@ -15,11 +15,11 @@ use App\Http\Requests\StoreCourse;
 use App\Http\Requests\UpdateCourse;
 use App\Mail\CourseConfirmDelete;
 use App\User;
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
-use Exception;
 use Illuminate\Support\Facades\Mail;
 
 class CourseController extends Controller
@@ -38,7 +38,7 @@ class CourseController extends Controller
             ->get();
 
         return view('courses.index', [
-            'courses' => $courses
+            'courses' => $courses,
         ]);
     }
 
@@ -54,7 +54,7 @@ class CourseController extends Controller
     {
         $this->authorize('manage', Course::class);
 
-        if($request->get('filter')) {
+        if ($request->get('filter')) {
             $courses = $this->filter($request->get('filter'));
         } else {
             $courses = Course::withTrashed();
@@ -63,7 +63,7 @@ class CourseController extends Controller
         return view('courses.manage', [
             'courses' => $courses
                 ->orderBy('created_at', 'desc')
-                ->paginate(config('const.pagination.per'))
+                ->paginate(config('const.pagination.per')),
         ]);
     }
 
@@ -92,7 +92,7 @@ class CourseController extends Controller
     {
         $this->authorize('create', Course::class);
 
-        if($request->get('external_id')) {
+        if ($request->get('external_id')) {
             // Create new external course
             // TODO: retrieve data from the specified Moodle course if it exists
             // TODO: create student & teacher enrollments
@@ -100,13 +100,13 @@ class CourseController extends Controller
                 'name' => 'Retrieved name from Moodle',
                 'description' => 'Retrieved description from Moodle',
                 'type' => CourseType::External,
-                'external_id' => $request->get('external_id')
+                'external_id' => $request->get('external_id'),
             ]);
         } else {
             // Create new local course
             $course = Course::create([
                 'name' => $request->input('name'),
-                'description' => $request->input('description')
+                'description' => $request->input('description'),
             ]);
         }
 
@@ -137,7 +137,7 @@ class CourseController extends Controller
             'cards' => $course
                 ->rootCards(),
             'folders' => $course
-                ->rootFolders()
+                ->rootFolders(),
         ]);
     }
 
@@ -206,7 +206,7 @@ class CourseController extends Controller
 
         $course->update([
             'name' => $request->get('name'),
-            'description' => $request->get('description')
+            'description' => $request->get('description'),
         ]);
         $course->save();
 
@@ -334,7 +334,8 @@ class CourseController extends Controller
      *
      * @return Builder
      */
-    private function filter(string $filter) {
+    private function filter(string $filter)
+    {
         $filters = Course::query();
 
         switch ($filter) {

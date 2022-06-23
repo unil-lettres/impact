@@ -2,9 +2,9 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
-use Illuminate\Database\Eloquent\Model;
 
 class Enrollment extends Model
 {
@@ -19,7 +19,7 @@ class Enrollment extends Model
     ];
 
     protected $dates = [
-        'deleted_at'
+        'deleted_at',
     ];
 
     /**
@@ -60,13 +60,13 @@ class Enrollment extends Model
      */
     public function addCard(Card $card)
     {
-        if (!$this->hasCard($card)) {
+        if (! $this->hasCard($card)) {
             $cards = collect($this->cards);
 
             $cards = $cards->push($card->id);
 
             $this->update([
-                'cards' => $cards->toArray()
+                'cards' => $cards->toArray(),
             ]);
             $this->save();
 
@@ -94,7 +94,7 @@ class Enrollment extends Model
             });
 
             $this->update([
-                'cards' => $cards->toArray()
+                'cards' => $cards->toArray(),
             ]);
             $this->save();
 
@@ -118,11 +118,11 @@ class Enrollment extends Model
     {
         $card = Card::findOrFail($cardId);
 
-        if($add->isNotEmpty()) {
+        if ($add->isNotEmpty()) {
             return $this->addCard($card);
         }
 
-        if($remove->isNotEmpty()) {
+        if ($remove->isNotEmpty()) {
             return $this->removeCard($card);
         }
 

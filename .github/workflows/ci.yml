@@ -66,6 +66,12 @@ jobs:
         working-directory: ./site
         run: ./setup.sh
 
+      - name: Check PHP code style
+        id: app-php-style
+        working-directory: ./site
+        run: ./vendor/bin/pint --test
+        continue-on-error: true
+
       - name: Serve
         working-directory: ./site
         run: |

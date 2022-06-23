@@ -14,7 +14,7 @@ class Invitation extends Model
     ];
 
     protected $dates = [
-        'deleted_at'
+        'deleted_at',
     ];
 
     /**
@@ -38,8 +38,9 @@ class Invitation extends Model
      *
      * @return string
      */
-    public function generateInvitationToken() {
-        return substr(md5(rand(0, 9) . $this->email . time()), 0, 32);
+    public function generateInvitationToken()
+    {
+        return substr(md5(rand(0, 9).$this->email.time()), 0, 32);
     }
 
     /**
@@ -47,7 +48,8 @@ class Invitation extends Model
      *
      * @return string
      */
-    public function getLink() {
-        return urldecode(url('invitations/register') . '?token=' . $this->invitation_token);
+    public function getLink()
+    {
+        return urldecode(url('invitations/register').'?token='.$this->invitation_token);
     }
 }

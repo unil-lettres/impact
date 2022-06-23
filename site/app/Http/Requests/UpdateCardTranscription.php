@@ -30,15 +30,15 @@ class UpdateCardTranscription extends AbstractRequest
             'transcription' => [
                 'nullable',
                 'array',
-                new Transcription
+                new Transcription,
             ],
             'box' => [
                 'required',
                 'string',
                 Rule::in(
-                    [ CardBox::Box2 ]
-                )
-            ]
+                    [CardBox::Box2]
+                ),
+            ],
         ];
     }
 }

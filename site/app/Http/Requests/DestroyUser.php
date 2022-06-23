@@ -22,7 +22,7 @@ class DestroyUser extends AbstractRequest
     public function rules()
     {
         return [
-            'user' => 'required|integer|exists:users,id'
+            'user' => 'required|integer|exists:users,id',
         ];
     }
 }

@@ -6,8 +6,8 @@ use App\Card;
 use App\Course;
 use App\Enums\FileStatus;
 use App\Enums\FileType;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class FilesTableSeeder extends Seeder
@@ -36,7 +36,7 @@ class FilesTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
-            'deleted_at' => null
+            'deleted_at' => null,
         ]);
 
         DB::table('files')->insert([
@@ -51,7 +51,7 @@ class FilesTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $firstCourse->id,
-            'deleted_at' => null
+            'deleted_at' => null,
         ]);
 
         DB::table('files')->insert([
@@ -66,7 +66,7 @@ class FilesTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
-            'deleted_at' => $now
+            'deleted_at' => $now,
         ]);
 
         DB::table('files')->insert([
@@ -81,7 +81,7 @@ class FilesTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
-            'deleted_at' => null
+            'deleted_at' => null,
         ]);
 
         $usedFile = DB::table('files')->insertGetId([
@@ -96,7 +96,7 @@ class FilesTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
-            'deleted_at' => null
+            'deleted_at' => null,
         ]);
 
         // Link a new card to a file
@@ -107,7 +107,7 @@ class FilesTableSeeder extends Seeder
             'course_id' => $secondCourse->id,
             'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS,
-            'file_id' => $usedFile
+            'file_id' => $usedFile,
         ]);
     }
 }

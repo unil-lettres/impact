@@ -2,9 +2,9 @@
 
 namespace App\Http\Middleware;
 
+use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Closure;
 
 class IsAdmin
 {
@@ -18,12 +18,12 @@ class IsAdmin
     public function handle($request, Closure $next)
     {
         // Check if user is authenticated
-        if(!Auth::user()) {
+        if (! Auth::user()) {
             return redirect('/');
         }
 
         // Check if user is an admin
-        if(auth()->user()->admin) {
+        if (auth()->user()->admin) {
             return $next($request);
         }
 

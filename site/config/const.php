@@ -23,7 +23,7 @@ return [
         ],
         'ffmpeg' => [
             'timeout' => env('FILE_TIMEOUT', 3600),
-        ]
+        ],
     ],
 
     'users' => [

@@ -10,7 +10,8 @@ use Illuminate\Support\Str;
 
 class FileUploadProcessor
 {
-    public function __construct() {
+    public function __construct()
+    {
         Storage::disk('public')
             ->makeDirectory(StoragePath::UploadStandard);
 
@@ -25,20 +26,21 @@ class FileUploadProcessor
      *
      * @return string
      */
-    public function fileType(string $mimeType) {
-        if(Str::is('video/*', $mimeType)) {
+    public function fileType(string $mimeType)
+    {
+        if (Str::is('video/*', $mimeType)) {
             return FileType::Video;
         }
 
-        if(Str::is('audio/*', $mimeType)) {
+        if (Str::is('audio/*', $mimeType)) {
             return FileType::Audio;
         }
 
-        if(Str::is('image/*', $mimeType)) {
+        if (Str::is('image/*', $mimeType)) {
             return FileType::Image;
         }
 
-        if(Str::is('application/*', $mimeType)) {
+        if (Str::is('application/*', $mimeType)) {
             return FileType::Document;
         }
 
@@ -66,7 +68,7 @@ class FileUploadProcessor
      */
     public function getFileName($filePath)
     {
-        if(!$filePath) {
+        if (! $filePath) {
             return 'No name';
         }
 
@@ -77,7 +79,7 @@ class FileUploadProcessor
      * Move file to defined storage path.
      *
      * @param UploadedFile $file
-     * @param boolean $isTemp
+     * @param bool $isTemp
      *
      * @return string|false
      */
@@ -95,7 +97,7 @@ class FileUploadProcessor
      *
      * @param string $filename
      *
-     * @return boolean
+     * @return bool
      */
     public function moveFileToStandardStorage(string $filename)
     {
@@ -104,8 +106,8 @@ class FileUploadProcessor
 
         return Storage::disk('public')
             ->move(
-                StoragePath::UploadTemp . '/' . $cleanedFilename,
-                StoragePath::UploadStandard . '/' . $cleanedFilename
+                StoragePath::UploadTemp.'/'.$cleanedFilename,
+                StoragePath::UploadStandard.'/'.$cleanedFilename
             );
     }
 
@@ -126,7 +128,7 @@ class FileUploadProcessor
 
         return Storage::disk('public')
             ->size(
-                $path . '/' . $cleanedFilename
+                $path.'/'.$cleanedFilename
             );
     }
 
@@ -135,7 +137,7 @@ class FileUploadProcessor
      *
      * @param string $filename
      *
-     * @return boolean
+     * @return bool
      */
     public function removeFileFromTempStorage(string $filename)
     {
@@ -144,7 +146,7 @@ class FileUploadProcessor
 
         return Storage::disk('public')
             ->delete(
-                StoragePath::UploadTemp . '/' . $cleanedFilename
+                StoragePath::UploadTemp.'/'.$cleanedFilename
             );
     }
 
@@ -153,7 +155,7 @@ class FileUploadProcessor
      *
      * @param string $filename
      *
-     * @return boolean
+     * @return bool
      */
     public function removeFileFromStandardStorage(string $filename)
     {
@@ -162,7 +164,7 @@ class FileUploadProcessor
 
         return Storage::disk('public')
             ->delete(
-                StoragePath::UploadStandard . '/' . $cleanedFilename
+                StoragePath::UploadStandard.'/'.$cleanedFilename
             );
     }
 }

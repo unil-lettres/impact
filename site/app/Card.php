@@ -44,21 +44,21 @@ class Card extends Model
         }';
 
     protected $fillable = [
-        'title', 'box2', 'box3', 'box4', 'course_id', 'folder_id', 'file_id', 'options'
+        'title', 'box2', 'box3', 'box4', 'course_id', 'folder_id', 'file_id', 'options',
     ];
 
     protected $dates = [
-        'deleted_at'
+        'deleted_at',
     ];
 
     protected $casts = [
         'box2' => 'array',
-        'options' => 'array'
+        'options' => 'array',
     ];
 
     protected $attributes = [
-        'box2' => Card::TRANSCRIPTION,
-        'options' => Card::OPTIONS
+        'box2' => self::TRANSCRIPTION,
+        'options' => self::OPTIONS,
     ];
 
     /**
@@ -120,8 +120,9 @@ class Card extends Model
      * a path as the key, and a name as the value.
      * @return \Illuminate\Support\Collection
      */
-    public function breadcrumbs(bool $self = false) {
-        if($this->folder()->get()->isEmpty()) {
+    public function breadcrumbs(bool $self = false)
+    {
+        if ($this->folder()->get()->isEmpty()) {
             // If the card has no folder, only return the course breadcrumbs
             $breadcrumbs = $this->course
                 ->breadcrumbs(true);
@@ -133,7 +134,7 @@ class Card extends Model
                 ->breadcrumbs(true);
         }
 
-        if($self) {
+        if ($self) {
             // Add the current card to the breadcrumbs
             $breadcrumbs->put(
                 route('cards.show', $this->id), $this->title

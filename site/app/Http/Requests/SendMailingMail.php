@@ -23,7 +23,7 @@ class SendMailingMail extends AbstractRequest
     {
         return [
             'subject' => 'string|required',
-            'content' => 'string|required'
+            'content' => 'string|required',
         ];
     }
 }

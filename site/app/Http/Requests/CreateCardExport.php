@@ -31,16 +31,16 @@ class CreateCardExport extends AbstractRequest
                 'required',
                 'string',
                 Rule::in(
-                    [ CardBox::Box2 ]
-                )
+                    [CardBox::Box2]
+                ),
             ],
             'format' => [
                 'required',
                 'string',
                 Rule::in(
-                    [ ExportFormat::Docx ]
-                )
-            ]
+                    [ExportFormat::Docx]
+                ),
+            ],
         ];
     }
 }

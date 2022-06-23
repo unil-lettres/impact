@@ -28,8 +28,8 @@ class ExtendUser extends AbstractRequest
                 'required',
                 'integer',
                 'exists:users,id',
-                new RefuteAdmins()
-            ]
+                new RefuteAdmins(),
+            ],
         ];
     }
 }

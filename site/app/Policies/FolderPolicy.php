@@ -128,13 +128,13 @@ class FolderPolicy
     public function select(User $user, Course $course, Folder $selected, Folder $folder = null)
     {
         // Only folders within the course can be selected
-        if($selected->course->id !== $course->id) {
+        if ($selected->course->id !== $course->id) {
             return false;
         }
 
-        if($folder) {
+        if ($folder) {
             // Cannot select own folder as parent
-            if($folder->id === $selected->id) {
+            if ($folder->id === $selected->id) {
                 return false;
             }
         }

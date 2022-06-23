@@ -19,12 +19,12 @@ class IsValid
     public function handle($request, Closure $next)
     {
         // Check if user is authenticated
-        if(!Auth::user()) {
+        if (! Auth::user()) {
             return redirect('/');
         }
 
         // Check if the account is still valid
-        if(Helpers::isUserValid(auth()->user())) {
+        if (Helpers::isUserValid(auth()->user())) {
             return $next($request);
         }
 

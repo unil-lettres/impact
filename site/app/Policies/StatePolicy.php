@@ -23,7 +23,7 @@ class StatePolicy
     public function viewAny(User $user, Course $course)
     {
         // The listing of the states cannot be viewed if not within a course
-        if (!$course) {
+        if (! $course) {
             return false;
         }
 
@@ -46,7 +46,7 @@ class StatePolicy
     public function view(User $user, State $state)
     {
         // A state cannot be viewed if not within a course
-        if (!$state->course) {
+        if (! $state->course) {
             return false;
         }
 
@@ -56,7 +56,7 @@ class StatePolicy
         }
 
         // Editors of the course can view a non teacher_only state
-        if ($user->isEditor($state->course) && !$state->teachers_only) {
+        if ($user->isEditor($state->course) && ! $state->teachers_only) {
             return true;
         }
 
@@ -74,7 +74,7 @@ class StatePolicy
     public function create(User $user, Course $course)
     {
         // A state cannot be created if not within a course
-        if (!$course) {
+        if (! $course) {
             return false;
         }
 
@@ -97,7 +97,7 @@ class StatePolicy
     public function update(User $user, State $state)
     {
         // A state cannot be updated if not within a course
-        if (!$state->course) {
+        if (! $state->course) {
             return false;
         }
 
@@ -125,7 +125,7 @@ class StatePolicy
     public function forceDelete(User $user, State $state)
     {
         // A state cannot be deleted if not within a course
-        if (!$state->course) {
+        if (! $state->course) {
             return false;
         }
 
@@ -153,7 +153,7 @@ class StatePolicy
     public function position(User $user, State $state)
     {
         // A state position cannot be updated if not within a course
-        if (!$state->course) {
+        if (! $state->course) {
             return false;
         }
 

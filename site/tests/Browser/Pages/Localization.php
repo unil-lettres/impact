@@ -20,7 +20,7 @@ class Localization extends Page
      */
     public function url()
     {
-        return 'lang/' . $this->locale;
+        return 'lang/'.$this->locale;
     }
 
     /**
@@ -30,7 +30,8 @@ class Localization extends Page
      * @return void
      */
     public function assert(Browser $browser)
-    {}
+    {
+    }
 
     /**
      * Get the element shortcuts for the page.

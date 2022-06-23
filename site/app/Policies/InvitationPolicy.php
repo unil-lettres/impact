@@ -38,7 +38,7 @@ class InvitationPolicy
     public function viewAny(User $user)
     {
         // Only teachers of a course can view invitations
-        if($user->enrollmentsAsTeacher()->isNotEmpty()) {
+        if ($user->enrollmentsAsTeacher()->isNotEmpty()) {
             return true;
         }
 
@@ -67,7 +67,7 @@ class InvitationPolicy
      */
     public function view(User $user, Invitation $invitation)
     {
-        if($invitation->registered_at) {
+        if ($invitation->registered_at) {
             return false;
         }
 
@@ -85,7 +85,7 @@ class InvitationPolicy
     public function create(User $user, ?Course $course)
     {
         // Only teachers of a course can view the invitation creation form
-        if (!$course && $user->enrollmentsAsTeacher()->isNotEmpty()) {
+        if (! $course && $user->enrollmentsAsTeacher()->isNotEmpty()) {
             return true;
         }
 
@@ -107,7 +107,7 @@ class InvitationPolicy
      */
     public function update(User $user, Invitation $invitation)
     {
-        if($invitation->registered_at) {
+        if ($invitation->registered_at) {
             return false;
         }
 
@@ -124,7 +124,7 @@ class InvitationPolicy
      */
     public function forceDelete(User $user, Invitation $invitation)
     {
-        if($invitation->registered_at) {
+        if ($invitation->registered_at) {
             return false;
         }
 
@@ -165,7 +165,7 @@ class InvitationPolicy
      */
     public function mail(User $user, Invitation $invitation)
     {
-        if($invitation->registered_at) {
+        if ($invitation->registered_at) {
             return false;
         }
 

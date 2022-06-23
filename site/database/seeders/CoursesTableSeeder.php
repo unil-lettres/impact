@@ -4,8 +4,8 @@ namespace Database\Seeders;
 
 use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
@@ -24,21 +24,21 @@ class CoursesTableSeeder extends Seeder
             'name' => 'First space',
             'created_at' => $now,
             'updated_at' => $now,
-            'deleted_at' => null
+            'deleted_at' => null,
         ]);
 
         $secondCourse = DB::table('courses')->insertGetId([
             'name' => 'Second space',
             'created_at' => $now,
             'updated_at' => $now,
-            'deleted_at' => null
+            'deleted_at' => null,
         ]);
 
         $deactivatedCourse = DB::table('courses')->insertGetId([
             'name' => 'Deactivated space',
             'created_at' => $now,
             'updated_at' => $now,
-            'deleted_at' => $now
+            'deleted_at' => $now,
         ]);
 
         DB::table('courses')->insertGetId([
@@ -56,7 +56,7 @@ class CoursesTableSeeder extends Seeder
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
-            'updated_at' => $now
+            'updated_at' => $now,
         ]);
 
         $studentUser = DB::table('users')->insertGetId([
@@ -65,31 +65,31 @@ class CoursesTableSeeder extends Seeder
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
-            'updated_at' => $now
+            'updated_at' => $now,
         ]);
 
         DB::table('enrollments')->insert([
             'role' => EnrollmentRole::Teacher,
             'course_id' => $firstCourse,
-            'user_id' => $teacherUser
+            'user_id' => $teacherUser,
         ]);
 
         DB::table('enrollments')->insert([
             'role' => EnrollmentRole::Teacher,
             'course_id' => $secondCourse,
-            'user_id' => $teacherUser
+            'user_id' => $teacherUser,
         ]);
 
         DB::table('enrollments')->insert([
             'role' => EnrollmentRole::Student,
             'course_id' => $secondCourse,
-            'user_id' => $studentUser
+            'user_id' => $studentUser,
         ]);
 
         DB::table('enrollments')->insert([
             'role' => EnrollmentRole::Student,
             'course_id' => $deactivatedCourse,
-            'user_id' => $studentUser
+            'user_id' => $studentUser,
         ]);
     }
 }

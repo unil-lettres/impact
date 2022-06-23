@@ -3,8 +3,8 @@
 namespace Database\Seeders;
 
 use App\Course;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class FoldersTableSeeder extends Seeder
@@ -24,7 +24,7 @@ class FoldersTableSeeder extends Seeder
             'title' => 'Test folder',
             'course_id' => $secondCourse->id,
             'created_at' => $now,
-            'updated_at' => $now
+            'updated_at' => $now,
         ]);
 
         DB::table('folders')->insert([
@@ -32,7 +32,7 @@ class FoldersTableSeeder extends Seeder
             'course_id' => $secondCourse->id,
             'parent_id' => $testFolder,
             'created_at' => $now,
-            'updated_at' => $now
+            'updated_at' => $now,
         ]);
     }
 }

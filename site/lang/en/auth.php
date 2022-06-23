@@ -17,6 +17,6 @@ return [
     'throttle' => 'Too many login attempts. Please try again in :seconds seconds.',
     'not_authorized' => 'You are not authorized to access this content.',
     'profile' => 'Manage profile',
-    'aai_failed' => 'Le processus d\'authentification a échoué.'
+    'aai_failed' => 'Le processus d\'authentification a échoué.',
 
 ];

@@ -13,8 +13,11 @@ class TeachersMailing extends Mailable
     use Queueable, SerializesModels;
 
     public $user;
+
     public $courses;
+
     public $subject;
+
     public $content;
 
     /**
@@ -52,10 +55,11 @@ class TeachersMailing extends Mailable
      *
      * @return string|string[]
      */
-    private function processContent($content) {
+    private function processContent($content)
+    {
         // Replace placeholder with courses
         $content = str_replace(
-            "{{espaces}}",
+            '{{espaces}}',
             $this->coursesAsHtmlList(),
             $content
         );
@@ -63,7 +67,7 @@ class TeachersMailing extends Mailable
         // Clean content
         return str_replace(
             "\r\n",
-            "<br/>",
+            '<br/>',
             $content
         );
     }
@@ -73,11 +77,12 @@ class TeachersMailing extends Mailable
      *
      * @return string
      */
-    private function coursesAsHtmlList() {
-        if($this->courses) {
-            $html = "";
+    private function coursesAsHtmlList()
+    {
+        if ($this->courses) {
+            $html = '';
             foreach ($this->courses as $course) {
-                $html .= '- <a href="' . route('courses.show', $course->id) . '">' . $course->name . '</a>';
+                $html .= '- <a href="'.route('courses.show', $course->id).'">'.$course->name.'</a>';
 
                 if ($course !== $this->courses->last()) {
                     $html .= '<br/>';
@@ -85,6 +90,6 @@ class TeachersMailing extends Mailable
             }
         }
 
-        return $html ?? "";
+        return $html ?? '';
     }
 }

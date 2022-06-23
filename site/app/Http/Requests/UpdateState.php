@@ -12,7 +12,7 @@ class UpdateState extends AbstractRequest
         StatePermission::TeachersAndEditorsCanShowAndEdit,
         StatePermission::AllCanShowTeachersAndEditorsCanEdit,
         StatePermission::AllCanShowTeachersCanEdit,
-        StatePermission::TeachersCanShowAndEdit
+        StatePermission::TeachersCanShowAndEdit,
     ];
 
     /**
@@ -39,33 +39,33 @@ class UpdateState extends AbstractRequest
             'description' => 'string|max:3000|nullable',
             'teachers_only' => [
                 'sometimes',
-                Rule::in([ 'on' ])
+                Rule::in(['on']),
             ],
             'box1' => [
                 'required',
                 'integer',
-                Rule::in(UpdateState::BOX_ALLOWED_PERMISSIONS)
+                Rule::in(self::BOX_ALLOWED_PERMISSIONS),
             ],
             'box2' => [
                 'required',
                 'integer',
-                Rule::in(UpdateState::BOX_ALLOWED_PERMISSIONS)
+                Rule::in(self::BOX_ALLOWED_PERMISSIONS),
             ],
             'box3' => [
                 'required',
                 'integer',
-                Rule::in(UpdateState::BOX_ALLOWED_PERMISSIONS)
+                Rule::in(self::BOX_ALLOWED_PERMISSIONS),
             ],
             'box4' => [
                 'required',
                 'integer',
-                Rule::in(UpdateState::BOX_ALLOWED_PERMISSIONS)
+                Rule::in(self::BOX_ALLOWED_PERMISSIONS),
             ],
             'box5' => [
                 'required',
                 'integer',
-                Rule::in(UpdateState::BOX_ALLOWED_PERMISSIONS)
-            ]
+                Rule::in(self::BOX_ALLOWED_PERMISSIONS),
+            ],
         ];
     }
 }

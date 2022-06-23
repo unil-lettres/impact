@@ -28,7 +28,7 @@ class InvitationsTableSeeder extends Seeder
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
-            'validity' => Carbon::now()->addMonths(config('const.users.validity'))
+            'validity' => Carbon::now()->addMonths(config('const.users.validity')),
         ]);
 
         // Create user with student enrollment to test invitations
@@ -39,7 +39,7 @@ class InvitationsTableSeeder extends Seeder
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
-            'validity' => Carbon::now()->addMonths(config('const.users.validity'))
+            'validity' => Carbon::now()->addMonths(config('const.users.validity')),
         ]);
 
         // Create course to test invitations
@@ -47,21 +47,21 @@ class InvitationsTableSeeder extends Seeder
             'name' => 'Invitation space',
             'created_at' => $now,
             'updated_at' => $now,
-            'deleted_at' => null
+            'deleted_at' => null,
         ]);
 
         // Create teacher enrollment to test invitations
         DB::table('enrollments')->insert([
             'role' => EnrollmentRole::Teacher,
             'course_id' => $course,
-            'user_id' => $userTeacher
+            'user_id' => $userTeacher,
         ]);
 
         // Create student enrollment to test invitations
         DB::table('enrollments')->insert([
             'role' => EnrollmentRole::Student,
             'course_id' => $course,
-            'user_id' => $userStudent
+            'user_id' => $userStudent,
         ]);
 
         DB::table('invitations')->insert([
@@ -71,7 +71,7 @@ class InvitationsTableSeeder extends Seeder
             'creator_id' => $userTeacher,
             'course_id' => $course,
             'created_at' => $now,
-            'updated_at' => $now
+            'updated_at' => $now,
         ]);
 
         DB::table('invitations')->insert([
@@ -81,7 +81,7 @@ class InvitationsTableSeeder extends Seeder
             'course_id' => $course,
             'registered_at' => $now,
             'created_at' => $now,
-            'updated_at' => $now
+            'updated_at' => $now,
         ]);
 
         DB::table('invitations')->insert([
@@ -91,7 +91,7 @@ class InvitationsTableSeeder extends Seeder
             'course_id' => $course,
             'registered_at' => null,
             'created_at' => $now,
-            'updated_at' => $now
+            'updated_at' => $now,
         ]);
     }
 }

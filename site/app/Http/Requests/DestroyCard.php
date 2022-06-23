@@ -22,7 +22,7 @@ class DestroyCard extends AbstractRequest
     public function rules()
     {
         return [
-            'card' => 'required|integer|exists:cards,id'
+            'card' => 'required|integer|exists:cards,id',
         ];
     }
 }

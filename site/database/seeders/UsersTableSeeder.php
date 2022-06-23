@@ -3,7 +3,6 @@
 namespace Database\Seeders;
 
 use App\Enums\UserType;
-use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +26,7 @@ class UsersTableSeeder extends Seeder
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
-            'admin' => true
+            'admin' => true,
         ]);
 
         DB::table('users')->insert([
@@ -38,7 +37,7 @@ class UsersTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'creator_id' => $admin,
-            'validity' => Carbon::now()->addMonths(config('const.users.validity'))
+            'validity' => Carbon::now()->addMonths(config('const.users.validity')),
         ]);
 
         DB::table('users')->insert([
@@ -49,7 +48,7 @@ class UsersTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'creator_id' => $admin,
-            'validity' => Carbon::now()->subDays(1)
+            'validity' => Carbon::now()->subDays(1),
         ]);
 
         DB::table('users')->insert([
@@ -58,7 +57,7 @@ class UsersTableSeeder extends Seeder
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
-            'type' => UserType::Aai
+            'type' => UserType::Aai,
         ]);
     }
 }

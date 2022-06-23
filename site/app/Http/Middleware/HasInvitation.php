@@ -19,7 +19,7 @@ class HasInvitation
     public function handle($request, Closure $next)
     {
         // Check for a token parameter
-        if (!$request->input('token')) {
+        if (! $request->input('token')) {
             return redirect('/login');
         }
 
@@ -29,7 +29,7 @@ class HasInvitation
                 ->where('invitation_token', $request->input('token'))
                 ->firstOrFail();
 
-            if($invitation->trashed()) {
+            if ($invitation->trashed()) {
                 return redirect('/login')
                     ->with('error', trans('messages.invitation.disabled.course'));
             }
@@ -39,7 +39,7 @@ class HasInvitation
         }
 
         // Check if the invitation was already used
-        if (!is_null($invitation->registered_at)) {
+        if (! is_null($invitation->registered_at)) {
             return redirect('/login')
                 ->with('error', trans('messages.invitation.already.used'));
         }

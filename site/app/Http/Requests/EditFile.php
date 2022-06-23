@@ -22,7 +22,7 @@ class EditFile extends AbstractRequest
     public function rules()
     {
         return [
-            'file' => 'required|integer|exists:files,id'
+            'file' => 'required|integer|exists:files,id',
         ];
     }
 }

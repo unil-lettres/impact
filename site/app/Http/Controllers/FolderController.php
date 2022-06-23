@@ -40,7 +40,7 @@ class FolderController extends Controller
 
         $this->authorize('create', [
             Folder::class,
-            $course
+            $course,
         ]);
 
         return view('folders.create', [
@@ -49,7 +49,7 @@ class FolderController extends Controller
                 ->breadcrumbs(true),
             'folders' => $course
                 ->folders()
-                ->get()
+                ->get(),
         ]);
     }
 
@@ -67,15 +67,15 @@ class FolderController extends Controller
 
         $this->authorize('create', [
             Folder::class,
-            $course
+            $course,
         ]);
 
         // Check also folder select policy if a parent folder is selected
-        if($request->input('parent_id')) {
+        if ($request->input('parent_id')) {
             $this->authorize('select', [
                 Folder::class,
                 $course,
-                Folder::findOrFail($request->input('parent_id'))
+                Folder::findOrFail($request->input('parent_id')),
             ]);
         }
 
@@ -109,7 +109,7 @@ class FolderController extends Controller
                 ->get(),
             'folders' => $folder
                 ->children()
-                ->get()
+                ->get(),
         ]);
     }
 
@@ -138,7 +138,7 @@ class FolderController extends Controller
             'folders' => $folders,
             'parent' => $folder->parent,
             'breadcrumbs' => $folder
-                ->breadcrumbs(true)
+                ->breadcrumbs(true),
         ]);
     }
 
@@ -158,18 +158,18 @@ class FolderController extends Controller
         $this->authorize('update', $folder);
 
         // Check also folder select policy if a parent folder is selected
-        if($request->input('parent_id')) {
+        if ($request->input('parent_id')) {
             $this->authorize('select', [
                 Folder::class,
                 $folder->course,
                 Folder::findOrFail($request->input('parent_id')),
-                $folder
+                $folder,
             ]);
         }
 
         $folder->update([
             'title' => $request->get('title'),
-            'parent_id' => $request->get('parent_id')
+            'parent_id' => $request->get('parent_id'),
         ]);
         $folder->save();
 

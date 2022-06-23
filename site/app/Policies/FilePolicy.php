@@ -29,7 +29,7 @@ class FilePolicy
         }
 
         // The listing of the files cannot be viewed if not within a course
-        if (!$course) {
+        if (! $course) {
             return false;
         }
 
@@ -72,7 +72,7 @@ class FilePolicy
         }
 
         // The file cannot be viewed if not linked to a course
-        if (!$file->course) {
+        if (! $file->course) {
             return false;
         }
 
@@ -142,7 +142,7 @@ class FilePolicy
         }
 
         // The file cannot be deleted if not linked to a course
-        if (!$file->course) {
+        if (! $file->course) {
             return false;
         }
 
@@ -163,7 +163,8 @@ class FilePolicy
      *
      * @return mixed
      */
-    public function upload(User $user, ?Course $course, ?Card $card) {
+    public function upload(User $user, ?Course $course, ?Card $card)
+    {
         if ($user->admin) {
             return true;
         }

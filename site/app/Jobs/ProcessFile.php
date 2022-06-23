@@ -11,12 +11,12 @@ use FFMpeg\Coordinate\Dimension;
 use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
 use FFMpeg\Filters\Video\ResizeFilter;
-use FFMpeg\Format\Video\X264;
 use FFMpeg\Format\Audio\Mp3;
+use FFMpeg\Format\Video\X264;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Storage;
 
@@ -25,8 +25,11 @@ class ProcessFile implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected File $file;
+
     protected FileUploadProcessor $fileUploadProcessor;
+
     protected string $fullTempPath;
+
     protected string $fullStandardPath;
 
     /**
@@ -80,7 +83,7 @@ class ProcessFile implements ShouldQueue
     public function failed(Exception $exception)
     {
         $this->file->update([
-            'status' => FileStatus::Failed
+            'status' => FileStatus::Failed,
         ]);
         $this->file->save();
 
@@ -91,12 +94,13 @@ class ProcessFile implements ShouldQueue
     /**
      * Process an image.
      */
-    protected function processImage() {
+    protected function processImage()
+    {
         $this->fileUploadProcessor
             ->moveFileToStandardStorage($this->file->filename);
 
         $this->file->update([
-            'status' => FileStatus::Ready
+            'status' => FileStatus::Ready,
         ]);
         $this->file->save();
     }
@@ -104,12 +108,13 @@ class ProcessFile implements ShouldQueue
     /**
      * Process a document.
      */
-    protected function processDocument() {
+    protected function processDocument()
+    {
         $this->fileUploadProcessor
             ->moveFileToStandardStorage($this->file->filename);
 
         $this->file->update([
-            'status' => FileStatus::Ready
+            'status' => FileStatus::Ready,
         ]);
         $this->file->save();
     }
@@ -117,14 +122,16 @@ class ProcessFile implements ShouldQueue
     /**
      * Process a video file.
      */
-    protected function processVideo() {
+    protected function processVideo()
+    {
         $this->transcodeFile(FileType::Video);
     }
 
     /**
      * Process an audio file.
      */
-    protected function processAudio() {
+    protected function processAudio()
+    {
         $this->transcodeFile(FileType::Audio);
     }
 
@@ -133,9 +140,10 @@ class ProcessFile implements ShouldQueue
      *
      * @param string $type
      */
-    protected function transcodeFile(string $type) {
+    protected function transcodeFile(string $type)
+    {
         $this->file->update([
-            'status' => FileStatus::Transcoding
+            'status' => FileStatus::Transcoding,
         ]);
         $this->file->save();
 
@@ -149,7 +157,7 @@ class ProcessFile implements ShouldQueue
         }
 
         $this->file->update([
-            'status' => FileStatus::Ready
+            'status' => FileStatus::Ready,
         ]);
         $this->file->save();
     }
@@ -157,16 +165,17 @@ class ProcessFile implements ShouldQueue
     /**
      * Transcode a video file.
      */
-    protected function transcodeVideo() {
+    protected function transcodeVideo()
+    {
         $ffmpeg = FFMpeg::create(
-            array(
+            [
                 'timeout' => config('const.files.ffmpeg.timeout'),
-            )
+            ]
         );
         $ffprobe = FFProbe::create();
-        $openFromPathname = $this->fullTempPath . $this->file->filename;
-        $saveToPathname = $this->fullStandardPath . $this->fileUploadProcessor
-                ->getFileName($this->file->filename) . '.' . config('const.files.video.extension');
+        $openFromPathname = $this->fullTempPath.$this->file->filename;
+        $saveToPathname = $this->fullStandardPath.$this->fileUploadProcessor
+                ->getFileName($this->file->filename).'.'.config('const.files.video.extension');
 
         // Transcode to MP4/X264 with FFmpeg
         $video = $ffmpeg
@@ -196,20 +205,20 @@ class ProcessFile implements ShouldQueue
             ->streams($saveToPathname)
             ->videos()
             ->first();
-        if($videoStream) {
+        if ($videoStream) {
             $this->file->update([
                 'filename' => $this->fileUploadProcessor
                     ->getBaseName($saveToPathname),
                 'size' => $this->fileUploadProcessor
                     ->getFileSize($saveToPathname),
-                'length' => (int)$videoStream
+                'length' => (int) $videoStream
                     ->get('duration'),
                 'width' => $videoStream
                     ->getDimensions()
                     ->getWidth(),
                 'height' => $videoStream
                     ->getDimensions()
-                    ->getHeight()
+                    ->getHeight(),
             ]);
             $this->file->save();
         }
@@ -218,16 +227,17 @@ class ProcessFile implements ShouldQueue
     /**
      * Transcode an audio file.
      */
-    protected function transcodeAudio() {
+    protected function transcodeAudio()
+    {
         $ffmpeg = FFMpeg::create(
-            array(
+            [
                 'timeout' => config('const.files.ffmpeg.timeout'),
-            )
+            ]
         );
         $ffprobe = FFProbe::create();
-        $openFromPathname = $this->fullTempPath . $this->file->filename;
-        $saveToPathname = $this->fullStandardPath . $this->fileUploadProcessor
-                ->getFileName($this->file->filename) . '.' . config('const.files.audio.extension');
+        $openFromPathname = $this->fullTempPath.$this->file->filename;
+        $saveToPathname = $this->fullStandardPath.$this->fileUploadProcessor
+                ->getFileName($this->file->filename).'.'.config('const.files.audio.extension');
 
         // Transcode to MP3 with FFmpeg
         $audio = $ffmpeg
@@ -247,14 +257,14 @@ class ProcessFile implements ShouldQueue
             ->streams($saveToPathname)
             ->audios()
             ->first();
-        if($audioStream) {
+        if ($audioStream) {
             $this->file->update([
                 'filename' => $this->fileUploadProcessor
                     ->getBaseName($saveToPathname),
                 'size' => $this->fileUploadProcessor
                     ->getFileSize($saveToPathname),
-                'length' => (int)$audioStream
-                    ->get('duration')
+                'length' => (int) $audioStream
+                    ->get('duration'),
             ]);
             $this->file->save();
         }

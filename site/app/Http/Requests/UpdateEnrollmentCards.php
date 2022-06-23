@@ -23,7 +23,7 @@ class UpdateEnrollmentCards extends AbstractRequest
     {
         return [
             'course' => 'required|integer|exists:courses,id',
-            'card' => 'required|integer|exists:cards,id'
+            'card' => 'required|integer|exists:cards,id',
         ];
     }
 }

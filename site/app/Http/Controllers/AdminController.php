@@ -18,7 +18,8 @@ class AdminController extends Controller
      * @return void
      */
     public function __construct()
-    {}
+    {
+    }
 
     /**
      * Show the admin index page.
@@ -37,19 +38,19 @@ class AdminController extends Controller
      */
     public function mailing()
     {
-        $subject = "[Impact] Utilisation de vos espaces";
+        $subject = '[Impact] Utilisation de vos espaces';
 
-        $content = "Bonjour,\n\n" .
-            "Vous êtes actuellement responsable des espaces IMPACT suivants :\n\n" .
-            "{{espaces}}\n\n" .
-            "Nous vous remercions de nous indiquer par retour de mail si vous n'avez plus utilité d'un de ces espaces et que nous pouvons donc procéder à sa suppression. A noter que vous avez la possibilité de dupliquer une fiche d'un espace à un autre pour en conserver le contenu.\n\n" .
-            "Avec nos cordiales salutations,\n\n" .
-            Auth::user()->name . "\n\n" .
-            "www.unil.ch/impact";
+        $content = "Bonjour,\n\n".
+            "Vous êtes actuellement responsable des espaces IMPACT suivants :\n\n".
+            "{{espaces}}\n\n".
+            "Nous vous remercions de nous indiquer par retour de mail si vous n'avez plus utilité d'un de ces espaces et que nous pouvons donc procéder à sa suppression. A noter que vous avez la possibilité de dupliquer une fiche d'un espace à un autre pour en conserver le contenu.\n\n".
+            "Avec nos cordiales salutations,\n\n".
+            Auth::user()->name."\n\n".
+            'www.unil.ch/impact';
 
         return view('admin.mailing', [
             'subject' => $subject,
-            'content' => $content
+            'content' => $content,
         ]);
     }
 

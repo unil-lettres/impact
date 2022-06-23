@@ -5,8 +5,8 @@ namespace App\Http\Middleware;
 use App\Enums\UserType;
 use App\User;
 use Closure;
-use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request;
 
 class CheckAai
 {
@@ -20,16 +20,16 @@ class CheckAai
     public function handle($request, Closure $next)
     {
         // Check if user is authenticated
-        if(Auth::user()) {
+        if (Auth::user()) {
             return redirect('/');
         }
 
         // Check if the user is authenticated by SwitchAAI
-        if($this->getServerVariable('Shib-Identity-Provider')) {
+        if ($this->getServerVariable('Shib-Identity-Provider')) {
             // Check if the user can be found in the database
             $user = User::where('email', $this->getServerVariable('mail'))->first();
 
-            if (!$user) {
+            if (! $user) {
                 // If the user cannot be found, create it
                 $user = $this->createAaiUser();
             }
@@ -53,7 +53,7 @@ class CheckAai
     private function createAaiUser(): User
     {
         return User::create([
-            'name' => $this->getServerVariable('givenName') . ' ' .
+            'name' => $this->getServerVariable('givenName').' '.
                 $this->getServerVariable('surname'),
             'email' => $this->getServerVariable('mail'),
             'type' => UserType::Aai,
@@ -71,10 +71,10 @@ class CheckAai
     {
         $variable = null;
 
-        if(Request::server($variableName)) {
+        if (Request::server($variableName)) {
             $variable = Request::server($variableName);
-        } elseif(Request::server('REDIRECT_' . $variableName)) {
-            $variable = Request::server('REDIRECT_' . $variableName);
+        } elseif (Request::server('REDIRECT_'.$variableName)) {
+            $variable = Request::server('REDIRECT_'.$variableName);
         }
 
         return $variable;

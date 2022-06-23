@@ -42,6 +42,6 @@ return [
     'state' => 'State',
     'date' => 'Date',
     'tags' => 'Tags',
-    'emails' => 'Emails'
+    'emails' => 'Emails',
 
 ];

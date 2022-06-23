@@ -13,11 +13,11 @@ class Course extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name', 'description', 'type', 'external_id'
+        'name', 'description', 'type', 'external_id',
     ];
 
     protected $dates = [
-        'deleted_at'
+        'deleted_at',
     ];
 
     /**
@@ -155,9 +155,10 @@ class Course extends Model
     /**
      * Check whether the current course is active or not
      *
-     * @return boolean
+     * @return bool
      */
-    public function isActive() {
+    public function isActive()
+    {
         return $this->trashed() ? false : true;
     }
 
@@ -166,7 +167,8 @@ class Course extends Model
      *
      * @return Collection
      */
-    public function rootFolders() {
+    public function rootFolders()
+    {
         return $this->folders()->where('parent_id', null)
             ->get();
     }
@@ -176,7 +178,8 @@ class Course extends Model
      *
      * @return Collection
      */
-    public function rootCards() {
+    public function rootCards()
+    {
         return $this->cards()->where('folder_id', null)
             ->get();
     }
@@ -191,12 +194,13 @@ class Course extends Model
      * a path as the key, and a name as the value.
      * @return \Illuminate\Support\Collection
      */
-    public function breadcrumbs(bool $self = false) {
+    public function breadcrumbs(bool $self = false)
+    {
         $breadcrumbs = collect([
-            route('home') => trans('courses.list')
+            route('home') => trans('courses.list'),
         ]);
 
-        if($self) {
+        if ($self) {
             // Add the current course to the breadcrumbs
             $breadcrumbs->put(
                 route('courses.show', $this->id), $this->name

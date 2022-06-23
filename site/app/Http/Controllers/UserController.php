@@ -49,7 +49,7 @@ class UserController extends Controller
     {
         $this->authorize('manage', User::class);
 
-        if($request->get('filter')) {
+        if ($request->get('filter')) {
             $users = $this->filter($request->get('filter'));
         } else {
             $users = User::withoutGlobalScope(ValidityScope::class)
@@ -58,7 +58,7 @@ class UserController extends Controller
 
         return view('users.manage', [
             'users' => $users->orderBy('created_at', 'desc')
-                ->paginate(config('const.pagination.per'))
+                ->paginate(config('const.pagination.per')),
         ]);
     }
 
@@ -167,7 +167,7 @@ class UserController extends Controller
         $this->authorize('update', $user);
 
         return view('users.profile', [
-            'user' => $user
+            'user' => $user,
         ]);
     }
 
@@ -192,7 +192,7 @@ class UserController extends Controller
                 // Validation rules for a local user
                 $validated = $request->validate([
                     'name' => 'required|string|max:255',
-                    'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+                    'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
                     'old_password'     => ['nullable', 'string'],
                     'new_password'     => ['nullable', 'different:old_password', Password::defaults()],
                     'password_confirm' => ['nullable', 'same:new_password'],
@@ -202,13 +202,13 @@ class UserController extends Controller
                 $validated = array_filter($validated, 'strlen');
 
                 // If the user entered an old password, check if it's matching the db
-                if(array_key_exists('old_password', $validated) &&
-                    !Hash::check($validated['old_password'], $user->password)){
+                if (array_key_exists('old_password', $validated) &&
+                    ! Hash::check($validated['old_password'], $user->password)) {
                     return back()->with('error', trans('messages.user.edit.wrong.password'));
                 }
 
                 // If the user entered a new password, replace the value by hashed version
-                if(array_key_exists('new_password', $validated)) {
+                if (array_key_exists('new_password', $validated)) {
                     $user->password = Hash::make($validated['new_password']);
                 }
 
@@ -229,8 +229,8 @@ class UserController extends Controller
         $user->name = $validated['name'];
 
         // Allow change of the user admin parameter only if the current user is already an admin
-        if(auth()->user()->admin) {
-            $user->admin = (bool)$request->input('admin');
+        if (auth()->user()->admin) {
+            $user->admin = (bool) $request->input('admin');
         }
 
         $user->save();
@@ -291,7 +291,8 @@ class UserController extends Controller
      *
      * @return Builder
      */
-    private function filter(string $filter) {
+    private function filter(string $filter)
+    {
         $filters = User::query();
 
         $filters->withoutGlobalScope(ValidityScope::class);
@@ -299,7 +300,7 @@ class UserController extends Controller
         switch ($filter) {
             case UsersFilter::Expired:
                 $filters
-                    ->whereDate('validity', "<=", Carbon::now());
+                    ->whereDate('validity', '<=', Carbon::now());
                 break;
             case UsersFilter::Aai:
                 $filters

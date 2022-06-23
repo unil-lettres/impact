@@ -24,7 +24,7 @@ class UpdateStatePosition extends AbstractRequest
         return [
             'course' => 'required|integer|exists:courses,id',
             'state' => 'required|integer|exists:states,id',
-            'newOrder' => 'array|required'
+            'newOrder' => 'array|required',
         ];
     }
 }

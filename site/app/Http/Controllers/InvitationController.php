@@ -12,12 +12,12 @@ use App\Http\Requests\StoreInvitation;
 use App\Invitation;
 use App\Mail\InvitationCreated;
 use App\User;
-use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Carbon;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
@@ -39,7 +39,7 @@ class InvitationController extends Controller
             ->paginate(config('const.pagination.per'));
 
         return view('invitations.index', [
-            'invitations' => $invitations
+            'invitations' => $invitations,
         ]);
     }
 
@@ -58,7 +58,7 @@ class InvitationController extends Controller
             ->paginate(config('const.pagination.per'));
 
         return view('invitations.manage', [
-            'invitations' => $invitations
+            'invitations' => $invitations,
         ]);
     }
 
@@ -72,10 +72,10 @@ class InvitationController extends Controller
     {
         $this->authorize('create', [
             Invitation::class,
-            null
+            null,
         ]);
 
-        if(Auth::user()->admin) {
+        if (Auth::user()->admin) {
             $courses = Course::local()
                 ->get();
         } else {
@@ -89,7 +89,7 @@ class InvitationController extends Controller
         }
 
         return view('invitations.create', [
-            'courses' => $courses
+            'courses' => $courses,
         ]);
     }
 
@@ -107,7 +107,7 @@ class InvitationController extends Controller
 
         $this->authorize('create', [
             Invitation::class,
-            $course
+            $course,
         ]);
 
         // Create new invitation
@@ -206,7 +206,7 @@ class InvitationController extends Controller
         $invitation = Invitation::where('invitation_token', $invitation_token)->firstOrFail();
 
         return view('invitations.register', [
-            'invitation' => $invitation
+            'invitation' => $invitation,
         ]);
     }
 
@@ -235,7 +235,7 @@ class InvitationController extends Controller
             'name' => $request->input('name'),
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
-            'creator_id' => $invitation->creator_id
+            'creator_id' => $invitation->creator_id,
         ]);
         // Add default validity for the new user
         $user->extendValidity();
@@ -244,7 +244,7 @@ class InvitationController extends Controller
         Enrollment::create([
             'role' => EnrollmentRole::Student,
             'course_id' => $invitation->course_id,
-            'user_id' => $user->id
+            'user_id' => $user->id,
         ]);
 
         // Update the invitation registered_at property

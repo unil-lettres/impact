@@ -20,7 +20,7 @@ class DatabaseSeeder extends Seeder
             CardsTableSeeder::class,
             InvitationsTableSeeder::class,
             FilesTableSeeder::class,
-            StatesTableSeeder::class
+            StatesTableSeeder::class,
         ]);
     }
 }

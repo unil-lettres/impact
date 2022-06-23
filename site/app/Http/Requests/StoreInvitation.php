@@ -23,7 +23,7 @@ class StoreInvitation extends AbstractRequest
     {
         return [
             'email' => 'required|email|unique:invitations|unique:users',
-            'course' => 'required|integer|exists:courses,id'
+            'course' => 'required|integer|exists:courses,id',
         ];
     }
 }

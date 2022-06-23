@@ -8,8 +8,8 @@ use App\Enrollment;
 use App\Enums\EnrollmentRole;
 use App\Folder;
 use App\User;
-use Illuminate\Support\Carbon;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class CardsTableSeeder extends Seeder
@@ -38,7 +38,7 @@ class CardsTableSeeder extends Seeder
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
             'box2' => Card::TRANSCRIPTION,
-            'options' => Card::OPTIONS
+            'options' => Card::OPTIONS,
         ]);
 
         $testCardInFolder = DB::table('cards')->insertGetId([
@@ -48,7 +48,7 @@ class CardsTableSeeder extends Seeder
             'course_id' => $secondCourse->id,
             'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS,
-            'folder_id' => $testFolder->id
+            'folder_id' => $testFolder->id,
         ]);
 
         DB::table('cards')->insert([
@@ -57,7 +57,7 @@ class CardsTableSeeder extends Seeder
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
             'box2' => Card::TRANSCRIPTION,
-            'options' => Card::OPTIONS
+            'options' => Card::OPTIONS,
         ]);
 
         DB::table('cards')->insert([
@@ -66,7 +66,7 @@ class CardsTableSeeder extends Seeder
             'updated_at' => $now,
             'course_id' => $firstCourse->id,
             'box2' => Card::TRANSCRIPTION,
-            'options' => Card::OPTIONS
+            'options' => Card::OPTIONS,
         ]);
 
         DB::table('cards')->insert([
@@ -100,7 +100,7 @@ class CardsTableSeeder extends Seeder
                 "box5": {
                     "hidden": true
                 }
-            }'
+            }',
         ]);
 
         DB::table('cards')->insert([
@@ -109,7 +109,7 @@ class CardsTableSeeder extends Seeder
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
             'box2' => Card::TRANSCRIPTION,
-            'options' => Card::OPTIONS
+            'options' => Card::OPTIONS,
         ]);
 
         $enrollment->addCard(Card::find($testCard));

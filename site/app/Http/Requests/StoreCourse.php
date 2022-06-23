@@ -24,7 +24,7 @@ class StoreCourse extends AbstractRequest
         return [
             'name' => 'string|required_if:external_id,null|max:255',
             'description' => 'string|max:3000|nullable',
-            'external_id' => 'integer|min:0|nullable'
+            'external_id' => 'integer|min:0|nullable',
         ];
     }
 }

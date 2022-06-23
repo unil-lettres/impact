@@ -22,7 +22,7 @@ class EnableCourse extends AbstractRequest
     public function rules()
     {
         return [
-            'course' => 'required|integer|exists:courses,id'
+            'course' => 'required|integer|exists:courses,id',
         ];
     }
 }

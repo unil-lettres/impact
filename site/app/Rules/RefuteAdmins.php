@@ -30,7 +30,7 @@ class RefuteAdmins implements Rule
         $user = User::withoutGlobalScope(ValidityScope::class)
             ->find($value);
 
-        if(!$user) {
+        if (! $user) {
             return false;
         }
 

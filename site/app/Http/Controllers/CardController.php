@@ -48,7 +48,7 @@ class CardController extends Controller
 
         $this->authorize('create', [
             Card::class,
-            $course
+            $course,
         ]);
 
         return view('cards.create', [
@@ -57,7 +57,7 @@ class CardController extends Controller
                 ->breadcrumbs(true),
             'folders' => $course
                 ->folders()
-                ->get()
+                ->get(),
         ]);
     }
 
@@ -75,15 +75,15 @@ class CardController extends Controller
 
         $this->authorize('create', [
             Card::class,
-            $course
+            $course,
         ]);
 
         // Check also folder select policy if a folder is selected
-        if($request->input('folder_id')) {
+        if ($request->input('folder_id')) {
             $this->authorize('select', [
                 Folder::class,
                 $course,
-                Folder::findOrFail($request->input('folder_id'))
+                Folder::findOrFail($request->input('folder_id')),
             ]);
         }
 
@@ -112,7 +112,7 @@ class CardController extends Controller
             'card' => $card,
             'breadcrumbs' => $card
                 ->breadcrumbs(),
-            'course' => $card->course
+            'course' => $card->course,
         ]);
     }
 
@@ -137,7 +137,7 @@ class CardController extends Controller
             'students' => $card->course
                 ->students(),
             'files' => $card->course
-                ->files
+                ->files,
         ]);
     }
 
@@ -157,23 +157,23 @@ class CardController extends Controller
         $this->authorize('update', $card);
 
         $options = $card->options;
-        $options['box1']['hidden'] = (bool)$request->get('box1-hidden');
+        $options['box1']['hidden'] = (bool) $request->get('box1-hidden');
         $options['box1']['link'] = $request->get('box1-link');
-        $options['box1']['start'] = (int)$request->get('box1-start');
-        $options['box1']['end'] = (int)$request->get('box1-end');
-        $options['box2']['hidden'] = (bool)$request->get('box2-hidden');
-        $options['box2']['sync'] = (bool)$request->get('box2-sync');
-        $options['box3']['hidden'] = (bool)$request->get('box3-hidden');
+        $options['box1']['start'] = (int) $request->get('box1-start');
+        $options['box1']['end'] = (int) $request->get('box1-end');
+        $options['box2']['hidden'] = (bool) $request->get('box2-hidden');
+        $options['box2']['sync'] = (bool) $request->get('box2-sync');
+        $options['box3']['hidden'] = (bool) $request->get('box3-hidden');
         $options['box3']['title'] = $request->get('box3-title');
-        $options['box4']['hidden'] = (bool)$request->get('box4-hidden');
+        $options['box4']['hidden'] = (bool) $request->get('box4-hidden');
         $options['box4']['title'] = $request->get('box4-title');
-        $options['box5']['hidden'] = (bool)$request->get('box5-hidden');
-        $options['emails'] = (bool)$request->get('emails');
+        $options['box5']['hidden'] = (bool) $request->get('box5-hidden');
+        $options['emails'] = (bool) $request->get('emails');
 
         $card->update([
             'title' => $request->get('title'),
             'file_id' => $request->get('box1-file'),
-            'options' => $options
+            'options' => $options,
         ]);
         $card->save();
 
@@ -218,7 +218,7 @@ class CardController extends Controller
         $this->authorize('unlinkFile', $card);
 
         $card->update([
-            'file_id' => null
+            'file_id' => null,
         ]);
         $card->save();
 
@@ -246,12 +246,12 @@ class CardController extends Controller
         $box = $request->get('box');
 
         $card->update([
-            $box => $html
+            $box => $html,
         ]);
         $card->save();
 
         return response()->json([
-            'success' => $id
+            'success' => $id,
         ], 200);
     }
 
@@ -276,12 +276,12 @@ class CardController extends Controller
         $box2['data'] = $request->get('transcription') ? $request->get('transcription') : [];
 
         $card->update([
-            $box => $box2
+            $box => $box2,
         ]);
         $card->save();
 
         return response()->json([
-            'success' => $id
+            'success' => $id,
         ], 200);
     }
 

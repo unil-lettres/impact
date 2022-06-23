@@ -28,7 +28,7 @@ class UpdateCard extends AbstractRequest
             'title' => 'required|string|max:255',
             'box1-hidden' => [
                 'sometimes',
-                Rule::in([ 'on' ])
+                Rule::in(['on']),
             ],
             'box1-file' => 'integer|exists:files,id|nullable',
             'box1-link' => 'url|nullable',
@@ -36,30 +36,30 @@ class UpdateCard extends AbstractRequest
             'box1-end' => 'integer|nullable',
             'box2-hidden' => [
                 'sometimes',
-                Rule::in([ 'on' ])
+                Rule::in(['on']),
             ],
             'box2-sync' => [
                 'sometimes',
-                Rule::in([ 'on' ])
+                Rule::in(['on']),
             ],
             'box3-hidden' => [
                 'sometimes',
-                Rule::in([ 'on' ])
+                Rule::in(['on']),
             ],
             'box3-title' => 'required|string|max:255',
             'box4-hidden' => [
                 'sometimes',
-                Rule::in([ 'on' ])
+                Rule::in(['on']),
             ],
             'box4-title' => 'required|string|max:255',
             'box5-hidden' => [
                 'sometimes',
-                Rule::in([ 'on' ])
+                Rule::in(['on']),
             ],
             'emails' => [
                 'sometimes',
-                Rule::in([ 'on' ])
-            ]
+                Rule::in(['on']),
+            ],
         ];
     }
 }

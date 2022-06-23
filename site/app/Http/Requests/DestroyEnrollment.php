@@ -22,7 +22,7 @@ class DestroyEnrollment extends AbstractRequest
     public function rules()
     {
         return [
-            'enrollment' => 'required|integer|exists:enrollments,id'
+            'enrollment' => 'required|integer|exists:enrollments,id',
         ];
     }
 }

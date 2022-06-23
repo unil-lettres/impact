@@ -77,7 +77,7 @@ Route::middleware(['auth', 'app'])->group(function () {
     // Files
     Route::resource('files', FileController::class)->only([
         'index',
-        'destroy'
+        'destroy',
     ]);
     Route::post('files/upload', [FileController::class, 'upload']);
 
@@ -112,7 +112,7 @@ Route::middleware(['auth', 'app'])->group(function () {
 });
 
 // Administration routes
-Route::group(['prefix' => 'admin',  'as' => 'admin.', 'middleware' => ['auth', 'app', 'is_admin']], function() {
+Route::group(['prefix' => 'admin',  'as' => 'admin.', 'middleware' => ['auth', 'app', 'is_admin']], function () {
     // Admin homepage
     Route::get('/', [AdminController::class, 'index'])
         ->name('index');

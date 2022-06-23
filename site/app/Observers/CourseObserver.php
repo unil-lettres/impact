@@ -23,7 +23,7 @@ class CourseObserver
             'description' => trans('states.private_description'),
             'position' => 0,
             'type' => StateType::Private,
-            'course_id' => $course->id
+            'course_id' => $course->id,
         ]);
 
         // Create the "open" state
@@ -31,7 +31,7 @@ class CourseObserver
             'name' => trans('states.open'),
             'description' => trans('states.open_description'),
             'position' => 1,
-            'course_id' => $course->id
+            'course_id' => $course->id,
         ]);
         $openState->updatePermissions(
             StatePermission::TeachersAndEditorsCanShowAndEdit
@@ -42,7 +42,7 @@ class CourseObserver
             'name' => trans('states.public'),
             'description' => trans('states.public_description'),
             'position' => 2,
-            'course_id' => $course->id
+            'course_id' => $course->id,
         ]);
         $publicState->updatePermissions(
             StatePermission::AllCanShowTeachersAndEditorsCanEdit
@@ -54,7 +54,7 @@ class CourseObserver
             'description' => trans('states.archived_description'),
             'position' => 1000,
             'type' => StateType::Archived,
-            'course_id' => $course->id
+            'course_id' => $course->id,
         ]);
         $archivedState->updatePermissions(
             StatePermission::TeachersCanShowAndEditEditorsCanShow
@@ -70,7 +70,7 @@ class CourseObserver
      */
     public function deleting(Course $course)
     {
-        if(!$course->isForceDeleting()) {
+        if (! $course->isForceDeleting()) {
             // Soft delete all related cards
             $course->cards()->delete();
 

@@ -30,9 +30,9 @@ class UpdateCardEditor extends AbstractRequest
                 'required',
                 'string',
                 Rule::in(
-                    [ CardBox::Box3, CardBox::Box4 ]
-                )
-            ]
+                    [CardBox::Box3, CardBox::Box4]
+                ),
+            ],
         ];
     }
 }

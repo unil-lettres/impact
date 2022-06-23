@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Requests;
+
 use Illuminate\Validation\Rule;
 
 class DisableCourse extends AbstractRequest
@@ -28,9 +29,9 @@ class DisableCourse extends AbstractRequest
                 'required',
                 'string',
                 Rule::in(
-                    [ 'home', 'admin.courses.manage' ]
-                )
-            ]
+                    ['home', 'admin.courses.manage']
+                ),
+            ],
         ];
     }
 }

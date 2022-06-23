@@ -29,11 +29,11 @@ class FindEnrollment extends AbstractRequest
                 'required',
                 'string',
                 Rule::in(
-                    [ EnrollmentRole::Student, EnrollmentRole::Teacher ]
-                )
+                    [EnrollmentRole::Student, EnrollmentRole::Teacher]
+                ),
             ],
             'user' => 'required|integer|exists:users,id',
-            'course' => 'required|integer|exists:courses,id'
+            'course' => 'required|integer|exists:courses,id',
         ];
     }
 }

@@ -24,7 +24,7 @@ class UpdateCourse extends AbstractRequest
         return [
             'course' => 'required|integer|exists:courses,id',
             'name' => 'string|required|max:255',
-            'description' => 'string|max:3000|nullable'
+            'description' => 'string|max:3000|nullable',
         ];
     }
 }

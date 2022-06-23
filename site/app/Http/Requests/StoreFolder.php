@@ -23,7 +23,7 @@ class StoreFolder extends AbstractRequest
     {
         return [
             'title' => 'required|string|max:200',
-            'parent_id' => 'integer|exists:folders,id|nullable'
+            'parent_id' => 'integer|exists:folders,id|nullable',
         ];
     }
 }

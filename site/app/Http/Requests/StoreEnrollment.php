@@ -31,20 +31,20 @@ class StoreEnrollment extends AbstractRequest
                 'required',
                 'string',
                 Rule::in(
-                    [ EnrollmentRole::Student, EnrollmentRole::Teacher ]
+                    [EnrollmentRole::Student, EnrollmentRole::Teacher]
                 ),
                 new EnrollmentUniqueness(
                     $this->input('course'),
                     $this->input('user')
-                )
+                ),
             ],
             'user' => [
                 'required',
                 'integer',
                 'exists:users,id',
-                new RefuteAdmins()
+                new RefuteAdmins(),
             ],
-            'course' => 'required|integer|exists:courses,id'
+            'course' => 'required|integer|exists:courses,id',
         ];
     }
 }

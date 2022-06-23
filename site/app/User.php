@@ -5,7 +5,6 @@ namespace App;
 use App\Enums\EnrollmentRole;
 use App\Scopes\ValidityScope;
 use DateTime;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,7 +43,7 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
         'validity' => 'datetime',
-        'admin' => 'boolean'
+        'admin' => 'boolean',
     ];
 
     /**
@@ -161,8 +160,9 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function isEditor(Card $card) {
-        if($this->admin) {
+    public function isEditor(Card $card)
+    {
+        if ($this->admin) {
             return true;
         }
 
@@ -177,8 +177,9 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function isTeacher(Course $course) {
-        if($this->admin) {
+    public function isTeacher(Course $course)
+    {
+        if ($this->admin) {
             return true;
         }
 
@@ -193,8 +194,9 @@ class User extends Authenticatable
      *
      * @return bool
      */
-    public function isStudent(Course $course) {
-        if($this->admin) {
+    public function isStudent(Course $course)
+    {
+        if ($this->admin) {
             return true;
         }
 
@@ -218,7 +220,7 @@ class User extends Authenticatable
             Carbon::instance($this->validity)->addMonths($months);
 
         $this->update([
-            'validity' => $this->skipAdmins($validity)
+            'validity' => $this->skipAdmins($validity),
         ]);
         $this->save();
 
@@ -235,7 +237,7 @@ class User extends Authenticatable
     public function defineValidity(DateTime $validity)
     {
         $this->update([
-            'validity' => $this->skipAdmins($validity)]
+            'validity' => $this->skipAdmins($validity), ]
         );
         $this->save();
 
@@ -249,7 +251,8 @@ class User extends Authenticatable
      *
      * @return DateTime|null
      */
-    private function skipAdmins(DateTime $validity) {
+    private function skipAdmins(DateTime $validity)
+    {
         return $this->admin ? null : $validity;
     }
 }

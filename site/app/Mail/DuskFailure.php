@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\File;
@@ -30,8 +29,9 @@ class DuskFailure extends Mailable
     public function build()
     {
         $files = File::allFiles('tests/Browser/screenshots');
+
         return $this->view('mails.dusk.dusk_failure', [
-            'files' => $files
+            'files' => $files,
         ]);
     }
 }

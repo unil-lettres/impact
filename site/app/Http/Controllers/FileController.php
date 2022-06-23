@@ -39,7 +39,7 @@ class FileController extends Controller
             'files' => $files,
             'course' => $course,
             'breadcrumbs' => $course
-                ->breadcrumbs(true)
+                ->breadcrumbs(true),
         ]);
     }
 
@@ -57,7 +57,7 @@ class FileController extends Controller
             ->paginate(config('const.pagination.per'));
 
         return view('files.manage', [
-            'files' => $files
+            'files' => $files,
         ]);
     }
 
@@ -74,7 +74,7 @@ class FileController extends Controller
         $courses = Course::all();
 
         return view('files.create', [
-            'courses' => $courses
+            'courses' => $courses,
         ]);
     }
 
@@ -98,7 +98,7 @@ class FileController extends Controller
             'courses' => Course::all(),
             'cards' => $file
                 ->cards()
-                ->get()
+                ->get(),
         ]);
     }
 
@@ -123,11 +123,11 @@ class FileController extends Controller
 
         // The file can be linked to a(nother) course only
         // if no card(s) are already linked to the file
-        if($file->cards->isEmpty()) {
+        if ($file->cards->isEmpty()) {
             $course = $request->get('course') ?
                 Course::findOrFail($request->get('course')) : null;
 
-            if($course) {
+            if ($course) {
                 // Determine whether the user can move the file to a specific course
                 $this->authorize('move', [
                     File::class,
@@ -139,7 +139,7 @@ class FileController extends Controller
             }
 
             $file->update([
-                'course_id' => $course
+                'course_id' => $course,
             ]);
         }
 
@@ -194,7 +194,7 @@ class FileController extends Controller
         $this->authorize('upload', [
             File::class,
             $course,
-            $card
+            $card,
         ]);
 
         // Move file to temp storage
@@ -212,7 +212,7 @@ class FileController extends Controller
             $course
         );
 
-        if($card) {
+        if ($card) {
             // Optionally link the file to a card
             $this->updateCard($file, $card);
         }
@@ -221,7 +221,7 @@ class FileController extends Controller
         ProcessFile::dispatch($file);
 
         return response()->json([
-            'success' => $file->id
+            'success' => $file->id,
         ], 200);
     }
 
@@ -235,7 +235,8 @@ class FileController extends Controller
      *
      * @return File $file
      */
-    private function createFileDraft(FileUploadProcessor $fileUploadProcessor, Request $request, string $path, ?Course $course) {
+    private function createFileDraft(FileUploadProcessor $fileUploadProcessor, Request $request, string $path, ?Course $course)
+    {
         // Get file basic infos
         $mimeType = $request->file('file')->getMimeType();
         $filename = $request->file('file')->getClientOriginalName();
@@ -252,7 +253,7 @@ class FileController extends Controller
             'type' => $fileUploadProcessor
                 ->fileType($mimeType),
             'size' => $size,
-            'course_id' => $course_id
+            'course_id' => $course_id,
         ]);
     }
 
@@ -264,9 +265,10 @@ class FileController extends Controller
      *
      * @return void
      */
-    private function updateCard(File $file, Card $card) {
+    private function updateCard(File $file, Card $card)
+    {
         $card->update([
-            'file_id' => $file->id
+            'file_id' => $file->id,
         ]);
         $card->save();
     }

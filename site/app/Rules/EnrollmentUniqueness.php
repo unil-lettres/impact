@@ -8,6 +8,7 @@ use Illuminate\Contracts\Validation\Rule;
 class EnrollmentUniqueness implements Rule
 {
     private $course_id;
+
     private $user_id;
 
     /**

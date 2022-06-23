@@ -15,27 +15,27 @@ class State extends Model implements Sortable
 
     const PERMISSIONS = '{
             "version": 1,
-            "box1": '. StatePermission::EditorsCanShowAndEdit .',
-            "box2": '. StatePermission::EditorsCanShowAndEdit .',
-            "box3": '. StatePermission::EditorsCanShowAndEdit .',
-            "box4": '. StatePermission::EditorsCanShowAndEdit .',
-            "box5": '. StatePermission::EditorsCanShowAndEdit .'
+            "box1": '.StatePermission::EditorsCanShowAndEdit.',
+            "box2": '.StatePermission::EditorsCanShowAndEdit.',
+            "box3": '.StatePermission::EditorsCanShowAndEdit.',
+            "box4": '.StatePermission::EditorsCanShowAndEdit.',
+            "box5": '.StatePermission::EditorsCanShowAndEdit.'
         }';
 
     protected $fillable = [
-        'name', 'description', 'position', 'permissions', 'course_id', 'type', 'teachers_only'
+        'name', 'description', 'position', 'permissions', 'course_id', 'type', 'teachers_only',
     ];
 
     protected $dates = [
-        'deleted_at'
+        'deleted_at',
     ];
 
     protected $casts = [
-        'permissions' => 'array'
+        'permissions' => 'array',
     ];
 
     protected $attributes = [
-        'permissions' => State::PERMISSIONS
+        'permissions' => self::PERMISSIONS,
     ];
 
     /**
@@ -67,7 +67,7 @@ class State extends Model implements Sortable
         $permissions[$box] = $permission;
 
         $this->update([
-            'permissions' => $permissions
+            'permissions' => $permissions,
         ]);
         $this->save();
     }
@@ -87,7 +87,7 @@ class State extends Model implements Sortable
         $permissions['box5'] = $permission;
 
         $this->update([
-            'permissions' => $permissions
+            'permissions' => $permissions,
         ]);
         $this->save();
     }

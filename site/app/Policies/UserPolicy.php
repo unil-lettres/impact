@@ -103,7 +103,7 @@ class UserPolicy
     public function extend(User $user, User $model)
     {
         return $user->admin &&
-            !$model->admin &&
+            ! $model->admin &&
             $model->type === UserType::Local;
     }
 

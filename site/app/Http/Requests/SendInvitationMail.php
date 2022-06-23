@@ -22,7 +22,7 @@ class SendInvitationMail extends AbstractRequest
     public function rules()
     {
         return [
-            'invitation' => 'required|integer|exists:invitations,id'
+            'invitation' => 'required|integer|exists:invitations,id',
         ];
     }
 }

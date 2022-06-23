@@ -45,7 +45,7 @@ class StateController extends Controller
             'activeState' => $activeState,
             'course' => $course,
             'breadcrumbs' => $course
-                ->breadcrumbs(true)
+                ->breadcrumbs(true),
         ]);
     }
 
@@ -71,7 +71,7 @@ class StateController extends Controller
         $state = State::create([
             'name' => trans('states.new_state'),
             'position' => $positionMax + 1,
-            'course_id' => $course->id
+            'course_id' => $course->id,
         ]);
 
         return redirect()
@@ -96,17 +96,17 @@ class StateController extends Controller
         $this->authorize('update', $state);
 
         $permissions = $state->permissions;
-        $permissions['box1'] = (int)$request->get('box1');
-        $permissions['box2'] = (int)$request->get('box2');
-        $permissions['box3'] = (int)$request->get('box3');
-        $permissions['box4'] = (int)$request->get('box4');
-        $permissions['box5'] = (int)$request->get('box5');
+        $permissions['box1'] = (int) $request->get('box1');
+        $permissions['box2'] = (int) $request->get('box2');
+        $permissions['box3'] = (int) $request->get('box3');
+        $permissions['box4'] = (int) $request->get('box4');
+        $permissions['box5'] = (int) $request->get('box5');
 
         $state->update([
             'name' => $request->get('name'),
             'description' => $request->get('description'),
-            'teachers_only' => (bool)$request->get('teachers_only'),
-            'permissions' => $permissions
+            'teachers_only' => (bool) $request->get('teachers_only'),
+            'permissions' => $permissions,
         ]);
         $state->save();
 
@@ -149,7 +149,8 @@ class StateController extends Controller
      * @return JsonResponse
      * @throws AuthorizationException
      */
-    public function position(UpdateStatePosition $request, int $course_id, int $state_id) {
+    public function position(UpdateStatePosition $request, int $course_id, int $state_id)
+    {
         $state = State::find($state_id);
 
         $this->authorize('position', $state);
@@ -159,7 +160,7 @@ class StateController extends Controller
         State::setNewOrder($newOrder, 1);
 
         return response()->json([
-            'success' => $state_id
+            'success' => $state_id,
         ]);
     }
 }

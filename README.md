@@ -80,9 +80,19 @@ Or to get the messages in JSON format.
 
 [http://impact.lan:8026/api/v2/messages](http://impact.lan:8026/api/v2/messages)
 
+## PHP code style
+
+All PHP files will be inspected during CI for code style issues. If you want to make a dry run beforehand, use the following command.
+
+``docker exec impact-app ./vendor/bin/pint --test``
+
+And if you want to automatically fix the issues.
+
+``docker exec impact-app ./vendor/bin/pint``
+
 ## Testing
 
-Run the following commands from the framework root directory (/site). Check environment file for requirements.
+Functional and unit tests will be played during CI. If you want to run them locally, use the following commands from the framework root directory (/site). Check environment file for requirements.
 
 ### Launch local testing environment 
 

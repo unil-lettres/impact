@@ -57,8 +57,7 @@ class AdminController extends Controller
     /**
      * Send the mailing to the teachers.
      *
-     * @param SendMailingMail $request
-     *
+     * @param  SendMailingMail  $request
      * @return RedirectResponse
      */
     public function mailMailing(SendMailingMail $request)

@@ -35,6 +35,7 @@ class CardTest extends DuskTestCase
      * Test list user cards.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testListUserCards()
@@ -55,6 +56,7 @@ class CardTest extends DuskTestCase
      * Test view card as an editor.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testViewCardAsEditor()
@@ -79,6 +81,7 @@ class CardTest extends DuskTestCase
      * Test view card as a teacher.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testViewCardAsTeacher()
@@ -103,6 +106,7 @@ class CardTest extends DuskTestCase
      * Test create card as a teacher.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testCreateCardAsTeacher()
@@ -127,6 +131,7 @@ class CardTest extends DuskTestCase
      * Test create card into a specific folder.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testCreateCardIntoFolder()
@@ -153,6 +158,7 @@ class CardTest extends DuskTestCase
      * Test hide/show card boxes.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testHideCardBoxes()
@@ -187,6 +193,7 @@ class CardTest extends DuskTestCase
      * Test saving some text in text editor
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testSaveTextInTextEditor()
@@ -218,6 +225,7 @@ class CardTest extends DuskTestCase
      * Test canceling some text in text editor
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testCancelTextInTextEditor()

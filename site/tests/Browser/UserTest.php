@@ -36,6 +36,7 @@ class UserTest extends DuskTestCase
      * Test list users.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testListUsers()
@@ -56,6 +57,7 @@ class UserTest extends DuskTestCase
      * Test create user.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testCreateUser()
@@ -85,6 +87,7 @@ class UserTest extends DuskTestCase
      * Test create user with error.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testCreateUserWithError()
@@ -110,6 +113,7 @@ class UserTest extends DuskTestCase
      * Test edit user.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testEditUser()
@@ -139,6 +143,7 @@ class UserTest extends DuskTestCase
      * Test edit user with errors.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testEditUserWithErrors()
@@ -173,6 +178,7 @@ class UserTest extends DuskTestCase
      * Test expired user.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testExpiredUser()
@@ -200,6 +206,7 @@ class UserTest extends DuskTestCase
      * Test AAI user.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testAaiUser()
@@ -226,6 +233,7 @@ class UserTest extends DuskTestCase
      * Test local user.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testLocalUser()
@@ -249,6 +257,7 @@ class UserTest extends DuskTestCase
      * Test delete user.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testDeleteUser()
@@ -273,6 +282,7 @@ class UserTest extends DuskTestCase
      * Test local user profile.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testLocalUserProfile()
@@ -298,6 +308,7 @@ class UserTest extends DuskTestCase
      * Test editing local user profile.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testEditLocalUserProfile()

@@ -41,8 +41,7 @@ class Enrollment extends Model
     /**
      * Check if the enrollment has a specific card.
      *
-     * @param Card $card
-     *
+     * @param  Card  $card
      * @return bool
      */
     public function hasCard(Card $card)
@@ -54,8 +53,7 @@ class Enrollment extends Model
      * Add a card to the enrollment if the card doesn't exist in the enrollment cards.
      * Return true if a card was added, false otherwise.
      *
-     * @param Card $card
-     *
+     * @param  Card  $card
      * @return bool
      */
     public function addCard(Card $card)
@@ -80,8 +78,7 @@ class Enrollment extends Model
      * Remove a card from the enrollment if the card exist in the enrollment cards.
      * Return true if a card was removed, false otherwise.
      *
-     * @param Card $card
-     *
+     * @param  Card  $card
      * @return bool
      */
     public function removeCard(Card $card)
@@ -108,10 +105,9 @@ class Enrollment extends Model
      * Add card to the enrollment if provided.
      * Remove card from the enrollment if provided.
      *
-     * @param int $cardId
-     * @param Collection $add
-     * @param Collection $remove
-     *
+     * @param  int  $cardId
+     * @param  Collection  $add
+     * @param  Collection  $remove
      * @return bool
      */
     public function updateCard(int $cardId, Collection $add, Collection $remove)

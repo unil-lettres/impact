@@ -35,6 +35,7 @@ class StateTest extends DuskTestCase
      * Test can view states management as teacher.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testTeachersCanViewStatesManagement()
@@ -63,6 +64,7 @@ class StateTest extends DuskTestCase
      * Test cannot view states management as student.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testStudentsCannotViewStatesManagement()
@@ -82,6 +84,7 @@ class StateTest extends DuskTestCase
      * Test create new state.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testCreateNewState()
@@ -110,6 +113,7 @@ class StateTest extends DuskTestCase
      * Test update state.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testUpdateState()
@@ -140,6 +144,7 @@ class StateTest extends DuskTestCase
      * Test delete state.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testDeleteState()

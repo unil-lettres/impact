@@ -18,6 +18,7 @@ class FolderController extends Controller
      * Display a listing of the resource.
      *
      * @return void
+     *
      * @throws AuthorizationException
      */
     public function index()
@@ -28,9 +29,9 @@ class FolderController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param CreateFolder $request
-     *
+     * @param  CreateFolder  $request
      * @return Renderable
+     *
      * @throws AuthorizationException
      */
     public function create(CreateFolder $request)
@@ -56,9 +57,9 @@ class FolderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreFolder $request
-     *
+     * @param  StoreFolder  $request
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function store(StoreFolder $request)
@@ -91,9 +92,9 @@ class FolderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Folder $folder
-     *
+     * @param  Folder  $folder
      * @return Renderable
+     *
      * @throws AuthorizationException
      */
     public function show(Folder $folder)
@@ -116,9 +117,9 @@ class FolderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Folder $folder
-     *
+     * @param  Folder  $folder
      * @return Renderable
+     *
      * @throws AuthorizationException
      */
     public function edit(Folder $folder)
@@ -145,10 +146,10 @@ class FolderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateFolder $request
-     * @param int $id
-     *
+     * @param  UpdateFolder  $request
+     * @param  int  $id
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function update(UpdateFolder $request, int $id)
@@ -181,10 +182,10 @@ class FolderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param DestroyFolder $request
-     * @param int $id
-     *
+     * @param  DestroyFolder  $request
+     * @param  int  $id
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function destroy(DestroyFolder $request, int $id)

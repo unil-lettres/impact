@@ -28,6 +28,7 @@ class InvitationController extends Controller
      * Display a listing of the resource.
      *
      * @return Renderable
+     *
      * @throws AuthorizationException
      */
     public function index()
@@ -47,6 +48,7 @@ class InvitationController extends Controller
      * Display a listing of the resource in the admin panel.
      *
      * @return Renderable
+     *
      * @throws AuthorizationException
      */
     public function manage()
@@ -66,6 +68,7 @@ class InvitationController extends Controller
      * Show the form for creating a new resource.
      *
      * @return Renderable
+     *
      * @throws AuthorizationException
      */
     public function create()
@@ -96,9 +99,9 @@ class InvitationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreInvitation $request
-     *
+     * @param  StoreInvitation  $request
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function store(StoreInvitation $request)
@@ -128,9 +131,9 @@ class InvitationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Invitation $invitation
-     *
+     * @param  Invitation  $invitation
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function show(Invitation $invitation)
@@ -143,9 +146,9 @@ class InvitationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Invitation $invitation
-     *
+     * @param  Invitation  $invitation
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function edit(Invitation $invitation)
@@ -158,10 +161,10 @@ class InvitationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Invitation $invitation
-     *
+     * @param  Request  $request
+     * @param  Invitation  $invitation
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function update(Request $request, Invitation $invitation)
@@ -174,9 +177,9 @@ class InvitationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param Invitation $invitation
-     *
+     * @param  Invitation  $invitation
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function destroy(Invitation $invitation)
@@ -193,9 +196,9 @@ class InvitationController extends Controller
      * Show the form for creating a new user.
      * A valid invitation token is needed.
      *
-     * @param  Request $request
-     *
+     * @param  Request  $request
      * @return Renderable
+     *
      * @throws AuthorizationException
      */
     public function register(Request $request)
@@ -213,9 +216,9 @@ class InvitationController extends Controller
     /**
      * Create a new user instance after a valid invitation registration.
      *
-     * @param CreateInvitationUser $request
-     *
+     * @param  CreateInvitationUser  $request
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function createInvitationUser(CreateInvitationUser $request)
@@ -261,10 +264,10 @@ class InvitationController extends Controller
     /**
      * Send the invitation mail to the recipient.
      *
-     * @param SendInvitationMail $request
-     * @param int $id
-     *
+     * @param  SendInvitationMail  $request
+     * @param  int  $id
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function mail(SendInvitationMail $request, int $id)

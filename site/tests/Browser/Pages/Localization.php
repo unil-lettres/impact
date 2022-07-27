@@ -8,7 +8,7 @@ class Localization extends Page
 {
     protected $locale;
 
-    public function __construct(String $locale)
+    public function __construct(string $locale)
     {
         $this->locale = $locale;
     }

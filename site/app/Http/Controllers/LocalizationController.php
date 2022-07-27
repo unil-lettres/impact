@@ -10,8 +10,7 @@ class LocalizationController extends Controller
     /**
      * Set the specified locale for current session.
      *
-     * @param string $locale
-     *
+     * @param  string  $locale
      * @return RedirectResponse
      */
     public function index($locale)

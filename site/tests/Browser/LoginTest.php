@@ -35,6 +35,7 @@ class LoginTest extends DuskTestCase
      * Test basic login.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testBasicLogin()
@@ -52,6 +53,7 @@ class LoginTest extends DuskTestCase
      * Test basic admin login.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testBasicAdminLogin()
@@ -72,6 +74,7 @@ class LoginTest extends DuskTestCase
      * Test invalid user.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testInvalidUser()

@@ -44,6 +44,7 @@ class ExportCardBox
      * Export the content of a card box
      *
      * @return string|null
+     *
      * @throws Exception
      */
     public function export()
@@ -68,8 +69,9 @@ class ExportCardBox
     /**
      * Export the transcription content
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
+     *
      * @throws Exception
      */
     private function transcription(array $data)
@@ -85,8 +87,9 @@ class ExportCardBox
     /**
      * Create a Word document with the transcription content
      *
-     * @param array $data
+     * @param  array  $data
      * @return bool
+     *
      * @throws Exception
      */
     private function transcriptionToDocx(array $data)

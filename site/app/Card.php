@@ -114,7 +114,8 @@ class Card extends Model
      * Get the breadcrumbs for this card
      *
      * Define if the breadcrumbs should contain the current card
-     * @param bool $self
+     *
+     * @param  bool  $self
      *
      * This function will return a Collection and should contain
      * a path as the key, and a name as the value.

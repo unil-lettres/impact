@@ -17,9 +17,8 @@ class FilePolicy
     /**
      * Determine whether the user can view any models.
      *
-     * @param User $user
-     * @param Course $course
-     *
+     * @param  User  $user
+     * @param  Course  $course
      * @return mixed
      */
     public function viewAny(User $user, Course $course)
@@ -44,8 +43,7 @@ class FilePolicy
     /**
      * Determine whether the user can view any files in the admin panel.
      *
-     * @param User $user
-     *
+     * @param  User  $user
      * @return mixed
      */
     public function manage(User $user)
@@ -60,9 +58,8 @@ class FilePolicy
     /**
      * Determine whether the user can view the model.
      *
-     * @param User $user
-     * @param File $file
-     *
+     * @param  User  $user
+     * @param  File  $file
      * @return mixed
      */
     public function view(User $user, File $file)
@@ -87,8 +84,7 @@ class FilePolicy
     /**
      * Determine whether the user can view the file create form in administration.
      *
-     * @param User $user
-     *
+     * @param  User  $user
      * @return mixed
      */
     public function create(User $user)
@@ -103,9 +99,8 @@ class FilePolicy
     /**
      * Determine whether the user can update the model.
      *
-     * @param User $user
-     * @param File $file
-     *
+     * @param  User  $user
+     * @param  File  $file
      * @return mixed
      */
     public function update(User $user, File $file)
@@ -120,9 +115,8 @@ class FilePolicy
     /**
      * Determine whether the user can forceDelete the model.
      *
-     * @param User $user
-     * @param File $file
-     *
+     * @param  User  $user
+     * @param  File  $file
      * @return mixed
      */
     public function forceDelete(User $user, File $file)
@@ -157,10 +151,9 @@ class FilePolicy
     /**
      * Determine whether the user can upload a file.
      *
-     * @param User $user
-     * @param Course|null $course
-     * @param Card|null $card
-     *
+     * @param  User  $user
+     * @param  Course|null  $course
+     * @param  Card|null  $card
      * @return mixed
      */
     public function upload(User $user, ?Course $course, ?Card $card)
@@ -185,10 +178,9 @@ class FilePolicy
     /**
      * Determine whether the user can move the model to a specific course.
      *
-     * @param User $user
-     * @param File $file
-     * @param Course $course
-     *
+     * @param  User  $user
+     * @param  File  $file
+     * @param  Course  $course
      * @return mixed
      */
     public function move(User $user, File $file, Course $course)

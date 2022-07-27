@@ -35,6 +35,7 @@ class CourseTest extends DuskTestCase
      * Test list courses as simple user.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testListCoursesAsUser()
@@ -56,6 +57,7 @@ class CourseTest extends DuskTestCase
      * Test list courses as an admin user.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testListCoursesAsAdmin()
@@ -77,6 +79,7 @@ class CourseTest extends DuskTestCase
      * Test view course as a teacher.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testViewCourseAsTeacher()
@@ -97,6 +100,7 @@ class CourseTest extends DuskTestCase
      * Test view course as a student.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testViewCourseAsStudent()
@@ -117,6 +121,7 @@ class CourseTest extends DuskTestCase
      * Test create a course.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testCreateCourse()
@@ -142,6 +147,7 @@ class CourseTest extends DuskTestCase
      * Test edit a local course.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testEditLocalCourse()
@@ -169,6 +175,7 @@ class CourseTest extends DuskTestCase
      * Test edit an external course.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testEditExternalCourse()
@@ -196,6 +203,7 @@ class CourseTest extends DuskTestCase
      * Test disable a course.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testDisableCourse()
@@ -221,6 +229,7 @@ class CourseTest extends DuskTestCase
      * Test delete a course.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testDeleteCourse()

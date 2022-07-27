@@ -56,7 +56,8 @@ class Folder extends Model
      * Get the breadcrumbs for this folder
      *
      * Define if the breadcrumbs should contain the current folder
-     * @param bool $self
+     *
+     * @param  bool  $self
      *
      * This function will return a Collection and should contain
      * a path as the key, and a name as the value.

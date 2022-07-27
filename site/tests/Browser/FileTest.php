@@ -35,6 +35,7 @@ class FileTest extends DuskTestCase
      * Test list files as an admin.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testListFilesAsAdmin()
@@ -58,6 +59,7 @@ class FileTest extends DuskTestCase
      * Test list files as a teacher.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testListFilesAsTeacher()
@@ -82,6 +84,7 @@ class FileTest extends DuskTestCase
      * Test show linked card as a teacher
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testShowLinkedCardAsTeacher()
@@ -108,6 +111,7 @@ class FileTest extends DuskTestCase
      * Test edit file.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testEditFile()
@@ -136,6 +140,7 @@ class FileTest extends DuskTestCase
      * Test can play a file with the ready status.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testCanPlayReadyFile()
@@ -157,6 +162,7 @@ class FileTest extends DuskTestCase
      * Test cannot play a file with the failed status.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testCannotPlayFailedFile()
@@ -178,6 +184,7 @@ class FileTest extends DuskTestCase
      * Test cannot play a file with the transcoding status.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testCannotPlayTranscodingFile()
@@ -199,6 +206,7 @@ class FileTest extends DuskTestCase
      * Test cannot edit the course of a used file.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testCannotEditCourseOfUsedFile()
@@ -221,6 +229,7 @@ class FileTest extends DuskTestCase
      * Test can edit the course of an unused file.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testCanEditCourseOfUnusedFile()
@@ -244,6 +253,7 @@ class FileTest extends DuskTestCase
      * Test can delete an unused file.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testCanDeleteUnusedFile()

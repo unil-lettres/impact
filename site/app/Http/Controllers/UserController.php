@@ -28,6 +28,7 @@ class UserController extends Controller
      * Display a listing of the resource.
      *
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function index()
@@ -40,9 +41,9 @@ class UserController extends Controller
     /**
      * Display a listing of the resource in the admin panel.
      *
-     * @param ManageUsers $request
-     *
+     * @param  ManageUsers  $request
      * @return Renderable
+     *
      * @throws AuthorizationException
      */
     public function manage(ManageUsers $request)
@@ -66,6 +67,7 @@ class UserController extends Controller
      * Show the form for creating a new resource.
      *
      * @return Renderable
+     *
      * @throws AuthorizationException
      */
     public function create()
@@ -78,9 +80,9 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param CreateUser $request
-     *
+     * @param  CreateUser  $request
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function store(CreateUser $request)
@@ -102,9 +104,9 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param User $user
-     *
+     * @param  User  $user
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function show(User $user)
@@ -117,10 +119,10 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param EditUser $user
-     * @param int $id
-     *
+     * @param  EditUser  $user
+     * @param  int  $id
      * @return Renderable
+     *
      * @throws AuthorizationException
      */
     public function edit(EditUser $user, int $id)
@@ -154,10 +156,10 @@ class UserController extends Controller
     /**
      * Show the profile of the specified resource.
      *
-     * @param EditUser $user
-     * @param int $id
-     *
+     * @param  EditUser  $user
+     * @param  int  $id
      * @return Renderable
+     *
      * @throws AuthorizationException
      */
     public function profile(EditUser $user, int $id)
@@ -174,10 +176,10 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateUser $request
-     * @param int $id
-     *
+     * @param  UpdateUser  $request
+     * @param  int  $id
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function update(UpdateUser $request, int $id)
@@ -193,8 +195,8 @@ class UserController extends Controller
                 $validated = $request->validate([
                     'name' => 'required|string|max:255',
                     'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
-                    'old_password'     => ['nullable', 'string'],
-                    'new_password'     => ['nullable', 'different:old_password', Password::defaults()],
+                    'old_password' => ['nullable', 'string'],
+                    'new_password' => ['nullable', 'different:old_password', Password::defaults()],
                     'password_confirm' => ['nullable', 'same:new_password'],
                 ]);
 
@@ -242,10 +244,10 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param DestroyUser $request
-     * @param int $id
-     *
+     * @param  DestroyUser  $request
+     * @param  int  $id
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function destroy(DestroyUser $request, int $id)
@@ -265,10 +267,10 @@ class UserController extends Controller
     /**
      * Extend the user account validity.
      *
-     * @param ExtendUser $request
-     * @param int $id
-     *
+     * @param  ExtendUser  $request
+     * @param  int  $id
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function extend(ExtendUser $request, int $id)
@@ -287,8 +289,7 @@ class UserController extends Controller
     /**
      * Filter users by parameter
      *
-     * @param string $filter
-     *
+     * @param  string  $filter
      * @return Builder
      */
     private function filter(string $filter)

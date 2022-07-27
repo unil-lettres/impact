@@ -41,8 +41,7 @@ class Invitations extends Page
     /**
      * Go to the user's profile page.
      *
-     * @param Browser $browser
-     *
+     * @param  Browser  $browser
      * @return void
      */
     public function invitations(Browser $browser)

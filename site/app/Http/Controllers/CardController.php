@@ -26,6 +26,7 @@ class CardController extends Controller
      * Display a listing of the resource.
      *
      * @return void
+     *
      * @throws AuthorizationException
      */
     public function index()
@@ -36,9 +37,9 @@ class CardController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param CreateCard $request
-     *
+     * @param  CreateCard  $request
      * @return RedirectResponse|Renderable
+     *
      * @throws AuthorizationException
      */
     public function create(CreateCard $request)
@@ -64,9 +65,9 @@ class CardController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreCard $request
-     *
+     * @param  StoreCard  $request
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function store(StoreCard $request)
@@ -99,9 +100,9 @@ class CardController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Card $card
-     *
+     * @param  Card  $card
      * @return Renderable
+     *
      * @throws AuthorizationException
      */
     public function show(Card $card)
@@ -119,9 +120,9 @@ class CardController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Card $card
-     *
+     * @param  Card  $card
      * @return Renderable
+     *
      * @throws AuthorizationException
      */
     public function edit(Card $card)
@@ -144,10 +145,10 @@ class CardController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateCard $request
-     * @param int $id
-     *
+     * @param  UpdateCard  $request
+     * @param  int  $id
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function update(UpdateCard $request, int $id)
@@ -185,10 +186,10 @@ class CardController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param DestroyCard $request
-     * @param int $id
-     *
+     * @param  DestroyCard  $request
+     * @param  int  $id
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function destroy(DestroyCard $request, int $id)
@@ -208,9 +209,9 @@ class CardController extends Controller
     /**
      * Unlink file from the specified resource.
      *
-     * @param Card $card
-     *
+     * @param  Card  $card
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function unlinkFile(Card $card)
@@ -230,10 +231,10 @@ class CardController extends Controller
     /**
      * Update the editor html from the specified resource.
      *
-     * @param UpdateCardEditor $request
-     * @param int $id
-     *
+     * @param  UpdateCardEditor  $request
+     * @param  int  $id
      * @return JsonResponse
+     *
      * @throws AuthorizationException
      */
     public function editor(UpdateCardEditor $request, int $id)
@@ -258,10 +259,10 @@ class CardController extends Controller
     /**
      * Update the transcription from the specified resource.
      *
-     * @param UpdateCardTranscription $request
-     * @param int $id
-     *
+     * @param  UpdateCardTranscription  $request
+     * @param  int  $id
      * @return JsonResponse
+     *
      * @throws AuthorizationException
      */
     public function transcription(UpdateCardTranscription $request, int $id)
@@ -288,10 +289,10 @@ class CardController extends Controller
     /**
      * Create an export of a box from the specified resource.
      *
-     * @param CreateCardExport $request
-     * @param int $id
-     *
+     * @param  CreateCardExport  $request
+     * @param  int  $id
      * @return BinaryFileResponse
+     *
      * @throws AuthorizationException|Exception
      */
     public function export(CreateCardExport $request, int $id)

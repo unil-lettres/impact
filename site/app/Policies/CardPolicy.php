@@ -14,8 +14,7 @@ class CardPolicy
     /**
      * Determine whether the user can view any cards.
      *
-     * @param User $user
-     *
+     * @param  User  $user
      * @return mixed
      */
     public function viewAny(User $user)
@@ -30,9 +29,8 @@ class CardPolicy
     /**
      * Determine whether the user can view the card.
      *
-     * @param User $user
-     * @param Card $card
-     *
+     * @param  User  $user
+     * @param  Card  $card
      * @return mixed
      */
     public function view(User $user, Card $card)
@@ -54,9 +52,8 @@ class CardPolicy
     /**
      * Determine whether the user can create cards.
      *
-     * @param User $user
-     * @param Course $course
-     *
+     * @param  User  $user
+     * @param  Course  $course
      * @return mixed
      */
     public function create(User $user, Course $course)
@@ -76,9 +73,8 @@ class CardPolicy
     /**
      * Determine whether the user can update the card.
      *
-     * @param User $user
-     * @param Card $card
-     *
+     * @param  User  $user
+     * @param  Card  $card
      * @return mixed
      */
     public function update(User $user, Card $card)
@@ -100,9 +96,8 @@ class CardPolicy
     /**
      * Determine whether the user can forceDelete the card.
      *
-     * @param User $user
-     * @param Card $card
-     *
+     * @param  User  $user
+     * @param  Card  $card
      * @return mixed
      */
     public function forceDelete(User $user, Card $card)
@@ -122,9 +117,8 @@ class CardPolicy
     /**
      * Determine whether the user can unlink a file from the card
      *
-     * @param User $user
-     * @param Card $card
-     *
+     * @param  User  $user
+     * @param  Card  $card
      * @return mixed
      */
     public function unlinkFile(User $user, Card $card)
@@ -144,9 +138,8 @@ class CardPolicy
     /**
      * Determine whether the user can update the editor html from the card
      *
-     * @param User $user
-     * @param Card $card
-     *
+     * @param  User  $user
+     * @param  Card  $card
      * @return mixed
      */
     public function editor(User $user, Card $card)
@@ -166,9 +159,8 @@ class CardPolicy
     /**
      * Determine whether the user can update the transcription from the card
      *
-     * @param User $user
-     * @param Card $card
-     *
+     * @param  User  $user
+     * @param  Card  $card
      * @return mixed
      */
     public function transcription(User $user, Card $card)
@@ -188,9 +180,8 @@ class CardPolicy
     /**
      * Determine whether the user can create an export from the card
      *
-     * @param User $user
-     * @param Card $card
-     *
+     * @param  User  $user
+     * @param  Card  $card
      * @return mixed
      */
     public function export(User $user, Card $card)
@@ -210,9 +201,8 @@ class CardPolicy
     /**
      * Determine whether the user can hide parts of the card
      *
-     * @param User $user
-     * @param Card $card
-     *
+     * @param  User  $user
+     * @param  Card  $card
      * @return mixed
      */
     public function hide(User $user, Card $card)

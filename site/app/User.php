@@ -156,8 +156,7 @@ class User extends Authenticatable
     /**
      * Check if the user is an editor of the given card.
      *
-     * @param Card $card
-     *
+     * @param  Card  $card
      * @return bool
      */
     public function isEditor(Card $card)
@@ -173,8 +172,7 @@ class User extends Authenticatable
     /**
      * Check if the user is a teacher of the given course.
      *
-     * @param Course $course
-     *
+     * @param  Course  $course
      * @return bool
      */
     public function isTeacher(Course $course)
@@ -190,8 +188,7 @@ class User extends Authenticatable
     /**
      * Check if the user is a student of the given course.
      *
-     * @param Course $course
-     *
+     * @param  Course  $course
      * @return bool
      */
     public function isStudent(Course $course)
@@ -207,8 +204,7 @@ class User extends Authenticatable
     /**
      * Extend the validity of the user account.
      *
-     * @param int|null $months
-     *
+     * @param  int|null  $months
      * @return DateTime
      */
     public function extendValidity(int $months = null)
@@ -230,8 +226,7 @@ class User extends Authenticatable
     /**
      * Define the validity of the user account.
      *
-     * @param DateTime $validity
-     *
+     * @param  DateTime  $validity
      * @return DateTime
      */
     public function defineValidity(DateTime $validity)
@@ -247,8 +242,7 @@ class User extends Authenticatable
     /**
      * Avoid adding a validity to admin accounts.
      *
-     * @param DateTime $validity
-     *
+     * @param  DateTime  $validity
      * @return DateTime|null
      */
     private function skipAdmins(DateTime $validity)

@@ -35,8 +35,7 @@ class ProcessFile implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param File $file
-     *
+     * @param  File  $file
      * @return void
      */
     public function __construct(File $file)
@@ -77,7 +76,6 @@ class ProcessFile implements ShouldQueue
      * The job failed to process.
      *
      * @param  Exception  $exception
-     *
      * @return void
      */
     public function failed(Exception $exception)
@@ -138,7 +136,7 @@ class ProcessFile implements ShouldQueue
     /**
      * Transcode a media file with FFmpeg.
      *
-     * @param string $type
+     * @param  string  $type
      */
     protected function transcodeFile(string $type)
     {

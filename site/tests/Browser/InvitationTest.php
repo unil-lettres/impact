@@ -36,6 +36,7 @@ class InvitationTest extends DuskTestCase
      * Test list invitations.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testAdminListInvitations()
@@ -57,6 +58,7 @@ class InvitationTest extends DuskTestCase
      * Test don't list registered invitations.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testAdminCannotListRegisteredInvitations()
@@ -74,6 +76,7 @@ class InvitationTest extends DuskTestCase
      * Test admin view all invitations.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testAdminViewAllInvitations()
@@ -92,6 +95,7 @@ class InvitationTest extends DuskTestCase
      * Test user view own invitations.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testTeacherViewOwnInvitations()
@@ -112,6 +116,7 @@ class InvitationTest extends DuskTestCase
      * Test list invitations.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testStudentCannotListInvitations()
@@ -132,6 +137,7 @@ class InvitationTest extends DuskTestCase
      * Test create an invitation.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testCreateInvitation()
@@ -163,6 +169,7 @@ class InvitationTest extends DuskTestCase
      * Test show the invitation link.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testShowInvitationLink()
@@ -184,6 +191,7 @@ class InvitationTest extends DuskTestCase
      * Test send invitation mail.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testSendInvitationMail()
@@ -205,6 +213,7 @@ class InvitationTest extends DuskTestCase
      * Test delete an invitation.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testDeleteInvitation()
@@ -229,6 +238,7 @@ class InvitationTest extends DuskTestCase
      * Test invitation link with user already registered.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testInvitationLinkUserAlreadyRegistered()
@@ -247,6 +257,7 @@ class InvitationTest extends DuskTestCase
      * Test invitation link with an invalid token.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testInvitationLinkInvalidToken()
@@ -265,6 +276,7 @@ class InvitationTest extends DuskTestCase
      * Test invitation link with user creation.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testInvitationLink()

@@ -58,8 +58,8 @@ class State extends Model implements Sortable
     /**
      * Update the permission of a specific box
      *
-     * @param string $box
-     * @param int $permission (App\Enums\StatePermission)
+     * @param  string  $box
+     * @param  int  $permission (App\Enums\StatePermission)
      */
     public function updatePermission(string $box, int $permission)
     {
@@ -75,7 +75,7 @@ class State extends Model implements Sortable
     /**
      * Update the permission of all boxes
      *
-     * @param int $permission (App\Enums\StatePermission)
+     * @param  int  $permission (App\Enums\StatePermission)
      */
     public function updatePermissions(int $permission)
     {

@@ -35,6 +35,7 @@ class LocalizationTest extends DuskTestCase
      * Test basic localization.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testBasicLocalization()

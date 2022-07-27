@@ -98,8 +98,7 @@ class Course extends Model
     /**
      * Get all the enrollments for a specific role (EnrollmentRole) of this course.
      *
-     * @param string $role
-     *
+     * @param  string  $role
      * @return Collection
      */
     public function enrollmentsForRole(string $role)
@@ -139,8 +138,7 @@ class Course extends Model
     /**
      * Get the role for a specific user of this course.
      *
-     * @param User $user
-     *
+     * @param  User  $user
      * @return string|null
      */
     public function userRole(User $user)
@@ -188,7 +186,8 @@ class Course extends Model
      * Get the breadcrumbs for this course
      *
      * Define if the breadcrumbs should contain the current course
-     * @param bool $self
+     *
+     * @param  bool  $self
      *
      * This function will return a Collection and should contain
      * a path as the key, and a name as the value.

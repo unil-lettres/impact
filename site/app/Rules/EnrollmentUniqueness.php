@@ -14,8 +14,8 @@ class EnrollmentUniqueness implements Rule
     /**
      * Create a new rule instance.
      *
-     * @param int $course
-     * @param int $user
+     * @param  int  $course
+     * @param  int  $user
      */
     public function __construct(int $course, int $user)
     {

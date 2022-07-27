@@ -15,7 +15,6 @@ class CoursePolicy
      *
      * @param $user
      * @param $ability
-     *
      * @return bool
      */
     public function before($user, $ability)
@@ -30,8 +29,7 @@ class CoursePolicy
     /**
      * Determine whether the user can view any courses.
      *
-     * @param User $user
-     *
+     * @param  User  $user
      * @return mixed
      */
     public function viewAny(User $user)
@@ -42,8 +40,7 @@ class CoursePolicy
     /**
      * Determine whether the user can view any courses in the admin panel.
      *
-     * @param User $user
-     *
+     * @param  User  $user
      * @return mixed
      */
     public function manage(User $user)
@@ -55,9 +52,8 @@ class CoursePolicy
     /**
      * Determine whether the user can view the course.
      *
-     * @param User $user
-     * @param Course $course
-     *
+     * @param  User  $user
+     * @param  Course  $course
      * @return mixed
      */
     public function view(User $user, Course $course)
@@ -73,8 +69,7 @@ class CoursePolicy
     /**
      * Determine whether the user can create courses.
      *
-     * @param User $user
-     *
+     * @param  User  $user
      * @return mixed
      */
     public function create(User $user)
@@ -86,9 +81,8 @@ class CoursePolicy
     /**
      * Determine whether the user can update the course.
      *
-     * @param User $user
-     * @param Course $course
-     *
+     * @param  User  $user
+     * @param  Course  $course
      * @return mixed
      */
     public function update(User $user, Course $course)
@@ -100,9 +94,8 @@ class CoursePolicy
     /**
      * Determine whether the user can configure the parameters of the course.
      *
-     * @param User $user
-     * @param Course $course
-     *
+     * @param  User  $user
+     * @param  Course  $course
      * @return mixed
      */
     public function configure(User $user, Course $course)
@@ -118,8 +111,7 @@ class CoursePolicy
     /**
      * Determine whether the user can enable the course.
      *
-     * @param User $user
-     *
+     * @param  User  $user
      * @return mixed
      */
     public function enable(User $user)
@@ -131,9 +123,8 @@ class CoursePolicy
     /**
      * Determine whether the user can archive the course.
      *
-     * @param User $user
-     * @param Course $course
-     *
+     * @param  User  $user
+     * @param  Course  $course
      * @return mixed
      */
     public function archive(User $user, Course $course)
@@ -149,9 +140,8 @@ class CoursePolicy
     /**
      * Determine whether the user can disable the course (soft delete).
      *
-     * @param User $user
-     * @param Course $course
-     *
+     * @param  User  $user
+     * @param  Course  $course
      * @return mixed
      */
     public function disable(User $user, Course $course)
@@ -167,9 +157,8 @@ class CoursePolicy
     /**
      * Determine whether the user can restore the course.
      *
-     * @param User $user
-     * @param Course $course
-     *
+     * @param  User  $user
+     * @param  Course  $course
      * @return mixed
      */
     public function restore(User $user, Course $course)
@@ -181,8 +170,7 @@ class CoursePolicy
     /**
      * Determine whether the user can permanently delete the course.
      *
-     * @param User $user
-     *
+     * @param  User  $user
      * @return mixed
      */
     public function forceDelete(User $user)
@@ -194,9 +182,8 @@ class CoursePolicy
     /**
      * Determine whether the user can send the mail to confirm the deletion of the course.
      *
-     * @param User $user
-     * @param Course $course
-     *
+     * @param  User  $user
+     * @param  Course  $course
      * @return mixed
      */
     public function mailConfirmDelete(User $user, Course $course)

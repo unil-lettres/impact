@@ -35,6 +35,7 @@ class BreadcrumbsTest extends DuskTestCase
      * Test view folders.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testViewBreadcrumbs()

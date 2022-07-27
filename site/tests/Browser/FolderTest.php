@@ -35,6 +35,7 @@ class FolderTest extends DuskTestCase
      * Test view folders.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testViewFolders()
@@ -57,6 +58,7 @@ class FolderTest extends DuskTestCase
      * Test view a card inside a folder.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testViewCardInsideFolder()
@@ -77,6 +79,7 @@ class FolderTest extends DuskTestCase
      * Test create folders as a teacher.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testCreateFoldersAsTeacher()
@@ -111,6 +114,7 @@ class FolderTest extends DuskTestCase
      * Test update folder as an admin.
      *
      * @return void
+     *
      * @throws Throwable
      */
     public function testUpdateFolderAsAdmin()

@@ -20,10 +20,10 @@ class StateController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param IndexState $request
-     * @param int $id
-     *
+     * @param  IndexState  $request
+     * @param  int  $id
      * @return Renderable
+     *
      * @throws AuthorizationException
      */
     public function index(IndexState $request, int $id): Renderable
@@ -52,10 +52,10 @@ class StateController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreState $request
-     * @param int $id
-     *
+     * @param  StoreState  $request
+     * @param  int  $id
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function store(StoreState $request, int $id): RedirectResponse
@@ -82,11 +82,11 @@ class StateController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param UpdateState $request
-     * @param int $course_id
-     * @param int $state_id
-     *
+     * @param  UpdateState  $request
+     * @param  int  $course_id
+     * @param  int  $state_id
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function update(UpdateState $request, int $course_id, int $state_id): RedirectResponse
@@ -118,11 +118,11 @@ class StateController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param DestroyState $request
-     * @param int $course_id
-     * @param int $state_id
-     *
+     * @param  DestroyState  $request
+     * @param  int  $course_id
+     * @param  int  $state_id
      * @return RedirectResponse
+     *
      * @throws AuthorizationException
      */
     public function destroy(DestroyState $request, int $course_id, int $state_id)
@@ -142,11 +142,11 @@ class StateController extends Controller
     /**
      * Update state position
      *
-     * @param UpdateStatePosition $request
-     * @param int $course_id
-     * @param int $state_id
-     *
+     * @param  UpdateStatePosition  $request
+     * @param  int  $course_id
+     * @param  int  $state_id
      * @return JsonResponse
+     *
      * @throws AuthorizationException
      */
     public function position(UpdateStatePosition $request, int $course_id, int $state_id)

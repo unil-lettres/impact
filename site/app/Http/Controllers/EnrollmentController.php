@@ -20,6 +20,7 @@ class EnrollmentController extends Controller
      * Display a listing of the resource.
      *
      * @return JsonResponse
+     *
      * @throws AuthorizationException
      */
     public function index()
@@ -44,9 +45,9 @@ class EnrollmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param StoreEnrollment $request
-     *
+     * @param  StoreEnrollment  $request
      * @return JsonResponse
+     *
      * @throws AuthorizationException
      */
     public function store(StoreEnrollment $request)
@@ -74,7 +75,8 @@ class EnrollmentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param Enrollment $enrollment
+     * @param  Enrollment  $enrollment
+     *
      * @throws AuthorizationException
      */
     public function show(Enrollment $enrollment)
@@ -85,9 +87,9 @@ class EnrollmentController extends Controller
     /**
      * Find the specified resource.
      *
-     * @param FindEnrollment $request
-     *
+     * @param  FindEnrollment  $request
      * @return JsonResponse
+     *
      * @throws AuthorizationException
      */
     public function find(FindEnrollment $request)
@@ -107,7 +109,7 @@ class EnrollmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param Enrollment $enrollment
+     * @param  Enrollment  $enrollment
      *
      * @throws AuthorizationException
      */
@@ -119,8 +121,8 @@ class EnrollmentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param Request $request
-     * @param Enrollment $enrollment
+     * @param  Request  $request
+     * @param  Enrollment  $enrollment
      *
      * @throws AuthorizationException
      */
@@ -132,9 +134,9 @@ class EnrollmentController extends Controller
     /**
      * Update the cards of the resources in storage.
      *
-     * @param UpdateEnrollmentCards $request
-     *
+     * @param  UpdateEnrollmentCards  $request
      * @return JsonResponse
+     *
      * @throws AuthorizationException
      */
     public function cards(UpdateEnrollmentCards $request)
@@ -160,10 +162,10 @@ class EnrollmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param DestroyEnrollment $request
-     * @param int $id
-     *
+     * @param  DestroyEnrollment  $request
+     * @param  int  $id
      * @return JsonResponse
+     *
      * @throws AuthorizationException
      */
     public function destroy(DestroyEnrollment $request, int $id)

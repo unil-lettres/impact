@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from "react-dom/client";
 
 import VideoPlayer from './Video';
 import French from 'video.js/dist/lang/fr.json';
@@ -138,6 +138,8 @@ export default class Player extends Component {
 
 const elementId = 'rct-player';
 if (document.getElementById(elementId)) {
+    const root = createRoot(document.getElementById(elementId));
+
     let data = document.getElementById(elementId).getAttribute('data');
-    ReactDOM.render(<Player data={ data } />, document.getElementById(elementId));
+    root.render(<Player data={ data } />);
 }

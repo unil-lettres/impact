@@ -1,5 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from "react-dom/client";
+
 import MultiEnrollmentSelect from "./MultiEnrollmentSelect";
 
 export default class MultiCourseEnrollment extends MultiEnrollmentSelect {
@@ -10,12 +11,16 @@ export default class MultiCourseEnrollment extends MultiEnrollmentSelect {
 
 const elementIdSdt = 'rct-multi-course-teacher-select';
 if (document.getElementById(elementIdSdt)) {
+    const root = createRoot(document.getElementById(elementIdSdt));
+
     let data = document.getElementById(elementIdSdt).getAttribute('data');
-    ReactDOM.render(<MultiCourseEnrollment data={ data } context={ 'user' } />, document.getElementById(elementIdSdt));
+    root.render(<MultiCourseEnrollment data={ data } context={ 'user' } />);
 }
 
 const elementIdThr = 'rct-multi-course-student-select';
 if (document.getElementById(elementIdThr)) {
+    const root = createRoot(document.getElementById(elementIdThr));
+
     let data = document.getElementById(elementIdThr).getAttribute('data');
-    ReactDOM.render(<MultiCourseEnrollment data={ data } context={ 'user' } />, document.getElementById(elementIdThr));
+    root.render(<MultiCourseEnrollment data={ data } context={ 'user' } />);
 }

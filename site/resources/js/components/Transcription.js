@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from "react-dom/client";
+import { flushSync } from "react-dom";
 
 import ContentEditable from 'react-contenteditable'
 import axios from "axios";
@@ -164,17 +165,21 @@ export default class Transcription extends Component {
     edit() {
         switch (!this.state.editable) {
             case false:
-                this.setState({
-                    editable: false
-                })
+                flushSync(() => {
+                    this.setState({
+                        editable: false
+                    });
+                });
 
                 this.save();
                 break;
             case true:
             default:
-                this.setState({
-                    editable: true
-                })
+                flushSync(() => {
+                    this.setState({
+                        editable: true
+                    });
+                });
         }
 
         this.updateUi();
@@ -182,15 +187,17 @@ export default class Transcription extends Component {
 
     cancel() {
         if(this.state.editable) {
-            this.setState({
-                    // We restore the transcription initially loaded from the db
-                    // We use cloneDeep to avoid a reference
-                    lines: _.cloneDeep(this.state.original),
-                    // We disable the edition mode
-                    editable: false
-                },
-                () => this.updateUi()
-            )
+            flushSync(() => {
+                this.setState({
+                        // We restore the transcription initially loaded from the db
+                        // We use cloneDeep to avoid a reference
+                        lines: _.cloneDeep(this.state.original),
+                        // We disable the edition mode
+                        editable: false
+                    },
+                    () => this.updateUi()
+                );
+            });
         }
     }
 
@@ -393,7 +400,9 @@ export default class Transcription extends Component {
 
 const elementId = 'rct-transcription';
 if (document.getElementById(elementId)) {
+    const root = createRoot(document.getElementById(elementId));
+
     let data = document.getElementById(elementId).getAttribute('data');
     let reference = document.getElementById(elementId).getAttribute('reference');
-    ReactDOM.render(<Transcription data={ data } reference={ reference } />, document.getElementById(elementId));
+    root.render(<Transcription data={ data } reference={ reference } />);
 }

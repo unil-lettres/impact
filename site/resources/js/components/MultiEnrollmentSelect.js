@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import axios from "axios";
 import Select from "react-select";
 import makeAnimated from 'react-select/animated';
@@ -23,17 +24,21 @@ export default class MultiEnrollmentSelect extends Component {
         };
 
         Object.keys(data.options).forEach(key=>{
-            this.state.options.push({
-                value: data.options[key].id,
-                label: data.options[key].name
-            });
+            if(data.options[key]) {
+                this.state.options.push({
+                    value: data.options[key].id,
+                    label: data.options[key].name
+                });
+            }
         });
 
         Object.keys(data.defaults).forEach(key=>{
-            this.state.defaults.push({
-                value: data.defaults[key].id,
-                label: data.defaults[key].name
-            });
+            if(data.defaults[key]) {
+                this.state.defaults.push({
+                    value: data.defaults[key].id,
+                    label: data.defaults[key].name
+                });
+            }
         });
 
         this.state.selected = this.state.defaults;

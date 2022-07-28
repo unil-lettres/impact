@@ -1,5 +1,6 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from "react-dom/client";
+
 import SingleSelect from "./SingleSelect";
 
 export default class SingleFolderSelect extends SingleSelect {
@@ -9,10 +10,12 @@ export default class SingleFolderSelect extends SingleSelect {
         let data = JSON.parse(this.props.data);
 
         Object.keys(data.options).forEach(key=>{
-            this.state.options.push({
-                value: data.options[key].id,
-                label: data.options[key].title
-            });
+            if(data.options[key]) {
+                this.state.options.push({
+                    value: data.options[key].id,
+                    label: data.options[key].title
+                });
+            }
         });
 
         if(data.default) {
@@ -26,7 +29,9 @@ export default class SingleFolderSelect extends SingleSelect {
 
 const elementId = 'rct-single-folder-select';
 if (document.getElementById(elementId)) {
+    const root = createRoot(document.getElementById(elementId));
+
     let data = document.getElementById(elementId).getAttribute('data');
     let reference = document.getElementById(elementId).getAttribute('reference');
-    ReactDOM.render(<SingleFolderSelect data={ data } reference={ reference } />, document.getElementById(elementId));
+    root.render(<SingleFolderSelect data={ data } reference={ reference } />);
 }

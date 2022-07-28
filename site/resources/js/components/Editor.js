@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from "react-dom/client";
+import { flushSync } from 'react-dom';
 
 import axios from "axios";
 
@@ -184,17 +185,21 @@ export default class Editor extends Component {
     edit() {
         switch (!this.state.editable) {
             case false:
-                this.setState({
-                    editable: false
-                })
+                flushSync(() => {
+                    this.setState({
+                        editable: false
+                    })
+                });
 
                 this.save();
                 break;
             case true:
             default:
-                this.setState({
-                    editable: true
-                })
+                flushSync(() => {
+                    this.setState({
+                        editable: true
+                    })
+                });
         }
 
         this.updateUi(this.editor.isReadOnly);
@@ -222,15 +227,17 @@ export default class Editor extends Component {
 
     cancel() {
         if(this.state.editable) {
-            this.setState({
-                    // We restore the html initially loaded from the db
-                    // We use cloneDeep to avoid a reference
-                    html: _.cloneDeep(this.state.original),
-                    // We disable the edition mode
-                    editable: false
-                },
-                () => this.updateUi()
-            )
+            flushSync(() => {
+                this.setState({
+                        // We restore the html initially loaded from the db
+                        // We use cloneDeep to avoid a reference
+                        html: _.cloneDeep(this.state.original),
+                        // We disable the edition mode
+                        editable: false
+                    },
+                    () => this.updateUi()
+                )
+            });
         }
     }
 
@@ -267,14 +274,18 @@ export default class Editor extends Component {
 
 const elementIdBox3 = 'rct-editor-box3';
 if (document.getElementById(elementIdBox3)) {
+    const root = createRoot(document.getElementById(elementIdBox3));
+
     let data = document.getElementById(elementIdBox3).getAttribute('data');
     let reference = document.getElementById(elementIdBox3).getAttribute('reference');
-    ReactDOM.render(<Editor data={ data } reference={ reference } />, document.getElementById(elementIdBox3));
+    root.render(<Editor data={ data } reference={ reference } />);
 }
 
 const elementIdBox4 = 'rct-editor-box4';
 if (document.getElementById(elementIdBox4)) {
+    const root = createRoot(document.getElementById(elementIdBox4));
+
     let data = document.getElementById(elementIdBox4).getAttribute('data');
     let reference = document.getElementById(elementIdBox4).getAttribute('reference');
-    ReactDOM.render(<Editor data={ data } reference={ reference } />, document.getElementById(elementIdBox4));
+    root.render(<Editor data={ data } reference={ reference } />);
 }

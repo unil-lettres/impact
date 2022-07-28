@@ -105,7 +105,7 @@ class Course extends Model
     {
         return $this->enrollments()->get()
             ->filter(function ($enrollment) use ($role) {
-                return $enrollment->role === $role;
+                return $enrollment->user && $enrollment->role === $role;
             });
     }
 

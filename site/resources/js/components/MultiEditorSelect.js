@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from "react-dom/client";
+
 import axios from "axios";
 import Select from "react-select";
 import makeAnimated from 'react-select/animated';
@@ -21,17 +22,21 @@ export default class MultiEditorSelect extends Component {
         };
 
         Object.keys(data.options).forEach(key=>{
-            this.state.options.push({
-                value: data.options[key].id,
-                label: data.options[key].name
-            });
+            if(data.options[key]) {
+                this.state.options.push({
+                    value: data.options[key].id,
+                    label: data.options[key].name
+                });
+            }
         });
 
         Object.keys(data.defaults).forEach(key=>{
-            this.state.defaults.push({
-                value: data.defaults[key].id,
-                label: data.defaults[key].name
-            });
+            if(data.defaults[key]) {
+                this.state.defaults.push({
+                    value: data.defaults[key].id,
+                    label: data.defaults[key].name
+                });
+            }
         });
 
         this.state.selected = this.state.defaults;
@@ -86,6 +91,8 @@ export default class MultiEditorSelect extends Component {
 
 const elementId = 'rct-multi-editor-select';
 if (document.getElementById(elementId)) {
+    const root = createRoot(document.getElementById(elementId));
+
     let data = document.getElementById(elementId).getAttribute('data');
-    ReactDOM.render(<MultiEditorSelect data={ data } />, document.getElementById(elementId));
+    root.render(<MultiEditorSelect data={ data } />);
 }

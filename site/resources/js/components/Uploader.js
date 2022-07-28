@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from "react-dom/client";
+
 import Uppy from '@uppy/core'
 import French from '@uppy/locales/lib/fr_FR'
 import English from '@uppy/locales/lib/en_US'
@@ -136,6 +137,8 @@ export default class Uploader extends Component {
 
 const elementId = 'rct-uploader';
 if (document.getElementById(elementId)) {
+    const root = createRoot(document.getElementById(elementId));
+
     let data = document.getElementById(elementId).getAttribute('data');
-    ReactDOM.render(<Uploader data={ data } />, document.getElementById(elementId));
+    root.render(<Uploader data={ data } />);
 }

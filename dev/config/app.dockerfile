@@ -15,13 +15,13 @@ RUN curl --silent --show-error https://getcomposer.org/installer | php -- --inst
 # Install Node
 RUN apt-get update &&\
   apt-get install -y --no-install-recommends gnupg &&\
-  curl -sL https://deb.nodesource.com/setup_14.x | bash - &&\
+  curl -sL https://deb.nodesource.com/setup_16.x | bash - &&\
   apt-get update &&\
   apt-get install -y --no-install-recommends nodejs &&\
   npm install --global gulp-cli
 
 # Replace default crontab
-ADD ./config/crontab /etc/crontab
+ADD ./crontab /etc/crontab
 
 # Copy supervisor configuration file
 # This is used to manage cron & php-fpm services
@@ -30,6 +30,6 @@ ADD ./config/crontab /etc/crontab
 # docker exec <container-id> supervisorctl tail -f php
 # docker exec <container-id> supervisorctl tail -f cron
 # docker exec <container-id> supervisorctl restart php
-COPY ./config/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

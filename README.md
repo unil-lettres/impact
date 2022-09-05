@@ -80,6 +80,12 @@ Or to get the messages in JSON format.
 
 [http://impact.lan:8026/api/v2/messages](http://impact.lan:8026/api/v2/messages)
 
+## Assets compiling
+
+In this project the assets are pre-compiled before deployment. 
+
+During development ``docker exec impact-app npm run dev`` or ``docker exec impact-app npm run watch`` should be used. When everything is ready to be pushed to the repository ``docker exec impact-app npm run prod`` should be used to compile assets for production.
+
 ## PHP code style
 
 All PHP files will be inspected during CI for code style issues. If you want to make a dry run beforehand, use the following command.

@@ -225,7 +225,6 @@ class UserController extends Controller
             default:
                 return redirect()->back()
                     ->with('error', trans('messages.user.edit.cannot.validate'));
-                break;
         }
 
         $user->name = $validated['name'];

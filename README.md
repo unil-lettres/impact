@@ -38,7 +38,7 @@ Build & run all the containers for this project.
 
 ``docker-compose up``
 
-Run the setup script.
+Run the setup script separately. The laravel-worker process will not work until the setup script is applied.
 
 ``docker exec impact-app ./setup.sh``
 

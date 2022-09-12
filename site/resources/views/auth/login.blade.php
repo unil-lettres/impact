@@ -3,29 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center login-forms">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-header">{{ trans('login.aai') }}</div>
-
-                <div class="card-body">
-                    <div>
-                        <a target="_blank" href="https://www.switch.ch/aai/about/">{{ trans('login.aai.about') }}</a> |
-                        <a target="_blank" href="https://www.switch.ch/aai/faq/">{{ trans('login.aai.faq') }}</a> |
-                        <a target="_blank" href="https://www.switch.ch/aai/help/">{{ trans('login.aai.help') }}</a> |
-                        <a target="_blank" href="https://www.switch.ch/aai/privacy/">{{ trans('login.aai.privacy') }}</a>
-                    </div>
-                    <hr>
-                    <p class="text-secondary">{!! trans('login.aai_info') !!}</p>
-                    <div class="col text-center">
-                        <a href="{{ route('aai') }}"
-                           class="btn btn-primary btn-lg">
-                            SWITCHaai
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
+        <div class="col-md-12">
             <div class="card">
                 <div class="card-header">{{ trans('login.local') }}</div>
 

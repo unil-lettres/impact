@@ -8,7 +8,7 @@
                 <div class="card-header">{{ trans('login.local') }}</div>
 
                 <div class="card-body">
-                    <p class="text-secondary">{{ trans('login.local_info') }}</p>
+                    <p class="text-secondary text-danger">{{ trans('login.local_info') }}</p>
 
                     <form method="POST" action="{{ route('login') }}">
                         @csrf

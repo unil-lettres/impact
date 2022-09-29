@@ -2,14 +2,13 @@ name: ci
 on: [push, pull_request]
 jobs:
   build:
+    name: PHP${{ matrix.php-versions }}
+    runs-on: ubuntu-20.04
     strategy:
       matrix:
         php-versions: [ '8.0', '8.1' ]
 
-    runs-on: ubuntu-20.04
-
     env:
-      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_CI_WEBHOOK_URL }}
       MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
       MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
       CI: gha
@@ -23,8 +22,6 @@ jobs:
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
           MYSQL_DATABASE: impact_test
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=5
-
-    name: PHP${{ matrix.php-versions }}
 
     steps:
       - name: Checkout
@@ -94,26 +91,20 @@ jobs:
         working-directory: ./site
         run: php artisan email:failure
 
-      - name: Notify Teams (success)
-        if: ${{ success() }}
-        continue-on-error: true
-        uses: mikesprague/teams-incoming-webhook-action@v1
-        with:
-          github-token: ${{ github.token }}
-          webhook-url: ${{ secrets.TEAMS_CI_WEBHOOK_URL }}
-          deploy-card: true
-          timezone: "Europe/Zurich"
-          title: "Success"
-          color: "success"
+  notification:
+    name: Notify
+    runs-on: ubuntu-latest
+    needs: build
+    if: always()
+    continue-on-error: true
 
-      - name: Notify Teams (failure)
-        if: ${{ failure() }}
-        continue-on-error: true
-        uses: mikesprague/teams-incoming-webhook-action@v1
+    steps:
+      - uses: technote-space/workflow-conclusion-action@v3
+      - uses: mikesprague/teams-incoming-webhook-action@v1
         with:
           github-token: ${{ github.token }}
           webhook-url: ${{ secrets.TEAMS_CI_WEBHOOK_URL }}
           deploy-card: true
           timezone: "Europe/Zurich"
-          title: "Failure"
-          color: "failure"
+          title: ${{ env.WORKFLOW_CONCLUSION }}
+          color: ${{ env.WORKFLOW_CONCLUSION }}

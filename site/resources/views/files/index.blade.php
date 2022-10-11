@@ -47,7 +47,7 @@
                                                 <span style="cursor: pointer"
                                                       class="base-popover"
                                                       data-toggle="popover"
-                                                      data-content='{!! Helpers::fileCards($file) !!}'>
+                                                      data-content='{{ Helpers::fileCards($file) }}'>
                                                     {{ trans_choice('cards.card(s)', $file->cards->count()) }}
                                                 </span>
                                             </td>

@@ -255,7 +255,7 @@ class Helpers
     {
         $html = '';
         foreach ($breadcrumbs as $path => $name) {
-            $html .= "<a href=\"".$path."\">".self::truncate($name, 25)."</a>";
+            $html .= '<a href="'.$path.'">'.self::truncate($name, 25).'</a>';
 
             if ($breadcrumbs->last() !== $name) {
                 $html .= '<span> / </span>';
@@ -276,7 +276,7 @@ class Helpers
         $html = '';
 
         foreach ($file->cards as $card) {
-            $html .= "<div><a href=\"".route('cards.show', $card->id)."\">".$card->title."</a></div>";
+            $html .= '<div><a href="'.route('cards.show', $card->id).'">'.$card->title.'</a></div>';
         }
 
         return $html;

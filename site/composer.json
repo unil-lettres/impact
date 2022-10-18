@@ -16,7 +16,7 @@
         "guzzlehttp/guzzle": "^7.0.1",
         "laravel/framework": "^9.0",
         "laravel/tinker": "^2.0",
-        "laravel/ui": "^3.0",
+        "laravel/ui": "^v4.0",
         "php-ffmpeg/php-ffmpeg": "^v1.0.1",
         "phpoffice/phpword": "^0.18.0",
         "spatie/eloquent-sortable": "^4.0.1"
@@ -24,7 +24,7 @@
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.4",
         "fakerphp/faker": "^1.13",
-        "laravel/dusk": "^6.4",
+        "laravel/dusk": "^7.1",
         "laravel/pint": "^v1.1.0",
         "laravel/telescope": "^4.0",
         "mockery/mockery": "^1.0",

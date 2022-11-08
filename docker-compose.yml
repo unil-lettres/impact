@@ -4,6 +4,8 @@ networks:
   impact-net:
     driver: bridge
 
+name: impact
+
 services:
   impact-web:
     image: nginx:1.17

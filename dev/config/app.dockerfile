@@ -24,12 +24,10 @@ RUN apt-get update &&\
 ADD ./crontab /etc/crontab
 
 # Copy supervisor configuration file
-# This is used to manage cron & php-fpm services
 #
 # docker exec <container-id> supervisorctl status
-# docker exec <container-id> supervisorctl tail -f php
-# docker exec <container-id> supervisorctl tail -f cron
-# docker exec <container-id> supervisorctl restart php
+# docker exec <container-id> supervisorctl tail -f <service>
+# docker exec <container-id> supervisorctl restart <service>
 COPY ./supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]

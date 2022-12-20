@@ -18,7 +18,7 @@
         "laravel/tinker": "^2.0",
         "laravel/ui": "^v4.0",
         "php-ffmpeg/php-ffmpeg": "^v1.0.1",
-        "phpoffice/phpword": "^0.18.0",
+        "phpoffice/phpword": "^1.0.0",
         "spatie/eloquent-sortable": "^4.0.1"
     },
     "require-dev": {

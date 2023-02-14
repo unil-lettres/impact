@@ -23,7 +23,7 @@ mix.js('resources/js/app.js', 'public/js')
  |--------------------------------------------------------------------------
  */
 
-const CKEditorWebpackPlugin = require('@ckeditor/ckeditor5-dev-webpack-plugin');
+const { CKEditorTranslationsPlugin } = require( '@ckeditor/ckeditor5-dev-translations' );
 const CKEditorStyles = require('@ckeditor/ckeditor5-dev-utils').styles;
 //Includes SVGs and CSS files from "node_modules/ckeditor5-*" and any other custom directories
 const CKEditorRegex = {
@@ -32,7 +32,7 @@ const CKEditorRegex = {
 };
 
 //Exclude CKEditor regex from mix's default rules
-Mix.listen('configReady', config => {
+mix.override(config => {
     const rules = config.module.rules;
     const targetSVG = (/(\.(png|jpe?g|gif|webp|avif)$|^((?!font).)*\.svg$)/).toString();
     const targetFont = (/(\.(woff2?|ttf|eot|otf)$|font.*\.svg$)/).toString();
@@ -50,7 +50,7 @@ Mix.listen('configReady', config => {
 
 mix.webpackConfig({
     plugins: [
-        new CKEditorWebpackPlugin({
+        new CKEditorTranslationsPlugin({
             language: 'fr',
             additionalLanguages: ['en'],
             outputDirectory: 'js/vendor/@ckeditor/translations'

@@ -66,7 +66,7 @@ To access the database please use the following link.
 
 [http://impact.lan:9898](http://impact.lan:9898)
 
-+ Server: impact-mariadb
++ Server: impact-mysql
 + Username: user
 + Password: password
 
@@ -96,23 +96,17 @@ And if you want to automatically fix the issues.
 
 ``docker exec impact-app ./vendor/bin/pint``
 
-## Testing
+## Tests
 
-Functional and unit tests will be played during CI. If you want to run them locally, use the following commands from the framework root directory (/site). Check environment file for requirements.
+To Run the full suite:
 
-### Launch local testing environment 
+`docker exec -it impact-app php artisan dusk --env=testing`
 
-``php artisan serve --env=dusk.local``
+To run a specific test class:
 
-### Install correct chrome driver if needed
+`docker exec -it impact-app php artisan dusk tests/Browser/MyTest.php --env=testing`
 
-``php artisan dusk:chrome-driver --detect``
-
-### Run functional tests
-
-Run all tests: ``php artisan dusk``
-
-Run specific tests: ``php artisan dusk --filter UserTest``
+To view the integration tests running in the browser, go to [http://impact.lan:4444](http://impact.lan:4444), click on Sessions, you should see a line corresponding to the running tests and a camera icon next to it, click on it to open a VNC viewer.
 
 # Error tracker
 

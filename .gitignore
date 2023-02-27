@@ -1,7 +1,6 @@
 .idea
 .DS_Store
 dev/.env
-dev/dbdata/*
-!dev/dbdata/.gitkeep
 site/supervisord*
-site/phpunit.dusk.xml
+/site/.env.backup
+/site/phpunit.dusk.xml

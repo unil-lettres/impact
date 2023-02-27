@@ -93,11 +93,11 @@ return [
 
         'testing' => [
             'driver' => 'mysql',
-            'host' => env('DB_HOST', '127.0.0.1'),
-            'port' => env('DB_PORT', '3306'),
-            'database' => env('DB_DATABASE', 'impact_test'),
-            'username' => env('DB_USERNAME', 'root'),
-            'password' => env('DB_PASSWORD', ''),
+            'host' => 'impact-mysql-testing',
+            'port' => '3307',
+            'database' => 'impact',
+            'username' => 'user',
+            'password' => 'password',
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
             'prefix' => '',

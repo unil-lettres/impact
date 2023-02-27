@@ -18,7 +18,7 @@ services:
     volumes_from:
       - impact-app
     ports:
-      - "8787:80"
+      - "127.0.0.1:8787:80"
     networks:
       - impact-net
     container_name: impact-web
@@ -38,24 +38,36 @@ services:
     networks:
       - impact-net
     container_name: impact-app
-  impact-mariadb:
+  impact-mysql:
     image: mariadb:10.4
     env_file:
       - ./dev/.env
     volumes:
-      - ./dev/dbdata:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
       - ./dev/config/my.cnf:/etc/mysql/my.cnf
     ports:
-      - "3303:3306"
+      - "127.0.0.1:3303:3306"
     networks:
       - impact-net
     container_name: impact-mysql
+  impact-mysql-testing:
+    image: mariadb:10.4
+    env_file:
+      - ./dev/.env
+    volumes:
+      - dusk-data:/var/lib/mysql
+      - ./dev/config/my-testing.cnf:/etc/mysql/my.cnf
+    expose:
+      - "3307"
+    networks:
+      - impact-net
+    container_name: impact-mysql-testing
   impact-myadmin:
     image: phpmyadmin/phpmyadmin:latest
     env_file:
       - ./dev/.env
     ports:
-      - "9898:80"
+      - "127.0.0.1:9898:80"
     networks:
       - impact-net
     container_name: impact-myadmin
@@ -64,7 +76,19 @@ services:
     expose:
       - "1025"
     ports:
-      - "8026:8025"
+      - "127.0.0.1:8026:8025"
     networks:
       - impact-net
     container_name: impact-mailhog
+  impact-selenium:
+    image: selenium/standalone-chrome:latest
+    shm_size: 2gb
+    ports:
+      - "127.0.0.1:4444:4444"
+    networks:
+      - impact-net
+    container_name: impact-selenium
+
+volumes:
+  mysql-data:
+  dusk-data:

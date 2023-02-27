@@ -19,8 +19,10 @@ jobs:
         ports:
           - 3306:3306
         env:
+          MYSQL_DATABASE: impact
+          MYSQL_USER: user
+          MYSQL_PASSWORD: password
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-          MYSQL_DATABASE: impact_test
         options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=5
 
     steps:
@@ -73,7 +75,7 @@ jobs:
         working-directory: ./site
         run: |
           php artisan dusk:chrome-driver --detect
-          google-chrome-stable --headless --disable-gpu --remote-debugging-port=9222 http://localhost &
+          ./vendor/laravel/dusk/bin/chromedriver-linux &
           php artisan serve &
 
       - name: Execute functional tests

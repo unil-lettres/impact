@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-# Create the Laravel .env file
+# Setup the Laravel environment file
 if [ -z "$CI" ]; then
-  # Not CI
+  # Copy file for local dev with docker
   cp .env.example .env
 else
-  # CI
-  cp .env.testing .env
+  # Copy file for CI
+  cp .env.dusk.ci .env
 fi
 
 # Install php dependencies
@@ -16,20 +16,13 @@ composer install --no-interaction
 php artisan key:generate
 
 if [ -z "$CI" ]; then
-  # Not CI
+  # Install js dependencies for local dev
   npm install
   npm run dev
-else
-  # CI
-  php artisan config:clear
-  php artisan config:cache
 fi
 
-# Run migrations
-php artisan migrate --force
-
-# Seeding dummy data
-php artisan db:seed
+# Run migrations & seed data
+php artisan migrate:fresh --seed
 
 # Create the symlink to make storage public
 php artisan storage:link

@@ -5,6 +5,7 @@ namespace Tests;
 use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\TestCase as BaseTestCase;
 
 abstract class DuskTestCase extends BaseTestCase
@@ -30,6 +31,19 @@ abstract class DuskTestCase extends BaseTestCase
      */
     protected function driver()
     {
+        $server = 'http://localhost:9515';
+
+        if (! env('CI')) {
+            // Change the remote web driver server for docker environment
+            $server = 'http://impact-selenium:4444/wd/hub';
+
+            // Setup & seed the database for docker environment
+            Artisan::call('migrate:fresh --database=testing --seed');
+
+            // Install the version of ChromeDriver that matches the detected version of Chrome
+            Artisan::call('dusk:chrome-driver --detect');
+        }
+
         $options = (new ChromeOptions)->addArguments([
             '--disable-gpu',
             '--headless',
@@ -37,7 +51,7 @@ abstract class DuskTestCase extends BaseTestCase
         ]);
 
         return RemoteWebDriver::create(
-            'http://localhost:9515', DesiredCapabilities::chrome()->setCapability(
+            $server, DesiredCapabilities::chrome()->setCapability(
                 ChromeOptions::CAPABILITY, $options
             )
         );

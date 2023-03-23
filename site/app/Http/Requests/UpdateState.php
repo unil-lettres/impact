@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ActionType;
 use App\Enums\StatePermission;
 use Illuminate\Validation\Rule;
 
@@ -65,6 +66,27 @@ class UpdateState extends AbstractRequest
                 'required',
                 'integer',
                 Rule::in(self::BOX_ALLOWED_PERMISSIONS),
+            ],
+            'action-type' => [
+                'required',
+                'string',
+                Rule::in(
+                    [ActionType::None, ActionType::Email]
+                ),
+            ],
+            'action-email-subject' => [
+                'string',
+                'max:255',
+                Rule::requiredIf(
+                    fn () => \request()->get('action-type') == ActionType::Email
+                ),
+            ],
+            'action-email-message' => [
+                'string',
+                'max:3000',
+                Rule::requiredIf(
+                    fn () => \request()->get('action-type') == ActionType::Email
+                ),
             ],
         ];
     }

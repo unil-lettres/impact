@@ -221,9 +221,33 @@
                                     <span class="title">
                                         {{ trans('states.action') }}
                                     </span>
+
+                                    <div class="col-md-4 col-6 float-right">
+                                        <select id="action-type"
+                                                name="action-type"
+                                                class="form-control"
+                                                onchange="displayActionForm(this)">
+                                            <option value="{{ \App\Enums\ActionType::None }}"
+                                                {{ !Helpers::stateHasActions($activeState) ? 'selected' : '' }}>
+                                                {{ trans('states.action_none') }}
+                                            </option>
+                                            <option value="{{ \App\Enums\ActionType::Email }}"
+                                                {{ Helpers::stateHasActionOfType($activeState, \App\Enums\ActionType::Email) ? 'selected' : '' }}>
+                                                {{ trans('states.action_email') }}
+                                            </option>
+                                        </select>
+                                    </div>
                                 </div>
                                 <div class="card-body">
-                                    <!-- TODO: add actions -->
+                                    <div class="action-none {{ Helpers::stateHasActions($activeState) ? 'd-none' : ''  }}">
+                                        <div class="text-center text-secondary">
+                                            {{ trans('states.action_none_content') }}
+                                        </div>
+                                    </div>
+
+                                    <div class="action-email {{ Helpers::stateHasActionOfType($activeState, \App\Enums\ActionType::Email) ? '' : 'd-none'  }}">
+                                        @include('states.include.action-email')
+                                    </div>
                                 </div>
                             </div>
 
@@ -239,4 +263,18 @@
             </div>
         </div>
     @endcan
+@endsection
+
+@section('scripts-footer')
+    <script type="text/javascript">
+        function displayActionForm(selectObject) {
+            if (selectObject.value === "{{ \App\Enums\ActionType::None }}") {
+                $(".action-email:first").addClass('d-none');
+                $(".action-none:first").removeClass('d-none');
+            } else if (selectObject.value === "{{ \App\Enums\ActionType::Email }}") {
+                $(".action-email:first").removeClass('d-none');
+                $(".action-none:first").addClass('d-none');
+            }
+        }
+    </script>
 @endsection

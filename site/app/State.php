@@ -22,8 +22,13 @@ class State extends Model implements Sortable
             "box5": '.StatePermission::EditorsCanShowAndEdit.'
         }';
 
+    const ACTIONS = '{
+            "version": 1,
+            "data": []
+        }';
+
     protected $fillable = [
-        'name', 'description', 'position', 'permissions', 'course_id', 'type', 'teachers_only',
+        'name', 'description', 'position', 'permissions', 'course_id', 'type', 'teachers_only', 'actions',
     ];
 
     protected $dates = [
@@ -32,10 +37,12 @@ class State extends Model implements Sortable
 
     protected $casts = [
         'permissions' => 'array',
+        'actions' => 'array',
     ];
 
     protected $attributes = [
         'permissions' => self::PERMISSIONS,
+        'actions' => self::ACTIONS,
     ];
 
     /**
@@ -90,5 +97,52 @@ class State extends Model implements Sortable
             'permissions' => $permissions,
         ]);
         $this->save();
+    }
+
+    /**
+     * Get all actions for this state, or only for a specific type
+     *
+     * @param  string|null  $type (App\Enums\ActionType)
+     *
+     * @return array
+     */
+    public function getActionsData(string $type = null)
+    {
+        if (!$this->actions) {
+            return [];
+        }
+
+        if (!isset($this->actions['data'])) {
+            return [];
+        }
+
+        if ($type) {
+            // Keep only the actions of the given type
+            return collect($this->actions['data'])
+                ->filter(function ($action) use ($type) {
+                    return isset($action['type']) && $action['type'] === $type;
+                })->toArray();
+        }
+
+        return $this->actions['data'];
+    }
+
+    /**
+     * Get the data of a specific action if available
+     *
+     * @param int $index
+     * @param string|null $type (App\Enums\ActionType)
+     *
+     * @return array|null
+     */
+    public function getActionData(int $index, string $type = null)
+    {
+        $actions = $this->getActionsData($type);
+
+        if (isset($actions[$index])) {
+            return $actions[$index];
+        }
+
+        return null;
     }
 }

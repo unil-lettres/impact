@@ -424,4 +424,53 @@ class Helpers
                 return false;
         }
     }
+
+    /**
+     * Return whether the state as an action of a certain type
+     *
+     * @param  State  $state
+     * @param  string  $type (App\Enums\ActionType)
+     * @return bool
+     */
+    public static function stateHasActionOfType(State $state, string $type): bool
+    {
+        if (!Helpers::stateHasActions($state)) {
+            return false;
+        }
+
+        foreach ($state->actions['data'] as $action) {
+            if(!isset($action['type'])) {
+                return false;
+            }
+
+            if ($action['type'] === $type) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Return whether the state as one or more action(s)
+     *
+     * @param  State  $state
+     * @return bool
+     */
+    public static function stateHasActions(State $state): bool
+    {
+        if (!$state->actions) {
+            return false;
+        }
+
+        if (!isset($state->actions['data'])) {
+            return false;
+        }
+
+        if (empty($state->actions['data'])) {
+            return false;
+        }
+
+        return true;
+    }
 }

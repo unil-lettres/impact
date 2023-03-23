@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Enums\ActionType;
 use App\Enums\StateType;
 use App\Http\Requests\DestroyState;
 use App\Http\Requests\IndexState;
@@ -95,18 +96,29 @@ class StateController extends Controller
 
         $this->authorize('update', $state);
 
-        $permissions = $state->permissions;
+        $permissions = $state->permissions ?? json_decode(State::PERMISSIONS);
         $permissions['box1'] = (int) $request->get('box1');
         $permissions['box2'] = (int) $request->get('box2');
         $permissions['box3'] = (int) $request->get('box3');
         $permissions['box4'] = (int) $request->get('box4');
         $permissions['box5'] = (int) $request->get('box5');
 
+        $actions = $state->actions ?? json_decode(State::ACTIONS);
+        $actions['data'] = match ($request->get('action-type')) {
+            ActionType::Email => [[
+                'type' => $request->get('action-type'),
+                'subject' => $request->get('action-email-subject'),
+                'message' => $request->get('action-email-message'),
+            ]],
+            default => (array) null,
+        };
+
         $state->update([
             'name' => $request->get('name'),
             'description' => $request->get('description'),
             'teachers_only' => (bool) $request->get('teachers_only'),
             'permissions' => $permissions,
+            'actions' => $actions,
         ]);
         $state->save();
 

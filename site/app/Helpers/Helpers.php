@@ -426,7 +426,7 @@ class Helpers
     }
 
     /**
-     * Return whether the state as an action of a certain type
+     * Return whether the state has an action of a certain type
      *
      * @param  State  $state
      * @param  string  $type (App\Enums\ActionType)
@@ -452,7 +452,7 @@ class Helpers
     }
 
     /**
-     * Return whether the state as one or more action(s)
+     * Return whether the state has one or more action(s)
      *
      * @param  State  $state
      * @return bool

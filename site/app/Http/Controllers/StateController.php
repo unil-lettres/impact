@@ -110,7 +110,7 @@ class StateController extends Controller
                 'subject' => $request->get('action-email-subject'),
                 'message' => $request->get('action-email-message'),
             ]],
-            default => (array) null,
+            default => [],
         };
 
         $state->update([

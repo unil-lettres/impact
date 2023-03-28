@@ -86,7 +86,7 @@ jobs:
       - name: Execute unit tests
         id: app-test-unit
         working-directory: ./site
-        run: vendor/bin/phpunit
+        run: php artisan test
 
       - name: Expose failed tests
         if: ${{ failure() }}

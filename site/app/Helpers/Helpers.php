@@ -434,12 +434,12 @@ class Helpers
      */
     public static function stateHasActionOfType(State $state, string $type): bool
     {
-        if (!Helpers::stateHasActions($state)) {
+        if (! Helpers::stateHasActions($state)) {
             return false;
         }
 
         foreach ($state->actions['data'] as $action) {
-            if(!isset($action['type'])) {
+            if (! isset($action['type'])) {
                 return false;
             }
 
@@ -459,11 +459,11 @@ class Helpers
      */
     public static function stateHasActions(State $state): bool
     {
-        if (!$state->actions) {
+        if (! $state->actions) {
             return false;
         }
 
-        if (!isset($state->actions['data'])) {
+        if (! isset($state->actions['data'])) {
             return false;
         }
 

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Enums\StatePermission;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
@@ -12,6 +13,7 @@ class State extends Model implements Sortable
 {
     use SoftDeletes;
     use SortableTrait;
+    use HasFactory;
 
     const PERMISSIONS = '{
             "version": 1,
@@ -103,16 +105,15 @@ class State extends Model implements Sortable
      * Get all actions for this state, or only for a specific type
      *
      * @param  string|null  $type (App\Enums\ActionType)
-     *
      * @return array
      */
     public function getActionsData(string $type = null)
     {
-        if (!$this->actions) {
+        if (! $this->actions) {
             return [];
         }
 
-        if (!isset($this->actions['data'])) {
+        if (! isset($this->actions['data'])) {
             return [];
         }
 
@@ -130,9 +131,8 @@ class State extends Model implements Sortable
     /**
      * Get the data of a specific action if available
      *
-     * @param int $index
-     * @param string|null $type (App\Enums\ActionType)
-     *
+     * @param  int  $index
+     * @param  string|null  $type (App\Enums\ActionType)
      * @return array|null
      */
     public function getActionData(int $index, string $type = null)

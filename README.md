@@ -98,7 +98,15 @@ And if you want to automatically fix the issues.
 
 ## Tests
 
-To Run the full suite:
+### Unit/Feature tests
+
+To run the full suite:
+
+`docker exec -it impact-app php artisan test`
+
+### Browser tests
+
+To run the full suite:
 
 `docker exec -it impact-app php artisan dusk --env=testing`
 

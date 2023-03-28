@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 
-# Setup the Laravel environment file
+# Setup the Laravel environment files
 if [ -z "$CI" ]; then
-  # Copy file for local dev with docker
+  # Copy the env file for local
+  # dev with docker
   cp .env.example .env
 else
-  # Copy file for CI
+  # Copy the env file for CI
   cp .env.dusk.ci .env
+  # Remove the env file for local tests
+  # to fallback to the main env file
+  rm .env.dusk.testing
 fi
 
 # Install php dependencies

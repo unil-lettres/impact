@@ -47,7 +47,7 @@ class StateTest extends TestCase
         $this->assertDatabaseHas('states', $stateDataUpdated);
     }
 
-    public function testCourseCanBeDeleted()
+    public function testStateCanBeDeleted()
     {
         $state = State::factory()->create();
 

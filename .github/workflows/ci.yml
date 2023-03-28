@@ -78,12 +78,12 @@ jobs:
           ./vendor/laravel/dusk/bin/chromedriver-linux &
           php artisan serve &
 
-      - name: Execute functional tests
-        id: app-test-functional
+      - name: Execute browser tests
+        id: app-test-browser
         working-directory: ./site
         run: php artisan dusk
 
-      - name: Execute unit tests
+      - name: Execute unit/feature tests
         id: app-test-unit
         working-directory: ./site
         run: php artisan test

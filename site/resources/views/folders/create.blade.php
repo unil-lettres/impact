@@ -42,7 +42,7 @@
                     </div>
                 </div>
 
-                <input type="hidden" name="course_id" value="{{ $course->id }}" >
+                <input type="hidden" name="course_id" value="{{ $course?->id }}" >
 
                 <button type="submit"
                         class="btn btn-primary">

@@ -22,7 +22,11 @@
                 {{ trans('cards.state') }}
             </label>
             <div class="col-md-8">
-                // State input placeholder
+                <input id="state" name="state" type="hidden" value="{{ $card->state ? $card->state->id : '' }}">
+                <div id="rct-single-state-select"
+                     reference="state"
+                     data='{{ json_encode(['options' => $states, 'default' => $card->state, 'clearable' => false]) }}'
+                ></div>
             </div>
         </div>
 

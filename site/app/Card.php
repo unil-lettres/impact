@@ -46,7 +46,7 @@ class Card extends Model
         }';
 
     protected $fillable = [
-        'title', 'box2', 'box3', 'box4', 'course_id', 'folder_id', 'file_id', 'options',
+        'title', 'box2', 'box3', 'box4', 'course_id', 'state_id', 'folder_id', 'file_id', 'options',
     ];
 
     protected $dates = [

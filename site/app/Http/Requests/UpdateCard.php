@@ -60,6 +60,7 @@ class UpdateCard extends AbstractRequest
                 'sometimes',
                 Rule::in(['on']),
             ],
+            'state' => 'required|integer|exists:states,id',
         ];
     }
 }

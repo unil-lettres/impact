@@ -19,6 +19,7 @@ require('./components/MultiCourseEnrollment');
 require('./components/SingleCourseSelect');
 require('./components/SingleFolderSelect');
 require('./components/SingleFileSelect');
+require('./components/SingleStateSelect');
 require('./components/Uploader');
 require('./components/Editor');
 require('./components/Player');

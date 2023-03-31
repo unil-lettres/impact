@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Card;
 use App\Course;
+use App\Enums\StateType;
 use App\Folder;
 use App\Http\Requests\CreateCard;
 use App\Http\Requests\CreateCardExport;
@@ -54,6 +55,11 @@ class CardController extends Controller
 
         return view('cards.create', [
             'course' => $course,
+            'state' => $course
+                ->states
+                ->where(
+                    'type', StateType::Private
+                )->first(),
             'breadcrumbs' => $course
                 ->breadcrumbs(true),
             'folders' => $course
@@ -139,6 +145,8 @@ class CardController extends Controller
                 ->students(),
             'files' => $card->course
                 ->files,
+            'states' => $card->course
+                ->states,
         ]);
     }
 
@@ -174,6 +182,7 @@ class CardController extends Controller
         $card->update([
             'title' => $request->get('title'),
             'file_id' => $request->get('box1-file'),
+            'state_id' => $request->get('state'),
             'options' => $options,
         ]);
         $card->save();

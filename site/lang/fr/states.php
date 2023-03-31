@@ -40,7 +40,7 @@ return [
     'email_subject' => 'Sujet',
     'email_subject_default' => 'Fiche rendue visible pour les responsables',
     'email_message' => 'Message',
-    'email_message_help' => 'Vous pouvez utiliser des variables qui seront remplacées lors de l\'envoi de l\'email par des paramètres de la fiche concernée. La balise <%title> sera remplacée par le titre de la fiche. La balise <%url> sera remplacée par l\'URL de la fiche',
-    'email_message_default' => 'La fiche <%title> est maintenant visible par les responsables. Elle peut être consultée avec le lien suivant: <%url>.',
+    'email_message_help' => 'Vous pouvez utiliser des variables qui seront remplacées lors de l\'envoi de l\'email par des paramètres de la fiche concernée. La balise {{title}} sera remplacée par le titre de la fiche. La balise {{url}} sera remplacée par l\'URL de la fiche',
+    'email_message_default' => 'La fiche {{title}} est maintenant visible par les responsables. Elle peut être consultée avec le lien suivant: {{url}}.',
 
 ];

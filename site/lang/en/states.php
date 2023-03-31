@@ -40,7 +40,7 @@ return [
     'email_subject' => 'Subject',
     'email_subject_default' => 'Card made visible to managers',
     'email_message' => 'Message',
-    'email_message_help' => 'You can use variables that will be replaced when the email is sent with parameters of the relevant card. The <%title> tag will be replaced by the title of the card. The <%url> tag will be replaced by the URL of the card',
-    'email_message_default' => 'The <%title> card is now visible to the managers. It can be viewed with the following link: <%url>.',
+    'email_message_help' => 'You can use variables that will be replaced when the email is sent with parameters of the relevant card. The {{title}} tag will be replaced by the title of the card. The {{url}} tag will be replaced by the URL of the card',
+    'email_message_default' => 'The {{title}} card is now visible to the managers. It can be viewed with the following link: {{url}}.',
 
 ];

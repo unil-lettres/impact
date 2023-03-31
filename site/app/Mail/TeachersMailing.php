@@ -52,18 +52,18 @@ class TeachersMailing extends Mailable
      * Clean content & replace placeholder
      *
      * @param  string  $content
-     * @return string|string[]
+     * @return string
      */
     private function processContent($content)
     {
-        // Replace placeholder with courses
+        // Replace {{espaces}} placeholder with courses if found
         $content = str_replace(
             '{{espaces}}',
             $this->coursesAsHtmlList(),
             $content
         );
 
-        // Clean content
+        // Clean content if needed
         return str_replace(
             "\r\n",
             '<br/>',

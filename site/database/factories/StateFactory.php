@@ -40,54 +40,6 @@ class StateFactory extends Factory
     }
 
     /**
-     * Indicate that the open state.
-     *
-     * @return Factory
-     */
-    public function open()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'name' => trans('states.open'),
-                'description' => trans('states.open_description'),
-                'position' => 1,
-                'permissions' => '{
-                    "version": 1,
-                    "box1": '.StatePermission::TeachersAndEditorsCanShowAndEdit.',
-                    "box2": '.StatePermission::TeachersAndEditorsCanShowAndEdit.',
-                    "box3": '.StatePermission::TeachersAndEditorsCanShowAndEdit.',
-                    "box4": '.StatePermission::TeachersAndEditorsCanShowAndEdit.',
-                    "box5": '.StatePermission::TeachersAndEditorsCanShowAndEdit.'
-                }',
-            ];
-        });
-    }
-
-    /**
-     * Indicate that the public state.
-     *
-     * @return Factory
-     */
-    public function public()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'name' => trans('states.public'),
-                'description' => trans('states.public_description'),
-                'position' => 2,
-                'permissions' => '{
-                    "version": 1,
-                    "box1": '.StatePermission::AllCanShowTeachersAndEditorsCanEdit.',
-                    "box2": '.StatePermission::AllCanShowTeachersAndEditorsCanEdit.',
-                    "box3": '.StatePermission::AllCanShowTeachersAndEditorsCanEdit.',
-                    "box4": '.StatePermission::AllCanShowTeachersAndEditorsCanEdit.',
-                    "box5": '.StatePermission::AllCanShowTeachersAndEditorsCanEdit.'
-                }',
-            ];
-        });
-    }
-
-    /**
      * Indicate that the state has a private type.
      *
      * @return Factory
@@ -105,6 +57,60 @@ class StateFactory extends Factory
     }
 
     /**
+     * Indicate that the state has a custom open type.
+     *
+     * @return Factory
+     */
+    public function open()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => trans('states.open'),
+                'description' => trans('states.open_description'),
+                'position' => 1,
+                'type' => StateType::Custom,
+                'permissions' => json_decode(
+                    '{
+                        "version": 1,
+                        "box1": '.StatePermission::TeachersAndEditorsCanShowAndEdit.',
+                        "box2": '.StatePermission::TeachersAndEditorsCanShowAndEdit.',
+                        "box3": '.StatePermission::TeachersAndEditorsCanShowAndEdit.',
+                        "box4": '.StatePermission::TeachersAndEditorsCanShowAndEdit.',
+                        "box5": '.StatePermission::TeachersAndEditorsCanShowAndEdit.'
+                    }'
+                ),
+            ];
+        });
+    }
+
+    /**
+     * Indicate that the state has a custom public type.
+     *
+     * @return Factory
+     */
+    public function public()
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'name' => trans('states.public'),
+                'description' => trans('states.public_description'),
+                'position' => 2,
+                'type' => StateType::Custom,
+                'permissions' => json_decode(
+                    '{
+                        "version": 1,
+                        "box1": '.StatePermission::AllCanShowTeachersAndEditorsCanEdit.',
+                        "box2": '.StatePermission::AllCanShowTeachersAndEditorsCanEdit.',
+                        "box3": '.StatePermission::AllCanShowTeachersAndEditorsCanEdit.',
+                        "box4": '.StatePermission::AllCanShowTeachersAndEditorsCanEdit.',
+                        "box5": '.StatePermission::AllCanShowTeachersAndEditorsCanEdit.'
+                    }'
+                ),
+            ];
+        });
+    }
+
+    /**
      * Indicate that the state has an archived type.
      *
      * @return Factory
@@ -117,14 +123,16 @@ class StateFactory extends Factory
                 'description' => trans('states.archived_description'),
                 'position' => 1000,
                 'type' => StateType::Archived,
-                'permissions' => '{
-                    "version": 1,
-                    "box1": '.StatePermission::TeachersCanShowAndEditEditorsCanShow.',
-                    "box2": '.StatePermission::TeachersCanShowAndEditEditorsCanShow.',
-                    "box3": '.StatePermission::TeachersCanShowAndEditEditorsCanShow.',
-                    "box4": '.StatePermission::TeachersCanShowAndEditEditorsCanShow.',
-                    "box5": '.StatePermission::TeachersCanShowAndEditEditorsCanShow.'
-                }',
+                'permissions' => json_decode(
+                    '{
+                        "version": 1,
+                        "box1": '.StatePermission::TeachersCanShowAndEditEditorsCanShow.',
+                        "box2": '.StatePermission::TeachersCanShowAndEditEditorsCanShow.',
+                        "box3": '.StatePermission::TeachersCanShowAndEditEditorsCanShow.',
+                        "box4": '.StatePermission::TeachersCanShowAndEditEditorsCanShow.',
+                        "box5": '.StatePermission::TeachersCanShowAndEditEditorsCanShow.'
+                    }'
+                ),
             ];
         });
     }

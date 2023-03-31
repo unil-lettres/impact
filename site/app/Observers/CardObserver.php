@@ -19,7 +19,7 @@ class CardObserver
     /**
      * Handle the Card "updated" event.
      *
-     * @param Card $card
+     * @param  Card  $card
      * @return void
      */
     public function updated(Card $card)
@@ -45,8 +45,8 @@ class CardObserver
     /**
      * Send an email to the teachers of the course
      *
-     * @param Card $card
-     * @param array $action
+     * @param  Card  $card
+     * @param  array  $action
      * @return void
      */
     private function sendEmailAction(Card $card, array $action)
@@ -60,7 +60,7 @@ class CardObserver
         )->send(
             new StateSelected(
                 $card,
-                '[Impact] ' . $action['subject'],
+                '[Impact] '.$action['subject'],
                 $action['message']
             )
         );

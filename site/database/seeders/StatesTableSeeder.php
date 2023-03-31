@@ -3,8 +3,6 @@
 namespace Database\Seeders;
 
 use App\Enums\EnrollmentRole;
-use App\Enums\StatePermission;
-use App\Enums\StateType;
 use App\State;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;

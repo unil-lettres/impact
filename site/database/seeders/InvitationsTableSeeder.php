@@ -99,10 +99,11 @@ class InvitationsTableSeeder extends Seeder
     /**
      * Create states for a course.
      *
-     * @param  int $courseId
+     * @param  int  $courseId
      * @return void
      */
-    private function createStates($courseId) {
+    private function createStates($courseId)
+    {
         $stateData = [
             'course_id' => $courseId,
         ];

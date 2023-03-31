@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
+use App\State;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +27,7 @@ class CoursesTableSeeder extends Seeder
             'updated_at' => $now,
             'deleted_at' => null,
         ]);
+        $this->createStates($firstCourse);
 
         $secondCourse = DB::table('courses')->insertGetId([
             'name' => 'Second space',
@@ -33,6 +35,7 @@ class CoursesTableSeeder extends Seeder
             'updated_at' => $now,
             'deleted_at' => null,
         ]);
+        $this->createStates($secondCourse);
 
         $deactivatedCourse = DB::table('courses')->insertGetId([
             'name' => 'Deactivated space',
@@ -40,8 +43,9 @@ class CoursesTableSeeder extends Seeder
             'updated_at' => $now,
             'deleted_at' => $now,
         ]);
+        $this->createStates($deactivatedCourse);
 
-        DB::table('courses')->insertGetId([
+        $externalCourse = DB::table('courses')->insertGetId([
             'name' => 'External space',
             'type' => CourseType::External,
             'external_id' => 12345678,
@@ -49,6 +53,7 @@ class CoursesTableSeeder extends Seeder
             'updated_at' => $now,
             'deleted_at' => null,
         ]);
+        $this->createStates($externalCourse);
 
         $teacherUser = DB::table('users')->insertGetId([
             'name' => 'Teacher user',
@@ -91,5 +96,37 @@ class CoursesTableSeeder extends Seeder
             'course_id' => $deactivatedCourse,
             'user_id' => $studentUser,
         ]);
+    }
+
+    /**
+     * Create states for a course.
+     *
+     * @param  int $courseId
+     * @return void
+     */
+    private function createStates($courseId) {
+        $stateData = [
+            'course_id' => $courseId,
+        ];
+
+        // Create the "private" state
+        State::factory()
+            ->private()
+            ->create($stateData);
+
+        // Create the "open" state
+        State::factory()
+            ->open()
+            ->create($stateData);
+
+        // Create the "public" state
+        State::factory()
+            ->public()
+            ->create($stateData);
+
+        // Create the "archived" state
+        State::factory()
+            ->archived()
+            ->create($stateData);
     }
 }

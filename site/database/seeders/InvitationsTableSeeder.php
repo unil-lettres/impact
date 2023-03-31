@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\EnrollmentRole;
-use App\User;
+use App\State;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -49,6 +49,7 @@ class InvitationsTableSeeder extends Seeder
             'updated_at' => $now,
             'deleted_at' => null,
         ]);
+        $this->createStates($course);
 
         // Create teacher enrollment to test invitations
         DB::table('enrollments')->insert([
@@ -93,5 +94,37 @@ class InvitationsTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
         ]);
+    }
+
+    /**
+     * Create states for a course.
+     *
+     * @param  int $courseId
+     * @return void
+     */
+    private function createStates($courseId) {
+        $stateData = [
+            'course_id' => $courseId,
+        ];
+
+        // Create the "private" state
+        State::factory()
+            ->private()
+            ->create($stateData);
+
+        // Create the "open" state
+        State::factory()
+            ->open()
+            ->create($stateData);
+
+        // Create the "public" state
+        State::factory()
+            ->public()
+            ->create($stateData);
+
+        // Create the "archived" state
+        State::factory()
+            ->archived()
+            ->create($stateData);
     }
 }

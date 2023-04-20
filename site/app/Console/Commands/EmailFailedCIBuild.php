@@ -34,12 +34,10 @@ class EmailFailedCIBuild extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return mixed
      */
     public function handle()
     {
-        return Mail::to('mailtrap@test.com')
+        Mail::to('mailtrap@test.com')
             ->send(new DuskFailure());
     }
 }

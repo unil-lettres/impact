@@ -45,7 +45,6 @@ class EnrollmentController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreEnrollment  $request
      * @return JsonResponse
      *
      * @throws AuthorizationException
@@ -75,7 +74,6 @@ class EnrollmentController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Enrollment  $enrollment
      *
      * @throws AuthorizationException
      */
@@ -87,7 +85,6 @@ class EnrollmentController extends Controller
     /**
      * Find the specified resource.
      *
-     * @param  FindEnrollment  $request
      * @return JsonResponse
      *
      * @throws AuthorizationException
@@ -109,7 +106,6 @@ class EnrollmentController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Enrollment  $enrollment
      *
      * @throws AuthorizationException
      */
@@ -121,8 +117,6 @@ class EnrollmentController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  Enrollment  $enrollment
      *
      * @throws AuthorizationException
      */
@@ -134,7 +128,6 @@ class EnrollmentController extends Controller
     /**
      * Update the cards of the resources in storage.
      *
-     * @param  UpdateEnrollmentCards  $request
      * @return JsonResponse
      *
      * @throws AuthorizationException
@@ -162,8 +155,6 @@ class EnrollmentController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  DestroyEnrollment  $request
-     * @param  int  $id
      * @return JsonResponse
      *
      * @throws AuthorizationException

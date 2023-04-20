@@ -38,7 +38,6 @@ class CardController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param  CreateCard  $request
      * @return RedirectResponse|Renderable
      *
      * @throws AuthorizationException
@@ -71,7 +70,6 @@ class CardController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreCard  $request
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -106,7 +104,6 @@ class CardController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Card  $card
      * @return Renderable
      *
      * @throws AuthorizationException
@@ -126,7 +123,6 @@ class CardController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Card  $card
      * @return Renderable
      *
      * @throws AuthorizationException
@@ -153,8 +149,6 @@ class CardController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateCard  $request
-     * @param  int  $id
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -195,8 +189,6 @@ class CardController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  DestroyCard  $request
-     * @param  int  $id
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -218,7 +210,6 @@ class CardController extends Controller
     /**
      * Unlink file from the specified resource.
      *
-     * @param  Card  $card
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -240,8 +231,6 @@ class CardController extends Controller
     /**
      * Update the editor html from the specified resource.
      *
-     * @param  UpdateCardEditor  $request
-     * @param  int  $id
      * @return JsonResponse
      *
      * @throws AuthorizationException
@@ -268,8 +257,6 @@ class CardController extends Controller
     /**
      * Update the transcription from the specified resource.
      *
-     * @param  UpdateCardTranscription  $request
-     * @param  int  $id
      * @return JsonResponse
      *
      * @throws AuthorizationException
@@ -298,8 +285,6 @@ class CardController extends Controller
     /**
      * Create an export of a box from the specified resource.
      *
-     * @param  CreateCardExport  $request
-     * @param  int  $id
      * @return BinaryFileResponse
      *
      * @throws AuthorizationException|Exception

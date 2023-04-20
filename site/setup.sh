@@ -2,14 +2,14 @@
 
 # Setup the Laravel environment files
 if [ -z "$CI" ]; then
-  # Copy the env file for local
+  # Copy the .env file for local
   # dev with docker
   cp .env.example .env
 else
-  # Copy the env file for CI
+  # Copy the .env file for CI
   cp .env.dusk.ci .env
-  # Remove the env file for local tests
-  # to fallback to the main env file
+  # Remove the .env file used for local testing
+  # to fallback to the main .env file
   rm .env.dusk.testing
 fi
 

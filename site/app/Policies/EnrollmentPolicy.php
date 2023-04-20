@@ -16,7 +16,6 @@ class EnrollmentPolicy
     /**
      * Determine whether the user can view any enrollments.
      *
-     * @param  User  $user
      * @return mixed
      */
     public function viewAny(User $user)
@@ -27,8 +26,6 @@ class EnrollmentPolicy
     /**
      * Determine whether the user can view the enrollment.
      *
-     * @param  User  $user
-     * @param  Enrollment  $enrollment
      * @return mixed
      */
     public function view(User $user, Enrollment $enrollment)
@@ -39,8 +36,6 @@ class EnrollmentPolicy
     /**
      * Determine whether the user can find an enrollment.
      *
-     * @param  User  $user
-     * @param  Enrollment  $enrollment
      * @return mixed
      */
     public function find(User $user, Enrollment $enrollment)
@@ -60,9 +55,6 @@ class EnrollmentPolicy
     /**
      * Determine whether the user can create enrollments.
      *
-     * @param  User  $user
-     * @param  Course  $enrolledCourse
-     * @param  User  $enrolledUser
      * @return mixed
      */
     public function create(User $user, Course $enrolledCourse, User $enrolledUser)
@@ -99,8 +91,6 @@ class EnrollmentPolicy
     /**
      * Determine whether the user can update the enrollment.
      *
-     * @param  User  $user
-     * @param  Enrollment  $enrollment
      * @return mixed
      */
     public function update(User $user, Enrollment $enrollment)
@@ -111,8 +101,6 @@ class EnrollmentPolicy
     /**
      * Determine whether the user can update the cards of the enrollment.
      *
-     * @param  User  $user
-     * @param  Enrollment  $enrollment
      * @return mixed
      */
     public function cards(User $user, Enrollment $enrollment)
@@ -139,8 +127,6 @@ class EnrollmentPolicy
     /**
      * Determine whether the user can forceDelete the enrollment.
      *
-     * @param  User  $user
-     * @param  Enrollment  $enrollment
      * @return mixed
      */
     public function forceDelete(User $user, Enrollment $enrollment)

@@ -14,7 +14,6 @@ class CheckAai
      * Handle an incoming request.
      *
      * @param  Request  $request
-     * @param  Closure  $next
      * @return mixed
      */
     public function handle($request, Closure $next)
@@ -63,7 +62,6 @@ class CheckAai
     /**
      * Wrapper function to be able to retrieve server variables.
      *
-     * @param  string  $variableName
      * @return string|null
      */
     private function getServerVariable(string $variableName)

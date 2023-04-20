@@ -14,7 +14,6 @@ class FolderPolicy
     /**
      * Determine whether the user can view any folders.
      *
-     * @param  User  $user
      * @return mixed
      */
     public function viewAny(User $user)
@@ -29,8 +28,6 @@ class FolderPolicy
     /**
      * Determine whether the user can view the folder.
      *
-     * @param  User  $user
-     * @param  Folder  $folder
      * @return mixed
      */
     public function view(User $user, Folder $folder)
@@ -50,8 +47,6 @@ class FolderPolicy
     /**
      * Determine whether the user can create folders.
      *
-     * @param  User  $user
-     * @param  Course  $course
      * @return mixed
      */
     public function create(User $user, Course $course)
@@ -71,8 +66,6 @@ class FolderPolicy
     /**
      * Determine whether the user can update the folder.
      *
-     * @param  User  $user
-     * @param  Folder  $folder
      * @return mixed
      */
     public function update(User $user, Folder $folder)
@@ -92,8 +85,6 @@ class FolderPolicy
     /**
      * Determine whether the user can forceDelete the folder.
      *
-     * @param  User  $user
-     * @param  Folder  $folder
      * @return mixed
      */
     public function forceDelete(User $user, Folder $folder)
@@ -113,9 +104,6 @@ class FolderPolicy
     /**
      * Determine whether the user can select the folder.
      *
-     * @param  User  $user
-     * @param  Course  $course
-     * @param  Folder  $selected
      * @param  Folder  $folder
      * @return mixed
      */

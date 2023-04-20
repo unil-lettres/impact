@@ -22,7 +22,6 @@ class FileUploadProcessor
     /**
      * Return file type from given mime type.
      *
-     * @param  string  $mimeType
      * @return string
      */
     public function fileType(string $mimeType)
@@ -49,7 +48,6 @@ class FileUploadProcessor
     /**
      * Get basename (ex. my_file.mp4) from file path.
      *
-     * @param $filePath
      * @return string
      */
     public function getBaseName($filePath)
@@ -60,7 +58,6 @@ class FileUploadProcessor
     /**
      * Get filename (ex. my_file) from file path.
      *
-     * @param $filePath
      * @return string
      */
     public function getFileName($filePath)
@@ -75,7 +72,6 @@ class FileUploadProcessor
     /**
      * Move file to defined storage path.
      *
-     * @param  UploadedFile  $file
      * @param  bool  $isTemp
      * @return string|false
      */
@@ -91,7 +87,6 @@ class FileUploadProcessor
     /**
      * Move file from temp storage path to standard storage path.
      *
-     * @param  string  $filename
      * @return bool
      */
     public function moveFileToStandardStorage(string $filename)
@@ -109,7 +104,6 @@ class FileUploadProcessor
     /**
      * Get the size of a file.
      *
-     * @param  string  $filename
      * @param  bool  $isTemp
      * @return int
      */
@@ -129,7 +123,6 @@ class FileUploadProcessor
     /**
      * Remove file from temp storage.
      *
-     * @param  string  $filename
      * @return bool
      */
     public function removeFileFromTempStorage(string $filename)
@@ -146,7 +139,6 @@ class FileUploadProcessor
     /**
      * Remove file from standard storage.
      *
-     * @param  string  $filename
      * @return bool
      */
     public function removeFileFromStandardStorage(string $filename)

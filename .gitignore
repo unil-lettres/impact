@@ -4,3 +4,4 @@ dev/.env
 site/supervisord*
 /site/.env.backup
 /site/phpunit.dusk.xml
+/site/.phpunit.cache

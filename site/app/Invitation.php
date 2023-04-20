@@ -13,8 +13,8 @@ class Invitation extends Model
         'email', 'invitation_token', 'registered_at',
     ];
 
-    protected $dates = [
-        'deleted_at',
+    protected $casts = [
+        'deleted_at' => 'datetime',
     ];
 
     /**

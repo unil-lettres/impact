@@ -69,7 +69,6 @@ class ExportCardBox
     /**
      * Export the transcription content
      *
-     * @param  array  $data
      * @return bool
      *
      * @throws Exception
@@ -87,7 +86,6 @@ class ExportCardBox
     /**
      * Create a Word document with the transcription content
      *
-     * @param  array  $data
      * @return bool
      *
      * @throws Exception

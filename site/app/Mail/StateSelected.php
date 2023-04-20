@@ -20,9 +20,6 @@ class StateSelected extends Mailable
     /**
      * Create a new message instance.
      *
-     * @param  Card  $card
-     * @param  string  $subject
-     * @param  string  $content
      * @return void
      */
     public function __construct(Card $card, string $subject, string $content)

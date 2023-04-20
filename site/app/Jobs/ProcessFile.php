@@ -35,7 +35,6 @@ class ProcessFile implements ShouldQueue
     /**
      * Create a new job instance.
      *
-     * @param  File  $file
      * @return void
      */
     public function __construct(File $file)
@@ -75,7 +74,6 @@ class ProcessFile implements ShouldQueue
     /**
      * The job failed to process.
      *
-     * @param  Exception  $exception
      * @return void
      */
     public function failed(Exception $exception)
@@ -135,8 +133,6 @@ class ProcessFile implements ShouldQueue
 
     /**
      * Transcode a media file with FFmpeg.
-     *
-     * @param  string  $type
      */
     protected function transcodeFile(string $type)
     {
@@ -173,7 +169,7 @@ class ProcessFile implements ShouldQueue
         $ffprobe = FFProbe::create();
         $openFromPathname = $this->fullTempPath.$this->file->filename;
         $saveToPathname = $this->fullStandardPath.$this->fileUploadProcessor
-                ->getFileName($this->file->filename).'.'.config('const.files.video.extension');
+            ->getFileName($this->file->filename).'.'.config('const.files.video.extension');
 
         // Transcode to MP4/X264 with FFmpeg
         $video = $ffmpeg
@@ -235,7 +231,7 @@ class ProcessFile implements ShouldQueue
         $ffprobe = FFProbe::create();
         $openFromPathname = $this->fullTempPath.$this->file->filename;
         $saveToPathname = $this->fullStandardPath.$this->fileUploadProcessor
-                ->getFileName($this->file->filename).'.'.config('const.files.audio.extension');
+            ->getFileName($this->file->filename).'.'.config('const.files.audio.extension');
 
         // Transcode to MP3 with FFmpeg
         $audio = $ffmpeg

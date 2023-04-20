@@ -12,7 +12,6 @@ class CourseObserver
     /**
      * Handle the course "created" event.
      *
-     * @param  Course  $course
      * @return void
      */
     public function created(Course $course)
@@ -64,7 +63,6 @@ class CourseObserver
     /**
      * Handle the course "deleting" event.
      *
-     * @param  Course  $course
      * @return void
      */
     public function deleting(Course $course)
@@ -90,7 +88,6 @@ class CourseObserver
     /**
      * Handle the course "restored" event.
      *
-     * @param  Course  $course
      * @return void
      */
     public function restored(Course $course)

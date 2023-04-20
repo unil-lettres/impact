@@ -19,7 +19,6 @@ class Login extends Page
     /**
      * Assert that the browser is on the page.
      *
-     * @param  Browser  $browser
      * @return void
      */
     public function assert(Browser $browser)
@@ -41,7 +40,6 @@ class Login extends Page
     /**
      * Login as a specific user.
      *
-     * @param  Browser  $browser
      * @param  string  $login
      * @param  string  $password
      * @return void
@@ -49,7 +47,7 @@ class Login extends Page
     public function loginAsUser(Browser $browser, $login, $password)
     {
         $browser->type('email', $login)
-          ->type('password', $password)
-          ->press('Se connecter');
+            ->type('password', $password)
+            ->press('Se connecter');
     }
 }

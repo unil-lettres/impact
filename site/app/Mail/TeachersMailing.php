@@ -22,11 +22,6 @@ class TeachersMailing extends Mailable
 
     /**
      * Create a new message instance.
-     *
-     * @param  User  $user
-     * @param  string  $subject
-     * @param  string  $content
-     * @param  Collection  $courses
      */
     public function __construct(User $user, string $subject, string $content, Collection $courses)
     {

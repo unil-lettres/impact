@@ -37,7 +37,6 @@ class Helpers
     /**
      * Check the validity of a user account
      *
-     * @param  User  $user
      * @return bool
      */
     public static function isUserValid(User $user)
@@ -64,7 +63,6 @@ class Helpers
     /**
      * Check if the user account type is local
      *
-     * @param  User  $user
      * @return bool
      */
     public static function isUserLocal(User $user)
@@ -80,7 +78,6 @@ class Helpers
     /**
      * Check if the course type is local
      *
-     * @param  Course  $course
      * @return bool
      */
     public static function isCourseLocal(Course $course)
@@ -96,7 +93,6 @@ class Helpers
     /**
      * Check if the course type is external
      *
-     * @param  Course  $course
      * @return bool
      */
     public static function isCourseExternal(Course $course)
@@ -124,7 +120,6 @@ class Helpers
     /**
      * Get the translated course type
      *
-     * @param  string  $type
      * @return string
      */
     public static function courseType(string $type)
@@ -141,7 +136,6 @@ class Helpers
     /**
      * Get the translated file type
      *
-     * @param  string  $type
      * @return string
      */
     public static function fileType(string $type)
@@ -163,7 +157,6 @@ class Helpers
     /**
      * Get the translated file status
      *
-     * @param  string  $status
      * @return string
      */
     public static function fileStatus(string $status)
@@ -184,7 +177,6 @@ class Helpers
     /**
      * Get the file status html badge
      *
-     * @param  string  $status
      * @return string
      */
     public static function fileStatusBadge(string $status)
@@ -204,7 +196,6 @@ class Helpers
     /**
      * Get file url for given filename
      *
-     * @param  string  $filename
      * @return string
      */
     public static function fileUrl(string $filename)
@@ -215,7 +206,6 @@ class Helpers
     /**
      * Check whether the file is processed and ready
      *
-     * @param  File  $file
      * @return bool
      */
     public static function isFileReady(File $file)
@@ -230,7 +220,6 @@ class Helpers
     /**
      * Check whether the file has the failed status
      *
-     * @param  File  $file
      * @return bool
      */
     public static function isFileFailed(File $file)
@@ -248,7 +237,6 @@ class Helpers
      * The breadcrumbs parameter should be a Collection and should
      * contain a path as the key, and a name as the value
      *
-     * @param  Collection  $breadcrumbs
      * @return string
      */
     public static function breadcrumbsHtml(Collection $breadcrumbs)
@@ -268,7 +256,6 @@ class Helpers
     /**
      * Generate HTML to list all the cards of a file
      *
-     * @param  File  $file
      * @return string
      */
     public static function fileCards(File $file)
@@ -286,7 +273,6 @@ class Helpers
      * Return the "used" string if the file is liked to card(s) or
      * return the "unused" string if the file is not linked to card(s)
      *
-     * @param  File  $file
      * @return string
      */
     public static function fileState(File $file)
@@ -297,7 +283,6 @@ class Helpers
     /**
      * Return whether the card has an external media link
      *
-     * @param  Card  $card
      * @return bool
      */
     public static function hasExternalLink(Card $card)
@@ -308,7 +293,6 @@ class Helpers
     /**
      * Return whether the card has an external media link
      *
-     * @param  Card  $card
      * @return string|null
      */
     public static function getExternalLink(Card $card)
@@ -323,7 +307,6 @@ class Helpers
     /**
      * Return whether the card has a internal or external media source
      *
-     * @param  Card  $card
      * @return bool
      */
     public static function hasSource(Card $card)
@@ -342,7 +325,6 @@ class Helpers
     /**
      * Return whether the card has a transcription
      *
-     * @param  Card  $card
      * @return bool
      */
     public static function hasTranscription(Card $card)
@@ -357,8 +339,6 @@ class Helpers
     /**
      * Return whether the specified box should be hidden from the view
      *
-     * @param  Card  $card
-     * @param  string  $box
      * @return bool|null
      */
     public static function isHidden(Card $card, string $box)
@@ -384,7 +364,6 @@ class Helpers
      * Return the permission label
      *
      * @param  int  $permission (App\Enums\StatePermission)
-     * @return string
      */
     public static function permissionLabel(int $permission): string
     {
@@ -409,9 +388,6 @@ class Helpers
 
     /**
      * Return whether the state type is considered read only or not
-     *
-     * @param  State  $state
-     * @return bool
      */
     public static function isStateReadOnly(State $state): bool
     {
@@ -428,9 +404,7 @@ class Helpers
     /**
      * Return whether the state has an action of a certain type
      *
-     * @param  State  $state
      * @param  string  $type (App\Enums\ActionType)
-     * @return bool
      */
     public static function stateHasActionOfType(State $state, string $type): bool
     {
@@ -453,9 +427,6 @@ class Helpers
 
     /**
      * Return whether the state has one or more action(s)
-     *
-     * @param  State  $state
-     * @return bool
      */
     public static function stateHasActions(State $state): bool
     {

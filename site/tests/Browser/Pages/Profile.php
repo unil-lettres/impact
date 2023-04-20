@@ -19,7 +19,6 @@ class Profile extends Page
     /**
      * Assert that the browser is on the page.
      *
-     * @param  Browser  $browser
      * @return void
      */
     public function assert(Browser $browser)
@@ -41,7 +40,6 @@ class Profile extends Page
     /**
      * Go to the user's profile page.
      *
-     * @param  Browser  $browser
      * @return void
      */
     public function profile(Browser $browser)

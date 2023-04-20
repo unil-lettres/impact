@@ -19,7 +19,6 @@ class Invitations extends Page
     /**
      * Assert that the browser is on the page.
      *
-     * @param  Browser  $browser
      * @return void
      */
     public function assert(Browser $browser)
@@ -41,7 +40,6 @@ class Invitations extends Page
     /**
      * Go to the user's profile page.
      *
-     * @param  Browser  $browser
      * @return void
      */
     public function invitations(Browser $browser)

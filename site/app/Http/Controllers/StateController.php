@@ -21,9 +21,6 @@ class StateController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  IndexState  $request
-     * @param  int  $id
-     * @return Renderable
      *
      * @throws AuthorizationException
      */
@@ -53,9 +50,6 @@ class StateController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreState  $request
-     * @param  int  $id
-     * @return RedirectResponse
      *
      * @throws AuthorizationException
      */
@@ -83,10 +77,6 @@ class StateController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateState  $request
-     * @param  int  $course_id
-     * @param  int  $state_id
-     * @return RedirectResponse
      *
      * @throws AuthorizationException
      */
@@ -130,9 +120,6 @@ class StateController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  DestroyState  $request
-     * @param  int  $course_id
-     * @param  int  $state_id
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -154,9 +141,6 @@ class StateController extends Controller
     /**
      * Update state position
      *
-     * @param  UpdateStatePosition  $request
-     * @param  int  $course_id
-     * @param  int  $state_id
      * @return JsonResponse
      *
      * @throws AuthorizationException

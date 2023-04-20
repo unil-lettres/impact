@@ -49,13 +49,10 @@ class Card extends Model
         'title', 'box2', 'box3', 'box4', 'course_id', 'state_id', 'folder_id', 'file_id', 'options',
     ];
 
-    protected $dates = [
-        'deleted_at',
-    ];
-
     protected $casts = [
         'box2' => 'array',
         'options' => 'array',
+        'deleted_at' => 'datetime',
     ];
 
     protected $attributes = [

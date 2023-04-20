@@ -46,7 +46,6 @@ class CourseController extends Controller
     /**
      * Display a listing of the resource in the admin panel.
      *
-     * @param  ManageCourses  $request
      * @return Renderable
      *
      * @throws AuthorizationException
@@ -85,7 +84,6 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreCourse  $request
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -123,7 +121,6 @@ class CourseController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Course  $course
      * @return Renderable
      *
      * @throws AuthorizationException
@@ -146,7 +143,6 @@ class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Course  $course
      * @return Renderable
      *
      * @throws AuthorizationException
@@ -169,7 +165,6 @@ class CourseController extends Controller
     /**
      * Configure the parameters of the specified resource.
      *
-     * @param  Course  $course
      * @return Renderable
      *
      * @throws AuthorizationException
@@ -194,8 +189,6 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateCourse  $request
-     * @param  int  $id
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -220,8 +213,6 @@ class CourseController extends Controller
     /**
      * Enable the specified disabled resource.
      *
-     * @param  EnableCourse  $request
-     * @param  int  $id
      * @return RedirectResponse
      *
      * @throws Exception
@@ -242,7 +233,6 @@ class CourseController extends Controller
     /**
      * Archive the specified resource.
      *
-     * @param  Course  $course
      * @return RedirectResponse
      *
      * @throws Exception
@@ -261,8 +251,6 @@ class CourseController extends Controller
     /**
      * Disable the specified resource (soft delete).
      *
-     * @param  DisableCourse  $request
-     * @param  int  $id
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -283,8 +271,6 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  DestroyCourse  $request
-     * @param  int  $id
      * @return RedirectResponse
      *
      * @throws Exception
@@ -305,8 +291,6 @@ class CourseController extends Controller
     /**
      * Send the confirmation mail to delete the resource.
      *
-     * @param  SendCourseDeleteConfirmMail  $request
-     * @param  int  $id
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -332,7 +316,6 @@ class CourseController extends Controller
     /**
      * Filter courses by parameter
      *
-     * @param  string  $filter
      * @return Builder
      */
     private function filter(string $filter)

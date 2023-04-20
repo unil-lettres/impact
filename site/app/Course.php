@@ -18,8 +18,8 @@ class Course extends Model
         'name', 'description', 'type', 'external_id',
     ];
 
-    protected $dates = [
-        'deleted_at',
+    protected $casts = [
+        'deleted_at' => 'datetime',
     ];
 
     /**
@@ -100,7 +100,6 @@ class Course extends Model
     /**
      * Get all the enrollments for a specific role (EnrollmentRole) of this course.
      *
-     * @param  string  $role
      * @return Collection
      */
     public function enrollmentsForRole(string $role)
@@ -140,7 +139,6 @@ class Course extends Model
     /**
      * Get the role for a specific user of this course.
      *
-     * @param  User  $user
      * @return string|null
      */
     public function userRole(User $user)

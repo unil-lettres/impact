@@ -14,8 +14,8 @@ class Folder extends Model
         'title', 'position', 'course_id', 'parent_id',
     ];
 
-    protected $dates = [
-        'deleted_at',
+    protected $casts = [
+        'deleted_at' => 'datetime',
     ];
 
     /**

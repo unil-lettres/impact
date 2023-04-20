@@ -21,8 +21,6 @@ class CourseConfirmDelete extends Mailable
 
     /**
      * Create a new message instance.
-     *
-     * @param  Course  $course
      */
     public function __construct(Course $course)
     {

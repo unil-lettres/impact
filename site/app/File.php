@@ -18,8 +18,8 @@ class File extends Model
         'name', 'filename', 'status', 'type', 'size', 'width', 'height', 'length', 'course_id',
     ];
 
-    protected $dates = [
-        'deleted_at',
+    protected $casts = [
+        'deleted_at' => 'datetime',
     ];
 
     /**

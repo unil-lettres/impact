@@ -10,7 +10,6 @@ class FileObserver
     /**
      * Handle the file "deleted" event.
      *
-     * @param  File  $file
      * @return void
      */
     public function deleted(File $file)

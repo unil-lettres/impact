@@ -10,7 +10,7 @@ Development:
 
 multIMedia interface: Presentation – Analysis – CommenT
 
-A Laravel 9 app with react components.
+A Laravel 10 app with react components.
 
 # Development
 

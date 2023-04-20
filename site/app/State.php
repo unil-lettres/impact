@@ -33,13 +33,10 @@ class State extends Model implements Sortable
         'name', 'description', 'position', 'permissions', 'course_id', 'type', 'teachers_only', 'actions',
     ];
 
-    protected $dates = [
-        'deleted_at',
-    ];
-
     protected $casts = [
         'permissions' => 'array',
         'actions' => 'array',
+        'deleted_at' => 'datetime',
     ];
 
     protected $attributes = [
@@ -67,7 +64,6 @@ class State extends Model implements Sortable
     /**
      * Update the permission of a specific box
      *
-     * @param  string  $box
      * @param  int  $permission (App\Enums\StatePermission)
      */
     public function updatePermission(string $box, int $permission)
@@ -131,7 +127,6 @@ class State extends Model implements Sortable
     /**
      * Get the data of a specific action if available
      *
-     * @param  int  $index
      * @param  string|null  $type (App\Enums\ActionType)
      * @return array|null
      */

@@ -22,7 +22,6 @@ class FileController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @param  Course  $course
      * @return Renderable
      *
      * @throws AuthorizationException
@@ -83,8 +82,6 @@ class FileController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  EditFile  $user
-     * @param  int  $id
      * @return Renderable
      *
      * @throws AuthorizationException
@@ -107,8 +104,6 @@ class FileController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateFile  $request
-     * @param  int  $id
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -155,8 +150,6 @@ class FileController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  DestroyFile  $request
-     * @param  int  $id
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -180,8 +173,6 @@ class FileController extends Controller
     /**
      * File upload endpoint.
      *
-     * @param  Request  $request
-     * @param  FileUploadProcessor  $fileUploadProcessor
      * @return JsonResponse
      *
      * @throws AuthorizationException
@@ -230,10 +221,6 @@ class FileController extends Controller
     /**
      * Create file draft with basic infos
      *
-     * @param  FileUploadProcessor  $fileUploadProcessor
-     * @param  Request  $request
-     * @param  string  $path
-     * @param  Course|null  $course
      * @return File $file
      */
     private function createFileDraft(FileUploadProcessor $fileUploadProcessor, Request $request, string $path, ?Course $course)
@@ -261,8 +248,6 @@ class FileController extends Controller
     /**
      * Link the file to a card
      *
-     * @param  File  $file
-     * @param  Card  $card
      * @return void
      */
     private function updateCard(File $file, Card $card)

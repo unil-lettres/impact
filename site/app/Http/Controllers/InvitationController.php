@@ -99,7 +99,6 @@ class InvitationController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreInvitation  $request
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -131,7 +130,6 @@ class InvitationController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Invitation  $invitation
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -146,7 +144,6 @@ class InvitationController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Invitation  $invitation
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -161,8 +158,6 @@ class InvitationController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  Request  $request
-     * @param  Invitation  $invitation
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -177,7 +172,6 @@ class InvitationController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  Invitation  $invitation
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -196,7 +190,6 @@ class InvitationController extends Controller
      * Show the form for creating a new user.
      * A valid invitation token is needed.
      *
-     * @param  Request  $request
      * @return Renderable
      *
      * @throws AuthorizationException
@@ -216,7 +209,6 @@ class InvitationController extends Controller
     /**
      * Create a new user instance after a valid invitation registration.
      *
-     * @param  CreateInvitationUser  $request
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -264,8 +256,6 @@ class InvitationController extends Controller
     /**
      * Send the invitation mail to the recipient.
      *
-     * @param  SendInvitationMail  $request
-     * @param  int  $id
      * @return RedirectResponse
      *
      * @throws AuthorizationException

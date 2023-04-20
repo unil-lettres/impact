@@ -29,7 +29,6 @@ class FolderController extends Controller
     /**
      * Show the form for creating a new resource.
      *
-     * @param  CreateFolder  $request
      * @return Renderable
      *
      * @throws AuthorizationException
@@ -57,7 +56,6 @@ class FolderController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  StoreFolder  $request
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -92,7 +90,6 @@ class FolderController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  Folder  $folder
      * @return Renderable
      *
      * @throws AuthorizationException
@@ -117,7 +114,6 @@ class FolderController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  Folder  $folder
      * @return Renderable
      *
      * @throws AuthorizationException
@@ -146,8 +142,6 @@ class FolderController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateFolder  $request
-     * @param  int  $id
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -182,8 +176,6 @@ class FolderController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  DestroyFolder  $request
-     * @param  int  $id
      * @return RedirectResponse
      *
      * @throws AuthorizationException

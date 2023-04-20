@@ -41,7 +41,6 @@ class UserController extends Controller
     /**
      * Display a listing of the resource in the admin panel.
      *
-     * @param  ManageUsers  $request
      * @return Renderable
      *
      * @throws AuthorizationException
@@ -80,7 +79,6 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  CreateUser  $request
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -104,7 +102,6 @@ class UserController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  User  $user
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -119,8 +116,6 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  EditUser  $user
-     * @param  int  $id
      * @return Renderable
      *
      * @throws AuthorizationException
@@ -156,8 +151,6 @@ class UserController extends Controller
     /**
      * Show the profile of the specified resource.
      *
-     * @param  EditUser  $user
-     * @param  int  $id
      * @return Renderable
      *
      * @throws AuthorizationException
@@ -176,8 +169,6 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  UpdateUser  $request
-     * @param  int  $id
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -243,8 +234,6 @@ class UserController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  DestroyUser  $request
-     * @param  int  $id
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -266,8 +255,6 @@ class UserController extends Controller
     /**
      * Extend the user account validity.
      *
-     * @param  ExtendUser  $request
-     * @param  int  $id
      * @return RedirectResponse
      *
      * @throws AuthorizationException
@@ -288,7 +275,6 @@ class UserController extends Controller
     /**
      * Filter users by parameter
      *
-     * @param  string  $filter
      * @return Builder
      */
     private function filter(string $filter)

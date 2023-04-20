@@ -8,7 +8,7 @@ name: impact
 
 services:
   impact-web:
-    image: nginx:1.17
+    image: nginx:1.24
     env_file:
       - ./dev/.env
     working_dir: /var/www
@@ -39,7 +39,7 @@ services:
       - impact-net
     container_name: impact-app
   impact-mysql:
-    image: mariadb:10.4
+    image: mariadb:10.6
     env_file:
       - ./dev/.env
     volumes:
@@ -51,7 +51,7 @@ services:
       - impact-net
     container_name: impact-mysql
   impact-mysql-testing:
-    image: mariadb:10.4
+    image: mariadb:10.6
     env_file:
       - ./dev/.env
     volumes:

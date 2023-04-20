@@ -1,21 +1,23 @@
 name: ci
 on: [push, pull_request]
+env:
+  MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+  MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+  CI: gha
+
 jobs:
   test:
     name: PHP${{ matrix.php-versions }}
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     strategy:
       matrix:
-        php-versions: [ '8.0', '8.1', '8.2' ]
-
-    env:
-      MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
-      MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
-      CI: gha
+        php-versions: [ '8.1', '8.2' ]
+        mariadb-version: [ '10.6' ]
+        node-version: [ '16' ]
 
     services:
       mariadb:
-        image: mariadb:10.4
+        image: mariadb:${{ matrix.mariadb-version }}
         ports:
           - 3306:3306
         env:
@@ -32,7 +34,7 @@ jobs:
       - name: Node Setup
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: ${{ matrix.node-version }}
 
       - name: PHP Setup
         uses: shivammathur/setup-php@v2

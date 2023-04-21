@@ -14,8 +14,8 @@
         <form method="post"
               action="{{ route('admin.courses.store') }}">
             @csrf
-            <div class="form-group">
-                <label for="name" class="control-label">{{ trans('courses.name') }}</label>
+            <div class="col-12 mb-3">
+                <label for="name" class="control-label form-label">{{ trans('courses.name') }}</label>
                 <div>
                     <input type="text"
                            id="name"
@@ -26,8 +26,8 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="description">{{ trans('courses.description') }}</label>
+            <div class="col-12 mb-3">
+                <label for="description" class="form-label">{{ trans('courses.description') }}</label>
                 <textarea class="form-control"
                           name="description"
                           id="description"
@@ -35,7 +35,7 @@
             </div>
 
             <div class="mb-3">
-                <a data-toggle="collapse"
+                <a data-bs-toggle="collapse"
                    href="#collapseExternalId"
                    role="button"
                    aria-expanded="false"
@@ -43,12 +43,12 @@
                     {{ trans('courses.create_from_moodle') }}
                 </a>
                 <i class="far fa-question-circle"
-                   data-toggle="tooltip"
+                   data-bs-toggle="tooltip"
                    data-placement="top"
                    title="{{ trans('courses.external.help') }}">
                 </i>
             </div>
-            <div class="form-group collapse" id="collapseExternalId">
+            <div class="col-12 mb-3 collapse" id="collapseExternalId">
                 <input type="number"
                        name="external_id"
                        id="external_id"

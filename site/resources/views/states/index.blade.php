@@ -12,7 +12,7 @@
             @endsection
             @section('actions')
                 @can('create', [\App\State::class, $course])
-                    <span class="float-right">
+                    <span class="float-end">
                         <form class="d-inline"
                               method="post"
                               action="{{ route('courses.create.state', $course->id) }}">
@@ -58,7 +58,7 @@
                                                     <span class="text-muted">{{ $state->name }}</span>
                                                 @else
                                                     <i class="far fa-circle fa-xs"></i>
-                                                    <a href="{{ route('courses.configure.states', [$course->id, 'state' => $state->id]) }}">
+                                                    <a class="legacy" href="{{ route('courses.configure.states', [$course->id, 'state' => $state->id]) }}">
                                                         {{ $state->name }}
                                                     </a>
                                                 @endif
@@ -66,14 +66,14 @@
                                         </span>
                                         <span class="actions">
                                             @can('forceDelete', $state)
-                                                <span class="float-right">
+                                                <span class="float-end">
                                                     <form class="with-delete-confirm" method="post"
                                                           action="{{ route('courses.destroy.state', [$course->id, $state->id]) }}">
                                                         @method('DELETE')
                                                         @csrf
                                                         <button type="submit"
                                                                 class="btn btn-sm btn-danger"
-                                                                data-toggle="tooltip"
+                                                                data-bs-toggle="tooltip"
                                                                 data-placement="top"
                                                                 title="{{ trans('states.delete') }}">
                                                             <i class="far fa-trash-alt"></i>
@@ -101,7 +101,7 @@
                                     </span>
                                 </div>
                                 <div class="card-body">
-                                    <div class="form-group row">
+                                    <div class="col-12 mb-3 row">
                                         <label for="name" class="col-md-3 col-form-label">
                                             {{ trans('states.name') }}
                                         </label>
@@ -114,7 +114,7 @@
                                             >
                                         </div>
                                     </div>
-                                    <div class="form-group row">
+                                    <div class="col-12 mb-3 row">
                                         <label for="description" class="col-md-3 col-form-label">
                                             {{ trans('states.description') }}
                                         </label>
@@ -125,11 +125,11 @@
                                                       rows="3">{{ old('description', $activeState->description) }}</textarea>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
+                                    <div class="col-12 mb-3 row">
                                         <label for="teachers_only" class="col-md-3 col-form-label">
                                             {{ trans('states.teachers_only') }}
                                             <i class="far fa-question-circle"
-                                               data-toggle="tooltip"
+                                               data-bs-toggle="tooltip"
                                                data-placement="top"
                                                title="{{ trans('states.teachers_only_help') }}">
                                             </i>
@@ -154,62 +154,62 @@
                                     </span>
                                 </div>
                                 <div class="card-body">
-                                    <div class="form-group row">
+                                    <div class="col-12 mb-3 row">
                                         <label for="box1" class="col-md-2 col-form-label">
                                             {{ trans('states.box1') }}
                                         </label>
                                         <div class="col-md-10">
                                             <select id="box1"
                                                     name="box1"
-                                                    class="form-control" >
+                                                    class="form-control form-select" >
                                                 @include('states.include.permissions', ['box' => 'box1'])
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
+                                    <div class="col-12 mb-3 row">
                                         <label for="box2" class="col-md-2 col-form-label">
                                             {{ trans('states.box2') }}
                                         </label>
                                         <div class="col-md-10">
                                             <select id="box2"
                                                     name="box2"
-                                                    class="form-control" >
+                                                    class="form-control form-select" >
                                                 @include('states.include.permissions', ['box' => 'box2'])
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
+                                    <div class="col-12 mb-3 row">
                                         <label for="box3" class="col-md-2 col-form-label">
                                             {{ trans('states.box3') }}
                                         </label>
                                         <div class="col-md-10">
                                             <select id="box3"
                                                     name="box3"
-                                                    class="form-control" >
+                                                    class="form-control form-select" >
                                                 @include('states.include.permissions', ['box' => 'box3'])
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
+                                    <div class="col-12 mb-3 row">
                                         <label for="box4" class="col-md-2 col-form-label">
                                             {{ trans('states.box4') }}
                                         </label>
                                         <div class="col-md-10">
                                             <select id="box4"
                                                     name="box4"
-                                                    class="form-control" >
+                                                    class="form-control form-select" >
                                                 @include('states.include.permissions', ['box' => 'box4'])
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="form-group row">
+                                    <div class="col-12 mb-3 row">
                                         <label for="box5" class="col-md-2 col-form-label">
                                             {{ trans('states.box5') }}
                                         </label>
                                         <div class="col-md-10">
                                             <select id="box5"
                                                     name="box5"
-                                                    class="form-control" >
+                                                    class="form-control form-select" >
                                                 @include('states.include.permissions', ['box' => 'box5'])
                                             </select>
                                         </div>
@@ -222,10 +222,10 @@
                                         {{ trans('states.action') }}
                                     </span>
 
-                                    <div class="col-md-4 col-6 float-right">
+                                    <div class="col-md-4 col-6 float-end">
                                         <select id="action-type"
                                                 name="action-type"
-                                                class="form-control"
+                                                class="form-control form-select"
                                                 onchange="displayActionForm(this)">
                                             <option value="{{ \App\Enums\ActionType::None }}"
                                                 {{ !Helpers::stateHasActions($activeState) ? 'selected' : '' }}>

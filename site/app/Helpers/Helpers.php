@@ -183,13 +183,13 @@ class Helpers
     {
         switch ($status) {
             case FileStatus::Ready:
-                return '<span class="badge badge-success">'.self::fileStatus($status).'</span>';
+                return '<span class="badge bg-success">'.self::fileStatus($status).'</span>';
             case FileStatus::Failed:
-                return '<span class="badge badge-danger">'.self::fileStatus($status).'</span>';
+                return '<span class="badge bg-danger">'.self::fileStatus($status).'</span>';
             case FileStatus::Transcoding:
             case FileStatus::Processing:
             default:
-                return '<span class="badge badge-warning">'.self::fileStatus($status).'</span>';
+                return '<span class="badge bg-warning">'.self::fileStatus($status).'</span>';
         }
     }
 
@@ -243,7 +243,7 @@ class Helpers
     {
         $html = '';
         foreach ($breadcrumbs as $path => $name) {
-            $html .= '<a href="'.$path.'">'.self::truncate($name, 25).'</a>';
+            $html .= '<a class="legacy" href="'.$path.'">'.self::truncate($name, 25).'</a>';
 
             if ($breadcrumbs->last() !== $name) {
                 $html .= '<span> / </span>';
@@ -263,7 +263,7 @@ class Helpers
         $html = '';
 
         foreach ($file->cards as $card) {
-            $html .= '<div><a href="'.route('cards.show', $card->id).'">'.$card->title.'</a></div>';
+            $html .= '<div><a class="legacy" href="'.route('cards.show', $card->id).'">'.$card->title.'</a></div>';
         }
 
         return $html;

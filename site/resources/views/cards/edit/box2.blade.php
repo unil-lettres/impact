@@ -3,8 +3,8 @@
         {{ trans('cards.box') }} 2 ({{ trans('cards.transcription') }})
     </div>
     <div class="card-body">
-        <div class="form-group row">
-            <label for="box2-hidden" class="col-md-5">
+        <div class="col-12 mb-3 row">
+            <label for="box2-hidden" class="col-md-5 form-label">
                 {{ trans('cards.hide') }}
             </label>
             <div class="col-md-7">
@@ -19,8 +19,8 @@
             </div>
         </div>
 
-        <div class="form-group row">
-            <label for="box2-sync" class="col-md-5">
+        <div class="col-12 mb-3 row">
+            <label for="box2-sync" class="col-md-5 form-label">
                 {{ trans('cards.sync_with_source') }}
             </label>
             <div class="col-md-7">

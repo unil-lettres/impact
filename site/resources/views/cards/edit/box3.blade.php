@@ -3,8 +3,8 @@
         {{ trans('cards.box') }} 3 ({{ $card->options[$reference]['title'] }})
     </div>
     <div class="card-body">
-        <div class="form-group row">
-            <label for="box3-hidden" class="col-md-4">
+        <div class="col-12 mb-3 row">
+            <label for="box3-hidden" class="col-md-4 form-label">
                 {{ trans('cards.hide') }}
             </label>
             <div class="col-md-8">
@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="col-12 mb-3 row">
             <label for="box3-title" class="col-md-4 col-form-label">
                 {{ trans('cards.title') }}
             </label>

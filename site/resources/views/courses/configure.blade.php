@@ -11,7 +11,7 @@
         @endsection
         @section('actions')
             @can('disable', $course)
-                <span class="float-right">
+                <span class="float-end">
                     <form class="with-delete-confirm d-inline"
                           method="post"
                           action="{{ route('courses.disable', $course->id) }}">
@@ -20,7 +20,7 @@
                         <input id="redirect" name="redirect" type="hidden" value="home">
                         <button type="submit"
                                 class="btn btn-danger"
-                                data-toggle="tooltip"
+                                data-bs-toggle="tooltip"
                                 data-placement="top"
                                 title="{{ trans('messages.course.delete.info') }}">
                             <i class="far fa-trash-alt"></i>
@@ -30,7 +30,7 @@
                 </span>
             @endcan
             @can('archive', $course)
-                <span class="float-right mr-1">
+                <span class="float-end me-1">
                     <form class="with-archive-confirm d-inline"
                           method="post"
                           action="{{ route('courses.archive', $course->id) }}">
@@ -38,7 +38,7 @@
                         @csrf
                         <button type="submit"
                                 class="btn btn-secondary"
-                                data-toggle="tooltip"
+                                data-bs-toggle="tooltip"
                                 data-placement="top"
                                 title="{{ trans('messages.course.archive.info') }}">
                             <i class="far fa-folder-open"></i>

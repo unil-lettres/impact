@@ -17,7 +17,7 @@
                     <form method="POST" action="{{ route('password.email') }}">
                         @csrf
 
-                        <div class="form-group row">
+                        <div class="col-12 mb-3 row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ trans('login.email') }}</label>
 
                             <div class="col-md-6">
@@ -31,7 +31,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
+                        <div class="col-12 row mb-0">
                             <div class="col-md-6 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
                                     {{ trans('login.password_reset_link') }}

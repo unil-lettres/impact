@@ -10,15 +10,15 @@
             @section('actions')
                 @can('update', $card)
                     <a href="{{ route('cards.edit', $card->id) }}"
-                       class="btn btn-primary float-right">
+                       class="btn btn-primary float-end">
                         {{ trans('cards.configure') }}
                     </a>
                 @endcan
                 @can('hide', $card)
                     <button type="submit"
                             id="btn-hide-boxes"
-                            class="btn btn-danger float-right mr-1"
-                            data-toggle="tooltip"
+                            class="btn btn-danger float-end me-1"
+                            data-bs-toggle="tooltip"
                             data-placement="top"
                             title="{{ trans('cards.hide_boxes') }}">
                         <i class="far fa-eye-slash"></i>

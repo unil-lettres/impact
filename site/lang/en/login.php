@@ -5,7 +5,7 @@ return [
     'local' => 'Local connection',
     'local_info' => 'For non-IAA users who received a local account for Impact.',
     'aai' => 'Connection with SWITCHaai',
-    'aai_info' => 'Connection service for university users who are <a href="https://www.switch.ch/aai/participants/homeorgs/" target="_blank">members of the SWITCHaai federation.</a>',
+    'aai_info' => 'Connection service for university users who are <a class="legacy" href="https://www.switch.ch/aai/participants/homeorgs/" target="_blank">members of the SWITCHaai federation.</a>',
     'login' => 'Login',
     'register' => 'Create a new user',
     'admin' => 'Admin',

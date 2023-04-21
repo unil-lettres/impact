@@ -22,7 +22,7 @@
                               action="{{ route('users.profile.update', $user->id) }}">
                             @csrf
                             @method('PUT')
-                            <div class="form-group row">
+                            <div class="col-12 mb-3 row">
                                 <label for="name" class="col-md-4 col-form-label">
                                     {{ trans('users.name') }}
                                 </label>
@@ -36,7 +36,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="col-12 mb-3 row">
                                 <label for="email" class="col-md-4 col-form-label">
                                     {{ trans('users.email') }}
                                 </label>
@@ -51,7 +51,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="col-12 mb-3 row">
                                 <label for="type" class="col-md-4 col-form-label">
                                     {{ trans('users.type') }}
                                 </label>
@@ -68,7 +68,7 @@
 
                             @if (Helpers::isUserLocal($user))
                                 @if ($user->validity)
-                                    <div class="form-group row">
+                                    <div class="col-12 mb-3 row">
                                         <label for="validity" class="col-md-4 col-form-label">
                                             {{ trans('users.validity') }}
                                         </label>
@@ -84,7 +84,7 @@
                                     </div>
                                 @endif
 
-                                <div class="form-group row">
+                                <div class="col-12 mb-3 row">
                                     <label for="old_password" class="col-md-4 col-form-label">
                                         {{ trans('users.password.current') }}
                                     </label>
@@ -96,7 +96,7 @@
                                         >
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="col-12 mb-3 row">
                                     <label for="new_password" class="col-md-4 col-form-label">
                                         {{ trans('users.password.new') }}
                                     </label>
@@ -108,7 +108,7 @@
                                         >
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="col-12 mb-3 row">
                                     <label for="password_confirm" class="col-md-4 col-form-label">
                                         {{ trans('users.password.confirm') }}
                                     </label>

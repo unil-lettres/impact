@@ -8,14 +8,14 @@
     @can('viewAny', [\App\File::class, $course])
         <div id="files">
             @section('title')
-                {{ trans('files.files') }} <span class="badge badge-secondary">{{ $files->total() }}</span>
+                {{ trans('files.files') }} <span class="badge bg-secondary">{{ $files->total() }}</span>
             @endsection
             @section('actions')
                 @can('upload', [\App\File::class, $course, null])
                     <input id="course_id" name="course_id" type="hidden" value="{{ $course->id }}">
 
                     <div id="rct-uploader"
-                         class="float-right"
+                         class="float-end"
                          data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxNumberOfFiles' => 5, 'modal' => true, 'label' => trans('files.create')]) }}'
                     ></div>
                 @endcan
@@ -46,8 +46,9 @@
                                             <td>
                                                 <span style="cursor: pointer"
                                                       class="base-popover"
-                                                      data-toggle="popover"
-                                                      data-content='{{ Helpers::fileCards($file) }}'>
+                                                      data-bs-html="true"
+                                                      data-bs-toggle="popover"
+                                                      data-bs-content='{{ Helpers::fileCards($file) }}'>
                                                     {{ trans_choice('cards.card(s)', $file->cards->count()) }}
                                                 </span>
                                             </td>
@@ -57,7 +58,7 @@
                                                     <span>
                                                     <a href="{{ Helpers::fileUrl($file->filename) }}"
                                                        target="_blank"
-                                                       data-toggle="tooltip"
+                                                       data-bs-toggle="tooltip"
                                                        data-placement="top"
                                                        class="btn btn-primary"
                                                        title="{{ trans('files.url') }}">
@@ -73,7 +74,7 @@
                                                             @csrf
                                                             <button type="submit"
                                                                     class="btn btn-danger"
-                                                                    data-toggle="tooltip"
+                                                                    data-bs-toggle="tooltip"
                                                                     data-placement="top"
                                                                     title="{{ trans('files.delete') }}">
                                                                 <i class="far fa-trash-alt"></i>

@@ -6,7 +6,7 @@
         <p>{{ trans('cards.choose_editors') }}</p>
 
         @if ($students->isNotEmpty())
-            <div class="form-group">
+            <div class="col-12 mb-3">
                 <div id="rct-multi-editor-select"
                      data='{{ json_encode(['record' => $card, 'options' => $students, 'defaults' => $editors]) }}'
                 ></div>

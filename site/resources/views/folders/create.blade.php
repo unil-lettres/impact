@@ -20,8 +20,8 @@
                   action="{{ route('folders.store') }}">
                 @csrf
                 <div class="row">
-                    <div class="form-group col-md-12 col-lg-7">
-                        <label for="title" class="control-label">{{ trans('folders.title') }}</label>
+                    <div class="col-12 mb-3 col-md-12 col-lg-7">
+                        <label for="title" class="control-label form-label">{{ trans('folders.title') }}</label>
                         <div>
                             <input id="title"
                                    type="text"
@@ -32,8 +32,8 @@
                         </div>
                     </div>
 
-                    <div class="form-group col-md-12 col-lg-5">
-                        <label for="parent_id" class="control-label">{{ trans('folders.location') }}</label>
+                    <div class="col-12 mb-3 col-md-12 col-lg-5">
+                        <label for="parent_id" class="control-label form-label">{{ trans('folders.location') }}</label>
                         <input id="parent_id" name="parent_id" type="hidden" value="">
                         <div id="rct-single-folder-select"
                              reference="parent_id"

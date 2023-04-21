@@ -5,11 +5,11 @@
         <div id="files">
             <div class="card">
                 <div class="card-header">
-                    <span class="title">{{ trans('files.files') }} <span class="badge badge-secondary">{{ $files->total() }}</span></span>
+                    <span class="title">{{ trans('files.files') }} <span class="badge bg-secondary">{{ $files->total() }}</span></span>
 
                     @can('create', \App\File::class)
                         <a href="{{ route('admin.files.create') }}"
-                           class="btn btn-primary float-right">
+                           class="btn btn-primary float-end">
                             {{ trans('files.create') }}
                         </a>
                     @endcan
@@ -40,7 +40,7 @@
                                             @can('update', $file)
                                                 <span>
                                             <a href="{{ route('admin.files.edit', $file->id) }}"
-                                               data-toggle="tooltip"
+                                               data-bs-toggle="tooltip"
                                                data-placement="top"
                                                class="btn btn-primary"
                                                title="{{ trans('files.edit') }}">
@@ -52,7 +52,7 @@
                                                 <span>
                                             <a href="{{ Helpers::fileUrl($file->filename) }}"
                                                target="_blank"
-                                               data-toggle="tooltip"
+                                               data-bs-toggle="tooltip"
                                                data-placement="top"
                                                class="btn btn-primary"
                                                title="{{ trans('files.url') }}">
@@ -68,7 +68,7 @@
                                                 @csrf
                                                 <button type="submit"
                                                         class="btn btn-danger"
-                                                        data-toggle="tooltip"
+                                                        data-bs-toggle="tooltip"
                                                         data-placement="top"
                                                         title="{{ trans('files.delete') }}">
                                                     <i class="far fa-trash-alt"></i>

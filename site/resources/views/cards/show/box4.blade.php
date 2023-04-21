@@ -1,13 +1,13 @@
 <div class="card {{ $reference }} {{ Helpers::isHidden($card, $reference) ? 'hidden' : '' }}">
     <div class="card-header">
-        <span class="font-weight-bolder">4. {{ $card->options[$reference]['title'] }}</span>
+        <span class="fw-bolder">4. {{ $card->options[$reference]['title'] }}</span>
         <span class="d-none" id="edit-failed-{{ $reference }}">[ {{ trans('messages.card.editor.failed') }} ]</span>
         @can('editor', $card)
-            <button class="btn btn-primary float-right"
+            <button class="btn btn-primary float-end"
                     id="edit-{{ $reference }}">
                 {{ trans('cards.edit') }}
             </button>
-            <button class="btn btn-secondary d-none float-right mr-2"
+            <button class="btn btn-secondary d-none float-end me-2"
                     id="cancel-{{ $reference }}">
                 {{ trans('cards.cancel') }}
             </button>

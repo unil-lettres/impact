@@ -26,7 +26,7 @@
                 @endcan
 
                 <div class="col-md-12 col-lg-5">
-                    <label for="course_id" class="control-label">{{ trans('files.select_space') }}</label>
+                    <label for="course_id" class="control-label form-label">{{ trans('files.select_space') }}</label>
                     <input id="course_id" name="course" type="hidden" value="">
                     <div id="rct-single-course-select"
                          reference="course_id"

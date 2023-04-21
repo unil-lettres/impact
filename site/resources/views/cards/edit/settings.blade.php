@@ -3,7 +3,7 @@
         {{ trans('cards.global_settings') }}
     </div>
     <div class="card-body">
-        <div class="form-group row">
+        <div class="col-12 mb-3 row">
             <label for="title" class="col-md-4 col-form-label">
                 {{ trans('cards.title') }}
             </label>
@@ -17,8 +17,8 @@
             </div>
         </div>
 
-        <div class="form-group row">
-            <label for="state" class="col-md-4">
+        <div class="col-12 mb-3 row">
+            <label for="state" class="col-md-4 form-label">
                 {{ trans('cards.state') }}
             </label>
             <div class="col-md-8">
@@ -30,8 +30,8 @@
             </div>
         </div>
 
-        <div class="form-group row">
-            <label for="date" class="col-md-4">
+        <div class="col-12 mb-3 row">
+            <label for="date" class="col-md-4 form-label">
                 {{ trans('cards.date') }}
             </label>
             <div class="col-md-8">
@@ -39,8 +39,8 @@
             </div>
         </div>
 
-        <div class="form-group row">
-            <label for="tags" class="col-md-4">
+        <div class="col-12 mb-3 row">
+            <label for="tags" class="col-md-4 form-label">
                 {{ trans('cards.tags') }}
             </label>
             <div class="col-md-8">
@@ -48,11 +48,11 @@
             </div>
         </div>
 
-        <div class="form-group row">
-            <label for="emails" class="col-md-4">
+        <div class="col-12 mb-3 row">
+            <label for="emails" class="col-md-4 form-label">
                 {{ trans('cards.emails') }}
                 <i class="far fa-question-circle"
-                   data-toggle="tooltip"
+                   data-bs-toggle="tooltip"
                    data-placement="top"
                    title="{{ trans('cards.send_mails') }}">
                 </i>

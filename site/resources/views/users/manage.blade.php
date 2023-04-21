@@ -4,17 +4,17 @@
     <div id="users">
         <div class="card">
             <div class="card-header">
-                <span class="title">{{ trans('users.manage') }} <span class="badge badge-secondary">{{ $users->total() }}</span></span>
+                <span class="title">{{ trans('users.manage') }} <span class="badge bg-secondary">{{ $users->total() }}</span></span>
                 <a href="{{ route('admin.users.create') }}"
-                   class="btn btn-primary float-right">
+                   class="btn btn-primary float-end">
                     {{ trans('users.create') }}
                 </a>
-                <div class="dropdown show float-right mr-1">
+                <div class="dropdown show float-end me-1">
                     <a class="btn btn-primary dropdown-toggle"
                        href="#"
                        role="button"
                        id="dropdownUsersFiltersLink"
-                       data-toggle="dropdown"
+                       data-bs-toggle="dropdown"
                        aria-haspopup="true"
                        aria-expanded="false">
                         {{ trans('admin.filters') }}
@@ -58,10 +58,10 @@
                                             {{ $user->email }}
                                             <div>
                                                 @if ($user->admin)
-                                                    <span class="badge badge-primary">{{ trans('users.admin') }}</span>
+                                                    <span class="badge bg-primary">{{ trans('users.admin') }}</span>
                                                 @endif
                                                 @unless (Helpers::isUserValid($user))
-                                                    <span class="badge badge-danger">{{ trans('users.expired') }}</span>
+                                                    <span class="badge bg-danger">{{ trans('users.expired') }}</span>
                                                 @endunless
                                             </div>
                                         </td>
@@ -72,7 +72,7 @@
                                             @can('update', $user)
                                                 <span>
                                                     <a href="{{ route('admin.users.edit', $user->id) }}"
-                                                       data-toggle="tooltip"
+                                                       data-bs-toggle="tooltip"
                                                        data-placement="top"
                                                        class="btn btn-primary"
                                                        title="{{ trans('users.edit') }}">
@@ -83,7 +83,7 @@
                                             @can('extend', $user)
                                                 <span>
                                                     <a href="{{ route('admin.users.extend', $user->id) }}"
-                                                       data-toggle="tooltip"
+                                                       data-bs-toggle="tooltip"
                                                        data-placement="top"
                                                        class="btn btn-primary"
                                                        title="{{ trans('users.validity.extend', ['months' => config('const.users.validity')]) }}">
@@ -99,7 +99,7 @@
                                                         @csrf
                                                         <button type="submit"
                                                                 class="btn btn-danger"
-                                                                data-toggle="tooltip"
+                                                                data-bs-toggle="tooltip"
                                                                 data-placement="top"
                                                                 title="{{ trans('users.delete') }}">
                                                             <i class="far fa-trash-alt"></i>

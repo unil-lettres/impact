@@ -21,8 +21,8 @@
         <form method="post"
               action="{{ route('admin.mailing.send') }}">
             @csrf
-            <div class="form-group">
-                <label for="subject" class="control-label">{{ trans('admin.mailing.subject') }}</label>
+            <div class="col-12 mb-3">
+                <label for="subject" class="control-label form-label">{{ trans('admin.mailing.subject') }}</label>
                 <div>
                     <input type="text"
                            id="subject"
@@ -34,8 +34,8 @@
                 </div>
             </div>
 
-            <div class="form-group">
-                <label for="content">{{ trans('admin.mailing.content') }}</label>
+            <div class="col-12 mb-3">
+                <label for="content" class="form-label">{{ trans('admin.mailing.content') }}</label>
                 <textarea class="form-control col-md-9"
                           name="content"
                           id="content"

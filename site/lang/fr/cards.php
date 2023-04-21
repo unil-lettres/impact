@@ -7,7 +7,7 @@ return [
     'card(s)' => '{0} -|{1} :count fiche|{2,*} :count fiches',
     'create' => 'Créer une fiche',
     'delete' => 'supprimer',
-    'unlink' => 'dissocier',
+    'unlink' => 'Dissocier',
     'not_found' => 'Aucune fiche trouvée',
     'my_cards' => 'Mes fiches',
     'editors' => 'Rédacteurs',

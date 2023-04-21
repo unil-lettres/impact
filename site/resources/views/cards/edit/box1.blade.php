@@ -3,8 +3,8 @@
         {{ trans('cards.box') }} 1 ({{ trans('cards.source') }})
     </div>
     <div class="card-body">
-        <div class="form-group row">
-            <label for="box1-hidden" class="col-md-4">
+        <div class="col-12 mb-3 row">
+            <label for="box1-hidden" class="col-md-4 form-label">
                 {{ trans('cards.hide') }}
             </label>
             <div class="col-md-8">
@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="col-12 mb-3 row">
             <label for="box1-file" class="col-md-4 col-form-label">
                 {{ trans('cards.select_source') }}
             </label>
@@ -32,7 +32,7 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="col-12 mb-3 row">
             <label for="box1-link" class="col-md-4 col-form-label">
                 {{ trans('cards.external_link') }}
             </label>
@@ -46,11 +46,11 @@
             </div>
         </div>
 
-        <div class="form-group row">
+        <div class="col-12 mb-3 row">
             <label class="col-md-4 col-form-label">
                 {{ trans('cards.extract') }}
                 <i class="far fa-question-circle"
-                   data-toggle="tooltip"
+                   data-bs-toggle="tooltip"
                    data-placement="top"
                    title="{{ trans('cards.extract_help') }}">
                 </i>

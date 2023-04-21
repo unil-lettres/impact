@@ -15,8 +15,8 @@
               action="{{ route('invitations.store') }}">
             @csrf
             <div class="row">
-                <div class="form-group col-md-12 col-lg-7">
-                    <label for="email" class="control-label">{{ trans('invitations.email') }}</label>
+                <div class="col-12 mb-3 col-md-12 col-lg-7">
+                    <label for="email" class="control-label form-label">{{ trans('invitations.email') }}</label>
                     <div>
                         <input id="email"
                                type="email"
@@ -27,8 +27,8 @@
                     </div>
                 </div>
 
-                <div class="form-group col-md-12 col-lg-5">
-                    <label for="course" class="control-label">{{ trans('invitations.select_space') }}</label>
+                <div class="col-12 mb-3 col-md-12 col-lg-5">
+                    <label for="course" class="control-label form-label">{{ trans('invitations.select_space') }}</label>
                     <input id="course" name="course" type="hidden" value="">
                     <div id="rct-single-course-select"
                          reference="course"

@@ -20,14 +20,14 @@
                         </div>
                         <div class="card-body">
                             @unless (Helpers::isCourseLocal($course))
-                                <span class="badge badge-secondary">{{ trans('courses.moodle_id', ['id' => $course->external_id]) }}</span>
+                                <span class="badge bg-secondary">{{ trans('courses.moodle_id', ['id' => $course->external_id]) }}</span>
                             @endunless
                             <form method="post"
                                   action="{{ route('admin.courses.update', $course->id) }}">
                                 @csrf
                                 @method('PUT')
-                                <div class="form-group">
-                                    <label for="name" class="control-label">{{ trans('courses.name') }}</label>
+                                <div class="col-12 mb-3">
+                                    <label for="name" class="control-label form-label">{{ trans('courses.name') }}</label>
                                     <div>
                                         <input type="text"
                                                id="name"
@@ -39,8 +39,8 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="description">{{ trans('courses.description') }}</label>
+                                <div class="col-12 mb-3">
+                                    <label for="description" class="form-label">{{ trans('courses.description') }}</label>
                                     <textarea class="form-control"
                                               name="description"
                                               id="description"

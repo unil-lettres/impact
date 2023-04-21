@@ -21,9 +21,9 @@
                             @if(Helpers::isFileReady($file))
                                 <a href="{{ Helpers::fileUrl($file->filename) }}"
                                    target="_blank"
-                                   data-toggle="tooltip"
+                                   data-bs-toggle="tooltip"
                                    data-placement="top"
-                                   class="btn btn-primary float-right"
+                                   class="btn btn-primary float-end"
                                    title="{{ trans('files.url') }}">
                                     <i class="far fa-share-square"></i>
                                 </a>
@@ -34,7 +34,7 @@
                                   action="{{ route('admin.files.update', $file->id) }}">
                                 @csrf
                                 @method('PUT')
-                                <div class="form-group row">
+                                <div class="col-12 mb-3 row">
                                     <label for="name" class="col-md-3 col-form-label">
                                         {{ trans('files.name') }}
                                     </label>
@@ -48,7 +48,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
+                                <div class="col-12 mb-3 row">
                                     <label for="course" class="col-md-3 col-form-label">
                                         {{ trans('files.space') }}
                                     </label>
@@ -62,7 +62,7 @@
                                 </div>
 
                                 @if ($file->filename)
-                                    <div class="form-group row">
+                                    <div class="col-12 mb-3 row">
                                         <label for="filename" class="col-md-3 col-form-label">
                                             {{ trans('files.filename') }}
                                         </label>
@@ -78,7 +78,7 @@
                                     </div>
                                 @endif
 
-                                <div class="form-group row">
+                                <div class="col-12 mb-3 row">
                                     <label for="status" class="col-md-3 col-form-label">
                                         {{ trans('files.status') }}
                                     </label>
@@ -93,7 +93,7 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group row">
+                                <div class="col-12 mb-3 row">
                                     <label for="type" class="col-md-3 col-form-label">
                                         {{ trans('files.type') }}
                                     </label>
@@ -109,7 +109,7 @@
                                 </div>
 
                                 @if ($file->size)
-                                    <div class="form-group row">
+                                    <div class="col-12 mb-3 row">
                                         <label for="size" class="col-md-3 col-form-label">
                                             {{ trans('files.size_in') }}
                                         </label>
@@ -126,7 +126,7 @@
                                 @endif
 
                                 @if ($file->width)
-                                    <div class="form-group row">
+                                    <div class="col-12 mb-3 row">
                                         <label for="width" class="col-md-3 col-form-label">
                                             {{ trans('files.width') }}
                                         </label>
@@ -143,7 +143,7 @@
                                 @endif
 
                                 @if ($file->height)
-                                    <div class="form-group row">
+                                    <div class="col-12 mb-3 row">
                                         <label for="height" class="col-md-3 col-form-label">
                                             {{ trans('files.height') }}
                                         </label>
@@ -160,7 +160,7 @@
                                 @endif
 
                                 @if ($file->length)
-                                    <div class="form-group row">
+                                    <div class="col-12 mb-3 row">
                                         <label for="length" class="col-md-3 col-form-label">
                                             {{ trans('files.length_in') }}
                                         </label>
@@ -194,7 +194,7 @@
                                 <ul>
                                     @foreach ($cards as $card)
                                         <li>
-                                            <a href="{{ route('cards.show', $card->id) }}">
+                                            <a class="legacy" href="{{ route('cards.show', $card->id) }}">
                                                 {{ $card->title }}
                                             </a>
 
@@ -204,9 +204,11 @@
                                                     @method('PUT')
                                                     @csrf
                                                     <button type="submit"
-                                                            class="btn btn-link"
-                                                            style="color: red; padding: 0;">
-                                                        ({{ trans('cards.unlink') }})
+                                                            class="btn btn-sm btn-danger"
+                                                            data-bs-toggle="tooltip"
+                                                            data-placement="top"
+                                                            title="{{ trans('cards.unlink') }}">
+                                                        <i class="far fa-trash-can"></i>
                                                     </button>
                                                 </form>
                                             @endcan

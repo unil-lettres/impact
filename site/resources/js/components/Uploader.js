@@ -5,8 +5,7 @@ import Uppy from '@uppy/core'
 import French from '@uppy/locales/lib/fr_FR'
 import English from '@uppy/locales/lib/en_US'
 import XHRUpload from '@uppy/xhr-upload';
-import { DashboardModal } from '@uppy/react'
-import DashboardComponent from "@uppy/dashboard";
+import { DashboardModal, Dashboard } from '@uppy/react'
 
 export default class Uploader extends Component {
     constructor (props) {
@@ -124,7 +123,7 @@ export default class Uploader extends Component {
         } else {
             return (
                 <div>
-                    <DashboardComponent
+                    <Dashboard
                         uppy={this.uppy}
                         proudlyDisplayPoweredByUppy={false}
                         height={360}

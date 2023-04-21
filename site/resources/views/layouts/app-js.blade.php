@@ -15,24 +15,16 @@
         return confirm('{{ trans('messages.confirm.archive') }}');
     });
 
+    // Javascript for tooltips
     $(function () {
-        $('[data-toggle="tooltip"]').tooltip()
+        $('[data-bs-toggle="tooltip"]').tooltip()
     });
 
-    $('.base-popover').popover({
-        trigger: 'click',
-        placement: 'auto',
-        html: true
-    });
-
-    $('body').on('click', function (e) {
-        $(".popover").each(function() {
-            if (!$(this).is(e.target) &&
-                $(this).has(e.target).length === 0 &&
-                $('.popover').has(e.target).length === 0
-            ) {
-                $(this).prevAll('*:first').popover('hide');
-            }
-        });
+    // Javascript for popovers
+    $(function () {
+        let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+        popoverTriggerList.map(function (popoverTriggerEl) {
+            return new bootstrap.Popover(popoverTriggerEl)
+        })
     });
 </script>

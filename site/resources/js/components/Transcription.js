@@ -356,10 +356,10 @@ export default class Transcription extends Component {
                                 <tr key={ index }
                                     onMouseEnter={ this.showActions(index) }
                                     onMouseLeave={ this.hideActions(index) } >
-                                    <td id={'line-'+index} className="line pr-2 align-top">
+                                    <td id={'line-'+index} className="line pe-2 align-top">
                                         { line.number }
                                     </td>
-                                    <td id={'speaker-'+index} className="speaker pr-2 align-top">
+                                    <td id={'speaker-'+index} className="speaker pe-2 align-top">
                                         <ContentEditable
                                             html={ line.speaker ?? "" }
                                             tagName="span"
@@ -377,7 +377,7 @@ export default class Transcription extends Component {
                                         />
                                     </td>
                                     <td id={'actions-'+index} className="actions">
-                                        <span className="action delete-line mr-1 d-none"
+                                        <span className="action delete-line me-1 d-none"
                                               onClick={ this.deleteLine(index) }
                                               title={ this.deleteLineActionLabel }>
                                             <i className="far fa-times-circle"/>

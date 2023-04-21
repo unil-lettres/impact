@@ -17,14 +17,14 @@
                     <div class="card-header">
                         <span class="title">{{ $user->name ? $user->name : $user->email }}</span>
                         @unless (Helpers::isUserValid($user))
-                            <span class="badge badge-danger">{{ trans('users.expired') }}</span>
+                            <span class="badge bg-danger">{{ trans('users.expired') }}</span>
                         @endunless
 
                         @can('extend', $user)
                             <a href="{{ route('admin.users.extend', $user->id) }}"
-                               data-toggle="tooltip"
+                               data-bs-toggle="tooltip"
                                data-placement="top"
-                               class="btn btn-primary float-right extend-validity"
+                               class="btn btn-primary float-end extend-validity"
                                title="{{ trans('users.validity.extend', ['months' => config('const.users.validity')]) }}">
                                 <i class="far fa-clock"></i>
                             </a>
@@ -35,7 +35,7 @@
                               action="{{ route('admin.users.update', $user->id) }}">
                             @csrf
                             @method('PUT')
-                            <div class="form-group row">
+                            <div class="col-12 mb-3 row">
                                 <label for="name" class="col-md-4 col-form-label">
                                     {{ trans('users.name') }}
                                 </label>
@@ -49,7 +49,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="col-12 mb-3 row">
                                 <label for="email" class="col-md-4 col-form-label">
                                     {{ trans('users.email') }}
                                 </label>
@@ -64,7 +64,7 @@
                                 </div>
                             </div>
 
-                            <div class="form-group row">
+                            <div class="col-12 mb-3 row">
                                 <label for="type" class="col-md-4 col-form-label">
                                     {{ trans('users.type') }}
                                 </label>
@@ -81,7 +81,7 @@
 
                             @if (Helpers::isUserLocal($user))
                                 @if ($user->validity)
-                                    <div class="form-group row">
+                                    <div class="col-12 mb-3 row">
                                         <label for="validity" class="col-md-4 col-form-label">
                                             {{ trans('users.validity') }}
                                         </label>
@@ -97,7 +97,7 @@
                                     </div>
                                 @endif
 
-                                <div class="form-group row">
+                                <div class="col-12 mb-3 row">
                                     <label for="old_password" class="col-md-4 col-form-label">
                                         {{ trans('users.password.current') }}
                                     </label>
@@ -109,7 +109,7 @@
                                         >
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="col-12 mb-3 row">
                                     <label for="new_password" class="col-md-4 col-form-label">
                                         {{ trans('users.password.new') }}
                                     </label>
@@ -121,7 +121,7 @@
                                         >
                                     </div>
                                 </div>
-                                <div class="form-group row">
+                                <div class="col-12 mb-3 row">
                                     <label for="password_confirm" class="col-md-4 col-form-label">
                                         {{ trans('users.password.confirm') }}
                                     </label>
@@ -135,8 +135,8 @@
                                 </div>
                             @endif
                             @can('delete', $user)
-                                <div class="form-group row">
-                                    <label for="admin" class="col-md-4">
+                                <div class="col-12 mb-3 row">
+                                    <label for="admin" class="col-md-4 form-label">
                                         {{ trans('users.admin') }}
                                     </label>
                                     <div class="col-md-8">

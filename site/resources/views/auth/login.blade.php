@@ -9,10 +9,10 @@
 
                 <div class="card-body">
                     <div>
-                        <a target="_blank" href="https://www.switch.ch/aai/about/">{{ trans('login.aai.about') }}</a> |
-                        <a target="_blank" href="https://www.switch.ch/aai/faq/">{{ trans('login.aai.faq') }}</a> |
-                        <a target="_blank" href="https://www.switch.ch/aai/help/">{{ trans('login.aai.help') }}</a> |
-                        <a target="_blank" href="https://www.switch.ch/aai/privacy/">{{ trans('login.aai.privacy') }}</a>
+                        <a class="legacy" target="_blank" href="https://www.switch.ch/aai/about/">{{ trans('login.aai.about') }}</a> |
+                        <a class="legacy" target="_blank" href="https://www.switch.ch/aai/faq/">{{ trans('login.aai.faq') }}</a> |
+                        <a class="legacy" target="_blank" href="https://www.switch.ch/aai/help/">{{ trans('login.aai.help') }}</a> |
+                        <a class="legacy" target="_blank" href="https://www.switch.ch/aai/privacy/">{{ trans('login.aai.privacy') }}</a>
                     </div>
                     <hr>
                     <p class="text-secondary">{!! trans('login.aai_info') !!}</p>
@@ -35,7 +35,7 @@
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
 
-                        <div class="form-group row">
+                        <div class="col-12 mb-3 row">
                             <label for="email" class="col-md-4 col-form-label text-md-right">{{ trans('login.email') }}</label>
 
                             <div class="col-md-6">
@@ -49,7 +49,7 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="col-12 mb-3 row">
                             <label for="password" class="col-md-4 col-form-label text-md-right">{{ trans('login.password') }}</label>
 
                             <div class="col-md-6">
@@ -63,26 +63,26 @@
                             </div>
                         </div>
 
-                        <div class="form-group row">
+                        <div class="col-12 mb-3 row">
                             <div class="col-md-6 offset-md-4">
                                 <div class="form-check">
                                     <input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
 
-                                    <label class="form-check-label" for="remember">
+                                    <label class="form-check-label form-label" for="remember">
                                         {{ trans('login.remember_me') }}
                                     </label>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="form-group row mb-0">
+                        <div class="col-12 row mb-0">
                             <div class="col-md-8 offset-md-4">
                                 <button type="submit" class="btn btn-primary">
                                     {{ trans('login.login') }}
                                 </button>
 
                                 @if (Route::has('password.request'))
-                                    <a class="btn btn-link" href="{{ route('password.request') }}">
+                                    <a class="btn btn-link legacy" href="{{ route('password.request') }}">
                                         {{ trans('login.forgot_password') }}
                                     </a>
                                 @endif

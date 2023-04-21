@@ -4,17 +4,17 @@
     <div id="courses">
         <div class="card">
             <div class="card-header">
-                <span class="title">{{ trans('courses.manage') }} <span class="badge badge-secondary">{{ $courses->total() }}</span></span>
+                <span class="title">{{ trans('courses.manage') }} <span class="badge bg-secondary">{{ $courses->total() }}</span></span>
                 <a href="{{ route('admin.courses.create') }}"
-                   class="btn btn-primary float-right">
+                   class="btn btn-primary float-end">
                     {{ trans('courses.create') }}
                 </a>
-                <div class="dropdown show float-right mr-1">
+                <div class="dropdown show float-end me-1">
                     <a class="btn btn-primary dropdown-toggle"
                        href="#"
                        role="button"
                        id="dropdownCoursesFiltersLink"
-                       data-toggle="dropdown"
+                       data-bs-toggle="dropdown"
                        aria-haspopup="true"
                        aria-expanded="false">
                         {{ trans('admin.filters') }}
@@ -56,7 +56,7 @@
                                         <td>
                                             {{ $course->name }}
                                             @unless ($course->isActive())
-                                                <span class="badge badge-danger">{{ trans('courses.disabled') }}</span>
+                                                <span class="badge bg-danger">{{ trans('courses.disabled') }}</span>
                                             @endunless
                                         </td>
                                         <td>
@@ -71,7 +71,7 @@
                                                 @if ($course->isActive())
                                                     <span>
                                                         <a href="{{ route('admin.courses.edit', $course->id) }}"
-                                                           data-toggle="tooltip"
+                                                           data-bs-toggle="tooltip"
                                                            data-placement="top"
                                                            class="btn btn-primary"
                                                            title="{{ trans('courses.edit') }}">
@@ -85,7 +85,7 @@
                                                 @can('mailConfirmDelete', $course)
                                                     <span>
                                                         <a href="{{ route('admin.courses.send.confirm.delete', $course->id) }}"
-                                                           data-toggle="tooltip"
+                                                           data-bs-toggle="tooltip"
                                                            data-placement="top"
                                                            class="btn btn-primary{{ $course->teachers()->count() > 0 ? '' : ' disabled' }}"
                                                            title="{{ trans('courses.send_confirm_delete') }}">
@@ -96,7 +96,7 @@
                                                 @can('enable', $course)
                                                     <span>
                                                         <a href="{{ route('admin.courses.enable', $course->id) }}"
-                                                           data-toggle="tooltip"
+                                                           data-bs-toggle="tooltip"
                                                            data-placement="top"
                                                            class="btn btn-success"
                                                            title="{{ trans('courses.enable') }}">
@@ -114,7 +114,7 @@
                                                             <input id="redirect" name="redirect" type="hidden" value="admin.courses.manage">
                                                             <button type="submit"
                                                                     class="btn btn-danger"
-                                                                    data-toggle="tooltip"
+                                                                    data-bs-toggle="tooltip"
                                                                     data-placement="top"
                                                                     title="{{ trans('courses.disable') }}">
                                                                 <i class="far fa-eye-slash"></i>
@@ -132,7 +132,7 @@
                                                         @csrf
                                                         <button type="submit"
                                                                 class="btn btn-danger"
-                                                                data-toggle="tooltip"
+                                                                data-bs-toggle="tooltip"
                                                                 data-placement="top"
                                                                 title="{{ trans('courses.delete') }}">
                                                             <i class="far fa-trash-alt"></i>

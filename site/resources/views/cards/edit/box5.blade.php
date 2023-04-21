@@ -3,8 +3,8 @@
         {{ trans('cards.box') }} 5 ({{ trans('cards.documents') }})
     </div>
     <div class="card-body">
-        <div class="form-group row">
-            <label for="box5-hidden" class="col-md-4">
+        <div class="col-12 mb-3 row">
+            <label for="box5-hidden" class="col-md-4 form-label">
                 {{ trans('cards.hide') }}
             </label>
             <div class="col-md-8">

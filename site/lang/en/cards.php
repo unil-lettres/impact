@@ -7,7 +7,7 @@ return [
     'card(s)' => '{0} -|{1} :count card|{2,*} :count cards',
     'create' => 'Create a card',
     'delete' => 'delete',
-    'unlink' => 'dissociate',
+    'unlink' => 'Dissociate',
     'not_found' => 'No cards found',
     'my_cards' => 'My cards',
     'configure' => 'Card configuration',

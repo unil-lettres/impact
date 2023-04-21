@@ -212,8 +212,7 @@ class CardTest extends DuskTestCase
                 ->assertSee('Annuler')
                 ->assertSee('Sauver');
 
-            $browser->click('#rct-editor-box3 div.ck-content')
-                ->type('#rct-editor-box3 div.ck-content', 'This is a typing test. Is it saved ?');
+            $browser->type('#rct-editor-box3 div.ck-content', 'This is a typing test. Is it saved ?');
 
             $browser->click('#edit-box3')
                 ->assertSee('Is it saved ?')
@@ -244,8 +243,7 @@ class CardTest extends DuskTestCase
                 ->assertSee('Annuler')
                 ->assertSee('Sauver');
 
-            $browser->click('#rct-editor-box4 div.ck-content')
-                ->type('#rct-editor-box4 div.ck-content', 'This is a typing test. Is it canceled ?')
+            $browser->type('#rct-editor-box4 div.ck-content', 'This is a typing test. Is it canceled ?')
                 ->assertSee('Is it canceled ?');
 
             $browser->click('#cancel-box4')

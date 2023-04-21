@@ -35,7 +35,7 @@ class EmailFailedCIBuild extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         Mail::to('mailtrap@test.com')
             ->send(new DuskFailure());

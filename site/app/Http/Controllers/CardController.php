@@ -14,6 +14,7 @@ use App\Http\Requests\UpdateCard;
 use App\Http\Requests\UpdateCardEditor;
 use App\Http\Requests\UpdateCardTranscription;
 use App\Services\ExportCardBox;
+use App\State;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
@@ -141,8 +142,9 @@ class CardController extends Controller
                 ->students(),
             'files' => $card->course
                 ->files,
-            'states' => $card->course
-                ->states,
+            'states' => State::where('course_id', $card->course->id)
+                ->ordered() // Order by position (asc)
+                ->get(),
         ]);
     }
 

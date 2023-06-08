@@ -6,6 +6,7 @@ use App\Card;
 use App\Course;
 use App\Enrollment;
 use App\Enums\EnrollmentRole;
+use App\Enums\StateType;
 use App\Folder;
 use App\User;
 use Illuminate\Database\Seeder;
@@ -37,6 +38,9 @@ class CardsTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
+            'state_id' => $secondCourse->states
+                ->where('type', StateType::Private)
+                ->first()->id,
             'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS,
         ]);
@@ -46,6 +50,9 @@ class CardsTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
+            'state_id' => $secondCourse->states
+                ->where('type', StateType::Private)
+                ->first()->id,
             'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS,
             'folder_id' => $testFolder->id,
@@ -56,6 +63,9 @@ class CardsTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
+            'state_id' => $secondCourse->states
+                ->where('type', StateType::Private)
+                ->first()->id,
             'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS,
         ]);
@@ -65,6 +75,9 @@ class CardsTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $firstCourse->id,
+            'state_id' => $firstCourse->states
+                ->where('type', StateType::Private)
+                ->first()->id,
             'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS,
         ]);
@@ -74,6 +87,9 @@ class CardsTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
+            'state_id' => $secondCourse->states
+                ->where('type', StateType::Private)
+                ->first()->id,
             'box2' => Card::TRANSCRIPTION,
             'options' => '{
                 "emails": true,
@@ -108,6 +124,9 @@ class CardsTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
+            'state_id' => $secondCourse->states
+                ->where('type', StateType::Private)
+                ->first()->id,
             'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS,
         ]);

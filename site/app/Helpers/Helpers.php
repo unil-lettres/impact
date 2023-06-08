@@ -16,16 +16,15 @@ use App\User;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 
 class Helpers
 {
     /**
      * Return current local
-     *
-     * @return string
      */
-    public static function currentLocal()
+    public static function currentLocal(): string
     {
         if (session()->has('locale')) {
             return session()->get('locale');
@@ -36,10 +35,8 @@ class Helpers
 
     /**
      * Check the validity of a user account
-     *
-     * @return bool
      */
-    public static function isUserValid(User $user)
+    public static function isUserValid(User $user): bool
     {
         // Check if user is an admin
         if ($user->admin) {
@@ -62,10 +59,8 @@ class Helpers
 
     /**
      * Check if the user account type is local
-     *
-     * @return bool
      */
-    public static function isUserLocal(User $user)
+    public static function isUserLocal(User $user): bool
     {
         // Check if user has a local account type
         if ($user->type === UserType::Local) {
@@ -77,10 +72,8 @@ class Helpers
 
     /**
      * Check if the course type is local
-     *
-     * @return bool
      */
-    public static function isCourseLocal(Course $course)
+    public static function isCourseLocal(Course $course): bool
     {
         // Check if course has a local type
         if ($course->type === CourseType::Local) {
@@ -92,10 +85,8 @@ class Helpers
 
     /**
      * Check if the course type is external
-     *
-     * @return bool
      */
-    public static function isCourseExternal(Course $course)
+    public static function isCourseExternal(Course $course): bool
     {
         // Check if course has an external type
         if ($course->type === CourseType::External) {
@@ -107,22 +98,16 @@ class Helpers
 
     /**
      * Truncate a string
-     *
-     * @param  string  $string
-     * @param  int  $limit
-     * @return string
      */
-    public static function truncate($string, $limit = 50)
+    public static function truncate(string $string, int $limit = 50): string
     {
         return Str::limit($string, $limit, $end = '...');
     }
 
     /**
      * Get the translated course type
-     *
-     * @return string
      */
-    public static function courseType(string $type)
+    public static function courseType(string $type): string
     {
         switch ($type) {
             case CourseType::External:
@@ -135,10 +120,8 @@ class Helpers
 
     /**
      * Get the translated file type
-     *
-     * @return string
      */
-    public static function fileType(string $type)
+    public static function fileType(string $type): string
     {
         switch ($type) {
             case FileType::Video:
@@ -156,10 +139,8 @@ class Helpers
 
     /**
      * Get the translated file status
-     *
-     * @return string
      */
-    public static function fileStatus(string $status)
+    public static function fileStatus(string $status): string
     {
         switch ($status) {
             case FileStatus::Transcoding:
@@ -176,10 +157,8 @@ class Helpers
 
     /**
      * Get the file status html badge
-     *
-     * @return string
      */
-    public static function fileStatusBadge(string $status)
+    public static function fileStatusBadge(string $status): string
     {
         switch ($status) {
             case FileStatus::Ready:
@@ -195,20 +174,16 @@ class Helpers
 
     /**
      * Get file url for given filename
-     *
-     * @return string
      */
-    public static function fileUrl(string $filename)
+    public static function fileUrl(string $filename): string
     {
         return asset('storage/uploads/files/'.$filename);
     }
 
     /**
      * Check whether the file is processed and ready
-     *
-     * @return bool
      */
-    public static function isFileReady(File $file)
+    public static function isFileReady(File $file): bool
     {
         if ($file->status === FileStatus::Ready) {
             return true;
@@ -219,10 +194,8 @@ class Helpers
 
     /**
      * Check whether the file has the failed status
-     *
-     * @return bool
      */
-    public static function isFileFailed(File $file)
+    public static function isFileFailed(File $file): bool
     {
         if ($file->status === FileStatus::Failed) {
             return true;
@@ -236,10 +209,8 @@ class Helpers
      *
      * The breadcrumbs parameter should be a Collection and should
      * contain a path as the key, and a name as the value
-     *
-     * @return string
      */
-    public static function breadcrumbsHtml(Collection $breadcrumbs)
+    public static function breadcrumbsHtml(Collection $breadcrumbs): string
     {
         $html = '';
         foreach ($breadcrumbs as $path => $name) {
@@ -255,10 +226,8 @@ class Helpers
 
     /**
      * Generate HTML to list all the cards of a file
-     *
-     * @return string
      */
-    public static function fileCards(File $file)
+    public static function fileCards(File $file): string
     {
         $html = '';
 
@@ -272,30 +241,24 @@ class Helpers
     /**
      * Return the "used" string if the file is liked to card(s) or
      * return the "unused" string if the file is not linked to card(s)
-     *
-     * @return string
      */
-    public static function fileState(File $file)
+    public static function fileState(File $file): string
     {
         return $file->isUsed() ? 'used' : 'unused';
     }
 
     /**
      * Return whether the card has an external media link
-     *
-     * @return bool
      */
-    public static function hasExternalLink(Card $card)
+    public static function hasExternalLink(Card $card): bool
     {
         return empty(trim($card['options']['box1']['link'])) ? false : true;
     }
 
     /**
      * Return whether the card has an external media link
-     *
-     * @return string|null
      */
-    public static function getExternalLink(Card $card)
+    public static function getExternalLink(Card $card): string|null
     {
         if (! self::hasExternalLink($card)) {
             return null;
@@ -306,10 +269,8 @@ class Helpers
 
     /**
      * Return whether the card has a internal or external media source
-     *
-     * @return bool
      */
-    public static function hasSource(Card $card)
+    public static function hasSource(Card $card): bool
     {
         if ($card->file) {
             return true;
@@ -324,10 +285,8 @@ class Helpers
 
     /**
      * Return whether the card has a transcription
-     *
-     * @return bool
      */
-    public static function hasTranscription(Card $card)
+    public static function hasTranscription(Card $card): bool
     {
         if ($card->box2['data']) {
             return true;
@@ -338,10 +297,8 @@ class Helpers
 
     /**
      * Return whether the specified box should be hidden from the view
-     *
-     * @return bool|null
      */
-    public static function isHidden(Card $card, string $box)
+    public static function isHidden(Card $card, string $box): bool|null
     {
         $options = $card->options;
 
@@ -443,5 +400,52 @@ class Helpers
         }
 
         return true;
+    }
+
+    /**
+     * Return whether the current user is allowed to see the card's box
+     */
+    public static function boxIsVisible(Card $card, string $box): bool
+    {
+        if (! $card->state) {
+            return false;
+        }
+
+        if (! $card->state->getPermission($box)) {
+            return false;
+        }
+
+        // Check if user role is allowed to see the box
+        return match ($card->state->getPermission($box)) {
+            StatePermission::TeachersCanShowAndEditEditorsCanShow => Auth::user()->isTeacher($card->course) || Auth::user()->isEditor($card),
+            StatePermission::EditorsCanShowAndEdit => Auth::user()->isEditor($card),
+            StatePermission::TeachersAndEditorsCanShowAndEdit => Auth::user()->isTeacher($card->course) || Auth::user()->isEditor($card),
+            StatePermission::AllCanShowTeachersAndEditorsCanEdit, StatePermission::AllCanShowTeachersCanEdit => Auth::user()->isTeacher($card->course) || Auth::user()->isEditor($card) || Auth::user()->isStudent($card->course),
+            StatePermission::TeachersCanShowAndEdit => Auth::user()->isTeacher($card->course),
+            default => Auth::user()->admin,
+        };
+    }
+
+    /**
+     * Return whether the current user is allowed to edit the card's box
+     */
+    public static function boxIsEditable(Card $card, string $box): bool
+    {
+        if (! $card->state) {
+            return false;
+        }
+
+        if (! $card->state->getPermission($box)) {
+            return false;
+        }
+
+        // Check if user role is allowed to edit the box
+        return match ($card->state->getPermission($box)) {
+            StatePermission::TeachersCanShowAndEditEditorsCanShow => Auth::user()->isTeacher($card->course),
+            StatePermission::EditorsCanShowAndEdit => Auth::user()->isEditor($card),
+            StatePermission::TeachersAndEditorsCanShowAndEdit, StatePermission::AllCanShowTeachersAndEditorsCanEdit => Auth::user()->isTeacher($card->course) || Auth::user()->isEditor($card),
+            StatePermission::AllCanShowTeachersCanEdit, StatePermission::TeachersCanShowAndEdit => Auth::user()->isTeacher($card->course),
+            default => Auth::user()->admin,
+        };
     }
 }

@@ -78,6 +78,24 @@ class State extends Model implements Sortable
     }
 
     /**
+     * Get the permission of a specific box
+     */
+    public function getPermission(string $box): int|null
+    {
+        $permissions = $this->permissions;
+
+        if (! $permissions) {
+            return null;
+        }
+
+        if (! isset($permissions[$box])) {
+            return null;
+        }
+
+        return $permissions[$box];
+    }
+
+    /**
      * Update the permission of all boxes
      *
      * @param  int  $permission (App\Enums\StatePermission)

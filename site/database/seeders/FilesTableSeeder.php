@@ -6,6 +6,7 @@ use App\Card;
 use App\Course;
 use App\Enums\FileStatus;
 use App\Enums\FileType;
+use App\Enums\StateType;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -105,6 +106,9 @@ class FilesTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
+            'state_id' => $secondCourse->states
+                ->where('type', StateType::Private)
+                ->first()->id,
             'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS,
             'file_id' => $usedFile,

@@ -19,6 +19,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpWord\Exception\Exception;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -132,6 +133,19 @@ class CardController extends Controller
     {
         $this->authorize('update', $card);
 
+        $states = State::where('course_id', $card->course->id)
+            ->ordered(); // Order by position (asc)
+
+        // If the user is not a teacher, only show public states and
+        // states with a position greater or equal than the current state and
+        // states that are not of the archived type
+        if (! Auth::user()->isTeacher($card->course)) {
+            $states = $states
+                ->where('teachers_only', false)
+                ->where('position', '>=', $card->state->position)
+                ->where('type', '!=', StateType::Archived);
+        }
+
         return view('cards.edit', [
             'card' => $card,
             'breadcrumbs' => $card
@@ -142,8 +156,7 @@ class CardController extends Controller
                 ->students(),
             'files' => $card->course
                 ->files,
-            'states' => State::where('course_id', $card->course->id)
-                ->ordered() // Order by position (asc)
+            'states' => $states
                 ->get(),
         ]);
     }

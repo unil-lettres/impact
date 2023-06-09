@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\StateAvailability;
 use Illuminate\Validation\Rule;
 
 class UpdateCard extends AbstractRequest
@@ -60,7 +61,12 @@ class UpdateCard extends AbstractRequest
                 'sometimes',
                 Rule::in(['on']),
             ],
-            'state' => 'required|integer|exists:states,id',
+            'state' => [
+                'required',
+                'integer',
+                'exists:states,id',
+                new StateAvailability,
+            ],
         ];
     }
 }

@@ -448,4 +448,20 @@ class Helpers
             default => Auth::user()->admin,
         };
     }
+
+    /**
+     * Return whether the current state of the card should be display in read only mode
+     */
+    public static function isStateSelectEditable(Card $card): bool
+    {
+        if (! $card->state) {
+            return false;
+        }
+
+        if ($card->state->type === StateType::Archived && ! Auth::user()->isTeacher($card->course)) {
+            return false;
+        }
+
+        return true;
+    }
 }

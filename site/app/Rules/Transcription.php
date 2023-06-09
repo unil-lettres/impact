@@ -4,28 +4,15 @@ namespace App\Rules;
 
 use Assert\Assert;
 use Assert\InvalidArgumentException;
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class Transcription implements Rule
+class Transcription implements ValidationRule
 {
     /**
-     * Create a new rule instance.
-     *
-     * @return void
+     * Run the validation rule.
      */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Determine if the validation rule passes.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
-     */
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         try {
             // The transcription should be a collection of arrays
@@ -37,19 +24,7 @@ class Transcription implements Rule
                 ->keyExists('speaker')
                 ->keyExists('speech');
         } catch (InvalidArgumentException $e) {
-            return false;
+            $fail('The transcription is not valid.');
         }
-
-        return true;
-    }
-
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message()
-    {
-        return 'The transcription is not valid.';
     }
 }

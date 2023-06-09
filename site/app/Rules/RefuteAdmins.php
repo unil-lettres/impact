@@ -4,48 +4,25 @@ namespace App\Rules;
 
 use App\Scopes\ValidityScope;
 use App\User;
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class RefuteAdmins implements Rule
+class RefuteAdmins implements ValidationRule
 {
     /**
-     * Create a new rule instance.
-     *
-     * @return void
+     * Run the validation rule.
      */
-    public function __construct()
-    {
-        //
-    }
-
-    /**
-     * Determine if the validation rule passes.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
-     */
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         $user = User::withoutGlobalScope(ValidityScope::class)
             ->find($value);
 
         if (! $user) {
-            return false;
+            $fail('Operation not permitted for this admin user.');
         }
 
-        // If the user is an admin the validation rule should return false,
-        // if the user is not and admin the validation rule should return true.
-        return $user->admin ? false : true;
-    }
-
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message()
-    {
-        return 'Operation not permitted for this admin user.';
+        if ($user->admin) {
+            $fail('Operation not permitted for this admin user.');
+        }
     }
 }

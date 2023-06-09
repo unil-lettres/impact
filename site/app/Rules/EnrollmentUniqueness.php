@@ -3,50 +3,42 @@
 namespace App\Rules;
 
 use App\Enrollment;
-use Illuminate\Contracts\Validation\Rule;
+use Closure;
+use Illuminate\Contracts\Validation\DataAwareRule;
+use Illuminate\Contracts\Validation\ValidationRule;
 
-class EnrollmentUniqueness implements Rule
+class EnrollmentUniqueness implements DataAwareRule, ValidationRule
 {
-    private $course_id;
-
-    private $user_id;
+    /**
+     * All of the data under validation.
+     */
+    protected array $data = [];
 
     /**
-     * Create a new rule instance.
+     * Set the data under validation.
      */
-    public function __construct(int $course, int $user)
+    public function setData(array $data): static
     {
-        $this->course_id = $course;
-        $this->user_id = $user;
+        $this->data = $data;
+
+        return $this;
     }
 
     /**
-     * Determine if the validation rule passes.
-     *
-     * @param  string  $attribute
-     * @param  mixed  $value
-     * @return bool
+     * Run the validation rule.
      */
-    public function passes($attribute, $value)
+    public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         // Check if an enrollment with the same course_id & user_id already exists
         $enrollment = Enrollment::where('role', $value)
-            ->where('course_id', $this->course_id)
-            ->where('user_id', $this->user_id)
+            ->where('course_id', $this->data['course'])
+            ->where('user_id', $this->data['user'])
             ->first();
 
-        // If the enrollment already exists the validation rule should return false,
-        // if a similar enrollment cannot be found the validation rule should return true.
-        return $enrollment ? false : true;
-    }
-
-    /**
-     * Get the validation error message.
-     *
-     * @return string
-     */
-    public function message()
-    {
-        return 'This enrollment already exists.';
+        // If the enrollment already exists the validation rule should fail,
+        // if a similar enrollment cannot be found the validation rule should pass.
+        if ($enrollment) {
+            $fail('This enrollment already exists.');
+        }
     }
 }

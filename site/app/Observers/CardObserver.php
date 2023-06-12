@@ -4,17 +4,33 @@ namespace App\Observers;
 
 use App\Card;
 use App\Enums\ActionType;
+use App\Enums\StateType;
 use App\Mail\StateSelected;
 use Illuminate\Support\Facades\Mail;
 
 class CardObserver
 {
     /**
-     * Handle events after all transactions are committed.
+     * Handle the Card "created" event.
      *
-     * @var bool
+     * @return void
      */
-    //public $afterCommit = true;
+    public function created(Card $card)
+    {
+        // If state is not set, set it the private state
+        if (! $card->state) {
+            $state = $card
+                ->course
+                ->states->where(
+                    'type', StateType::Private
+                )->first();
+
+            $card->update([
+                'state_id' => $state->id,
+            ]);
+            $card->save();
+        }
+    }
 
     /**
      * Handle the Card "updated" event.
@@ -23,10 +39,10 @@ class CardObserver
      */
     public function updated(Card $card)
     {
-        // Check if the state of the card has changed
-        if ($card->wasChanged('state_id')) {
+        // Check if the state of the card has changed and if was already set
+        if ($card->wasChanged('state_id') && $card->getOriginal('state_id')) {
             // Loop through the actions of the new state
-            foreach ($card->state?->getActionsData() as $action) {
+            foreach ($card->state->getActionsData() as $action) {
                 switch ($action['type']) {
                     case ActionType::Email:
                         $this->sendEmailAction(

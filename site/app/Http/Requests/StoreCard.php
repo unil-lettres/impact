@@ -24,7 +24,6 @@ class StoreCard extends AbstractRequest
         return [
             'title' => 'required|string|max:255',
             'course_id' => 'required|integer|exists:courses,id',
-            'state_id' => 'required|integer|exists:states,id',
             'folder_id' => 'integer|exists:folders,id|nullable',
         ];
     }

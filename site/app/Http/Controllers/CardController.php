@@ -56,11 +56,6 @@ class CardController extends Controller
 
         return view('cards.create', [
             'course' => $course,
-            'state' => $course
-                ->states
-                ->where(
-                    'type', StateType::Private
-                )->first(),
             'breadcrumbs' => $course
                 ->breadcrumbs(true),
             'folders' => $course

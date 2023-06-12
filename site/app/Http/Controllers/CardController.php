@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Card;
 use App\Course;
-use App\Enums\StateType;
 use App\Folder;
 use App\Http\Requests\CreateCard;
 use App\Http\Requests\CreateCardExport;
@@ -131,14 +130,9 @@ class CardController extends Controller
         $states = State::where('course_id', $card->course->id)
             ->ordered(); // Order by position (asc)
 
-        // If the user is not a teacher, only show public states and
-        // states with a position greater or equal than the current state and
-        // states that are not of the archived type
+        // If the user is not a teacher, only show states with the limited scope
         if (! Auth::user()->isTeacher($card->course)) {
-            $states = $states
-                ->where('teachers_only', false)
-                ->where('position', '>=', $card->state->position)
-                ->where('type', '!=', StateType::Archived);
+            $states = $states::limited($card);
         }
 
         return view('cards.edit', [

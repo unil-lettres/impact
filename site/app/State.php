@@ -3,6 +3,8 @@
 namespace App;
 
 use App\Enums\StatePermission;
+use App\Enums\StateType;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -43,6 +45,16 @@ class State extends Model implements Sortable
         'permissions' => self::PERMISSIONS,
         'actions' => self::ACTIONS,
     ];
+
+    /**
+     * Scope a query to remove the states that are only available for teachers.
+     */
+    public function scopeLimited(Builder $query, Card $card): void
+    {
+        $query->where('teachers_only', false)
+            ->where('position', '>=', $card->state->position)
+            ->where('type', '!=', StateType::Archived);
+    }
 
     /**
      * Get the course of this card.

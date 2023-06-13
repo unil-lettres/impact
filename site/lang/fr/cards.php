@@ -42,6 +42,6 @@ return [
     'state' => 'État',
     'date' => 'Date',
     'tags' => 'Étiquettes',
-    'emails' => 'Emails',
+    'no_emails' => 'Ne pas envoyer d\'emails',
 
 ];

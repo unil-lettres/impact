@@ -34,10 +34,8 @@ class CardObserver
 
     /**
      * Handle the Card "updated" event.
-     *
-     * @return void
      */
-    public function updated(Card $card)
+    public function updated(Card $card): void
     {
         // Check if the state of the card has changed and if was already set
         if ($card->wasChanged('state_id') && $card->getOriginal('state_id')) {
@@ -45,6 +43,12 @@ class CardObserver
             foreach ($card->state->getActionsData() as $action) {
                 switch ($action['type']) {
                     case ActionType::Email:
+                        // Cancel if the card has the do not sent
+                        // emails option set to true
+                        if ($card->options['no_emails']) {
+                            return;
+                        }
+
                         $this->sendEmailAction(
                             $card,
                             $action
@@ -59,13 +63,10 @@ class CardObserver
 
     /**
      * Send an email to the teachers of the course
-     *
-     * @return void
      */
-    private function sendEmailAction(Card $card, array $action)
+    private function sendEmailAction(Card $card, array $action): void
     {
-        // Send the state changed email to
-        // the teachers of the course
+        // Send the state changed email to the teachers of the course
         Mail::to(
             $card->course->teachers()->map(function ($teacher) {
                 return $teacher->email;

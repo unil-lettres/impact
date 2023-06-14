@@ -64,6 +64,15 @@ class StateFactory extends Factory
     public function open()
     {
         return $this->state(function (array $attributes) {
+            // Create the "open" state email action
+            $actions = json_decode(State::ACTIONS, true);
+            $actions['data'] = [
+                State::buildEmailAction(
+                    trans('states.email_subject_open'),
+                    trans('states.email_message_open')
+                ),
+            ];
+
             return [
                 'name' => trans('states.open'),
                 'description' => trans('states.open_description'),
@@ -79,6 +88,7 @@ class StateFactory extends Factory
                         "box5": '.StatePermission::TeachersAndEditorsCanShowAndEdit.'
                     }'
                 ),
+                'actions' => $actions,
             ];
         });
     }
@@ -91,6 +101,15 @@ class StateFactory extends Factory
     public function public()
     {
         return $this->state(function (array $attributes) {
+            // Create the "public" state email action
+            $actions = json_decode(State::ACTIONS, true);
+            $actions['data'] = [
+                State::buildEmailAction(
+                    trans('states.email_subject_public'),
+                    trans('states.email_message_public')
+                ),
+            ];
+
             return [
                 'name' => trans('states.public'),
                 'description' => trans('states.public_description'),
@@ -106,6 +125,7 @@ class StateFactory extends Factory
                         "box5": '.StatePermission::AllCanShowTeachersAndEditorsCanEdit.'
                     }'
                 ),
+                'actions' => $actions,
             ];
         });
     }

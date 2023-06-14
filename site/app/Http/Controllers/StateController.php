@@ -86,20 +86,21 @@ class StateController extends Controller
 
         $this->authorize('update', $state);
 
-        $permissions = $state->permissions ?? json_decode(State::PERMISSIONS);
+        $permissions = $state->permissions ?? json_decode(State::PERMISSIONS, true);
         $permissions['box1'] = (int) $request->get('box1');
         $permissions['box2'] = (int) $request->get('box2');
         $permissions['box3'] = (int) $request->get('box3');
         $permissions['box4'] = (int) $request->get('box4');
         $permissions['box5'] = (int) $request->get('box5');
 
-        $actions = $state->actions ?? json_decode(State::ACTIONS);
+        $actions = $state->actions ?? json_decode(State::ACTIONS, true);
         $actions['data'] = match ($request->get('action-type')) {
-            ActionType::Email => [[
-                'type' => $request->get('action-type'),
-                'subject' => $request->get('action-email-subject'),
-                'message' => $request->get('action-email-message'),
-            ]],
+            ActionType::Email => [
+                State::buildEmailAction(
+                    $request->get('action-email-subject'),
+                    $request->get('action-email-message')
+                ),
+            ],
             default => [],
         };
 

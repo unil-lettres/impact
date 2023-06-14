@@ -163,7 +163,7 @@ class CardController extends Controller
 
         $this->authorize('update', $card);
 
-        $options = $card->options ?? json_decode(Card::OPTIONS);
+        $options = $card->options ?? json_decode(Card::OPTIONS, true);
         $options['box1']['hidden'] = (bool) $request->get('box1-hidden');
         $options['box1']['link'] = $request->get('box1-link');
         $options['box1']['start'] = (int) $request->get('box1-start');
@@ -273,7 +273,7 @@ class CardController extends Controller
 
         $box = $request->get('box');
 
-        $box2 = $card->box2 ?? json_decode(Card::TRANSCRIPTION);
+        $box2 = $card->box2 ?? json_decode(Card::TRANSCRIPTION, true);
         $box2['data'] = $request->get('transcription') ? $request->get('transcription') : [];
 
         $card->update([

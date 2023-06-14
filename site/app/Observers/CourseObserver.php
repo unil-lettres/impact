@@ -25,23 +25,39 @@ class CourseObserver
             'course_id' => $course->id,
         ]);
 
-        // Create the "open" state
+        $actions = json_decode(State::ACTIONS, true);
+
+        // Create the "open" state with an email action
+        $actions['data'] = [
+            State::buildEmailAction(
+                trans('states.email_subject_open'),
+                trans('states.email_message_open')
+            ),
+        ];
         $openState = State::create([
             'name' => trans('states.open'),
             'description' => trans('states.open_description'),
             'position' => 1,
             'course_id' => $course->id,
+            'actions' => $actions,
         ]);
         $openState->updatePermissions(
             StatePermission::TeachersAndEditorsCanShowAndEdit
         );
 
-        // Create the "public" state
+        // Create the "public" state with an email action
+        $actions['data'] = [
+            State::buildEmailAction(
+                trans('states.email_subject_public'),
+                trans('states.email_message_public')
+            ),
+        ];
         $publicState = State::create([
             'name' => trans('states.public'),
             'description' => trans('states.public_description'),
             'position' => 2,
             'course_id' => $course->id,
+            'actions' => $actions,
         ]);
         $publicState->updatePermissions(
             StatePermission::AllCanShowTeachersAndEditorsCanEdit

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Enums\ActionType;
 use App\Enums\StatePermission;
 use App\Enums\StateType;
 use Illuminate\Database\Eloquent\Builder;
@@ -169,5 +170,17 @@ class State extends Model implements Sortable
         }
 
         return null;
+    }
+
+    /**
+     * Build email action structure
+     */
+    public static function buildEmailAction(string $subject, string $message): array
+    {
+        return [
+            'type' => ActionType::Email,
+            'subject' => $subject,
+            'message' => $message,
+        ];
     }
 }

@@ -450,7 +450,7 @@ class Helpers
     }
 
     /**
-     * Return whether the current state of the card should be display in read only mode
+     * Return whether the current state of the card should be displayed in read only mode
      */
     public static function isStateSelectEditable(Card $card): bool
     {

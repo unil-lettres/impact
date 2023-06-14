@@ -6,7 +6,7 @@
         <input id="action-email-subject"
                type="text"
                name="action-email-subject"
-               value="{{ $activeState->getActionData(0, \App\Enums\ActionType::Email)['subject'] ?? trans('states.email_subject_default') }}"
+               value="{{ $activeState->getActionData(0, \App\Enums\ActionType::Email)['subject'] ?? '' }}"
                class="form-control"
         >
     </div>
@@ -24,6 +24,6 @@
         <textarea class="form-control"
                   name="action-email-message"
                   id="action-email-message"
-                  rows="3">{{ $activeState->getActionData(0, \App\Enums\ActionType::Email)['message'] ?? trans('states.email_message_default') }}</textarea>
+                  rows="3">{{ $activeState->getActionData(0, \App\Enums\ActionType::Email)['message'] ?? '' }}</textarea>
     </div>
 </div>

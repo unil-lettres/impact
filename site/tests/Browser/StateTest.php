@@ -170,4 +170,64 @@ class StateTest extends DuskTestCase
                 ->assertSee('État supprimé.');
         });
     }
+
+    /**
+     * Test open state has a default email action.
+     *
+     * @return void
+     *
+     * @throws Throwable
+     */
+    public function testOpenStateAsEmailAction()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('states-teacher-user@example.com', 'password');
+
+            $browser->assertSee('Test states')
+                ->clickLink('Test states');
+
+            $browser->assertSee('Configuration de l\'espace')
+                ->clickLink('Configuration de l\'espace');
+
+            $browser->assertSee('États')
+                ->clickLink('États');
+
+            $browser->assertSee('ouvert')
+                ->clickLink('ouvert')
+                ->assertSee(trans('states.action_email'))
+                ->assertValue('#action-email-subject',trans('states.email_subject_open'))
+                ->assertValue('#action-email-message',trans('states.email_message_open'));
+        });
+    }
+
+    /**
+     * Test public state has a default email action.
+     *
+     * @return void
+     *
+     * @throws Throwable
+     */
+    public function testPublicStateAsEmailAction()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('states-teacher-user@example.com', 'password');
+
+            $browser->assertSee('Test states')
+                ->clickLink('Test states');
+
+            $browser->assertSee('Configuration de l\'espace')
+                ->clickLink('Configuration de l\'espace');
+
+            $browser->assertSee('États')
+                ->clickLink('États');
+
+            $browser->assertSee('public')
+                ->clickLink('public')
+                ->assertSee(trans('states.action_email'))
+                ->assertValue('#action-email-subject',trans('states.email_subject_public'))
+                ->assertValue('#action-email-message',trans('states.email_message_public'));
+        });
+    }
 }

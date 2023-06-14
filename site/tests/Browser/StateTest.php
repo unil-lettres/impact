@@ -194,7 +194,7 @@ class StateTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testOpenStateAsEmailAction()
+    public function testOpenStateHasEmailAction()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -212,8 +212,8 @@ class StateTest extends DuskTestCase
             $browser->assertSee('ouvert')
                 ->clickLink('ouvert')
                 ->assertSee(trans('states.action_email'))
-                ->assertValue('#action-email-subject',trans('states.email_subject_open'))
-                ->assertValue('#action-email-message',trans('states.email_message_open'));
+                ->assertValue('#action-email-subject', trans('states.email_subject_open'))
+                ->assertValue('#action-email-message', trans('states.email_message_open'));
         });
     }
 
@@ -224,7 +224,7 @@ class StateTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testPublicStateAsEmailAction()
+    public function testPublicStateHasEmailAction()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -242,8 +242,8 @@ class StateTest extends DuskTestCase
             $browser->assertSee('public')
                 ->clickLink('public')
                 ->assertSee(trans('states.action_email'))
-                ->assertValue('#action-email-subject',trans('states.email_subject_public'))
-                ->assertValue('#action-email-message',trans('states.email_message_public'));
+                ->assertValue('#action-email-subject', trans('states.email_subject_public'))
+                ->assertValue('#action-email-message', trans('states.email_message_public'));
         });
     }
 }

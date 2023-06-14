@@ -131,8 +131,17 @@ class StateTest extends DuskTestCase
             $browser->assertSee('États')
                 ->clickLink('États');
 
+            // Create a new state
+            $browser->assertSee('Ajouter un état')
+                ->press('Ajouter un état')
+                ->waitForText('Nouvel état créé.')
+                ->assertSee('nouvel état');
+
+            // Update the new state
             $browser->type('name', 'Updated state')
-                ->type('description', 'Updated public description state')
+                ->type('description', 'Updated public description state');
+
+            $browser->scrollTo('@state-update-button') // Scroll to avoid "Element is not clickable at point" error
                 ->press('Mettre à jour l\'état')
                 ->waitForText('État mis à jour.')
                 ->assertSee('Updated state')
@@ -162,7 +171,14 @@ class StateTest extends DuskTestCase
             $browser->assertSee('États')
                 ->clickLink('États');
 
-            $browser->click('#states-list div:nth-child(4) .actions form.with-delete-confirm button')
+            // Create a new state
+            $browser->assertSee('Ajouter un état')
+                ->press('Ajouter un état')
+                ->waitForText('Nouvel état créé.')
+                ->assertSee('nouvel état');
+
+            // Delete the new state
+            $browser->click('#states-list div:nth-last-child(2) .actions form.with-delete-confirm button')
                 ->waitForDialog($seconds = null)
                 ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
                 ->acceptDialog()

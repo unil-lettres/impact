@@ -75,18 +75,20 @@ class UpdateState extends AbstractRequest
                 ),
             ],
             'action-email-subject' => [
+                Rule::requiredIf(
+                    fn () => \request()->get('action-type') == ActionType::Email
+                ),
                 'string',
                 'max:255',
-                Rule::requiredIf(
-                    fn () => \request()->get('action-type') == ActionType::Email
-                ),
+                'nullable',
             ],
             'action-email-message' => [
-                'string',
-                'max:3000',
                 Rule::requiredIf(
                     fn () => \request()->get('action-type') == ActionType::Email
                 ),
+                'string',
+                'max:3000',
+                'nullable',
             ],
         ];
     }

@@ -253,7 +253,8 @@
 
                             @can('update', $activeState)
                                 <button type="submit"
-                                        class="btn btn-primary">
+                                        class="btn btn-primary"
+                                        dusk="state-update-button">
                                     {{ trans('states.update') }}
                                 </button>
                             @endcan

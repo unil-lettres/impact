@@ -127,13 +127,11 @@ class CardController extends Controller
     {
         $this->authorize('update', $card);
 
-        $states = State::where('course_id', $card->course->id)
-            ->ordered(); // Order by position (asc)
-
-        // If the user is not a teacher, only show states with the limited scope
-        if (! Auth::user()->isTeacher($card->course)) {
-            $states = $states::limited($card);
-        }
+        // If the user is not a teacher or an admin, only show states with the limited scope
+        $states = match (Auth::user()->isTeacher($card->course)) {
+            true => State::where('course_id', $card->course->id),
+            default => State::limited($card)->where('course_id', $card->course->id),
+        };
 
         return view('cards.edit', [
             'card' => $card,
@@ -146,6 +144,7 @@ class CardController extends Controller
             'files' => $card->course
                 ->files,
             'states' => $states
+                ->ordered()
                 ->get(),
         ]);
     }

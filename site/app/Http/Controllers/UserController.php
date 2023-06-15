@@ -283,24 +283,11 @@ class UserController extends Controller
 
         $filters->withoutGlobalScope(ValidityScope::class);
 
-        switch ($filter) {
-            case UsersFilter::Expired:
-                $filters
-                    ->whereDate('validity', '<=', Carbon::now());
-                break;
-            case UsersFilter::Aai:
-                $filters
-                    ->where('type', UserType::Aai);
-                break;
-            case UsersFilter::Local:
-                $filters
-                    ->where('type', UserType::Local);
-                break;
-            default:
-                $filters
-                    ->select('users.*');
-        }
-
-        return $filters;
+        return match ($filter) {
+            UsersFilter::Expired => $filters->whereDate('validity', '<=', Carbon::now()),
+            UsersFilter::Aai => $filters->where('type', UserType::Aai),
+            UsersFilter::Local => $filters->where('type', UserType::Local),
+            default => $filters->select('users.*'),
+        };
     }
 }

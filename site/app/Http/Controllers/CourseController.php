@@ -322,22 +322,13 @@ class CourseController extends Controller
     {
         $filters = Course::query();
 
-        switch ($filter) {
-            case CoursesFilter::Disabled:
-                $filters->onlyTrashed();
-                break;
-            case CoursesFilter::External:
-                $filters->withTrashed()
-                    ->where('type', CourseType::External);
-                break;
-            case CoursesFilter::Local:
-                $filters->withTrashed()
-                    ->where('type', CourseType::Local);
-                break;
-            default:
-                $filters->withTrashed();
-        }
-
-        return $filters;
+        return match ($filter) {
+            CoursesFilter::Disabled => $filters->onlyTrashed(),
+            CoursesFilter::External => $filters->withTrashed()
+                ->where('type', CourseType::External),
+            CoursesFilter::Local => $filters->withTrashed()
+                ->where('type', CourseType::Local),
+            default => $filters->withTrashed(),
+        };
     }
 }

@@ -109,13 +109,10 @@ class Helpers
      */
     public static function courseType(string $type): string
     {
-        switch ($type) {
-            case CourseType::External:
-                return trans('courses.external');
-            case CourseType::Local:
-            default:
-                return trans('courses.local');
-        }
+        return match ($type) {
+            CourseType::External => trans('courses.external'),
+            default => trans('courses.local'),
+        };
     }
 
     /**
@@ -123,18 +120,13 @@ class Helpers
      */
     public static function fileType(string $type): string
     {
-        switch ($type) {
-            case FileType::Video:
-                return trans('files.video');
-            case FileType::Audio:
-                return trans('files.audio');
-            case FileType::Document:
-                return trans('files.document');
-            case FileType::Image:
-                return trans('files.image');
-            default:
-                return trans('files.other');
-        }
+        return match ($type) {
+            FileType::Video => trans('files.video'),
+            FileType::Audio => trans('files.audio'),
+            FileType::Document => trans('files.document'),
+            FileType::Image => trans('files.image'),
+            default => trans('files.other'),
+        };
     }
 
     /**
@@ -142,17 +134,12 @@ class Helpers
      */
     public static function fileStatus(string $status): string
     {
-        switch ($status) {
-            case FileStatus::Transcoding:
-                return trans('files.transcoding');
-            case FileStatus::Ready:
-                return trans('files.ready');
-            case FileStatus::Failed:
-                return trans('files.failed');
-            case FileStatus::Processing:
-            default:
-                return trans('files.processing');
-        }
+        return match ($status) {
+            FileStatus::Transcoding => trans('files.transcoding'),
+            FileStatus::Ready => trans('files.ready'),
+            FileStatus::Failed => trans('files.failed'),
+            default => trans('files.processing'),
+        };
     }
 
     /**
@@ -160,16 +147,11 @@ class Helpers
      */
     public static function fileStatusBadge(string $status): string
     {
-        switch ($status) {
-            case FileStatus::Ready:
-                return '<span class="badge bg-success">'.self::fileStatus($status).'</span>';
-            case FileStatus::Failed:
-                return '<span class="badge bg-danger">'.self::fileStatus($status).'</span>';
-            case FileStatus::Transcoding:
-            case FileStatus::Processing:
-            default:
-                return '<span class="badge bg-warning">'.self::fileStatus($status).'</span>';
-        }
+        return match ($status) {
+            FileStatus::Ready => '<span class="badge bg-success">'.self::fileStatus($status).'</span>',
+            FileStatus::Failed => '<span class="badge bg-danger">'.self::fileStatus($status).'</span>',
+            default => '<span class="badge bg-warning">'.self::fileStatus($status).'</span>',
+        };
     }
 
     /**
@@ -324,23 +306,15 @@ class Helpers
      */
     public static function permissionLabel(int $permission): string
     {
-        switch ($permission) {
-            case StatePermission::TeachersCanShowAndEditEditorsCanShow:
-                return trans('states.permission1');
-            case StatePermission::EditorsCanShowAndEdit:
-                return trans('states.permission2');
-            case StatePermission::TeachersAndEditorsCanShowAndEdit:
-                return trans('states.permission3');
-            case StatePermission::AllCanShowTeachersAndEditorsCanEdit:
-                return trans('states.permission4');
-            case StatePermission::AllCanShowTeachersCanEdit:
-                return trans('states.permission5');
-            case StatePermission::TeachersCanShowAndEdit:
-                return trans('states.permission6');
-            case StatePermission::None:
-            default:
-                return trans('states.permission0');
-        }
+        return match ($permission) {
+            StatePermission::TeachersCanShowAndEditEditorsCanShow => trans('states.permission1'),
+            StatePermission::EditorsCanShowAndEdit => trans('states.permission2'),
+            StatePermission::TeachersAndEditorsCanShowAndEdit => trans('states.permission3'),
+            StatePermission::AllCanShowTeachersAndEditorsCanEdit => trans('states.permission4'),
+            StatePermission::AllCanShowTeachersCanEdit => trans('states.permission5'),
+            StatePermission::TeachersCanShowAndEdit => trans('states.permission6'),
+            default => trans('states.permission0'),
+        };
     }
 
     /**
@@ -348,14 +322,10 @@ class Helpers
      */
     public static function isStateReadOnly(State $state): bool
     {
-        switch ($state->type) {
-            case StateType::Archived:
-            case StateType::Private:
-                return true;
-            case StateType::Custom:
-            default:
-                return false;
-        }
+        return match ($state->type) {
+            StateType::Archived, StateType::Private => true,
+            default => false,
+        };
     }
 
     /**

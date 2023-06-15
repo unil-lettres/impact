@@ -55,20 +55,12 @@ class ProcessFile implements ShouldQueue
     public function handle()
     {
         // Launch the process corresponding to the file type
-        switch ($this->file->type) {
-            case FileType::Audio:
-                $this->processAudio();
-                break;
-            case FileType::Video:
-                $this->processVideo();
-                break;
-            case FileType::Image:
-                $this->processImage();
-                break;
-            case FileType::Document:
-            default:
-                $this->processDocument();
-        }
+        match ($this->file->type) {
+            FileType::Audio => $this->processAudio(),
+            FileType::Video => $this->processVideo(),
+            FileType::Image => $this->processImage(),
+            default => $this->processDocument(),
+        };
     }
 
     /**
@@ -141,14 +133,10 @@ class ProcessFile implements ShouldQueue
         ]);
         $this->file->save();
 
-        switch ($type) {
-            case FileType::Video:
-                $this->transcodeVideo();
-                break;
-            case FileType::Audio:
-            default:
-                $this->transcodeAudio();
-        }
+        match ($type) {
+            FileType::Video => $this->transcodeVideo(),
+            default => $this->transcodeAudio(),
+        };
 
         $this->file->update([
             'status' => FileStatus::Ready,

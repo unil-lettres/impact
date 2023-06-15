@@ -51,13 +51,11 @@ class ExportCardBox
     {
         $box = $this->box;
         $data = $this->card->$box;
-        $exported = false;
 
-        switch ($box) {
-            case CardBox::Box2:
-                $exported = $this->transcription($data);
-                break;
-        }
+        $exported = match ($box) {
+            CardBox::Box2 => $this->transcription($data),
+            default => false,
+        };
 
         if (! $exported) {
             return null;
@@ -75,12 +73,10 @@ class ExportCardBox
      */
     private function transcription(array $data)
     {
-        switch ($this->format) {
-            case ExportFormat::Docx:
-                return $this->transcriptionToDocx($data);
-            default:
-                return false;
-        }
+        return match ($this->format) {
+            ExportFormat::Docx => $this->transcriptionToDocx($data),
+            default => false,
+        };
     }
 
     /**
@@ -148,14 +144,10 @@ class ExportCardBox
     {
         $phpWord = new PhpWord();
 
-        switch (Helpers::currentLocal()) {
-            case 'fr':
-                $locale = Language::FR_FR;
-                break;
-            case 'en':
-            default:
-                $locale = Language::EN_US;
-        }
+        $locale = match (Helpers::currentLocal()) {
+            'fr' => Language::FR_FR,
+            default => Language::EN_US,
+        };
 
         $phpWord->getSettings()->setThemeFontLang(
             new Language(

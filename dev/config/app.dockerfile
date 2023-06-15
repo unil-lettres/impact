@@ -7,7 +7,7 @@ ENV COMPOSER_VERSION=2.2
 RUN apt-get update
 
 # Install additional packages
-RUN apt-get install -y nano zlib1g-dev libpng-dev libzip-dev libicu-dev supervisor ffmpeg ffmpeg2theora mediainfo curl cron git zip unzip
+RUN apt-get install -y nano zlib1g-dev libpng-dev libzip-dev libicu-dev supervisor ffmpeg mediainfo curl cron git zip unzip
 
 # Install needed php extensions
 RUN apt-get clean; docker-php-ext-install pdo_mysql zip gd bcmath pcntl intl

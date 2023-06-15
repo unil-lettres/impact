@@ -1,4 +1,4 @@
-FROM php:8.1-fpm
+FROM php:8.1-fpm-bullseye
 
 ENV NODE_VERSION=16
 ENV COMPOSER_VERSION=2.2

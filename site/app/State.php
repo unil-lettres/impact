@@ -53,8 +53,11 @@ class State extends Model implements Sortable
     public function scopeLimited(Builder $query, Card $card): void
     {
         $query->where('teachers_only', false)
-            ->where('position', '>=', $card->state->position)
             ->where('type', '!=', StateType::Archived);
+
+        if ($card->state) {
+            $query->where('position', '>=', $card->state->position);
+        }
     }
 
     /**

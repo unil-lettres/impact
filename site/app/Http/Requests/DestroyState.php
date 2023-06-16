@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\StateReferenced;
+
 class DestroyState extends AbstractRequest
 {
     /**
@@ -23,7 +25,12 @@ class DestroyState extends AbstractRequest
     {
         return [
             'course' => 'required|integer|exists:courses,id',
-            'state' => 'required|integer|exists:states,id',
+            'state' => [
+                'required',
+                'integer',
+                'exists:states,id',
+                new StateReferenced,
+            ],
         ];
     }
 }

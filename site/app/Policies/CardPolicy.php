@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Card;
 use App\Course;
+use App\Enums\StateType;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -32,14 +33,18 @@ class CardPolicy
      */
     public function view(User $user, Card $card)
     {
-        // TODO: update policy when states are added to the card
-
         if ($user->admin) {
             return true;
         }
 
-        // Only teachers of the course & editors can view the card
-        if ($user->isTeacher($card->course) || $user->isEditor($card)) {
+        // Editors of the course can view the card
+        if ($user->isEditor($card)) {
+            return true;
+        }
+
+        // Teachers of the course can view the card,
+        // if the state is not set to the 'private' type
+        if ($user->isTeacher($card->course) && $card->state?->type !== StateType::Private) {
             return true;
         }
 
@@ -72,14 +77,19 @@ class CardPolicy
      */
     public function update(User $user, Card $card)
     {
-        // TODO: update policy when states are added to the card
-
         if ($user->admin) {
             return true;
         }
 
-        // Only teachers of the course can update cards
-        if ($user->isTeacher($card->course) || $user->isEditor($card)) {
+        // Teachers of the course can update the card,
+        // if the state is not set to the 'private' type
+        if ($user->isTeacher($card->course) && $card->state?->type !== StateType::Private) {
+            return true;
+        }
+
+        // Editors of the course can update card,
+        // if the state is not set to the 'archived' type
+        if ($user->isEditor($card) && $card->state?->type !== StateType::Archived) {
             return true;
         }
 
@@ -187,6 +197,25 @@ class CardPolicy
      * @return mixed
      */
     public function hide(User $user, Card $card)
+    {
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers of the course can hide parts of the card
+        if ($user->isTeacher($card->course)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can set the parameters of the card
+     *
+     * @return mixed
+     */
+    public function parameters(User $user, Card $card)
     {
         if ($user->admin) {
             return true;

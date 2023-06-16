@@ -107,7 +107,7 @@ class FilesTableSeeder extends Seeder
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
             'state_id' => $secondCourse->states
-                ->where('type', StateType::Private)
+                ->where('type', StateType::Custom)
                 ->first()->id,
             'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS,

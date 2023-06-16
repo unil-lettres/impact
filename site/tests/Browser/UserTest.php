@@ -167,7 +167,9 @@ class UserTest extends DuskTestCase
 
             $browser->type('name', 'Test update user with errors')
                 ->type('email', 'test-update-user-with-errors@example.com')
-                ->type('old_password', 'password-with-errors')
+                ->type('old_password', 'password-with-errors');
+
+            $browser->scrollTo('@user-update-button') // Scroll to avoid "Element is not clickable at point" error
                 ->press('Mettre à jour le compte')
                 ->waitForText('Vous avez entré le mauvais mot de passe')
                 ->assertSee('Vous avez entré le mauvais mot de passe');
@@ -268,7 +270,7 @@ class UserTest extends DuskTestCase
 
             $browser->visit('/admin/users');
 
-            $browser->click('#users table tbody tr:first-child .actions form.with-delete-confirm button')
+            $browser->click('#users table tbody tr:nth-last-child(2) .actions form.with-delete-confirm button')
                 ->waitForDialog($seconds = null)
                 ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
                 ->acceptDialog()

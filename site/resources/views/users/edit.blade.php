@@ -153,7 +153,9 @@
                             @endcan
 
                             <hr>
-                            <button type="submit" class="btn btn-primary">
+                            <button type="submit"
+                                    class="btn btn-primary"
+                                    dusk="user-update-button">
                                 {{ trans('users.update') }}
                             </button>
                         </form>

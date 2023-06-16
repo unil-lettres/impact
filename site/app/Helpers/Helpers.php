@@ -214,7 +214,13 @@ class Helpers
         $html = '';
 
         foreach ($file->cards as $card) {
-            $html .= '<div><a class="legacy" href="'.route('cards.show', $card->id).'">'.$card->title.'</a></div>';
+            $user = Auth::user();
+
+            $html .= match (true) {
+                // Append the card title without a link because teachers cannot access private cards
+                ! $user->admin && $user->isTeacher($card->course) && $card->state?->type === StateType::Private => '<div>'.$card->title.'</div>',
+                default => '<div><a class="legacy" href="'.route('cards.show', $card->id).'">'.$card->title.'</a></div>',
+            };
         }
 
         return $html;
@@ -433,5 +439,13 @@ class Helpers
         }
 
         return true;
+    }
+
+    /**
+     * Return whether the current state is referenced by a card
+     */
+    public static function isStateReferenced(State $state): bool
+    {
+        return ! $state->cards->isEmpty();
     }
 }

@@ -52,25 +52,27 @@
             </div>
         </div>
 
-        <div class="col-12 mb-3 row">
-            <label for="no_emails" class="col-md-4 form-label">
-                {{ trans('cards.no_emails') }}
-                <i class="far fa-question-circle"
-                   data-bs-toggle="tooltip"
-                   data-placement="top"
-                   title="{{ trans('cards.send_mails') }}">
-                </i>
-            </label>
-            <div class="col-md-8">
-                <div class="form-check">
-                    <input id="no_emails"
-                           type="checkbox"
-                           name="no_emails"
-                           {{ old('no_emails', $card->options['no_emails']) ? 'checked' : '' }}
-                           class="form-check-input"
-                    >
+        @can('parameters', $card)
+            <div class="col-12 mb-3 row">
+                <label for="no_emails" class="col-md-4 form-label">
+                    {{ trans('cards.no_emails') }}
+                    <i class="far fa-question-circle"
+                       data-bs-toggle="tooltip"
+                       data-placement="top"
+                       title="{{ trans('cards.send_mails') }}">
+                    </i>
+                </label>
+                <div class="col-md-8">
+                    <div class="form-check">
+                        <input id="no_emails"
+                               type="checkbox"
+                               name="no_emails"
+                               {{ old('no_emails', $card->options['no_emails']) ? 'checked' : '' }}
+                               class="form-check-input"
+                        >
+                    </div>
                 </div>
             </div>
-        </div>
+        @endcan
     </div>
 </div>

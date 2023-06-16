@@ -76,7 +76,7 @@ class CardsTableSeeder extends Seeder
             'updated_at' => $now,
             'course_id' => $firstCourse->id,
             'state_id' => $firstCourse->states
-                ->where('type', StateType::Private)
+                ->where('type', StateType::Custom)
                 ->first()->id,
             'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS,

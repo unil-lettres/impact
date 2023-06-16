@@ -75,6 +75,7 @@
                                                                 class="btn btn-sm btn-danger"
                                                                 data-bs-toggle="tooltip"
                                                                 data-placement="top"
+                                                                {{ Helpers::isStateReferenced($state) ? 'disabled' : '' }}
                                                                 title="{{ trans('states.delete') }}">
                                                             <i class="far fa-trash-alt"></i>
                                                         </button>

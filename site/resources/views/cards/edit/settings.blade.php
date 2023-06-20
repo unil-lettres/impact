@@ -26,7 +26,7 @@
                     <input id="state" name="state" type="hidden" value="{{ $card->state ? $card->state->id : '' }}">
                     <div id="rct-single-state-select"
                          reference="state"
-                         data='{{ json_encode(['options' => $states, 'default' => $card->state, 'clearable' => false]) }}'
+                         data='{{ json_encode(['options' => $states, 'default' => $card->state, 'clearable' => false, 'message' => Auth::user()->isTeacher($card->course) ? null : ['content' => trans('cards.state_cannot_cancel'), 'type' => 'text-danger']]) }}'
                     ></div>
                 @else
                     <div>{{ $card->state ? $card->state->name : '' }}</div>

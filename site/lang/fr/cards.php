@@ -40,6 +40,7 @@ return [
     'sync_with_source' => 'Synchroniser avec source',
     'global_settings' => 'Paramètres globaux',
     'state' => 'État',
+    'state_cannot_cancel' => 'Attention, le changement d\'état ne pourra pas être annulé',
     'date' => 'Date',
     'tags' => 'Étiquettes',
     'no_emails' => 'Ne pas envoyer d\'emails',

@@ -19,16 +19,19 @@ export default class SingleSelect extends Component {
                 data.clearable : false,
             disabled: data.disabled ?
                 data.disabled : false,
+            message: data.message ?
+                data.message : null,
+            isOptionSelected: false
         };
 
         this.state.selected = this.state.default;
-        this.state.clearable = data.clearable ? data.clearable : false;
     }
 
     handleChange = (selectedOption, { action }) => {
         this.setState(
             {
-                selected: selectedOption
+                selected: selectedOption,
+                isOptionSelected: true
             },
             () => this.save(action)
         );
@@ -45,15 +48,21 @@ export default class SingleSelect extends Component {
 
     render() {
         return (
-            <Select
-                components={ animatedComponents }
-                isClearable={ this.state.clearable }
-                closeMenuOnSelect={ true }
-                isDisabled={ this.state.disabled }
-                defaultValue={ this.state.default }
-                onChange={ this.handleChange }
-                options={ this.state.options }
-            />
+            <div>
+                <Select
+                    components={animatedComponents}
+                    isClearable={this.state.clearable}
+                    closeMenuOnSelect={true}
+                    isDisabled={this.state.disabled}
+                    defaultValue={this.state.default}
+                    onChange={this.handleChange}
+                    options={this.state.options}
+                />
+                {this.state.message && this.state.isOptionSelected && (
+                    // Available types: https://getbootstrap.com/docs/5.0/utilities/colors/#colors
+                    <div className={this.state.message.type}>{this.state.message.content}</div>
+                )}
+            </div>
         );
     }
 }

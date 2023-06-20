@@ -40,6 +40,7 @@ return [
     'sync_with_source' => 'Synchronize with source',
     'global_settings' => 'Global settings',
     'state' => 'State',
+    'state_cannot_cancel' => 'Please note that the change of state cannot be cancelled',
     'date' => 'Date',
     'tags' => 'Tags',
     'no_emails' => 'Do not send emails',

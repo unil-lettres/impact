@@ -212,10 +212,9 @@ class Helpers
     public static function fileCards(File $file): string
     {
         $html = '';
+        $user = Auth::user();
 
         foreach ($file->cards as $card) {
-            $user = Auth::user();
-
             $html .= match (true) {
                 // Append the card title without a link because teachers cannot access private cards
                 ! $user->admin && $user->isTeacher($card->course) && $card->state?->type === StateType::Private => '<div>'.$card->title.'</div>',

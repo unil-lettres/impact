@@ -378,53 +378,6 @@ class Helpers
     }
 
     /**
-     * Return whether the current user is allowed to see the card's box
-     */
-    public static function boxIsVisible(Card $card, string $box): bool
-    {
-        if (! $card->state) {
-            return false;
-        }
-
-        if (! $card->state->getPermission($box)) {
-            return false;
-        }
-
-        // Check if user role is allowed to see the box
-        return match ($card->state->getPermission($box)) {
-            StatePermission::TeachersCanShowAndEditEditorsCanShow => Auth::user()->isTeacher($card->course) || Auth::user()->isEditor($card),
-            StatePermission::EditorsCanShowAndEdit => Auth::user()->isEditor($card),
-            StatePermission::TeachersAndEditorsCanShowAndEdit => Auth::user()->isTeacher($card->course) || Auth::user()->isEditor($card),
-            StatePermission::AllCanShowTeachersAndEditorsCanEdit, StatePermission::AllCanShowTeachersCanEdit => Auth::user()->isTeacher($card->course) || Auth::user()->isEditor($card) || Auth::user()->isStudent($card->course),
-            StatePermission::TeachersCanShowAndEdit => Auth::user()->isTeacher($card->course),
-            default => Auth::user()->admin,
-        };
-    }
-
-    /**
-     * Return whether the current user is allowed to edit the card's box
-     */
-    public static function boxIsEditable(Card $card, string $box): bool
-    {
-        if (! $card->state) {
-            return false;
-        }
-
-        if (! $card->state->getPermission($box)) {
-            return false;
-        }
-
-        // Check if user role is allowed to edit the box
-        return match ($card->state->getPermission($box)) {
-            StatePermission::TeachersCanShowAndEditEditorsCanShow => Auth::user()->isTeacher($card->course),
-            StatePermission::EditorsCanShowAndEdit => Auth::user()->isEditor($card),
-            StatePermission::TeachersAndEditorsCanShowAndEdit, StatePermission::AllCanShowTeachersAndEditorsCanEdit => Auth::user()->isTeacher($card->course) || Auth::user()->isEditor($card),
-            StatePermission::AllCanShowTeachersCanEdit, StatePermission::TeachersCanShowAndEdit => Auth::user()->isTeacher($card->course),
-            default => Auth::user()->admin,
-        };
-    }
-
-    /**
      * Return whether the current state of the card should be displayed in read only mode
      */
     public static function isStateSelectEditable(Card $card): bool

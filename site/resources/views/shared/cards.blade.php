@@ -16,6 +16,7 @@
                             </button>
                         </form>
                     @endcan
+                    <div class="text-black-50">{{ $card->state?->name }}</div>
                 </li>
             @endcan
         @endforeach

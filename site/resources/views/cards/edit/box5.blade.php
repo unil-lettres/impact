@@ -1,4 +1,4 @@
-@if(Helpers::boxIsEditable($card, $reference))
+@if($card->boxIsEditable($reference))
     @can('parameters', $card)
         <div class="card">
             <div class="card-header">

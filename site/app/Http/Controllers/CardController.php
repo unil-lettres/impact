@@ -241,11 +241,15 @@ class CardController extends Controller
     public function editor(UpdateCardEditor $request, int $id)
     {
         $card = Card::find($id);
+        $box = $request->get('box');
 
-        $this->authorize('editor', $card);
+        $this->authorize('box', [
+            Card::class,
+            $card,
+            $box,
+        ]);
 
         $html = $request->get('html');
-        $box = $request->get('box');
 
         $card->update([
             $box => $html,
@@ -267,10 +271,13 @@ class CardController extends Controller
     public function transcription(UpdateCardTranscription $request, int $id)
     {
         $card = Card::find($id);
-
-        $this->authorize('transcription', $card);
-
         $box = $request->get('box');
+
+        $this->authorize('box', [
+            Card::class,
+            $card,
+            $box,
+        ]);
 
         $box2 = $card->box2 ?? json_decode(Card::TRANSCRIPTION, true);
         $box2['data'] = $request->get('transcription') ? $request->get('transcription') : [];
@@ -295,11 +302,15 @@ class CardController extends Controller
     public function export(CreateCardExport $request, int $id)
     {
         $card = Card::find($id);
+        $box = $request->get('box');
 
-        $this->authorize('export', $card);
+        $this->authorize('box', [
+            Card::class,
+            $card,
+            $box,
+        ]);
 
         $format = $request->get('format');
-        $box = $request->get('box');
 
         $service = new ExportCardBox($card, $box, $format);
 

@@ -1,9 +1,9 @@
-@if(Helpers::boxIsVisible($card, $reference))
+@if($card->boxIsVisible($reference))
     <div class="card {{ $reference }} {{ Helpers::isHidden($card, $reference) ? 'hidden' : '' }}">
         <div class="card-header">
             <span class="fw-bolder">5. {{ trans('cards.documents') }}</span>
 
-            @if(Helpers::boxIsEditable($card, $reference))
+            @if($card->boxIsEditable($reference))
                 <div class="float-end">
                     <!-- Button trigger document upload -->
                 </div>

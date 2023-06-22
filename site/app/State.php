@@ -132,6 +132,30 @@ class State extends Model implements Sortable
     }
 
     /**
+     * Get all the boxes with a public permission (AllCanShow)
+     */
+    public function publicPermissions(): array
+    {
+        if (! $this->permissions) {
+            return [];
+        }
+
+        return collect($this->permissions)
+            ->filter(fn ($permission) => State::isPermissionPublic($permission)
+            )
+            ->keys()
+            ->toArray();
+    }
+
+    /**
+     * Check whether state boxes have at least one public permission
+     */
+    public function hasPublicPermission(): bool
+    {
+        return ! empty($this->publicPermissions());
+    }
+
+    /**
      * Get all actions for this state, or only for a specific type
      *
      * @param  string|null  $type (App\Enums\ActionType)
@@ -185,5 +209,14 @@ class State extends Model implements Sortable
             'subject' => $subject,
             'message' => $message,
         ];
+    }
+
+    /**
+     * Check whether the permission is considered public
+     */
+    public static function isPermissionPublic(int $permission): bool
+    {
+        return $permission === StatePermission::AllCanShowTeachersAndEditorsCanEdit ||
+            $permission === StatePermission::AllCanShowTeachersCanEdit;
     }
 }

@@ -1,10 +1,10 @@
-@if(Helpers::boxIsVisible($card, $reference))
+@if($card->boxIsVisible($reference))
     <div class="card {{ $reference }} {{ Helpers::isHidden($card, $reference) ? 'hidden' : '' }}">
         <div class="card-header">
             <span class="fw-bolder">2. {{ trans('cards.transcription') }}</span>
             <span class="d-none" id="edit-failed-{{ $reference }}">[ {{ trans('messages.card.editor.failed') }} ]</span>
 
-            @if(Helpers::boxIsEditable($card, $reference))
+            @if($card->boxIsEditable($reference))
                 <button class="btn btn-primary float-end"
                         id="edit-{{ $reference }}">
                     {{ trans('cards.edit') }}

@@ -1,4 +1,4 @@
-@if(Helpers::boxIsEditable($card, $reference))
+@if($card->boxIsEditable($reference))
     <div class="card">
         <div class="card-header">
             {{ trans('cards.box') }} 2 ({{ trans('cards.transcription') }})

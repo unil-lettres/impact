@@ -1,9 +1,9 @@
-@if(Helpers::boxIsVisible($card, $reference))
+@if($card->boxIsVisible($reference))
     <div class="card {{ $reference }} {{ Helpers::isHidden($card, $reference) ? 'hidden' : '' }}">
         <div class="card-header">
             <span class="fw-bolder">1. {{ trans('cards.source') }}</span>
 
-            @if(Helpers::boxIsEditable($card, $reference))
+            @if($card->boxIsEditable($reference))
                 <input id="card_id" name="card_id" type="hidden" value="{{ $card->id }}">
                 <input id="course_id" name="course_id" type="hidden" value="{{ $course->id }}">
 

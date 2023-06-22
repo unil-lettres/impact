@@ -2,10 +2,12 @@
 
 namespace App;
 
+use App\Enums\StatePermission;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class Card extends Model
 {
@@ -142,5 +144,52 @@ class Card extends Model
         }
 
         return $breadcrumbs;
+    }
+
+    /**
+     * Return whether the current user is allowed to see a card's box
+     */
+    public function boxIsVisible(string $box): bool
+    {
+        if (! $this->state) {
+            return false;
+        }
+
+        if (! $this->state->getPermission($box)) {
+            return false;
+        }
+
+        // Check if user role is allowed to see the box
+        return match ($this->state->getPermission($box)) {
+            StatePermission::TeachersCanShowAndEditEditorsCanShow => Auth::user()->isTeacher($this->course) || Auth::user()->isEditor($this),
+            StatePermission::EditorsCanShowAndEdit => Auth::user()->isEditor($this),
+            StatePermission::TeachersAndEditorsCanShowAndEdit => Auth::user()->isTeacher($this->course) || Auth::user()->isEditor($this),
+            StatePermission::AllCanShowTeachersAndEditorsCanEdit, StatePermission::AllCanShowTeachersCanEdit => Auth::user()->isTeacher($this->course) || Auth::user()->isEditor($this) || Auth::user()->isStudent($this->course),
+            StatePermission::TeachersCanShowAndEdit => Auth::user()->isTeacher($this->course),
+            default => Auth::user()->admin,
+        };
+    }
+
+    /**
+     * Return whether the current user is allowed to edit a card's box
+     */
+    public function boxIsEditable(string $box): bool
+    {
+        if (! $this->state) {
+            return false;
+        }
+
+        if (! $this->state->getPermission($box)) {
+            return false;
+        }
+
+        // Check if user role is allowed to edit the box
+        return match ($this->state->getPermission($box)) {
+            StatePermission::TeachersCanShowAndEditEditorsCanShow => Auth::user()->isTeacher($this->course),
+            StatePermission::EditorsCanShowAndEdit => Auth::user()->isEditor($this),
+            StatePermission::TeachersAndEditorsCanShowAndEdit, StatePermission::AllCanShowTeachersAndEditorsCanEdit => Auth::user()->isTeacher($this->course) || Auth::user()->isEditor($this),
+            StatePermission::AllCanShowTeachersCanEdit, StatePermission::TeachersCanShowAndEdit => Auth::user()->isTeacher($this->course),
+            default => Auth::user()->admin,
+        };
     }
 }

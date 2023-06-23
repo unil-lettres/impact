@@ -72,7 +72,7 @@ class CourseObserver
             'course_id' => $course->id,
         ]);
         $archivedState->updatePermissions(
-            StatePermission::TeachersCanShowAndEditEditorsCanShow
+            StatePermission::AllCanShowTeachersCanEdit
         );
     }
 

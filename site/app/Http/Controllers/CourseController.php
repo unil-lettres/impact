@@ -241,7 +241,7 @@ class CourseController extends Controller
     {
         $this->authorize('archive', $course);
 
-        // TODO: add logic
+        $course->archive();
 
         return redirect()
             ->back()

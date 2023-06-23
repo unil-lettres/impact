@@ -146,11 +146,11 @@ class StateFactory extends Factory
                 'permissions' => json_decode(
                     '{
                         "version": 1,
-                        "box1": '.StatePermission::TeachersCanShowAndEditEditorsCanShow.',
-                        "box2": '.StatePermission::TeachersCanShowAndEditEditorsCanShow.',
-                        "box3": '.StatePermission::TeachersCanShowAndEditEditorsCanShow.',
-                        "box4": '.StatePermission::TeachersCanShowAndEditEditorsCanShow.',
-                        "box5": '.StatePermission::TeachersCanShowAndEditEditorsCanShow.'
+                        "box1": '.StatePermission::AllCanShowTeachersCanEdit.',
+                        "box2": '.StatePermission::AllCanShowTeachersCanEdit.',
+                        "box3": '.StatePermission::AllCanShowTeachersCanEdit.',
+                        "box4": '.StatePermission::AllCanShowTeachersCanEdit.',
+                        "box5": '.StatePermission::AllCanShowTeachersCanEdit.'
                     }'
                 ),
             ];

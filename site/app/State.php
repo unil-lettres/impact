@@ -141,14 +141,13 @@ class State extends Model implements Sortable
         }
 
         return collect($this->permissions)
-            ->filter(fn ($permission) => State::isPermissionPublic($permission)
-            )
-            ->keys()
-            ->toArray();
+            ->filter(function ($permission) {
+                return State::isPermissionPublic($permission);
+            })->keys()->toArray();
     }
 
     /**
-     * Check whether state boxes have at least one public permission
+     * Check whether state has at least one public permission
      */
     public function hasPublicPermission(): bool
     {

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Enums\EnrollmentRole;
+use App\Enums\StateType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -158,6 +159,21 @@ class Course extends Model
     public function isActive()
     {
         return $this->trashed() ? false : true;
+    }
+
+    /**
+     * Archive all the cards of the course
+     */
+    public function archive(): void
+    {
+        // Retrieve the archived state of the course
+        $state = $this->states
+            ->where('type', StateType::Archived)->first();
+
+        // Update the state of all the cards
+        $this->cards()->update([
+            'state_id' => $state?->id,
+        ]);
     }
 
     /**

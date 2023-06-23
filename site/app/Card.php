@@ -147,7 +147,8 @@ class Card extends Model
     }
 
     /**
-     * Return whether the current user is allowed to see a card's box
+     * Return whether a box can be viewed by the current user.
+     * The current state of the card is used to determine the visibility.
      */
     public function boxIsVisible(string $box): bool
     {
@@ -171,7 +172,8 @@ class Card extends Model
     }
 
     /**
-     * Return whether the current user is allowed to edit a card's box
+     * Return whether a box can be edited by the current user.
+     * The current state of the card is used to determine the editability.
      */
     public function boxIsEditable(string $box): bool
     {

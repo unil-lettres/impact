@@ -63,8 +63,8 @@
                                             {{ Helpers::courseType($course->type) }}
                                         </td>
                                         <td>
-                                            <div>{{ trans('cards.cards') }}: {{ $course->cards->count() }}</div>
-                                            <div>{{ trans('enrollments.enrollments') }}: {{ $course->enrollments->count() }}</div>
+                                            <div>{{ trans('cards.cards') }}: {{ $course->cards()->withTrashed()->count() }}</div>
+                                            <div>{{ trans('enrollments.enrollments') }}: {{ $course->enrollments()->withTrashed()->count() }}</div>
                                         </td>
                                         <td class="actions">
                                             @can('update', $course)
@@ -87,7 +87,7 @@
                                                         <a href="{{ route('admin.courses.send.confirm.delete', $course->id) }}"
                                                            data-bs-toggle="tooltip"
                                                            data-placement="top"
-                                                           class="btn btn-primary{{ $course->teachers()->count() > 0 ? '' : ' disabled' }}"
+                                                           class="btn btn-primary{{ $course->teachers(true)->count() > 0 ? '' : ' disabled' }}"
                                                            title="{{ trans('courses.send_confirm_delete') }}">
                                                             <i class="far fa-paper-plane"></i>
                                                         </a>

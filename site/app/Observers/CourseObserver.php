@@ -84,6 +84,9 @@ class CourseObserver
     public function deleting(Course $course)
     {
         if (! $course->isForceDeleting()) {
+            // Soft delete all related enrollments
+            $course->enrollments()->delete();
+
             // Soft delete all related cards
             $course->cards()->delete();
 
@@ -108,6 +111,11 @@ class CourseObserver
      */
     public function restored(Course $course)
     {
+        // Restore all related enrollments
+        foreach ($course->enrollments()->withTrashed()->get() as $enrollment) {
+            $enrollment->restore();
+        }
+
         // Restore all related cards
         foreach ($course->cards()->withTrashed()->get() as $card) {
             $card->restore();

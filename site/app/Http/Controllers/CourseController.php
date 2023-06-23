@@ -303,7 +303,7 @@ class CourseController extends Controller
 
         // Send the confirmation mail to the teachers of the course
         Mail::to(
-            $course->teachers()->map(function ($teacher) {
+            $course->teachers(true)->map(function ($teacher) {
                 return $teacher->email;
             })
         )->send(new CourseConfirmDelete($course));

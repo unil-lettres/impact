@@ -10,13 +10,10 @@ use App\Http\Requests\CreateCardExport;
 use App\Http\Requests\DestroyCard;
 use App\Http\Requests\StoreCard;
 use App\Http\Requests\UpdateCard;
-use App\Http\Requests\UpdateCardEditor;
-use App\Http\Requests\UpdateCardTranscription;
 use App\Services\ExportCardBox;
 use App\State;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use PhpOffice\PhpWord\Exception\Exception;
@@ -229,67 +226,6 @@ class CardController extends Controller
         return redirect()
             ->back()
             ->with('success', trans('messages.card.unlinked'));
-    }
-
-    /**
-     * Update the editor html from the specified resource.
-     *
-     * @return JsonResponse
-     *
-     * @throws AuthorizationException
-     */
-    public function editor(UpdateCardEditor $request, int $id)
-    {
-        $card = Card::find($id);
-        $box = $request->get('box');
-
-        $this->authorize('box', [
-            Card::class,
-            $card,
-            $box,
-        ]);
-
-        $html = $request->get('html');
-
-        $card->update([
-            $box => $html,
-        ]);
-        $card->save();
-
-        return response()->json([
-            'success' => $id,
-        ], 200);
-    }
-
-    /**
-     * Update the transcription from the specified resource.
-     *
-     * @return JsonResponse
-     *
-     * @throws AuthorizationException
-     */
-    public function transcription(UpdateCardTranscription $request, int $id)
-    {
-        $card = Card::find($id);
-        $box = $request->get('box');
-
-        $this->authorize('box', [
-            Card::class,
-            $card,
-            $box,
-        ]);
-
-        $box2 = $card->box2 ?? json_decode(Card::TRANSCRIPTION, true);
-        $box2['data'] = $request->get('transcription') ? $request->get('transcription') : [];
-
-        $card->update([
-            $box => $box2,
-        ]);
-        $card->save();
-
-        return response()->json([
-            'success' => $id,
-        ], 200);
     }
 
     /**

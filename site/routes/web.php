@@ -14,10 +14,13 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\CourseController;
-use App\Http\Controllers\EnrollmentController;
 use App\Http\Controllers\FileController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\Json\CardJsonController;
+use App\Http\Controllers\Json\EnrollmentJsonController;
+use App\Http\Controllers\Json\FileJsonController;
+use App\Http\Controllers\Json\StateJsonController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\UserController;
@@ -64,9 +67,9 @@ Route::middleware(['auth', 'app'])->group(function () {
     Route::resource('cards', CardController::class);
     Route::put('cards/{card}/unlink/file', [CardController::class, 'unlinkFile'])
         ->name('cards.unlink.file');
-    Route::put('cards/{card}/editor', [CardController::class, 'editor'])
+    Route::put('cards/{card}/editor', [CardJsonController::class, 'editor'])
         ->name('cards.editor');
-    Route::put('cards/{card}/transcription', [CardController::class, 'transcription'])
+    Route::put('cards/{card}/transcription', [CardJsonController::class, 'transcription'])
         ->name('cards.transcription');
     Route::post('cards/{card}/export', [CardController::class, 'export'])
         ->name('cards.export');
@@ -79,14 +82,14 @@ Route::middleware(['auth', 'app'])->group(function () {
         'index',
         'destroy',
     ]);
-    Route::post('files/upload', [FileController::class, 'upload']);
+    Route::post('files/upload', [FileJsonController::class, 'upload']);
 
     // Enrollments
-    Route::get('enrollments', [EnrollmentController::class, 'index']);
-    Route::post('enrollments', [EnrollmentController::class, 'store']);
-    Route::get('enrollments/find', [EnrollmentController::class, 'find']);
-    Route::put('enrollments/cards', [EnrollmentController::class, 'cards']);
-    Route::delete('enrollments/{enrollment}', [EnrollmentController::class, 'destroy']);
+    Route::get('enrollments', [EnrollmentJsonController::class, 'index']);
+    Route::post('enrollments', [EnrollmentJsonController::class, 'store']);
+    Route::get('enrollments/find', [EnrollmentJsonController::class, 'find']);
+    Route::put('enrollments/cards', [EnrollmentJsonController::class, 'cards']);
+    Route::delete('enrollments/{enrollment}', [EnrollmentJsonController::class, 'destroy']);
 
     // Courses
     Route::get('courses/{course}', [CourseController::class, 'show'])
@@ -107,7 +110,7 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('courses.update.state');
     Route::delete('courses/{course}/state/{state}', [StateController::class, 'destroy'])
         ->name('courses.destroy.state');
-    Route::put('courses/{course}/state/{state}/position', [StateController::class, 'position'])
+    Route::put('courses/{course}/state/{state}/position', [StateJsonController::class, 'position'])
         ->name('courses.update.state.position');
 });
 

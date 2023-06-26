@@ -9,11 +9,9 @@ use App\Http\Requests\DestroyState;
 use App\Http\Requests\IndexState;
 use App\Http\Requests\StoreState;
 use App\Http\Requests\UpdateState;
-use App\Http\Requests\UpdateStatePosition;
 use App\State;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
 class StateController extends Controller
@@ -137,27 +135,5 @@ class StateController extends Controller
         return redirect()
             ->route('courses.configure.states', $course_id)
             ->with('success', trans('messages.state.deleted'));
-    }
-
-    /**
-     * Update state position
-     *
-     * @return JsonResponse
-     *
-     * @throws AuthorizationException
-     */
-    public function position(UpdateStatePosition $request, int $course_id, int $state_id)
-    {
-        $state = State::find($state_id);
-
-        $this->authorize('position', $state);
-
-        $newOrder = $request->get('newOrder');
-
-        State::setNewOrder($newOrder, 1);
-
-        return response()->json([
-            'success' => $state_id,
-        ]);
     }
 }

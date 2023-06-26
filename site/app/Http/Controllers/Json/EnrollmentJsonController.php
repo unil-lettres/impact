@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Json;
 
 use App\Course;
 use App\Enrollment;
 use App\Enums\EnrollmentRole;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\DestroyEnrollment;
 use App\Http\Requests\FindEnrollment;
 use App\Http\Requests\StoreEnrollment;
@@ -14,7 +15,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class EnrollmentController extends Controller
+class EnrollmentJsonController extends Controller
 {
     /**
      * Display a listing of the resource.

@@ -9,11 +9,9 @@ use App\File;
 use App\Http\Requests\DestroyFile;
 use App\Http\Requests\EditFile;
 use App\Http\Requests\UpdateFile;
-use App\Jobs\ProcessFile;
 use App\Services\FileUploadProcessor;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -168,54 +166,6 @@ class FileController extends Controller
         return redirect()
             ->back()
             ->with('success', trans('messages.file.deleted'));
-    }
-
-    /**
-     * File upload endpoint.
-     *
-     * @return JsonResponse
-     *
-     * @throws AuthorizationException
-     */
-    public function upload(Request $request, FileUploadProcessor $fileUploadProcessor)
-    {
-        $course = $request->get('course') ?
-            Course::find($request->get('course')) : null;
-        $card = $request->get('card') ?
-            Card::find($request->get('card')) : null;
-
-        $this->authorize('upload', [
-            File::class,
-            $course,
-            $card,
-        ]);
-
-        // Move file to temp storage
-        $path = $fileUploadProcessor
-            ->moveFileToStoragePath(
-                $request->file('file'),
-                true
-            );
-
-        // Create file draft
-        $file = $this->createFileDraft(
-            $fileUploadProcessor,
-            $request,
-            $path,
-            $course
-        );
-
-        if ($card) {
-            // Optionally link the file to a card
-            $this->updateCard($file, $card);
-        }
-
-        // Dispatch record for async file processing
-        ProcessFile::dispatch($file);
-
-        return response()->json([
-            'success' => $file->id,
-        ], 200);
     }
 
     /**

@@ -55,9 +55,10 @@
                                         <span class="align-middle">
                                             @can('view', $state)
                                                 @if (Helpers::isStateReadOnly($state))
+                                                    <i class="fa-solid fa-grip-lines me-1"></i>
                                                     <span class="text-muted">{{ $state->name }}</span>
                                                 @else
-                                                    <i class="far fa-circle fa-xs"></i>
+                                                    <i class="fa-solid fa-bars me-1"></i>
                                                     <a class="legacy" href="{{ route('courses.configure.states', [$course->id, 'state' => $state->id]) }}">
                                                         {{ $state->name }}
                                                     </a>

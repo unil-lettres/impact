@@ -28,7 +28,7 @@
 
             <div>
                 <span class="text-muted me-3">{{ trans('cards.state') }}: {{ $card->state?->name }}</span>
-                <span class="text-muted me-3">{{ trans('cards.date') }}: {todo}<!-- TODO --></span>
+                <span class="text-muted me-3">{{ trans('cards.date') }}: {{ $card->options['presentation_date'] ?? '-' }} </span>
                 <span class="text-muted">{{ trans('cards.tags') }}: {todo}<!-- TODO --></span>
             </div>
             <hr>

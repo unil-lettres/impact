@@ -172,6 +172,7 @@ class CardController extends Controller
         $options['box4']['title'] = $request->get('box4-title');
         $options['box5']['hidden'] = (bool) $request->get('box5-hidden');
         $options['no_emails'] = (bool) $request->get('no_emails');
+        $options['presentation_date'] = $request->get('presentation_date');
 
         $card->update([
             'title' => $request->get('title'),

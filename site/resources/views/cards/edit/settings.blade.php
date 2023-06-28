@@ -39,7 +39,9 @@
                 {{ trans('cards.date') }}
             </label>
             <div class="col-md-8">
-                // Date input placeholder
+                <div id="rct-date-picker"
+                     data='{{ json_encode(['locale' => Helpers::currentLocal(), 'name' => 'presentation_date', 'default' => $card->options['presentation_date'] ?? null]) }}'
+                ></div>
             </div>
         </div>
 
@@ -67,7 +69,7 @@
                         <input id="no_emails"
                                type="checkbox"
                                name="no_emails"
-                               {{ old('no_emails', $card->options['no_emails']) ? 'checked' : '' }}
+                               {{ old('no_emails', $card->options['no_emails'] ?? false) ? 'checked' : '' }}
                                class="form-check-input"
                         >
                     </div>

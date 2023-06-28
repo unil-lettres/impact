@@ -24,3 +24,4 @@ require('./components/Uploader');
 require('./components/Editor');
 require('./components/Player');
 require('./components/Transcription');
+require('./components/DayPicker');

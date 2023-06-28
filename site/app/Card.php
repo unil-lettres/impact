@@ -22,6 +22,7 @@ class Card extends Model
     const OPTIONS = '{
             "version": 1,
             "no_emails": false,
+            "presentation_date": null,
             "box1": {
                 "hidden": false,
                 "link": null,

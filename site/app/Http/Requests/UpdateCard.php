@@ -61,6 +61,10 @@ class UpdateCard extends AbstractRequest
                 'sometimes',
                 Rule::in(['on']),
             ],
+            'presentation_date' => [
+                'nullable',
+                'date_format:d/m/Y',
+            ],
             'state' => [
                 'required',
                 'integer',

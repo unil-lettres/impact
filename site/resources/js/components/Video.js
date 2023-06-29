@@ -7,7 +7,10 @@ import offset from  'videojs-offset/dist/videojs-offset';
 export default class VideoPlayer extends Component {
     componentDidMount() {
         // Instantiate Video.js
-        this.player = videojs(this.videoNode, this.props);
+        this.player = videojs(
+            this.videoNode,
+            this.props
+        );
 
         // Add offset if available
         videojs.registerPlugin("offset", offset);
@@ -72,6 +75,10 @@ export default class VideoPlayer extends Component {
         this.player.on('ended', () => {
             props.onEnd();
         });
+
+        this.player.on('keydown', (e) => {
+            props.userActions(e);
+        });
     }
 
     render() {
@@ -96,6 +103,7 @@ VideoPlayer.defaultProps = {
     onSeeking: () => { },
     onSeeked: () => { },
     onEnd: () => { },
+    userActions: () => { },
     offset: { start: null, end: null },
     autoplay: false,
     controls: true,

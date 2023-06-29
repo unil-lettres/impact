@@ -83,7 +83,7 @@ export default class Player extends Component {
     }
 
     onVideoPause(duration){
-        // On pause we get back a little bit to facilitate the transcription process
+        // On pause, we get back a little bit to facilitate the transcription process
         const OFFSET = 1.0;
         if ( this.player.currentTime() > OFFSET ) {
             this.player.currentTime(this.player.currentTime() - OFFSET);
@@ -113,6 +113,28 @@ export default class Player extends Component {
         //console.log("Video ended");
     }
 
+    userActions(event) {
+        if (event.shiftKey) {
+            // Shift + Right arrow (play/pause)
+            if (event.which === 39) {
+                this.player.paused() ? this.player.play() : this.player.pause();
+            }
+
+            // Shift + Left arrow (seek back 2s)
+            if (event.which === 37) {
+                this.player.currentTime(this.player.currentTime() - 2);
+            }
+
+            // Shift + Down arrow (speed slow/default speed)
+            if (event.which === 40) {
+                this.player.playbackRate(this.player.playbackRate() === 1 ? 0.5 : 1);
+            }
+        }
+
+        // Stop propagation of the event
+        event.preventDefault();
+    }
+
     render() {
         const isMediaReachable = this.isMediaReachable();
         return (
@@ -126,6 +148,7 @@ export default class Player extends Component {
                         onSeeking={this.onVideoSeeking.bind(this)}
                         onSeeked={this.onVideoSeeked.bind(this)}
                         onEnd={this.onVideoEnd.bind(this)}
+                        userActions={this.userActions.bind(this)}
                         offset={this.offset}
                         { ...this.options }
                     />

@@ -122,7 +122,12 @@ export default class Player extends Component {
 
             // Shift + Left arrow (seek back 2s)
             if (event.which === 37) {
-                this.player.currentTime(this.player.currentTime() - 2);
+                const OFFSET = 2.0;
+                if ( this.player.currentTime() > OFFSET ) {
+                    this.player.currentTime(this.player.currentTime() - OFFSET);
+                } else {
+                    this.player.currentTime(0);
+                }
             }
 
             // Shift + Down arrow (speed slow/default speed)

@@ -134,23 +134,21 @@
                                     </div>
                                 </div>
                             @endif
-                            @can('delete', $user)
-                                <div class="col-12 mb-3 row">
-                                    <label for="admin" class="col-md-4 form-label">
-                                        {{ trans('users.admin') }}
-                                    </label>
-                                    <div class="col-md-8">
-                                        <div class="form-check">
-                                            <input id="admin"
-                                                   type="checkbox"
-                                                   name="admin"
-                                                   {{ old('admin', $user->admin) ? 'checked' : '' }}
-                                                   class="form-check-input"
-                                            >
-                                        </div>
+                            <div class="col-12 mb-3 row">
+                                <label for="admin" class="col-md-4 form-label">
+                                    {{ trans('users.admin') }}
+                                </label>
+                                <div class="col-md-8">
+                                    <div class="form-check">
+                                        <input id="admin"
+                                               type="checkbox"
+                                               name="admin"
+                                               {{ old('admin', $user->admin) ? 'checked' : '' }}
+                                               class="form-check-input"
+                                        >
                                     </div>
                                 </div>
-                            @endcan
+                            </div>
 
                             <hr>
                             <button type="submit"

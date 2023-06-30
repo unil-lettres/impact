@@ -220,8 +220,10 @@ class UserController extends Controller
 
         $user->name = $validated['name'];
 
-        // Allow change of the user admin parameter only if the current user is already an admin
-        if (auth()->user()->admin) {
+        // Allow change of the admin parameter only if the current user is already an admin
+        // and the request is coming from the users administration page. This parameter
+        // is not allowed to be changed from the user profile page.
+        if (auth()->user()->admin && $request->route()->named('admin.users.update')) {
             $user->admin = (bool) $request->input('admin');
         }
 

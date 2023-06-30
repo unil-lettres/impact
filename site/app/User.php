@@ -44,6 +44,7 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'validity' => 'datetime',
         'admin' => 'boolean',
+        'password' => 'hashed',
     ];
 
     /**

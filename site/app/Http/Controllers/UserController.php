@@ -200,9 +200,9 @@ class UserController extends Controller
                     return back()->with('error', trans('messages.user.edit.wrong.password'));
                 }
 
-                // If the user entered a new password, replace the value by hashed version
+                // If the user entered a new password, replace the old value with the new one
                 if (array_key_exists('new_password', $validated)) {
-                    $user->password = Hash::make($validated['new_password']);
+                    $user->password = $validated['new_password'];
                 }
 
                 $user->email = $validated['email'];

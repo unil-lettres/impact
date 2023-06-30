@@ -2,18 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Card;
 use App\Course;
-use App\Enums\FileStatus;
 use App\File;
 use App\Http\Requests\DestroyFile;
 use App\Http\Requests\EditFile;
 use App\Http\Requests\UpdateFile;
-use App\Services\FileUploadProcessor;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class FileController extends Controller
 {
@@ -166,45 +162,5 @@ class FileController extends Controller
         return redirect()
             ->back()
             ->with('success', trans('messages.file.deleted'));
-    }
-
-    /**
-     * Create file draft with basic infos
-     *
-     * @return File $file
-     */
-    private function createFileDraft(FileUploadProcessor $fileUploadProcessor, Request $request, string $path, ?Course $course)
-    {
-        // Get file basic infos
-        $mimeType = $request->file('file')->getMimeType();
-        $filename = $request->file('file')->getClientOriginalName();
-        $size = $request->file('file')->getSize();
-
-        $course_id = $course ? $course->id : null;
-
-        return File::create([
-            'name' => $fileUploadProcessor
-                ->getFileName($filename),
-            'filename' => $fileUploadProcessor
-                ->getBaseName($path),
-            'status' => FileStatus::Processing,
-            'type' => $fileUploadProcessor
-                ->fileType($mimeType),
-            'size' => $size,
-            'course_id' => $course_id,
-        ]);
-    }
-
-    /**
-     * Link the file to a card
-     *
-     * @return void
-     */
-    private function updateCard(File $file, Card $card)
-    {
-        $card->update([
-            'file_id' => $file->id,
-        ]);
-        $card->save();
     }
 }

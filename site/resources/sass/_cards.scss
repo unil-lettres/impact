@@ -25,6 +25,12 @@
             overflow-y: scroll;
         }
 
+        // Make the card body resizable
+        #transcription-viewer {
+            resize: vertical;
+            overflow: auto;
+        }
+
         tbody tr {
             font-size: 12px;
             font-family: courier, serif;

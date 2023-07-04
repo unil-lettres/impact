@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Tag;
 use App\Enums\CoursesFilter;
 use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
@@ -13,6 +14,7 @@ use App\Http\Requests\ManageCourses;
 use App\Http\Requests\SendCourseDeleteConfirmMail;
 use App\Http\Requests\StoreCourse;
 use App\Http\Requests\UpdateCourse;
+use App\Http\Requests\ConfigureCourseRequest;
 use App\Mail\CourseConfirmDelete;
 use App\User;
 use Exception;
@@ -169,9 +171,15 @@ class CourseController extends Controller
      *
      * @throws AuthorizationException
      */
-    public function configure(Course $course)
+    public function configure(Course $course, ConfigureCourseRequest $request)
     {
         $this->authorize('configure', $course);
+
+        $tagOrder = $request->get('tag_order') ?? 'name';
+        $tagDirection = $request->get('tag_direction') ?? 'asc';
+        $tags = Tag::with('cards')->where(
+            'course_id', $course->id
+        )->orderBy($tagOrder, $tagDirection)->get();
 
         return view('courses.configure', [
             'course' => $course,
@@ -183,6 +191,7 @@ class CourseController extends Controller
             'usersAsTeacher' => $course->teachers(),
             'studentRole' => EnrollmentRole::Student,
             'usersAsStudent' => $course->students(),
+            'tags' => $tags,
         ]);
     }
 

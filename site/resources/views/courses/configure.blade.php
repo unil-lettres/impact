@@ -69,18 +69,7 @@
                     </div>
                     <div class="card-body">
                         <p>{{ trans('courses.tags.help') }}</p>
-                        <!-- TODO: add tags -->
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <span class="title">
-                            {{ trans('courses.transcription.type') }}
-                        </span>
-                    </div>
-                    <div class="card-body">
-                        <p>{{ trans('courses.transcription.type.help') }}</p>
-                        <!-- TODO: add transcription type -->
+                        <x-forms.tags-manage :tags="$tags"></x-forms.tags-manage>
                     </div>
                 </div>
             </div>
@@ -102,6 +91,17 @@
                         <div id="rct-multi-user-student-select"
                              data='{{ json_encode(['record' => $course, 'role' => $studentRole, 'options' => $users, 'defaults' => $usersAsStudent, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
                         ></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <span class="title">
+                            {{ trans('courses.transcription.type') }}
+                        </span>
+                    </div>
+                    <div class="card-body">
+                        <p>{{ trans('courses.transcription.type.help') }}</p>
+                        <!-- TODO: add transcription type -->
                     </div>
                 </div>
             </div>

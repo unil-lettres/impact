@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Course;
-use App\Tag;
 use App\Enums\CoursesFilter;
 use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
+use App\Http\Requests\ConfigureCourseRequest;
 use App\Http\Requests\DestroyCourse;
 use App\Http\Requests\DisableCourse;
 use App\Http\Requests\EnableCourse;
@@ -14,8 +14,8 @@ use App\Http\Requests\ManageCourses;
 use App\Http\Requests\SendCourseDeleteConfirmMail;
 use App\Http\Requests\StoreCourse;
 use App\Http\Requests\UpdateCourse;
-use App\Http\Requests\ConfigureCourseRequest;
 use App\Mail\CourseConfirmDelete;
+use App\Tag;
 use App\User;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;

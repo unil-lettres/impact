@@ -97,8 +97,8 @@ class Card extends Model
     }
 
     /**
-    * The tag that belong to the card.
-    */
+     * The tag that belong to the card.
+     */
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class);

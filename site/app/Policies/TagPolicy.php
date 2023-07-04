@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Tag;
 use App\User;
-use Illuminate\Auth\Access\Response;
 
 class TagPolicy
 {

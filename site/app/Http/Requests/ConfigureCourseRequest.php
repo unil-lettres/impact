@@ -32,7 +32,7 @@ class ConfigureCourseRequest extends AbstractRequest
             ],
             'tag_direction' => [
                 'string',
-                Rule::in( ['asc', 'desc'] ),
+                Rule::in(['asc', 'desc']),
             ],
         ];
     }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Course extends Model
@@ -96,6 +97,11 @@ class Course extends Model
     {
         return $this->hasMany('App\State', 'course_id')
             ->orderBy('created_at', 'desc');
+    }
+
+    public function tags(): HasMany
+    {
+        return $this->hasMany(Tag::class, 'course_id')->orderBy('name');
     }
 
     /**

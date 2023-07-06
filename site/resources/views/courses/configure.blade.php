@@ -108,7 +108,34 @@
                     </div>
                     <div class="card-body">
                         <p>{{ trans('courses.tags.help') }}</p>
-                        <x-forms.tags-manage :tags="$tags" :course="$course"></x-forms.tags-manage>
+                        @if (count($tags) > 0)
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        @foreach ($tagColumns as $column_name => $direction)
+                                            <th scope="col">
+                                                <a href="{{route('courses.configure', ['course' => $course, 'tag_order' => $column_name, 'tag_direction' => $direction])}}"
+                                                class="icon-link link-dark link-underline-opacity-0">
+                                                    {{ trans("tags.$column_name") }}
+                                                    <i class="fa-solid fa-sort-{{['asc' => 'down', 'desc' => 'up'][$direction]}}"></i>
+                                                </a>
+                                            </th>
+                                        @endforeach
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($tags as $tag)
+                                        <tr>
+                                            @foreach (array_keys($tagColumns) as $column_name)
+                                                <td>{{ $tag->$column_name }}</td>
+                                            @endforeach
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        @else
+                            <div>{{ trans('tags.empty') }}</div>
+                        @endif
                     </div>
                 </div>
             </div>

@@ -177,9 +177,23 @@ class CourseController extends Controller
 
         $tagOrder = $request->get('tag_order') ?? 'name';
         $tagDirection = $request->get('tag_direction') ?? 'asc';
-        $tags = Tag::with('cards')->where(
-            'course_id', $course->id
-        )->orderBy($tagOrder, $tagDirection)->get();
+
+        $tags = Tag::where('course_id', $course->id)
+            ->selectRaw('name, count(card_tag.tag_id) as cards_count')
+            ->leftJoin('card_tag', 'tags.id', '=', 'card_tag.tag_id')
+            ->groupBy('tags.id', 'name')
+            ->orderBy($tagOrder, $tagDirection)
+            ->orderBy('name', 'asc')
+            ->orderBy('cards_count', 'asc')
+            ->get();
+
+        // Get inversed order values for each columns (for url generation).
+        $tagColumns = array_merge(
+            array_fill_keys(['name', 'cards_count'], 'desc'),
+            [
+                $tagOrder => ['asc' => 'desc', 'desc' => 'asc'][$tagDirection],
+            ],
+        );
 
         return view('courses.configure', [
             'course' => $course,
@@ -192,6 +206,7 @@ class CourseController extends Controller
             'studentRole' => EnrollmentRole::Student,
             'usersAsStudent' => $course->students(),
             'tags' => $tags,
+            'tagColumns' => $tagColumns,
         ]);
     }
 

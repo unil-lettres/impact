@@ -27,7 +27,7 @@ class ConfigureCourseRequest extends AbstractRequest
             'tag_order' => [
                 'string',
                 Rule::in(
-                    ['name', 'cards_number']
+                    ['name', 'cards_count']
                 ),
             ],
             'tag_direction' => [

@@ -108,27 +108,90 @@
                     </div>
                     <div class="card-body">
                         <p>{{ trans('courses.tags.help') }}</p>
+                        <hr />
+                        @can('create', [\App\Tag::class, $course])
+                            <form method="post"
+                                action="{{ route('tags.store') }}"
+                                class="row row-cols-md-auto g-2">
+                                @method('POST')
+                                @csrf
+                                <input type="hidden" name="course_id" value="{{ $course->id }}" >
+                                <div class="col-12 flex-fill">
+                                    <input
+                                        name="name"
+                                        type="text"
+                                        class="form-control"
+                                        placeholder="{{ trans('tags.create_placeholder') }}">
+                                </div>
+                                <div class="col-12">
+                                    <button type="submit"
+                                            class="btn btn-primary w-100"
+                                            data-bs-toggle="tooltip"
+                                            data-placement="top"
+                                            title="{{ trans('tags.create') }}">
+                                        {{ trans('tags.create') }}
+                                    </button>
+                                </div>
+                            </form>
+                            <hr />
+                        @endcan
                         @if (count($tags) > 0)
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        @foreach ($tagColumns as $column_name => $direction)
-                                            <th scope="col">
-                                                <a href="{{route('courses.configure', ['course' => $course, 'tag_order' => $column_name, 'tag_direction' => $direction])}}"
+                                        <th scope="col">
+                                            <a href="{{route('courses.configure', ['course' => $course, 'tag_order' => 'name', 'tag_direction' => $tagColumns['name']])}}"
                                                 class="icon-link link-dark link-underline-opacity-0">
-                                                    {{ trans("tags.$column_name") }}
-                                                    <i class="fa-solid fa-sort-{{['asc' => 'down', 'desc' => 'up'][$direction]}}"></i>
-                                                </a>
-                                            </th>
-                                        @endforeach
+                                                {{ trans("tags.name") }}
+                                                <i class="fa-solid fa-sort-{{['asc' => 'down', 'desc' => 'up'][$tagColumns['name']]}}"></i>
+                                            </a>
+                                        </th>
+                                        <th scope="col" class="text-end">
+                                            <a href="{{route('courses.configure', ['course' => $course, 'tag_order' => 'cards_count', 'tag_direction' => $tagColumns['cards_count']])}}"
+                                                class="icon-link link-dark link-underline-opacity-0">
+                                                {{ trans("tags.cards_count") }}
+                                                <i class="fa-solid fa-sort-{{['asc' => 'down', 'desc' => 'up'][$tagColumns['cards_count']]}}"></i>
+                                            </a>
+                                        </th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach ($tags as $tag)
                                         <tr>
-                                            @foreach (array_keys($tagColumns) as $column_name)
-                                                <td>{{ $tag->$column_name }}</td>
-                                            @endforeach
+                                            <td>{{ $tag->name }}</td>
+                                            <td class="text-end">{{ $tag->cards_count }}</td>
+                                            <td>
+                                                <div class="d-flex justify-content-end gap-1">
+                                                    @can('update', $tag)
+                                                        <span>
+                                                            <a href=""
+                                                            data-bs-toggle="tooltip"
+                                                            data-placement="top"
+                                                            class="btn btn-primary"
+                                                            title="{{ trans('tags.edit') }}">
+                                                                <i class="far fa-edit"></i>
+                                                            </a>
+                                                        </span>
+                                                    @endcan
+                                                    @can('delete', $tag)
+                                                        <span>
+                                                            <form class="with-delete-confirm" method="post"
+                                                                action="{{ route('tags.destroy', ['tag' => $tag->id]) }}">
+                                                                @method('DELETE')
+                                                                @csrf
+                                                                <button type="submit"
+                                                                        class="btn btn-danger"
+                                                                        data-bs-toggle="tooltip"
+                                                                        data-placement="top"
+                                                                        title="{{ trans('tags.delete') }}">
+                                                                    <i class="far fa-trash-alt"></i>
+                                                                </button>
+                                                            </form>
+                                                        </span>
+                                                    @endcan
+                                                </div>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </tbody>

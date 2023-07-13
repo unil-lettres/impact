@@ -23,6 +23,7 @@ use App\Http\Controllers\Json\FileJsonController;
 use App\Http\Controllers\Json\StateJsonController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\StateController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -112,6 +113,12 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('courses.destroy.state');
     Route::put('courses/{course}/state/{state}/position', [StateJsonController::class, 'position'])
         ->name('courses.update.state.position');
+
+    // Tags
+    Route::resource('tags', TagController::class)->only([
+        'store',
+        'destroy',
+    ]);
 });
 
 // Administration routes

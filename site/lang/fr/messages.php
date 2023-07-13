@@ -49,5 +49,8 @@ return [
     'state.created' => 'Nouvel état créé.',
     'state.updated' => 'État mis à jour.',
     'state.deleted' => 'État supprimé.',
+    'tag.deleted' => 'Tag supprimé.',
+    'tag.created' => 'Étiquette créée.',
+    'tag.already_exists' => 'Étiquette déjà existante.',
 
 ];

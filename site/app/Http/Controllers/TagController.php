@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
 use App\Http\Requests\StoreTagRequest;
 use App\Http\Requests\UpdateTagRequest;
 use App\Tag;
@@ -29,7 +30,20 @@ class TagController extends Controller
      */
     public function store(StoreTagRequest $request)
     {
-        //
+        $course = Course::findOrFail($request->course_id);
+        $this->authorize('create', [Tag::class, $course]);
+
+        if (Tag::where('name', $request->name)->exists()) {
+            return redirect()
+                ->back()
+                ->with('error', trans('messages.tag.already_exists'));
+        }
+
+        $course->tags()->create($request->all());
+
+        return redirect()
+            ->back()
+            ->with('success', trans('messages.tag.created'));
     }
 
     /**
@@ -57,10 +71,16 @@ class TagController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove (permanently, not soft deleted) the specified resource from storage.
      */
     public function destroy(Tag $tag)
     {
-        //
+        $this->authorize('delete', $tag);
+
+        $tag->forceDelete();
+
+        return redirect()
+            ->back()
+            ->with('success', trans('messages.tag.deleted'));
     }
 }

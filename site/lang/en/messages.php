@@ -49,5 +49,8 @@ return [
     'state.created' => 'New state created.',
     'state.updated' => 'State updated.',
     'state.deleted' => 'State deleted.',
+    'tag.deleted' => 'Tag deleted.',
+    'tag.created' => 'Tag created.',
+    'tag.already_exists' => 'Tag exists already.',
 
 ];

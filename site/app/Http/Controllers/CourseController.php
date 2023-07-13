@@ -179,9 +179,9 @@ class CourseController extends Controller
         $tagDirection = $request->get('tag_direction') ?? 'asc';
 
         $tags = Tag::where('course_id', $course->id)
-            ->selectRaw('name, count(card_tag.tag_id) as cards_count')
+            ->selectRaw('tags.id, course_id, name, count(card_tag.tag_id) as cards_count')
             ->leftJoin('card_tag', 'tags.id', '=', 'card_tag.tag_id')
-            ->groupBy('tags.id', 'name')
+            ->groupBy('tags.id', 'course_id', 'name')
             ->orderBy($tagOrder, $tagDirection)
             ->orderBy('name', 'asc')
             ->orderBy('cards_count', 'asc')

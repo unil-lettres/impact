@@ -13,6 +13,9 @@ class Tag extends Model
     use HasFactory;
     use SoftDeletes;
 
+
+    protected $fillable = [ 'name' ];
+
     /**
      * The cards that belong to the tag.
      */

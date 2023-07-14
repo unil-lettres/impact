@@ -23,7 +23,7 @@ class StoreTagRequest extends FormRequest
     {
         return [
             'course_id' => 'required|integer|exists:courses,id',
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|alpha_dash|unique:tags,name',
         ];
     }
 }

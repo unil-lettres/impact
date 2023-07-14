@@ -51,6 +51,6 @@ return [
     'state.deleted' => 'État supprimé.',
     'tag.deleted' => 'Tag supprimé.',
     'tag.created' => 'Étiquette créée.',
-    'tag.already_exists' => 'Étiquette déjà existante.',
+    'tag.renamed' => 'Étiquette renommée.',
 
 ];

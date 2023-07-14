@@ -117,6 +117,7 @@ Route::middleware(['auth', 'app'])->group(function () {
     // Tags
     Route::resource('tags', TagController::class)->only([
         'store',
+        'update',
         'destroy',
     ]);
 });

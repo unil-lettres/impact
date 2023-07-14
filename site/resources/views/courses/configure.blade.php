@@ -159,19 +159,21 @@
                                 <tbody>
                                     @foreach ($tags as $tag)
                                         <tr>
-                                            <td>{{ $tag->name }}</td>
-                                            <td class="text-end">{{ $tag->cards_count }}</td>
-                                            <td>
+                                            <td class="align-middle">{{ $tag->name }}</td>
+                                            <td class="text-end align-middle">{{ $tag->cards_count }}</td>
+                                            <td class="align-middle">
                                                 <div class="d-flex justify-content-end gap-1">
                                                     @can('update', $tag)
-                                                        <span>
-                                                            <a href=""
-                                                            data-bs-toggle="tooltip"
-                                                            data-placement="top"
-                                                            class="btn btn-primary"
-                                                            title="{{ trans('tags.edit') }}">
+                                                        <span data-bs-toggle="tooltip"
+                                                              title="{{ trans('tags.edit') }}"
+                                                              data-placement="top">
+                                                            <button type="button"
+                                                                    class="btn btn-primary"
+                                                                    data-bs-toggle="modal"
+                                                                    data-bs-name="{{ $tag->name }}"
+                                                                    data-bs-target="#editTagModal">
                                                                 <i class="far fa-edit"></i>
-                                                            </a>
+                                                            </button>
                                                         </span>
                                                     @endcan
                                                     @can('delete', $tag)
@@ -204,4 +206,68 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="editTagModal" tabindex="-1" aria-labelledby="editTagModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="editTagModalLabel">{{ trans('tags.edit_modal_title') }}</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+                <form method="post"
+                      action="{{ route('tags.update', ['tag' => $tag->id]) }}">
+                    @method('PUT')
+                    @csrf
+                    <div class="modal-body">
+                        <input
+                            name="name"
+                            type="text"
+                            class="form-control"
+                            autocomplete="off">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal">
+                            {{ trans('tags.edit_modal_close') }}
+                        </button>
+                        <button type="submit"
+                                class="btn btn-primary"
+                                disabled>
+                            {{ trans('tags.edit_modal_apply') }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    @once
+        <script>
+            (function() {
+                const editTagModal = document.getElementById('editTagModal');
+                const modalBodyInput = editTagModal.querySelector('.modal-body input[name="name"]');
+                const submitButton = editTagModal.querySelector('.modal-footer .btn-primary');
+
+                editTagModal.addEventListener('shown.bs.modal', () => {
+                    modalBodyInput.select();
+                });
+
+                editTagModal.addEventListener('show.bs.modal', event => {
+                    const button = event.relatedTarget;
+                    const name = button.getAttribute('data-bs-name');
+                    const id = button.getAttribute('data-bs-id');
+
+                    modalBodyInput.placeholder = name;
+                    modalBodyInput.value = name;
+                });
+
+                modalBodyInput.addEventListener('input', event => {
+                    const name = event.target.value;
+                    const placeholder = event.target.placeholder;
+
+                    submitButton.disabled = !name || name.toLowerCase() === placeholder.toLowerCase();
+                });
+            })();
+        </script>
+    @endonce
 @endsection
+

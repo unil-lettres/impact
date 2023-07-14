@@ -9,5 +9,8 @@ return [
     'edit' => 'Rename tag',
     'create_placeholder' => 'New tag',
     'create' => 'Create tag',
+    'edit_modal_title' => 'Rename tag',
+    'edit_modal_apply' => 'Save',
+    'edit_modal_close' => 'Cancel',
 
 ];

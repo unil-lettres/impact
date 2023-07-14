@@ -9,5 +9,8 @@ return [
     'edit' => 'Renommer l\'étiquette',
     'create_placeholder' => 'Nouvelle étiquette',
     'create' => 'Ajouter l\'étiquette',
+    'edit_modal_title' => 'Renommer l\'étiquette',
+    'edit_modal_apply' => 'Enregistrer',
+    'edit_modal_close' => 'Annuler',
 
 ];

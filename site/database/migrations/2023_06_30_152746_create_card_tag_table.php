@@ -17,6 +17,8 @@ return new class extends Migration
             $table->bigInteger('tag_id')->unsigned();
             $table->bigInteger('card_id')->unsigned();
 
+            $table->unique(['tag_id', 'card_id']);
+
             $table->foreign('tag_id')
                 ->references('id')
                 ->on('tags')

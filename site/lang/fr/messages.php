@@ -52,5 +52,7 @@ return [
     'tag.deleted' => 'Tag supprimé.',
     'tag.created' => 'Étiquette créée.',
     'tag.renamed' => 'Étiquette renommée.',
+    'tag.retrieved' => 'Étiquettes reprises.',
+    'tag.retrieved.none' => 'Toutes les étiquettes existent déjà dans cet espace.',
 
 ];

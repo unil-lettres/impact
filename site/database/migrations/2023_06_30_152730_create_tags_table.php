@@ -17,6 +17,8 @@ return new class extends Migration
             $table->timestamps();
             $table->bigInteger('course_id')->unsigned();
             $table->softDeletes();
+
+            $table->unique(['course_id', 'name']);
         });
     }
 

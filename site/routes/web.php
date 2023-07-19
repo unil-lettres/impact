@@ -74,6 +74,12 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('cards.transcription');
     Route::post('cards/{card}/export', [CardController::class, 'export'])
         ->name('cards.export');
+    Route::put('cards/{card}/createTag', [CardJsonController::class, 'createTag'])
+        ->name('cards.create.tag');
+    Route::put('cards/{card}/link/{tag}', [CardJsonController::class, 'linkTag'])
+        ->name('cards.link.tag');
+    Route::put('cards/{card}/unlink/{tag}', [CardJsonController::class, 'unlinkTag'])
+        ->name('cards.unlink.tag');
 
     // Folders
     Route::resource('folders', FolderController::class);
@@ -113,6 +119,8 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('courses.destroy.state');
     Route::put('courses/{course}/state/{state}/position', [StateJsonController::class, 'position'])
         ->name('courses.update.state.position');
+    Route::post('courses/{course}/retrieve_tags', [CourseController::class, 'retrieveTags'])
+        ->name('courses.retrieve.tags');
 
     // Tags
     Route::resource('tags', TagController::class)->only([

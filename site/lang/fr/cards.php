@@ -44,5 +44,6 @@ return [
     'date' => 'Date',
     'tags' => 'Étiquettes',
     'no_emails' => 'Ne pas envoyer d\'emails',
+    'edit.tags_are_auto_save' => 'Les étiquettes sont enregistrées automatiquement lorsque vous les ajoutez ou les enlevez.',
 
 ];

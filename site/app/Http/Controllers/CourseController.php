@@ -11,6 +11,7 @@ use App\Http\Requests\DestroyCourse;
 use App\Http\Requests\DisableCourse;
 use App\Http\Requests\EnableCourse;
 use App\Http\Requests\ManageCourses;
+use App\Http\Requests\RetrieveTagsRequest;
 use App\Http\Requests\SendCourseDeleteConfirmMail;
 use App\Http\Requests\StoreCourse;
 use App\Http\Requests\UpdateCourse;
@@ -205,6 +206,7 @@ class CourseController extends Controller
             'usersAsTeacher' => $course->teachers(),
             'studentRole' => EnrollmentRole::Student,
             'usersAsStudent' => $course->students(),
+            'allCourses' => Course::all(),
             'tags' => $tags,
             'tagColumns' => $tagColumns,
         ]);
@@ -354,5 +356,29 @@ class CourseController extends Controller
                 ->where('type', CourseType::Local),
             default => $filters->withTrashed(),
         };
+    }
+
+    /**
+     * Retrieve tags from a course and copy them into this one.
+     */
+    public function retrieveTags(Course $course, RetrieveTagsRequest $request)
+    {
+        $this->authorize('create', [Tag::class, $course]);
+        $courseFrom = Course::find($request->course_id);
+
+        $existingNames = $course->tags()->select('name')->get();
+        $tagsToCreate = $courseFrom->tags()->whereNotIn('name', $existingNames)->get();
+
+        if ($tagsToCreate->isEmpty()) {
+            return redirect()
+                ->back()
+                ->with('warning', trans('messages.tag.retrieved.none'));
+        }
+
+        $course->tags()->createMany($tagsToCreate->toArray());
+
+        return redirect()
+            ->back()
+            ->with('success', trans('messages.tag.retrieved'));
     }
 }

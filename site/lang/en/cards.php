@@ -44,5 +44,6 @@ return [
     'date' => 'Date',
     'tags' => 'Tags',
     'no_emails' => 'Do not send emails',
+    'edit.tags_are_auto_save' => 'Tags are automatically saved when you add or remove them.',
 
 ];

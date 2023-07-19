@@ -13,6 +13,8 @@ class Tag extends Model
     use HasFactory;
     use SoftDeletes;
 
+    // TODO faire les trucs de mass assignment / casts
+    // TODO completer la classe
 
     protected $fillable = [ 'name' ];
 

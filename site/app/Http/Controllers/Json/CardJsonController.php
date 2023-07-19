@@ -90,7 +90,8 @@ class CardJsonController extends Controller
 
         $tag = $card->course->tags()->create($request->all());
         $card->tags()->attach($tag);
-        return response()->json([ 'tag_id' => $tag->id ], 200);
+
+        return response()->json(['tag_id' => $tag->id], 200);
     }
 
     /**
@@ -104,7 +105,8 @@ class CardJsonController extends Controller
         $this->authorize('update', $card);
 
         $card->tags()->attach($tag);
-        return response()->json([ 'success' => true, ], 200);
+
+        return response()->json(['success' => true], 200);
     }
 
     /**
@@ -118,6 +120,7 @@ class CardJsonController extends Controller
         $this->authorize('update', $card);
 
         $card->tags()->detach($tag);
-        return response()->json([ 'success' => true, ], 200);
+
+        return response()->json(['success' => true], 200);
     }
 }

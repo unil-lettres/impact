@@ -16,7 +16,7 @@ class Tag extends Model
     // TODO faire les trucs de mass assignment / casts
     // TODO completer la classe
 
-    protected $fillable = [ 'name' ];
+    protected $fillable = ['name'];
 
     /**
      * The cards that belong to the tag.

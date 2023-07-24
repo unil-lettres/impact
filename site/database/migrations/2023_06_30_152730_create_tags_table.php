@@ -18,6 +18,12 @@ return new class extends Migration
             $table->bigInteger('course_id')->unsigned();
             $table->softDeletes();
 
+            $table
+                ->foreign('course_id')
+                ->references('id')
+                ->on('courses')
+                ->onDelete('cascade');
+
             $table->unique(['course_id', 'name']);
         });
     }

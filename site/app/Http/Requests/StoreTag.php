@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Database\Query\Builder;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class StoreTag extends FormRequest
 {
@@ -23,7 +25,17 @@ class StoreTag extends FormRequest
     {
         return [
             'course_id' => 'required|integer|exists:courses,id',
-            'name' => 'required|string|max:255|alpha_dash|unique:tags,name',
+            'name' => [
+                'required',
+                'string',
+                'max:255',
+                'alpha_dash',
+                Rule::unique('tags', 'name')->where(
+                    fn (Builder $query) => $query->where(
+                        'course_id', $this->input('course_id')
+                    )
+                ),
+            ],
         ];
     }
 }

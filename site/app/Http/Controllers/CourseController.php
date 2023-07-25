@@ -24,6 +24,7 @@ use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -206,7 +207,9 @@ class CourseController extends Controller
             'usersAsTeacher' => $course->teachers(),
             'studentRole' => EnrollmentRole::Student,
             'usersAsStudent' => $course->students(),
-            'allCourses' => Course::all(),
+            'coursesAsTeacher' => Auth::user()->enrollmentsAsTeacher()->map(
+                function ($enrollment) { return $enrollment->course; }
+            ),
             'tags' => $tags,
             'tagColumns' => $tagColumns,
         ]);

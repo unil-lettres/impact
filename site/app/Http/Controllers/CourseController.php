@@ -11,7 +11,7 @@ use App\Http\Requests\DestroyCourse;
 use App\Http\Requests\DisableCourse;
 use App\Http\Requests\EnableCourse;
 use App\Http\Requests\ManageCourses;
-use App\Http\Requests\RetrieveTagsRequest;
+use App\Http\Requests\CloneTags;
 use App\Http\Requests\SendCourseDeleteConfirmMail;
 use App\Http\Requests\StoreCourse;
 use App\Http\Requests\UpdateCourse;
@@ -359,9 +359,9 @@ class CourseController extends Controller
     }
 
     /**
-     * Retrieve tags from a course and copy them into this one.
+     * Clone all tags from a course and copy them into this one.
      */
-    public function retrieveTags(Course $course, RetrieveTagsRequest $request)
+    public function cloneTags(Course $course, CloneTags $request)
     {
         $this->authorize('create', [Tag::class, $course]);
         $courseFrom = Course::find($request->course_id);
@@ -372,13 +372,13 @@ class CourseController extends Controller
         if ($tagsToCreate->isEmpty()) {
             return redirect()
                 ->back()
-                ->with('warning', trans('messages.tag.retrieved.none'));
+                ->with('warning', trans('messages.tag.cloned.none'));
         }
 
         $course->tags()->createMany($tagsToCreate->toArray());
 
         return redirect()
             ->back()
-            ->with('success', trans('messages.tag.retrieved'));
+            ->with('success', trans('messages.tag.cloned'));
     }
 }

@@ -119,8 +119,8 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('courses.destroy.state');
     Route::put('courses/{course}/state/{state}/position', [StateJsonController::class, 'position'])
         ->name('courses.update.state.position');
-    Route::post('courses/{course}/retrieve_tags', [CourseController::class, 'retrieveTags'])
-        ->name('courses.retrieve.tags');
+    Route::post('courses/{course}/cloneTags', [CourseController::class, 'cloneTags'])
+        ->name('courses.clone.tags');
 
     // Tags
     Route::resource('tags', TagController::class)->only([

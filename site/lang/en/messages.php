@@ -52,7 +52,7 @@ return [
     'tag.deleted' => 'Tag deleted.',
     'tag.created' => 'Tag created.',
     'tag.renamed' => 'Tag renamed.',
-    'tag.retrieved' => 'Tags retrieved.',
-    'tag.retrieved.none' => 'All tags already exist in this course.',
+    'tag.cloned' => 'Tags retrieved.',
+    'tag.cloned.none' => 'All tags already exist in this course.',
 
 ];

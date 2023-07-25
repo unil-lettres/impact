@@ -114,32 +114,32 @@
                                     <button class="btn btn-primary w-100"
                                             type="button"
                                             data-bs-toggle="collapse"
-                                            data-bs-target="#collapseRetrieveTags"
+                                            data-bs-target="#collapseCloneTags"
                                             aria-expanded="false"
-                                            aria-controls="collapseRetrieveTags">
-                                        {{ trans('tags.retrieve_tags_label') }}
+                                            aria-controls="collapseCloneTags">
+                                        {{ trans('tags.clone_tags_label') }}
                                     </button>
                                 </div>
                                 <div class="col-12">
-                                    <div class="collapse" id="collapseRetrieveTags">
+                                    <div class="collapse" id="collapseCloneTags">
                                         <div class="card card-body mt-1">
                                             <p>
-                                                {{ trans('tags.retrieve_tags_help') }}
+                                                {{ trans('tags.clone_tags_help') }}
                                             </p>
                                             <form method="post"
-                                                  action="{{ route('courses.retrieve.tags', [$course->id]) }}"
+                                                  action="{{ route('courses.clone.tags', [$course->id]) }}"
                                                   class="row row-cols-md-auto g-2">
                                                 @method('POST')
                                                 @csrf
                                                 <div class="col-12 flex-fill">
                                                     <select name="course_id" class="form-select" aria-label="Courses tags source">
                                                         <option value="" selected>
-                                                            {{ trans('tags.retrieve_tags_courses_list') }}
+                                                            {{ trans('tags.clone_tags_courses_list') }}
                                                         </option>
-                                                        @foreach ($allCourses as $retrieve_course)
-                                                            @continue($course->id === $retrieve_course->id)
-                                                            <option value="{{ $retrieve_course->id }}">
-                                                                {{ $retrieve_course->name }}
+                                                        @foreach ($allCourses as $fromCourse)
+                                                            @continue($course->id === $fromCourse->id)
+                                                            <option value="{{ $fromCourse->id }}">
+                                                                {{ $fromCourse->name }}
                                                             </option>
                                                         @endforeach
                                                     </select>
@@ -148,7 +148,7 @@
                                                     <button type="submit"
                                                             class="btn btn-primary w-100"
                                                             disabled>
-                                                        {{ trans('tags.retrieve_tags_action') }}
+                                                        {{ trans('tags.clone_tags_action') }}
                                                     </button>
                                                 </div>
                                             </form>
@@ -298,9 +298,9 @@
                 const editTagModalForm = editTagModal.querySelector('form');
                 const editTagModalInput = editTagModal.querySelector('.modal-body input[name="name"]');
                 const editTagModalSubmit = editTagModal.querySelector('.modal-footer .btn-primary');
-                const collapseRetrieveTags = document.getElementById('collapseRetrieveTags');
-                const collapseRetrieveTagsSelect = collapseRetrieveTags.querySelector('select');
-                const collapseRetrieveTagsSubmit = collapseRetrieveTags.querySelector('.btn-primary');
+                const collapseCloneTags = document.getElementById('collapseCloneTags');
+                const collapseCloneTagsSelect = collapseCloneTags.querySelector('select');
+                const collapseCloneTagsSubmit = collapseCloneTags.querySelector('.btn-primary');
 
                 editTagModal.addEventListener('shown.bs.modal', () => {
                     editTagModalInput.select();
@@ -323,8 +323,8 @@
                     editTagModalSubmit.disabled = !name || name.toLowerCase() === placeholder.toLowerCase();
                 });
 
-                collapseRetrieveTagsSelect.addEventListener('input', event => {
-                    collapseRetrieveTagsSubmit.disabled = !event.target.value;
+                collapseCloneTagsSelect.addEventListener('input', event => {
+                    collapseCloneTagsSubmit.disabled = !event.target.value;
                 });
             })();
         </script>

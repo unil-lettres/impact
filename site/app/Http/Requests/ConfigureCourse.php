@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Validation\Rule;
 
-class ConfigureCourseRequest extends AbstractRequest
+class ConfigureCourse extends AbstractRequest
 {
     /**
      * Determine if the user is authorized to make this request.

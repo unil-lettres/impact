@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class CreateTagInCardRequest extends StoreTagRequest
+class CreateTagInCard extends StoreTag
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -2,9 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Http\Requests\StoreTagRequest;
+use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateTagRequest extends StoreTagRequest
+class StoreTag extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,7 +22,8 @@ class UpdateTagRequest extends StoreTagRequest
     public function rules(): array
     {
         return [
-            'name' => parent::rules()['name'],
+            'course_id' => 'required|integer|exists:courses,id',
+            'name' => 'required|string|max:255|alpha_dash|unique:tags,name',
         ];
     }
 }

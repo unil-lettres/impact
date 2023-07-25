@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Json;
 
 use App\Card;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateTagInCardRequest;
+use App\Http\Requests\CreateTagInCard;
 use App\Http\Requests\UpdateCardEditor;
 use App\Http\Requests\UpdateCardTranscription;
 use App\Tag;
@@ -80,7 +80,7 @@ class CardJsonController extends Controller
      *
      * @throws AuthorizationException
      */
-    public function createTag(Card $card, CreateTagInCardRequest $request)
+    public function createTag(Card $card, CreateTagInCard $request)
     {
         $this->authorize('update', $card);
 

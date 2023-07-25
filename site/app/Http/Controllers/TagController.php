@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Course;
-use App\Http\Requests\StoreTagRequest;
-use App\Http\Requests\UpdateTagRequest;
+use App\Http\Requests\StoreTag;
+use App\Http\Requests\UpdateTag;
 use App\Tag;
 
 class TagController extends Controller
@@ -12,7 +12,7 @@ class TagController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreTagRequest $request)
+    public function store(StoreTag $request)
     {
         $course = Course::findOrFail($request->course_id);
 
@@ -28,7 +28,7 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTagRequest $request, Tag $tag)
+    public function update(UpdateTag $request, Tag $tag)
     {
         $this->authorize('update', $tag);
 

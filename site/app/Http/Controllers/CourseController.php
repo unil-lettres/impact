@@ -7,7 +7,7 @@ use App\Enums\CoursesFilter;
 use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
 use App\Http\Requests\CloneTags;
-use App\Http\Requests\ConfigureCourseRequest;
+use App\Http\Requests\ConfigureCourse;
 use App\Http\Requests\DestroyCourse;
 use App\Http\Requests\DisableCourse;
 use App\Http\Requests\EnableCourse;
@@ -173,7 +173,7 @@ class CourseController extends Controller
      *
      * @throws AuthorizationException
      */
-    public function configure(Course $course, ConfigureCourseRequest $request)
+    public function configure(Course $course, ConfigureCourse $request)
     {
         $this->authorize('configure', $course);
 

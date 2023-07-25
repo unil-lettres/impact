@@ -20,19 +20,19 @@ class TagsTableSeeder extends Seeder
         $secondCard = $secondCourse->cards()->where('title', 'Test card second space')->first();
 
         $firstTag = Tag::create([
-            'name' => 'Test tag 1 first course',
+            'name' => 'Test_tag_1_first_course',
             'course_id' => $firstCourse->id,
         ]);
 
         $secondTag = Tag::create([
-            'name' => 'Test tag 2 first course',
+            'name' => 'Test_tag_2_first_course',
             'course_id' => $firstCourse->id,
         ]);
 
         $firstCard->tags()->attach([$firstTag->id, $secondTag->id]);
 
         $thirdTag = Tag::create([
-            'name' => 'Test tag second course',
+            'name' => 'Test_tag_second_course',
             'course_id' => $secondCourse->id,
         ]);
 

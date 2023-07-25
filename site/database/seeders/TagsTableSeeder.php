@@ -3,9 +3,7 @@
 namespace Database\Seeders;
 
 use App\Course;
-use App\Card;
 use App\Tag;
-
 use Illuminate\Database\Seeder;
 
 class TagsTableSeeder extends Seeder

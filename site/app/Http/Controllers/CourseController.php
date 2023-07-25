@@ -6,12 +6,12 @@ use App\Course;
 use App\Enums\CoursesFilter;
 use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
+use App\Http\Requests\CloneTags;
 use App\Http\Requests\ConfigureCourseRequest;
 use App\Http\Requests\DestroyCourse;
 use App\Http\Requests\DisableCourse;
 use App\Http\Requests\EnableCourse;
 use App\Http\Requests\ManageCourses;
-use App\Http\Requests\CloneTags;
 use App\Http\Requests\SendCourseDeleteConfirmMail;
 use App\Http\Requests\StoreCourse;
 use App\Http\Requests\UpdateCourse;
@@ -23,8 +23,8 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class CourseController extends Controller
 {
@@ -208,7 +208,9 @@ class CourseController extends Controller
             'studentRole' => EnrollmentRole::Student,
             'usersAsStudent' => $course->students(),
             'coursesAsTeacher' => Auth::user()->enrollmentsAsTeacher()->map(
-                function ($enrollment) { return $enrollment->course; }
+                function ($enrollment) {
+                    return $enrollment->course;
+                }
             ),
             'tags' => $tags,
             'tagColumns' => $tagColumns,

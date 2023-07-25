@@ -170,4 +170,19 @@ class CoursePolicy
         // Only admins can send the mail to confirm the deletion of the course
         return false;
     }
+
+    /**
+     * Determine whether the user can send the mail to confirm the deletion of the course.
+     *
+     * @return mixed
+     */
+    public function cloneTags(User $user, Course $fromCourse, Course $toCourse)
+    {
+        // Only admins & teachers can clone tags to another course.
+        if ($user->isTeacher($fromCourse) && $user->isTeacher($toCourse)) {
+            return true;
+        }
+
+        return false;
+    }
 }

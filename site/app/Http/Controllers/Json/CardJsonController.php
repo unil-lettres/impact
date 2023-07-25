@@ -84,10 +84,6 @@ class CardJsonController extends Controller
     {
         $this->authorize('update', $card);
 
-        // TODO reutiliser le tag policy ou faire un tag policy pour les cards
-        // $this->authorize('create', Tag::class);
-        // $this->authorize('create', [Tag::class, $course]);
-
         $tag = $card->course->tags()->create($request->all());
         $card->tags()->attach($tag);
 

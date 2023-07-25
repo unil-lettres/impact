@@ -363,8 +363,9 @@ class CourseController extends Controller
      */
     public function cloneTags(Course $course, CloneTags $request)
     {
-        $this->authorize('create', [Tag::class, $course]);
-        $courseFrom = Course::find($request->course_id);
+        $courseFrom = Course::findOrFail($request->course_id);
+
+        $this->authorize('cloneTags', [$courseFrom, $course]);
 
         $existingNames = $course->tags()->select('name')->get();
         $tagsToCreate = $courseFrom->tags()->whereNotIn('name', $existingNames)->get();

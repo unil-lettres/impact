@@ -50,7 +50,6 @@
                 {{ trans('cards.tags') }}
             </label>
             <div class="col-md-8">
-                {{-- TODO AJOUTER LES DROITS ?? --}}
                 <div id="rct-multi-tag-select"
                         createLabel="{{ trans('general.create_select_option_label') }}"
                         data='{{ json_encode(['record' => $card, 'options' => $card->course->tags, 'defaults' => $card->tags ]) }}'

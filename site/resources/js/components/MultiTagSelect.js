@@ -20,7 +20,7 @@ export default class MultiTagSelect extends Component {
                 data.options,
                 (option) => ({ value: option.id, label: option.name })
             ),
-            value: _.map(
+            values: _.map(
                 data.defaults,
                 (option) => ({ value: option.id, label: option.name }),
             ),
@@ -32,25 +32,25 @@ export default class MultiTagSelect extends Component {
         const cardId = this.state.record.id;
 
         // Available react-select actions: https://github.com/JedWatson/react-select/issues/3451
-        const [action, option, setValue] = {
+        const [action, option, getValues] = {
             'select-option': [
                 'link',
                 event?.option,
-                (prevState) => [...prevState.value, option],
+                (prevState) => [...prevState.values, option],
             ],
             'remove-value': [
                 'unlink',
                 event?.removedValue,
-                (prevState) => _.reject(prevState.value, option),
+                (prevState) => _.reject(prevState.values, option),
             ],
-        }[event.action] || [undefined, undefined];
+        }[event.action] || [undefined, undefined, _.identity];
 
         this.setState({ isLoading: true });
         axios
             .put(`/cards/${cardId}/${action}/${option.value}`)
             .then((response) => {
                 console.log(response);
-                this.setState((prevState) => ({ value: setValue(prevState) }));
+                this.setState((prevState) => ({ values: getValues(prevState) }));
             })
             .catch((error) => console.error(error))
             .finally(() => this.setState({ isLoading: false }));
@@ -75,8 +75,8 @@ export default class MultiTagSelect extends Component {
                         ...prevState.options,
                         newTag,
                     ],
-                    value: [
-                        ...prevState.value,
+                    values: [
+                        ...prevState.values,
                         newTag,
                     ]
                 }));
@@ -105,7 +105,7 @@ export default class MultiTagSelect extends Component {
                 escapeClearsValue={false}
                 backspaceRemovesValue={false}
                 isLoading={this.state.isLoading}
-                value={this.state.value}
+                value={this.state.values}
                 onChange={this.handleChange}
                 onCreateOption={this.handleCreate}
                 formatCreateLabel={(inputValue) => `${this.props.createLabel} "${inputValue}"`}

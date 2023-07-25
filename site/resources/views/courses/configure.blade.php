@@ -136,7 +136,7 @@
                                                         <option value="" selected>
                                                             {{ trans('tags.clone_tags_courses_list') }}
                                                         </option>
-                                                        @foreach ($coursesAsTeacher as $fromCourse)
+                                                        @foreach ($clonableCourses as $fromCourse)
                                                             @continue($course->id === $fromCourse->id)
                                                             <option value="{{ $fromCourse->id }}">
                                                                 {{ $fromCourse->name }}

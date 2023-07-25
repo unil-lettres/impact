@@ -197,6 +197,16 @@ class CourseController extends Controller
             ],
         );
 
+        if (Auth::user()->admin) {
+            $clonableCourses = Course::all();
+        } else {
+            $clonableCourses = Auth::user()->enrollmentsAsTeacher()->map(
+                function ($enrollment) {
+                    return $enrollment->course;
+                }
+            );
+        }
+
         return view('courses.configure', [
             'course' => $course,
             'breadcrumbs' => $course
@@ -207,11 +217,7 @@ class CourseController extends Controller
             'usersAsTeacher' => $course->teachers(),
             'studentRole' => EnrollmentRole::Student,
             'usersAsStudent' => $course->students(),
-            'coursesAsTeacher' => Auth::user()->enrollmentsAsTeacher()->map(
-                function ($enrollment) {
-                    return $enrollment->course;
-                }
-            ),
+            'clonableCourses' => $clonableCourses,
             'tags' => $tags,
             'tagColumns' => $tagColumns,
         ]);

@@ -28,7 +28,7 @@ export default class Transcription extends Component {
         super(props)
 
         const data = JSON.parse(this.props.data);
-        const transcription = data.card.box2.data ?? [];
+        const transcription = data.card.box2.icor ?? [];
         const disabled = data.disabled ?? true;
         this.contentRef = React.createRef();
 

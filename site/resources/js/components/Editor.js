@@ -103,7 +103,7 @@ export default class Editor extends Component {
         super(props)
 
         const data = JSON.parse(this.props.data);
-        const html = data.card[this.props.reference];
+        const html = data.content ?? null;
         const disabled = data.disabled ?? true;
 
         this.state = {
@@ -138,7 +138,7 @@ export default class Editor extends Component {
     initVariables(data) {
         this.editor = BalloonEditor;
         this.config = editorConfiguration;
-        this.card = data.card;
+        this.cardId = data.cardId;
         this.editButtonId = 'edit-' + this.props.reference;
         this.editButton = document.getElementById(this.editButtonId);
         this.cancelButtonId = 'cancel-' + this.props.reference;
@@ -206,7 +206,7 @@ export default class Editor extends Component {
     }
 
     save() {
-        axios.put('/cards/' + this.card.id + '/editor', {
+        axios.put('/cards/' + this.cardId + '/editor', {
             html: this.state.html,
             box: this.props.reference
         }).then(response => {
@@ -231,7 +231,7 @@ export default class Editor extends Component {
                 this.setState({
                         // We restore the html initially loaded from the db
                         // We use cloneDeep to avoid a reference
-                        html: _.cloneDeep(this.state.original),
+                        html: _.cloneDeep(this.state.original ?? ''),
                         // We disable the edition mode
                         editable: false
                     },
@@ -287,5 +287,14 @@ if (document.getElementById(elementIdBox4)) {
 
     let data = document.getElementById(elementIdBox4).getAttribute('data');
     let reference = document.getElementById(elementIdBox4).getAttribute('reference');
+    root.render(<Editor data={ data } reference={ reference } />);
+}
+
+const elementIdBox2 = 'rct-editor-box2';
+if (document.getElementById(elementIdBox2)) {
+    const root = createRoot(document.getElementById(elementIdBox2));
+
+    let data = document.getElementById(elementIdBox2).getAttribute('data');
+    let reference = document.getElementById(elementIdBox2).getAttribute('reference');
     root.render(<Editor data={ data } reference={ reference } />);
 }

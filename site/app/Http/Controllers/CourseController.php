@@ -13,6 +13,7 @@ use App\Http\Requests\ManageCourses;
 use App\Http\Requests\SendCourseDeleteConfirmMail;
 use App\Http\Requests\StoreCourse;
 use App\Http\Requests\UpdateCourse;
+use App\Http\Requests\UpdateTranscriptionType;
 use App\Mail\CourseConfirmDelete;
 use App\User;
 use Exception;
@@ -208,6 +209,25 @@ class CourseController extends Controller
         return redirect()
             ->back()
             ->with('success', trans('messages.course.updated'));
+    }
+
+    /**
+     * Update the specified resource transcription type in storage.
+     */
+    public function transcription(UpdateTranscriptionType $request, int $id)
+    {
+        $course = Course::find($id);
+
+        $this->authorize('transcription', $course);
+
+        $course->update([
+            'transcription' => $request->get('type'),
+        ]);
+        $course->save();
+
+        return redirect()
+            ->back()
+            ->with('success', trans('messages.course.transcription.updated'));
     }
 
     /**

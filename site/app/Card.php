@@ -16,7 +16,8 @@ class Card extends Model
 
     const TRANSCRIPTION = '{
             "version": 1,
-            "data": []
+            "icor": [],
+            "text": null
         }';
 
     const OPTIONS = '{

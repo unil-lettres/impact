@@ -100,6 +100,8 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('courses.archive');
     Route::delete('/courses/{course}/disable', [CourseController::class, 'disable'])
         ->name('courses.disable');
+    Route::put('courses/{course}/configure/transcription', [CourseController::class, 'transcription'])
+        ->name('courses.configure.transcription');
     Route::get('courses/{course}/configure/files', [FileController::class, 'index'])
         ->name('courses.configure.files');
     Route::get('courses/{course}/configure/states', [StateController::class, 'index'])

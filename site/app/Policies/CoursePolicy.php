@@ -170,4 +170,19 @@ class CoursePolicy
         // Only admins can send the mail to confirm the deletion of the course
         return false;
     }
+
+    /**
+     * Determine whether the user can update the transcription type of the course.
+     *
+     * @return mixed
+     */
+    public function transcription(User $user, Course $course)
+    {
+        // Only admins & teachers can update the transcription type of the course
+        if ($user->isTeacher($course)) {
+            return true;
+        }
+
+        return false;
+    }
 }

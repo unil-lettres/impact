@@ -9,6 +9,7 @@ use App\Enums\FileStatus;
 use App\Enums\FileType;
 use App\Enums\StatePermission;
 use App\Enums\StateType;
+use App\Enums\TranscriptionType;
 use App\Enums\UserType;
 use App\File;
 use App\State;
@@ -239,7 +240,7 @@ class Helpers
      */
     public static function hasExternalLink(Card $card): bool
     {
-        return empty(trim($card['options']['box1']['link'])) ? false : true;
+        return !empty(trim($card['options']['box1']['link'] ?? ''));
     }
 
     /**
@@ -319,6 +320,19 @@ class Helpers
             StatePermission::AllCanShowTeachersCanEdit => trans('states.permission5'),
             StatePermission::TeachersCanShowAndEdit => trans('states.permission6'),
             default => trans('states.permission0'),
+        };
+    }
+
+    /**
+     * Return the transcription type label
+     *
+     * @param  string  $transcriptionType (App\Enums\TranscriptionType)
+     */
+    public static function transcriptionTypeLabel(string $transcriptionType): string
+    {
+        return match ($transcriptionType) {
+            TranscriptionType::Text => trans('courses.transcription.type.text'),
+            default => trans('courses.transcription.type.icor'),
         };
     }
 

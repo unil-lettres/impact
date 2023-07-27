@@ -26,6 +26,7 @@ return [
     'course.enabled' => 'Espace activé.',
     'course.deleted' => 'Espace supprimé.',
     'course.updated' => 'Espace mis à jour.',
+    'course.transcription.updated' => 'Type de transcription mis à jour.',
     'course.archived' => 'Espace archivé.',
     'course.delete.info' => 'L\'espace ne sera plus accessible mais peut être restauré sur demande. Une confirmation de suppression définitive du contenu vous sera demandée par un administrateur dans un second temps.',
     'course.archive.info' => 'Les utilisateurs ne pourront plus modifier leur fiche après cette opération.',

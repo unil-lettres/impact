@@ -76,8 +76,7 @@ jobs:
       - name: Serve
         working-directory: ./site
         run: |
-          php artisan dusk:chrome-driver 114
-          #php artisan dusk:chrome-driver --detect
+          php artisan dusk:chrome-driver --detect
           ./vendor/laravel/dusk/bin/chromedriver-linux &
           php artisan serve &
 

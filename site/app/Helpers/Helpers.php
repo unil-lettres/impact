@@ -240,13 +240,13 @@ class Helpers
      */
     public static function hasExternalLink(Card $card): bool
     {
-        return !empty(trim($card['options']['box1']['link'] ?? ''));
+        return ! empty(trim($card['options']['box1']['link'] ?? ''));
     }
 
     /**
      * Return whether the card has an external media link
      */
-    public static function getExternalLink(Card $card): string|null
+    public static function getExternalLink(Card $card): ?string
     {
         if (! self::hasExternalLink($card)) {
             return null;
@@ -286,7 +286,7 @@ class Helpers
     /**
      * Return whether the specified box should be hidden from the view
      */
-    public static function isHidden(Card $card, string $box): bool|null
+    public static function isHidden(Card $card, string $box): ?bool
     {
         $options = $card->options;
 

@@ -96,7 +96,7 @@ class State extends Model implements Sortable
     /**
      * Get the permission of a specific box
      */
-    public function getPermission(string $box): int|null
+    public function getPermission(string $box): ?int
     {
         $permissions = $this->permissions;
 

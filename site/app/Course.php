@@ -16,7 +16,7 @@ class Course extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'type', 'external_id', 'transcription'
+        'name', 'description', 'type', 'external_id', 'transcription',
     ];
 
     protected $casts = [

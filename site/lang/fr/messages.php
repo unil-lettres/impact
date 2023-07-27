@@ -49,7 +49,7 @@ return [
     'state.created' => 'Nouvel état créé.',
     'state.updated' => 'État mis à jour.',
     'state.deleted' => 'État supprimé.',
-    'tag.deleted' => 'Tag supprimé.',
+    'tag.deleted' => 'Étiquette supprimée.',
     'tag.created' => 'Étiquette créée.',
     'tag.renamed' => 'Étiquette renommée.',
     'tag.cloned' => 'Étiquettes reprises.',

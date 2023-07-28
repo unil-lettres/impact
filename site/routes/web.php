@@ -107,6 +107,8 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('courses.archive');
     Route::delete('/courses/{course}/disable', [CourseController::class, 'disable'])
         ->name('courses.disable');
+    Route::get('courses/{course}/configure/tags', [TagController::class, 'index'])
+        ->name('courses.configure.tags');
     Route::get('courses/{course}/configure/files', [FileController::class, 'index'])
         ->name('courses.configure.files');
     Route::get('courses/{course}/configure/states', [StateController::class, 'index'])

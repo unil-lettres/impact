@@ -7,7 +7,6 @@ use App\Enums\CoursesFilter;
 use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
 use App\Http\Requests\CloneTags;
-use App\Http\Requests\ConfigureCourse;
 use App\Http\Requests\DestroyCourse;
 use App\Http\Requests\DisableCourse;
 use App\Http\Requests\EnableCourse;
@@ -16,14 +15,12 @@ use App\Http\Requests\SendCourseDeleteConfirmMail;
 use App\Http\Requests\StoreCourse;
 use App\Http\Requests\UpdateCourse;
 use App\Mail\CourseConfirmDelete;
-use App\Tag;
 use App\User;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class CourseController extends Controller
@@ -173,39 +170,9 @@ class CourseController extends Controller
      *
      * @throws AuthorizationException
      */
-    public function configure(Course $course, ConfigureCourse $request)
+    public function configure(Course $course)
     {
         $this->authorize('configure', $course);
-
-        $tagOrder = $request->get('tag_order') ?? 'name';
-        $tagDirection = $request->get('tag_direction') ?? 'asc';
-
-        $tags = Tag::where('course_id', $course->id)
-            ->selectRaw('tags.id, course_id, name, count(card_tag.tag_id) as cards_count')
-            ->leftJoin('card_tag', 'tags.id', '=', 'card_tag.tag_id')
-            ->groupBy('tags.id', 'course_id', 'name')
-            ->orderBy($tagOrder, $tagDirection)
-            ->orderBy('name', 'asc')
-            ->orderBy('cards_count', 'asc')
-            ->get();
-
-        // Get inversed order values for each columns (for url generation).
-        $tagColumns = array_merge(
-            array_fill_keys(['name', 'cards_count'], 'desc'),
-            [
-                $tagOrder => ['asc' => 'desc', 'desc' => 'asc'][$tagDirection],
-            ],
-        );
-
-        if (Auth::user()->admin) {
-            $clonableCourses = Course::all();
-        } else {
-            $clonableCourses = Auth::user()->enrollmentsAsTeacher()->map(
-                function ($enrollment) {
-                    return $enrollment->course;
-                }
-            );
-        }
 
         return view('courses.configure', [
             'course' => $course,
@@ -217,9 +184,6 @@ class CourseController extends Controller
             'usersAsTeacher' => $course->teachers(),
             'studentRole' => EnrollmentRole::Student,
             'usersAsStudent' => $course->students(),
-            'clonableCourses' => $clonableCourses,
-            'tags' => $tags,
-            'tagColumns' => $tagColumns,
         ]);
     }
 

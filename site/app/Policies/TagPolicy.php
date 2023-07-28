@@ -11,6 +11,19 @@ class TagPolicy
     /**
      * Determine whether the user can create models.
      */
+    public function viewInCourseConfiguration(User $user, Course $course): bool
+    {
+        // Only admins & teachers can view a tag.
+        if ($user->isTeacher($course)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can create models.
+     */
     public function create(User $user, Course $course): bool
     {
         // Only admins & teachers can update a tag.

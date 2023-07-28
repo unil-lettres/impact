@@ -3,6 +3,9 @@
         <li class="nav-item {{ Route::is('courses.configure') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('courses.configure', $course->id) }}">{{ trans('courses.configuration') }}</a>
         </li>
+        <li class="nav-item {{ Route::is('courses.configure.tags*') ? 'active' : '' }}">
+            <a class="nav-link" href="{{ route('courses.configure.tags', $course->id) }}">{{ trans('courses.tags') }}</a>
+        </li>
         <li class="nav-item {{ Route::is('courses.configure.files*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('courses.configure.files', $course->id) }}">{{ trans('files.files') }}</a>
         </li>

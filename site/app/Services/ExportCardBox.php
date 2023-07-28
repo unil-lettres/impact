@@ -112,16 +112,16 @@ class ExportCardBox
         ];
 
         $table = $section->addTable($tableStyle);
-        foreach ($data['data'] as $row) {
+        foreach ($data['icor'] as $row) {
             $table->addRow();
 
             $number = $row['number'] ? strval($row['number']) : '';
             $table->addCell(400)->addText($number, $fontStyleName);
 
-            $speaker = $row['speaker'] ? $row['speaker'] : '';
+            $speaker = $row['speaker'] ?: '';
             $table->addCell(500)->addText($speaker, $fontStyleName);
 
-            $speech = $row['speech'] ? $row['speech'] : '';
+            $speech = $row['speech'] ?: '';
             $cell = $table->addCell(8000);
             $lines = explode('<br />', $speech);
             foreach ($lines as $line) {

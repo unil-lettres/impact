@@ -3,9 +3,8 @@
 namespace Tests\Feature;
 
 use App\Course;
-use App\User;
 use App\Tag;
-use App\Card;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -15,24 +14,10 @@ class TagTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->handleValidationExceptions();
-    }
-
-    public function tearDown(): void
-    {
-        parent::tearDown();
-
-        $this->withoutExceptionHandling();
-    }
-
     /**
      * A basic feature test example.
      */
-    public function test_crud_tag(): void
+    public function testCrudTag(): void
     {
         $admin = User::factory()->admin()->create();
 
@@ -48,7 +33,8 @@ class TagTest extends TestCase
         // Create with error
         $newTag = ['course_id' => $course->id, 'name' => 'inv@l1de n@m3'];
 
-        $this->actingAs($admin)
+        $this->withExceptionHandling()
+            ->actingAs($admin)
             ->post('/tags', $newTag)
             ->assertSessionHasErrors(['name']);
 
@@ -61,7 +47,8 @@ class TagTest extends TestCase
         $this->assertDatabaseHas('tags', $updatedTag);
 
         // Update with error
-        $this->actingAs($admin)
+        $this->withExceptionHandling()
+            ->actingAs($admin)
             ->put("/tags/$tagId", ['name' => 'inv@l1de n@m3'])
             ->assertSessionHasErrors(['name']);
 
@@ -70,7 +57,7 @@ class TagTest extends TestCase
         $this->assertDatabaseMissing('tags', ['id' => $tagId]);
     }
 
-    public function test_clone_tag(): void
+    public function testCloneTag(): void
     {
         $admin = User::factory()->admin()->create();
 
@@ -88,7 +75,7 @@ class TagTest extends TestCase
         );
     }
 
-    public function test_link_tag() : void
+    public function testLinkTag(): void
     {
         $admin = User::factory()->admin()->create();
 
@@ -108,7 +95,7 @@ class TagTest extends TestCase
         );
 
         // Create with error
-        $response = $this->actingAs($admin)->put(
+        $response = $this->withExceptionHandling()->actingAs($admin)->put(
             "/cards/$card->id/createTag", ['name' => 'inv@l1de n@m3']
         );
 
@@ -131,5 +118,37 @@ class TagTest extends TestCase
             'card_tag',
             ['tag_id' => $tagId, 'card_id' => $card->id],
         );
+    }
+
+    public function testOrderTags()
+    {
+        $admin = User::factory()->admin()->create();
+
+        $course = Course::factory()->hasTags(
+            3,
+            // We need to be sure that tag names are not interferring with other
+            // words in the page.
+            ['name' => fn () => fake()->uuid()],
+        )->hasCards(5)->create();
+
+        // Here we link some tags to the cards, so we can test the order.
+        $course->tags->first()->cards()->attach(
+            $course->cards->pluck('id')->toArray(),
+        );
+        // We use slice to link more or less tags to the cards to order by
+        // cards_count afterward.
+        $course->tags->get(1)->cards()->attach(
+            $course->cards->slice(1)->pluck('id')->toArray(),
+        );
+        $course->tags->last()->cards()->attach(
+            $course->cards->slice(3)->pluck('id')->toArray(),
+        );
+
+        $response = $this->actingAs($admin)->get(
+            "/courses/$course->id/configure?tag_order=cards_count&tag_direction=asc",
+        );
+        $response->assertSeeInOrder($course->tags->sortBy(
+            fn ($tag) => $tag->cards->count()
+        )->pluck('name')->toArray());
     }
 }

@@ -4,10 +4,10 @@ namespace Tests\Browser;
 
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
-use Laravel\Dusk\Concerns\ProvidesBrowser;
 use Laravel\Dusk\Browser;
-use Tests\DuskTestCase;
+use Laravel\Dusk\Concerns\ProvidesBrowser;
 use Tests\Browser\Pages\Login;
+use Tests\DuskTestCase;
 
 class TagTest extends DuskTestCase
 {
@@ -64,7 +64,7 @@ class TagTest extends DuskTestCase
             // Delete
             $browser->press('[data-bs-original-title="Supprimer l\'étiquette"]')
                 ->waitForDialog()
-                ->assertDialogOpened("Êtes-vous sûr de vouloir supprimer cet élément ?")
+                ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
                 ->acceptDialog()
                 ->waitForText('Étiquette supprimée.')
                 ->assertPathIs('/courses/1/configure')
@@ -80,17 +80,43 @@ class TagTest extends DuskTestCase
 
             $browser->visit('/courses/1/configure');
 
-            $browser->press("Reprendre les étiquettes")
-                ->select('course_id', 'Second space')
-                ->press('Reprendre')
+            $browser->press('Reprendre les étiquettes')
+                ->select('course_id', '2')
+                ->waitUntilEnabled('#collapseCloneTags button[type="submit"]')
+                ->press('#collapseCloneTags button[type="submit"]')
                 ->waitForText('Étiquettes reprises.')
                 ->assertPathIs('/courses/1/configure')
                 ->assertSee('Test_tag_second_course')
-                ->press("Reprendre les étiquettes")
-                ->select('course_id', 'Second space')
-                ->press('Reprendre')
+                ->press('Reprendre les étiquettes')
+                ->select('course_id', '2')
+                ->waitUntilEnabled('#collapseCloneTags button[type="submit"]')
+                ->press('#collapseCloneTags button[type="submit"]')
                 ->waitForText('Toutes les étiquettes existent déjà dans cet espace.');
+        });
+    }
 
+    public function testTagFromCard(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->visit('/cards/4/edit');
+
+            $newTag = fake()->word();
+
+            // The selector "...select-2" is relative to the number of
+            // react-select present in the page.
+            $browser->type('#react-select-2-input', $newTag)
+                ->waitForText("Créer \"$newTag\"")
+                // The selector "...option-2" is relative to the number of tags
+                // present in the list.
+                ->click('#react-select-2-option-2')
+                ->waitForText('No options')
+                ->waitForText($newTag)
+                ->click("[aria-label='Remove $newTag']")
+                ->waitUntilMissingText('No options')
+                ->assertSee($newTag);
         });
     }
 }

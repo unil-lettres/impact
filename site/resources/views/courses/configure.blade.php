@@ -323,7 +323,7 @@
                     editTagModalSubmit.disabled = !name || name.toLowerCase() === placeholder.toLowerCase();
                 });
 
-                collapseCloneTagsSelect.addEventListener('input', event => {
+                collapseCloneTagsSelect.addEventListener('change', event => {
                     collapseCloneTagsSubmit.disabled = !event.target.value;
                 });
             })();

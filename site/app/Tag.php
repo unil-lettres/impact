@@ -22,7 +22,7 @@ class Tag extends Model
      */
     public function cards(): BelongsToMany
     {
-        return $this->belongsToMany(Card::class)->orderBy('name');
+        return $this->belongsToMany(Card::class);
     }
 
     /**

@@ -14,6 +14,5 @@ return [
     'clone_tags_label' => 'Retrieve the tags',
     'clone_tags_help' => 'You can retrieve the tags from another space into this one. The pages will not be modified, only the tags from the chosen space will be retrieved and, therefore, visible in the list of tags.',
     'clone_tags_action' => 'Retrieve',
-    'clone_tags_courses_list' => 'Select the space from which the tags will be retrieved',
 
 ];

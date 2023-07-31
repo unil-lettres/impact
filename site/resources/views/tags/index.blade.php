@@ -74,7 +74,7 @@
                                                 class="btn btn-primary"
                                                 data-bs-toggle="modal"
                                                 data-bs-name="{{ $tag->name }}"
-                                                data-bs-action="{{ route('tags.update', ['tag' => $tag->id]) }}"
+                                                data-bs-action="{{ route('tags.update', $tag->id) }}"
                                                 data-bs-target="#editTagModal"
                                             >
                                                 <i class="far fa-edit"></i>
@@ -115,7 +115,7 @@
                     </span>
                 </div>
                 <div class="card-body">
-                    <div id="cloneTags">
+                    <div>
                         <p>
                             {{ trans('tags.clone_tags_help') }}
                         </p>
@@ -124,19 +124,16 @@
                             @csrf
                             <div class="col-12 flex-fill">
                                 <select name="course_id" class="form-select" aria-label="Courses tags source">
-                                    <option value="" selected>
-                                        {{ trans('tags.clone_tags_courses_list') }}
-                                    </option>
                                     @foreach ($clonableCourses as $fromCourse)
-                                    @continue($course->id === $fromCourse->id)
-                                    <option value="{{ $fromCourse->id }}">
-                                        {{ $fromCourse->name }}
-                                    </option>
+                                        @continue($course->id === $fromCourse->id)
+                                        <option value="{{ $fromCourse->id }}">
+                                            {{ $fromCourse->name }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="col-12 align-end">
-                                <button type="submit" class="btn btn-primary w-100" disabled>
+                                <button type="submit" class="btn btn-primary w-100">
                                     {{ trans('tags.clone_tags_action') }}
                                 </button>
                             </div>
@@ -157,6 +154,7 @@
                 <form method="post">
                     @method('PUT')
                     @csrf
+                    <input type="hidden" name="course_id" value="{{ $course->id }}" />
                     <div class="modal-body">
                         <input name="name" type="text" class="form-control" autocomplete="off">
                     </div>
@@ -164,7 +162,7 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                             {{ trans('tags.modal_close') }}
                         </button>
-                        <button type="submit" class="btn btn-primary" disabled>
+                        <button type="submit" class="btn btn-primary">
                             {{ trans('tags.edit_modal_apply') }}
                         </button>
                     </div>
@@ -190,7 +188,7 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                             {{ trans('tags.modal_close') }}
                         </button>
-                        <button type="submit" class="btn btn-primary" disabled>
+                        <button type="submit" class="btn btn-primary">
                             {{ trans('tags.create_modal_apply') }}
                         </button>
                     </div>
@@ -202,51 +200,31 @@
 @once
 <script>
     (function() {
-        const createTagModal = document.getElementById('createTagModal');
-        const createTagModalInput = createTagModal.querySelector('.modal-body input[name="name"]');
-        const createTagModalSubmit = createTagModal.querySelector('.modal-footer .btn-primary');
-        const editTagModal = document.getElementById('editTagModal');
-        const editTagModalForm = editTagModal.querySelector('form');
-        const editTagModalInput = editTagModal.querySelector('.modal-body input[name="name"]');
-        const editTagModalSubmit = editTagModal.querySelector('.modal-footer .btn-primary');
-        const cloneTags = document.getElementById('cloneTags');
-        const cloneTagsSelect = cloneTags.querySelector('select');
-        const cloneTagsSubmit = cloneTags.querySelector('.btn-primary');
-
-        createTagModal.addEventListener('shown.bs.modal', () => {
-            createTagModalInput.select();
-        });
-
-        editTagModal.addEventListener('shown.bs.modal', () => {
-            editTagModalInput.select();
-        });
-
-        createTagModal.addEventListener('input', event => {
-            createTagModalSubmit.disabled = !event.target.value;
-        });
-
-        editTagModal.addEventListener('show.bs.modal', event => {
-            const button = event.relatedTarget;
-            const name = button.getAttribute('data-bs-name');
-            const formAction = button.getAttribute('data-bs-action');
-
-            editTagModalInput.placeholder = name;
-            editTagModalInput.value = name;
-            editTagModalForm.action = formAction;
-        });
-
-        editTagModalInput.addEventListener('input', event => {
-            const name = event.target.value;
-            const placeholder = event.target.placeholder;
-
-            editTagModalSubmit.disabled = (
-                !name || name.toLowerCase() === placeholder.toLowerCase()
+        function attachShownEvent(element) {
+            element.addEventListener(
+                'shown.bs.modal',
+                (evt) => evt.target.querySelector('input[name="name"]').select(),
             );
+        }
+
+        const editTagModal = document.getElementById('editTagModal');
+
+        attachShownEvent(document.getElementById('createTagModal'));
+        attachShownEvent(editTagModal);
+
+        editTagModal.addEventListener('show.bs.modal', evt => {
+            const { relatedTarget, target } = evt;
+            const name = relatedTarget.getAttribute('data-bs-name');
+            const formAction = relatedTarget.getAttribute('data-bs-action');
+
+            Object.assign(target.querySelector('input[name="name"]'), {
+                placeholder: name,
+                value: name,
+            });
+
+            target.querySelector('form').action = formAction;
         });
 
-        cloneTagsSelect.addEventListener('change', event => {
-            cloneTagsSubmit.disabled = !event.target.value;
-        });
     })();
 </script>
 @endonce

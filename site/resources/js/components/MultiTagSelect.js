@@ -57,11 +57,15 @@ export default class MultiTagSelect extends Component {
     }
 
     handleCreate = (inputValue) => {
-        const cardId = this.state.record.id;
+        const cardId = this.state.record.id,
+              courseId = this.state.record.id;
 
         this.setState({ isLoading: true });
         axios
-            .put(`/cards/${cardId}/createTag`, { name: inputValue })
+            .put(
+                `/cards/${cardId}/createTag`,
+                { name: inputValue, course_id: courseId }
+            )
             .then((response) => {
                 console.log(response);
 

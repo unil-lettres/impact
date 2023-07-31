@@ -20,6 +20,7 @@ class UpdateTag extends StoreTag
     public function rules(): array
     {
         return [
+            'course_id' => parent::rules()['course_id'],
             'name' => parent::rules()['name'],
         ];
     }

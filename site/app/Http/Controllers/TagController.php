@@ -81,7 +81,7 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateTag $request, Tag $tag)
+    public function update(Tag $tag, UpdateTag $request)
     {
         $this->authorize('update', $tag);
 

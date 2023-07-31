@@ -45,7 +45,7 @@ class TagTest extends DuskTestCase
 
             // Create
             $tagName = fake()->word();
-            $browser->press("Ajouter une étiquette")
+            $browser->press('Ajouter une étiquette')
                 ->waitForText('Annuler')
                 ->type('#createTagModal [name="name"]', $tagName)
                 ->press('#createTagModal [type="submit"]')
@@ -56,7 +56,7 @@ class TagTest extends DuskTestCase
             // Update
             $newTagName = fake()->word();
             $browser->press("[data-bs-name='$tagName']")
-                ->waitForText("Modifier")
+                ->waitForText('Modifier')
                 ->type('#editTagModal [name="name"]', $newTagName)
                 ->press('Modifier')
                 ->waitForText('Étiquette renommée.')

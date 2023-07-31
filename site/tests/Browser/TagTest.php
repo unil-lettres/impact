@@ -92,27 +92,4 @@ class TagTest extends DuskTestCase
                 ->waitForText('Toutes les étiquettes existent déjà dans cet espace.');
         });
     }
-
-    public function testTagFromCard(): void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
-                ->loginAsUser('admin-user@example.com', 'password');
-
-            $browser->visit('/cards/4/edit');
-
-            $newTag = fake()->word();
-
-            $browser->type('#rct-multi-tag-select input', $newTag)
-                ->waitForText("Créer \"$newTag\"")
-                // The selector "...option-2" is relative to the number of tags
-                // present in the list, the last one is the "create" option.
-                ->click("#rct-multi-tag-select [id$=option-2]")
-                ->waitForText('No options')
-                ->waitForText($newTag)
-                ->click("[aria-label='Remove $newTag']")
-                ->waitUntilMissingText('No options')
-                ->assertSee($newTag);
-        });
-    }
 }

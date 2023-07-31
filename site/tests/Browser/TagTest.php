@@ -105,13 +105,11 @@ class TagTest extends DuskTestCase
 
             $newTag = fake()->word();
 
-            // The selector "...select-2" is relative to the number of
-            // react-select present in the page.
-            $browser->type('#react-select-2-input', $newTag)
+            $browser->type('#rct-multi-tag-select input', $newTag)
                 ->waitForText("Créer \"$newTag\"")
                 // The selector "...option-2" is relative to the number of tags
-                // present in the list.
-                ->click('#react-select-2-option-2')
+                // present in the list, the last one is the "create" option.
+                ->click("#rct-multi-tag-select [id$=option-2]")
                 ->waitForText('No options')
                 ->waitForText($newTag)
                 ->click("[aria-label='Remove $newTag']")

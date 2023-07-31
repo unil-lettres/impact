@@ -22,7 +22,6 @@ return [
     'configuration' => 'Configuration',
     'type' => 'Type',
     'tags' => 'Tags',
-    'tags.help' => 'The following tags are available. You can add, rename or delete a tag.',
     'transcription.type' => 'Transcription type',
     'transcription.type.help' => 'You can choose the type of transcription used for box 2: either a standard text editor or a specific editor for transcriptions supporting the ICOR format. All records in the space will have the same editor.',
     'external' => 'External',

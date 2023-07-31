@@ -83,13 +83,11 @@ class TagTest extends DuskTestCase
             $browser->visit('/courses/1/configure/tags');
 
             $browser->select('course_id', '2')
-                // ->press('#collapseCloneTags button[type="submit"]')
                 ->press('Reprendre')
                 ->waitForText('Étiquettes reprises.')
                 ->assertPathIs('/courses/1/configure/tags')
                 ->assertSee('Test_tag_second_course')
                 ->select('course_id', '2')
-                // ->waitUntilEnabled('#collapseCloneTags button[type="submit"]')
                 ->press('Reprendre')
                 ->waitForText('Toutes les étiquettes existent déjà dans cet espace.');
         });

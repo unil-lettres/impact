@@ -25,6 +25,19 @@
         @endcan
         <hr>
     @endsection
+    @if ($errors->any())
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-danger">
+                    <ul class="mb-0">
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+        </div>
+    @endif
     <div class="row">
         <div class="col-md-12 col-lg-{{ empty($clonableCourses) ? '12' : '8'}}">
             <div class="card">

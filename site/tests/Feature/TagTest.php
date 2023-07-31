@@ -84,7 +84,8 @@ class TagTest extends TestCase
 
         // Create
         $response = $this->actingAs($admin)->put(
-            "/cards/$card->id/createTag", ['name' => fake()->word()]
+            "/cards/$card->id/createTag",
+            ['name' => fake()->word(), 'course_id' => $course->id]
         );
 
         $tagId = $response['tag_id'];
@@ -95,9 +96,10 @@ class TagTest extends TestCase
         );
 
         // Create with error
-        $response = $this->withExceptionHandling()->actingAs($admin)->put(
-            "/cards/$card->id/createTag", ['name' => 'inv@l1de n@m3']
-        );
+        $this->withExceptionHandling()->actingAs($admin)->put(
+            "/cards/$card->id/createTag",
+            ['name' => 'inv@l1de n@m3', 'course_id' => $course->id]
+        )->assertSessionHasErrors(['name']);
 
         // Unlink
         $response = $this->actingAs($admin)->put(
@@ -145,7 +147,7 @@ class TagTest extends TestCase
         );
 
         $response = $this->actingAs($admin)->get(
-            "/courses/$course->id/configure?tag_order=cards_count&tag_direction=asc",
+            "/courses/$course->id/configure/tags?tag_order=cards_count&tag_direction=asc",
         );
         $response->assertSeeInOrder($course->tags->sortBy(
             fn ($tag) => $tag->cards->count()

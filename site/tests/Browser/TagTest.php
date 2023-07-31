@@ -41,24 +41,26 @@ class TagTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/courses/1/configure');
+            $browser->visit('/courses/1/configure/tags');
 
             // Create
             $tagName = fake()->word();
-            $browser->type('name', $tagName)
-                ->press("Ajouter l'étiquette")
+            $browser->press("Ajouter une étiquette")
+                ->waitForText('Annuler')
+                ->type('#createTagModal [name="name"]', $tagName)
+                ->press('#createTagModal [type="submit"]')
                 ->waitForText('Étiquette créée.')
-                ->assertPathIs('/courses/1/configure')
+                ->assertPathIs('/courses/1/configure/tags')
                 ->assertSee($tagName);
 
             // Update
             $newTagName = fake()->word();
             $browser->press("[data-bs-name='$tagName']")
-                ->waitForText("Renommer l'étiquette")
-                ->type('.modal-dialog [name="name"]', $newTagName)
-                ->press('Enregistrer')
+                ->waitForText("Modifier")
+                ->type('#editTagModal [name="name"]', $newTagName)
+                ->press('Modifier')
                 ->waitForText('Étiquette renommée.')
-                ->assertPathIs('/courses/1/configure')
+                ->assertPathIs('/courses/1/configure/tags')
                 ->assertSee($newTagName);
 
             // Delete
@@ -67,7 +69,7 @@ class TagTest extends DuskTestCase
                 ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
                 ->acceptDialog()
                 ->waitForText('Étiquette supprimée.')
-                ->assertPathIs('/courses/1/configure')
+                ->assertPathIs('/courses/1/configure/tags')
                 ->assertDontSee($newTagName);
         });
     }
@@ -78,19 +80,17 @@ class TagTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/courses/1/configure');
+            $browser->visit('/courses/1/configure/tags');
 
-            $browser->press('Reprendre les étiquettes')
-                ->select('course_id', '2')
-                ->waitUntilEnabled('#collapseCloneTags button[type="submit"]')
-                ->press('#collapseCloneTags button[type="submit"]')
+            $browser->select('course_id', '2')
+                // ->press('#collapseCloneTags button[type="submit"]')
+                ->press('Reprendre')
                 ->waitForText('Étiquettes reprises.')
-                ->assertPathIs('/courses/1/configure')
+                ->assertPathIs('/courses/1/configure/tags')
                 ->assertSee('Test_tag_second_course')
-                ->press('Reprendre les étiquettes')
                 ->select('course_id', '2')
-                ->waitUntilEnabled('#collapseCloneTags button[type="submit"]')
-                ->press('#collapseCloneTags button[type="submit"]')
+                // ->waitUntilEnabled('#collapseCloneTags button[type="submit"]')
+                ->press('Reprendre')
                 ->waitForText('Toutes les étiquettes existent déjà dans cet espace.');
         });
     }

@@ -250,4 +250,52 @@ class CardTest extends DuskTestCase
                 ->assertDontSee('Is it canceled ?');
         });
     }
+
+    /**
+     * Test changing the transcription type.
+     *
+     * @return void
+     *
+     * @throws Throwable
+     */
+    public function testChangeTranscriptionType()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->assertSee('Second space')
+                ->clickLink('Second space')
+                ->assertSee('Test card features')
+                ->clickLink('Test card features');
+
+            $browser->click('#edit-box2')
+                ->assertSee('Annuler')
+                ->assertSee('Sauver')
+                ->assertSee('Effacer texte')
+                ->assertPresent('#rct-transcription')
+                ->assertNotPresent('#rct-editor-box2');
+
+            $browser->assertSee('Second space')
+                ->clickLink('Second space')
+                ->clickLink('Configuration de l\'espace')
+                ->assertSee('Type de transcription');
+
+            $browser->select('type', 'text')
+                ->press('Mettre à jour la configuration')
+                ->assertSee('Configuration de l\'espace mise à jour.');
+
+            $browser->assertSee('Second space')
+                ->clickLink('Second space')
+                ->assertSee('Test card features')
+                ->clickLink('Test card features');
+
+            $browser->click('#edit-box2')
+                ->assertSee('Annuler')
+                ->assertSee('Sauver')
+                ->assertDontSee('Effacer texte')
+                ->assertPresent('#rct-editor-box2')
+                ->assertNotPresent('#rct-transcription');
+        });
+    }
 }

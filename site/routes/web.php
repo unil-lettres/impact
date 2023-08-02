@@ -94,16 +94,18 @@ Route::middleware(['auth', 'app'])->group(function () {
     // Courses
     Route::get('courses/{course}', [CourseController::class, 'show'])
         ->name('courses.show');
-    Route::get('courses/{course}/configure', [CourseController::class, 'configure'])
+    Route::get('courses/{course}/configure', [CourseController::class, 'editConfiguration'])
         ->name('courses.configure');
+    Route::put('courses/{course}/configure', [CourseController::class, 'updateConfiguration'])
+        ->name('courses.configure.update');
     Route::put('/courses/{course}/archive', [CourseController::class, 'archive'])
         ->name('courses.archive');
     Route::delete('/courses/{course}/disable', [CourseController::class, 'disable'])
         ->name('courses.disable');
-    Route::put('courses/{course}/configure/transcription', [CourseController::class, 'transcription'])
-        ->name('courses.configure.transcription');
     Route::get('courses/{course}/configure/files', [FileController::class, 'index'])
         ->name('courses.configure.files');
+    Route::get('courses/{course}/configure/registrations', [UserController::class, 'index'])
+        ->name('courses.configure.registrations');
     Route::get('courses/{course}/configure/states', [StateController::class, 'index'])
         ->name('courses.configure.states');
     Route::post('courses/{course}/state', [StateController::class, 'store'])

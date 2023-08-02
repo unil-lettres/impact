@@ -22,7 +22,7 @@
                     </a>
                 @endcan
 
-                @can('configure', $course)
+                @can('editConfiguration', $course)
                     <a href="{{ route('courses.configure', $course->id) }}"
                        class="btn btn-primary float-end me-1">
                         {{ trans('courses.configure') }}

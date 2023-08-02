@@ -83,13 +83,28 @@ class CoursePolicy
     }
 
     /**
-     * Determine whether the user can configure the parameters of the course.
+     * Determine whether the user can edit the configuration of the course.
      *
      * @return mixed
      */
-    public function configure(User $user, Course $course)
+    public function editConfiguration(User $user, Course $course)
     {
         // Only admins & teachers can configure courses
+        if ($user->isTeacher($course)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can update the configuration of the course.
+     *
+     * @return mixed
+     */
+    public function updateConfiguration(User $user, Course $course)
+    {
+        // Only admins & teachers can update the configuration of the course
         if ($user->isTeacher($course)) {
             return true;
         }
@@ -168,21 +183,6 @@ class CoursePolicy
     public function mailConfirmDelete(User $user, Course $course)
     {
         // Only admins can send the mail to confirm the deletion of the course
-        return false;
-    }
-
-    /**
-     * Determine whether the user can update the transcription type of the course.
-     *
-     * @return mixed
-     */
-    public function transcription(User $user, Course $course)
-    {
-        // Only admins & teachers can update the transcription type of the course
-        if ($user->isTeacher($course)) {
-            return true;
-        }
-
         return false;
     }
 }

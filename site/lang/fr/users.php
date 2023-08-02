@@ -21,5 +21,6 @@ return [
     'password.new' => 'Nouveau mot de passe',
     'password.confirm' => 'Confirmer le mot de passe',
     'update' => 'Mettre à jour le compte',
+    'registrations' => 'Inscriptions',
 
 ];

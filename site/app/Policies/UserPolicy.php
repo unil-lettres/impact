@@ -2,6 +2,8 @@
 
 namespace App\Policies;
 
+use App\Course;
+use App\Enums\CourseType;
 use App\Enums\UserType;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -15,9 +17,26 @@ class UserPolicy
      *
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user, Course $course)
     {
         if ($user->admin) {
+            return true;
+        }
+
+        // The listing of the registered users cannot be viewed
+        // if not within a course
+        if (! $course) {
+            return false;
+        }
+
+        // The listing of the registered users cannot be viewed
+        // if the course is has an external type
+        if ($course->type === CourseType::External) {
+            return false;
+        }
+
+        // Only the teachers of the course can view the listing of the registered users
+        if ($user->isTeacher($course)) {
             return true;
         }
 

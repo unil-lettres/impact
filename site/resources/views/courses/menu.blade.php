@@ -3,7 +3,7 @@
         <li class="nav-item {{ Route::is('courses.configure') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('courses.configure', $course->id) }}">{{ trans('courses.configuration') }}</a>
         </li>
-        @can('viewInCourseConfiguration', [\App\Tag::class, $course])
+        @can('viewAny', [\App\Tag::class, $course])
         <li class="nav-item {{ Route::is('courses.configure.tags*') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('courses.configure.tags', $course->id) }}">{{ trans('courses.tags') }}</a>
         </li>

@@ -20,7 +20,7 @@ class TagController extends Controller
      */
     public function index(Course $course, IndexTag $request)
     {
-        $this->authorize('viewInCourseConfiguration', [Tag::class, $course]);
+        $this->authorize('viewAny', [Tag::class, $course]);
 
         $tagOrder = $request->get('tag_order') ?? 'name';
         $tagDirection = $request->get('tag_direction') ?? 'asc';

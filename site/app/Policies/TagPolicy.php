@@ -11,7 +11,7 @@ class TagPolicy
     /**
      * Determine whether the user can view models.
      */
-    public function viewInCourseConfiguration(User $user, Course $course): bool
+    public function viewAny(User $user, Course $course): bool
     {
         // Only admins & teachers can view a tag.
         if ($user->isTeacher($course)) {

@@ -172,7 +172,7 @@ class CoursePolicy
     }
 
     /**
-     * Determine whether the user can send the mail to confirm the deletion of the course.
+     * Determine whether the user can clone tags from a course to another course.
      *
      * @return mixed
      */

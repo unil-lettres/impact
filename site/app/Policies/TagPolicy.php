@@ -9,7 +9,7 @@ use App\User;
 class TagPolicy
 {
     /**
-     * Determine whether the user can create models.
+     * Determine whether the user can view models.
      */
     public function viewInCourseConfiguration(User $user, Course $course): bool
     {
@@ -26,7 +26,7 @@ class TagPolicy
      */
     public function create(User $user, Course $course): bool
     {
-        // Only admins & teachers can update a tag.
+        // Only admins & teachers can create a tag.
         if ($user->isTeacher($course)) {
             return true;
         }

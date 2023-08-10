@@ -197,7 +197,9 @@
         </div>
     </div>
 </div>
-@once
+@endsection
+
+@section('scripts-footer')
 <script>
     (function() {
         function attachShownEvent(element) {
@@ -227,5 +229,4 @@
 
     })();
 </script>
-@endonce
 @endsection

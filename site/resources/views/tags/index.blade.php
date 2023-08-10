@@ -39,7 +39,7 @@
         </div>
     @endif
     <div class="row">
-        <div class="col-md-12 col-lg-{{ empty($clonableCourses) ? '12' : '8'}}">
+        <div class="col-md-12 col-lg-{{ $clonableCourses->isEmpty() ? '12' : '8'}}">
             <div class="card">
                 <div class="card-body">
                     <table class="table">
@@ -106,7 +106,7 @@
             </div>
         </div>
 
-        @if(!empty($clonableCourses))
+        @if($clonableCourses->isNotEmpty())
         <div class="col-md-12 col-lg-4">
             <div class="card">
                 <div class="card-header">
@@ -125,7 +125,6 @@
                             <div class="col-12 flex-fill">
                                 <select name="course_id" class="form-select" aria-label="Courses tags source">
                                     @foreach ($clonableCourses as $fromCourse)
-                                        @continue($course->id === $fromCourse->id)
                                         <option value="{{ $fromCourse->id }}">
                                             {{ $fromCourse->name }}
                                         </option>

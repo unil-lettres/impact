@@ -42,15 +42,13 @@ class TagController extends Controller
             ],
         );
 
-        if (Auth::user()->admin) {
-            $clonableCourses = Course::all();
-        } else {
-            $clonableCourses = Auth::user()->enrollmentsAsTeacher()->map(
-                function ($enrollment) {
-                    return $enrollment->course;
-                }
-            );
-        }
+        $clonableCourses = match (Auth::user()->admin) {
+            true => Course::all(),
+            default => Auth::user()
+                ->enrollmentsAsTeacher()
+                ->filter(fn ($enrollment) => $enrollment->course->id !== $course->id)
+                ->map(fn ($enrollment) => $enrollment->course),
+        };
 
         return view('tags.index', [
             'course' => $course,

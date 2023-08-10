@@ -4,27 +4,29 @@
 @include('courses.menu')
 @endsection
 
+@section('title')
+    {{ trans('courses.tags') }} <span class="badge bg-secondary">{{ $tags->count() }}</span>
+@endsection
+
+@section('actions')
+    @can('create', [\App\Tag::class, $course])
+        <div class="float-end">
+            <button
+                type="submit"
+                class="btn btn-primary "
+                data-bs-toggle="modal"
+                data-bs-target="#createTagModal"
+            >
+                {{ trans('tags.create') }}
+            </button>
+        </div>
+        <div class="clearfix"></div>
+    @endcan
+    <hr>
+@endsection
+
 @section('content')
 <div id="tags">
-    @section('title')
-        {{ trans('courses.tags') }} <span class="badge bg-secondary">{{ $tags->count() }}</span>
-    @endsection
-    @section('actions')
-        @can('create', [\App\Tag::class, $course])
-            <div class="float-end">
-                <button
-                    type="submit"
-                    class="btn btn-primary "
-                    data-bs-toggle="modal"
-                    data-bs-target="#createTagModal"
-                >
-                    {{ trans('tags.create') }}
-                </button>
-            </div>
-            <div class="clearfix"></div>
-        @endcan
-        <hr>
-    @endsection
     @if ($errors->any())
         <div class="row">
             <div class="col">

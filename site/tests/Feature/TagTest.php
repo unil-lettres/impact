@@ -22,7 +22,7 @@ class TagTest extends TestCase
         $admin = User::factory()->admin()->create();
 
         $course = Course::factory()->create();
-        $tagName = fake()->word();
+        $tagName = "a_new_tag";
 
         // Create
         $newTag = ['course_id' => $course->id, 'name' => $tagName];
@@ -40,7 +40,7 @@ class TagTest extends TestCase
 
         // Update
         $tagId = Tag::where('name', $tagName)->first()->id;
-        $updatedTag = array_merge($newTag, ['name' => fake()->word()]);
+        $updatedTag = array_merge($newTag, ['name' => "updated_tag_name"]);
 
         $this->actingAs($admin)->put("/tags/$tagId", $updatedTag);
         $this->assertDatabaseMissing('tags', $newTag);
@@ -85,7 +85,7 @@ class TagTest extends TestCase
         // Create
         $response = $this->actingAs($admin)->put(
             "/cards/$card->id/createTag",
-            ['name' => fake()->word(), 'course_id' => $course->id]
+            ['name' => "a_new_tag", 'course_id' => $course->id]
         );
 
         $tagId = $response['tag_id'];

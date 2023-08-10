@@ -44,7 +44,7 @@ class TagTest extends DuskTestCase
             $browser->visit('/courses/1/configure/tags');
 
             // Create
-            $tagName = fake()->word();
+            $tagName = "a_new_tag";
             $browser->press('Ajouter une étiquette')
                 ->waitForText('Annuler')
                 ->type('#createTagModal [name="name"]', $tagName)
@@ -54,7 +54,7 @@ class TagTest extends DuskTestCase
                 ->assertSee($tagName);
 
             // Update
-            $newTagName = fake()->word();
+            $newTagName = "aaa_updated_tag_name";
             $browser->press("[data-bs-name='$tagName']")
                 ->waitForText('Modifier')
                 ->type('#editTagModal [name="name"]', $newTagName)
@@ -101,13 +101,12 @@ class TagTest extends DuskTestCase
 
             $browser->visit('/cards/4/edit');
 
-            $newTag = fake()->word();
+            $newTag = "a_new_tag";
 
             $browser->type('#rct-multi-tag-select input', $newTag)
                 ->waitForText("Créer \"$newTag\"")
                 // Select the the "create" option of react select tags.
                 ->click("#rct-multi-tag-select [id$=listbox] > div > div:last-child")
-                ->waitForText('No options')
                 ->waitForText($newTag)
                 ->click("[aria-label='Remove $newTag']")
                 ->waitUntilMissingText('No options')

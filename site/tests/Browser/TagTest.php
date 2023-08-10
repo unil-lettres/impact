@@ -2,7 +2,6 @@
 
 namespace Tests\Browser;
 
-use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
@@ -12,18 +11,12 @@ use Tests\DuskTestCase;
 class TagTest extends DuskTestCase
 {
     use ProvidesBrowser;
-    use WithFaker;
-
-    protected static bool $migrated = false;
 
     public function setUp(): void
     {
         parent::setUp();
 
-        if (! static::$migrated) {
-            Artisan::call('migrate:fresh --seed');
-            static::$migrated = true;
-        }
+        Artisan::call('migrate:fresh --seed');
     }
 
     public function tearDown(): void
@@ -107,6 +100,7 @@ class TagTest extends DuskTestCase
                 ->waitForText("Créer \"$newTag\"")
                 // Select the the "create" option of react select tags.
                 ->click("#rct-multi-tag-select [id$=listbox] > div > div:last-child")
+                ->waitForText('No options')
                 ->waitForText($newTag)
                 ->click("[aria-label='Remove $newTag']")
                 ->waitUntilMissingText('No options')

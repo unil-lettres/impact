@@ -8,7 +8,6 @@ use App\Http\Requests\IndexTag;
 use App\Http\Requests\StoreTag;
 use App\Http\Requests\UpdateTag;
 use App\Tag;
-use Illuminate\Support\Facades\Auth;
 
 class TagController extends Controller
 {
@@ -43,20 +42,10 @@ class TagController extends Controller
             ],
         );
 
-        $clonableCourses = match (Auth::user()->admin) {
-            true => Course::all(),
-            default => Auth::user()
-                ->enrollmentsAsTeacher()
-                ->map(fn ($enrollment) => $enrollment->course),
-        };
-
         return view('tags.index', [
             'course' => $course,
             'breadcrumbs' => $course
                 ->breadcrumbs(true),
-            'clonableCourses' => $clonableCourses->filter(
-                fn ($c) => $c->id !== $course->id
-            ),
             'tags' => $tags,
             'tagColumns' => $tagColumns,
         ]);

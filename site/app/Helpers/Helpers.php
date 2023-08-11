@@ -400,4 +400,20 @@ class Helpers
     {
         return ! $state->cards->isEmpty();
     }
+
+    /**
+     * Return a list of courses available as source to clone tags from.
+     *
+     * @param  int  $courseId The current course (that should be filtered from
+     * the returned collection).
+     */
+    public static function getAvailableCoursesToCloneTags(int $courseId): Collection
+    {
+        return (match (Auth::user()->admin) {
+            true => Course::all(),
+            default => Auth::user()
+                ->enrollmentsAsTeacher()
+                ->map(fn ($enrollment) => $enrollment->course),
+        })->filter(fn ($course) => $course->id !== $courseId);
+    }
 }

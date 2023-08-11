@@ -22,6 +22,7 @@
 @endcan
 
 @section('content')
+@php($clonableCourses = Helpers::getAvailableCoursesToCloneTags($course->id))
 <div id="tags">
     @if ($errors->any())
         <div class="row">

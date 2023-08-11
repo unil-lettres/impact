@@ -1,12 +1,12 @@
 @extends('layouts.app-admin')
 
+@section('title')
+    {{ trans('files.create') }}
+@endsection
+
 @section('admin.content')
     <div id="create-file">
         @can('create', \App\File::class)
-            @section('title')
-                {{ trans('files.create') }}
-            @endsection
-            <hr>
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>

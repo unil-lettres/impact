@@ -4,30 +4,28 @@
     @include('courses.menu')
 @endsection
 
-@section('content')
-    @can('viewAny', [\App\State::class, $course])
-        <div id="states">
-            @section('title')
-                {{ trans('states.states') }}
-            @endsection
-            @section('actions')
-                @can('create', [\App\State::class, $course])
-                    <span class="float-end">
-                        <form class="d-inline"
-                              method="post"
-                              action="{{ route('courses.create.state', $course->id) }}">
-                            @method('POST')
-                            @csrf
-                            <button type="submit"
-                                    class="btn btn-primary">
-                                {{ trans('states.add') }}
-                            </button>
-                        </form>
-                    </span>
-                @endcan
-            @endsection
-            <hr>
+@section('title')
+    {{ trans('states.states') }}
+@endsection
 
+
+@can('viewAny', [\App\State::class, $course])
+    @can('create', [\App\State::class, $course])
+        @section('actions')
+            <form class="d-inline"
+                    method="post"
+                    action="{{ route('courses.create.state', $course->id) }}">
+                @method('POST')
+                @csrf
+                <button type="submit"
+                        class="btn btn-primary">
+                    {{ trans('states.add') }}
+                </button>
+            </form>
+        @endsection
+    @endcan
+    @section('content')
+        <div id="states">
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>
@@ -265,19 +263,19 @@
                 </div>
             </div>
         </div>
-    @endcan
-@endsection
+    @endsection
 
-@section('scripts-footer')
-    <script type="text/javascript">
-        function displayActionForm(selectObject) {
-            if (selectObject.value === "{{ \App\Enums\ActionType::None }}") {
-                $(".action-email:first").addClass('d-none');
-                $(".action-none:first").removeClass('d-none');
-            } else if (selectObject.value === "{{ \App\Enums\ActionType::Email }}") {
-                $(".action-email:first").removeClass('d-none');
-                $(".action-none:first").addClass('d-none');
+    @section('scripts-footer')
+        <script type="text/javascript">
+            function displayActionForm(selectObject) {
+                if (selectObject.value === "{{ \App\Enums\ActionType::None }}") {
+                    $(".action-email:first").addClass('d-none');
+                    $(".action-none:first").removeClass('d-none');
+                } else if (selectObject.value === "{{ \App\Enums\ActionType::Email }}") {
+                    $(".action-email:first").removeClass('d-none');
+                    $(".action-none:first").addClass('d-none');
+                }
             }
-        }
-    </script>
-@endsection
+        </script>
+    @endsection
+@endcan

@@ -1,25 +1,24 @@
 @extends('layouts.app-base')
 
-@section('content')
-    <div id="folder">
-        @can('view', $folder)
-            @section('title')
-                {{ $folder->title }}
-            @endsection
+@section('title')
+    {{ $folder->title }}
+@endsection
 
-            @section('actions')
-                @can('update', $folder)
-                    <a href="{{ route('folders.edit', $folder->id) }}"
-                       class="btn btn-primary float-end me-1">
-                        {{ trans('folders.edit') }}
-                    </a>
-                @endcan
-            @endsection
-            <hr>
+@can('view', $folder)
+    @can('update', $folder)
+        @section('actions')
+            <a href="{{ route('folders.edit', $folder->id) }}"
+                class="btn btn-primary">
+                {{ trans('folders.edit') }}
+            </a>
+        @endsection
+    @endcan
+    @section('content')
+        <div id="folder">
             <div>
                 @include('shared.folders')
                 @include('shared.cards')
             </div>
-        @endcan
-    </div>
-@endsection
+        </div>
+    @endsection
+@endcan

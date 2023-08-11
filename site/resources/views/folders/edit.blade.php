@@ -1,12 +1,12 @@
 @extends('layouts.app-base')
 
+@section('title')
+    {{ trans('folders.edit') }}
+@endsection
+
 @section('content')
     <div id="edit-folder">
         @can('update', $folder)
-            @section('title')
-                {{ trans('folders.edit') }}
-            @endsection
-            <hr>
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>

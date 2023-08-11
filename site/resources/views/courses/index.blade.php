@@ -1,11 +1,11 @@
 @extends('layouts.app-base')
 
+@section('title')
+    {{ trans('courses.list') }}
+@endsection
+
 @section('content')
     <div id="courses">
-        @section('title')
-            {{ trans('courses.list') }}
-        @endsection
-        <hr>
         <div>
             @unless ($courses->isEmpty())
                 <ul>

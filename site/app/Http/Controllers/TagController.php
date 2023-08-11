@@ -47,7 +47,6 @@ class TagController extends Controller
             true => Course::all(),
             default => Auth::user()
                 ->enrollmentsAsTeacher()
-                ->filter(fn ($enrollment) => $enrollment->course->id !== $course->id)
                 ->map(fn ($enrollment) => $enrollment->course),
         };
 
@@ -55,7 +54,9 @@ class TagController extends Controller
             'course' => $course,
             'breadcrumbs' => $course
                 ->breadcrumbs(true),
-            'clonableCourses' => $clonableCourses,
+            'clonableCourses' => $clonableCourses->filter(
+                fn ($c) => $c->id !== $course->id
+            ),
             'tags' => $tags,
             'tagColumns' => $tagColumns,
         ]);

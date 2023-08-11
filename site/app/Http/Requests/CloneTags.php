@@ -22,7 +22,8 @@ class CloneTags extends AbstractRequest
     public function rules()
     {
         return [
-            'course_id' => 'required|integer|exists:courses,id',
+            'course_id_from' => 'required|integer|exists:courses,id',
+            'course_id_to' => 'required|integer|exists:courses,id',
         ];
     }
 }

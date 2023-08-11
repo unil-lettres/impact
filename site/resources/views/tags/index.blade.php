@@ -117,11 +117,12 @@
                         <p>
                             {{ trans('tags.clone_tags_help') }}
                         </p>
-                        <form method="post" action="{{ route('courses.clone.tags', [$course->id]) }}" class="row row-cols-md-auto g-2 justify-content-end">
+                        <form method="post" action="{{ route('tags.clone') }}" class="row row-cols-md-auto g-2 justify-content-end">
                             @method('POST')
                             @csrf
+                            <input type="hidden" name="course_id_to" value="{{ $course->id }}" />
                             <div class="col-12 flex-fill">
-                                <select name="course_id" class="form-select" aria-label="Courses tags source">
+                                <select name="course_id_from" class="form-select" aria-label="Courses tags source">
                                     @foreach ($clonableCourses as $fromCourse)
                                         <option value="{{ $fromCourse->id }}">
                                             {{ $fromCourse->name }}

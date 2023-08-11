@@ -59,4 +59,19 @@ class TagPolicy
 
         return false;
     }
+
+    /**
+     * Determine whether the user can clone tags from a course to another course.
+     *
+     * @return mixed
+     */
+    public function clone(User $user, Course $fromCourse, Course $toCourse)
+    {
+        // Only admins & teachers can clone tags to another course.
+        if ($user->isTeacher($fromCourse) && $user->isTeacher($toCourse)) {
+            return true;
+        }
+
+        return false;
+    }
 }

@@ -65,7 +65,11 @@ class TagTest extends TestCase
         $courseTo = Course::factory()->create();
 
         $this->actingAs($admin)->post(
-            "/courses/$courseTo->id/cloneTags", ['course_id' => $courseFrom->id]
+            '/tags/clone',
+            [
+                'course_id_to' => $courseTo->id,
+                'course_id_from' => $courseFrom->id,
+            ]
         );
 
         $courseFrom->tags->each(

@@ -6,7 +6,6 @@ use App\Course;
 use App\Enums\CoursesFilter;
 use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
-use App\Http\Requests\CloneTags;
 use App\Http\Requests\DestroyCourse;
 use App\Http\Requests\DisableCourse;
 use App\Http\Requests\EnableCourse;
@@ -331,30 +330,5 @@ class CourseController extends Controller
                 ->where('type', CourseType::Local),
             default => $filters->withTrashed(),
         };
-    }
-
-    /**
-     * Clone all tags from a course and copy them into this one.
-     */
-    public function cloneTags(Course $course, CloneTags $request)
-    {
-        $courseFrom = Course::findOrFail($request->course_id);
-
-        $this->authorize('cloneTags', [$courseFrom, $course]);
-
-        $existingNames = $course->tags()->select('name')->get();
-        $tagsToCreate = $courseFrom->tags()->whereNotIn('name', $existingNames)->get();
-
-        if ($tagsToCreate->isEmpty()) {
-            return redirect()
-                ->back()
-                ->with('warning', trans('messages.tag.cloned.none'));
-        }
-
-        $course->tags()->createMany($tagsToCreate->toArray());
-
-        return redirect()
-            ->back()
-            ->with('success', trans('messages.tag.cloned'));
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Http\Requests\CloneTags;
 use App\Http\Requests\IndexTag;
 use App\Http\Requests\StoreTag;
 use App\Http\Requests\UpdateTag;
@@ -103,5 +104,31 @@ class TagController extends Controller
         return redirect()
             ->back()
             ->with('success', trans('messages.tag.deleted'));
+    }
+
+    /**
+     * Clone all tags from a course and copy them into this one.
+     */
+    public function clone(CloneTags $request)
+    {
+        $courseFrom = Course::findOrFail($request->course_id_from);
+        $courseTo = Course::findOrFail($request->course_id_to);
+
+        $this->authorize('clone', [Tag::class, $courseFrom, $courseTo]);
+
+        $existingNames = $courseTo->tags()->select('name')->get();
+        $tagsToCreate = $courseFrom->tags()->whereNotIn('name', $existingNames)->get();
+
+        if ($tagsToCreate->isEmpty()) {
+            return redirect()
+                ->back()
+                ->with('warning', trans('messages.tag.cloned.none'));
+        }
+
+        $courseTo->tags()->createMany($tagsToCreate->toArray());
+
+        return redirect()
+            ->back()
+            ->with('success', trans('messages.tag.cloned'));
     }
 }

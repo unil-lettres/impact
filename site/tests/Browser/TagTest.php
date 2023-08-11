@@ -15,7 +15,6 @@ class TagTest extends DuskTestCase
     public function setUp(): void
     {
         parent::setUp();
-
         Artisan::call('migrate:fresh --seed');
     }
 

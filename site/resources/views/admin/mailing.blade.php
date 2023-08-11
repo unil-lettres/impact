@@ -1,12 +1,11 @@
 @extends('layouts.app-admin')
 
+@section('title')
+    {{ trans('admin.mailing.title') }}
+@endsection
+
 @section('admin.content')
     <div id="mailing">
-        @section('title')
-            {{ trans('admin.mailing.title') }}
-        @endsection
-        <hr>
-
         <p>{{ trans('admin.mailing.description') }}</p>
 
         @if ($errors->any())

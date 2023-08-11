@@ -8,22 +8,18 @@
     {{ trans('courses.tags') }} <span class="badge bg-secondary">{{ $tags->count() }}</span>
 @endsection
 
-@section('actions')
-    @can('create', [\App\Tag::class, $course])
-        <div class="float-end">
-            <button
-                type="submit"
-                class="btn btn-primary "
-                data-bs-toggle="modal"
-                data-bs-target="#createTagModal"
-            >
-                {{ trans('tags.create') }}
-            </button>
-        </div>
-        <div class="clearfix"></div>
-    @endcan
-    <hr>
-@endsection
+@can('create', [\App\Tag::class, $course])
+    @section('actions')
+        <button
+            type="submit"
+            class="btn btn-primary "
+            data-bs-toggle="modal"
+            data-bs-target="#createTagModal"
+        >
+            {{ trans('tags.create') }}
+        </button>
+    @endsection
+@endcan
 
 @section('content')
 <div id="tags">

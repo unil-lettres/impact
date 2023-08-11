@@ -1,12 +1,12 @@
 @extends('layouts.app-base')
 
+@section('title')
+    {{ trans('cards.create') }}
+@endsection
+
 @section('content')
     <div id="create-card">
         @can('create', [\App\Card::class, $course])
-            @section('title')
-                {{ trans('cards.create') }}
-            @endsection
-            <hr>
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>

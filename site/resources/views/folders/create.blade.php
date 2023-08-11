@@ -1,12 +1,12 @@
 @extends('layouts.app-base')
 
+@section('title')
+    {{ trans('folders.create') }}
+@endsection
+
 @section('content')
     <div id="create-folder">
         @can('create', [\App\Folder::class, $course])
-            @section('title')
-                {{ trans('folders.create') }}
-            @endsection
-            <hr>
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul>

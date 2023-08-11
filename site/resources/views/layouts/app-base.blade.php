@@ -13,13 +13,28 @@
             <div id="content" class="container">
                 @yield('menu')
 
-                <div class="container title-content">
-                    <span class="page-title h2">
-                        @yield('title')
-                    </span>
+                @if(false
+                    || View::hasSection('title')
+                    || View::hasSection('actions')
+                    || View::hasSection('sub-title')
+                )
+                    <div class="container">
+                        <div class="d-flex flex-wrap gap-2">
+                            <div class="flex-fill">
+                                <div class="h2 mb-0">@yield('title')</div>
+                                @hasSection('sub-title')
+                                    {{-- Using hasSection to avoid adding a margin (mt-1) if there is no content. --}}
+                                    <div class="text-muted mt-1">@yield('sub-title')</div>
+                                @endif
+                            </div>
+                            <div class="align-self-end">
+                                @yield('actions')
+                            </div>
+                        </div>
 
-                    @yield('actions')
-                </div>
+                        <hr>
+                    </div>
+                @endif
 
                 <div class="container messages-content">
                     @include('includes.messages')

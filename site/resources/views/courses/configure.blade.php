@@ -4,52 +4,50 @@
     @include('courses.menu')
 @endsection
 
+@section('title')
+    {{ trans('courses.configure') }}
+@endsection
+
+@canany(['archive', 'disable'], $course)
+    @section('actions')
+        @can('archive', $course)
+            <form class="with-archive-confirm d-inline"
+                    method="post"
+                    action="{{ route('courses.archive', $course->id) }}">
+                @method('PUT')
+                @csrf
+                <button type="submit"
+                        class="btn btn-secondary me-1"
+                        data-bs-toggle="tooltip"
+                        data-placement="top"
+                        title="{{ trans('messages.course.archive.info') }}">
+                    <i class="far fa-folder-open"></i>
+                    {{ trans('courses.archive') }}
+                </button>
+            </form>
+        @endcan
+        @can('disable', $course)
+            <form class="with-delete-confirm d-inline"
+                    method="post"
+                    action="{{ route('courses.disable', $course->id) }}">
+                @method('DELETE')
+                @csrf
+                <input id="redirect" name="redirect" type="hidden" value="home">
+                <button type="submit"
+                        class="btn btn-danger"
+                        data-bs-toggle="tooltip"
+                        data-placement="top"
+                        title="{{ trans('messages.course.delete.info') }}">
+                    <i class="far fa-trash-alt"></i>
+                    {{ trans('courses.delete') }}
+                </button>
+            </form>
+        @endcan
+    @endsection
+@endcanany
+
 @section('content')
     <div id="configure-course">
-        @section('title')
-            {{ trans('courses.configure') }}
-        @endsection
-        @section('actions')
-            @can('disable', $course)
-                <span class="float-end">
-                    <form class="with-delete-confirm d-inline"
-                          method="post"
-                          action="{{ route('courses.disable', $course->id) }}">
-                        @method('DELETE')
-                        @csrf
-                        <input id="redirect" name="redirect" type="hidden" value="home">
-                        <button type="submit"
-                                class="btn btn-danger"
-                                data-bs-toggle="tooltip"
-                                data-placement="top"
-                                title="{{ trans('messages.course.delete.info') }}">
-                            <i class="far fa-trash-alt"></i>
-                            {{ trans('courses.delete') }}
-                        </button>
-                    </form>
-                </span>
-            @endcan
-            @can('archive', $course)
-                <span class="float-end me-1">
-                    <form class="with-archive-confirm d-inline"
-                          method="post"
-                          action="{{ route('courses.archive', $course->id) }}">
-                        @method('PUT')
-                        @csrf
-                        <button type="submit"
-                                class="btn btn-secondary"
-                                data-bs-toggle="tooltip"
-                                data-placement="top"
-                                title="{{ trans('messages.course.archive.info') }}">
-                            <i class="far fa-folder-open"></i>
-                            {{ trans('courses.archive') }}
-                        </button>
-                    </form>
-                </span>
-            @endcan
-        @endsection
-        <hr>
-
         <form method="post"
               action="{{ route('courses.configure.update', $course->id) }}">
             @csrf

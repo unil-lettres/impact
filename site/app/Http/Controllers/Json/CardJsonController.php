@@ -4,10 +4,8 @@ namespace App\Http\Controllers\Json;
 
 use App\Card;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CreateTagInCard;
 use App\Http\Requests\UpdateCardEditor;
 use App\Http\Requests\UpdateCardTranscription;
-use App\Tag;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 
@@ -72,51 +70,5 @@ class CardJsonController extends Controller
         return response()->json([
             'success' => $id,
         ], 200);
-    }
-
-    /**
-     * Create and link a tag to a card.
-     *
-     *
-     * @throws AuthorizationException
-     */
-    public function createTag(Card $card, CreateTagInCard $request)
-    {
-        $this->authorize('update', $card);
-
-        $tag = $card->course->tags()->create($request->all());
-        $card->tags()->attach($tag);
-
-        return response()->json(['tag_id' => $tag->id], 200);
-    }
-
-    /**
-     * Link a tag to a card.
-     *
-     *
-     * @throws AuthorizationException
-     */
-    public function linkTag(Card $card, Tag $tag)
-    {
-        $this->authorize('update', $card);
-
-        $card->tags()->attach($tag);
-
-        return response()->json(['success' => true], 200);
-    }
-
-    /**
-     * Unlink a tag from a card.
-     *
-     *
-     * @throws AuthorizationException
-     */
-    public function unlinkTag(Card $card, Tag $tag)
-    {
-        $this->authorize('update', $card);
-
-        $card->tags()->detach($tag);
-
-        return response()->json(['success' => true], 200);
     }
 }

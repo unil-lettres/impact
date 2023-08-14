@@ -34,20 +34,21 @@ export default class MultiTagSelect extends Component {
         // Available react-select actions: https://github.com/JedWatson/react-select/issues/3451
         const [action, option, getValues] = {
             'select-option': [
-                'link',
+                'attach',
                 event?.option,
                 (prevState) => [...prevState.values, option],
             ],
             'remove-value': [
-                'unlink',
+                'detach',
                 event?.removedValue,
                 (prevState) => _.reject(prevState.values, option),
             ],
         }[event.action] || [undefined, undefined, _.identity];
 
         this.setState({ isLoading: true });
+        // Used routes are "tags.attach.tag" and "tags.detach.tag".
         axios
-            .put(`/cards/${cardId}/${action}/${option.value}`)
+            .put(`/tags/${option.value}/${action}/${cardId}`)
             .then((response) => {
                 console.log(response);
                 this.setState((prevState) => ({ values: getValues(prevState) }));
@@ -57,14 +58,13 @@ export default class MultiTagSelect extends Component {
     }
 
     handleCreate = (inputValue) => {
-        const cardId = this.state.record.id,
-              courseId = this.state.record.id;
+        const cardId = this.state.record.id;
 
         this.setState({ isLoading: true });
         axios
-            .put(
-                `/cards/${cardId}/createTag`,
-                { name: inputValue, course_id: courseId }
+            .post(
+                `/tags/create`,
+                { name: inputValue, card_id: cardId }
             )
             .then((response) => {
                 console.log(response);

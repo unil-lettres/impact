@@ -25,6 +25,7 @@ use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Json\TagJsonController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -74,12 +75,6 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('cards.transcription');
     Route::post('cards/{card}/export', [CardController::class, 'export'])
         ->name('cards.export');
-    Route::put('cards/{card}/createTag', [CardJsonController::class, 'createTag'])
-        ->name('cards.create.tag');
-    Route::put('cards/{card}/link/{tag}', [CardJsonController::class, 'linkTag'])
-        ->name('cards.link.tag');
-    Route::put('cards/{card}/unlink/{tag}', [CardJsonController::class, 'unlinkTag'])
-        ->name('cards.unlink.tag');
 
     // Folders
     Route::resource('folders', FolderController::class);
@@ -130,6 +125,12 @@ Route::middleware(['auth', 'app'])->group(function () {
     ]);
     Route::post('tags/clone', [TagController::class, 'clone'])
         ->name('tags.clone');
+    Route::post('tags/create', [TagJsonController::class, 'create'])
+        ->name('tags.create');
+    Route::put('tags/{tag}/attach/{card}', [TagJsonController::class, 'attach'])
+        ->name('tags.attach.tag');
+    Route::put('tags/{tag}/detach/{card}', [TagJsonController::class, 'detach'])
+        ->name('tags.detach.tag');
 });
 
 // Administration routes

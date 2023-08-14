@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests;
 
-class CreateTagInCard extends StoreTag
+class CreateTag extends StoreTag
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -20,7 +20,7 @@ class CreateTagInCard extends StoreTag
     public function rules(): array
     {
         return [
-            'course_id' => parent::rules()['course_id'],
+            'card_id' => 'required|integer|exists:cards,id',
             'name' => parent::rules()['name'],
         ];
     }

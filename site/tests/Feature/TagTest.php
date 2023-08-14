@@ -79,7 +79,7 @@ class TagTest extends TestCase
         );
     }
 
-    public function testLinkTag(): void
+    public function testAttachTag(): void
     {
         $admin = User::factory()->admin()->create();
 
@@ -88,8 +88,8 @@ class TagTest extends TestCase
 
         // Create
         $response = $this->actingAs($admin)->put(
-            "/cards/$card->id/createTag",
-            ['name' => 'a_new_tag', 'course_id' => $course->id]
+            "/tags/create",
+            ['name' => 'a_new_tag', 'card_id' => $card->id]
         );
 
         $tagId = $response['tag_id'];
@@ -99,15 +99,15 @@ class TagTest extends TestCase
             ['tag_id' => $tagId, 'card_id' => $card->id],
         );
 
-        // Create with error
+        // Create with error TODO
         $this->withExceptionHandling()->actingAs($admin)->put(
             "/cards/$card->id/createTag",
-            ['name' => 'inv@l1de n@m3', 'course_id' => $course->id]
+            ['name' => 'inv@l1de n@m3', 'card_id' => $card->id]
         )->assertSessionHasErrors(['name']);
 
-        // Unlink
+        // Detach
         $response = $this->actingAs($admin)->put(
-            "/cards/$card->id/unlink/$tagId",
+            "/tags/$tagId/detach/$card->id",
         );
 
         $this->assertDatabaseMissing(
@@ -115,9 +115,9 @@ class TagTest extends TestCase
             ['tag_id' => $tagId, 'card_id' => $card->id],
         );
 
-        // Link
+        // Attach
         $response = $this->actingAs($admin)->put(
-            "/cards/$card->id/link/$tagId",
+            "/tags/$tagId/attach/$card->id",
         );
 
         $this->assertDatabaseHas(

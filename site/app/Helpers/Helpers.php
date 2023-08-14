@@ -402,18 +402,22 @@ class Helpers
     }
 
     /**
-     * Return a list of courses available as source to clone tags from.
+     * Return a collection of courses from user's enrollments.
      *
-     * @param  int  $courseId The current course (that should be filtered from
-     * the returned collection).
+     * Return all courses if user is admin.
+     *
+     * @param  Collection<Course>  $excludeCourses Collection of courses that
+     * should not be present in the collection results.
      */
-    public static function getAvailableCoursesToCloneTags(int $courseId): Collection
+    public static function fetchUserCourses(Collection $excludeCourses = null): Collection
     {
+        $excludeCourses = $excludeCourses ?? collect([]);
+
         return (match (Auth::user()->admin) {
             true => Course::all(),
             default => Auth::user()
                 ->enrollmentsAsTeacher()
                 ->map(fn ($enrollment) => $enrollment->course),
-        })->filter(fn ($course) => $course->id !== $courseId);
+        })->whereNotIn('id', $excludeCourses->pluck('id'));
     }
 }

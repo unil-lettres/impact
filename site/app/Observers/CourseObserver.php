@@ -101,6 +101,9 @@ class CourseObserver
 
             // Soft delete all related states
             $course->states()->delete();
+
+            // Soft delete all related tags
+            $course->tags()->delete();
         }
     }
 
@@ -139,6 +142,11 @@ class CourseObserver
         // Restore all related states
         foreach ($course->states()->withTrashed()->get() as $state) {
             $state->restore();
+        }
+
+        // Restore all related tags
+        foreach ($course->tags()->withTrashed()->get() as $tag) {
+            $tag->restore();
         }
     }
 }

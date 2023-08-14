@@ -49,5 +49,10 @@ return [
     'state.created' => 'Nouvel état créé.',
     'state.updated' => 'État mis à jour.',
     'state.deleted' => 'État supprimé.',
+    'tag.deleted' => 'Étiquette supprimée.',
+    'tag.created' => 'Étiquette créée.',
+    'tag.renamed' => 'Étiquette renommée.',
+    'tag.cloned' => 'Étiquettes reprises.',
+    'tag.cloned.none' => 'Toutes les étiquettes existent déjà dans cet espace.',
 
 ];

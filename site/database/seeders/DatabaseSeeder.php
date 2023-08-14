@@ -21,6 +21,7 @@ class DatabaseSeeder extends Seeder
             InvitationsTableSeeder::class,
             FilesTableSeeder::class,
             StatesTableSeeder::class,
+            TagsTableSeeder::class,
         ]);
     }
 }

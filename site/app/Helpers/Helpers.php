@@ -400,4 +400,24 @@ class Helpers
     {
         return ! $state->cards->isEmpty();
     }
+
+    /**
+     * Return a collection of courses from user's enrollments.
+     *
+     * Return all courses if user is admin.
+     *
+     * @param  Collection<Course>  $excludeCourses Collection of courses that
+     * should not be present in the collection results.
+     */
+    public static function fetchUserCourses(Collection $excludeCourses = null): Collection
+    {
+        $excludeCourses = $excludeCourses ?? collect([]);
+
+        return (match (Auth::user()->admin) {
+            true => Course::all(),
+            default => Auth::user()
+                ->enrollmentsAsTeacher()
+                ->map(fn ($enrollment) => $enrollment->course),
+        })->whereNotIn('id', $excludeCourses->pluck('id'));
+    }
 }

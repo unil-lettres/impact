@@ -21,4 +21,9 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         //
     ];
+
+    protected function runningUnitTests()
+    {
+        return parent::runningUnitTests() || $this->app->environment('dusk.testing');
+    }
 }

@@ -18,7 +18,7 @@
         </div>
 
         <div class="col-12 mb-3 row">
-            <label for="state" class="col-md-4 form-label">
+            <label for="state" class="col-md-4 col-form-label">
                 {{ trans('cards.state') }}
             </label>
             <div class="col-md-8">
@@ -35,7 +35,7 @@
         </div>
 
         <div class="col-12 mb-3 row">
-            <label for="date" class="col-md-4 form-label">
+            <label for="date" class="col-md-4 col-form-label">
                 {{ trans('cards.date') }}
             </label>
             <div class="col-md-8">
@@ -46,11 +46,15 @@
         </div>
 
         <div class="col-12 mb-3 row">
-            <label for="tags" class="col-md-4 form-label">
+            <label for="tags" class="col-md-4 col-form-label">
                 {{ trans('cards.tags') }}
             </label>
             <div class="col-md-8">
-                // Tags input placeholder
+                <div id="rct-multi-tag-select"
+                        createLabel="{{ trans('general.create_select_option_label') }}"
+                        data='{{ json_encode(['record' => $card, 'options' => $card->course->tags, 'defaults' => $card->tags ]) }}'
+                ></div>
+                <div class="form-text">{{ trans('cards.edit.tags_are_auto_save') }}</div>
             </div>
         </div>
 

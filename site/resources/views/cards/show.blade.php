@@ -8,7 +8,7 @@
     <div>
         <span class="me-3">{{ trans('cards.state') }}: {{ $card->state?->name }}</span>
         <span class="me-3">{{ trans('cards.date') }}: {{ $card->options['presentation_date'] ?? '-' }} </span>
-        <span>{{ trans('cards.tags') }}: {todo}<!-- TODO --></span>
+        <span>{{ trans('cards.tags') }}: {{ $card->tags->isEmpty() ? '-' : $card->tags->implode('name', ', ') }}</span>
     </div>
 @endsection
 

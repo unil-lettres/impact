@@ -6,6 +6,7 @@ use App\Enums\StatePermission;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
@@ -93,6 +94,14 @@ class Card extends Model
     public function state()
     {
         return $this->hasOne('App\State', 'id', 'state_id');
+    }
+
+    /**
+     * The tag that belong to the card.
+     */
+    public function tags(): BelongsToMany
+    {
+        return $this->belongsToMany(Tag::class)->orderBy('name');
     }
 
     /**

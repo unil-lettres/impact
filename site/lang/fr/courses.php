@@ -22,7 +22,6 @@ return [
     'configuration' => 'Configuration',
     'type' => 'Type',
     'tags' => 'Étiquettes',
-    'tags.help' => 'Les étiquettes suivantes sont disponibles. Il est possible d\'ajouter ou de supprimer une étiquette.',
     'transcription.type' => 'Type de transcription',
     'transcription.type.help' => 'Vous pouvez choisir le type de transcription utilisé pour la case 2 : soit un éditeur de texte usuel, soit un éditeur spécifique pour les transcriptions supportant le format ICOR. Toutes les fiches de l\'espace auront le même éditeur.',
     'external' => 'Externe',

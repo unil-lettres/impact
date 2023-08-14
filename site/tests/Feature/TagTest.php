@@ -79,7 +79,7 @@ class TagTest extends TestCase
         );
     }
 
-    public function testAttachTag(): void
+    public function testJsonCrudTag(): void
     {
         $admin = User::factory()->admin()->create();
 
@@ -87,7 +87,7 @@ class TagTest extends TestCase
         $card = $course->cards->first();
 
         // Create
-        $response = $this->actingAs($admin)->put(
+        $response = $this->actingAs($admin)->post(
             "/tags/create",
             ['name' => 'a_new_tag', 'card_id' => $card->id]
         );
@@ -99,9 +99,9 @@ class TagTest extends TestCase
             ['tag_id' => $tagId, 'card_id' => $card->id],
         );
 
-        // Create with error TODO
-        $this->withExceptionHandling()->actingAs($admin)->put(
-            "/cards/$card->id/createTag",
+        // Create with error
+        $this->withExceptionHandling()->actingAs($admin)->post(
+            "/tags/create",
             ['name' => 'inv@l1de n@m3', 'card_id' => $card->id]
         )->assertSessionHasErrors(['name']);
 

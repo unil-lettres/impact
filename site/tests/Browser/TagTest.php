@@ -74,12 +74,12 @@ class TagTest extends DuskTestCase
 
             $browser->visit('/courses/1/configure/tags');
 
-            $browser->select('course_id', '2')
+            $browser->select('course_id_from', '2')
                 ->press('Reprendre')
                 ->waitForText('Étiquettes reprises.')
                 ->assertPathIs('/courses/1/configure/tags')
                 ->assertSee('Test_tag_second_course')
-                ->select('course_id', '2')
+                ->select('course_id_from', '2')
                 ->press('Reprendre')
                 ->waitForText('Toutes les étiquettes existent déjà dans cet espace.');
         });

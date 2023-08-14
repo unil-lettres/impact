@@ -4,14 +4,13 @@
     @include('courses.menu')
 @endsection
 
+@section('title')
+    {{ trans('users.registrations') }}
+@endsection
+
 @section('content')
     @can('viewAny', [\App\User::class, $course])
         <div id="registrations">
-            @section('title')
-                {{ trans('users.registrations') }}
-            @endsection
-            <hr>
-
             <div class="row">
                 <div class="col-md-12 col-lg-6">
                     <div class="card">

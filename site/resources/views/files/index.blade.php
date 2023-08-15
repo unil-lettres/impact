@@ -5,7 +5,7 @@
 @endsection
 
 @section('title')
-    {{ trans('files.files') }} <span class="badge bg-secondary">{{ $files->total() }}</span>
+    {{ trans('files.files') }}
 @endsection
 
 @can('viewAny', [\App\File::class, $course])

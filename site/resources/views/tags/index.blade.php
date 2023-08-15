@@ -5,7 +5,7 @@
 @endsection
 
 @section('title')
-    {{ trans('courses.tags') }} <span class="badge bg-secondary">{{ $tags->count() }}</span>
+    {{ trans('courses.tags') }}
 @endsection
 
 @can('create', [\App\Tag::class, $course])

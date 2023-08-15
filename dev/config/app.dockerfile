@@ -1,6 +1,6 @@
 FROM php:8.1-fpm-bullseye
 
-ENV NODE_VERSION=16
+ENV NODE_VERSION=18
 ENV COMPOSER_VERSION=2.2
 
 # Update repositories

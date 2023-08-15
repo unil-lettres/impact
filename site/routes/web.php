@@ -21,11 +21,11 @@ use App\Http\Controllers\Json\CardJsonController;
 use App\Http\Controllers\Json\EnrollmentJsonController;
 use App\Http\Controllers\Json\FileJsonController;
 use App\Http\Controllers\Json\StateJsonController;
+use App\Http\Controllers\Json\TagJsonController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Json\TagJsonController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 

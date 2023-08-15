@@ -79,11 +79,11 @@
                                         class="form-control form-select" >
                                     <option value="{{ \App\Enums\TranscriptionType::Icor }}"
                                         {{ $course->transcription === \App\Enums\TranscriptionType::Icor ? 'selected' : '' }}>
-                                        {{ Helpers::transcriptionTypeLabel(\App\Enums\TranscriptionType::Icor) }}
+                                        {{ trans('courses.transcription.type.icor') }}
                                     </option>
                                     <option value="{{ \App\Enums\TranscriptionType::Text }}"
                                         {{ $course->transcription === \App\Enums\TranscriptionType::Text ? 'selected' : '' }}>
-                                        {{ Helpers::transcriptionTypeLabel(\App\Enums\TranscriptionType::Text) }}
+                                        {{ trans('courses.transcription.type.text') }}
                                     </option>
                                 </select>
                             </div>

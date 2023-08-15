@@ -306,37 +306,6 @@ class Helpers
     }
 
     /**
-     * Return the permission label
-     *
-     * @param  int  $permission (App\Enums\StatePermission)
-     */
-    public static function permissionLabel(int $permission): string
-    {
-        return match ($permission) {
-            StatePermission::TeachersCanShowAndEditEditorsCanShow => trans('states.permission1'),
-            StatePermission::EditorsCanShowAndEdit => trans('states.permission2'),
-            StatePermission::TeachersAndEditorsCanShowAndEdit => trans('states.permission3'),
-            StatePermission::AllCanShowTeachersAndEditorsCanEdit => trans('states.permission4'),
-            StatePermission::AllCanShowTeachersCanEdit => trans('states.permission5'),
-            StatePermission::TeachersCanShowAndEdit => trans('states.permission6'),
-            default => trans('states.permission0'),
-        };
-    }
-
-    /**
-     * Return the transcription type label
-     *
-     * @param  string  $transcriptionType (App\Enums\TranscriptionType)
-     */
-    public static function transcriptionTypeLabel(string $transcriptionType): string
-    {
-        return match ($transcriptionType) {
-            TranscriptionType::Text => trans('courses.transcription.type.text'),
-            default => trans('courses.transcription.type.icor'),
-        };
-    }
-
-    /**
      * Return whether the state type is considered read only or not
      */
     public static function isStateReadOnly(State $state): bool

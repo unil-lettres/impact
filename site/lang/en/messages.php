@@ -50,5 +50,10 @@ return [
     'state.created' => 'New state created.',
     'state.updated' => 'State updated.',
     'state.deleted' => 'State deleted.',
+    'tag.deleted' => 'Tag deleted.',
+    'tag.created' => 'Tag created.',
+    'tag.renamed' => 'Tag renamed.',
+    'tag.cloned' => 'Tags retrieved.',
+    'tag.cloned.none' => 'All tags already exist in this course.',
 
 ];

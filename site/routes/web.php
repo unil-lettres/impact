@@ -23,7 +23,9 @@ use App\Http\Controllers\Json\FileJsonController;
 use App\Http\Controllers\Json\StateJsonController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\StateController;
+use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\Json\TagJsonController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -102,6 +104,8 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('courses.archive');
     Route::delete('/courses/{course}/disable', [CourseController::class, 'disable'])
         ->name('courses.disable');
+    Route::get('courses/{course}/configure/tags', [TagController::class, 'index'])
+        ->name('courses.configure.tags');
     Route::get('courses/{course}/configure/files', [FileController::class, 'index'])
         ->name('courses.configure.files');
     Route::get('courses/{course}/configure/registrations', [UserController::class, 'index'])
@@ -116,6 +120,21 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('courses.destroy.state');
     Route::put('courses/{course}/state/{state}/position', [StateJsonController::class, 'position'])
         ->name('courses.update.state.position');
+
+    // Tags
+    Route::resource('tags', TagController::class)->only([
+        'store',
+        'update',
+        'destroy',
+    ]);
+    Route::post('tags/clone', [TagController::class, 'clone'])
+        ->name('tags.clone');
+    Route::post('tags/create', [TagJsonController::class, 'create'])
+        ->name('tags.create');
+    Route::put('tags/{tag}/attach/{card}', [TagJsonController::class, 'attach'])
+        ->name('tags.attach.tag');
+    Route::put('tags/{tag}/detach/{card}', [TagJsonController::class, 'detach'])
+        ->name('tags.detach.tag');
 });
 
 // Administration routes

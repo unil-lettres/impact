@@ -6,6 +6,12 @@
             </li>
         @endcan
 
+        @can('viewAny', [\App\Tag::class, $course])
+            <li class="nav-item {{ Route::is('courses.configure.tags*') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('courses.configure.tags', $course->id) }}">{{ trans('courses.tags') }}</a>
+            </li>
+        @endcan
+
         @can('viewAny', [\App\User::class, $course])
             <li class="nav-item {{ Route::is('courses.configure.registrations*') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('courses.configure.registrations', $course->id) }}">{{ trans('users.registrations') }}</a>

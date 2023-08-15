@@ -13,16 +13,10 @@ class FileTest extends DuskTestCase
 {
     use ProvidesBrowser;
 
-    protected static bool $migrated = false;
-
     public function setUp(): void
     {
         parent::setUp();
-
-        if (! static::$migrated) {
-            Artisan::call('migrate:fresh --seed');
-            static::$migrated = true;
-        }
+        Artisan::call('migrate:fresh --seed');
     }
 
     public function tearDown(): void

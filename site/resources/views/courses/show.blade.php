@@ -11,7 +11,7 @@
         || Auth::user()->can('create', [\App\Card::class, $course])
     )
         @section('actions')
-            @can('configure', $course)
+            @can('editConfiguration', $course)
                 <a href="{{ route('courses.configure', $course->id) }}"
                    class="btn btn-primary me-1">
                     {{ trans('courses.configure') }}

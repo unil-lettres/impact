@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Json;
 
 use App\Card;
+use App\Enums\CardBox;
+use App\Enums\TranscriptionType;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UpdateCardEditor;
 use App\Http\Requests\UpdateCardTranscription;
@@ -29,7 +31,16 @@ class CardJsonController extends Controller
             $box,
         ]);
 
-        $html = $request->get('html');
+        // Box2 data initialization based on the transcription type.
+        // If the box is not box2, the data is stored as is.
+        $html = match ($box) {
+            CardBox::Box2 => $this->initBox2Data(
+                $card,
+                TranscriptionType::Text,
+                $request->get('html')
+            ),
+            default => $request->get('html'),
+        };
 
         $card->update([
             $box => $html,
@@ -59,16 +70,34 @@ class CardJsonController extends Controller
             $box,
         ]);
 
-        $box2 = $card->box2 ?? json_decode(Card::TRANSCRIPTION, true);
-        $box2['data'] = $request->get('transcription') ? $request->get('transcription') : [];
-
         $card->update([
-            $box => $box2,
+            $box => $this->initBox2Data(
+                $card,
+                TranscriptionType::Icor,
+                $request->get('transcription')
+            ),
         ]);
         $card->save();
 
         return response()->json([
             'success' => $id,
         ], 200);
+    }
+
+    /**
+     * Box2 data initialization based on the transcription type.
+     *
+     * @param  string  $type (App\Enums\TranscriptionType)
+     */
+    private function initBox2Data(Card $card, string $type, mixed $content): array
+    {
+        $box2 = $card->box2 ?? json_decode(Card::TRANSCRIPTION, true);
+
+        $box2[$type] = match ($type) {
+            TranscriptionType::Icor => $content ?? [],
+            default => $content ?? null,
+        };
+
+        return $box2;
     }
 }

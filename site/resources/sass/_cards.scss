@@ -7,8 +7,9 @@
         }
     }
 
-    .box4,
-    .box3 {
+    .box2,
+    .box3,
+    .box4 {
         .card-body {
             padding: 1rem !important;
         }
@@ -20,7 +21,6 @@
 
     .box2 {
         .card-body {
-            padding: 1rem !important;
             height: 31.9em;
             overflow-y: scroll;
         }

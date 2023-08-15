@@ -21,11 +21,11 @@ use App\Http\Controllers\Json\CardJsonController;
 use App\Http\Controllers\Json\EnrollmentJsonController;
 use App\Http\Controllers\Json\FileJsonController;
 use App\Http\Controllers\Json\StateJsonController;
+use App\Http\Controllers\Json\TagJsonController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\Json\TagJsonController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -96,8 +96,10 @@ Route::middleware(['auth', 'app'])->group(function () {
     // Courses
     Route::get('courses/{course}', [CourseController::class, 'show'])
         ->name('courses.show');
-    Route::get('courses/{course}/configure', [CourseController::class, 'configure'])
+    Route::get('courses/{course}/configure', [CourseController::class, 'editConfiguration'])
         ->name('courses.configure');
+    Route::put('courses/{course}/configure', [CourseController::class, 'updateConfiguration'])
+        ->name('courses.configure.update');
     Route::put('/courses/{course}/archive', [CourseController::class, 'archive'])
         ->name('courses.archive');
     Route::delete('/courses/{course}/disable', [CourseController::class, 'disable'])
@@ -106,6 +108,8 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('courses.configure.tags');
     Route::get('courses/{course}/configure/files', [FileController::class, 'index'])
         ->name('courses.configure.files');
+    Route::get('courses/{course}/configure/registrations', [UserController::class, 'index'])
+        ->name('courses.configure.registrations');
     Route::get('courses/{course}/configure/states', [StateController::class, 'index'])
         ->name('courses.configure.states');
     Route::post('courses/{course}/state', [StateController::class, 'store'])

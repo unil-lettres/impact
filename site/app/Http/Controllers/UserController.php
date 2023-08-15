@@ -25,17 +25,25 @@ use Illuminate\Validation\Rules\Password;
 class UserController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return RedirectResponse
+     * Display a listing of the resource in the course configuration.
      *
      * @throws AuthorizationException
      */
-    public function index()
+    public function index(Course $course): Renderable
     {
-        $this->authorize('viewAny', User::class);
+        $this->authorize('viewAny', [User::class, $course]);
 
-        return redirect()->back();
+        return view('users.registration', [
+            'course' => $course,
+            'breadcrumbs' => $course
+                ->breadcrumbs(true),
+            'users' => User::withoutAdmins()
+                ->get(),
+            'teacherRole' => EnrollmentRole::Teacher,
+            'usersAsTeacher' => $course->teachers(),
+            'studentRole' => EnrollmentRole::Student,
+            'usersAsStudent' => $course->students(),
+        ]);
     }
 
     /**

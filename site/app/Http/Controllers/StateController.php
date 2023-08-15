@@ -17,7 +17,7 @@ use Illuminate\Http\RedirectResponse;
 class StateController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource in the course configuration.
      *
      *
      * @throws AuthorizationException

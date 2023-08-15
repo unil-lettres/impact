@@ -48,61 +48,53 @@
 
 @section('content')
     <div id="configure-course">
-        <div class="row">
-            <div class="col-md-12 col-lg-6">
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul>
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div><br />
-                @endif
-                <div class="card">
-                    <div class="card-header">
-                        <span class="title">
-                            {{ trans('courses.tags') }}
-                        </span>
-                    </div>
-                    <div class="card-body">
-                        <p>{{ trans('courses.tags.help') }}</p>
-                        <!-- TODO: add tags -->
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <span class="title">
-                            {{ trans('courses.transcription.type') }}
-                        </span>
-                    </div>
-                    <div class="card-body">
-                        <p>{{ trans('courses.transcription.type.help') }}</p>
-                        <!-- TODO: add transcription type -->
-                    </div>
-                </div>
-            </div>
+        <form method="post"
+              action="{{ route('courses.configure.update', $course->id) }}">
+            @csrf
+            @method('PUT')
 
-            <div class="col-md-12 col-lg-6">
-                <div class="card">
-                    <div class="card-header">
-                        <span class="title">{{ trans('enrollments.enrollments') }}</span>
-                    </div>
-                    <div class="card-body">
-                        {{ trans('enrollments.as_teacher') }}
-                        <div id="rct-multi-user-teacher-select"
-                             data='{{ json_encode(['record' => $course, 'role' => $teacherRole, 'options' => $users, 'defaults' => $usersAsTeacher, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
-                        ></div>
+            @if ($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div><br />
+            @endif
 
-                        <hr>
-
-                        {{ trans('enrollments.as_student') }}
-                        <div id="rct-multi-user-student-select"
-                             data='{{ json_encode(['record' => $course, 'role' => $studentRole, 'options' => $users, 'defaults' => $usersAsStudent, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
-                        ></div>
+            <div class="row">
+                <div class="col-md-12 col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <span class="title">
+                                {{ trans('courses.transcription.type') }}
+                            </span>
+                        </div>
+                        <div class="card-body">
+                            <label for="type">{{ trans('courses.transcription.type.help') }}</label>
+                            <div class="mt-2">
+                                <select id="type"
+                                        name="type"
+                                        class="form-control form-select" >
+                                    <option value="{{ \App\Enums\TranscriptionType::Icor }}"
+                                        {{ $course->transcription === \App\Enums\TranscriptionType::Icor ? 'selected' : '' }}>
+                                        {{ trans('courses.transcription.type.icor') }}
+                                    </option>
+                                    <option value="{{ \App\Enums\TranscriptionType::Text }}"
+                                        {{ $course->transcription === \App\Enums\TranscriptionType::Text ? 'selected' : '' }}>
+                                        {{ trans('courses.transcription.type.text') }}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <button type="submit" class="btn btn-primary">
+                {{ trans('courses.configuration.update') }}
+            </button>
+        </form>
     </div>
 @endsection

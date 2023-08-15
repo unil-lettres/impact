@@ -7,7 +7,6 @@ use App\Course;
 use App\Enums\CourseType;
 use App\Enums\FileStatus;
 use App\Enums\FileType;
-use App\Enums\StatePermission;
 use App\Enums\StateType;
 use App\Enums\UserType;
 use App\File;
@@ -239,7 +238,7 @@ class Helpers
      */
     public static function hasExternalLink(Card $card): bool
     {
-        return empty(trim($card['options']['box1']['link'])) ? false : true;
+        return ! empty(trim($card['options']['box1']['link'] ?? ''));
     }
 
     /**
@@ -302,24 +301,6 @@ class Helpers
         }
 
         return $options[$box]['hidden'];
-    }
-
-    /**
-     * Return the permission label
-     *
-     * @param  int  $permission (App\Enums\StatePermission)
-     */
-    public static function permissionLabel(int $permission): string
-    {
-        return match ($permission) {
-            StatePermission::TeachersCanShowAndEditEditorsCanShow => trans('states.permission1'),
-            StatePermission::EditorsCanShowAndEdit => trans('states.permission2'),
-            StatePermission::TeachersAndEditorsCanShowAndEdit => trans('states.permission3'),
-            StatePermission::AllCanShowTeachersAndEditorsCanEdit => trans('states.permission4'),
-            StatePermission::AllCanShowTeachersCanEdit => trans('states.permission5'),
-            StatePermission::TeachersCanShowAndEdit => trans('states.permission6'),
-            default => trans('states.permission0'),
-        };
     }
 
     /**

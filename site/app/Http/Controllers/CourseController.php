@@ -12,6 +12,7 @@ use App\Http\Requests\EnableCourse;
 use App\Http\Requests\ManageCourses;
 use App\Http\Requests\SendCourseDeleteConfirmMail;
 use App\Http\Requests\StoreCourse;
+use App\Http\Requests\UpdateConfiguration;
 use App\Http\Requests\UpdateCourse;
 use App\Mail\CourseConfirmDelete;
 use App\User;
@@ -163,30 +164,6 @@ class CourseController extends Controller
     }
 
     /**
-     * Configure the parameters of the specified resource.
-     *
-     * @return Renderable
-     *
-     * @throws AuthorizationException
-     */
-    public function configure(Course $course)
-    {
-        $this->authorize('configure', $course);
-
-        return view('courses.configure', [
-            'course' => $course,
-            'breadcrumbs' => $course
-                ->breadcrumbs(true),
-            'users' => User::withoutAdmins()
-                ->get(),
-            'teacherRole' => EnrollmentRole::Teacher,
-            'usersAsTeacher' => $course->teachers(),
-            'studentRole' => EnrollmentRole::Student,
-            'usersAsStudent' => $course->students(),
-        ]);
-    }
-
-    /**
      * Update the specified resource in storage.
      *
      * @return RedirectResponse
@@ -208,6 +185,43 @@ class CourseController extends Controller
         return redirect()
             ->back()
             ->with('success', trans('messages.course.updated'));
+    }
+
+    /**
+     * Show the form for editing the configuration the specified resource.
+     *
+     * @return Renderable
+     *
+     * @throws AuthorizationException
+     */
+    public function editConfiguration(Course $course)
+    {
+        $this->authorize('editConfiguration', $course);
+
+        return view('courses.configure', [
+            'course' => $course,
+            'breadcrumbs' => $course
+                ->breadcrumbs(true),
+        ]);
+    }
+
+    /**
+     * Update the specified resource configuration in storage.
+     */
+    public function updateConfiguration(UpdateConfiguration $request, int $id)
+    {
+        $course = Course::find($id);
+
+        $this->authorize('updateConfiguration', $course);
+
+        $course->update([
+            'transcription' => $request->get('type'),
+        ]);
+        $course->save();
+
+        return redirect()
+            ->back()
+            ->with('success', trans('messages.course.configuration.updated'));
     }
 
     /**

@@ -88,7 +88,7 @@ class TagTest extends TestCase
 
         // Create
         $response = $this->actingAs($admin)->post(
-            "/tags/create",
+            '/tags/create',
             ['name' => 'a_new_tag', 'card_id' => $card->id]
         );
 
@@ -101,7 +101,7 @@ class TagTest extends TestCase
 
         // Create with error
         $this->withExceptionHandling()->actingAs($admin)->post(
-            "/tags/create",
+            '/tags/create',
             ['name' => 'inv@l1de n@m3', 'card_id' => $card->id]
         )->assertSessionHasErrors(['name']);
 

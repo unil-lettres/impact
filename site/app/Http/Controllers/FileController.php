@@ -14,7 +14,7 @@ use Illuminate\Http\RedirectResponse;
 class FileController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of the resource in the course configuration.
      *
      * @return Renderable
      *

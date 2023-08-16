@@ -122,14 +122,12 @@
                             @method('POST')
                             @csrf
                             <input type="hidden" name="course_id_to" value="{{ $course->id }}" />
+                            <input id="course_id_from" name="course_id_from" type="hidden" value="">
                             <div class="col-12 flex-fill">
-                                <select name="course_id_from" class="form-select" aria-label="Courses tags source">
-                                    @foreach ($clonableCourses as $fromCourse)
-                                        <option value="{{ $fromCourse->id }}">
-                                            {{ $fromCourse->name }}
-                                        </option>
-                                    @endforeach
-                                </select>
+                                <div id="rct-single-course-select"
+                                    reference="course_id_from"
+                                    data='{{ json_encode(['options' => $clonableCourses]) }}'
+                                ></div>
                             </div>
                             <div class="col-12 align-end">
                                 <button type="submit" class="btn btn-primary w-100">

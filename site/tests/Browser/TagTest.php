@@ -76,7 +76,6 @@ class TagTest extends DuskTestCase
 
             $browser->click('#rct-single-course-select')
                 ->waitForText('Second space')
-                ->screenshot('dsds')
                 // Select the "Second space" option of react select tags.
                 ->click('#rct-single-course-select [id$=listbox] > div > div:first-child')
                 ->press('Reprendre')

@@ -5,6 +5,8 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+use Illuminate\Support\Facades\Log;
+
 class Enrollment extends Model
 {
     use SoftDeletes;
@@ -83,8 +85,14 @@ class Enrollment extends Model
                 return $cardId == $card->id;
             });
 
+            // We need to call values() to reset the keys of the collection.
+            // Otherwise if we remove the first card of the collection and
+            // losing the element at index 0, Eloquent (or something in-between)
+            // will not write the values as we would in database.
+            // Values 'array( 1 => 2, 2 => 5)' will be writed in db as '{"1":2,"2":5}',
+            // but 'array( 0 => 2, 1 => 5 )' as '[2,5]'.
             $this->update([
-                'cards' => $cards->toArray(),
+                'cards' => $cards->values()->toArray(),
             ]);
             $this->save();
 

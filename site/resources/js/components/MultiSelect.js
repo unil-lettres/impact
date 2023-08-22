@@ -141,6 +141,7 @@ export default class MultiSelect extends Component {
             value: this.state.values,
             onChange: this.handleChange,
             options: this.state.options,
+            isDisabled: this.state.isDisabled,
         };
 
         if (this.props.canCreate) {

@@ -75,18 +75,17 @@ class TagTest extends DuskTestCase
             $browser->visit('/courses/1/configure/tags');
 
             $browser->click('#rct-single-course-select')
-                ->waitForText("Second space")
-                ->screenshot("dsds")
+                ->waitForText('Second space')
                 // Select the "Second space" option of react select tags.
-                ->click("#rct-single-course-select [id$=listbox] > div > div:first-child")
+                ->click('#rct-single-course-select [id$=listbox] > div > div:first-child')
                 ->press('Reprendre')
                 ->waitForText('Étiquettes reprises.')
                 ->assertPathIs('/courses/1/configure/tags')
                 ->assertSee('Test_tag_second_course')
                 ->click('#rct-single-course-select')
-                ->waitForText("Second space")
+                ->waitForText('Second space')
                 // Select the "Second space" option of react select tags.
-                ->click("#rct-single-course-select [id$=listbox] > div > div:first-child")
+                ->click('#rct-single-course-select [id$=listbox] > div > div:first-child')
                 ->press('Reprendre')
                 ->waitForText('Toutes les étiquettes existent déjà dans cet espace.');
         });

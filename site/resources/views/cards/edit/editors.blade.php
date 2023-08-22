@@ -11,6 +11,7 @@
                     <div id="rct-multi-editor-select"
                          data='{{ json_encode(['record' => $card, 'options' => $students, 'defaults' => $editors]) }}'
                     ></div>
+                    <div class="form-text">{{ trans('cards.edit.editors_are_auto_save') }}</div>
                 </div>
             @else
                 <p class="text-secondary">

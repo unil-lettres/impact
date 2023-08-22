@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers\Json;
 
+use App\Card;
 use App\Course;
 use App\Enrollment;
 use App\Enums\EnrollmentRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DestroyEnrollment;
-use App\Http\Requests\FindEnrollment;
 use App\Http\Requests\StoreEnrollment;
 use App\Http\Requests\UpdateEnrollmentCards;
 use App\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class EnrollmentJsonController extends Controller
 {
@@ -34,16 +34,6 @@ class EnrollmentJsonController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @throws AuthorizationException
-     */
-    public function create()
-    {
-        $this->authorize('create', Enrollment::class);
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @return JsonResponse
@@ -52,8 +42,8 @@ class EnrollmentJsonController extends Controller
      */
     public function store(StoreEnrollment $request)
     {
-        $course = Course::findOrFail($request->get('course'));
-        $user = User::findOrFail($request->get('user'));
+        $course = Course::findOrFail($request->course_id);
+        $user = User::findOrFail($request->user_id);
 
         $this->authorize('create', [
             Enrollment::class,
@@ -62,7 +52,7 @@ class EnrollmentJsonController extends Controller
         ]);
 
         Enrollment::create([
-            'role' => $request->get('role'),
+            'role' => $request->role,
             'course_id' => $course->id,
             'user_id' => $user->id,
         ]);
@@ -73,84 +63,41 @@ class EnrollmentJsonController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     *
-     *
-     * @throws AuthorizationException
-     */
-    public function show(Enrollment $enrollment)
-    {
-        $this->authorize('view', Enrollment::class);
-    }
-
-    /**
-     * Find the specified resource.
-     *
-     * @return JsonResponse
+     * Add a card to an enrollment.
      *
      * @throws AuthorizationException
      */
-    public function find(FindEnrollment $request)
+    public function attach(UpdateEnrollmentCards $request): JsonResponse
     {
-        $enrollment = Enrollment::where('course_id', $request->get('course'))
-            ->where('user_id', $request->get('user'))
-            ->where('role', $request->get('role'))
-            ->first();
-
-        $this->authorize('find', $enrollment);
-
-        return response()->json([
-            'enrollment' => $enrollment,
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     *
-     * @throws AuthorizationException
-     */
-    public function edit(Enrollment $enrollment)
-    {
-        $this->authorize('update', $enrollment);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     *
-     * @throws AuthorizationException
-     */
-    public function update(Request $request, Enrollment $enrollment)
-    {
-        $this->authorize('update', $enrollment);
-    }
-
-    /**
-     * Update the cards of the resources in storage.
-     *
-     * @return JsonResponse
-     *
-     * @throws AuthorizationException
-     */
-    public function cards(UpdateEnrollmentCards $request)
-    {
-        $courseId = $request->get('course');
-        $cardId = $request->get('card');
-        $add = collect($request->get('add'));
-        $remove = collect($request->get('remove'));
-        $userId = $add->first() ?? $remove->first();
-
-        $enrollment = Enrollment::where('course_id', $courseId)
-            ->where('user_id', $userId)
-            ->where('role', EnrollmentRole::Student)
-            ->first();
+        $card = Card::findOrFail($request->card_id);
+        $enrollment = $this->retrieveStudentEnrollment(
+            $request->user_id, $card
+        );
 
         $this->authorize('cards', $enrollment);
 
-        return response()->json([
-            'success' => $enrollment->updateCard($cardId, $add, $remove),
-        ]);
+        $success = $enrollment->addCard($card);
+
+        return response()->json(['success' => $success], 200);
+    }
+
+    /**
+     * Remove a card from an enrollment.
+     *
+     * @throws AuthorizationException
+     */
+    public function detach(UpdateEnrollmentCards $request): JsonResponse
+    {
+        $card = Card::findOrFail($request->card_id);
+        $enrollment = $this->retrieveStudentEnrollment(
+            $request->user_id, $card
+        );
+
+        $this->authorize('cards', $enrollment);
+
+        $success = $enrollment->removeCard($card);
+
+        return response()->json(['success' => $success], 200);
     }
 
     /**
@@ -160,14 +107,33 @@ class EnrollmentJsonController extends Controller
      *
      * @throws AuthorizationException
      */
-    public function destroy(DestroyEnrollment $request, int $id)
+    public function destroy(DestroyEnrollment $request)
     {
-        $enrollment = Enrollment::find($id);
+        $enrollment = Enrollment::where('course_id', $request->course_id)
+            ->where('user_id', $request->user_id)
+            ->where('role', $request->role)
+            ->firstOrFail();
 
         $this->authorize('forceDelete', $enrollment);
 
         return response()->json([
             'success' => $enrollment->forceDelete() ?? false,
         ]);
+    }
+
+    /**
+     * Retrieve the student enrollment associated with the given course and
+     * user.
+     *
+     *
+     * @throws ModelNotFoundException
+     */
+    private function retrieveStudentEnrollment(
+        int $userId, Card $card
+    ): Enrollment {
+        return Enrollment::where('course_id', $card->course->id)
+            ->where('user_id', $userId)
+            ->where('role', EnrollmentRole::Student)
+            ->firstOrFail();
     }
 }

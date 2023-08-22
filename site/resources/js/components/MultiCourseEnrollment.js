@@ -1,20 +1,65 @@
 import React from 'react';
 import { createRoot } from "react-dom/client";
 
-import MultiEnrollmentSelect from "./MultiEnrollmentSelect";
+import MultiSelect from "./MultiSelect";
 
-export default class MultiCourseEnrollment extends MultiEnrollmentSelect {
-    constructor(props){
-        super(props);
+class MultiCourseTeacherEnrollment extends MultiSelect {
+    select = (record, option) => {
+        return axios.post(
+            '/enrollments',
+            {
+                'course_id': option.value,
+                'user_id': record.id,
+                'role': 'teacher',
+            },
+        );
+    }
+
+    remove = (record, option) => {
+        return axios.delete(
+            '/enrollments',
+            {
+                data: {
+                    'course_id': option.value,
+                    'user_id': record.id,
+                    'role': 'teacher',
+                },
+            },
+        );
     }
 }
 
+class MultiCourseStudentEnrollment extends MultiSelect {
+    select = (record, option) => {
+        return axios.post(
+            '/enrollments',
+            {
+                'course_id': option.value,
+                'user_id': record.id,
+                'role': 'student',
+            },
+        );
+    }
+
+    remove = (record, option) => {
+        return axios.delete(
+            '/enrollments',
+            {
+                data: {
+                    'course_id': option.value,
+                    'user_id': record.id,
+                    'role': 'student',
+                },
+            },
+        );
+    }
+}
 const elementIdSdt = 'rct-multi-course-teacher-select';
 if (document.getElementById(elementIdSdt)) {
     const root = createRoot(document.getElementById(elementIdSdt));
 
     let data = document.getElementById(elementIdSdt).getAttribute('data');
-    root.render(<MultiCourseEnrollment data={ data } context={ 'user' } />);
+    root.render(<MultiCourseTeacherEnrollment data={ data } />);
 }
 
 const elementIdThr = 'rct-multi-course-student-select';
@@ -22,5 +67,5 @@ if (document.getElementById(elementIdThr)) {
     const root = createRoot(document.getElementById(elementIdThr));
 
     let data = document.getElementById(elementIdThr).getAttribute('data');
-    root.render(<MultiCourseEnrollment data={ data } context={ 'user' } />);
+    root.render(<MultiCourseStudentEnrollment data={ data } />);
 }

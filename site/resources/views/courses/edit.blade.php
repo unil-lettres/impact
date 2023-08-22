@@ -61,13 +61,13 @@
                             <span class="title">{{ trans('enrollments.enrollments') }}</span>
                         </div>
                         <div class="card-body">
+                            <div class="form-text">{{ trans('users.edit.enrollments_are_auto_save') }}</div>
+                            <hr>
                             {{ trans('enrollments.as_teacher') }}
                             <div id="rct-multi-user-teacher-select"
+                                 class="mb-3"
                                  data='{{ json_encode(['record' => $course, 'role' => $teacherRole, 'options' => $users, 'defaults' => $usersAsTeacher, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
                             ></div>
-
-                            <hr>
-
                             {{ trans('enrollments.as_student') }}
                             <div id="rct-multi-user-student-select"
                                  data='{{ json_encode(['record' => $course, 'role' => $studentRole, 'options' => $users, 'defaults' => $usersAsStudent, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'

@@ -4,7 +4,6 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Collection;
 
 class Enrollment extends Model
 {
@@ -90,27 +89,6 @@ class Enrollment extends Model
             $this->save();
 
             return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Add card to the enrollment if provided.
-     * Remove card from the enrollment if provided.
-     *
-     * @return bool
-     */
-    public function updateCard(int $cardId, Collection $add, Collection $remove)
-    {
-        $card = Card::findOrFail($cardId);
-
-        if ($add->isNotEmpty()) {
-            return $this->addCard($card);
-        }
-
-        if ($remove->isNotEmpty()) {
-            return $this->removeCard($card);
         }
 
         return false;

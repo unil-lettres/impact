@@ -29,7 +29,6 @@ class MultiEnrollmentSelect extends MultiSelect {
             'user': [record.id, option.value],
         }[this.props.context];
 
-        console.log(course_id, user_id, this.role);
         return axios.delete(
             '/enrollments',
             { data: { course_id, user_id, 'role': this.role } },

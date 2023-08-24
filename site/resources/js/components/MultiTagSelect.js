@@ -2,7 +2,6 @@ import React from 'react';
 import { createRoot } from "react-dom/client";
 
 import axios from "axios";
-import _ from "lodash";
 import MultiSelect from "./MultiSelect";
 
 

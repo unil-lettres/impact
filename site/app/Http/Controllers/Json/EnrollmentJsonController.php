@@ -125,7 +125,6 @@ class EnrollmentJsonController extends Controller
      * Retrieve the student enrollment associated with the given course and
      * user.
      *
-     *
      * @throws ModelNotFoundException
      */
     private function retrieveStudentEnrollment(

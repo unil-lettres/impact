@@ -22,8 +22,8 @@ class UpdateEnrollmentCards extends AbstractRequest
     public function rules()
     {
         return [
-            'course' => 'required|integer|exists:courses,id',
-            'card' => 'required|integer|exists:cards,id',
+            'card_id' => 'required|integer|exists:cards,id',
+            'user_id' => 'required|integer|exists:users,id',
         ];
     }
 }

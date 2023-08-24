@@ -31,8 +31,8 @@ class EnrollmentUniqueness implements DataAwareRule, ValidationRule
     {
         // Check if an enrollment with the same course_id & user_id already exists
         $enrollment = Enrollment::where('role', $value)
-            ->where('course_id', $this->data['course'])
-            ->where('user_id', $this->data['user'])
+            ->where('course_id', $this->data['course_id'])
+            ->where('user_id', $this->data['user_id'])
             ->first();
 
         // If the enrollment already exists the validation rule should fail,

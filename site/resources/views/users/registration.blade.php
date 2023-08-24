@@ -21,6 +21,7 @@
                             <div id="rct-multi-user-teacher-select"
                                  data='{{ json_encode(['record' => $course, 'role' => $teacherRole, 'options' => $users, 'defaults' => $usersAsTeacher, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
                             ></div>
+                            <div class="form-text">{{ trans('users.edit.enrollments_are_auto_save') }}</div>
                         </div>
                     </div>
                 </div>
@@ -33,6 +34,7 @@
                             <div id="rct-multi-user-student-select"
                                  data='{{ json_encode(['record' => $course, 'role' => $studentRole, 'options' => $users, 'defaults' => $usersAsStudent, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
                             ></div>
+                            <div class="form-text">{{ trans('users.edit.enrollments_are_auto_save') }}</div>
                         </div>
                     </div>
                 </div>

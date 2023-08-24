@@ -1,121 +1,22 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { createRoot } from "react-dom/client";
 
 import axios from "axios";
-import CreatableSelect from 'react-select/creatable';
-import makeAnimated from 'react-select/animated';
-import _ from "lodash";
+import MultiSelect from "./MultiSelect";
 
-const animatedComponents = makeAnimated();
 
-export default class MultiTagSelect extends Component {
-    constructor(props) {
-        super(props);
+export default class MultiTagSelect extends MultiSelect {
 
-        let data = JSON.parse(this.props.data);
-
-        this.state = {
-            record: data.record,
-            options: _.map(
-                data.options,
-                (option) => ({ value: option.id, label: option.name })
-            ),
-            values: _.map(
-                data.defaults,
-                (option) => ({ value: option.id, label: option.name }),
-            ),
-            isLoading: false,
-        };
+    select = (record, option) => {
+        return axios.put(`/tags/${option.value}/attach/${record.id}`);
     }
 
-    handleChange = (selectedOptions, event) => {
-        const cardId = this.state.record.id;
-
-        // Available react-select actions: https://github.com/JedWatson/react-select/issues/3451
-        const [action, option, getValues] = {
-            'select-option': [
-                'attach',
-                event?.option,
-                (prevState) => [...prevState.values, option],
-            ],
-            'remove-value': [
-                'detach',
-                event?.removedValue,
-                (prevState) => _.reject(prevState.values, option),
-            ],
-        }[event.action] || [undefined, undefined, _.identity];
-
-        this.setState({ isLoading: true });
-        // Used routes are "tags.attach.tag" and "tags.detach.tag".
-        axios
-            .put(`/tags/${option.value}/${action}/${cardId}`)
-            .then((response) => {
-                console.log(response);
-                this.setState((prevState) => ({ values: getValues(prevState) }));
-            })
-            .catch((error) => console.error(error))
-            .finally(() => this.setState({ isLoading: false }));
+    remove = (record, option) => {
+        return axios.put(`/tags/${option.value}/detach/${record.id}`);
     }
 
-    handleCreate = (inputValue) => {
-        const cardId = this.state.record.id;
-
-        this.setState({ isLoading: true });
-        axios
-            .post(
-                `/tags/create`,
-                { name: inputValue, card_id: cardId }
-            )
-            .then((response) => {
-                console.log(response);
-
-                const newTag = {
-                    value: response.data.tag_id,
-                    label: inputValue,
-                };
-
-                this.setState((prevState) => ({
-                    options: [
-                        ...prevState.options,
-                        newTag,
-                    ],
-                    values: [
-                        ...prevState.values,
-                        newTag,
-                    ]
-                }));
-            })
-            .catch((error) => {
-
-                // Request form validation failed.
-                if (error.response.status === 422) {
-                    alert(error.response.data.message);
-                }
-
-                console.error(error);
-            })
-            .finally(() => {
-                this.setState({ isLoading: false });
-            });
-    }
-
-    render() {
-        return (
-            <CreatableSelect
-                isMulti
-                components={animatedComponents}
-                isClearable={false}
-                closeMenuOnSelect={false}
-                escapeClearsValue={false}
-                backspaceRemovesValue={false}
-                isLoading={this.state.isLoading}
-                value={this.state.values}
-                onChange={this.handleChange}
-                onCreateOption={this.handleCreate}
-                formatCreateLabel={(inputValue) => `${this.props.createLabel} "${inputValue}"`}
-                options={this.state.options}
-            />
-        );
+    create = (record, name) => {
+        return axios.post(`/tags/create`, { name, card_id: record.id })
     }
 }
 
@@ -125,5 +26,5 @@ if (element) {
 
     let data = element.getAttribute('data');
     let createLabel = element.getAttribute('createLabel');
-    root.render(<MultiTagSelect data={data} createLabel={createLabel} />);
+    root.render(<MultiTagSelect data={data} canCreate={true} createLabel={createLabel} />);
 }

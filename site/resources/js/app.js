@@ -14,8 +14,7 @@ require('./sortable');
  */
 
 require('./components/MultiEditorSelect');
-require('./components/MultiUserEnrollment');
-require('./components/MultiCourseEnrollment');
+require('./components/MultiEnrollmentSelect');
 require('./components/MultiTagSelect');
 require('./components/SingleCourseSelect');
 require('./components/SingleFolderSelect');

@@ -35,13 +35,13 @@ class StoreEnrollment extends AbstractRequest
                 ),
                 new EnrollmentUniqueness,
             ],
-            'user' => [
+            'user_id' => [
                 'required',
                 'integer',
                 'exists:users,id',
                 new RefuteAdmins,
             ],
-            'course' => 'required|integer|exists:courses,id',
+            'course_id' => 'required|integer|exists:courses,id',
         ];
     }
 }

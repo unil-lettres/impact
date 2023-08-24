@@ -22,5 +22,6 @@ return [
     'password.confirm' => 'Confirm password',
     'update' => 'Update account',
     'registrations' => 'Registrations',
+    'edit.enrollments_are_auto_save' => 'Enrollments are automatically saved when you add or remove them.',
 
 ];

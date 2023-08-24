@@ -2,6 +2,9 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\EnrollmentRole;
+use Illuminate\Validation\Rule;
+
 class DestroyEnrollment extends AbstractRequest
 {
     /**
@@ -22,7 +25,15 @@ class DestroyEnrollment extends AbstractRequest
     public function rules()
     {
         return [
-            'enrollment' => 'required|integer|exists:enrollments,id',
+            'role' => [
+                'required',
+                'string',
+                Rule::in(
+                    [EnrollmentRole::Student, EnrollmentRole::Teacher]
+                ),
+            ],
+            'user_id' => 'required|integer|exists:users,id',
+            'course_id' => 'required|integer|exists:courses,id',
         ];
     }
 }

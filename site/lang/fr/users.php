@@ -22,5 +22,6 @@ return [
     'password.confirm' => 'Confirmer le mot de passe',
     'update' => 'Mettre à jour le compte',
     'registrations' => 'Inscriptions',
+    'edit.enrollments_are_auto_save' => 'Les inscriptions sont enregistrées automatiquement lorsque vous en ajoutez ou en enlevez.',
 
 ];

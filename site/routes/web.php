@@ -89,9 +89,11 @@ Route::middleware(['auth', 'app'])->group(function () {
     // Enrollments
     Route::get('enrollments', [EnrollmentJsonController::class, 'index']);
     Route::post('enrollments', [EnrollmentJsonController::class, 'store']);
-    Route::get('enrollments/find', [EnrollmentJsonController::class, 'find']);
-    Route::put('enrollments/cards', [EnrollmentJsonController::class, 'cards']);
-    Route::delete('enrollments/{enrollment}', [EnrollmentJsonController::class, 'destroy']);
+    Route::delete('enrollments', [EnrollmentJsonController::class, 'destroy']);
+    Route::put('enrollments/attach', [EnrollmentJsonController::class, 'attach'])
+        ->name('enrollments.attach');
+    Route::put('enrollments/detach', [EnrollmentJsonController::class, 'detach'])
+        ->name('enrollments.detach');
 
     // Courses
     Route::get('courses/{course}', [CourseController::class, 'show'])

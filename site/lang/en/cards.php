@@ -45,5 +45,6 @@ return [
     'tags' => 'Tags',
     'no_emails' => 'Do not send emails',
     'edit.tags_are_auto_save' => 'Tags are automatically saved when you add or remove them.',
+    'edit.editors_are_auto_save' => 'Editors are automatically saved when you add or remove them.',
 
 ];

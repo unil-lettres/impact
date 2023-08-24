@@ -1,140 +1,69 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { createRoot } from "react-dom/client";
 
-import axios from "axios";
-import Select from "react-select";
-import makeAnimated from 'react-select/animated';
-import _ from "lodash";
+import MultiSelect from "./MultiSelect";
 
-const animatedComponents = makeAnimated();
-
-export default class MultiEnrollmentSelect extends Component {
-    constructor(props){
+class MultiEnrollmentSelect extends MultiSelect {
+    constructor(props) {
         super(props);
 
-        let data = JSON.parse(this.props.data);
-
-        this.state = {
-            context: this.props.context,
-            record: data.record,
-            role: data.role,
-            options: [],
-            defaults: [],
-            selected: [],
-            isDisabled: data.isDisabled ?? false,
-        };
-
-        Object.keys(data.options).forEach(key=>{
-            if(data.options[key]) {
-                this.state.options.push({
-                    value: data.options[key].id,
-                    label: data.options[key].name
-                });
-            }
-        });
-
-        Object.keys(data.defaults).forEach(key=>{
-            if(data.defaults[key]) {
-                this.state.defaults.push({
-                    value: data.defaults[key].id,
-                    label: data.defaults[key].name
-                });
-            }
-        });
-
-        this.state.selected = this.state.defaults;
+        const data = JSON.parse(this.props.data);
+        this.role = data.role;
     }
 
-    handleChange = (selectedOptions, { action }) => {
-        let added = _.differenceWith(selectedOptions, this.state.selected, _.isEqual).map( course =>
-            course.value
-        );
-        let removed = _.differenceWith(this.state.selected, selectedOptions, _.isEqual).map( course =>
-            course.value
-        );
+    select = (record, option) => {
+        const [course_id, user_id] = {
+            'course': [option.value, record.id],
+            'user': [record.id, option.value],
+        }[this.props.context];
 
-        this.setState(
-            {
-                selected: selectedOptions
-            },
-            () => this.save(added, removed, action)
-        );
-    };
-
-    save(added, removed, action) {
-        if (added && added.length > 0) {
-            this.createEnrollment(added[0], action);
-        } else if(removed && removed.length > 0) {
-            this.deleteEnrollment(removed[0], action);
-        } else {
-            console.log('nothing to add or delete');
-        }
-    }
-
-    createEnrollment(item, action) {
-        axios.post('/enrollments', {
-            user: this.getUserId(item),
-            course: this.getCourseId(item),
-            role: this.state.role
-        }).then(response => {
-            console.log(response);
-        }).catch(error => {
-            console.log(error)
-        });
-    }
-
-    deleteEnrollment(item, action) {
-        this.findEnrollment(item).then(function (response) {
-            if(response != null && response.data.hasOwnProperty("enrollment")) {
-                axios.delete("/enrollments/" + response.data.enrollment.id)
-                    .then(function (response) {
-                        console.log(response);
-                    }).catch(function (error) {
-                        console.log(error);
-                });
-            }
-        }).catch(function (error) {
-            console.log(error);
-        });
-    }
-
-    findEnrollment(item) {
-        return axios.get('/enrollments/find', {
-            params: {
-                user: this.getUserId(item),
-                course: this.getCourseId(item),
-                role: this.state.role
-            }
-        }).then(function (response) {
-            return response;
-        }).catch(function (error) {
-            console.log(error);
-        });
-    }
-
-    getUserId(item) {
-        return this.state.context === 'user' ?
-            this.state.record.id : item;
-    }
-
-    getCourseId(item) {
-        return this.state.context === 'course' ?
-            this.state.record.id : item;
-    }
-
-    render() {
-        return (
-            <Select
-                isMulti
-                components={ animatedComponents }
-                isClearable={ false }
-                closeMenuOnSelect={ false }
-                escapeClearsValue={ false }
-                backspaceRemovesValue={ false }
-                isDisabled={ this.state.isDisabled }
-                defaultValue={ this.state.defaults }
-                onChange={ this.handleChange }
-                options={ this.state.options }
-            />
+        return axios.post(
+            '/enrollments',
+            { course_id, user_id, 'role': this.role },
         );
     }
+
+    remove = (record, option) => {
+        const [course_id, user_id] = {
+            'course': [option.value, record.id],
+            'user': [record.id, option.value],
+        }[this.props.context];
+
+        return axios.delete(
+            '/enrollments',
+            { data: { course_id, user_id, 'role': this.role } },
+        );
+    }
+}
+
+const elementIdCourseThr = 'rct-multi-course-teacher-select';
+if (document.getElementById(elementIdCourseThr)) {
+    const root = createRoot(document.getElementById(elementIdCourseThr));
+
+    let data = document.getElementById(elementIdCourseThr).getAttribute('data');
+    root.render(<MultiEnrollmentSelect data={ data } context='course' />);
+}
+
+const elementIdCourseSdt = 'rct-multi-course-student-select';
+if (document.getElementById(elementIdCourseSdt)) {
+    const root = createRoot(document.getElementById(elementIdCourseSdt));
+
+    let data = document.getElementById(elementIdCourseSdt).getAttribute('data');
+    root.render(<MultiEnrollmentSelect data={ data } context='course' />);
+}
+
+const elementIdUserThr = 'rct-multi-user-teacher-select';
+if (document.getElementById(elementIdUserThr)) {
+    const root = createRoot(document.getElementById(elementIdUserThr));
+
+    let data = document.getElementById(elementIdUserThr).getAttribute('data');
+    root.render(<MultiEnrollmentSelect data={ data } context='user' />);
+}
+
+const elementIdUserStd = 'rct-multi-user-student-select';
+if (document.getElementById(elementIdUserStd)) {
+    const root = createRoot(document.getElementById(elementIdUserStd));
+
+    let data = document.getElementById(elementIdUserStd).getAttribute('data');
+    root.render(<MultiEnrollmentSelect data={ data } context='user' />);
 }

@@ -17,7 +17,7 @@ class TagFactory extends Factory
     public function definition()
     {
         return [
-            // Using uuid() to avoid occasional collisions word() would cause 
+            // Using uuid() to avoid occasional collisions word() would cause
             // because of unicity (course_id, name) constraint.
             'name' => fake()->uuid(),
         ];

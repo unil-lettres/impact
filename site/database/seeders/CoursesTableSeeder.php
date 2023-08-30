@@ -2,12 +2,13 @@
 
 namespace Database\Seeders;
 
+use App\Course;
+use App\Enrollment;
 use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
-use App\State;
+use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class CoursesTableSeeder extends Seeder
@@ -21,113 +22,76 @@ class CoursesTableSeeder extends Seeder
     {
         $now = Carbon::now();
 
-        $firstCourse = DB::table('courses')->insertGetId([
+        $firstCourse = Course::create([
             'name' => 'First space',
             'created_at' => $now,
             'updated_at' => $now,
             'deleted_at' => null,
-        ]);
-        $this->createStates($firstCourse);
+        ])->id;
 
-        $secondCourse = DB::table('courses')->insertGetId([
+        $secondCourse = Course::create([
             'name' => 'Second space',
             'created_at' => $now,
             'updated_at' => $now,
             'deleted_at' => null,
-        ]);
-        $this->createStates($secondCourse);
+        ])->id;
 
-        $deactivatedCourse = DB::table('courses')->insertGetId([
+        $deactivatedCourse = Course::create([
             'name' => 'Deactivated space',
             'created_at' => $now,
             'updated_at' => $now,
             'deleted_at' => $now,
-        ]);
-        $this->createStates($deactivatedCourse);
+        ])->id;
 
-        $externalCourse = DB::table('courses')->insertGetId([
+        $externalCourse = Course::create([
             'name' => 'External space',
             'type' => CourseType::External,
             'external_id' => 12345678,
             'created_at' => $now,
             'updated_at' => $now,
             'deleted_at' => null,
-        ]);
-        $this->createStates($externalCourse);
+        ])->id;
 
-        $teacherUser = DB::table('users')->insertGetId([
+        $teacherUser = User::create([
             'name' => 'Teacher user',
             'email' => 'teacher-user@example.com',
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
-        ]);
+        ])->id;
 
-        $studentUser = DB::table('users')->insertGetId([
+        $studentUser = User::create([
             'name' => 'Student user',
             'email' => 'student-user@example.com',
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
-        ]);
+        ])->id;
 
-        DB::table('enrollments')->insert([
+        Enrollment::create([
             'role' => EnrollmentRole::Teacher,
             'course_id' => $firstCourse,
             'user_id' => $teacherUser,
         ]);
 
-        DB::table('enrollments')->insert([
+        Enrollment::create([
             'role' => EnrollmentRole::Teacher,
             'course_id' => $secondCourse,
             'user_id' => $teacherUser,
         ]);
 
-        DB::table('enrollments')->insert([
+        Enrollment::create([
             'role' => EnrollmentRole::Student,
             'course_id' => $secondCourse,
             'user_id' => $studentUser,
         ]);
 
-        DB::table('enrollments')->insert([
+        Enrollment::create([
             'role' => EnrollmentRole::Student,
             'course_id' => $deactivatedCourse,
             'user_id' => $studentUser,
         ]);
-    }
-
-    /**
-     * Create states for a course.
-     *
-     * @param  int  $courseId
-     * @return void
-     */
-    private function createStates($courseId)
-    {
-        $stateData = [
-            'course_id' => $courseId,
-        ];
-
-        // Create the "private" state
-        State::factory()
-            ->private()
-            ->create($stateData);
-
-        // Create the "open" state
-        State::factory()
-            ->open()
-            ->create($stateData);
-
-        // Create the "public" state
-        State::factory()
-            ->public()
-            ->create($stateData);
-
-        // Create the "archived" state
-        State::factory()
-            ->archived()
-            ->create($stateData);
     }
 }

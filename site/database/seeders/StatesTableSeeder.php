@@ -2,11 +2,12 @@
 
 namespace Database\Seeders;
 
+use App\Course;
+use App\Enrollment;
 use App\Enums\EnrollmentRole;
-use App\State;
+use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class StatesTableSeeder extends Seeder
@@ -20,66 +21,38 @@ class StatesTableSeeder extends Seeder
     {
         $now = Carbon::now();
 
-        $course = DB::table('courses')->insertGetId([
+        $course = Course::create([
             'name' => 'Test states',
             'created_at' => $now,
             'updated_at' => $now,
             'deleted_at' => null,
-        ]);
+        ])->id;
 
-        // Create the "private" state
-        State::factory()
-            ->private()
-            ->create([
-                'course_id' => $course,
-            ]);
-
-        // Create the "open" state
-        State::factory()
-            ->open()
-            ->create([
-                'course_id' => $course,
-            ]);
-
-        // Create the "public" state
-        State::factory()
-            ->public()
-            ->create([
-                'course_id' => $course,
-            ]);
-
-        // Create the "archived" state
-        State::factory()
-            ->archived()
-            ->create([
-                'course_id' => $course,
-            ]);
-
-        $teacherUser = DB::table('users')->insertGetId([
+        $teacherUser = User::create([
             'name' => 'States teacher user',
             'email' => 'states-teacher-user@example.com',
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
-        ]);
+        ])->id;
 
-        $studentUser = DB::table('users')->insertGetId([
+        $studentUser = User::create([
             'name' => 'States student user',
             'email' => 'states-student-user@example.com',
             'password' => bcrypt('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
-        ]);
+        ])->id;
 
-        DB::table('enrollments')->insert([
+        Enrollment::create([
             'role' => EnrollmentRole::Teacher,
             'course_id' => $course,
             'user_id' => $teacherUser,
         ]);
 
-        DB::table('enrollments')->insert([
+        Enrollment::create([
             'role' => EnrollmentRole::Student,
             'course_id' => $course,
             'user_id' => $studentUser,

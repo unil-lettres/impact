@@ -11,7 +11,6 @@ use App\Folder;
 use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class CardsTableSeeder extends Seeder
 {
@@ -33,7 +32,7 @@ class CardsTableSeeder extends Seeder
             ->where('role', EnrollmentRole::Student)
             ->first();
 
-        $testCard = DB::table('cards')->insertGetId([
+        $testCard = Card::create([
             'title' => 'Test card second space',
             'created_at' => $now,
             'updated_at' => $now,
@@ -43,9 +42,9 @@ class CardsTableSeeder extends Seeder
                 ->first()->id,
             'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS,
-        ]);
+        ])->id;
 
-        $testCardInFolder = DB::table('cards')->insertGetId([
+        $testCardInFolder = Card::create([
             'title' => 'Test card in folder',
             'created_at' => $now,
             'updated_at' => $now,
@@ -56,9 +55,9 @@ class CardsTableSeeder extends Seeder
             'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS,
             'folder_id' => $testFolder->id,
-        ]);
+        ])->id;
 
-        DB::table('cards')->insert([
+        Card::create([
             'title' => 'Test card second space not assigned',
             'created_at' => $now,
             'updated_at' => $now,
@@ -70,7 +69,7 @@ class CardsTableSeeder extends Seeder
             'options' => Card::OPTIONS,
         ]);
 
-        DB::table('cards')->insert([
+        Card::create([
             'title' => 'Test card first space',
             'created_at' => $now,
             'updated_at' => $now,
@@ -82,7 +81,7 @@ class CardsTableSeeder extends Seeder
             'options' => Card::OPTIONS,
         ]);
 
-        DB::table('cards')->insert([
+        Card::create([
             'title' => 'Test card hidden boxes',
             'created_at' => $now,
             'updated_at' => $now,
@@ -119,7 +118,7 @@ class CardsTableSeeder extends Seeder
             }',
         ]);
 
-        DB::table('cards')->insert([
+        Card::create([
             'title' => 'Test card features',
             'created_at' => $now,
             'updated_at' => $now,

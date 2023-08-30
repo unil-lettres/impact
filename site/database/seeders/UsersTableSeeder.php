@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use App\Enums\UserType;
+use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class UsersTableSeeder extends Seeder
@@ -19,7 +19,7 @@ class UsersTableSeeder extends Seeder
     {
         $now = Carbon::now();
 
-        $admin = DB::table('users')->insertGetId([
+        $admin = User::create([
             'name' => 'Admin user',
             'email' => 'admin-user@example.com',
             'password' => bcrypt('password'),
@@ -27,9 +27,9 @@ class UsersTableSeeder extends Seeder
             'created_at' => $now,
             'updated_at' => $now,
             'admin' => true,
-        ]);
+        ])->id;
 
-        DB::table('users')->insert([
+        User::create([
             'name' => 'First user',
             'email' => 'first-user@example.com',
             'password' => bcrypt('password'),
@@ -40,7 +40,7 @@ class UsersTableSeeder extends Seeder
             'validity' => Carbon::now()->addMonths(config('const.users.validity')),
         ]);
 
-        DB::table('users')->insert([
+        User::create([
             'name' => 'Invalid user',
             'email' => 'invalid-user@example.com',
             'password' => bcrypt('password'),
@@ -51,7 +51,7 @@ class UsersTableSeeder extends Seeder
             'validity' => Carbon::now()->subDays(1),
         ]);
 
-        DB::table('users')->insert([
+        User::create([
             'name' => 'AAI user',
             'email' => 'aai-user@example.com',
             'remember_token' => Str::random(10),

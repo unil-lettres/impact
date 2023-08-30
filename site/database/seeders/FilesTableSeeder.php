@@ -7,9 +7,9 @@ use App\Course;
 use App\Enums\FileStatus;
 use App\Enums\FileType;
 use App\Enums\StateType;
+use App\File;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class FilesTableSeeder extends Seeder
 {
@@ -25,7 +25,7 @@ class FilesTableSeeder extends Seeder
         $firstCourse = Course::where('name', 'First space')->first();
         $secondCourse = Course::where('name', 'Second space')->first();
 
-        DB::table('files')->insert([
+        File::create([
             'name' => 'Test video file',
             'filename' => 'jesuisunfichierdetest1.mp4',
             'status' => FileStatus::Ready,
@@ -40,7 +40,7 @@ class FilesTableSeeder extends Seeder
             'deleted_at' => null,
         ]);
 
-        DB::table('files')->insert([
+        File::create([
             'name' => 'Test audio file',
             'filename' => 'jesuisunfichierdetest2.mp3',
             'status' => FileStatus::Transcoding,
@@ -55,7 +55,7 @@ class FilesTableSeeder extends Seeder
             'deleted_at' => null,
         ]);
 
-        DB::table('files')->insert([
+        File::create([
             'name' => 'Deactivated file',
             'filename' => 'jesuisunfichierdetest3.mp3',
             'status' => FileStatus::Ready,
@@ -70,7 +70,7 @@ class FilesTableSeeder extends Seeder
             'deleted_at' => $now,
         ]);
 
-        DB::table('files')->insert([
+        File::create([
             'name' => 'Failed file',
             'filename' => 'jesuisunfichierdetest4.mp4',
             'status' => FileStatus::Failed,
@@ -85,7 +85,7 @@ class FilesTableSeeder extends Seeder
             'deleted_at' => null,
         ]);
 
-        $usedFile = DB::table('files')->insertGetId([
+        $usedFile = File::create([
             'name' => 'Used file',
             'filename' => 'jesuisunfichierdetest5.mp4',
             'status' => FileStatus::Ready,
@@ -98,10 +98,10 @@ class FilesTableSeeder extends Seeder
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
             'deleted_at' => null,
-        ]);
+        ])->id;
 
         // Link a new card to a file
-        DB::table('cards')->insert([
+        Card::create([
             'title' => 'Test card with file',
             'created_at' => $now,
             'updated_at' => $now,

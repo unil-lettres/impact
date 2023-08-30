@@ -11,9 +11,11 @@
 @can('viewAny', [\App\File::class, $course])
     @can('upload', [\App\File::class, $course, null])
         @section('actions')
-            <div id="rct-files"
-                 data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxNumberOfFiles' => 5, 'label' => trans('files.create'), 'course_id' => $course->id]) }}'
-            ></div>
+            @can('upload', [\App\File::class, $course, null])
+                <div id="rct-files"
+                     data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxNumberOfFiles' => 5, 'label' => trans('files.create'), 'course_id' => $course->id]) }}'
+                ></div>
+            @endcan
         @endsection
     @endcan
     @section('content')

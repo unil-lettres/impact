@@ -18,7 +18,7 @@ class PrepareFileService
 
     private FileUploadProcessor $fileUploadProcessor;
 
-    public function __construct(Course $course, Card $card, bool $attachment)
+    public function __construct(?Course $course, ?Card $card, bool $attachment)
     {
         $this->course = $course;
         $this->card = $card;
@@ -51,15 +51,18 @@ class PrepareFileService
      */
     public function addRelation(File $file): void
     {
-        if ($this->attachment) {
+        if (! $this->card) {
+            return;
+        }
+
+        match ($this->attachment) {
             // If the file is an attachment, update
             // the file and link it to the card
-            $this->updateFile($file, $this->card);
-        } elseif ($this->card) {
+            true => $this->updateFile($file, $this->card),
             // If the file is a regular file, update
             // the card and link it to the file
-            $this->updateCard($file, $this->card);
-        }
+            default => $this->updateCard($file, $this->card),
+        };
     }
 
     /**

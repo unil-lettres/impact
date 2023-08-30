@@ -168,7 +168,11 @@ Route::group(['prefix' => 'admin',  'as' => 'admin.', 'middleware' => ['auth', '
         ->name('courses.send.confirm.delete');
 
     // Files
-    Route::resource('files', FileController::class);
+    Route::resource('files', FileController::class)->only([
+        'edit',
+        'update',
+        'destroy',
+    ]);
     Route::get('/files', [FileController::class, 'manage'])
         ->name('files.manage');
 

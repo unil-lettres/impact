@@ -7,11 +7,12 @@
                 <div class="card-header">
                     <span class="title">{{ trans('files.files') }} <span class="badge bg-secondary">{{ $files->total() }}</span></span>
 
-                    @can('create', \App\File::class)
-                        <a href="{{ route('admin.files.create') }}"
-                           class="btn btn-primary float-end">
-                            {{ trans('files.create') }}
-                        </a>
+                    @can('upload', [\App\File::class, null, null])
+                        <div class="float-end">
+                            <div id="rct-files" class="float-end"
+                                 data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.create'), 'maxNumberOfFiles' => 10]) }}'
+                            ></div>
+                        </div>
                     @endcan
                 </div>
                 <div class="card-body">

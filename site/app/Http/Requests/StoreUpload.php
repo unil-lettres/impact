@@ -23,7 +23,7 @@ class StoreUpload extends AbstractRequest
     {
         return [
             'course_id' => 'nullable|integer|exists:courses,id',
-            'card_id' => 'integer|required_if:attachment,true|exists:cards,id',
+            'card_id' => 'nullable|integer|exists:cards,id',
             'attachment' => 'required|boolean',
         ];
     }
@@ -34,15 +34,9 @@ class StoreUpload extends AbstractRequest
     protected function prepareForValidation(): void
     {
         $this->merge([
-            'attachment' => $this->toBoolean($this->attachment),
+            'course_id' => json_decode($this->course_id),
+            'card_id' => json_decode($this->card_id),
+            'attachment' => json_decode($this->attachment),
         ]);
-    }
-
-    /**
-     * Convert to boolean
-     */
-    private function toBoolean(string $boolean): bool
-    {
-        return filter_var($boolean, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
     }
 }

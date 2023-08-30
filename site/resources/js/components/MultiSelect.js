@@ -65,7 +65,6 @@ export default class MultiSelect extends Component {
     }
 
     handleChange = (selectedOptions, event) => {
-
         // Available react-select actions: https://github.com/JedWatson/react-select/issues/3451
         const [action, option, getValues] = {
             'select-option': [
@@ -92,7 +91,6 @@ export default class MultiSelect extends Component {
     }
 
     handleCreate = (inputValue) => {
-
         this.setState({ isLoading: true });
 
         this.create(this.state.record, inputValue)

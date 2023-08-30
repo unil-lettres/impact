@@ -5,12 +5,31 @@
 
             @if($card->boxIsEditable($reference))
                 <div class="float-end">
-                    <!-- Button trigger document upload -->
+                    <div id="rct-attachments" class="float-end"
+                         data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.add'), 'maxNumberOfFiles' => 5, 'course_id' => $course->id, 'card_id' => $card->id]) }}'
+                    ></div>
                 </div>
             @endif
         </div>
         <div class="card-body">
-            // Add attachments upload
+            @if ($card->attachments->isNotEmpty())
+                <ul>
+                    @foreach ($card->attachments as $attachment)
+                        <li>
+                            <!-- TODO: add logic to delete attachments -->
+                            <a href="{{ Helpers::fileUrl($attachment->filename) }}"
+                               title="{{ trans('files.url') }}"
+                               target="_blank">
+                                {{ $attachment->name }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
+            @else
+                <p class="text-secondary text-center">
+                    {{ trans('messages.card.no.attachments') }}
+                </p>
+            @endif
         </div>
     </div>
 @endif

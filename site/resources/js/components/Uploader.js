@@ -9,7 +9,7 @@ import { DashboardModal, Dashboard } from '@uppy/react'
 
 export default class Uploader extends Component {
     constructor (props) {
-        super(props)
+        super(props);
 
         let data = JSON.parse(this.props.data);
 
@@ -30,8 +30,9 @@ export default class Uploader extends Component {
         this.label = data.label ?? 'Send file(s)';
         this.maxFileSize = data.maxFileSize ?? 500000000;
         this.maxNumberOfFiles = data.maxNumberOfFiles ?? 1;
-        this.allowedFileTypes = data.allowedFileTypes ?? ['audio/*', 'video/*'];
-        this.modal = data.modal ?? false;
+        this.modal = data.modal ?? true;
+        this.course_id = data.course_id ?? null;
+        this.card_id = data.card_id ?? null;
     }
 
     initLocale () {
@@ -71,15 +72,11 @@ export default class Uploader extends Component {
         });
 
         this.uppy.on('upload', (data) => {
-            let course = document.getElementById('course_id') ?
-                document.getElementById('course_id').value : null;
-            let card = document.getElementById('card_id') ?
-                document.getElementById('card_id').value : null;
-
             this.uppy.setOptions({
                 meta: {
-                    course: course,
-                    card: card
+                    course_id: this.course_id,
+                    card_id: this.card_id,
+                    attachment: this.attachment
                 }
             });
         });
@@ -132,12 +129,4 @@ export default class Uploader extends Component {
             );
         }
     }
-}
-
-const elementId = 'rct-uploader';
-if (document.getElementById(elementId)) {
-    const root = createRoot(document.getElementById(elementId));
-
-    let data = document.getElementById(elementId).getAttribute('data');
-    root.render(<Uploader data={ data } />);
 }

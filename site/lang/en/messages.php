@@ -40,6 +40,7 @@ return [
     'card.media.processing' => 'The file is processing, please wait.',
     'card.media.not.selected' => 'No media selected',
     'card.no.transcription' => 'No transcription',
+    'card.no.attachments' => 'No attachments',
     'card.empty' => 'Empty',
     'folder.created' => 'Folder created: :title',
     'folder.deleted' => 'Folder deleted.',

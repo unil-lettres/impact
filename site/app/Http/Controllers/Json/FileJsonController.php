@@ -4,14 +4,13 @@ namespace App\Http\Controllers\Json;
 
 use App\Card;
 use App\Course;
-use App\Enums\FileStatus;
 use App\File;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUpload;
 use App\Jobs\ProcessFile;
-use App\Services\FileUploadProcessor;
+use App\Services\PrepareFileService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class FileJsonController extends Controller
 {
@@ -22,12 +21,13 @@ class FileJsonController extends Controller
      *
      * @throws AuthorizationException
      */
-    public function upload(Request $request, FileUploadProcessor $fileUploadProcessor)
+    public function upload(StoreUpload $request)
     {
-        $course = $request->get('course') ?
-            Course::find($request->get('course')) : null;
-        $card = $request->get('card') ?
-            Card::find($request->get('card')) : null;
+        $course = $request->get('course_id') ?
+            Course::find($request->get('course_id')) : null;
+        $card = $request->get('card_id') ?
+            Card::find($request->get('card_id')) : null;
+        $attachment = $request->get('attachment');
 
         $this->authorize('upload', [
             File::class,
@@ -35,25 +35,19 @@ class FileJsonController extends Controller
             $card,
         ]);
 
-        // Move file to temp storage
-        $path = $fileUploadProcessor
-            ->moveFileToStoragePath(
-                $request->file('file'),
-                true
-            );
-
-        // Create file draft
-        $file = $this->createFileDraft(
-            $fileUploadProcessor,
-            $request,
-            $path,
-            $course
+        // Create file draft, move to temp storage
+        // and add the appropriate relation
+        $fileService = new PrepareFileService(
+            $course,
+            $card,
+            $attachment
         );
-
-        if ($card) {
-            // Optionally link the file to a card
-            $this->updateCard($file, $card);
-        }
+        $file = $fileService->prepareFile(
+            $request->file('file')
+        );
+        $fileService->addRelation(
+            $file
+        );
 
         // Dispatch record for async file processing
         ProcessFile::dispatch($file);
@@ -61,45 +55,5 @@ class FileJsonController extends Controller
         return response()->json([
             'success' => $file->id,
         ], 200);
-    }
-
-    /**
-     * Create file draft with basic infos
-     *
-     * @return File $file
-     */
-    private function createFileDraft(FileUploadProcessor $fileUploadProcessor, Request $request, string $path, ?Course $course)
-    {
-        // Get file basic infos
-        $mimeType = $request->file('file')->getMimeType();
-        $filename = $request->file('file')->getClientOriginalName();
-        $size = $request->file('file')->getSize();
-
-        $course_id = $course ? $course->id : null;
-
-        return File::create([
-            'name' => $fileUploadProcessor
-                ->getFileName($filename),
-            'filename' => $fileUploadProcessor
-                ->getBaseName($path),
-            'status' => FileStatus::Processing,
-            'type' => $fileUploadProcessor
-                ->fileType($mimeType),
-            'size' => $size,
-            'course_id' => $course_id,
-        ]);
-    }
-
-    /**
-     * Link the file to a card
-     *
-     * @return void
-     */
-    private function updateCard(File $file, Card $card)
-    {
-        $card->update([
-            'file_id' => $file->id,
-        ]);
-        $card->save();
     }
 }

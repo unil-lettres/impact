@@ -41,6 +41,7 @@ return [
     'card.media.processing' => 'Le fichier est en cours de traitement, veuillez patienter.',
     'card.media.not.selected' => 'Aucun fichier n\'a été sélectionné',
     'card.no.transcription' => 'Pas de transcription',
+    'card.no.attachments' => 'Pas d\'annexes',
     'card.empty' => 'Vide',
     'folder.created' => 'Dossier créé: :title',
     'folder.deleted' => 'Dossier supprimé.',

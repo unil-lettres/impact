@@ -4,11 +4,8 @@
             <span class="fw-bolder">1. {{ trans('cards.source') }}</span>
 
             @if($card->boxIsEditable($reference))
-                <input id="card_id" name="card_id" type="hidden" value="{{ $card->id }}">
-                <input id="course_id" name="course_id" type="hidden" value="{{ $course->id }}">
-
-                <div id="rct-uploader" class="float-end"
-                     data='{{ json_encode(['locale' => Helpers::currentLocal(), 'modal' => true, 'label' => 'Envoyer']) }}'
+                <div id="rct-files" class="float-end"
+                     data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.upload'), 'course_id' => $course->id, 'card_id' => $card->id]) }}'
                 ></div>
             @endif
         </div>

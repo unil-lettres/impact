@@ -11,10 +11,8 @@
 @can('viewAny', [\App\File::class, $course])
     @can('upload', [\App\File::class, $course, null])
         @section('actions')
-            <input id="course_id" name="course_id" type="hidden" value="{{ $course->id }}">
-
-            <div id="rct-uploader"
-                 data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxNumberOfFiles' => 5, 'modal' => true, 'label' => trans('files.create')]) }}'
+            <div id="rct-files"
+                 data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxNumberOfFiles' => 5, 'label' => trans('files.create'), 'course_id' => $course->id]) }}'
             ></div>
         @endsection
     @endcan

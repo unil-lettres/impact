@@ -3,10 +3,13 @@
 namespace App;
 
 use App\Enums\StatePermission;
+use App\Scopes\HideAttachmentsScope;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
@@ -68,7 +71,7 @@ class Card extends Model
     /**
      * Get the course of this card.
      */
-    public function course()
+    public function course(): HasOne
     {
         return $this->hasOne('App\Course', 'id', 'course_id');
     }
@@ -76,7 +79,7 @@ class Card extends Model
     /**
      * Get the folder of this card.
      */
-    public function folder()
+    public function folder(): HasOne
     {
         return $this->hasOne('App\Folder', 'id', 'folder_id');
     }
@@ -84,7 +87,7 @@ class Card extends Model
     /**
      * Get the file of this card.
      */
-    public function file()
+    public function file(): HasOne
     {
         return $this->hasOne('App\File', 'id', 'file_id');
     }
@@ -92,7 +95,7 @@ class Card extends Model
     /**
      * Get the state of this card.
      */
-    public function state()
+    public function state(): HasOne
     {
         return $this->hasOne('App\State', 'id', 'state_id');
     }
@@ -103,6 +106,16 @@ class Card extends Model
     public function tags(): BelongsToMany
     {
         return $this->belongsToMany(Tag::class)->orderBy('name');
+    }
+
+    /**
+     * Get the attachments of this card.
+     */
+    public function attachments(): HasMany
+    {
+        return $this->hasMany('App\File', 'card_id')
+            ->withoutGlobalScope(HideAttachmentsScope::class)
+            ->orderBy('created_at', 'desc');
     }
 
     /**

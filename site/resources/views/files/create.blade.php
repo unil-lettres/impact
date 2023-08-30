@@ -19,20 +19,11 @@
             <div class="row">
                 @can('upload', [\App\File::class, null, null])
                     <div class="col-md-12 col-lg-7">
-                        <div id="rct-uploader"
-                             data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxNumberOfFiles' => 10]) }}'
+                        <div id="rct-files"
+                             data='{{ json_encode(['locale' => Helpers::currentLocal(), 'modal' => false, 'maxNumberOfFiles' => 10]) }}'
                         ></div>
                     </div>
                 @endcan
-
-                <div class="col-md-12 col-lg-5">
-                    <label for="course_id" class="control-label form-label">{{ trans('files.select_space') }}</label>
-                    <input id="course_id" name="course" type="hidden" value="">
-                    <div id="rct-single-course-select"
-                         reference="course_id"
-                         data='{{ json_encode(['options' => $courses]) }}'
-                    ></div>
-                </div>
             </div>
         @endcan
     </div>

@@ -18,6 +18,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
 class ProcessFile implements ShouldQueue
@@ -34,8 +35,6 @@ class ProcessFile implements ShouldQueue
 
     /**
      * Create a new job instance.
-     *
-     * @return void
      */
     public function __construct(File $file)
     {
@@ -49,27 +48,32 @@ class ProcessFile implements ShouldQueue
 
     /**
      * Execute the job.
-     *
-     * @return void
      */
-    public function handle()
+    public function handle(): void
     {
-        // Launch the process corresponding to the file type
-        match ($this->file->type) {
-            FileType::Audio => $this->processAudio(),
-            FileType::Video => $this->processVideo(),
-            FileType::Image => $this->processImage(),
-            default => $this->processDocument(),
-        };
+        if ($this->file->isAttachment()) {
+            // If the file is an attachment, always process
+            // it as a document (avoid transcoding)
+            $this->processDocument();
+        } else {
+            // Otherwise Launch the process corresponding
+            // to the file type
+            match ($this->file->type) {
+                FileType::Audio => $this->processAudio(),
+                FileType::Video => $this->processVideo(),
+                FileType::Image => $this->processImage(),
+                default => $this->processDocument(),
+            };
+        }
     }
 
     /**
      * The job failed to process.
-     *
-     * @return void
      */
-    public function failed(Exception $exception)
+    public function failed(Exception $exception): void
     {
+        Log::error($exception->getMessage());
+
         $this->file->update([
             'status' => FileStatus::Failed,
         ]);
@@ -82,7 +86,7 @@ class ProcessFile implements ShouldQueue
     /**
      * Process an image.
      */
-    protected function processImage()
+    protected function processImage(): void
     {
         $this->fileUploadProcessor
             ->moveFileToStandardStorage($this->file->filename);
@@ -96,7 +100,7 @@ class ProcessFile implements ShouldQueue
     /**
      * Process a document.
      */
-    protected function processDocument()
+    protected function processDocument(): void
     {
         $this->fileUploadProcessor
             ->moveFileToStandardStorage($this->file->filename);
@@ -110,7 +114,7 @@ class ProcessFile implements ShouldQueue
     /**
      * Process a video file.
      */
-    protected function processVideo()
+    protected function processVideo(): void
     {
         $this->transcodeFile(FileType::Video);
     }
@@ -118,7 +122,7 @@ class ProcessFile implements ShouldQueue
     /**
      * Process an audio file.
      */
-    protected function processAudio()
+    protected function processAudio(): void
     {
         $this->transcodeFile(FileType::Audio);
     }
@@ -126,7 +130,7 @@ class ProcessFile implements ShouldQueue
     /**
      * Transcode a media file with FFmpeg.
      */
-    protected function transcodeFile(string $type)
+    protected function transcodeFile(string $type): void
     {
         $this->file->update([
             'status' => FileStatus::Transcoding,
@@ -147,7 +151,7 @@ class ProcessFile implements ShouldQueue
     /**
      * Transcode a video file.
      */
-    protected function transcodeVideo()
+    protected function transcodeVideo(): void
     {
         $ffmpeg = FFMpeg::create(
             [
@@ -209,7 +213,7 @@ class ProcessFile implements ShouldQueue
     /**
      * Transcode an audio file.
      */
-    protected function transcodeAudio()
+    protected function transcodeAudio(): void
     {
         $ffmpeg = FFMpeg::create(
             [

@@ -21,6 +21,8 @@ class FilePolicy
      */
     public function viewAny(User $user, Course $course)
     {
+        // TODO: add attachments logic
+
         if ($user->admin) {
             return true;
         }
@@ -59,6 +61,8 @@ class FilePolicy
      */
     public function view(User $user, File $file)
     {
+        // TODO: add attachments logic
+
         if ($user->admin) {
             return true;
         }
@@ -111,6 +115,8 @@ class FilePolicy
      */
     public function forceDelete(User $user, File $file)
     {
+        // TODO: add attachments logic
+
         // The file cannot be deleted if linked to a card
         if ($file->cards->isNotEmpty()) {
             return false;
@@ -145,6 +151,8 @@ class FilePolicy
      */
     public function upload(User $user, ?Course $course, ?Card $card)
     {
+        // TODO: add attachments logic
+
         if ($user->admin) {
             return true;
         }

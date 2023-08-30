@@ -35,8 +35,8 @@ class FileJsonController extends Controller
             $card,
         ]);
 
-        // Create file draft, move to temp storage
-        // and add the appropriate relation
+        // Create file draft, move to temp storage and add the
+        // appropriate relation (regular or attachment)
         $fileService = new PrepareFileService(
             $course,
             $card,

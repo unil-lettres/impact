@@ -56,7 +56,7 @@ class PrepareFileService
             // the file and link it to the card
             $this->updateFile($file, $this->card);
         } elseif ($this->card) {
-            // If the file is not an attachment, update
+            // If the file is a regular file, update
             // the card and link it to the file
             $this->updateCard($file, $this->card);
         }
@@ -88,7 +88,7 @@ class PrepareFileService
     }
 
     /**
-     * Link the file to a card (box1 media)
+     * Link a file to a card
      */
     private function updateCard(File $file, Card $card): void
     {
@@ -99,7 +99,7 @@ class PrepareFileService
     }
 
     /**
-     * Link the card to the file (make an attachment)
+     * Link a card to a file
      */
     private function updateFile(File $file, Card $card): void
     {

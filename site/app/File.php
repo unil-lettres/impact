@@ -50,7 +50,7 @@ class File extends Model
     }
 
     /**
-     * Get the cards of this file.
+     * Get the cards of this file (regular).
      */
     public function cards(): HasMany
     {
@@ -60,7 +60,7 @@ class File extends Model
 
     /**
      * Check if the file is used by card(s). It could be used
-     * as the box 1 media or as an attachment.
+     * as a regular file or as an attachment.
      */
     public function isUsed(): bool
     {

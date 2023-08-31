@@ -15,7 +15,7 @@ use PhpOffice\PhpWord\SimpleType\JcTable;
 use PhpOffice\PhpWord\Style\Language;
 use PhpOffice\PhpWord\Style\Table;
 
-class ExportCardBox
+class ExportBoxService
 {
     private Card $card;
 
@@ -43,11 +43,9 @@ class ExportCardBox
     /**
      * Export the content of a card box
      *
-     * @return string|null
-     *
      * @throws Exception
      */
-    public function export()
+    public function export(): ?string
     {
         $box = $this->box;
         $data = $this->card->$box;
@@ -67,11 +65,9 @@ class ExportCardBox
     /**
      * Export the transcription content
      *
-     * @return bool
-     *
      * @throws Exception
      */
-    private function transcription(array $data)
+    private function transcription(array $data): bool
     {
         return match ($this->format) {
             ExportFormat::Docx => $this->transcriptionToDocx($data),
@@ -82,11 +78,9 @@ class ExportCardBox
     /**
      * Create a Word document with the transcription content
      *
-     * @return bool
-     *
      * @throws Exception
      */
-    private function transcriptionToDocx(array $data)
+    private function transcriptionToDocx(array $data): bool
     {
         $phpWord = $this->initPhpWord();
 
@@ -137,10 +131,8 @@ class ExportCardBox
 
     /**
      * Initialize an instance of PHPWord
-     *
-     * @return PhpWord
      */
-    private function initPhpWord()
+    private function initPhpWord(): PhpWord
     {
         $phpWord = new PhpWord();
 

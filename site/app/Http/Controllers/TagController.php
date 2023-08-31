@@ -25,10 +25,8 @@ class TagController extends Controller
         $tagOrder = $request->get('tag_order') ?? 'name';
         $tagDirection = $request->get('tag_direction') ?? 'asc';
 
-        $tags = Tag::where('course_id', $course->id)
-            ->selectRaw('tags.id, course_id, name, count(card_tag.tag_id) as cards_count')
-            ->leftJoin('card_tag', 'tags.id', '=', 'card_tag.tag_id')
-            ->groupBy('tags.id', 'course_id', 'name')
+        $tags = Tag::withCount('cards')
+            ->where('course_id', $course->id)
             ->orderBy($tagOrder, $tagDirection)
             ->orderBy('name', 'asc')
             ->orderBy('cards_count', 'asc')

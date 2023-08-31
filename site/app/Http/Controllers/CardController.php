@@ -10,7 +10,7 @@ use App\Http\Requests\CreateCardExport;
 use App\Http\Requests\DestroyCard;
 use App\Http\Requests\StoreCard;
 use App\Http\Requests\UpdateCard;
-use App\Services\ExportCardBox;
+use App\Services\ExportBoxService;
 use App\State;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
@@ -249,7 +249,7 @@ class CardController extends Controller
 
         $format = $request->get('format');
 
-        $service = new ExportCardBox($card, $box, $format);
+        $service = new ExportBoxService($card, $box, $format);
 
         return response()
             ->download(

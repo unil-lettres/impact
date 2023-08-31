@@ -8,7 +8,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class FileUploadProcessor
+class FileUploadService
 {
     public function __construct()
     {
@@ -21,10 +21,8 @@ class FileUploadProcessor
 
     /**
      * Return file type from given mime type.
-     *
-     * @return string
      */
-    public function fileType(string $mimeType)
+    public function fileType(string $mimeType): string
     {
         if (Str::is('video/*', $mimeType)) {
             return FileType::Video;
@@ -47,20 +45,16 @@ class FileUploadProcessor
 
     /**
      * Get basename (ex. my_file.mp4) from file path.
-     *
-     * @return string
      */
-    public function getBaseName($filePath)
+    public function getBaseName($filePath): string
     {
         return pathinfo($filePath, PATHINFO_BASENAME);
     }
 
     /**
      * Get filename (ex. my_file) from file path.
-     *
-     * @return string
      */
-    public function getFileName($filePath)
+    public function getFileName($filePath): string
     {
         if (! $filePath) {
             return 'No name';
@@ -71,11 +65,8 @@ class FileUploadProcessor
 
     /**
      * Move file to defined storage path.
-     *
-     * @param  bool  $isTemp
-     * @return string|false
      */
-    public function moveFileToStoragePath(UploadedFile $file, $isTemp = false)
+    public function moveFileToStoragePath(UploadedFile $file, bool $isTemp = false): string|false
     {
         $path = $isTemp ? StoragePath::UploadTemp : StoragePath::UploadStandard;
 
@@ -86,10 +77,8 @@ class FileUploadProcessor
 
     /**
      * Move file from temp storage path to standard storage path.
-     *
-     * @return bool
      */
-    public function moveFileToStandardStorage(string $filename)
+    public function moveFileToStandardStorage(string $filename): bool
     {
         // Clean filename to keep only the name of the file
         $cleanedFilename = $this->getBaseName($filename);
@@ -103,11 +92,8 @@ class FileUploadProcessor
 
     /**
      * Get the size of a file.
-     *
-     * @param  bool  $isTemp
-     * @return int
      */
-    public function getFileSize(string $filename, $isTemp = false)
+    public function getFileSize(string $filename, bool $isTemp = false): int
     {
         // Clean filename to keep only the name of the file
         $cleanedFilename = $this->getBaseName($filename);
@@ -122,10 +108,8 @@ class FileUploadProcessor
 
     /**
      * Remove file from temp storage.
-     *
-     * @return bool
      */
-    public function removeFileFromTempStorage(string $filename)
+    public function removeFileFromTempStorage(string $filename): bool
     {
         // Clean filename to keep only the name of the file
         $cleanedFilename = $this->getBaseName($filename);
@@ -138,10 +122,8 @@ class FileUploadProcessor
 
     /**
      * Remove file from standard storage.
-     *
-     * @return bool
      */
-    public function removeFileFromStandardStorage(string $filename)
+    public function removeFileFromStandardStorage(string $filename): bool
     {
         // Clean filename to keep only the name of the file
         $cleanedFilename = $this->getBaseName($filename);

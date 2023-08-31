@@ -31,6 +31,7 @@ class FileJsonController extends Controller
         $attachment = $request->get('attachment');
 
         $this->authorize('upload', [
+            // We use a different policy for attachments
             $attachment ? AttachmentPolicy::class : File::class,
             $course,
             $card,

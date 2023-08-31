@@ -7,6 +7,8 @@ use App\File;
 use App\Http\Requests\DestroyFile;
 use App\Http\Requests\EditFile;
 use App\Http\Requests\UpdateFile;
+use App\Policies\AttachmentPolicy;
+use App\Scopes\HideAttachmentsScope;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
@@ -150,14 +152,18 @@ class FileController extends Controller
      */
     public function destroy(DestroyFile $request, int $id)
     {
-        $file = File::find($id);
+        $file = File::withoutGlobalScope(HideAttachmentsScope::class)
+            ->find($id);
 
-        $this->authorize('forceDelete', $file);
+        $this->authorize('forceDelete', [
+            // We use a different policy for attachments
+            $file->isAttachment() ? AttachmentPolicy::class : File::class,
+            $file,
+        ]);
 
-        // Delete the record
+        // Delete the record from the database. The binary
+        // file will be deleted with the FileObserver "deleted" event.
         $file->forceDelete();
-
-        // Then the binary file will be deleted in the FileObserver "deleted" event
 
         return redirect()
             ->back()

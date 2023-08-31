@@ -14,26 +14,45 @@
             @endif
         </div>
         <div class="card-body">
-            @if ($card->attachments->isNotEmpty())
-                <ul>
+            <div class="attachments-list list-group">
+                @if ($card->attachments->isNotEmpty())
                     @foreach ($card->attachments as $attachment)
                         @can('view', [\App\Policies\AttachmentPolicy::class, $attachment])
-                            <li>
-                                <!-- TODO: add logic to delete attachments -->
-                                <a href="{{ Helpers::fileUrl($attachment->filename) }}"
-                                   title="{{ trans('files.url') }}"
-                                   target="_blank">
-                                    {{ $attachment->name }}
-                                </a>
-                            </li>
+                            <div>
+                                <span class="align-middle">
+                                    <a href="{{ Helpers::fileUrl($attachment->filename) }}"
+                                       title="{{ trans('files.url') }}"
+                                       target="_blank">
+                                        {{ $attachment->name }}
+                                    </a>
+                                </span>
+                                <span class="actions">
+                                    @can('forceDelete', [\App\Policies\AttachmentPolicy::class, $attachment])
+                                        <span class="float-end">
+                                            <form class="with-delete-confirm" method="post"
+                                                  action="{{ route('files.destroy', $attachment->id) }}">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-danger"
+                                                        data-bs-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="{{ trans('files.delete') }}">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </span>
+                                    @endcan
+                                </span>
+                            </div>
                         @endcan
                     @endforeach
-                </ul>
-            @else
-                <p class="text-secondary text-center">
-                    {{ trans('messages.card.no.attachments') }}
-                </p>
-            @endif
+                @else
+                    <p class="text-secondary text-center">
+                        {{ trans('messages.card.no.attachments') }}
+                    </p>
+                @endif
+            </div>
         </div>
     </div>
 @endif

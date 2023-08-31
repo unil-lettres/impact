@@ -38,14 +38,14 @@ class AttachmentPolicy
      *
      * @return mixed
      */
-    public function view(User $user, File $file)
+    public function view(User $user, File $attachment)
     {
         if ($user->admin) {
             return true;
         }
 
         // Teachers and students of the course can view the attachment
-        if ($user->isTeacher($file->course) || $user->isStudent($file->course)) {
+        if ($user->isTeacher($attachment->course) || $user->isStudent($attachment->course)) {
             return true;
         }
 
@@ -57,10 +57,10 @@ class AttachmentPolicy
      *
      * @return mixed
      */
-    public function forceDelete(User $user, File $file)
+    public function forceDelete(User $user, File $attachment)
     {
         // The attachment cannot be deleted if status is "processing" or "transcoding"
-        if (Str::contains($file->status, [FileStatus::Processing, FileStatus::Transcoding])) {
+        if (Str::contains($attachment->status, [FileStatus::Processing, FileStatus::Transcoding])) {
             return false;
         }
 
@@ -69,7 +69,7 @@ class AttachmentPolicy
         }
 
         // Teachers of the course or editors of the card can deleted the attachment
-        if ($user->isTeacher($file->course) || $user->isEditor($file->card)) {
+        if ($user->isTeacher($attachment->course) || $user->isEditor($attachment->card)) {
             return true;
         }
 

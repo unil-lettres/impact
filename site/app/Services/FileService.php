@@ -8,7 +8,7 @@ use App\Enums\FileStatus;
 use App\File;
 use Illuminate\Http\UploadedFile;
 
-class PrepareFileService
+class FileService
 {
     private ?Course $course;
 

@@ -8,6 +8,7 @@ use App\File;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpload;
 use App\Jobs\ProcessFile;
+use App\Policies\AttachmentPolicy;
 use App\Services\FileService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
@@ -30,7 +31,7 @@ class FileJsonController extends Controller
         $attachment = $request->get('attachment');
 
         $this->authorize('upload', [
-            File::class,
+            $attachment ? AttachmentPolicy::class : File::class,
             $course,
             $card,
         ]);

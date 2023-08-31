@@ -4,7 +4,7 @@
             <span class="fw-bolder">5. {{ trans('cards.documents') }}</span>
 
             @if($card->boxIsEditable($reference))
-                @can('upload', [\App\File::class, $course, $card])
+                @can('upload', [\App\Policies\AttachmentPolicy::class, $course, $card])
                     <div class="float-end">
                         <div id="rct-attachments" class="float-end"
                              data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.add'), 'maxNumberOfFiles' => 5, 'course_id' => $course->id, 'card_id' => $card->id]) }}'
@@ -17,14 +17,16 @@
             @if ($card->attachments->isNotEmpty())
                 <ul>
                     @foreach ($card->attachments as $attachment)
-                        <li>
-                            <!-- TODO: add logic to delete attachments -->
-                            <a href="{{ Helpers::fileUrl($attachment->filename) }}"
-                               title="{{ trans('files.url') }}"
-                               target="_blank">
-                                {{ $attachment->name }}
-                            </a>
-                        </li>
+                        @can('view', [\App\Policies\AttachmentPolicy::class, $attachment])
+                            <li>
+                                <!-- TODO: add logic to delete attachments -->
+                                <a href="{{ Helpers::fileUrl($attachment->filename) }}"
+                                   title="{{ trans('files.url') }}"
+                                   target="_blank">
+                                    {{ $attachment->name }}
+                                </a>
+                            </li>
+                        @endcan
                     @endforeach
                 </ul>
             @else

@@ -10,7 +10,7 @@
                     @can('upload', [\App\File::class, null, null])
                         <div class="float-end">
                             <div id="rct-files" class="float-end"
-                                 data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.create'), 'maxNumberOfFiles' => 10]) }}'
+                                 data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.create'), 'maxNumberOfFiles' => 10, 'note' => trans('messages.file.reload')]) }}'
                             ></div>
                         </div>
                     @endcan
@@ -49,7 +49,7 @@
                                             </a>
                                         </span>
                                             @endcan
-                                            @if(Helpers::isFileReady($file))
+                                            @if(Helpers::isFileStatus($file, \App\Enums\FileStatus::Ready))
                                                 <span>
                                             <a href="{{ Helpers::fileUrl($file->filename) }}"
                                                target="_blank"

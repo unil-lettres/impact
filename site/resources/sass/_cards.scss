@@ -75,6 +75,9 @@
     .box5 .attachments-list {
         div {
             padding: 0.25rem;
+        }
+
+        div:nth-last-child(n+2) {
             border-bottom: 1px solid #dee2e6;
         }
     }

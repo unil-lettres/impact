@@ -6,7 +6,7 @@
             @if($card->boxIsEditable($reference))
                 @can('upload', [\App\File::class, $course, $card])
                     <div id="rct-files" class="float-end"
-                         data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.upload'), 'course_id' => $course->id, 'card_id' => $card->id]) }}'
+                         data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.upload'), 'course_id' => $course->id, 'card_id' => $card->id, 'note' => trans('messages.file.reload')]) }}'
                     ></div>
                 @endcan
             @endif
@@ -18,16 +18,16 @@
                          data='{{ json_encode(['locale' => Helpers::currentLocal(), 'card' => $card, 'url' => Helpers::getExternalLink($card), 'isLocal' => false]) }}'
                     ></div>
                 @elseif($card->file)
-                    @if(Helpers::isFileReady($card->file))
+                    @if(Helpers::isFileStatus($card->file, \App\Enums\FileStatus::Ready))
                         <div id="rct-player"
                              data='{{ json_encode(['locale' => Helpers::currentLocal(), 'card' => $card, 'url' => Helpers::fileUrl($card->file->filename), 'isLocal' => true]) }}'
                         ></div>
-                    @elseif(Helpers::isFileFailed($card->file))
-                        <p class="text-danger text-center p-3">
+                    @elseif(Helpers::isFileStatus($card->file, \App\Enums\FileStatus::Failed))
+                        <p class="text-danger text-center fs-5 lh-sm p-3">
                             {{ trans('messages.card.media.failed') }}
                         </p>
                     @else
-                        <p class="text-primary text-center p-3">
+                        <p class="text-secondary text-center fs-5 lh-sm p-3">
                             {{ trans('messages.card.media.processing') }}
                         </p>
                     @endif

@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { createRoot } from "react-dom/client";
 
 import Uppy from '@uppy/core'
 import French from '@uppy/locales/lib/fr_FR'
@@ -14,7 +13,8 @@ export default class Uploader extends Component {
         let data = JSON.parse(this.props.data);
 
         this.state = {
-            modalOpen: false
+            modalOpen: false,
+            successfulUpload: false
         }
 
         this.handleOpen = this.handleOpen.bind(this)
@@ -31,8 +31,10 @@ export default class Uploader extends Component {
         this.maxFileSize = data.maxFileSize ?? 500000000;
         this.maxNumberOfFiles = data.maxNumberOfFiles ?? 1;
         this.modal = data.modal ?? true;
+        this.reloadOnModalClose = data.reloadOnModalClose ?? true;
         this.course_id = data.course_id ?? null;
         this.card_id = data.card_id ?? null;
+        this.note = data.note ?? null;
     }
 
     initLocale () {
@@ -82,9 +84,18 @@ export default class Uploader extends Component {
         });
 
         this.uppy.on('complete', (result) => {
-            if(result.successful[0] !== undefined) {
-                console.log(result.successful[0].response.body);
+            if (result.failed.length > 0) {
+                console.error('Errors:');
+                result.failed.forEach((file) => {
+                    console.error(file.error);
+                });
             }
+        });
+
+        this.uppy.on('upload-success', (file, response) => {
+            this.setState({
+                successfulUpload: true
+            })
         });
     }
 
@@ -98,6 +109,12 @@ export default class Uploader extends Component {
         this.setState({
             modalOpen: false
         })
+
+        if(this.reloadOnModalClose && this.state.successfulUpload) {
+            // Reload page only if one or more files were uploaded
+            // successfully & reload option is set to true.
+            window.location.reload();
+        }
     }
 
     render () {
@@ -113,6 +130,7 @@ export default class Uploader extends Component {
                         closeModalOnClickOutside
                         open={this.state.modalOpen}
                         onRequestClose={this.handleClose}
+                        note={this.note}
                         proudlyDisplayPoweredByUppy={false}
                     />
                 </div>

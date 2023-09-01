@@ -6,8 +6,6 @@ import Uploader from "./Uploader";
 export default class Attachments extends Uploader {
     constructor(props){
         super(props);
-
-        // TODO: add logic to update the attachments UI when upload is complete
     }
 
     get allowedFileTypes() {

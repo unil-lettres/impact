@@ -48,6 +48,8 @@ return [
     'folder.updated' => 'Dossier mis à jour.',
     'file.deleted' => 'Fichier supprimé.',
     'file.updated' => 'Fichier mis à jour.',
+    'file.reload' => 'Suite à l\'envoi de fichier(s), la page sera rechargée automatiquement à la fermeture de cette fenêtre',
+    'file.error' => 'Erreur lors du traitement',
     'mailing.sent' => 'Le message a été envoyé aux responsables.',
     'state.created' => 'Nouvel état créé.',
     'state.updated' => 'État mis à jour.',

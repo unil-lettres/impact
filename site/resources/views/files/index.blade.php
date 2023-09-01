@@ -13,7 +13,7 @@
         @section('actions')
             @can('upload', [\App\File::class, $course, null])
                 <div id="rct-files"
-                     data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxNumberOfFiles' => 5, 'label' => trans('files.create'), 'course_id' => $course->id]) }}'
+                     data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxNumberOfFiles' => 5, 'label' => trans('files.create'), 'course_id' => $course->id, 'note' => trans('messages.file.reload')]) }}'
                 ></div>
             @endcan
         @endsection
@@ -52,18 +52,19 @@
                                                 </td>
                                                 <td>{{ $file->created_at->format('d/m/Y H:i:s') }}</td>
                                                 <td class="actions">
-                                                    @if(Helpers::isFileReady($file))
+                                                    @if(Helpers::isFileStatus($file, \App\Enums\FileStatus::Ready))
                                                         <span>
-                                                        <a href="{{ Helpers::fileUrl($file->filename) }}"
-                                                        target="_blank"
-                                                        data-bs-toggle="tooltip"
-                                                        data-placement="top"
-                                                        class="btn btn-primary"
-                                                        title="{{ trans('files.url') }}">
-                                                            <i class="far fa-share-square"></i>
-                                                        </a>
-                                                    </span>
+                                                            <a href="{{ Helpers::fileUrl($file->filename) }}"
+                                                            target="_blank"
+                                                            data-bs-toggle="tooltip"
+                                                            data-placement="top"
+                                                            class="btn btn-primary"
+                                                            title="{{ trans('files.url') }}">
+                                                                <i class="far fa-share-square"></i>
+                                                            </a>
+                                                        </span>
                                                     @endif
+
                                                     @can('forceDelete', $file)
                                                         <span>
                                                             <form class="with-delete-confirm" method="post"

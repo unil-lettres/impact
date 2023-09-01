@@ -7,7 +7,7 @@
                 @can('upload', [\App\Policies\AttachmentPolicy::class, $course, $card])
                     <div class="float-end">
                         <div id="rct-attachments" class="float-end"
-                             data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.add'), 'maxNumberOfFiles' => 5, 'course_id' => $course->id, 'card_id' => $card->id]) }}'
+                             data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.add'), 'maxNumberOfFiles' => 5, 'course_id' => $course->id, 'card_id' => $card->id, 'note' => trans('messages.file.reload')]) }}'
                         ></div>
                     </div>
                 @endcan
@@ -20,15 +20,23 @@
                         @can('view', [\App\Policies\AttachmentPolicy::class, $attachment])
                             <div>
                                 <span class="align-middle">
-                                    <a href="{{ Helpers::fileUrl($attachment->filename) }}"
-                                       title="{{ trans('files.url') }}"
-                                       target="_blank">
-                                        {{ $attachment->name }}
-                                    </a>
+                                    @if(Helpers::isFileStatus($attachment, \App\Enums\FileStatus::Ready))
+                                        <a href="{{ Helpers::fileUrl($attachment->filename) }}"
+                                           title="{{ trans('files.url') }}"
+                                           target="_blank">
+                                        {{ Str::limit($attachment->name, 40) }}
+                                        </a>
+                                    @elseif(Helpers::isFileStatus($attachment, \App\Enums\FileStatus::Failed))
+                                        {{ Str::limit($attachment->name, 40) }}
+                                        <span class="text-danger">({{ trans('messages.file.error') }})</span>
+                                    @else
+                                        {{ Str::limit($attachment->name, 40) }}
+                                    @endif
                                 </span>
+
                                 <span class="actions">
-                                    @can('forceDelete', [\App\Policies\AttachmentPolicy::class, $attachment])
-                                        <span class="float-end">
+                                    <span class="float-end">
+                                        @can('forceDelete', [\App\Policies\AttachmentPolicy::class, $attachment])
                                             <form class="with-delete-confirm" method="post"
                                                   action="{{ route('files.destroy', $attachment->id) }}">
                                                 @method('DELETE')
@@ -41,8 +49,12 @@
                                                     <i class="far fa-trash-alt"></i>
                                                 </button>
                                             </form>
-                                        </span>
-                                    @endcan
+                                        @endcan
+
+                                        @if(Helpers::isFileStatus($attachment, \App\Enums\FileStatus::Processing) || Helpers::isFileStatus($attachment, \App\Enums\FileStatus::Transcoding))
+                                            {!! Helpers::fileStatusBadge($attachment->status) !!}
+                                        @endif
+                                    </span>
                                 </span>
                             </div>
                         @endcan

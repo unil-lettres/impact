@@ -18,7 +18,7 @@
                         <div class="card-header">
                             <span class="title">{{ $file->name }}</span>
 
-                            @if(Helpers::isFileReady($file))
+                            @if(Helpers::isFileStatus($file, \App\Enums\FileStatus::Ready))
                                 <a href="{{ Helpers::fileUrl($file->filename) }}"
                                    target="_blank"
                                    data-bs-toggle="tooltip"

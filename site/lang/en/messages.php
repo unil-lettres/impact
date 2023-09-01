@@ -47,6 +47,8 @@ return [
     'folder.updated' => 'Folder updated.',
     'file.deleted' => 'File deleted.',
     'file.updated' => 'File updated.',
+    'file.reload' => 'After sending file(s), the page will be reloaded automatically when this window is closed.',
+    'file.error' => 'Processing error',
     'mailing.sent' => 'The message has been sent to the teachers.',
     'state.created' => 'New state created.',
     'state.updated' => 'State updated.',

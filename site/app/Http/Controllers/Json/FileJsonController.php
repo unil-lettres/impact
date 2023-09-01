@@ -18,11 +18,9 @@ class FileJsonController extends Controller
     /**
      * File upload endpoint.
      *
-     * @return JsonResponse
-     *
      * @throws AuthorizationException
      */
-    public function upload(StoreUpload $request)
+    public function upload(StoreUpload $request): JsonResponse
     {
         $course = $request->get('course_id') ?
             Course::find($request->get('course_id')) : null;

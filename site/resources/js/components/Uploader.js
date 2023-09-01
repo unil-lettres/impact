@@ -31,7 +31,7 @@ export default class Uploader extends Component {
         this.maxFileSize = data.maxFileSize ?? 500000000;
         this.maxNumberOfFiles = data.maxNumberOfFiles ?? 1;
         this.modal = data.modal ?? true;
-        this.reloadOnModalClose = data.reloadOnModalClose ?? true;
+        this.reloadOnModalClose = data.reloadOnModalClose ?? false;
         this.course_id = data.course_id ?? null;
         this.card_id = data.card_id ?? null;
         this.note = data.note ?? null;

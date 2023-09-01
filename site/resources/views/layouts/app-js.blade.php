@@ -27,4 +27,22 @@
             return new bootstrap.Popover(popoverTriggerEl)
         })
     });
+
+    // Custom directive to use js confirm() dialog with Livewire components
+    Livewire.directive('confirm', ({ el, directive, component, cleanup }) => {
+        let content =  directive.expression
+
+        let onClick = e => {
+            if (! confirm(content)) {
+                e.preventDefault()
+                e.stopImmediatePropagation()
+            }
+        }
+
+        el.addEventListener('click', onClick, { capture: true })
+
+        cleanup(() => {
+            el.removeEventListener('click', onClick)
+        })
+    })
 </script>

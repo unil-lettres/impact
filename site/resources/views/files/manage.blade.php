@@ -10,7 +10,7 @@
                     @can('upload', [\App\File::class, null, null])
                         <div class="float-end">
                             <div id="rct-files" class="float-end"
-                                 data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.create'), 'maxNumberOfFiles' => 10, 'note' => trans('messages.file.reload')]) }}'
+                                 data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.create'), 'maxNumberOfFiles' => 10, 'reloadOnModalClose' => true, 'note' => trans('messages.file.reload')]) }}'
                             ></div>
                         </div>
                     @endcan

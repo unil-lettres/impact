@@ -53,7 +53,14 @@
         </div>
 
         <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+
+        <!-- Adding manually Livewire's js assets -->
+        @livewireScripts
+
+        <!-- Adding custom js scripts globally -->
         @include('layouts.app-js')
+
+        <!-- Adding custom js scripts on a view basis -->
         @yield('scripts-footer')
     </body>
 </html>

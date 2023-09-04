@@ -3,9 +3,9 @@
 namespace Database\Seeders;
 
 use App\Course;
+use App\Folder;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
-use Illuminate\Support\Facades\DB;
 
 class FoldersTableSeeder extends Seeder
 {
@@ -20,14 +20,14 @@ class FoldersTableSeeder extends Seeder
 
         $secondCourse = Course::where('name', 'Second space')->first();
 
-        $testFolder = DB::table('folders')->insertGetId([
+        $testFolder = Folder::create([
             'title' => 'Test folder',
             'course_id' => $secondCourse->id,
             'created_at' => $now,
             'updated_at' => $now,
-        ]);
+        ])->id;
 
-        DB::table('folders')->insert([
+        Folder::create([
             'title' => 'Test child folder',
             'course_id' => $secondCourse->id,
             'parent_id' => $testFolder,

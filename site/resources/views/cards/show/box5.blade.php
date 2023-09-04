@@ -14,7 +14,7 @@
             @endif
         </div>
         <div class="card-body">
-            <livewire:attachments :card="$card"/>
+            <livewire:attachments :card="$card" :reference="$reference"/>
         </div>
     </div>
 @endif

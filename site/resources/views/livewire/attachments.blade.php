@@ -1,4 +1,4 @@
-<div class="attachments-list list-group" wire:poll>
+<div class="attachments-list list-group" {{ $card->boxIsEditable($reference) ? 'wire:poll' : '' }}>
     @if ($card->attachments->isNotEmpty())
         @foreach ($card->attachments as $attachment)
             @can('view', [\App\Policies\AttachmentPolicy::class, $attachment])

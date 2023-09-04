@@ -13,14 +13,19 @@ use Livewire\Component;
 
 class Attachments extends Component
 {
-    public $card;
+    public Card $card;
 
-    public function mount(Card $card)
+    public string $reference;
+
+    public function mount(Card $card, string $reference)
     {
         $this->card = $card;
+        $this->reference = $reference;
     }
 
     /**
+     * Remove the specified resource from storage.
+     *
      * @throws AuthorizationException
      * @throws ValidationException
      */
@@ -39,8 +44,8 @@ class Attachments extends Component
             $attachment,
         ]);
 
-        // Delete the record from the database. The binary
-        // file will be deleted with the FileObserver "deleted" event.
+        // Delete the record from the database. The binary will
+        // be deleted with the FileObserver "deleted" event.
         $attachment->forceDelete();
     }
 

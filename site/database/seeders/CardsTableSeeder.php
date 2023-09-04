@@ -40,8 +40,6 @@ class CardsTableSeeder extends Seeder
             'state_id' => $secondCourse->states
                 ->where('type', StateType::Private)
                 ->first()->id,
-            'box2' => Card::TRANSCRIPTION,
-            'options' => Card::OPTIONS,
         ])->id;
 
         $testCardInFolder = Card::create([
@@ -52,8 +50,6 @@ class CardsTableSeeder extends Seeder
             'state_id' => $secondCourse->states
                 ->where('type', StateType::Private)
                 ->first()->id,
-            'box2' => Card::TRANSCRIPTION,
-            'options' => Card::OPTIONS,
             'folder_id' => $testFolder->id,
         ])->id;
 
@@ -65,8 +61,6 @@ class CardsTableSeeder extends Seeder
             'state_id' => $secondCourse->states
                 ->where('type', StateType::Private)
                 ->first()->id,
-            'box2' => Card::TRANSCRIPTION,
-            'options' => Card::OPTIONS,
         ]);
 
         Card::create([
@@ -77,8 +71,6 @@ class CardsTableSeeder extends Seeder
             'state_id' => $firstCourse->states
                 ->where('type', StateType::Custom)
                 ->first()->id,
-            'box2' => Card::TRANSCRIPTION,
-            'options' => Card::OPTIONS,
         ]);
 
         Card::create([
@@ -89,33 +81,32 @@ class CardsTableSeeder extends Seeder
             'state_id' => $secondCourse->states
                 ->where('type', StateType::Private)
                 ->first()->id,
-            'box2' => Card::TRANSCRIPTION,
-            'options' => '{
-                "emails": true,
-                "box1": {
-                    "hidden": true,
-                    "link": null,
-                    "start": null,
-                    "end": null
-                },
-                "box2": {
-                    "hidden": true,
-                    "sync": true
-                },
-                "box3": {
-                    "hidden": false,
-                    "title": "Théorie",
-                    "fixed": false
-                },
-                "box4": {
-                    "hidden": false,
-                    "title": "Exemplification",
-                    "fixed": false
-                },
-                "box5": {
-                    "hidden": true
-                }
-            }',
+            'options' => [
+                "emails" => true,
+                "box1" => [
+                    "hidden" => true,
+                    "link" => null,
+                    "start" => null,
+                    "end" => null
+                ],
+                "box2" => [
+                    "hidden" => true,
+                    "sync" => true
+                ],
+                "box3" => [
+                    "hidden" => false,
+                    "title" => "Théorie",
+                    "fixed" => false
+                ],
+                "box4" => [
+                    "hidden" => false,
+                    "title" => "Exemplification",
+                    "fixed" => false
+                ],
+                "box5" => [
+                    "hidden" => true
+                ]
+            ],
         ]);
 
         Card::create([
@@ -126,8 +117,6 @@ class CardsTableSeeder extends Seeder
             'state_id' => $secondCourse->states
                 ->where('type', StateType::Private)
                 ->first()->id,
-            'box2' => Card::TRANSCRIPTION,
-            'options' => Card::OPTIONS,
         ]);
 
         $enrollment->addCard(Card::find($testCard));

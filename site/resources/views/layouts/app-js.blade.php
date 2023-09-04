@@ -28,7 +28,8 @@
         })
     });
 
-    // Custom directive to use js confirm() dialog with Livewire components
+    // Custom Livewire directive to use js confirm() dialog
+    // https://livewire.laravel.com/docs/javascript#registering-custom-directives
     Livewire.directive('confirm', ({ el, directive, component, cleanup }) => {
         let content =  directive.expression
 
@@ -43,6 +44,18 @@
 
         cleanup(() => {
             el.removeEventListener('click', onClick)
+        })
+    })
+
+    document.addEventListener('livewire:init', () => {
+        // Customizing Livewire page expiration behavior (avoid confirm() dialog on logout)
+        // https://livewire.laravel.com/docs/javascript#customizing-page-expiration-behavior
+        Livewire.hook('request', ({ fail }) => {
+            fail(({ status, preventDefault }) => {
+                if (status === 419) {
+                    preventDefault()
+                }
+            })
         })
     })
 </script>

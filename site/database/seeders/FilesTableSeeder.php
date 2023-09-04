@@ -100,8 +100,8 @@ class FilesTableSeeder extends Seeder
             'deleted_at' => null,
         ]);
 
-        // Link a new card to a file
-        DB::table('cards')->insert([
+        // Link a file to a card (regular)
+        $cardWithFile = DB::table('cards')->insertGetId([
             'title' => 'Test card with file',
             'created_at' => $now,
             'updated_at' => $now,
@@ -112,6 +112,23 @@ class FilesTableSeeder extends Seeder
             'box2' => Card::TRANSCRIPTION,
             'options' => Card::OPTIONS,
             'file_id' => $usedFile,
+        ]);
+
+        // Link a card to a file (attachment)
+        DB::table('files')->insert([
+            'name' => 'My attachment',
+            'filename' => 'attachmentstest1.jpg',
+            'status' => FileStatus::Ready,
+            'type' => FileType::Image,
+            'size' => 34661,
+            'width' => null,
+            'height' => null,
+            'length' => null,
+            'created_at' => $now,
+            'updated_at' => $now,
+            'course_id' => $secondCourse->id,
+            'deleted_at' => null,
+            'card_id' => $cardWithFile,
         ]);
     }
 }

@@ -24,9 +24,7 @@ class CardFactory extends Factory
     {
         return [
             'title' => fake()->sentence(),
-            'box2' => json_decode(Card::TRANSCRIPTION),
             'course_id' => Course::factory(),
-            'options' => json_decode(Card::OPTIONS),
         ];
     }
 }

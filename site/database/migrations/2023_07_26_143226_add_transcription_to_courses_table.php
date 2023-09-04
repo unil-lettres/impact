@@ -17,7 +17,7 @@ return new class extends Migration
         });
 
         // !! Reset the box2 with an updated default value for all cards
-        Card::query()->update(['box2' => Card::TRANSCRIPTION]);
+        Card::query()->update(['box2' => json_decode(Card::TRANSCRIPTION, true)]);
     }
 
     /**

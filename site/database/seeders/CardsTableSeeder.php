@@ -82,30 +82,30 @@ class CardsTableSeeder extends Seeder
                 ->where('type', StateType::Private)
                 ->first()->id,
             'options' => [
-                "emails" => true,
-                "box1" => [
-                    "hidden" => true,
-                    "link" => null,
-                    "start" => null,
-                    "end" => null
+                'emails' => true,
+                'box1' => [
+                    'hidden' => true,
+                    'link' => null,
+                    'start' => null,
+                    'end' => null,
                 ],
-                "box2" => [
-                    "hidden" => true,
-                    "sync" => true
+                'box2' => [
+                    'hidden' => true,
+                    'sync' => true,
                 ],
-                "box3" => [
-                    "hidden" => false,
-                    "title" => "Théorie",
-                    "fixed" => false
+                'box3' => [
+                    'hidden' => false,
+                    'title' => 'Théorie',
+                    'fixed' => false,
                 ],
-                "box4" => [
-                    "hidden" => false,
-                    "title" => "Exemplification",
-                    "fixed" => false
+                'box4' => [
+                    'hidden' => false,
+                    'title' => 'Exemplification',
+                    'fixed' => false,
                 ],
-                "box5" => [
-                    "hidden" => true
-                ]
+                'box5' => [
+                    'hidden' => true,
+                ],
             ],
         ]);
 

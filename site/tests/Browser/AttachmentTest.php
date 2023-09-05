@@ -32,7 +32,7 @@ class AttachmentTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testShowUploadAttachmentsInterface()
+    public function testOpenUploadAttachmentsInterface()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())

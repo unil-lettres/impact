@@ -154,35 +154,25 @@ class Helpers
     }
 
     /**
+     * Check whether the file has a specific status
+     *
+     * @param  string  $status (App\Enums\FileStatus)
+     */
+    public static function isFileStatus(File $file, string $status): bool
+    {
+        if ($file->status === $status) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Get file url for given filename
      */
     public static function fileUrl(string $filename): string
     {
         return asset('storage/uploads/files/'.$filename);
-    }
-
-    /**
-     * Check whether the file is processed and ready
-     */
-    public static function isFileReady(File $file): bool
-    {
-        if ($file->status === FileStatus::Ready) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Check whether the file has the failed status
-     */
-    public static function isFileFailed(File $file): bool
-    {
-        if ($file->status === FileStatus::Failed) {
-            return true;
-        }
-
-        return false;
     }
 
     /**

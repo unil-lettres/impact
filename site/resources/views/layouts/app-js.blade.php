@@ -27,4 +27,35 @@
             return new bootstrap.Popover(popoverTriggerEl)
         })
     });
+
+    // Custom Livewire directive to use js confirm() dialog
+    // https://livewire.laravel.com/docs/javascript#registering-custom-directives
+    Livewire.directive('confirm', ({ el, directive, component, cleanup }) => {
+        let content =  directive.expression
+
+        let onClick = e => {
+            if (! confirm(content)) {
+                e.preventDefault()
+                e.stopImmediatePropagation()
+            }
+        }
+
+        el.addEventListener('click', onClick, { capture: true })
+
+        cleanup(() => {
+            el.removeEventListener('click', onClick)
+        })
+    })
+
+    document.addEventListener('livewire:init', () => {
+        // Customizing Livewire page expiration behavior (avoid confirm() dialog on logout)
+        // https://livewire.laravel.com/docs/javascript#customizing-page-expiration-behavior
+        Livewire.hook('request', ({ fail }) => {
+            fail(({ status, preventDefault }) => {
+                if (status === 419) {
+                    preventDefault()
+                }
+            })
+        })
+    })
 </script>

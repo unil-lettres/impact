@@ -17,6 +17,7 @@
         "laravel/framework": "^10.0",
         "laravel/tinker": "^2.0",
         "laravel/ui": "^v4.0",
+        "livewire/livewire": "^3.0",
         "php-ffmpeg/php-ffmpeg": "^v1.1",
         "phpoffice/phpword": "^1.0",
         "spatie/eloquent-sortable": "^4.0",

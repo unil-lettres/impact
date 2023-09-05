@@ -154,10 +154,9 @@ class FileController extends Controller
 
         $this->authorize('forceDelete', $file);
 
-        // Delete the record
+        // Delete the record from the database. The binary will
+        // be deleted with the FileObserver "deleted" event.
         $file->forceDelete();
-
-        // Then the binary file will be deleted in the FileObserver "deleted" event
 
         return redirect()
             ->back()

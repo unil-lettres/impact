@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { createRoot } from "react-dom/client";
 
 import Uppy from '@uppy/core'
 import French from '@uppy/locales/lib/fr_FR'
@@ -9,12 +8,13 @@ import { DashboardModal, Dashboard } from '@uppy/react'
 
 export default class Uploader extends Component {
     constructor (props) {
-        super(props)
+        super(props);
 
         let data = JSON.parse(this.props.data);
 
         this.state = {
-            modalOpen: false
+            modalOpen: false,
+            successfulUpload: false
         }
 
         this.handleOpen = this.handleOpen.bind(this)
@@ -30,8 +30,11 @@ export default class Uploader extends Component {
         this.label = data.label ?? 'Send file(s)';
         this.maxFileSize = data.maxFileSize ?? 500000000;
         this.maxNumberOfFiles = data.maxNumberOfFiles ?? 1;
-        this.allowedFileTypes = data.allowedFileTypes ?? ['audio/*', 'video/*'];
-        this.modal = data.modal ?? false;
+        this.modal = data.modal ?? true;
+        this.reloadOnModalClose = data.reloadOnModalClose ?? false;
+        this.course_id = data.course_id ?? null;
+        this.card_id = data.card_id ?? null;
+        this.note = data.note ?? null;
     }
 
     initLocale () {
@@ -71,23 +74,28 @@ export default class Uploader extends Component {
         });
 
         this.uppy.on('upload', (data) => {
-            let course = document.getElementById('course_id') ?
-                document.getElementById('course_id').value : null;
-            let card = document.getElementById('card_id') ?
-                document.getElementById('card_id').value : null;
-
             this.uppy.setOptions({
                 meta: {
-                    course: course,
-                    card: card
+                    course_id: this.course_id,
+                    card_id: this.card_id,
+                    attachment: this.attachment
                 }
             });
         });
 
         this.uppy.on('complete', (result) => {
-            if(result.successful[0] !== undefined) {
-                console.log(result.successful[0].response.body);
+            if (result.failed.length > 0) {
+                console.error('Errors:');
+                result.failed.forEach((file) => {
+                    console.error(file.error);
+                });
             }
+        });
+
+        this.uppy.on('upload-success', (file, response) => {
+            this.setState({
+                successfulUpload: true
+            })
         });
     }
 
@@ -101,6 +109,12 @@ export default class Uploader extends Component {
         this.setState({
             modalOpen: false
         })
+
+        if(this.reloadOnModalClose && this.state.successfulUpload) {
+            // Reload page only if one or more files were uploaded
+            // successfully & reload option is set to true.
+            window.location.reload();
+        }
     }
 
     render () {
@@ -116,6 +130,7 @@ export default class Uploader extends Component {
                         closeModalOnClickOutside
                         open={this.state.modalOpen}
                         onRequestClose={this.handleClose}
+                        note={this.note}
                         proudlyDisplayPoweredByUppy={false}
                     />
                 </div>
@@ -132,12 +147,4 @@ export default class Uploader extends Component {
             );
         }
     }
-}
-
-const elementId = 'rct-uploader';
-if (document.getElementById(elementId)) {
-    const root = createRoot(document.getElementById(elementId));
-
-    let data = document.getElementById(elementId).getAttribute('data');
-    root.render(<Uploader data={ data } />);
 }

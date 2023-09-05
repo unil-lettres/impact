@@ -4,9 +4,7 @@ import { createRoot } from "react-dom/client";
 import axios from "axios";
 import MultiSelect from "./MultiSelect";
 
-
 export default class MultiTagSelect extends MultiSelect {
-
     select = (record, option) => {
         return axios.put(`/tags/${option.value}/attach/${record.id}`);
     }

@@ -30,5 +30,7 @@ return [
     'failed' => 'Erreur',
     'url' => 'Url du fichier',
     'used' => 'Utilisé par',
+    'upload' => 'Déposer',
+    'add' => 'Ajouter',
 
 ];

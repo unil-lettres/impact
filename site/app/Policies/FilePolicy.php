@@ -77,20 +77,6 @@ class FilePolicy
     }
 
     /**
-     * Determine whether the user can view the file create form in administration.
-     *
-     * @return mixed
-     */
-    public function create(User $user)
-    {
-        if ($user->admin) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Determine whether the user can update the model.
      *
      * @return mixed

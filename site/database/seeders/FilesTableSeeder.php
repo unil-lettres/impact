@@ -100,8 +100,8 @@ class FilesTableSeeder extends Seeder
             'deleted_at' => null,
         ])->id;
 
-        // Link a new card to a file
-        Card::create([
+        // Link a file to a card (regular)
+        $cardWithFile = Card::create([
             'title' => 'Test card with file',
             'created_at' => $now,
             'updated_at' => $now,
@@ -110,6 +110,23 @@ class FilesTableSeeder extends Seeder
                 ->where('type', StateType::Custom)
                 ->first()->id,
             'file_id' => $usedFile,
+        ])->id;
+
+        // Link a card to a file (attachment)
+        File::create([
+            'name' => 'My attachment',
+            'filename' => 'attachmentstest1.jpg',
+            'status' => FileStatus::Ready,
+            'type' => FileType::Image,
+            'size' => 34661,
+            'width' => null,
+            'height' => null,
+            'length' => null,
+            'created_at' => $now,
+            'updated_at' => $now,
+            'course_id' => $secondCourse->id,
+            'deleted_at' => null,
+            'card_id' => $cardWithFile,
         ]);
     }
 }

@@ -8,6 +8,7 @@ use App\Enrollment;
 use App\File;
 use App\Folder;
 use App\Invitation;
+use App\Policies\AttachmentPolicy;
 use App\Policies\CardPolicy;
 use App\Policies\CoursePolicy;
 use App\Policies\EnrollmentPolicy;
@@ -33,6 +34,9 @@ class AuthServiceProvider extends ServiceProvider
         Enrollment::class => EnrollmentPolicy::class,
         Folder::class => FolderPolicy::class,
         File::class => FilePolicy::class,
+        // Map the AttachmentPolicy to itself
+        // since there is no Attachment model.
+        AttachmentPolicy::class => AttachmentPolicy::class,
     ];
 
     /**

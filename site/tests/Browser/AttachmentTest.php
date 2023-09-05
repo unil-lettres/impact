@@ -95,8 +95,8 @@ class AttachmentTest extends DuskTestCase
             $browser->assertSee('Test card with file')
                 ->clickLink('Test card with file');
 
-            $browser->with('.box5 .attachments-list', function ($unused) {
-                $unused->click('button.btn-danger')
+            $browser->with('.box5 .attachments-list div:first-child', function ($attachment) {
+                $attachment->click('button.btn-danger')
                     ->waitForDialog($seconds = null)
                     ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
                     ->acceptDialog();

@@ -9,12 +9,15 @@ use App\Scopes\HideAttachmentsScope;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Rule;
 use Livewire\Component;
 
 class Attachments extends Component
 {
+    #[Rule('required')]
     public Card $card;
 
+    #[Rule('required')]
     public string $reference;
 
     public function mount(Card $card, string $reference)

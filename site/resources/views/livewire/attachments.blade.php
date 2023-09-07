@@ -2,7 +2,7 @@
     @if ($card->attachments->isNotEmpty())
         @foreach ($card->attachments as $attachment)
             @can('view', [\App\Policies\AttachmentPolicy::class, $attachment])
-                <div>
+                <div class="attachment">
                     <span class="align-middle">
                         @if(Helpers::isFileStatus($attachment, \App\Enums\FileStatus::Ready))
                             <a href="{{ Helpers::fileUrl($attachment->filename) }}"

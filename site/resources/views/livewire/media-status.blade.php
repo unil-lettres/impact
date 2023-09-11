@@ -16,7 +16,7 @@
 
                 {{ trans('messages.card.media.failed') }}
             @else
-                <div class="progress mb-3 mt-2" style="height: 20px; width:50%; margin: auto;">
+                <div class="progress mb-3 mt-2">
                     <div
                         class="progress-bar bg-secondary"
                         role="progressbar"

@@ -10,6 +10,7 @@ use App\Enums\FileType;
 use App\Enums\StateType;
 use App\Enums\UserType;
 use App\File;
+use App\Folder;
 use App\State;
 use App\User;
 use Illuminate\Support\Carbon;
@@ -390,5 +391,62 @@ class Helpers
                 ->enrollmentsAsTeacher()
                 ->map(fn ($enrollment) => $enrollment->course),
         })->whereNotIn('id', $excludeCourses->pluck('id'));
+    }
+
+    /**
+     * Return the next position for a card or folder based on existing cards
+     * or folders.
+     *
+     * @param  Course The course.
+     * @param  Folder The parent folder (if exists).
+     */
+    public static function getNextPositionForCourse(Course $course, Folder $parent = null)
+    {
+        $maxCardPosition = Card::where('course_id', $course->id)
+            ->where('folder_id', $parent->id ?? null)
+            ->max('position');
+
+        $maxFolderPosition = Folder::where('course_id', $course->id)
+            ->where('parent_id', $parent->id ?? null)
+            ->max('position');
+
+        if (is_null($maxCardPosition ?? $maxFolderPosition)) {
+            return 0;
+        }
+
+        $position = max($maxCardPosition, $maxFolderPosition);
+
+        return $position + 1;
+    }
+
+    /**
+     * Return a collection of cards and folders contained inside the given
+     * folder.
+     *
+     * If no folder are given, return the root rows.
+     *
+     * @param  Course The course.
+     * @param  Folder The folder.
+     */
+    public static function getFolderContent(
+        Course $course,
+        Folder $folder = null,
+    ) {
+        // TODO recupérer uniquement les cartes dont l'utilisateur peut avoir accès.
+        return collect([])
+            ->concat(
+                Folder::where('course_id', $course->id)
+                    ->where('parent_id', $folder?->id)
+                    ->get()
+            )
+            ->concat(
+                Card::with('tags')->with('state')->with('folder')
+                    ->where('course_id', $course->id)
+                    ->where('folder_id', $folder?->id)
+                    ->get()
+            )
+            ->sortBy('id')
+            ->sortBy('position')
+            ->values();
     }
 }

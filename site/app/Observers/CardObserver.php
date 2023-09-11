@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Card;
 use App\Enums\ActionType;
 use App\Enums\StateType;
+use App\Helpers\Helpers;
 use App\Mail\StateSelected;
 use Illuminate\Support\Facades\Mail;
 
@@ -17,6 +18,16 @@ class CardObserver
      */
     public function created(Card $card)
     {
+        $cardUpdate = [];
+
+        // Get the next position based on other cards and folders of this course.
+        if (is_null($card->position)) {
+            $cardUpdate['position'] = Helpers::getNextPositionForCourse(
+                $card->course,
+                $card->folder
+            );
+        }
+
         // If state is not set, set it the private state
         if (! $card->state) {
             $state = $card
@@ -25,11 +36,10 @@ class CardObserver
                     'type', StateType::Private
                 )->first();
 
-            $card->update([
-                'state_id' => $state->id,
-            ]);
-            $card->save();
+            $cardUpdate['state_id'] = $state->id;
         }
+
+        $card->updateQuietly($cardUpdate);
     }
 
     /**

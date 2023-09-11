@@ -1,0 +1,130 @@
+
+.finder {
+
+    [x-cloak] { display: none !important; }
+
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    position: relative;
+
+    .width-small {
+        width: 10px;
+    }
+
+    .width-large {
+        width: 20px;
+    }
+
+
+    .column-large {
+        flex: 0 0 472px;
+    }
+
+    .column-medium {
+        flex: 0 0 300px;
+    }
+
+    .column-small {
+        flex: 0 0 100px;
+    }
+
+    .icons {
+        width: 40px;
+    }
+
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    li {
+        cursor: default;
+    }
+
+    .selected-row {
+        background-color: aqua;
+    }
+
+    .modal-backdrop {
+        --bs-backdrop-zindex: 1050;
+        --bs-backdrop-bg: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: var(--bs-backdrop-zindex);
+        width: 100%;
+        height: 100%;
+        background-color: var(--bs-backdrop-bg);
+      }
+
+    .transition-transform {
+        transition: transform 0.3s ease;
+    }
+
+    .rotate {
+        transform: rotate(-90deg);
+    }
+}
+
+@include media-breakpoint-down(xxl) {
+    .finder {
+
+        .column-large {
+            flex: 0 0 432px;
+        }
+
+        .column-medium {
+            flex: 0 0 230px;
+        }
+
+        .column-small {
+            flex: 0 0 100px;
+        }
+    }
+ }
+
+ @include media-breakpoint-down(xl) {
+     .finder {
+
+         .column-large {
+             flex: 0 0 412px;
+         }
+
+         .column-medium {
+             flex: 0 0 150px;
+         }
+
+         .column-small {
+             flex: 0 0 100px;
+         }
+     }
+  }
+
+ @include media-breakpoint-down(lg) {
+     .finder {
+
+         .column-large {
+             flex: 0 0 592px;
+         }
+
+         .column-small {
+             flex: 0 0 80px;
+         }
+     }
+  }
+
+ @include media-breakpoint-down(md) {
+     .finder {
+
+         .column-large {
+             flex: 0 0 412px;
+         }
+
+         .column-small {
+             flex: 0 0 80px;
+         }
+     }
+  }

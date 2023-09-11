@@ -36,5 +36,9 @@ return [
     'mail.confirm_delete.request' => 'We have just received a request regarding the deletion of the Impact space ":name".',
     'mail.confirm_delete.confirm' => 'If you really want to delete this space, please confirm it by answering this email.',
     'mail.confirm_delete.destroyed' => 'Once this operation done, all the data will be deleted and the space will not be retrievable.',
-
+    'finder.name' => 'Name',
+    'finder.editors' => 'Editors',
+    'finder.created' => 'Created',
+    'finder.tags' => 'Tags',
+    'finder.state' => 'State',
 ];

@@ -43,3 +43,8 @@
 .selected-bg {
     background-color: #80808014;
 }
+
+.text-niagara {
+    @extend .text-primary;
+    color: $niagara!important;
+}

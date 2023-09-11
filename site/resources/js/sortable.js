@@ -1,5 +1,6 @@
-import Sortable from 'sortablejs';
+import Sortable from "sortablejs";
 import axios from "axios";
+import _ from "lodash";
 
 // States
 let statesList = document.getElementById('states-list');
@@ -29,5 +30,26 @@ function updatePosition(route, newOrder) {
         console.log(response);
     }).catch(error => {
         console.log(error)
+    });
+}
+
+// Finder
+let finderList = document.querySelectorAll(".finder-selectable-list");
+if (finderList) {
+    _.each(finderList, function (finder) {
+        Sortable.create(finder, {
+            onUpdate: (evt) => {
+                _.each(evt.item.parentNode.children, (row, index) => {
+                    row.dispatchEvent(new CustomEvent('sort-updated', {
+                        bubbles: false,
+                        cancelable: false,
+                        detail: {
+                            position: index,
+                        },
+                    }));
+                });
+            },
+            animation: 150,
+        });
     });
 }

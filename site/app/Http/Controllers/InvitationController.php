@@ -244,7 +244,7 @@ class InvitationController extends Controller
 
         // Update the invitation registered_at property
         $invitation->registered_at = Carbon::now();
-        $invitation->update();
+        $invitation->save();
 
         // Login with created user
         Auth::login($user);

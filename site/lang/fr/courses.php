@@ -36,5 +36,10 @@ return [
     'mail.confirm_delete.request' => 'Une demande de suppression de l\'espace Impact ":name" nous est parvenue.',
     'mail.confirm_delete.confirm' => 'Si vous souhaitez réellement supprimer cet espace, merci de nous le confirmer en répondant à ce mail.',
     'mail.confirm_delete.destroyed' => 'Une fois cette opération réalisée toutes les données seront détruites et l\'espace ne sera plus récupérable.',
+    'finder.name' => 'Nom',
+    'finder.editors' => 'Editeurs',
+    'finder.created' => 'Création',
+    'finder.tags' => 'Etiquettes',
+    'finder.state' => 'Etat',
 
 ];

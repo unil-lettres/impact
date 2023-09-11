@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Enums\FinderRowType;
 use App\Enums\StatePermission;
 use App\Scopes\HideAttachmentsScope;
 use Illuminate\Database\Eloquent\Collection;
@@ -226,5 +227,10 @@ class Card extends Model
             StatePermission::AllCanShowTeachersCanEdit, StatePermission::TeachersCanShowAndEdit => Auth::user()->isTeacher($this->course),
             default => Auth::user()->admin,
         };
+    }
+
+    public function getType(): string
+    {
+        return FinderRowType::Card;
     }
 }

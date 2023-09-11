@@ -4,6 +4,7 @@
         @include('includes.head')
 
         @yield('styles')
+        @livewireStyles
         @yield('scripts-head')
     </head>
     <body>

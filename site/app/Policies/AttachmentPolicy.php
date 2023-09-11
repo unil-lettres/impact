@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Card;
 use App\Course;
+use App\Enums\CardBox;
 use App\Enums\FileStatus;
 use App\File;
 use App\User;
@@ -68,8 +69,12 @@ class AttachmentPolicy
             return true;
         }
 
-        // Teachers of the course or editors of the card can deleted the attachment
-        if ($user->isTeacher($attachment->course) || $user->isEditor($attachment->card)) {
+        // Teachers of the course or editors of the card can deleted
+        // the attachment if the attachments box is editable
+        if (
+            ($user->isTeacher($attachment->course) || $user->isEditor($attachment->card))
+            && $attachment->card->boxIsEditable(CardBox::Box5)
+        ) {
             return true;
         }
 
@@ -87,8 +92,12 @@ class AttachmentPolicy
             return true;
         }
 
-        // Teachers of the course or editors of the card can upload a file within a card
-        if ($user->isTeacher($course) || $user->isEditor($card)) {
+        // Teachers of the course or editors of the card can deleted
+        // the attachment if the attachments box is editable
+        if (
+            ($user->isTeacher($course) || $user->isEditor($card))
+            && $card->boxIsEditable(CardBox::Box5)
+        ) {
             return true;
         }
 

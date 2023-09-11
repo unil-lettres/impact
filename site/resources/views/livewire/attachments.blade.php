@@ -33,7 +33,7 @@
                             @endcan
 
                             @if(Helpers::isFileStatus($attachment, \App\Enums\FileStatus::Processing) || Helpers::isFileStatus($attachment, \App\Enums\FileStatus::Transcoding))
-                                {!! Helpers::fileStatusBadge($attachment->status) !!}
+                                {!! Helpers::fileStatusBadge($attachment) !!}
                             @endif
                         </span>
                     </span>

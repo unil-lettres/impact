@@ -38,6 +38,7 @@ return [
     'card.configuration.updated' => 'Configuration de la fiche mise à jour.',
     'card.editor.failed' => 'Erreur - échec de la mise à jour',
     'card.media.failed' => 'Le traitement du fichier a échoué, veuillez essayer de l\'envoyer à nouveau, ou contactez un administrateur.',
+    'card.media.ready' => 'Le fichier est prêt, veuillez recharger la page.',
     'card.media.processing' => 'Le fichier est en cours de traitement, veuillez patienter.',
     'card.media.not.selected' => 'Aucun fichier n\'a été sélectionné',
     'card.no.transcription' => 'Pas de transcription',

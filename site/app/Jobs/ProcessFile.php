@@ -34,6 +34,11 @@ class ProcessFile implements ShouldQueue
     protected string $fullStandardPath;
 
     /**
+     * Number of seconds the job can run before timing out.
+     */
+    public int $timeout;
+
+    /**
      * Create a new job instance.
      */
     public function __construct(File $file)
@@ -44,6 +49,7 @@ class ProcessFile implements ShouldQueue
             ->path('uploads/tmp/');
         $this->fullStandardPath = Storage::disk('public')
             ->path('uploads/files/');
+        $this->timeout = config('const.files.ffmpeg.timeout');
     }
 
     /**
@@ -94,7 +100,6 @@ class ProcessFile implements ShouldQueue
         $this->file->update([
             'status' => FileStatus::Ready,
         ]);
-        $this->file->save();
     }
 
     /**
@@ -144,8 +149,8 @@ class ProcessFile implements ShouldQueue
 
         $this->file->update([
             'status' => FileStatus::Ready,
+            'progress' => 100,
         ]);
-        $this->file->save();
     }
 
     /**
@@ -163,6 +168,17 @@ class ProcessFile implements ShouldQueue
         $saveToPathname = $this->fullStandardPath.$this->fileUploadService
             ->getFileName($this->file->filename).'.'.config('const.files.video.extension');
 
+        $format = new X264('libmp3lame', 'libx264');
+        $format->on('progress', function ($video, $format, $progress) {
+            // Update file progress in database
+            // every 10% of transcoding
+            if ($progress % 10 === 0) {
+                $this->file->update([
+                    'progress' => $progress,
+                ]);
+            }
+        });
+
         // Transcode to MP4/X264 with FFmpeg
         $video = $ffmpeg
             ->open($openFromPathname);
@@ -178,7 +194,7 @@ class ProcessFile implements ShouldQueue
             ->synchronize();
         $video
             ->save(
-                new X264('libmp3lame', 'libx264'),
+                $format,
                 $saveToPathname,
             );
 
@@ -206,7 +222,6 @@ class ProcessFile implements ShouldQueue
                     ->getDimensions()
                     ->getHeight(),
             ]);
-            $this->file->save();
         }
     }
 
@@ -225,12 +240,23 @@ class ProcessFile implements ShouldQueue
         $saveToPathname = $this->fullStandardPath.$this->fileUploadService
             ->getFileName($this->file->filename).'.'.config('const.files.audio.extension');
 
+        $format = new Mp3();
+        $format->on('progress', function ($audio, $format, $progress) {
+            // Update file progress in database
+            // every 10% of transcoding
+            if ($progress % 10 === 0) {
+                $this->file->update([
+                    'progress' => $progress,
+                ]);
+            }
+        });
+
         // Transcode to MP3 with FFmpeg
         $audio = $ffmpeg
             ->open($openFromPathname);
         $audio
             ->save(
-                new Mp3(),
+                $format,
                 $saveToPathname,
             );
 
@@ -252,7 +278,6 @@ class ProcessFile implements ShouldQueue
                 'length' => (int) $audioStream
                     ->get('duration'),
             ]);
-            $this->file->save();
         }
     }
 }

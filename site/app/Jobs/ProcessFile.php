@@ -170,9 +170,8 @@ class ProcessFile implements ShouldQueue
 
         $format = new X264('libmp3lame', 'libx264');
         $format->on('progress', function ($video, $format, $progress) {
-            // Update file progress in database
-            // every 10% of transcoding
-            if ($progress % 10 === 0) {
+            // Update file progress in database every x percent of transcoding
+            if ($progress % config('const.files.ffmpeg.progress.update') === 0) {
                 $this->file->update([
                     'progress' => $progress,
                 ]);
@@ -242,9 +241,8 @@ class ProcessFile implements ShouldQueue
 
         $format = new Mp3();
         $format->on('progress', function ($audio, $format, $progress) {
-            // Update file progress in database
-            // every 10% of transcoding
-            if ($progress % 10 === 0) {
+            // Update file progress in database every x percent of transcoding
+            if ($progress % config('const.files.ffmpeg.progress.update') === 0) {
                 $this->file->update([
                     'progress' => $progress,
                 ]);

@@ -37,8 +37,8 @@ class Media extends Component
     }
 
     /*
-     * Used to determine the cache key for
-     * the MediaStatus Livewire component.
+     * Used to generate the cache key for the
+     * MediaStatus Livewire component.
      */
     public function mediaStatusKey(): string
     {

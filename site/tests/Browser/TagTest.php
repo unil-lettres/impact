@@ -43,6 +43,7 @@ class TagTest extends DuskTestCase
                 ->press('#createTagModal [type="submit"]')
                 ->waitForText('Étiquette créée.')
                 ->assertPathIs('/courses/1/configure/tags')
+                ->waitForText($tagName)
                 ->assertSee($tagName);
 
             // Update
@@ -53,6 +54,7 @@ class TagTest extends DuskTestCase
                 ->press('Modifier')
                 ->waitForText('Étiquette renommée.')
                 ->assertPathIs('/courses/1/configure/tags')
+                ->waitForText($newTagName)
                 ->assertSee($newTagName);
 
             // Delete
@@ -81,6 +83,7 @@ class TagTest extends DuskTestCase
                 ->press('Reprendre')
                 ->waitForText('Étiquettes reprises.')
                 ->assertPathIs('/courses/1/configure/tags')
+                ->waitForText('Test_tag_second_course')
                 ->assertSee('Test_tag_second_course')
                 ->click('#rct-single-course-select')
                 ->waitForText('Second space')

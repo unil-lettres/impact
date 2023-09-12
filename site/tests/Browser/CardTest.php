@@ -244,4 +244,82 @@ class CardTest extends DuskTestCase
                 ->assertDontSee('Is it canceled ?');
         });
     }
+
+    /**
+     * Test showing processing status message in source viewer
+     * when the file has the "processing" or "transcoding" status
+     *
+     * @return void
+     *
+     * @throws Throwable
+     */
+    public function testShowProcessingStatusInSourceViewer()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->assertSee('Second space')
+                ->clickLink('Second space');
+
+            $browser->assertSee('Test card with processing file')
+                ->clickLink('Test card with processing file');
+
+            $browser->with('.box1', function (Browser $browser) {
+                $browser->assertSee('Le fichier est en cours de traitement');
+            });
+        });
+    }
+
+    /**
+     * Test showing failed status message in source viewer
+     * when the file has the "failed" status
+     *
+     * @return void
+     *
+     * @throws Throwable
+     */
+    public function testShowFailedStatusInSourceViewer()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->assertSee('Second space')
+                ->clickLink('Second space');
+
+            $browser->assertSee('Test card with failed file')
+                ->clickLink('Test card with failed file');
+
+            $browser->with('.box1', function (Browser $browser) {
+                $browser->assertSee('Le traitement du fichier a échoué');
+            });
+        });
+    }
+
+    /**
+     * Test showing the media player in source viewer
+     * when the file has the "ready" status
+     *
+     * @return void
+     *
+     * @throws Throwable
+     */
+    public function testShowPlayerInSourceViewer()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->assertSee('Second space')
+                ->clickLink('Second space');
+
+            $browser->assertSee('Test card with file')
+                ->clickLink('Test card with file');
+
+            $browser->with('.box1', function (Browser $browser) {
+                $browser->assertPresent('#rct-player');
+            });
+        });
+    }
 }

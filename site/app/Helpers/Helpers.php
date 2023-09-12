@@ -235,9 +235,9 @@ class Helpers
     }
 
     /**
-     * Return whether the card has an external media link
+     * Return the card external media link
      */
-    public static function getExternalLink(Card $card): ?string
+    public static function getCardExternalLink(Card $card): ?string
     {
         if (! self::cardHasExternalLink($card)) {
             return null;
@@ -279,18 +279,6 @@ class Helpers
 
         // Show media status if the card has a file that is not ready
         if (! self::isFileStatus($card->file, FileStatus::Ready)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Return whether the card has a transcription
-     */
-    public static function hasTranscription(Card $card): bool
-    {
-        if ($card->box2['data']) {
             return true;
         }
 

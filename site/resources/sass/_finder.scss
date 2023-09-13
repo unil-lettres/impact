@@ -3,8 +3,22 @@
 
     [x-cloak] { display: none !important; }
 
+    ul {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .row-height {
+        line-height: 40px;
+    }
+
     .cursor-pointer {
         cursor: pointer;
+    }
+
+    .cursor-default {
+        cursor: default;
     }
 
     position: relative;
@@ -34,14 +48,12 @@
         width: 40px;
     }
 
-    ul {
-        margin: 0;
-        padding: 0;
-        list-style: none;
+    .background-hover:hover {
+        background-color: var(--bs-gray-200);
     }
 
-    li {
-        cursor: default;
+    .selected {
+        background-color: $niagara-200!important;
     }
 
     .selected-row {
@@ -94,7 +106,7 @@
          }
 
          .column-medium {
-             flex: 0 0 150px;
+             flex: 0 0 200px;
          }
 
          .column-small {

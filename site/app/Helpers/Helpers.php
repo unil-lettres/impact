@@ -7,6 +7,7 @@ use App\Course;
 use App\Enums\CourseType;
 use App\Enums\FileStatus;
 use App\Enums\FileType;
+use App\Enums\FinderRowType;
 use App\Enums\StateType;
 use App\Enums\UserType;
 use App\File;
@@ -431,7 +432,7 @@ class Helpers
     public static function getFolderContent(
         Course $course,
         Folder $folder = null,
-    ) {
+    ): Collection {
         // TODO recupérer uniquement les cartes dont l'utilisateur peut avoir accès.
         return collect([])
             ->concat(

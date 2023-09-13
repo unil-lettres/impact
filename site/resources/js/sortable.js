@@ -41,9 +41,11 @@ if (finderList) {
             onUpdate: (evt) => {
                 _.each(evt.item.parentNode.children, (row, index) => {
                     row.dispatchEvent(new CustomEvent('sort-updated', {
-                        bubbles: false,
+                        bubbles: true,
                         cancelable: false,
                         detail: {
+                            id: row.getAttribute('data-id'),
+                            type: row.getAttribute('data-type'),
                             position: index,
                         },
                     }));

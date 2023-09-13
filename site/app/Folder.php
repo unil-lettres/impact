@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Enums\FinderRowType;
+use App\Helpers\Helpers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
@@ -93,5 +94,10 @@ class Folder extends Model
     public function getType(): string
     {
         return FinderRowType::Folder;
+    }
+
+    public function getContent(): Collection
+    {
+        return Helpers::getFolderContent($this->course, $this);
     }
 }

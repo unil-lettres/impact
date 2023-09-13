@@ -1,13 +1,14 @@
-@props(['card', 'selected' => false, 'depth' => 0])
+@props(['card', 'selected' => false, 'lockedMove' => false, 'depth' => 0])
 
 <li
     class="d-flex border-top background-hover cursor-default row-height"
     data-id="{{ $card->id }}"
     data-type="{{ $card->getType() }}"
-    x-data="{ key: '{{ $card->getType() }}-{{ $card->id }}' }"
-    @click.stop="selectedItems = _.xor(selectedItems, [key])"
+    x-data="{ key: '{{ $card->folder_id }}-{{ $card->getType() }}-{{ $card->id }}' }"
+    @click.stop="toggleSelect(key, {{ $card->folder_id }});"
     :class="!selectedItems.includes(key) || 'selected'"
     wire:key='{{ $card->getType() }}-{{ $card->id }}'
+    {{ $lockedMove ? 'locked-move' : '' }}
 >
     <div
         class='column-large text-truncate px-1'

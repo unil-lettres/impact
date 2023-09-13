@@ -432,6 +432,8 @@ class Helpers
     public static function getFolderContent(
         Course $course,
         Folder $folder = null,
+        string $sortColumn = 'position',
+        string $sortDirection = 'asc',
     ): Collection {
         // TODO recupérer uniquement les cartes dont l'utilisateur peut avoir accès.
         return collect([])
@@ -446,8 +448,10 @@ class Helpers
                     ->where('folder_id', $folder?->id)
                     ->get()
             )
-            ->sortBy('id')
-            ->sortBy('position')
+            ->sortBy([
+                [$sortColumn, $sortDirection],
+                ['id', 'asc'], // Should not happens since position should be unique.
+            ])
             ->values();
     }
 }

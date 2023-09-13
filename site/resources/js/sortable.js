@@ -38,6 +38,10 @@ let finderList = document.querySelectorAll(".finder-selectable-list");
 if (finderList) {
     _.each(finderList, function (finder) {
         Sortable.create(finder, {
+            onMove: (evt) => {
+                // Disable sorting when item has locked-move attribute.
+                return !evt.dragged.hasAttribute('locked-move');
+            },
             onUpdate: (evt) => {
                 _.each(evt.item.parentNode.children, (row, index) => {
                     row.dispatchEvent(new CustomEvent('sort-updated', {

@@ -5,13 +5,13 @@
     class="border-top row-height"
     data-id="{{ $folder->id }}"
     data-type="{{ $folder->getType() }}"
-    x-data="{ open: false, key: '{{ $folder->getType() }}-{{ $folder->id }}' }"
+    x-data="{ key: '{{ $folder->getType() }}-{{ $folder->id }}' }"
     @click.stop="selectedItems = _.xor(selectedItems, [key])"
     wire:key='{{ $folder->getType() }}-{{ $folder->id }}'
 >
     <div
         class='column-large overflow-hidden text-truncate px-1 cursor-pointer background-hover'
-        x-on:click="open = ! open"
+        x-on:click="openedFolder = _.xor(openedFolder, [key])"
         :class="!selectedItems.includes(key) || 'selected'"
     >
         @for ($i = 0; $i < $depth; $i++)
@@ -20,7 +20,7 @@
         @if ($rows->count() > 0)
             <i
                 class="fa-solid fa-caret-down d-inline-block text-center width-small transition-transform"
-                :class="open || 'rotate'"
+                :class="openedFolder.includes(key) || 'rotate'"
             ></i>
         @else
             <i class="d-inline-block width-small">&nbsp;</i>
@@ -31,7 +31,7 @@
     </div>
     <ul
         class="finder-selectable-list"
-        x-show="open"
+        x-show="openedFolder.includes(key)"
         x-transition
     >
         @foreach ($rows as $row)

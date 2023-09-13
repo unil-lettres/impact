@@ -28,7 +28,7 @@
     </div>
     <ul
         class="finder-selectable-list"
-        x-data="{ selectedItems: [] }"
+        x-data="{ selectedItems: [], openedFolder: [] }"
     >
         @foreach ($this->rows as $row)
             @if ($row->getType() === ('App\\Enums\\FinderRowType')::Folder)

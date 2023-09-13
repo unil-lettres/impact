@@ -7,6 +7,7 @@
     x-data="{ key: '{{ $card->getType() }}-{{ $card->id }}' }"
     @click.stop="selectedItems = _.xor(selectedItems, [key])"
     :class="!selectedItems.includes(key) || 'selected'"
+    wire:key='{{ $card->getType() }}-{{ $card->id }}'
 >
     <div
         class='column-large text-truncate px-1'

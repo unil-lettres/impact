@@ -7,6 +7,7 @@
     data-type="{{ $folder->getType() }}"
     x-data="{ open: false, key: '{{ $folder->getType() }}-{{ $folder->id }}' }"
     @click.stop="selectedItems = _.xor(selectedItems, [key])"
+    wire:key='{{ $folder->getType() }}-{{ $folder->id }}'
 >
     <div
         class='column-large overflow-hidden text-truncate px-1 cursor-pointer background-hover'

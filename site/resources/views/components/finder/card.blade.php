@@ -4,8 +4,8 @@
     class="d-flex border-top background-hover cursor-default row-height"
     data-id="{{ $card->id }}"
     data-type="{{ $card->getType() }}"
-    x-data="{ key: '{{ $card->folder_id }}-{{ $card->getType() }}-{{ $card->id }}' }"
-    @click.stop="toggleSelect(key, {{ $card->folder_id }});"
+    x-data="{ key: '{{ $card->getType() }}-{{ $card->id }}' }"
+    @click.stop="toggleSelect(key)"
     :class="!selectedItems.includes(key) || 'selected'"
     wire:key='{{ $card->getType() }}-{{ $card->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}

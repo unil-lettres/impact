@@ -1,7 +1,4 @@
-<div
-    class='finder'
-    x-cloak
->
+<div class='finder' x-cloak>
     <div
         wire:loading.delay.longest
         class='modal-backdrop fade show'
@@ -24,30 +21,22 @@
     <div class="d-flex row-height">
         <div class='column-large px-1'>{{ trans('courses.finder.name') }}</div>
         <div class='column-small px-1 d-none d-sm-block'>
-            {{ trans('courses.finder.state') }}</div>
+            {{ trans('courses.finder.state') }}
+        </div>
         <div class='column-small px-1 d-none d-xl-block'>
-            {{ trans('courses.finder.created') }}</div>
+            {{ trans('courses.finder.created') }}
+        </div>
         <div class='column-medium px-1 d-none d-lg-block'>
-            {{ trans('courses.finder.editors') }}</div>
+            {{ trans('courses.finder.editors') }}
+        </div>
         <div class='column-medium px-1 d-none d-lg-block'>
-            {{ trans('courses.finder.tags') }}</div>
+            {{ trans('courses.finder.tags') }}
+        </div>
     </div>
     <ul
         class="finder-selectable-list"
-        x-data="{
-            selectedItems: [],
-            openedFolder: [],
-            toggleSelect(key, parent_id) {
-                this.selectedItems = _.xor(this.selectedItems, [key]);
-                _.remove(
-                    this.selectedItems,
-                    (value) => {
-                        const [item_parent_id] = value.split('-');
-                        return (item_parent_id || undefined) != (parent_id || undefined);
-                    }
-                );
-            },
-        }"
+        @click.outside="selectedItems = []"
+        x-data="finderData"
     >
         @foreach ($this->rows as $row)
             @if ($row->getType() === ('App\\Enums\\FinderRowType')::Folder)
@@ -63,4 +52,17 @@
         @endforeach
     </ul>
     <div class="border-top"></div>
+    @section('scripts-footer')
+        <script data-navigate-once>
+            document.addEventListener('livewire:init', () => {
+                Alpine.data('finderData', () => ({
+                    selectedItems: [],
+                    openedFolder: [],
+                    toggleSelect(key) {
+                        this.selectedItems = _.xor(this.selectedItems, [key]);
+                    }
+                }))
+            });
+        </script>
+    @endsection
 </div>

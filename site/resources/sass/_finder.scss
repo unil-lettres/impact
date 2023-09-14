@@ -49,7 +49,12 @@
     }
 
     .selected {
-        background-color: $niagara-200!important;
+        background-color: $gray-200!important;
+    }
+
+    .selected .background-hover:hover,
+    .selected.background-hover:hover {
+        background-color: $gray-400!important;
     }
 
     .selected-row {

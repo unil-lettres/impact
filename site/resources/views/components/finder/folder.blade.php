@@ -9,16 +9,16 @@
 
 <li
     class="border-top row-height cursor-default"
-    :class="!selectedItems.includes(key) || 'selected'"
     data-id="{{ $folder->id }}"
     data-type="{{ $folder->getType() }}"
-    x-data="{ key: '{{ $folder->parent_id }}-{{ $folder->getType() }}-{{ $folder->id }}' }"
-    @click.stop="toggleSelect(key, {{ $folder->parent_id }});"
+    x-data="{ key: '{{ $folder->getType() }}-{{ $folder->id }}'}"
+    @click.stop="toggleSelect(key)"
     wire:key='{{ $folder->getType() }}-{{ $folder->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}
 >
     <div
         class='column-large overflow-hidden text-truncate px-1 background-hover'
+        :class="!selectedItems.includes(key) || 'selected'"
     >
         <div class="d-inline-block" x-on:click.stop="openedFolder = _.xor(openedFolder, [key])">
             @for ($i = 0; $i < $depth; $i++)

@@ -2,6 +2,8 @@ import Sortable from "sortablejs";
 import axios from "axios";
 import _ from "lodash";
 
+window.Sortable = Sortable;
+
 // States
 let statesList = document.getElementById('states-list');
 if(statesList) {
@@ -30,32 +32,5 @@ function updatePosition(route, newOrder) {
         console.log(response);
     }).catch(error => {
         console.log(error)
-    });
-}
-
-// Finder
-let finderList = document.querySelectorAll(".finder-selectable-list");
-if (finderList) {
-    _.each(finderList, function (finder) {
-        Sortable.create(finder, {
-            onMove: (evt) => {
-                // Disable sorting when item has locked-move attribute.
-                return !evt.dragged.hasAttribute('locked-move');
-            },
-            onUpdate: (evt) => {
-                _.each(evt.item.parentNode.children, (row, index) => {
-                    row.dispatchEvent(new CustomEvent('sort-updated', {
-                        bubbles: true,
-                        cancelable: false,
-                        detail: {
-                            id: row.getAttribute('data-id'),
-                            type: row.getAttribute('data-type'),
-                            position: index,
-                        },
-                    }));
-                });
-            },
-            animation: 150,
-        });
     });
 }

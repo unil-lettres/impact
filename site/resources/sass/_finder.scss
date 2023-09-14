@@ -1,6 +1,17 @@
 
 .finder {
 
+    &:not(.hide-select) {
+        .selected {
+            background-color: $gray-200!important;
+        }
+
+        .selected .background-hover:hover,
+        .selected.background-hover:hover {
+            background-color: $gray-400!important;
+        }
+    }
+
     [x-cloak] { display: none !important; }
 
     ul {
@@ -46,19 +57,6 @@
 
     .background-hover:hover {
         background-color: var(--bs-gray-200);
-    }
-
-    .selected {
-        background-color: $gray-200!important;
-    }
-
-    .selected .background-hover:hover,
-    .selected.background-hover:hover {
-        background-color: $gray-400!important;
-    }
-
-    .selected-row {
-        background-color: aqua;
     }
 
     .modal-backdrop {

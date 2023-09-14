@@ -40,6 +40,7 @@
         class="finder-selectable-list"
         x-show="openedFolder.includes(key)"
         x-transition
+        x-init="initSortable($el)"
     >
         @foreach ($rows as $row)
             @if ($row->getType() === ('App\\Enums\\FinderRowType')::Folder)

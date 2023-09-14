@@ -37,6 +37,7 @@
         class="finder-selectable-list"
         @click.outside="selectedItems = []"
         x-data="finderData"
+        x-init="initSortable($el)"
     >
         @foreach ($this->rows as $row)
             @if ($row->getType() === ('App\\Enums\\FinderRowType')::Folder)
@@ -60,8 +61,38 @@
                     openedFolder: [],
                     toggleSelect(key) {
                         this.selectedItems = _.xor(this.selectedItems, [key]);
+                    },
+                    initSortable(list) {
+                        Sortable.create(list, {
+                            onStart: () => {
+                                // Hide selected elements while dragging.
+                                list.closest('.finder').classList.add('hide-select');
+                            },
+                            onEnd: () => {
+                                // Display again selected elements when dragging end.
+                                list.closest('.finder').classList.remove('hide-select');
+                            },
+                            onMove: (evt) => {
+                                // Disable sorting when item has locked-move attribute.
+                                return !evt.dragged.hasAttribute('locked-move');
+                            },
+                            onUpdate: (evt) => {
+                                _.each(evt.item.parentNode.children, (row, index) => {
+                                    row.dispatchEvent(new CustomEvent('sort-updated', {
+                                        bubbles: true,
+                                        cancelable: false,
+                                        detail: {
+                                            id: row.getAttribute('data-id'),
+                                            type: row.getAttribute('data-type'),
+                                            position: index,
+                                        },
+                                    }));
+                                });
+                            },
+                            animation: 150,
+                        });
                     }
-                }))
+                }));
             });
         </script>
     @endsection

@@ -1,10 +1,11 @@
 @props(['card', 'selected' => false, 'lockedMove' => false, 'depth' => 0])
 
 <li
-    class="d-flex border-top background-hover cursor-default row-height"
+    class="d-flex border-top border-secondary-subtle background-hover cursor-default row-height"
     data-id="{{ $card->id }}"
     data-type="{{ $card->getType() }}"
     x-data="{ key: '{{ $card->getType() }}-{{ $card->id }}' }"
+    :data-key="key"
     @click.stop="toggleSelect(key)"
     :class="!selectedItems.includes(key) || 'selected'"
     wire:key='{{ $card->getType() }}-{{ $card->id }}'

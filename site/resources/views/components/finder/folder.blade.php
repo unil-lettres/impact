@@ -8,10 +8,11 @@
 @php($rows = $folder->getContent($sortColumn, $sortDirection))
 
 <li
-    class="border-top row-height cursor-default"
+    class="border-top border-secondary-subtle row-height cursor-default"
     data-id="{{ $folder->id }}"
     data-type="{{ $folder->getType() }}"
     x-data="{ key: '{{ $folder->getType() }}-{{ $folder->id }}'}"
+    :data-key="key"
     @click.stop="toggleSelect(key)"
     wire:key='{{ $folder->getType() }}-{{ $folder->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}
@@ -20,7 +21,7 @@
         class='column-large overflow-hidden text-truncate px-1 background-hover'
         :class="!selectedItems.includes(key) || 'selected'"
     >
-        <div class="d-inline-block" x-on:click.stop="openedFolder = _.xor(openedFolder, [key])">
+        <div class="d-inline-block" @click.stop="toggleOpen($el, key)">
             @for ($i = 0; $i < $depth; $i++)
                 <i class="d-inline-block width-small">&nbsp;</i>
             @endfor

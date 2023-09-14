@@ -52,7 +52,7 @@
             @endif
         @endforeach
     </ul>
-    <div class="border-top"></div>
+    <div class="border-top border-secondary-subtle"></div>
     @section('scripts-footer')
         <script data-navigate-once>
             document.addEventListener('livewire:init', () => {
@@ -61,6 +61,18 @@
                     openedFolder: [],
                     toggleSelect(key) {
                         this.selectedItems = _.xor(this.selectedItems, [key]);
+                    },
+                    toggleOpen(element, key) {
+                        this.openedFolder = _.xor(this.openedFolder, [key]);
+
+                        // Unselect childs if folder is closed.
+                        _.pull(
+                            this.selectedItems,
+                            ..._.map(
+                                element.closest('li').querySelectorAll('li'),
+                                childs => childs.getAttribute('data-key'),
+                            ),
+                        );
                     },
                     initSortable(list) {
                         Sortable.create(list, {

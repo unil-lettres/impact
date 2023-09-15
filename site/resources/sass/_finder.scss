@@ -28,6 +28,56 @@
         cursor: default;
     }
 
+    .cursor-pointer {
+        cursor: pointer;
+    }
+
+    .sort-direction {
+
+        &-asc {
+            i.fa-arrow-down {
+                transition: all 0.3s ease;
+                color: $gray-500;
+            }
+            &:hover {
+                i.fa-arrow-down {
+                    color: $primary;
+                    transform: translateY(2px);
+                }
+            }
+        }
+
+        &-desc {
+            i.fa-arrow-down {
+                transition: all 0.3s ease;
+                color: $primary;
+            }
+            &:hover {
+                i.fa-arrow-down {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+
+        &-remove {
+            i.fa-arrow-down {
+                transition: all 0.3s ease;
+                color: $primary;
+                transform: rotate(180deg);
+            }
+            &:hover {
+                i.fa-arrow-down {
+                    display: none;
+                }
+
+                i.fa-xmark {
+                    color: $primary;
+                    display: inline-block!important;
+                }
+            }
+        }
+    }
+
     position: relative;
 
     .width-small {

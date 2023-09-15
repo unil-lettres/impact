@@ -40,6 +40,25 @@ class Finder extends Component
         );
     }
 
+
+    #[Computed]
+    public function sortAttributes($column)
+    {
+        if ($column === $this->sortColumn) {
+            [$directionCss, $direction, $column] = match($this->sortDirection) {
+                'asc' => ['desc', 'desc', $column],
+                'desc' => ['remove', 'asc', 'position'],
+            };
+        } else {
+            $direction = $directionCss = 'asc';
+        }
+
+        return <<<HTML
+            class='d-flex cursor-pointer gap-2 sort-direction-$directionCss'
+            wire:click='sort("$column", "$direction")'
+        HTML;
+    }
+
     #[On('sort-updated')]
     public function move(int $id, string $type, int $position)
     {

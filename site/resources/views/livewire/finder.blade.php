@@ -17,20 +17,51 @@
             </div>
         </div>
     </div>
-    <button wire:click="sort('name', 'desc')">sort by name</button>
     <div class="d-flex row-height">
-        <div class='column-large px-1'>{{ trans('courses.finder.name') }}</div>
+        <div class='column-large px-1'>
+            <div {!! $this->sortAttributes('title') !!}>
+                <div>{{ trans('courses.finder.name') }}</div>
+                <div>
+                    <i class="fa-solid fa-arrow-down"></i>
+                    <i class="fa-solid fa-xmark d-none"></i>
+                </div>
+            </div>
+        </div>
         <div class='column-small px-1 d-none d-sm-block'>
-            {{ trans('courses.finder.state') }}
+            <div {!! $this->sortAttributes('state_name') !!}>
+                <div>{{ trans('courses.finder.state') }}</div>
+                <div>
+                    <i class="fa-solid fa-arrow-down"></i>
+                    <i class="fa-solid fa-xmark d-none"></i>
+                </div>
+            </div>
         </div>
         <div class='column-small px-1 d-none d-xl-block'>
-            {{ trans('courses.finder.created') }}
+            <div {!! $this->sortAttributes('created_at') !!}>
+                <div>{{ trans('courses.finder.created') }}</div>
+                <div>
+                    <i class="fa-solid fa-arrow-down"></i>
+                    <i class="fa-solid fa-xmark d-none"></i>
+                </div>
+            </div>
         </div>
         <div class='column-medium px-1 d-none d-lg-block'>
-            {{ trans('courses.finder.editors') }}
+            <div {!! $this->sortAttributes('editors_list') !!}>
+                <div>{{ trans('courses.finder.editors') }}</div>
+                <div>
+                    <i class="fa-solid fa-arrow-down"></i>
+                    <i class="fa-solid fa-xmark d-none"></i>
+                </div>
+            </div>
         </div>
         <div class='column-medium px-1 d-none d-lg-block'>
-            {{ trans('courses.finder.tags') }}
+            <div {!! $this->sortAttributes('tags_list') !!}>
+                <div>{{ trans('courses.finder.tags') }}</div>
+                <div>
+                    <i class="fa-solid fa-arrow-down"></i>
+                    <i class="fa-solid fa-xmark d-none"></i>
+                </div>
+            </div>
         </div>
     </div>
     <ul

@@ -5,6 +5,7 @@ namespace App;
 use App\Enums\FinderRowType;
 use App\Enums\StatePermission;
 use App\Scopes\HideAttachmentsScope;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -142,7 +143,35 @@ class Card extends Model
 
         return $enrollments->map(function ($enrollment) {
             return $enrollment->user;
-        });
+        })->sortBy('name');
+    }
+
+    /**
+     * Get a string of all editors joined by a comma (',').
+     */
+    protected function editorsList(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->editors()->pluck('name')->join(', '),
+        );
+    }
+
+    /**
+     * Get the name of the state.
+     */
+    protected function stateName(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->state->name);
+    }
+
+    /**
+     * Get a string of all tags joined by a comma (',').
+     */
+    protected function tagsList(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->tags()->pluck('name')->join(', '),
+        );
     }
 
     /**

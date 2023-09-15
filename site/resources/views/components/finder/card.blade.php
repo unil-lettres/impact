@@ -37,14 +37,14 @@
     </div>
     <div
         class='column-medium text-truncate px-1 d-none d-lg-block fw-light'
-        title="{{ $card->editors()->pluck('name')->join(', ') }}"
+        title="{{ $card->editors_list }}"
     >
-        {{ $card->editors()->pluck('name')->join(', ') }}
+        {{ $card->editors_list }}
     </div>
     <div
         class='column-medium text-truncate px-1 d-none d-lg-block fw-light'
-        title="{{ $card->tags->pluck('name')->join(', ') }}"
+        title="{{ $card->tags_list }}"
     >
-        {{ $card->tags->pluck('name')->join(', ') }}
+        {{ $card->tags_list }}
     </div>
 </li>

@@ -32,6 +32,17 @@
         cursor: pointer;
     }
 
+    .card-row:hover a {
+        &:hover {
+            @extend .bg-light;
+        };
+        display: block!important;
+    }
+
+    .fs-7 {
+        font-size: 0.7rem!important;
+    }
+
     .sort-direction {
 
         &-asc {

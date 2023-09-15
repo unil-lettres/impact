@@ -19,9 +19,6 @@ class MediaStatus extends Component
     {
         $this->card = $card;
         $this->progress = $card->file?->progress ?? 0;
-
-        // Define MediaStatus to active in the parent component
-        $this->dispatch('media-status-is-active', active: true);
     }
 
     public function render(): Renderable

@@ -263,29 +263,6 @@ class Helpers
     }
 
     /**
-     * Return whether the card should show the media status in box1
-     */
-    public static function showMediaStatus(Card $card): bool
-    {
-        // Show media status if the card doesn't have a file yet
-        if (! self::cardHasSource($card)) {
-            return true;
-        }
-
-        // Do not show media status if the card has an external link
-        if (self::cardHasExternalLink($card)) {
-            return false;
-        }
-
-        // Show media status if the card has a file that is not ready
-        if (! self::isFileStatus($card->file, FileStatus::Ready)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Return whether the specified box should be hidden from the view
      */
     public static function isHidden(Card $card, string $box): ?bool

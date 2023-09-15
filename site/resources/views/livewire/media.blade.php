@@ -1,5 +1,5 @@
 <div class="media" {{ $card->boxIsEditable($reference) ? 'wire:poll' : '' }}>
-    @if(Helpers::showMediaStatus($card) || $mediaStatusIsActive)
+    @if($this->showMediaStatus($card))
         <livewire:media-status :card="$card" key="{{ $this->mediaStatusKey() }}"/>
     @else
         @if(Helpers::cardHasExternalLink($card))

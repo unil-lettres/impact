@@ -40,7 +40,7 @@
                                             <tr class="{{ $file->type }} {{ $file->status }} {{ Helpers::fileState($file) }}">
                                                 <td>{{ Helpers::truncate($file->name) }}</td>
                                                 <td>{{ Helpers::fileType($file->type) }}</td>
-                                                <td>{!! Helpers::fileStatusBadge($file->status) !!}</td>
+                                                <td>{!! Helpers::fileStatusBadge($file) !!}</td>
                                                 <td>
                                                     <span style="cursor: pointer"
                                                         class="base-popover"

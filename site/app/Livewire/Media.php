@@ -1,0 +1,78 @@
+<?php
+
+namespace App\Livewire;
+
+use App\Card;
+use App\Enums\FileStatus;
+use App\Helpers\Helpers;
+use Illuminate\Contracts\Support\Renderable;
+use Livewire\Attributes\Rule;
+use Livewire\Component;
+
+class Media extends Component
+{
+    #[Rule('required')]
+    public Card $card;
+
+    #[Rule('required')]
+    public string $reference;
+
+    #[Rule('required')]
+    public bool $mediaStatusIsActive = false;
+
+    /*
+     * Return whether the card should show the media status
+     * Livewire component in box1
+     */
+    public function showMediaStatus(Card $card)
+    {
+        $show = $this->shouldShowMediaStatus($card);
+
+        if ($show) {
+            // If the media status view is shown, we want
+            // Livewire refresh to show it until the file
+            // is ready and the page is reloaded manually
+            $this->mediaStatusIsActive = true;
+        }
+
+        return $show || $this->mediaStatusIsActive;
+    }
+
+    /*
+     * Used to generate the cache key for the MediaStatus
+     * Livewire component
+     */
+    public function mediaStatusKey(): string
+    {
+        if (! $this->card->file) {
+            return 'no-file';
+        }
+
+        return $this->card->file->status.'-'.$this->card->file->progress ?? '0';
+    }
+
+    public function render(): Renderable
+    {
+        return view('livewire.media');
+    }
+
+    private function shouldShowMediaStatus(Card $card): bool
+    {
+        // Show media status if the card doesn't have a file yet
+        if (! Helpers::cardHasSource($card)) {
+            return true;
+        }
+
+        // Do not show media status if the card has an external link
+        if (Helpers::cardHasExternalLink($card)) {
+            return false;
+        }
+
+        // Show media status if the card has a file that is not ready
+        if (! Helpers::isFileStatus($card->file, FileStatus::Ready)) {
+            return true;
+        }
+
+        return false;
+    }
+}

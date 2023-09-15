@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Card;
 use App\Course;
+use App\Enums\FileStatus;
 use App\Folder;
 use App\Http\Requests\CreateCard;
 use App\Http\Requests\CreateCardExport;
@@ -130,6 +131,11 @@ class CardController extends Controller
             default => State::limited($card)->where('course_id', $card->course->id),
         };
 
+        // Only show files with the ready status
+        $files = $card->course
+            ->files
+            ->where('status', FileStatus::Ready);
+
         return view('cards.edit', [
             'card' => $card,
             'breadcrumbs' => $card
@@ -138,8 +144,7 @@ class CardController extends Controller
                 ->editors(),
             'students' => $card->course
                 ->students(),
-            'files' => $card->course
-                ->files,
+            'files' => $files,
             'states' => $states
                 ->ordered()
                 ->get(),

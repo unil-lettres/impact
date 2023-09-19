@@ -43,4 +43,5 @@ return [
     'finder.state' => 'Etat',
     'finder.filter.tags' => 'Etiquettes',
     'finder.filter.editors' => 'Editeurs',
+    'finder.filter.states' => 'Etats',
 ];

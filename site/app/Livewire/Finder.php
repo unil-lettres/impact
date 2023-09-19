@@ -28,6 +28,7 @@ class Finder extends Component
         $this->filters = collect([
             'tag' => collect([]),
             'editor' => collect([]),
+            'state' => collect([]),
         ]);
     }
 

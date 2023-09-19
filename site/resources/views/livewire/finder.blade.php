@@ -17,7 +17,7 @@
             </div>
         </div>
     </div>--}}
-    <div>
+    <div class='d-flex'>
         <div
             class="rct-multi-filter-select"
             data='{{ json_encode(['record' => 'tag', 'options' => $course->tags]) }}'
@@ -28,6 +28,12 @@
             class="rct-multi-filter-select"
             data='{{ json_encode(['record' => 'editor', 'options' => $this->editors]) }}'
             placeholder='{{ trans("courses.finder.filter.editors") }}'
+            wire:ignore
+        ></div>
+        <div
+            class="rct-multi-filter-select"
+            data='{{ json_encode(['record' => 'state', 'options' => $course->states]) }}'
+            placeholder='{{ trans("courses.finder.filter.states") }}'
             wire:ignore
         ></div>
     </div>

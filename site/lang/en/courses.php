@@ -43,4 +43,5 @@ return [
     'finder.state' => 'State',
     'finder.filter.tags' => 'Tags',
     'finder.filter.editors' => 'Editors',
+    'finder.filter.states' => 'States',
 ];

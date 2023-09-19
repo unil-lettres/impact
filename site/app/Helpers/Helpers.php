@@ -437,37 +437,44 @@ class Helpers
     ): Collection {
 
         // TODO recupérer uniquement les cartes dont l'utilisateur peut avoir accès.
-        $cards = Card::with('tags')->with('state')->with('folder')
-            ->where('course_id', $course->id)
-            ->where('folder_id', $folder?->id)
-            ->where(function ($query) use ($filters) {
-                $filterTags = $filters->get('tag');
-                if ($filterTags->isNotEmpty()) {
-                    return $query->whereHas('tags', function ($query) use ($filterTags) {
-                        $query->whereIn('tag_id', $filterTags);
-                    });
-                }
-                return $query;
-            })
-            ->get()
-            ->filter(
-                fn($card) => (false
-                    || $filters->get('editor')->isEmpty()
-                    || $card
-                        ->editors()
-                        ->pluck('id')
-                        ->intersect($filters->get('editor'))
-                        ->isNotEmpty()
-                )
-            );
-
         return collect([])
             ->concat(
                 Folder::where('course_id', $course->id)
                     ->where('parent_id', $folder?->id)
                     ->get()
             )
-            ->concat($cards)
+            ->concat(
+                Card::with('tags')->with('state')->with('folder')
+                    ->where('course_id', $course->id)
+                    ->where('folder_id', $folder?->id)
+                    ->where(function ($query) use ($filters) {
+                        $filterTags = $filters->get('tag');
+                        if ($filterTags->isNotEmpty()) {
+                            return $query->whereHas('tags', function ($query) use ($filterTags) {
+                                $query->whereIn('tag_id', $filterTags);
+                            });
+                        }
+                        return $query;
+                    })
+                    ->where(function ($query) use ($filters) {
+                        $filterStates = $filters->get('state');
+                        if ($filterStates->isNotEmpty()) {
+                            return $query->whereIn('state_id', $filterStates);
+                        }
+                        return $query;
+                    })
+                    ->get()
+                    ->filter(
+                        fn($card) => (false
+                            || $filters->get('editor')->isEmpty()
+                            || $card
+                                ->editors()
+                                ->pluck('id')
+                                ->intersect($filters->get('editor'))
+                                ->isNotEmpty()
+                        )
+                    )
+            )
             ->sortBy([
                 [$sortColumn, $sortDirection],
                 ['id', 'asc'], // Should not happens since position should be unique.

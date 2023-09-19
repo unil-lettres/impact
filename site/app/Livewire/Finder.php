@@ -8,6 +8,7 @@ use App\Course;
 use App\Enums\FinderRowType;
 use App\Helpers\Helpers;
 use App\Tag;
+use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -20,27 +21,30 @@ class Finder extends Component
     public $course;
     public $sortColumn = self::DEFAULT_SORT_COLUMN;
     public $sortDirection = self::DEFAULT_SORT_DIRECTION;
-    public $filterTags;
+    public $filters;
 
     public function mount()
     {
-        $this->filterTags = collect([]);
+        $this->filters = collect([
+            'tag' => collect([]),
+            'editor' => collect([]),
+        ]);
     }
 
     #[Computed]
-    public function rows()
+    public function rows(): Collection
     {
         return Helpers::getFolderContent(
             Course::find($this->course->id),
+            $this->filters,
             null,
             $this->sortColumn,
             $this->sortDirection,
-            $this->filterTags,
         );
     }
 
     #[Computed]
-    public function lockedMove()
+    public function lockedMove(): bool
     {
         return (FALSE
             || $this->sortColumn != self::DEFAULT_SORT_COLUMN
@@ -49,7 +53,7 @@ class Finder extends Component
     }
 
     #[Computed]
-    public function sortAttributes($column)
+    public function sortAttributes($column): string
     {
         if ($column === $this->sortColumn) {
             [$directionCss, $direction, $column] = match($this->sortDirection) {
@@ -66,6 +70,14 @@ class Finder extends Component
         HTML;
     }
 
+    #[Computed]
+    public function editors(): Collection
+    {
+        return $this->course->cards->map(
+            fn (Card $card) => $card->editors(),
+        )->flatten(1)->unique('id');
+    }
+
     #[On('sort-updated')]
     public function move(int $id, string $type, int $position)
     {
@@ -79,22 +91,28 @@ class Finder extends Component
         $entity->save();
     }
 
-    #[On('add-tag-to-filter')]
-    public function addTagToFilter(int $idFilter)
+    #[On('add-element-to-filter')]
+    public function addElementToFilter(int $idFilter, string $type)
     {
-        // TODO valdier les inputs et retirer ce findOrFail
-        $this->filterTags = $this->filterTags->push(
-            Tag::findOrFail($idFilter)->id,
-        )->uniqueStrict()->values();
+        // TODO valdier les inputs
+        $this->filters->put(
+            $type,
+            $this->filters->get($type)->push(
+                $idFilter,
+            )->uniqueStrict()->values(),
+        );
     }
 
-    #[On('remove-tag-to-filter')]
-    public function removeTagToFilter(int $idFilter)
+    #[On('remove-element-to-filter')]
+    public function removeElementToFilter(int $idFilter, string $type)
     {
-        // TODO valdier les inputs et retirer ce findOrFail
-        $this->filterTags = $this->filterTags->filter(
-            fn (int $idTag) => $idTag !== Tag::findOrFail($idFilter)->id,
-        )->values();
+        // TODO valdier les inputs
+        $this->filters->put(
+            $type,
+            $this->filters->get($type)->filter(
+                fn (int $id) => $id !== $idFilter,
+            )->values(),
+        );
     }
 
     public function sort($column, $direction)

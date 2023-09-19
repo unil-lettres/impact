@@ -1,5 +1,5 @@
 <div class='finder' x-cloak>
-    <div
+    {{-- <div
         wire:loading.delay.longest
         class='modal-backdrop fade show'
     >
@@ -16,13 +16,21 @@
                 </div>
             </div>
         </div>
+    </div>--}}
+    <div>
+        <div
+            class="rct-multi-filter-select"
+            data='{{ json_encode(['record' => 'tag', 'options' => $course->tags]) }}'
+            placeholder='{{ trans("courses.finder.filter.tags") }}'
+            wire:ignore
+        ></div>
+        <div
+            class="rct-multi-filter-select"
+            data='{{ json_encode(['record' => 'editor', 'options' => $this->editors]) }}'
+            placeholder='{{ trans("courses.finder.filter.editors") }}'
+            wire:ignore
+        ></div>
     </div>
-    <div
-        id="rct-multi-tag-filter"
-        data='{{ json_encode(['record' => $course, 'options' => $course->tags]) }}'
-        placeholder='{{ trans("courses.finder.filterTags") }}'
-        wire:ignore
-    ></div>
     <div class="d-flex row-height">
         <div class='column-large px-1'>
             <div {!! $this->sortAttributes('title') !!}>
@@ -83,7 +91,7 @@
                     :sortColumn="$this->sortColumn"
                     :sortDirection="$this->sortDirection"
                     :lockedMove="$this->lockedMove"
-                    :filterTags="$this->filterTags"
+                    :filters="$this->filters"
                 />
             @else
                 <x-finder.card :card="$row" :lockedMove="$this->lockedMove" />

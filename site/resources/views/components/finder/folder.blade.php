@@ -1,12 +1,12 @@
 @props([
     'folder',
+    'filters',
     'sortColumn' => 'position',
     'sortDirection' => 'asc',
     'depth' => 0,
     'lockedMove' => false,
-    'filterTags' => null,
 ])
-@php($rows = $folder->getContent($sortColumn, $sortDirection, $filterTags))
+@php($rows = $folder->getContent($sortColumn, $sortDirection, $filters))
 
 <li
     class="border-top border-secondary-subtle row-height cursor-default"
@@ -52,7 +52,7 @@
                     :sortDirection="$sortDirection"
                     :depth="$depth + 1"
                     :lockedMove="$lockedMove"
-                    :filterTags="$filterTags"
+                    :filters="$filters"
                 />
             @else
                 <x-finder.card

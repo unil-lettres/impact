@@ -41,6 +41,6 @@ return [
     'finder.created' => 'Création',
     'finder.tags' => 'Etiquettes',
     'finder.state' => 'Etat',
-    'finder.filterTags' => 'Tags',
-
+    'finder.filter.tags' => 'Etiquettes',
+    'finder.filter.editors' => 'Editeurs',
 ];

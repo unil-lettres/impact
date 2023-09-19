@@ -99,15 +99,15 @@ class Folder extends Model
     public function getContent(
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
-        Collection $filterTags = null,
+        Collection $filters = null,
     ): Collection
     {
         return Helpers::getFolderContent(
             $this->course,
+            $filters,
             $this,
             $sortColumn,
             $sortDirection,
-            $filterTags
         );
     }
 }

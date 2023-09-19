@@ -7,6 +7,7 @@ use App\Folder;
 use App\Course;
 use App\Enums\FinderRowType;
 use App\Helpers\Helpers;
+use App\Tag;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -19,6 +20,12 @@ class Finder extends Component
     public $course;
     public $sortColumn = self::DEFAULT_SORT_COLUMN;
     public $sortDirection = self::DEFAULT_SORT_DIRECTION;
+    public $filterTags;
+
+    public function mount()
+    {
+        $this->filterTags = collect([]);
+    }
 
     #[Computed]
     public function rows()
@@ -28,6 +35,7 @@ class Finder extends Component
             null,
             $this->sortColumn,
             $this->sortDirection,
+            $this->filterTags,
         );
     }
 
@@ -39,7 +47,6 @@ class Finder extends Component
             || $this->sortDirection != self::DEFAULT_SORT_DIRECTION
         );
     }
-
 
     #[Computed]
     public function sortAttributes($column)
@@ -70,6 +77,24 @@ class Finder extends Component
         $entity = $type === FinderRowType::Folder ? Folder::find($id) : Card::Find($id);
         $entity->position = $position;
         $entity->save();
+    }
+
+    #[On('add-tag-to-filter')]
+    public function addTagToFilter(int $idFilter)
+    {
+        // TODO valdier les inputs et retirer ce findOrFail
+        $this->filterTags = $this->filterTags->push(
+            Tag::findOrFail($idFilter)->id,
+        )->uniqueStrict()->values();
+    }
+
+    #[On('remove-tag-to-filter')]
+    public function removeTagToFilter(int $idFilter)
+    {
+        // TODO valdier les inputs et retirer ce findOrFail
+        $this->filterTags = $this->filterTags->filter(
+            fn (int $idTag) => $idTag !== Tag::findOrFail($idFilter)->id,
+        )->values();
     }
 
     public function sort($column, $direction)

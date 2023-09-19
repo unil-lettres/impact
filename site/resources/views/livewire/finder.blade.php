@@ -17,6 +17,12 @@
             </div>
         </div>
     </div>
+    <div
+        id="rct-multi-tag-filter"
+        data='{{ json_encode(['record' => $course, 'options' => $course->tags]) }}'
+        placeholder='{{ trans("courses.finder.filterTags") }}'
+        wire:ignore
+    ></div>
     <div class="d-flex row-height">
         <div class='column-large px-1'>
             <div {!! $this->sortAttributes('title') !!}>
@@ -77,6 +83,7 @@
                     :sortColumn="$this->sortColumn"
                     :sortDirection="$this->sortDirection"
                     :lockedMove="$this->lockedMove"
+                    :filterTags="$this->filterTags"
                 />
             @else
                 <x-finder.card :card="$row" :lockedMove="$this->lockedMove" />

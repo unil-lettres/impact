@@ -7,7 +7,6 @@ use App\Course;
 use App\Enums\CourseType;
 use App\Enums\FileStatus;
 use App\Enums\FileType;
-use App\Enums\FinderRowType;
 use App\Enums\StateType;
 use App\Enums\UserType;
 use App\File;
@@ -18,6 +17,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class Helpers
@@ -434,7 +434,11 @@ class Helpers
         Folder $folder = null,
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
+        Collection $filterTags = null,
     ): Collection {
+
+        if (is_null($filterTags)) $filterTags = collect([]);
+
         // TODO recupérer uniquement les cartes dont l'utilisateur peut avoir accès.
         return collect([])
             ->concat(
@@ -446,6 +450,14 @@ class Helpers
                 Card::with('tags')->with('state')->with('folder')
                     ->where('course_id', $course->id)
                     ->where('folder_id', $folder?->id)
+                    ->where(function ($query) use ($filterTags) {
+                        if ($filterTags->isNotEmpty()) {
+                            return $query->whereHas('tags', function ($query) use ($filterTags) {
+                                $query->whereIn('tag_id', $filterTags);
+                            });
+                        }
+                        return $query;
+                    })
                     ->get()
             )
             ->sortBy([

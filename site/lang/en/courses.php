@@ -41,4 +41,5 @@ return [
     'finder.created' => 'Created',
     'finder.tags' => 'Tags',
     'finder.state' => 'State',
+    'finder.filterTags' => 'Tags',
 ];

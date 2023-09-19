@@ -96,13 +96,18 @@ class Folder extends Model
         return FinderRowType::Folder;
     }
 
-    public function getContent($sortColumn = 'position', $sortDirection = 'asc'): Collection
+    public function getContent(
+        string $sortColumn = 'position',
+        string $sortDirection = 'asc',
+        Collection $filterTags = null,
+    ): Collection
     {
         return Helpers::getFolderContent(
             $this->course,
             $this,
             $sortColumn,
             $sortDirection,
+            $filterTags
         );
     }
 }

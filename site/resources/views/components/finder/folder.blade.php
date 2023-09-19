@@ -4,8 +4,9 @@
     'sortDirection' => 'asc',
     'depth' => 0,
     'lockedMove' => false,
+    'filterTags' => null,
 ])
-@php($rows = $folder->getContent($sortColumn, $sortDirection))
+@php($rows = $folder->getContent($sortColumn, $sortDirection, $filterTags))
 
 <li
     class="border-top border-secondary-subtle row-height cursor-default"
@@ -51,6 +52,7 @@
                     :sortDirection="$sortDirection"
                     :depth="$depth + 1"
                     :lockedMove="$lockedMove"
+                    :filterTags="$filterTags"
                 />
             @else
                 <x-finder.card

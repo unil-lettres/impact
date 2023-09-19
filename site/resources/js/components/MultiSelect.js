@@ -142,6 +142,10 @@ export default class MultiSelect extends Component {
             isDisabled: this.state.isDisabled,
         };
 
+        if (this.props.placeholder) {
+            attributes.placeholder = this.props.placeholder;
+        }
+
         if (this.props.canCreate) {
 
             if (this.props.createLabel) {

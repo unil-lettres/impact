@@ -29,6 +29,7 @@ class Finder extends Component
             'tag' => collect([]),
             'editor' => collect([]),
             'state' => collect([]),
+            'name' => collect([]),
         ]);
     }
 
@@ -93,25 +94,25 @@ class Finder extends Component
     }
 
     #[On('add-element-to-filter')]
-    public function addElementToFilter(int $idFilter, string $type)
+    public function addElementToFilter(mixed $filter, string $type)
     {
         // TODO valdier les inputs
         $this->filters->put(
             $type,
             $this->filters->get($type)->push(
-                $idFilter,
+                $filter,
             )->uniqueStrict()->values(),
         );
     }
 
     #[On('remove-element-to-filter')]
-    public function removeElementToFilter(int $idFilter, string $type)
+    public function removeElementToFilter(mixed $filter, string $type)
     {
         // TODO valdier les inputs
         $this->filters->put(
             $type,
             $this->filters->get($type)->filter(
-                fn (int $id) => $id !== $idFilter,
+                fn (mixed $_filter) => $_filter !== $filter,
             )->values(),
         );
     }

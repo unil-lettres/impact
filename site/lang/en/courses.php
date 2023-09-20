@@ -44,4 +44,7 @@ return [
     'finder.filter.tags' => 'Tags',
     'finder.filter.editors' => 'Editors',
     'finder.filter.states' => 'States',
+    'finder.filter.names' => 'Card name',
+    'finder.filter.names.create' => 'Search...',
+    'finder.filter.names.empty' => 'Type a term to search...',
 ];

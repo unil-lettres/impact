@@ -98,7 +98,7 @@ export default class MultiSelect extends Component {
                 console.log(response);
 
                 const newTag = {
-                    value: response.data.tag_id,
+                    value: response?.data?.tag_id,
                     label: inputValue,
                 };
 
@@ -116,7 +116,7 @@ export default class MultiSelect extends Component {
             .catch((error) => {
 
                 // Request form validation failed.
-                if (error.response.status === 422) {
+                if (error?.response?.status === 422) {
                     alert(error.response.data.message);
                 }
 
@@ -144,6 +144,10 @@ export default class MultiSelect extends Component {
 
         if (this.props.placeholder) {
             attributes.placeholder = this.props.placeholder;
+        }
+
+        if (this.props.noOptionsMessage) {
+            attributes.noOptionsMessage = () => this.props.noOptionsMessage;
         }
 
         if (this.props.canCreate) {

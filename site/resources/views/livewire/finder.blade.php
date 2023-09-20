@@ -36,6 +36,14 @@
             placeholder='{{ trans("courses.finder.filter.states") }}'
             wire:ignore
         ></div>
+        <div
+            id="rct-multi-filter-select-name"
+            createLabel="{{ trans('courses.finder.filter.names.create') }}"
+            noOptionsMessage="{{ trans('courses.finder.filter.names.empty') }}"
+            data='{{ json_encode(['record' => 'name', 'options' => collect([])]) }}'
+            placeholder='{{ trans("courses.finder.filter.names") }}'
+            wire:ignore
+        ></div>
     </div>
     <div class="d-flex row-height">
         <div class='column-large px-1'>

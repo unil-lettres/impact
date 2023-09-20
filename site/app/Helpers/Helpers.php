@@ -436,6 +436,8 @@ class Helpers
         string $sortDirection = 'asc',
     ): Collection {
 
+        $prepare = fn($str) => strtoupper(str_replace(' ', '', $str));
+
         // TODO recupérer uniquement les cartes dont l'utilisateur peut avoir accès.
         return collect([])
             ->concat(
@@ -474,6 +476,19 @@ class Helpers
                                 ->isNotEmpty()
                         )
                     )
+                    ->filter(
+                        fn($card) => (false
+                            || $filters->get('name')->isEmpty()
+                            || $filters
+                                ->get('name')
+                                ->contains(
+                                    fn($name) => str_contains(
+                                        $prepare($card->title),
+                                        $prepare($name),
+                                    )
+                                )
+                        )
+                    )
             )
             ->sortBy([
                 [$sortColumn, $sortDirection],
@@ -481,4 +496,5 @@ class Helpers
             ])
             ->values();
     }
+
 }

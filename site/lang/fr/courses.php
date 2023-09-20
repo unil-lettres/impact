@@ -44,4 +44,7 @@ return [
     'finder.filter.tags' => 'Etiquettes',
     'finder.filter.editors' => 'Editeurs',
     'finder.filter.states' => 'Etats',
+    'finder.filter.names' => 'Nom de fiche',
+    'finder.filter.names.create' => 'Rechercher...',
+    'finder.filter.names.empty' => 'Rechercher un nom...',
 ];

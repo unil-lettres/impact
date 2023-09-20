@@ -145,12 +145,15 @@ class Helpers
     /**
      * Get the file status html badge
      */
-    public static function fileStatusBadge(string $status): string
+    public static function fileStatusBadge(File $file): string
     {
-        return match ($status) {
-            FileStatus::Ready => '<span class="badge bg-success">'.self::fileStatus($status).'</span>',
-            FileStatus::Failed => '<span class="badge bg-danger">'.self::fileStatus($status).'</span>',
-            default => '<span class="badge bg-warning">'.self::fileStatus($status).'</span>',
+        return match ($file->status) {
+            FileStatus::Ready => '<span class="badge bg-success">'.self::fileStatus($file->status).'</span>',
+            FileStatus::Failed => '<span class="badge bg-danger">'.self::fileStatus($file->status).'</span>',
+            default => '<span class="badge bg-warning">'
+                .self::fileStatus($file->status)
+                .($file->progress ? ' ('.$file->progress.'%)' : '')
+                .'</span>',
         };
     }
 
@@ -159,9 +162,9 @@ class Helpers
      *
      * @param  string  $status (App\Enums\FileStatus)
      */
-    public static function isFileStatus(File $file, string $status): bool
+    public static function isFileStatus(?File $file, string $status): bool
     {
-        if ($file->status === $status) {
+        if ($file?->status === $status) {
             return true;
         }
 
@@ -227,17 +230,17 @@ class Helpers
     /**
      * Return whether the card has an external media link
      */
-    public static function hasExternalLink(Card $card): bool
+    public static function cardHasExternalLink(Card $card): bool
     {
         return ! empty(trim($card['options']['box1']['link'] ?? ''));
     }
 
     /**
-     * Return whether the card has an external media link
+     * Return the card external media link
      */
-    public static function getExternalLink(Card $card): ?string
+    public static function getCardExternalLink(Card $card): ?string
     {
-        if (! self::hasExternalLink($card)) {
+        if (! self::cardHasExternalLink($card)) {
             return null;
         }
 
@@ -247,25 +250,13 @@ class Helpers
     /**
      * Return whether the card has a internal or external media source
      */
-    public static function hasSource(Card $card): bool
+    public static function cardHasSource(Card $card): bool
     {
         if ($card->file) {
             return true;
         }
 
-        if (self::hasExternalLink($card)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Return whether the card has a transcription
-     */
-    public static function hasTranscription(Card $card): bool
-    {
-        if ($card->box2['data']) {
+        if (self::cardHasExternalLink($card)) {
             return true;
         }
 

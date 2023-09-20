@@ -29,6 +29,7 @@ class FilesTableSeeder extends Seeder
             'name' => 'Test video file',
             'filename' => 'jesuisunfichierdetest1.mp4',
             'status' => FileStatus::Ready,
+            'progress' => 100,
             'type' => FileType::Video,
             'size' => 4519413,
             'width' => 854,
@@ -40,10 +41,11 @@ class FilesTableSeeder extends Seeder
             'deleted_at' => null,
         ]);
 
-        File::create([
+        $processingFile = File::create([
             'name' => 'Test audio file',
             'filename' => 'jesuisunfichierdetest2.mp3',
             'status' => FileStatus::Transcoding,
+            'progress' => 50,
             'type' => FileType::Audio,
             'size' => 4519413,
             'width' => null,
@@ -53,12 +55,24 @@ class FilesTableSeeder extends Seeder
             'updated_at' => $now,
             'course_id' => $firstCourse->id,
             'deleted_at' => null,
+        ])->id;
+
+        Card::create([
+            'title' => 'Test card with processing file',
+            'created_at' => $now,
+            'updated_at' => $now,
+            'course_id' => $secondCourse->id,
+            'state_id' => $secondCourse->states
+                ->where('type', StateType::Custom)
+                ->first()->id,
+            'file_id' => $processingFile,
         ]);
 
         File::create([
             'name' => 'Deactivated file',
             'filename' => 'jesuisunfichierdetest3.mp3',
             'status' => FileStatus::Ready,
+            'progress' => 100,
             'type' => FileType::Audio,
             'size' => 4519413,
             'width' => null,
@@ -70,7 +84,7 @@ class FilesTableSeeder extends Seeder
             'deleted_at' => $now,
         ]);
 
-        File::create([
+        $failedFile = File::create([
             'name' => 'Failed file',
             'filename' => 'jesuisunfichierdetest4.mp4',
             'status' => FileStatus::Failed,
@@ -83,12 +97,24 @@ class FilesTableSeeder extends Seeder
             'updated_at' => $now,
             'course_id' => $secondCourse->id,
             'deleted_at' => null,
+        ])->id;
+
+        Card::create([
+            'title' => 'Test card with failed file',
+            'created_at' => $now,
+            'updated_at' => $now,
+            'course_id' => $secondCourse->id,
+            'state_id' => $secondCourse->states
+                ->where('type', StateType::Custom)
+                ->first()->id,
+            'file_id' => $failedFile,
         ]);
 
-        $usedFile = File::create([
+        $readyFile = File::create([
             'name' => 'Used file',
             'filename' => 'jesuisunfichierdetest5.mp4',
             'status' => FileStatus::Ready,
+            'progress' => 100,
             'type' => FileType::Video,
             'size' => 4519413,
             'width' => 854,
@@ -109,7 +135,7 @@ class FilesTableSeeder extends Seeder
             'state_id' => $secondCourse->states
                 ->where('type', StateType::Custom)
                 ->first()->id,
-            'file_id' => $usedFile,
+            'file_id' => $readyFile,
         ])->id;
 
         // Link a card to a file (attachment)

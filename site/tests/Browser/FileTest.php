@@ -91,7 +91,7 @@ class FileTest extends DuskTestCase
                 ->clickLink('Configuration de l\'espace')
                 ->clickLink('Fichiers');
 
-            $browser->with('#files table tbody tr.used', function ($used) {
+            $browser->with('#files table tbody tr.ready.used', function ($used) {
                 $used->click('span.base-popover');
             });
             $browser->waitForText('Test card with file')
@@ -212,7 +212,7 @@ class FileTest extends DuskTestCase
             $browser->clickLink('Admin')
                 ->clickLink('Fichiers');
 
-            $browser->click('#files table tbody tr.used .actions span:nth-child(1) a')
+            $browser->click('#files table tbody tr.ready.used .actions span:nth-child(1) a')
                 ->assertSee('Test card with file')
                 ->click('#rct-single-course-select')
                 ->assertDontSee('First space');

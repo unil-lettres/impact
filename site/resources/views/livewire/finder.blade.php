@@ -91,6 +91,7 @@
                 </div>
             </div>
         </div>
+        <div class='column-options px-1'></div>
     </div>
     <ul
         class="finder-selectable-list"

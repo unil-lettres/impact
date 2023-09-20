@@ -427,7 +427,7 @@ class Helpers
         string $sortDirection = 'asc',
     ): Collection {
 
-        $prepare = fn($str) => strtoupper(str_replace(' ', '', $str));
+        $prepare = fn ($str) => strtoupper(str_replace(' ', '', $str));
 
         // TODO recupérer uniquement les cartes dont l'utilisateur peut avoir accès.
         return collect([])
@@ -447,6 +447,7 @@ class Helpers
                                 $query->whereIn('tag_id', $filterTags);
                             });
                         }
+
                         return $query;
                     })
                     ->where(function ($query) use ($filters) {
@@ -454,11 +455,12 @@ class Helpers
                         if ($filterStates->isNotEmpty()) {
                             return $query->whereIn('state_id', $filterStates);
                         }
+
                         return $query;
                     })
                     ->get()
                     ->filter(
-                        fn($card) => (false
+                        fn ($card) => (false
                             || $filters->get('editor')->isEmpty()
                             || $card
                                 ->editors()
@@ -468,12 +470,12 @@ class Helpers
                         )
                     )
                     ->filter(
-                        fn($card) => (false
+                        fn ($card) => (false
                             || $filters->get('name')->isEmpty()
                             || $filters
                                 ->get('name')
                                 ->contains(
-                                    fn($name) => str_contains(
+                                    fn ($name) => str_contains(
                                         $prepare($card->title),
                                         $prepare($name),
                                     )
@@ -487,5 +489,4 @@ class Helpers
             ])
             ->values();
     }
-
 }

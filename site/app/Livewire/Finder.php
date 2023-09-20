@@ -3,11 +3,10 @@
 namespace App\Livewire;
 
 use App\Card;
-use App\Folder;
 use App\Course;
 use App\Enums\FinderRowType;
+use App\Folder;
 use App\Helpers\Helpers;
-use App\Tag;
 use Illuminate\Support\Collection;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -16,11 +15,15 @@ use Livewire\Component;
 class Finder extends Component
 {
     const DEFAULT_SORT_COLUMN = 'position';
+
     const DEFAULT_SORT_DIRECTION = 'asc';
 
     public $course;
+
     public $sortColumn = self::DEFAULT_SORT_COLUMN;
+
     public $sortDirection = self::DEFAULT_SORT_DIRECTION;
+
     public $filters;
 
     public function mount()
@@ -48,17 +51,16 @@ class Finder extends Component
     #[Computed]
     public function lockedMove(): bool
     {
-        return (FALSE
+        return false
             || $this->sortColumn != self::DEFAULT_SORT_COLUMN
-            || $this->sortDirection != self::DEFAULT_SORT_DIRECTION
-        );
+            || $this->sortDirection != self::DEFAULT_SORT_DIRECTION;
     }
 
     #[Computed]
     public function sortAttributes($column): string
     {
         if ($column === $this->sortColumn) {
-            [$directionCss, $direction, $column] = match($this->sortDirection) {
+            [$directionCss, $direction, $column] = match ($this->sortDirection) {
                 'asc' => ['desc', 'desc', $column],
                 'desc' => ['remove', 'asc', 'position'],
             };
@@ -85,8 +87,9 @@ class Finder extends Component
     {
         // TODO valdier les inputs
 
-        if ($this->lockedMove())
+        if ($this->lockedMove()) {
             return;
+        }
 
         $entity = $type === FinderRowType::Folder ? Folder::find($id) : Card::Find($id);
         $entity->position = $position;

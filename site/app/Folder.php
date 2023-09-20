@@ -100,8 +100,7 @@ class Folder extends Model
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
         Collection $filters = null,
-    ): Collection
-    {
+    ): Collection {
         return Helpers::getFolderContent(
             $this->course,
             $filters,

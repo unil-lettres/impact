@@ -1,4 +1,4 @@
-<div class='finder' x-cloak>
+<div class='finder' x-cloak x-data="finderData">
     {{-- <div
         wire:loading.delay.longest
         class='modal-backdrop fade show'
@@ -17,7 +17,7 @@
             </div>
         </div>
     </div>--}}
-    <div class='d-flex'>
+    <div x-show.important="selectedItems.length === 0" class='d-flex'>
         <div
             class="rct-multi-filter-select"
             data='{{ json_encode(['record' => 'tag', 'options' => $course->tags]) }}'
@@ -44,6 +44,14 @@
             placeholder='{{ trans("courses.finder.filter.names") }}'
             wire:ignore
         ></div>
+    </div>
+    <div x-show="selectedItems.length > 0" class="mt-3 bg-light rounded-pill px-3 py-2">
+        <i class="fa-solid fa-xmark me-3"></i>
+        <span>
+            <strong x-text="selectedItems.length"></strong> élément(s) sélectionné(s) dont
+            <strong x-text="selectedItems.filter(key => key.includes('card')).length"></strong> fiche(s)
+        </span>
+        <i class="fa-solid fa-ellipsis-vertical ms-3"></i>
     </div>
     <div class="d-flex row-height">
         <div class='flex-fill px-1'>
@@ -96,7 +104,6 @@
     <ul
         class="finder-selectable-list"
         @click.outside="selectedItems = []"
-        x-data="finderData"
         x-init="initSortable($el)"
     >
         @foreach ($this->rows as $row)
@@ -121,20 +128,54 @@
                     selectedItems: [],
                     openedFolder: [],
                     toggleSelect(element, key) {
-                        this.selectedItems = _.xor(this.selectedItems, [key]);
+
+                        if (this.selectedItems.includes(key)) {
+
+                            // Unselect all children of farthest selected parent
+                            // of clicked element.
+                            let parent = element.parentNode;
+                            let farthestSelectedParent = null;
+
+                            while (parent) {
+                                if (parent?.classList?.contains('folder-selected')) {
+                                    farthestSelectedParent = parent;
+                                }
+                                parent = parent.parentNode;
+                            }
+
+                            let _element = farthestSelectedParent || element;
+                            let key = _element.getAttribute('data-key');
+                            const keysToUnselect = _.map(
+                                _element.querySelectorAll('.finder-folder, .finder-card'),
+                                children => children.getAttribute('data-key'),
+                            );
+                            _.pull(this.selectedItems, ...keysToUnselect, key);
+                        } else {
+                            // Select clicked element and all its children.
+                            const keysToSelect = _.map(
+                                element.querySelectorAll('.finder-folder, .finder-card'),
+                                children => children.getAttribute('data-key'),
+                            );
+                            this.selectedItems = _.uniq(
+                                [...this.selectedItems, ...keysToSelect, key]
+                            );
+                        }
+
                         this.closeAllDropDowns(element);
                     },
                     toggleOpen(element, key) {
                         this.openedFolder = _.xor(this.openedFolder, [key]);
 
-                        // Unselect childs if folder is closed.
-                        _.pull(
-                            this.selectedItems,
-                            ..._.map(
-                                element.closest('li').querySelectorAll('li'),
-                                childs => childs.getAttribute('data-key'),
-                            ),
-                        );
+                        // Unselect children if folder is closed and while not selected.
+                        if (!this.selectedItems.includes(key)) {
+                            _.pull(
+                                this.selectedItems,
+                                ..._.map(
+                                    element.closest('li').querySelectorAll('li'),
+                                    childs => childs.getAttribute('data-key'),
+                                ),
+                            );
+                        }
 
                         this.closeAllDropDowns(element);
                     },

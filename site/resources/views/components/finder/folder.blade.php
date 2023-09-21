@@ -9,7 +9,8 @@
 @php($rows = $folder->getContent($sortColumn, $sortDirection, $filters))
 
 <li
-    class="border-top border-secondary-subtle row-height cursor-default"
+    class="finder-folder border-top border-secondary-subtle row-height cursor-default"
+    :class="!selectedItems.includes(key) || 'folder-selected'"
     data-id="{{ $folder->id }}"
     data-type="{{ $folder->getType() }}"
     x-data="{ key: '{{ $folder->getType() }}-{{ $folder->id }}'}"

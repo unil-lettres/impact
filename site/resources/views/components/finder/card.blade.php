@@ -1,7 +1,7 @@
 @props(['card', 'selected' => false, 'lockedMove' => false, 'depth' => 0])
 
 <li
-    class="d-flex border-top border-secondary-subtle background-hover cursor-default row-height"
+    class="finder-card d-flex border-top border-secondary-subtle background-hover cursor-default row-height"
     data-id="{{ $card->id }}"
     data-type="{{ $card->getType() }}"
     x-data="{ key: '{{ $card->getType() }}-{{ $card->id }}' }"

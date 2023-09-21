@@ -33,11 +33,11 @@
     @endif
     @section('content')
         <livewire:finder :course="$course" />
-        {{-- <div id="course">
+        <div id="course">
             <div>
                 @include('shared.folders')
                 @include('shared.cards')
             </div>
-        </div> --}}
+        </div>
     @endsection
 @endcan

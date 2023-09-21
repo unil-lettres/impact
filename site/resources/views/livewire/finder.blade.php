@@ -46,7 +46,7 @@
         ></div>
     </div>
     <div class="d-flex row-height">
-        <div class='column-large px-1'>
+        <div class='flex-fill px-1'>
             <div {!! $this->sortAttributes('title') !!}>
                 <div>{{ trans('courses.finder.name') }}</div>
                 <div>
@@ -120,8 +120,9 @@
                 Alpine.data('finderData', () => ({
                     selectedItems: [],
                     openedFolder: [],
-                    toggleSelect(key) {
+                    toggleSelect(element, key) {
                         this.selectedItems = _.xor(this.selectedItems, [key]);
+                        this.closeAllDropDowns(element);
                     },
                     toggleOpen(element, key) {
                         this.openedFolder = _.xor(this.openedFolder, [key]);
@@ -134,6 +135,25 @@
                                 childs => childs.getAttribute('data-key'),
                             ),
                         );
+
+                        this.closeAllDropDowns(element);
+                    },
+                    openMenu(element) {
+                        // Close all dropdowns except the one clicked.
+                        // This is needed to be done manually because some
+                        // events are not bubbled (preventPropagation).
+                        this.closeAllDropDowns(element);
+
+                        // Unselect items to avoid confusion on the targeted
+                        // menu actions.
+                        this.selectedItems = [];
+                    },
+                    closeAllDropDowns(element) {
+                        document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((dropdown) => {
+                            if (dropdown !== element) {
+                                bootstrap.Dropdown.getInstance(dropdown)?.hide();
+                            }
+                        });
                     },
                     initSortable(list) {
                         Sortable.create(list, {

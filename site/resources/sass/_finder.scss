@@ -92,13 +92,8 @@
         width: 20px;
     }
 
-
-    .column-large {
-        flex: 0 0 452px;
-    }
-
     .column-medium {
-        flex: 0 0 295px;
+        flex: 0 0 290px;
     }
 
     .column-small {
@@ -106,7 +101,7 @@
     }
 
     .column-options {
-        flex: 0 0 30px;
+        flex: 0 0 40px;
     }
 
     .icons {
@@ -139,61 +134,13 @@
 }
 
 @include media-breakpoint-down(xxl) {
-    .finder {
-
-        .column-large {
-            flex: 0 0 412px;
-        }
-
-        .column-medium {
-            flex: 0 0 225px;
-        }
-
-        .column-small {
-            flex: 0 0 100px;
-        }
+    .finder .column-medium {
+        flex: 0 0 220px;
     }
  }
 
  @include media-breakpoint-down(xl) {
-     .finder {
-
-         .column-large {
-             flex: 0 0 398px;
-         }
-
-         .column-medium {
-             flex: 0 0 193px;
-         }
-
-         .column-small {
-             flex: 0 0 99px;
-         }
-     }
-  }
-
- @include media-breakpoint-down(lg) {
-     .finder {
-
-         .column-large {
-             flex: 0 0 572px;
-         }
-
-         .column-small {
-             flex: 0 0 70px;
-         }
-     }
-  }
-
- @include media-breakpoint-down(md) {
-     .finder {
-
-         .column-large {
-             flex: 1 1 auto !important;
-         }
-
-         .column-small {
-             flex: 0 0 80px;
-         }
+     .finder .column-medium {
+        flex: 0 0 190px;
      }
   }

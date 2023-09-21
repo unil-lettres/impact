@@ -6,14 +6,14 @@
     data-type="{{ $card->getType() }}"
     x-data="{ key: '{{ $card->getType() }}-{{ $card->id }}' }"
     :data-key="key"
-    @click.stop="toggleSelect(key)"
+    @click.stop="toggleSelect($el, key)"
+    @dblclick.stop="window.location = '{{ route('cards.show', $card->id) }}'"
     :class="!selectedItems.includes(key) || 'selected'"
     wire:key='{{ $card->getType() }}-{{ $card->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}
-    @dblclick="window.location = '{{ route('cards.show', $card->id) }}'"
 >
     <div
-        class='column-large text-truncate px-1 position-relative'
+        class='flex-fill text-truncate px-1 position-relative'
         title="{{ $card->title }}"
     >
         @for ($i = 0; $i < $depth; $i++)
@@ -49,15 +49,50 @@
     >
         {{ $card->tags_list }}
     </div>
-    <div class='column-options px-1'>
+    <div class='column-options'>
         <div class="dropdown" @click.stop>
-            <button class="btn p-1" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <button
+                class="btn border-0"
+                :class="selectedItems.length > 1 ? 'text-secondary' : ''"
+                style="width:100%"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                @click.stop="openMenu($el)"
+                @dblclick.stop
+            >
                 <i class="fa-solid fa-ellipsis-vertical"></i>
             </button>
             <ul class="dropdown-menu">
-                <li><button class="dropdown-item" type="button">Action</button></li>
-                <li><button class="dropdown-item" type="button">Another action</button></li>
-                <li><button class="dropdown-item" type="button">Something else here</button></li>
+                <li class="dropdown-item d-flex cursor-pointer align-items-center"
+                    @click="window.location = '{{ route('cards.show', $card->id) }}'"
+                >
+                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.open')}}</span>
+                    <span class="text-secondary ms-3 text-lowercase fs-7 fw-light">{{ trans('courses.finder.menu.open.help')}}</span>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.move')}}</span>
+                </li>
+                <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy')}}</span>
+                </li>
+                <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy_in')}}</span>
+                </li>
+                <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.rename')}}</span>
+                </li>
+                <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.delete')}}</span>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.print')}}</span>
+                </li>
+                <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.mail')}}</span>
+                </li>
             </ul>
         </div>
     </div>

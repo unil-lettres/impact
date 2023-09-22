@@ -77,6 +77,11 @@ export default class MultiSelect extends Component {
                 event?.removedValue,
                 (prevState) => _.reject(prevState.values, option),
             ],
+            'deselect-option': [
+                this.remove,
+                event?.option,
+                (prevState) => _.reject(prevState.values, option),
+            ],
         }[event.action] || [undefined, undefined, _.identity];
 
         this.setState({ isLoading: true });
@@ -126,8 +131,8 @@ export default class MultiSelect extends Component {
                 this.setState({ isLoading: false });
             });
     }
-
     render() {
+
         let attributes = {
             isMulti: true,
             components: animatedComponents,
@@ -140,6 +145,7 @@ export default class MultiSelect extends Component {
             onChange: this.handleChange,
             options: this.state.options,
             isDisabled: this.state.isDisabled,
+            ...(this.props.reactAttributes || []),
         };
 
         if (this.props.placeholder) {

@@ -58,13 +58,49 @@
                 </button>
             </div>
         </div>
-        <div x-show="selectedItems.length > 0" class="bg-light rounded-pill px-3 py-2" @click.stop>
+        <div x-show="selectedItems.length > 0" class="bg-light rounded-pill px-3 py-1" @click.stop>
             <a href="#" class="me-2 text-body" @click="selectedItems = []"><i class="fa-solid fa-xmark"></i></a>
             <span>
                 <strong x-text="selectedItems.length"></strong> {{ trans('courses.finder.selected') }}
                 <strong x-text="selectedItems.filter(key => key.includes('card')).length"></strong> {{ trans('courses.finder.selected_cards') }}
             </span>
-            <i class="fa-solid fa-ellipsis-vertical ms-3"></i>
+            <div class="dropdown d-inline-block" @click.stop>
+                <button
+                    class="btn border-0"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    @click.stop="openMenu($el, true)"
+                    @dblclick.stop
+                >
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+                <ul class="dropdown-menu">
+                    <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.move')}}</span>
+                    </li>
+                    <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy')}}</span>
+                    </li>
+                    <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy_in')}}</span>
+                    </li>
+                    <li wire:confirm="{{ trans('courses.finder.menu.delete.card.confirm') }}" wire:click="destroySelection()"
+                        class="dropdown-item d-flex cursor-pointer align-items-center"
+                    >
+                        <i class="fa-regular fa-trash-can me-2"></i>
+                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.delete')}}</span>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.print')}}</span>
+                    </li>
+                    <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.mail')}}</span>
+                    </li>
+                </ul>
+            </div>
+            <button class="btn" @click="selectAll" x-show="!isAllSelected()">{{ trans('courses.finder.select_all') }}</button>
         </div>
     </div>
     <div class="d-flex row-height">
@@ -193,7 +229,7 @@
 
                         this.closeAllDropDowns(element);
                     },
-                    openMenu(element) {
+                    openMenu(element, keepSelection = false) {
                         // Close all dropdowns except the one clicked.
                         // This is needed to be done manually because some
                         // events are not bubbled (preventPropagation).
@@ -201,7 +237,7 @@
 
                         // Unselect items to avoid confusion on the targeted
                         // menu actions.
-                        this.selectedItems = [];
+                        if (!keepSelection) this.selectedItems = [];
                     },
                     closeAllDropDowns(element) {
                         document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((dropdown) => {
@@ -209,6 +245,15 @@
                                 bootstrap.Dropdown.getInstance(dropdown)?.hide();
                             }
                         });
+                    },
+                    selectAll() {
+                        this.selectedItems = _.map(
+                            document.querySelectorAll('.finder-folder, .finder-card'),
+                            children => children.getAttribute('data-key'),
+                        );
+                    },
+                    isAllSelected() {
+                        return this.selectedItems.length === document.querySelectorAll('.finder-folder, .finder-card').length;
                     },
                     initSortable(list) {
                         Sortable.create(list, {

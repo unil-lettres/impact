@@ -43,6 +43,7 @@ return [
     'finder.state' => 'Etat',
     'finder.selected' => 'élément(s) sélectionné(s) dont',
     'finder.selected_cards' => 'fiche(s)',
+    'finder.select_all' => 'tout séléctionner',
     'finder.filter.tags' => 'Etiquettes',
     'finder.filter.editors' => 'Editeurs',
     'finder.filter.states' => 'Etats',

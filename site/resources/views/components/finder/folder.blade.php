@@ -81,7 +81,7 @@
                         <li wire:confirm="{{ trans('courses.finder.menu.delete.folder.confirm') }}" wire:click="destroyFolder({{$folder->id}})"
                             class="dropdown-item d-flex cursor-pointer align-items-center"
                         >
-                            <i class="fa-regular fa-trash-can me-1"></i>
+                            <i class="fa-regular fa-trash-can me-2"></i>
                             <span class="flex-fill me-5">{{ trans('courses.finder.menu.delete')}}</span>
                         </li>
                     @endcan

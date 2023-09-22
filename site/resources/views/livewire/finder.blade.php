@@ -19,7 +19,12 @@
     </div>--}}
 
     <div class="toolsbox mt-3" style="height: 50px;">
-        <div x-show.important="selectedItems.length === 0" class='d-flex gap-2' wire:ignore>
+        <div
+            x-show.important="selectedItems.length === 0"
+            class='d-flex gap-2'
+            data-filter-label="{{ trans('courses.finder.filter_label') }}"
+            wire:ignore
+        >
             <div
                 class="rct-multi-filter-select filter-select"
                 data='{{ json_encode(['record' => 'tag', 'options' => $course->tags]) }}'
@@ -49,15 +54,15 @@
                     wire:click="clearFilters"
                     @click="window.MultiFilterSelect.create()"
                 >
-                    tout effacer
+                    {{ trans('courses.finder.filter.clear') }}
                 </button>
             </div>
         </div>
         <div x-show="selectedItems.length > 0" class="bg-light rounded-pill px-3 py-2" @click.stop>
             <a href="#" class="me-2 text-body" @click="selectedItems = []"><i class="fa-solid fa-xmark"></i></a>
             <span>
-                <strong x-text="selectedItems.length"></strong> élément(s) sélectionné(s) dont
-                <strong x-text="selectedItems.filter(key => key.includes('card')).length"></strong> fiche(s)
+                <strong x-text="selectedItems.length"></strong> {{ trans('courses.finder.selected') }}
+                <strong x-text="selectedItems.filter(key => key.includes('card')).length"></strong> {{ trans('courses.finder.selected_cards') }}
             </span>
             <i class="fa-solid fa-ellipsis-vertical ms-3"></i>
         </div>

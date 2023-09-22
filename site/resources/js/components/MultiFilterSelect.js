@@ -54,11 +54,12 @@ export default class MultiFilterSelect extends MultiSelect {
 }
 
 const ValueContainer = ({ children, getValue, ...props }) => {
-    var length = getValue().length;
+    const length = getValue().length;
+    const label = document.querySelector("[data-filter-label]").getAttribute('data-filter-label');
     return (
       <components.ValueContainer {...props}>
         {children}
-        {length > 1 && (<span className='react-select-badge'>{length} item(s) selected</span>)}
+        {length > 1 && (<span className='react-select-badge'>{length} {label}</span>)}
       </components.ValueContainer>
     );
   };

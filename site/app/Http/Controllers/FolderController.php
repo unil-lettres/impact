@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Course;
 use App\Folder;
 use App\Http\Requests\CreateFolder;
-use App\Http\Requests\DestroyFolder;
 use App\Http\Requests\StoreFolder;
 use App\Http\Requests\UpdateFolder;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -171,26 +170,5 @@ class FolderController extends Controller
         return redirect()
             ->back()
             ->with('success', trans('messages.folder.updated'));
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @return RedirectResponse
-     *
-     * @throws AuthorizationException
-     */
-    public function destroy(DestroyFolder $request, int $id)
-    {
-        $folder = Folder::find($id);
-        $course = $folder->course;
-
-        $this->authorize('forceDelete', $folder);
-
-        $folder->forceDelete();
-
-        return redirect()
-            ->route('courses.show', $course->id)
-            ->with('success', trans('messages.folder.deleted'));
     }
 }

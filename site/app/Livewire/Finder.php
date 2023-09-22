@@ -131,6 +131,20 @@ class Finder extends Component
         return view('livewire.finder');
     }
 
+    public function destroyFolder(Folder $folder)
+    {
+        $this->authorize('forceDelete', $folder);
+
+        $folder->forceDelete();
+    }
+
+    public function destroyCard(Card $card)
+    {
+        $this->authorize('forceDelete', $card);
+
+        $card->forceDelete();
+    }
+
     private function initFilters()
     {
         $this->filters = collect([

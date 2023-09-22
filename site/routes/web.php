@@ -77,7 +77,9 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('cards.export');
 
     // Folders
-    Route::resource('folders', FolderController::class);
+    Route::resource('folders', FolderController::class)->except([
+        'destroy',
+    ]);
 
     // Files
     Route::resource('files', FileController::class)->only([

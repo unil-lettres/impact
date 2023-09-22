@@ -58,6 +58,8 @@ return [
     'finder.menu.copy' => 'Copy',
     'finder.menu.copy_in' => 'Copy in...',
     'finder.menu.delete' => 'Delete',
+    'finder.menu.delete.folder.confirm' => 'This action will delete the folder and all its content. Are you sure you want to continue?',
+    'finder.menu.delete.card.confirm' => 'This action will delete the card. Are you sure you want to continue?',
     'finder.menu.move' => 'Move in folder...',
     'finder.menu.rename' => 'Rename...',
     'finder.menu.mail' => 'Send mail',

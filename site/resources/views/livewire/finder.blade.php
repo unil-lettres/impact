@@ -17,41 +17,50 @@
             </div>
         </div>
     </div>--}}
-    <div x-show.important="selectedItems.length === 0" class='d-flex'>
-        <div
-            class="rct-multi-filter-select"
-            data='{{ json_encode(['record' => 'tag', 'options' => $course->tags]) }}'
-            placeholder='{{ trans("courses.finder.filter.tags") }}'
-            wire:ignore
-        ></div>
-        <div
-            class="rct-multi-filter-select"
-            data='{{ json_encode(['record' => 'editor', 'options' => $this->editors]) }}'
-            placeholder='{{ trans("courses.finder.filter.editors") }}'
-            wire:ignore
-        ></div>
-        <div
-            class="rct-multi-filter-select"
-            data='{{ json_encode(['record' => 'state', 'options' => $course->states]) }}'
-            placeholder='{{ trans("courses.finder.filter.states") }}'
-            wire:ignore
-        ></div>
-        <div
-            id="rct-multi-filter-select-name"
-            createLabel="{{ trans('courses.finder.filter.names.create') }}"
-            noOptionsMessage="{{ trans('courses.finder.filter.names.empty') }}"
-            data='{{ json_encode(['record' => 'name', 'options' => collect([])]) }}'
-            placeholder='{{ trans("courses.finder.filter.names") }}'
-            wire:ignore
-        ></div>
-    </div>
-    <div x-show="selectedItems.length > 0" class="mt-3 bg-light rounded-pill px-3 py-2">
-        <i class="fa-solid fa-xmark me-3"></i>
-        <span>
-            <strong x-text="selectedItems.length"></strong> élément(s) sélectionné(s) dont
-            <strong x-text="selectedItems.filter(key => key.includes('card')).length"></strong> fiche(s)
-        </span>
-        <i class="fa-solid fa-ellipsis-vertical ms-3"></i>
+
+    <div class="toolsbox mt-3" style="height: 50px;">
+        <div x-show.important="selectedItems.length === 0" class='d-flex gap-2' wire:ignore>
+            <div
+                class="rct-multi-filter-select filter-select"
+                data='{{ json_encode(['record' => 'tag', 'options' => $course->tags]) }}'
+                placeholder='{{ trans("courses.finder.filter.tags") }}'
+            ></div>
+            <div
+                class="rct-multi-filter-select filter-select"
+                data='{{ json_encode(['record' => 'editor', 'options' => $this->editors]) }}'
+                placeholder='{{ trans("courses.finder.filter.editors") }}'
+            ></div>
+            <div
+                class="rct-multi-filter-select filter-select"
+                data='{{ json_encode(['record' => 'state', 'options' => $course->states]) }}'
+                placeholder='{{ trans("courses.finder.filter.states") }}'
+            ></div>
+            <div
+                id="rct-multi-filter-select-name"
+                class="filter-select"
+                createLabel="{{ trans('courses.finder.filter.names.create') }}"
+                noOptionsMessage="{{ trans('courses.finder.filter.names.empty') }}"
+                data='{{ json_encode(['record' => 'name', 'options' => collect([])]) }}'
+                placeholder='{{ trans("courses.finder.filter.names") }}'
+            ></div>
+            <div>
+                <button
+                    class="btn"
+                    wire:click="clearFilters"
+                    @click="window.MultiFilterSelect.create()"
+                >
+                    tout effacer
+                </button>
+            </div>
+        </div>
+        <div x-show="selectedItems.length > 0" class="bg-light rounded-pill px-3 py-2" @click.stop>
+            <a href="#" class="me-2 text-body" @click="selectedItems = []"><i class="fa-solid fa-xmark"></i></a>
+            <span>
+                <strong x-text="selectedItems.length"></strong> élément(s) sélectionné(s) dont
+                <strong x-text="selectedItems.filter(key => key.includes('card')).length"></strong> fiche(s)
+            </span>
+            <i class="fa-solid fa-ellipsis-vertical ms-3"></i>
+        </div>
     </div>
     <div class="d-flex row-height">
         <div class='flex-fill px-1'>

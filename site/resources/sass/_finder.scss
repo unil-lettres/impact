@@ -131,6 +131,20 @@
     .rotate {
         transform: rotate(-90deg);
     }
+
+    .filter-select {
+        flex: 1 1 200px;
+        min-width: 0;
+    }
+
+    .react-select-badge {
+        background: rgb(2,0,36);
+        background: linear-gradient(90deg, rgba(2,0,36,0) 0%, rgba(255,255,255,1) 16%);
+        position: absolute;
+        right: 0;
+        padding: 2px 13px 2px 27px;
+        white-space: nowrap;
+    }
 }
 
 @include media-breakpoint-down(xxl) {

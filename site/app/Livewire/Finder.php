@@ -28,12 +28,7 @@ class Finder extends Component
 
     public function mount()
     {
-        $this->filters = collect([
-            'tag' => collect([]),
-            'editor' => collect([]),
-            'state' => collect([]),
-            'name' => collect([]),
-        ]);
+        $this->initFilters();
     }
 
     #[Computed]
@@ -120,6 +115,11 @@ class Finder extends Component
         );
     }
 
+    public function clearFilters()
+    {
+        $this->initFilters();
+    }
+
     public function sort($column, $direction)
     {
         $this->sortColumn = $column;
@@ -129,5 +129,15 @@ class Finder extends Component
     public function render()
     {
         return view('livewire.finder');
+    }
+
+    private function initFilters()
+    {
+        $this->filters = collect([
+            'tag' => collect([]),
+            'editor' => collect([]),
+            'state' => collect([]),
+            'name' => collect([]),
+        ]);
     }
 }

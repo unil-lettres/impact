@@ -57,10 +57,12 @@
                 </button>
                 <ul class="dropdown-menu">
                     <li class="dropdown-item d-flex cursor-pointer align-items-center" x-show.important="!openedFolder.includes(key)" @click="toggleOpen($el, key)">
+                        <i class="d-inline-block text-center width-large fa-regular fa-folder-open me-2"></i>
                         <span class="flex-fill me-5">{{ trans('courses.finder.menu.open')}}</span>
                         <span class="text-secondary ms-3 text-lowercase fs-7 fw-light">{{ trans('courses.finder.menu.open.help')}}</span>
                     </li>
                     <li class="dropdown-item d-flex cursor-pointer align-items-center" x-show.important="openedFolder.includes(key)" @click="toggleOpen($el, key)">
+                        <i class="d-inline-block text-center width-large fa-solid fa-folder me-2"></i>
                         <span class="flex-fill me-5">{{ trans('courses.finder.menu.close')}}</span>
                         <span class="text-secondary ms-3 text-lowercase fs-7 fw-light">{{ trans('courses.finder.menu.open.help')}}</span>
                     </li>

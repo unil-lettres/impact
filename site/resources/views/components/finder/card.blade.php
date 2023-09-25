@@ -67,6 +67,7 @@
                 <li class="dropdown-item d-flex cursor-pointer align-items-center"
                     @click="window.location = '{{ route('cards.show', $card->id) }}'"
                 >
+                    <i class="fa-solid fa-square-arrow-up-right me-2"></i>
                     <span class="flex-fill me-5">{{ trans('courses.finder.menu.open')}}</span>
                     <span class="text-secondary ms-3 text-lowercase fs-7 fw-light">{{ trans('courses.finder.menu.open.help')}}</span>
                 </li>

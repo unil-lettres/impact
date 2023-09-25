@@ -471,9 +471,9 @@ class Helpers
                     )
                     ->filter(
                         fn ($card) => (false
-                            || $filters->get('name')->isEmpty()
+                            || $filters->get('card')->isEmpty()
                             || $filters
-                                ->get('name')
+                                ->get('card')
                                 ->contains(
                                     fn ($name) => str_contains(
                                         $prepare($card->title),

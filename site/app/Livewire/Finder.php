@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Card;
 use App\Course;
+use App\Enums\CardBox;
 use App\Enums\FinderRowType;
 use App\Folder;
 use App\Helpers\Helpers;
@@ -25,6 +26,8 @@ class Finder extends Component
     public $sortDirection = self::DEFAULT_SORT_DIRECTION;
 
     public $filters;
+
+    public $filterCardDetails;
 
     public function mount()
     {
@@ -49,24 +52,6 @@ class Finder extends Component
         return false
             || $this->sortColumn != self::DEFAULT_SORT_COLUMN
             || $this->sortDirection != self::DEFAULT_SORT_DIRECTION;
-    }
-
-    #[Computed]
-    public function sortAttributes($column): string
-    {
-        if ($column === $this->sortColumn) {
-            [$directionCss, $direction, $column] = match ($this->sortDirection) {
-                'asc' => ['desc', 'desc', $column],
-                'desc' => ['remove', 'asc', 'position'],
-            };
-        } else {
-            $direction = $directionCss = 'asc';
-        }
-
-        return <<<HTML
-            class='d-flex cursor-pointer gap-2 sort-direction-$directionCss'
-            wire:click='sort("$column", "$direction")'
-        HTML;
     }
 
     #[Computed]
@@ -115,6 +100,38 @@ class Finder extends Component
         );
     }
 
+    public function sortAttributes($column): string
+    {
+        if ($column === $this->sortColumn) {
+            [$directionCss, $direction, $column] = match ($this->sortDirection) {
+                'asc' => ['desc', 'desc', $column],
+                'desc' => ['remove', 'asc', 'position'],
+            };
+        } else {
+            $direction = $directionCss = 'asc';
+        }
+
+        return <<<HTML
+            class='d-flex cursor-pointer gap-2 sort-direction-$directionCss'
+            wire:click='sort("$column", "$direction")'
+        HTML;
+    }
+
+    public function toggleFilterCardDetail(string $detail)
+    {
+        if (!in_array($detail, ['name', CardBox::Box2, CardBox::Box3, CardBox::Box4])) {
+            return;
+        }
+
+        if ($this->filterCardDetails->contains($detail)) {
+            $this->filterCardDetails = $this->filterCardDetails->filter(
+                fn (string $_detail) => $_detail !== $detail,
+            );
+        } else {
+            $this->filterCardDetails->push($detail);
+        }
+    }
+
     public function clearFilters()
     {
         $this->initFilters();
@@ -122,6 +139,7 @@ class Finder extends Component
 
     public function sort($column, $direction)
     {
+        // TODO valdier les inputs
         $this->sortColumn = $column;
         $this->sortDirection = $direction;
     }
@@ -147,11 +165,24 @@ class Finder extends Component
 
     private function initFilters()
     {
+        $this->filterCardDetails = collect(['name', 'box2', 'box3', 'box4']);
         $this->filters = collect([
             'tag' => collect([]),
             'editor' => collect([]),
             'state' => collect([]),
-            'name' => collect([]),
+            'card' => collect([]),
         ]);
+
+        // Need to update checked state with Javascript because of how checked
+        // attribute works (updating the HTML with the attribute don't show
+        // the checked state visually).
+        collect([
+            'filterCardName',
+            'filterCardCase2',
+            'filterCardCase3',
+            'filterCardCase4',
+        ])->each(function ($filter) {
+            $this->js("document.getElementById('$filter').checked = true;");
+        });
     }
 }

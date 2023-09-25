@@ -17,38 +17,94 @@
             </div>
         </div>
     </div>--}}
-
-    <div class="toolsbox mt-3" style="height: 50px;">
+    <div class="toolsbox mt-3" style="height: 63px;">
         <div
             x-show.important="selectedItems.length === 0"
             class='d-flex gap-2'
             data-filter-label="{{ trans('courses.finder.filter_label') }}"
-            wire:ignore
         >
-            <div
-                class="rct-multi-filter-select filter-select"
-                data='{{ json_encode(['record' => 'tag', 'options' => $course->tags]) }}'
-                placeholder='{{ trans("courses.finder.filter.tags") }}'
-            ></div>
-            <div
-                class="rct-multi-filter-select filter-select"
-                data='{{ json_encode(['record' => 'editor', 'options' => $this->editors]) }}'
-                placeholder='{{ trans("courses.finder.filter.editors") }}'
-            ></div>
-            <div
-                class="rct-multi-filter-select filter-select"
-                data='{{ json_encode(['record' => 'state', 'options' => $course->states]) }}'
-                placeholder='{{ trans("courses.finder.filter.states") }}'
-            ></div>
-            <div
-                id="rct-multi-filter-select-name"
-                class="filter-select"
-                createLabel="{{ trans('courses.finder.filter.names.create') }}"
-                noOptionsMessage="{{ trans('courses.finder.filter.names.empty') }}"
-                data='{{ json_encode(['record' => 'name', 'options' => collect([])]) }}'
-                placeholder='{{ trans("courses.finder.filter.names") }}'
-            ></div>
-            <div>
+            <div class="filter-select">
+                <div
+                    wire:ignore
+                    class="rct-multi-filter-select"
+                    data='{{ json_encode(['record' => 'tag', 'options' => $course->tags]) }}'
+                    placeholder='{{ trans("courses.finder.filter.tags") }}'
+                ></div>
+            </div>
+            <div class="filter-select">
+                <div
+                    wire:ignore
+                    class="rct-multi-filter-select"
+                    data='{{ json_encode(['record' => 'editor', 'options' => $this->editors]) }}'
+                    placeholder='{{ trans("courses.finder.filter.editors") }}'
+                ></div>
+            </div>
+            <div class="filter-select">
+                <div
+                    wire:ignore
+                    class="rct-multi-filter-select"
+                    data='{{ json_encode(['record' => 'state', 'options' => $course->states]) }}'
+                    placeholder='{{ trans("courses.finder.filter.states") }}'
+                ></div>
+            </div>
+            <div class="filter-select">
+                <div
+                    wire:ignore
+                    id="rct-multi-filter-select-name"
+                    createLabel="{{ trans('courses.finder.filter.names.create') }}"
+                    noOptionsMessage="{{ trans('courses.finder.filter.names.empty') }}"
+                    data='{{ json_encode(['record' => 'card', 'options' => collect([])]) }}'
+                    placeholder='{{ trans("courses.finder.filter.names") }}'
+                ></div>
+                <div class="d-flex gap-2">
+                    <div class="form-check border-end pe-2">
+                        <label class="form-check-label" for="filterCardName">
+                            Nom
+                        </label>
+                        <input
+                            wire:click="toggleFilterCardDetail('name')"
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="filterCardName">
+                    </div>
+                    <div>Case :</div>
+                    <div class="form-check">
+                        <input
+                            wire:click="toggleFilterCardDetail('{{'App\\Enums\\CardBox'::Box2}}')"
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="filterCardCase2">
+                        <label class="form-check-label" for="filterCardCase2">
+                            2
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input
+                            wire:click="toggleFilterCardDetail('{{'App\\Enums\\CardBox'::Box3}}')"
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="filterCardCase3">
+                        <label class="form-check-label" for="filterCardCase3">
+                            3
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input
+                            wire:click="toggleFilterCardDetail('{{'App\\Enums\\CardBox'::Box4}}')"
+                            class="form-check-input"
+                            type="checkbox"
+                            value=""
+                            id="filterCardCase4">
+                        <label class="form-check-label" for="filterCardCase4">
+                            4
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="text-nowrap">
                 <button
                     class="btn"
                     wire:click="clearFilters"
@@ -100,7 +156,7 @@
                     </li>
                 </ul>
             </div>
-            <button class="btn" @click="selectAll" x-show="!isAllSelected()">{{ trans('courses.finder.select_all') }}</button>
+            <button class="btn" @click="selectAll" x-show="!isAllSelected()">{{ trans('courses.finder.select_all')}}</button>
         </div>
     </div>
     <div class="d-flex row-height">

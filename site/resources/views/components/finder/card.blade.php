@@ -81,9 +81,6 @@
                 <li class="dropdown-item d-flex cursor-pointer align-items-center">
                     <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy_in')}}</span>
                 </li>
-                <li class="dropdown-item d-flex cursor-pointer align-items-center">
-                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.rename')}}</span>
-                </li>
                 @can('forceDelete', $card)
                     <li wire:confirm="{{ trans('courses.finder.menu.delete.card.confirm') }}" wire:click="destroyCard({{$card->id}})"
                         class="dropdown-item d-flex cursor-pointer align-items-center"

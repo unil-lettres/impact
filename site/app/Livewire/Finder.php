@@ -144,6 +144,13 @@ class Finder extends Component
         $this->sortDirection = $direction;
     }
 
+    public function copyCard(Card $card)
+    {
+        // TODO authorizations
+
+        $card->copy();
+    }
+
     public function render()
     {
         return view('livewire.finder');

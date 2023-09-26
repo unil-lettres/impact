@@ -2,11 +2,15 @@
 
 namespace App;
 
+use App\Enums\StoragePath;
 use App\Scopes\HideAttachmentsScope;
+use App\Services\FileUploadService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
+use Ramsey\Uuid\Uuid;
 
 class File extends Model
 {
@@ -73,5 +77,30 @@ class File extends Model
     public function isAttachment(): bool
     {
         return ! is_null($this->card_id);
+    }
+
+    /**
+     * Copy a file and return it.
+     */
+    public function copy(): File
+    {
+        // Clean filename to keep only the name of the file
+        $cleanedFilename = pathinfo($this->filename, PATHINFO_BASENAME);
+        $copiedFilename = Uuid::uuid4().$cleanedFilename;
+
+        $success = Storage::disk('public')->copy(
+            StoragePath::UploadStandard.'/'.$cleanedFilename,
+            StoragePath::UploadStandard.'/'.$copiedFilename,
+        );
+
+        if (!$success) {
+            return null;
+        }
+
+        $file = $this->replicate()->fill([ 'filename' => $copiedFilename ]);
+
+        $file->save();
+
+        return $file;
     }
 }

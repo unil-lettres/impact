@@ -59,7 +59,7 @@
                 <div class="d-flex gap-2">
                     <div class="form-check border-end pe-2">
                         <label class="form-check-label" for="filterCardName">
-                            Nom
+                            {{ trans('courses.finder.name') }}
                         </label>
                         <input
                             wire:click="toggleFilterCardDetail('name')"
@@ -68,7 +68,7 @@
                             value=""
                             id="filterCardName">
                     </div>
-                    <div>Case :</div>
+                    <div>{{ trans('courses.finder.filter.box') }} :</div>
                     <div class="form-check">
                         <input
                             wire:click="toggleFilterCardDetail('{{'App\\Enums\\CardBox'::Box2}}')"

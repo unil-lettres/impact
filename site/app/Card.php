@@ -5,6 +5,7 @@ namespace App;
 use App\Enums\FinderRowType;
 use App\Enums\StatePermission;
 use App\Scopes\HideAttachmentsScope;
+use App\Services\FileUploadService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Card extends Model
 {
@@ -130,18 +132,22 @@ class Card extends Model
     }
 
     /**
-     * Get the editors of this card.
-     *
-     * @return Collection
+     * Return a collection of enrollements that have this card.
      */
-    public function editors()
+    public function enrollments(): Collection
     {
-        $enrollments = $this->course->enrollments()->get()
+        return $this->course->enrollments()->get()
             ->filter(function ($enrollment) {
                 return $enrollment->cards ? in_array($this->id, $enrollment->cards) : false;
             });
+    }
 
-        return $enrollments->map(function ($enrollment) {
+    /**
+     * Get the editors of this card.
+     */
+    public function editors(): Collection
+    {
+        return $this->enrollments()->map(function ($enrollment) {
             return $enrollment->user;
         })->sortBy('name');
     }
@@ -258,8 +264,67 @@ class Card extends Model
         };
     }
 
+    public function forceDelete()
+    {
+        // Delete attachments (only attachments and not regular file).
+        $this->attachments()->each(function ($attachment) {
+            $attachment->forceDelete();
+        });
+
+        // Remove this card from all enrollments as editors.
+        $this->enrollments()->each(function ($enrollment) {
+            $enrollment->removeCard($this);
+        });
+
+        // Delete the card.
+        parent::forceDelete();
+    }
+
     public function getType(): string
     {
         return FinderRowType::Card;
+    }
+
+    /**
+     * Duplicate this card.
+     *
+     * All attachments will be duplicated as well (but not regular file).
+     */
+    public function copy()
+    {
+        DB::beginTransaction();
+        $copiedCard = $this->replicate(['position']);
+        $copiedCard->save();
+
+        // Attach tags.
+        $copiedCard->tags()->attach($this->tags->pluck('id'));
+
+        // Attach editors.
+        $this->enrollments()->each(fn ($enrollment) => $enrollment->addCard($copiedCard));
+
+        // Copy attachments.
+        $files = collect([]);
+        $failed = false;
+        $this->attachments()->each(
+            function ($attachment) use ($copiedCard, $files, $failed) {
+                if ($failed) return;
+
+                $copiedFile = $attachment->copy();
+                if ($copiedFile) {
+                    $files->push($copiedFile);
+                    $copiedFile->card_id = $copiedCard->id;
+                    $copiedFile->save();
+                } else {
+                    $failed = true;
+                }
+            }
+        );
+
+        if ($failed) {
+            $files->each(fn ($file) => $file->forceDelete());
+            DB::rollBack();
+        } else {
+            DB::commit();
+        }
     }
 }

@@ -20,7 +20,6 @@ class CardObserver
     {
         $cardUpdate = [];
 
-        // Get the next position based on other cards and folders of this course.
         if (is_null($card->position)) {
             $cardUpdate['position'] = Helpers::getNextPositionForCourse(
                 $card->course,
@@ -47,6 +46,15 @@ class CardObserver
      */
     public function updated(Card $card): void
     {
+        if ($card->wasChanged('folder_id')) {
+            $card->updateQuietly([
+                'position' => Helpers::getNextPositionForCourse(
+                    $card->course,
+                    $card->folder
+                ),
+            ]);
+        }
+
         // Check if the state of the card has changed and if was already set
         if ($card->wasChanged('state_id') && $card->getOriginal('state_id')) {
             // Loop through the actions of the new state

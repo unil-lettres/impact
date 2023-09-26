@@ -24,4 +24,19 @@ class FolderObserver
             ]);
         }
     }
+
+    /**
+     * Handle the Folder "updated" event.
+     */
+    public function updated(Folder $folder): void
+    {
+        if ($folder->wasChanged('parent_id')) {
+            $folder->updateQuietly([
+                'position' => Helpers::getNextPositionForCourse(
+                    $folder->course,
+                    $folder->folder
+                ),
+            ]);
+        }
+    }
 }

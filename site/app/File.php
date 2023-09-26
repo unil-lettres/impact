@@ -79,9 +79,9 @@ class File extends Model
     }
 
     /**
-     * Copy a file and return it.
+     * Clone a file and return it.
      */
-    public function copy(): File
+    public function clone(): File
     {
         // Clean filename to keep only the name of the file
         $cleanedFilename = pathinfo($this->filename, PATHINFO_BASENAME);

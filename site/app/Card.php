@@ -285,14 +285,14 @@ class Card extends Model
     }
 
     /**
-     * Duplicate this card.
+     * Clone this card.
      *
-     * All attachments will be duplicated as well (but not regular file).
+     * All attachments will be cloned as well (but not regular file).
      *
      * @param  Folder|null  $destFolder The new parent folder. Null if the card
-     * should be duplicated in the same parent folder.
+     * should be cloned in the same parent folder.
      */
-    public function copy(Folder $destFolder = null)
+    public function clone(Folder $destFolder = null)
     {
         DB::beginTransaction();
         $copiedCard = $this->replicate(['position'])->fill(
@@ -306,7 +306,7 @@ class Card extends Model
         // Attach editors.
         $this->enrollments()->each(fn ($enrollment) => $enrollment->addCard($copiedCard));
 
-        // Copy attachments.
+        // Clone attachments.
         $files = collect([]);
         $failed = false;
         $this->attachments()->each(
@@ -315,7 +315,7 @@ class Card extends Model
                     return;
                 }
 
-                $copiedFile = $attachment->copy();
+                $copiedFile = $attachment->clone();
                 if ($copiedFile) {
                     $files->push($copiedFile);
                     $copiedFile->card_id = $copiedCard->id;

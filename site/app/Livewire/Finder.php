@@ -144,17 +144,17 @@ class Finder extends Component
         $this->sortDirection = $direction;
     }
 
-    public function copyCard(Card $card)
+    public function cloneCard(Card $card)
     {
         // TODO authorizations (and @can in the view)
 
-        $card->copy();
+        $card->clone();
     }
 
-    public function copyFolder(Folder $folder)
+    public function cloneFolder(Folder $folder)
     {
         // TODO authorizations (and @can in the view)
-        $folder->copy();
+        $folder->clone();
     }
 
     public function render()

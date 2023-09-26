@@ -112,12 +112,12 @@ class Folder extends Model
     }
 
     /**
-     * Duplicate this folder and all contained cards.
+     * Clone this folder and all contained cards.
      *
      * @param  Folder|null  $destFolder The new parent folder. Null if the folder
-     * should be duplicated in the same parent folder.
+     * should be cloned in the same parent folder.
      */
-    public function copy($destFolder = null)
+    public function clone($destFolder = null)
     {
         DB::transaction(function () use ($destFolder) {
             if ($destFolder) {
@@ -135,9 +135,9 @@ class Folder extends Model
             $copiedFolder = $this->replicate(['position'])->fill($values);
             $copiedFolder->save();
 
-            // Copy children.
-            $this->children->each(fn ($child) => $child->copy($copiedFolder));
-            $this->cards->each(fn ($card) => $card->copy($copiedFolder));
+            // Clone children.
+            $this->children->each(fn ($child) => $child->clone($copiedFolder));
+            $this->cards->each(fn ($card) => $card->clone($copiedFolder));
         });
     }
 }

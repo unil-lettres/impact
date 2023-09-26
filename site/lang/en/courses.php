@@ -52,6 +52,7 @@ return [
     'finder.filter.names.empty' => 'Type a term to search...',
     'finder.filter.clear' => 'clear all',
     'finder.filter_label' => 'item(s)',
+    'finder.filter.box' => 'Box',
     'finder.menu.open' => 'Open',
     'finder.menu.open.help' => 'double click',
     'finder.menu.close' => 'Close',

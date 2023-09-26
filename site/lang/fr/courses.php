@@ -52,6 +52,7 @@ return [
     'finder.filter.names.empty' => 'Rechercher un nom...',
     'finder.filter.clear' => 'tout effacer',
     'finder.filter_label' => 'élément(s)',
+    'finder.filter.box' => 'Case',
     'finder.menu.open' => 'Ouvrir',
     'finder.menu.open.help' => 'double-clic',
     'finder.menu.close' => 'Fermer',

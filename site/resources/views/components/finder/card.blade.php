@@ -79,6 +79,7 @@
                     class="dropdown-item d-flex cursor-pointer align-items-center"
                     wire:click="copyCard({{$card->id}})"
                 >
+                    <i class="fa-regular fa-copy me-2"></i>
                     <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy')}}</span>
                 </li>
                 <li class="dropdown-item d-flex cursor-pointer align-items-center">

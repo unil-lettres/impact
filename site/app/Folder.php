@@ -7,6 +7,7 @@ use App\Helpers\Helpers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class Folder extends Model
 {
@@ -108,5 +109,35 @@ class Folder extends Model
             $sortColumn,
             $sortDirection,
         );
+    }
+
+    /**
+     * Duplicate this folder and all contained cards.
+     *
+     * @param  Folder|null  $destFolder The new parent folder. Null if the folder
+     * should be duplicated in the same parent folder.
+     */
+    public function copy($destFolder = null)
+    {
+        DB::transaction(function () use ($destFolder) {
+            if ($destFolder) {
+                $values = [
+                    'title' => $this->title,
+                    'parent_id' => $destFolder->id,
+                ];
+            } else {
+                $copyLabel = trans('courses.finder.copy');
+                $values = [
+                    'title' => "{$this->title} ($copyLabel)",
+                    'parent_id' => $this->parent_id,
+                ];
+            }
+            $copiedFolder = $this->replicate(['position'])->fill($values);
+            $copiedFolder->save();
+
+            // Copy children.
+            $this->children->each(fn ($child) => $child->copy($copiedFolder));
+            $this->cards->each(fn ($card) => $card->copy($copiedFolder));
+        });
     }
 }

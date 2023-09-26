@@ -4,7 +4,6 @@ namespace App;
 
 use App\Enums\StoragePath;
 use App\Scopes\HideAttachmentsScope;
-use App\Services\FileUploadService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -93,11 +92,11 @@ class File extends Model
             StoragePath::UploadStandard.'/'.$copiedFilename,
         );
 
-        if (!$success) {
+        if (! $success) {
             return null;
         }
 
-        $file = $this->replicate()->fill([ 'filename' => $copiedFilename ]);
+        $file = $this->replicate()->fill(['filename' => $copiedFilename]);
 
         $file->save();
 

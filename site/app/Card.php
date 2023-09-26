@@ -5,7 +5,6 @@ namespace App;
 use App\Enums\FinderRowType;
 use App\Enums\StatePermission;
 use App\Scopes\HideAttachmentsScope;
-use App\Services\FileUploadService;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -289,11 +288,16 @@ class Card extends Model
      * Duplicate this card.
      *
      * All attachments will be duplicated as well (but not regular file).
+     *
+     * @param  Folder|null  $destFolder The new parent folder. Null if the card
+     * should be duplicated in the same parent folder.
      */
-    public function copy()
+    public function copy(Folder $destFolder = null)
     {
         DB::beginTransaction();
-        $copiedCard = $this->replicate(['position']);
+        $copiedCard = $this->replicate(['position'])->fill(
+            ['folder_id' => $destFolder ? $destFolder->id : $this->folder_id]
+        );
         $copiedCard->save();
 
         // Attach tags.
@@ -307,7 +311,9 @@ class Card extends Model
         $failed = false;
         $this->attachments()->each(
             function ($attachment) use ($copiedCard, $files, $failed) {
-                if ($failed) return;
+                if ($failed) {
+                    return;
+                }
 
                 $copiedFile = $attachment->copy();
                 if ($copiedFile) {

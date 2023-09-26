@@ -44,6 +44,7 @@ return [
     'finder.selected' => 'selected item(s) including',
     'finder.selected_cards' => 'card(s)',
     'finder.select_all' => 'select all',
+    'finder.copy' => 'copy',
     'finder.filter.tags' => 'Tags',
     'finder.filter.editors' => 'Editors',
     'finder.filter.states' => 'States',

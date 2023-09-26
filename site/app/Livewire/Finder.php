@@ -119,7 +119,7 @@ class Finder extends Component
 
     public function toggleFilterCardDetail(string $detail)
     {
-        if (!in_array($detail, ['name', CardBox::Box2, CardBox::Box3, CardBox::Box4])) {
+        if (! in_array($detail, ['name', CardBox::Box2, CardBox::Box3, CardBox::Box4])) {
             return;
         }
 
@@ -146,9 +146,15 @@ class Finder extends Component
 
     public function copyCard(Card $card)
     {
-        // TODO authorizations
+        // TODO authorizations (and @can in the view)
 
         $card->copy();
+    }
+
+    public function copyFolder(Folder $folder)
+    {
+        // TODO authorizations (and @can in the view)
+        $folder->copy();
     }
 
     public function render()

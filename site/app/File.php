@@ -80,7 +80,7 @@ class File extends Model
     /**
      * Clone a file and return it.
      *
-     * @param string $prefix Prefix to add to the filename
+     * @param  string  $prefix Prefix to add to the filename
      */
     public function clone($prefix = ''): File
     {

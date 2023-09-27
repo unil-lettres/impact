@@ -291,7 +291,6 @@ class Card extends Model
      *
      * @param  Folder|null  $destFolder The new parent folder. Null if the card
      * should be cloned in the same parent folder.
-     *
      * @param  Course|null  $course The new course. Null if the card should be
      * cloned in the same course.
      */
@@ -310,7 +309,7 @@ class Card extends Model
                 'course_id' => $destCourse->id,
                 'folder_id' => null,
             ];
-        } else if ($destFolder) {
+        } elseif ($destFolder) {
             $values = [
                 'course_id' => $destFolder->course_id,
                 'folder_id' => $destFolder->id,

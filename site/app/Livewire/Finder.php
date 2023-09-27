@@ -9,7 +9,6 @@ use App\Enums\FinderRowType;
 use App\Folder;
 use App\Helpers\Helpers;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -168,6 +167,7 @@ class Finder extends Component
 
         if ($validator->fails()) {
             $this->flashMessage($validator->errors()->first(), 'text-bg-danger');
+
             return;
         }
 
@@ -206,6 +206,7 @@ class Finder extends Component
         $keys = collect($keys)
             ->map(function ($key) {
                 [$type, $key] = explode('-', $key);
+
                 return $type === FinderRowType::Card ? Card::find($key) : Folder::find($key);
             })
             ->each(function ($entity) use ($dest) {
@@ -243,7 +244,7 @@ class Finder extends Component
     {
         session()->flash('message', $message);
         session()->flash('bsClass', $bsClass);
-        $this->js(<<<JS
+        $this->js(<<<'JS'
            setTimeout(function(){
                 document.getElementById('toast-flash').classList.remove('show');
             }, 5000);

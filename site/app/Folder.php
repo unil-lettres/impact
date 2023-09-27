@@ -116,7 +116,6 @@ class Folder extends Model
      *
      * @param  Folder|null  $destFolder The new parent folder. Null if the folder
      * should be cloned in the same parent folder.
-     *
      * @param  Course|null  $destCourse The new course. Null if the folder
      * should be cloned in the same course.
      */
@@ -133,7 +132,7 @@ class Folder extends Model
                 'parent_id' => $destFolder->id,
                 'course_id' => $destFolder->course_id,
             ];
-        } else if ($destCourse) {
+        } elseif ($destCourse) {
             $values = [
                 'parent_id' => null,
                 'course_id' => $destCourse->id,

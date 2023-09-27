@@ -1,4 +1,4 @@
-@props(['card', 'modalId', 'selected' => false, 'lockedMove' => false, 'depth' => 0])
+@props(['card', 'modalCloneId', 'modalMoveId', 'selected' => false, 'lockedMove' => false, 'depth' => 0])
 
 <li
     class="finder-card d-flex border-top border-secondary-subtle background-hover cursor-default row-height"
@@ -72,7 +72,13 @@
                     <span class="text-secondary ms-3 text-lowercase fs-7 fw-light">{{ trans('courses.finder.menu.open.help')}}</span>
                 </li>
                 <li><hr class="dropdown-divider"></li>
-                <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                <li
+                    class="dropdown-item d-flex cursor-pointer align-items-center"
+                    data-bs-toggle="modal"
+                    data-bs-target="#{{$modalMoveId}}"
+                    :data-bs-keys="key"
+                >
+                    <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
                     <span class="flex-fill me-5">{{ trans('courses.finder.menu.move')}}</span>
                 </li>
                 <li
@@ -85,9 +91,10 @@
                 <li
                     class="dropdown-item d-flex cursor-pointer align-items-center"
                     data-bs-toggle="modal"
-                    data-bs-target="#{{$modalId}}"
+                    data-bs-target="#{{$modalCloneId}}"
                     :data-bs-keys="key"
                 >
+                    <i class="fa-solid fa-file-import me-2"></i>
                     <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy_in')}}</span>
                 </li>
                 @can('forceDelete', $card)

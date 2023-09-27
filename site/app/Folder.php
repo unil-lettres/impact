@@ -152,4 +152,21 @@ class Folder extends Model
             $this->cards->each(fn ($card) => $card->clone($copiedFolder));
         });
     }
+
+    /**
+     * Move this folder to another folder.
+     *
+     * @param  Folder|null  $folder The new parent folder. Null if the folder
+     * should be moved to the root folder.
+     */
+    public function move(Folder $folder = null)
+    {
+        if ($folder && $folder->course_id !== $this->course_id) {
+            // TODO throw error
+            return;
+        }
+
+        $this->parent_id = $folder ? $folder->id : null;
+        $this->save();
+    }
 }

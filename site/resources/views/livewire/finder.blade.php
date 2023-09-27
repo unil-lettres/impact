@@ -21,6 +21,7 @@
         </div>
     </div>
     <x-finder.modal-clone-in id="modalCloneIn" />
+    <x-finder.modal-move-in id="modalMoveIn" />
     <div class="toolsbox mt-3" style="height: 63px;">
         <div
             x-show.important="selectedItems.length === 0"
@@ -224,13 +225,15 @@
                     :sortDirection="$this->sortDirection"
                     :lockedMove="$this->lockedMove"
                     :filters="$this->filters"
-                    modalId="modalCloneIn"
+                    modalCloneId="modalCloneIn"
+                    modalMoveId="modalMoveIn"
                 />
             @else
                 <x-finder.card
                     :card="$row"
                     :lockedMove="$this->lockedMove"
-                    modalId="modalCloneIn"
+                    modalCloneId="modalCloneIn"
+                    modalMoveId="modalMoveIn"
                 />
             @endif
         @endforeach

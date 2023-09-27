@@ -1,7 +1,8 @@
 @props([
     'folder',
     'filters',
-    'modalId',
+    'modalCloneId',
+    'modalMoveId',
     'sortColumn' => 'position',
     'sortDirection' => 'asc',
     'depth' => 0,
@@ -68,7 +69,13 @@
                         <span class="text-secondary ms-3 text-lowercase fs-7 fw-light">{{ trans('courses.finder.menu.open.help')}}</span>
                     </li>
                     <li><hr class="dropdown-divider"></li>
-                    <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                    <li
+                        class="dropdown-item d-flex cursor-pointer align-items-center"
+                        data-bs-toggle="modal"
+                        data-bs-target="#{{$modalMoveId}}"
+                        :data-bs-keys="key"
+                    >
+                        <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
                         <span class="flex-fill me-5">{{ trans('courses.finder.menu.move')}}</span>
                     </li>
                     <li
@@ -81,9 +88,10 @@
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         data-bs-toggle="modal"
-                        data-bs-target="#{{$modalId}}"
+                        data-bs-target="#{{$modalCloneId}}"
                         :data-bs-keys="key"
                     >
+                        <i class="fa-solid fa-file-import me-2"></i>
                         <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy_in')}}</span>
                     </li>
                     <li class="dropdown-item d-flex cursor-pointer align-items-center" @click="renameFolder($wire, {{$folder->id}})">
@@ -124,14 +132,16 @@
                     :depth="$depth + 1"
                     :lockedMove="$lockedMove"
                     :filters="$filters"
-                    modalId="{{$modalId}}"
+                    modalCloneId="{{$modalCloneId}}"
+                    modalMoveId="{{$modalMoveId}}"
                 />
             @else
                 <x-finder.card
                     :card="$row"
                     :depth="$depth + 1"
                     :lockedMove="$lockedMove"
-                    modalId="{{$modalId}}"
+                    modalCloneId="{{$modalCloneId}}"
+                    modalMoveId="{{$modalMoveId}}"
                 />
             @endif
         @endforeach

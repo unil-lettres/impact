@@ -65,6 +65,7 @@ return [
     'finder.menu.delete.folder.confirm' => 'This action will delete the folder and all its content. Are you sure you want to continue?',
     'finder.menu.delete.card.confirm' => 'This action will delete the card. Are you sure you want to continue?',
     'finder.menu.move' => 'Move in folder...',
+    'finder.menu.move_in.success' => 'Items have been successfully moved.',
     'finder.menu.rename' => 'Rename...',
     'finder.menu.rename_prompt' => 'Please type the new name of the folder',
     'finder.menu.mail' => 'Send mail',

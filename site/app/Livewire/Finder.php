@@ -9,6 +9,7 @@ use App\Enums\FinderRowType;
 use App\Folder;
 use App\Helpers\Helpers;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -200,20 +201,35 @@ class Finder extends Component
     {
         // TODO authorizations (and @can in the view)
         // TODO valdier les inputs
+        $this->keysToEntities($keys)->each(
+            fn ($entity) => $entity->clone(null, $dest),
+        );
 
+        $this->flashMessage(trans('courses.finder.menu.move_in.success'));
+    }
+
+    public function moveIn(string $keys, int $dest = null)
+    {
+        // TODO authorizations (and @can in the view)
+        // TODO valdier les inputs
+        $this->keysToEntities($keys)->each(
+            fn ($entity) => $entity->move($dest ? Folder::find($dest) : null),
+        );
+
+        $this->flashMessage(trans('courses.finder.menu.move_in.success'));
+    }
+
+    private function keysToEntities(string $keys): Collection
+    {
+        // TODO voir si possible de directement envoyé un array depuis le front.
         $keys = explode(',', $keys);
 
-        $keys = collect($keys)
+        return collect($keys)
             ->map(function ($key) {
                 [$type, $key] = explode('-', $key);
-
                 return $type === FinderRowType::Card ? Card::find($key) : Folder::find($key);
-            })
-            ->each(function ($entity) use ($dest) {
-                $entity->clone(null, $dest);
             });
 
-        $this->flashMessage(trans('courses.finder.menu.copy_in.success'));
     }
 
     private function initFilters()

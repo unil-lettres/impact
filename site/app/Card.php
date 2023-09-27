@@ -351,4 +351,20 @@ class Card extends Model
             DB::commit();
         }
     }
+
+    /**
+     * Move this card to another folder.
+     *
+     * @param  Folder|null  $folder The new parent folder. Null if the card
+     * should be moved to the root folder.
+     */
+    public function move(Folder $folder = null)
+    {
+        if ($folder && $folder->course_id !== $this->course_id) {
+            // TODO throw error
+            return;
+        }
+        $this->folder_id = $folder ? $folder->id : null;
+        $this->save();
+    }
 }

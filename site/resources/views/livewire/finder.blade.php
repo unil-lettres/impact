@@ -21,24 +21,6 @@
         </div>
     </div>
     <x-finder.modal-clone-in id="modalCloneIn" />
-    {{-- <div
-        wire:loading.delay.longest
-        class='modal-backdrop fade show'
-    >
-        <div
-            class='d-flex justify-content-center align-items-center'
-            style="height: 100%"
-        >
-            <div>
-                <div
-                    class='spinner-grow text-niagara'
-                    role='status'
-                >
-                    <span class='visually-hidden'>Loading...</span>
-                </div>
-            </div>
-        </div>
-    </div>--}}
     <div class="toolsbox mt-3" style="height: 63px;">
         <div
             x-show.important="selectedItems.length === 0"

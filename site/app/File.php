@@ -9,7 +9,6 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Storage;
-use Ramsey\Uuid\Uuid;
 
 class File extends Model
 {
@@ -80,12 +79,14 @@ class File extends Model
 
     /**
      * Clone a file and return it.
+     *
+     * @param string $prefix Prefix to add to the filename
      */
-    public function clone(): File
+    public function clone($prefix = ''): File
     {
         // Clean filename to keep only the name of the file
         $cleanedFilename = pathinfo($this->filename, PATHINFO_BASENAME);
-        $copiedFilename = Uuid::uuid4().$cleanedFilename;
+        $copiedFilename = substr($prefix.$cleanedFilename, 0, 99);
 
         $success = Storage::disk('public')->copy(
             StoragePath::UploadStandard.'/'.$cleanedFilename,

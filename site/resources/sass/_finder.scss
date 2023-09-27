@@ -108,6 +108,11 @@
         width: 40px;
     }
 
+    .dropdown-item > i {
+        width: 25px;
+        text-align: center;
+    }
+
     .background-hover:hover {
         background-color: var(--bs-gray-200);
     }

@@ -1,4 +1,26 @@
 <div class='finder' x-cloak x-data="finderData">
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div
+            class="toast align-items-center text-bg-danger border-0 {{session('error') ? 'show' : 'hide'}}"
+            role="alert"
+            id="toast-error"
+            aria-live="assertive"
+            aria-atomic="true"
+        >
+            <div class="d-flex">
+                <div class="toast-body">
+                {{ session('error') }}
+                </div>
+                <button
+                    type="button"
+                    class="btn-close btn-close-white me-2 m-auto"
+                    @click="$el.closest('.toast').classList.remove('show')"
+                    aria-label="Close"
+                ></button>
+            </div>
+        </div>
+    </div>
+    <x-finder.modal-clone-in id="modalCloneIn" />
     {{-- <div
         wire:loading.delay.longest
         class='modal-backdrop fade show'
@@ -220,129 +242,139 @@
                     :sortDirection="$this->sortDirection"
                     :lockedMove="$this->lockedMove"
                     :filters="$this->filters"
+                    modalId="modalCloneIn"
                 />
             @else
-                <x-finder.card :card="$row" :lockedMove="$this->lockedMove" />
+                <x-finder.card
+                    :card="$row"
+                    :lockedMove="$this->lockedMove"
+                    modalId="modalCloneIn"
+                />
             @endif
         @endforeach
     </ul>
     <div class="border-top border-secondary-subtle"></div>
-    @section('scripts-footer')
-        <script data-navigate-once>
-            document.addEventListener('livewire:init', () => {
-                Alpine.data('finderData', () => ({
-                    selectedItems: [],
-                    openedFolder: [],
-                    toggleSelect(element, key) {
+    <script data-navigate-once>
+        document.addEventListener('livewire:init', () => {
 
-                        if (this.selectedItems.includes(key)) {
+            Alpine.data('finderData', () => ({
+                selectedItems: [],
+                openedFolder: [],
+                toggleSelect(element, key) {
 
-                            // Unselect all children of farthest selected parent
-                            // of clicked element.
-                            let parent = element.parentNode;
-                            let farthestSelectedParent = null;
+                    if (this.selectedItems.includes(key)) {
 
-                            while (parent) {
-                                if (parent?.classList?.contains('folder-selected')) {
-                                    farthestSelectedParent = parent;
-                                }
-                                parent = parent.parentNode;
+                        // Unselect all children of farthest selected parent
+                        // of clicked element.
+                        let parent = element.parentNode;
+                        let farthestSelectedParent = null;
+
+                        while (parent) {
+                            if (parent?.classList?.contains('folder-selected')) {
+                                farthestSelectedParent = parent;
                             }
-
-                            let _element = farthestSelectedParent || element;
-                            let key = _element.getAttribute('data-key');
-                            const keysToUnselect = _.map(
-                                _element.querySelectorAll('.finder-folder, .finder-card'),
-                                children => children.getAttribute('data-key'),
-                            );
-                            _.pull(this.selectedItems, ...keysToUnselect, key);
-                        } else {
-                            // Select clicked element and all its children.
-                            const keysToSelect = _.map(
-                                element.querySelectorAll('.finder-folder, .finder-card'),
-                                children => children.getAttribute('data-key'),
-                            );
-                            this.selectedItems = _.uniq(
-                                [...this.selectedItems, ...keysToSelect, key]
-                            );
+                            parent = parent.parentNode;
                         }
 
-                        this.closeAllDropDowns(element);
-                    },
-                    toggleOpen(element, key) {
-                        this.openedFolder = _.xor(this.openedFolder, [key]);
-
-                        // Unselect children if folder is closed and while not selected.
-                        if (!this.selectedItems.includes(key)) {
-                            _.pull(
-                                this.selectedItems,
-                                ..._.map(
-                                    element.closest('li').querySelectorAll('li'),
-                                    childs => childs.getAttribute('data-key'),
-                                ),
-                            );
-                        }
-
-                        this.closeAllDropDowns(element);
-                    },
-                    openMenu(element, keepSelection = false) {
-                        // Close all dropdowns except the one clicked.
-                        // This is needed to be done manually because some
-                        // events are not bubbled (preventPropagation).
-                        this.closeAllDropDowns(element);
-
-                        // Unselect items to avoid confusion on the targeted
-                        // menu actions.
-                        if (!keepSelection) this.selectedItems = [];
-                    },
-                    closeAllDropDowns(element) {
-                        document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((dropdown) => {
-                            if (dropdown !== element) {
-                                bootstrap.Dropdown.getInstance(dropdown)?.hide();
-                            }
-                        });
-                    },
-                    selectAll() {
-                        this.selectedItems = _.map(
-                            document.querySelectorAll('.finder-folder, .finder-card'),
+                        let _element = farthestSelectedParent || element;
+                        let key = _element.getAttribute('data-key');
+                        const keysToUnselect = _.map(
+                            _element.querySelectorAll('.finder-folder, .finder-card'),
                             children => children.getAttribute('data-key'),
                         );
-                    },
-                    isAllSelected() {
-                        return this.selectedItems.length === document.querySelectorAll('.finder-folder, .finder-card').length;
-                    },
-                    initSortable(list) {
-                        Sortable.create(list, {
-                            onStart: () => {
-                                // Hide selected elements while dragging.
-                                list.closest('.finder').classList.add('hide-select');
-                            },
-                            onEnd: () => {
-                                // Display again selected elements when dragging end.
-                                list.closest('.finder').classList.remove('hide-select');
-                            },
-                            onMove: (evt) => {
-                                // Disable sorting when item has locked-move attribute.
-                                return !evt.dragged.hasAttribute('locked-move');
-                            },
-                            onUpdate: (evt) => {
-                                _.each(evt.item.parentNode.children, (row, index) => {
-                                    row.dispatchEvent(new CustomEvent('sort-updated', {
-                                        bubbles: true,
-                                        cancelable: false,
-                                        detail: {
-                                            id: row.getAttribute('data-id'),
-                                            type: row.getAttribute('data-type'),
-                                            position: index,
-                                        },
-                                    }));
-                                });
-                            },
-                            animation: 150,
-                        });
+                        _.pull(this.selectedItems, ...keysToUnselect, key);
+                    } else {
+                        // Select clicked element and all its children.
+                        const keysToSelect = _.map(
+                            element.querySelectorAll('.finder-folder, .finder-card'),
+                            children => children.getAttribute('data-key'),
+                        );
+                        this.selectedItems = _.uniq(
+                            [...this.selectedItems, ...keysToSelect, key]
+                        );
                     }
-                }));
-            });
-        </script>
-    @endsection
+
+                    this.closeAllDropDowns(element);
+                },
+                toggleOpen(element, key) {
+                    this.openedFolder = _.xor(this.openedFolder, [key]);
+
+                    // Unselect children if folder is closed and while not selected.
+                    if (!this.selectedItems.includes(key)) {
+                        _.pull(
+                            this.selectedItems,
+                            ..._.map(
+                                element.closest('li').querySelectorAll('li'),
+                                childs => childs.getAttribute('data-key'),
+                            ),
+                        );
+                    }
+
+                    this.closeAllDropDowns(element);
+                },
+                openMenu(element, keepSelection = false) {
+                    // Close all dropdowns except the one clicked.
+                    // This is needed to be done manually because some
+                    // events are not bubbled (preventPropagation).
+                    this.closeAllDropDowns(element);
+
+                    // Unselect items to avoid confusion on the targeted
+                    // menu actions.
+                    if (!keepSelection) this.selectedItems = [];
+                },
+                closeAllDropDowns(element) {
+                    document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((dropdown) => {
+                        if (dropdown !== element) {
+                            bootstrap.Dropdown.getInstance(dropdown)?.hide();
+                        }
+                    });
+                },
+                selectAll() {
+                    this.selectedItems = _.map(
+                        document.querySelectorAll('.finder-folder, .finder-card'),
+                        children => children.getAttribute('data-key'),
+                    );
+                },
+                isAllSelected() {
+                    return this.selectedItems.length === document.querySelectorAll('.finder-folder, .finder-card').length;
+                },
+                renameFolder($wire, folderId) {
+                    const newName = prompt("{{ trans('courses.finder.menu.rename_prompt') }}");
+                    if (newName !== null) {
+                        $wire.call("renameFolder", folderId, newName);
+                    }
+                },
+                initSortable(list) {
+                    Sortable.create(list, {
+                        onStart: () => {
+                            // Hide selected elements while dragging.
+                            list.closest('.finder').classList.add('hide-select');
+                        },
+                        onEnd: () => {
+                            // Display again selected elements when dragging end.
+                            list.closest('.finder').classList.remove('hide-select');
+                        },
+                        onMove: (evt) => {
+                            // Disable sorting when item has locked-move attribute.
+                            return !evt.dragged.hasAttribute('locked-move');
+                        },
+                        onUpdate: (evt) => {
+                            _.each(evt.item.parentNode.children, (row, index) => {
+                                row.dispatchEvent(new CustomEvent('sort-updated', {
+                                    bubbles: true,
+                                    cancelable: false,
+                                    detail: {
+                                        id: row.getAttribute('data-id'),
+                                        type: row.getAttribute('data-type'),
+                                        position: index,
+                                    },
+                                }));
+                            });
+                        },
+                        animation: 150,
+                    });
+                }
+            }));
+        });
+    </script>
 </div>

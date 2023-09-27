@@ -9,6 +9,8 @@ use App\Enums\FinderRowType;
 use App\Folder;
 use App\Helpers\Helpers;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -157,6 +159,24 @@ class Finder extends Component
         $folder->clone();
     }
 
+    public function renameFolder(Folder $folder, string $newName)
+    {
+        // TODO authorizations (and @can in the view)
+        $validator = Validator::make(['newName' => $newName], [
+            'newName' => 'required|string|max:200',
+        ]);
+
+        if ($validator->fails()) {
+            $this->flashError($validator->errors()->first());
+            return;
+        }
+
+        $validated = $validator->validated();
+
+        $folder->title = $validated['newName'];
+        $folder->save();
+    }
+
     public function render()
     {
         return view('livewire.finder');
@@ -176,8 +196,27 @@ class Finder extends Component
         $card->forceDelete();
     }
 
+    public function cloneIn(string $keys, Course $dest)
+    {
+        // TODO authorizations (and @can in the view)
+        // TODO valdier les inputs
+
+        $keys = explode(',', $keys);
+
+        $keys = collect($keys)
+            ->map(function ($key) {
+                [$type, $key] = explode('-', $key);
+                return $type === FinderRowType::Card ? Card::find($key) : Folder::find($key);
+            })
+            ->each(function ($entity) use ($dest) {
+                $entity->clone(null, $dest);
+            });
+
+    }
+
     private function initFilters()
     {
+        // TODO check what is the default checked state on legacy
         $this->filterCardDetails = collect(['name', 'box2', 'box3', 'box4']);
         $this->filters = collect([
             'tag' => collect([]),
@@ -197,5 +236,15 @@ class Finder extends Component
         ])->each(function ($filter) {
             $this->js("document.getElementById('$filter').checked = true;");
         });
+    }
+
+    private function flashError(string $error)
+    {
+        session()->flash('error', $error);
+        $this->js(<<<JS
+           setTimeout(function(){
+                document.getElementById('toast-error').classList.remove('show');
+            }, 5000);
+        JS);
     }
 }

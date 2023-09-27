@@ -116,22 +116,35 @@ class Folder extends Model
      *
      * @param  Folder|null  $destFolder The new parent folder. Null if the folder
      * should be cloned in the same parent folder.
+     *
+     * @param  Course|null  $destCourse The new course. Null if the folder
+     * should be cloned in the same course.
      */
-    public function clone($destFolder = null)
+    public function clone($destFolder = null, $destCourse = null)
     {
-        DB::transaction(function () use ($destFolder) {
-            if ($destFolder) {
-                $values = [
-                    'title' => $this->title,
-                    'parent_id' => $destFolder->id,
-                ];
-            } else {
-                $copyLabel = trans('courses.finder.copy');
-                $values = [
-                    'title' => "{$this->title} ($copyLabel)",
-                    'parent_id' => $this->parent_id,
-                ];
-            }
+        // Can specify only one of these attribute (course will be deduced from
+        // folder if specified).
+        if ($destFolder && $destCourse) {
+            // TODO throw error
+            return;
+        }
+        if ($destFolder) {
+            $values = [
+                'parent_id' => $destFolder->id,
+                'course_id' => $destFolder->course_id,
+            ];
+        } else if ($destCourse) {
+            $values = [
+                'parent_id' => null,
+                'course_id' => $destCourse->id,
+            ];
+        } else {
+            $copyLabel = trans('courses.finder.copy');
+            $values = [
+                'title' => "{$this->title} ($copyLabel)",
+            ];
+        }
+        DB::transaction(function () use ($values) {
             $copiedFolder = $this->replicate(['position'])->fill($values);
             $copiedFolder->save();
 

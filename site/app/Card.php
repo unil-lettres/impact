@@ -291,13 +291,32 @@ class Card extends Model
      *
      * @param  Folder|null  $destFolder The new parent folder. Null if the card
      * should be cloned in the same parent folder.
+     *
+     * @param  Course|null  $course The new course. Null if the card should be
+     * cloned in the same course.
      */
-    public function clone(Folder $destFolder = null)
+    public function clone(Folder $destFolder = null, Course $destCourse = null)
     {
+        // Can specify only one of these attribute (course will be deduced from
+        // folder if specified).
+        if ($destFolder && $destCourse) {
+            // TODO throw error
+            return;
+        }
         DB::beginTransaction();
-        $copiedCard = $this->replicate(['position'])->fill(
-            ['folder_id' => $destFolder ? $destFolder->id : $this->folder_id]
-        );
+        $values = [];
+        if ($destCourse) {
+            $values = [
+                'course_id' => $destCourse->id,
+                'folder_id' => null,
+            ];
+        } else if ($destFolder) {
+            $values = [
+                'course_id' => $destFolder->course_id,
+                'folder_id' => $destFolder->id,
+            ];
+        }
+        $copiedCard = $this->replicate(['position'])->fill($values);
         $copiedCard->save();
 
         // Attach tags.
@@ -315,7 +334,7 @@ class Card extends Model
                     return;
                 }
 
-                $copiedFile = $attachment->clone();
+                $copiedFile = $attachment->clone($copiedCard->id);
                 if ($copiedFile) {
                     $files->push($copiedFile);
                     $copiedFile->card_id = $copiedCard->id;

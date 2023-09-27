@@ -65,5 +65,6 @@ return [
     'finder.menu.delete.card.confirm' => 'Cela va supprimer la fiche. Êtes-vous sûr ?',
     'finder.menu.move' => 'Déplacer dans un dossier...',
     'finder.menu.rename' => 'Renommer...',
+    'finder.menu.rename_prompt' => 'Veuillez saisir le nouveau nom du dossier',
     'finder.menu.mail' => 'Envoi de mail',
 ];

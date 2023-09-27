@@ -167,7 +167,7 @@ class Finder extends Component
         ]);
 
         if ($validator->fails()) {
-            $this->flashError($validator->errors()->first());
+            $this->flashMessage($validator->errors()->first(), 'text-bg-danger');
             return;
         }
 
@@ -212,6 +212,7 @@ class Finder extends Component
                 $entity->clone(null, $dest);
             });
 
+        $this->flashMessage(trans('courses.finder.menu.copy_in.success'));
     }
 
     private function initFilters()
@@ -238,12 +239,13 @@ class Finder extends Component
         });
     }
 
-    private function flashError(string $error)
+    private function flashMessage(string $message, string $bsClass = 'text-bg-success')
     {
-        session()->flash('error', $error);
+        session()->flash('message', $message);
+        session()->flash('bsClass', $bsClass);
         $this->js(<<<JS
            setTimeout(function(){
-                document.getElementById('toast-error').classList.remove('show');
+                document.getElementById('toast-flash').classList.remove('show');
             }, 5000);
         JS);
     }

@@ -60,6 +60,7 @@ return [
     'finder.menu.print' => 'Print',
     'finder.menu.copy' => 'Copy',
     'finder.menu.copy_in' => 'Copy in...',
+    'finder.menu.copy_in.success' => 'Items have been successfully copied in the course.',
     'finder.menu.delete' => 'Delete',
     'finder.menu.delete.folder.confirm' => 'This action will delete the folder and all its content. Are you sure you want to continue?',
     'finder.menu.delete.card.confirm' => 'This action will delete the card. Are you sure you want to continue?',

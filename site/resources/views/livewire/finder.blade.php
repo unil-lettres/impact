@@ -1,15 +1,15 @@
 <div class='finder' x-cloak x-data="finderData">
     <div class="toast-container position-fixed top-0 end-0 p-3">
         <div
-            class="toast align-items-center text-bg-danger border-0 {{session('error') ? 'show' : 'hide'}}"
+            class="toast align-items-center {{session('bsClass')}} border-0 {{session('message') ? 'show' : 'hide'}}"
             role="alert"
-            id="toast-error"
+            id="toast-flash"
             aria-live="assertive"
             aria-atomic="true"
         >
             <div class="d-flex">
                 <div class="toast-body">
-                {{ session('error') }}
+                {{ session('message') }}
                 </div>
                 <button
                     type="button"

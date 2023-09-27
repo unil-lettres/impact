@@ -60,6 +60,7 @@ return [
     'finder.menu.print' => 'Imprimer',
     'finder.menu.copy' => 'Dubliquer',
     'finder.menu.copy_in' => 'Dubliquer dans...',
+    'finder.menu.copy_in.success' => 'Les éléments ont été copiés avec succès dans l\'espace.',
     'finder.menu.delete' => 'Supprimer',
     'finder.menu.delete.folder.confirm' => 'Cela va supprimer le dossier et tout ce qu\'il contient. Êtes-vous sûr ?',
     'finder.menu.delete.card.confirm' => 'Cela va supprimer la fiche. Êtes-vous sûr ?',

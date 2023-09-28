@@ -73,7 +73,7 @@
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         data-bs-toggle="modal"
                         data-bs-target="#{{$modalMoveId}}"
-                        :data-bs-keys="key"
+                        :data-bs-keys="[key]"
                     >
                         <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
                         <span class="flex-fill me-5">{{ trans('courses.finder.menu.move')}}</span>
@@ -89,10 +89,10 @@
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         data-bs-toggle="modal"
                         data-bs-target="#{{$modalCloneId}}"
-                        :data-bs-keys="key"
+                        :data-bs-keys="[key]"
                     >
                         <i class="fa-solid fa-file-import me-2"></i>
-                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy_in')}}</span>
+                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.clone_in')}}</span>
                     </li>
                     <li class="dropdown-item d-flex cursor-pointer align-items-center" @click="renameFolder($wire, {{$folder->id}})">
                         <i class="fa-solid fa-i-cursor me-2"></i>

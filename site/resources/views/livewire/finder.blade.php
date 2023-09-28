@@ -20,8 +20,8 @@
             </div>
         </div>
     </div>
-    <x-finder.modal-clone-in id="modalCloneIn" />
-    <x-finder.modal-move-in id="modalMoveIn" />
+    <x-finder.modal-clone-in id="modalCloneIn" :course="$course" />
+    <x-finder.modal-move-in id="modalMoveIn" :course="$course" />
     <div class="toolsbox mt-3" style="height: 63px;">
         <div
             x-show.important="selectedItems.length === 0"
@@ -144,7 +144,7 @@
                         <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy')}}</span>
                     </li>
                     <li class="dropdown-item d-flex cursor-pointer align-items-center">
-                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy_in')}}</span>
+                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.clone_in')}}</span>
                     </li>
                     <li wire:confirm="{{ trans('courses.finder.menu.delete.card.confirm') }}" wire:click="destroySelection()"
                         class="dropdown-item d-flex cursor-pointer align-items-center"

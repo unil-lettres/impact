@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Folder extends Model
 {
@@ -147,14 +148,16 @@ class Folder extends Model
             $copiedFolder = $this->replicate(['position'])->fill($values);
             $copiedFolder->save();
 
-            // Clone children.
-            $this->children->each(fn ($child) => $child->clone($copiedFolder));
-            $this->cards->each(fn ($card) => $card->clone($copiedFolder));
+            // Clone children (folder and cards).
+            $this->children
+                ->concat($this->cards)
+                ->sortBy('position')
+                ->each(fn ($entity) => $entity->clone($copiedFolder));
         });
     }
 
     /**
-     * Move this folder to another folder.
+     * Move this folder to another folder of the same course.
      *
      * @param  Folder|null  $folder The new parent folder. Null if the folder
      * should be moved to the root folder.
@@ -166,7 +169,36 @@ class Folder extends Model
             return;
         }
 
-        $this->parent_id = $folder ? $folder->id : null;
+        if ($folder) {
+            // Check that the folder is not moved into itself or into one of its
+            // children.
+            $parents = $folder->getAllParents()->push($folder)->pluck('id');
+            if ($parents->contains($this->id)) {
+                // TODO throw error
+                return;
+            } else {
+                $this->parent_id = $folder->id;
+            }
+        } else {
+            $this->parent_id = null;
+        }
+
         $this->save();
+    }
+
+    /**
+     * Get all parents of this folder.
+     */
+    public function getAllParents(): Collection
+    {
+        $parents = collect([]);
+
+        $parent = $this->parent;
+        while ($parent) {
+            $parents->push($parent);
+            $parent = $parent->parent;
+        }
+
+        return $parents;
     }
 }

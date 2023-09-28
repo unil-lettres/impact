@@ -9,7 +9,6 @@ use App\Enums\FinderRowType;
 use App\Folder;
 use App\Helpers\Helpers;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -197,21 +196,25 @@ class Finder extends Component
         $card->forceDelete();
     }
 
-    public function cloneIn(string $keys, Course $dest)
+    public function cloneIn(array $keys, Course $dest)
     {
         // TODO authorizations (and @can in the view)
         // TODO valdier les inputs
+        // TODO doit être teacher du course des keys
+        // TODO toutes les keys doivent provenir du même course
         $this->keysToEntities($keys)->each(
             fn ($entity) => $entity->clone(null, $dest),
         );
 
-        $this->flashMessage(trans('courses.finder.menu.move_in.success'));
+        $this->flashMessage(trans('courses.finder.menu.clone_in.success'));
     }
 
-    public function moveIn(string $keys, int $dest = null)
+    public function moveIn(array $keys, int $dest = null)
     {
         // TODO authorizations (and @can in the view)
         // TODO valdier les inputs
+        // TODO doit être teacher du course des keys
+        // TODO toutes les keys doivent provenir du même course
         $this->keysToEntities($keys)->each(
             fn ($entity) => $entity->move($dest ? Folder::find($dest) : null),
         );
@@ -219,11 +222,8 @@ class Finder extends Component
         $this->flashMessage(trans('courses.finder.menu.move_in.success'));
     }
 
-    private function keysToEntities(string $keys): Collection
+    private function keysToEntities(array $keys): Collection
     {
-        // TODO voir si possible de directement envoyé un array depuis le front.
-        $keys = explode(',', $keys);
-
         return collect($keys)
             ->map(function ($key) {
                 [$type, $key] = explode('-', $key);

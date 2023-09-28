@@ -365,14 +365,14 @@ class Helpers
     }
 
     /**
-     * Return a collection of courses from user's enrollments.
+     * Return a collection of courses from teacher's enrollments.
      *
      * Return all courses if user is admin.
      *
      * @param  Collection<Course>  $excludeCourses Collection of courses that
      * should not be present in the collection results.
      */
-    public static function fetchUserCourses(Collection $excludeCourses = null): Collection
+    public static function fetchCoursesAsTeacher(Collection $excludeCourses = null): Collection
     {
         $excludeCourses = $excludeCourses ?? collect([]);
 

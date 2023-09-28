@@ -76,7 +76,7 @@
                     class="dropdown-item d-flex cursor-pointer align-items-center"
                     data-bs-toggle="modal"
                     data-bs-target="#{{$modalMoveId}}"
-                    :data-bs-keys="key"
+                    :data-bs-keys="[key]"
                 >
                     <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
                     <span class="flex-fill me-5">{{ trans('courses.finder.menu.move')}}</span>
@@ -92,10 +92,10 @@
                     class="dropdown-item d-flex cursor-pointer align-items-center"
                     data-bs-toggle="modal"
                     data-bs-target="#{{$modalCloneId}}"
-                    :data-bs-keys="key"
+                    :data-bs-keys="[key]"
                 >
                     <i class="fa-solid fa-file-import me-2"></i>
-                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy_in')}}</span>
+                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.clone_in')}}</span>
                 </li>
                 @can('forceDelete', $card)
                     <li wire:confirm="{{ trans('courses.finder.menu.delete.card.confirm') }}" wire:click="destroyCard({{$card->id}})"

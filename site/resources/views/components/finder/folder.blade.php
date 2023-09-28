@@ -76,7 +76,7 @@
                         :data-bs-keys="[key]"
                     >
                         <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
-                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.move')}}</span>
+                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.move_in')}}</span>
                     </li>
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"

@@ -137,8 +137,14 @@
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </button>
                 <ul class="dropdown-menu">
-                    <li class="dropdown-item d-flex cursor-pointer align-items-center">
-                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.move')}}</span>
+                    <li
+                        class="dropdown-item d-flex cursor-pointer align-items-center"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalMoveIn"
+                        :data-bs-keys="[selectedItems]"
+                    >
+                        <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
+                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.move_in')}}</span>
                     </li>
                     <li class="dropdown-item d-flex cursor-pointer align-items-center">
                         <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy')}}</span>
@@ -307,7 +313,7 @@
                     // menu actions.
                     if (!keepSelection) this.selectedItems = [];
                 },
-                closeAllDropDowns(element) {
+                closeAllDropDowns(element = null) {
                     document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((dropdown) => {
                         if (dropdown !== element) {
                             bootstrap.Dropdown.getInstance(dropdown)?.hide();

@@ -138,24 +138,32 @@ class Finder extends Component
         $this->initFilters();
     }
 
-    public function sort($column, $direction)
+    public function sort($column, $direction): void
     {
         // TODO valdier les inputs
         $this->sortColumn = $column;
         $this->sortDirection = $direction;
     }
 
-    public function cloneCard(Card $card)
+    public function cloneCard(Card $card): void
     {
         // TODO authorizations (and @can in the view)
-
         $card->clone();
     }
 
-    public function cloneFolder(Folder $folder)
+    public function cloneFolder(Folder $folder): void
     {
         // TODO authorizations (and @can in the view)
         $folder->clone();
+    }
+
+    public function cloneMultiple(array $keys): void
+    {
+        // TODO authorizations (and @can in the view)
+        // TODO valdier les inputs
+        // TODO doit être teacher du course des keys
+        // TODO toutes les keys doivent provenir du même course
+        $this->keysToEntities($keys)->each(fn ($entity) => $entity->clone());
     }
 
     public function renameFolder(Folder $folder, string $newName)
@@ -196,6 +204,18 @@ class Finder extends Component
         $card->forceDelete();
     }
 
+    public function destroyMultiple(array $keys): void
+    {
+        // TODO authorizations (and @can in the view)
+        // TODO valdier les inputs
+        // TODO doit être teacher du course des keys
+        // TODO toutes les keys doivent provenir du même course
+        $this->keysToEntities($keys)->each(
+            fn ($entity) => $entity->forceDelete(),
+        );
+        $this->js("selectedItems = []");
+    }
+
     public function cloneIn(array $keys, Course $dest)
     {
         // TODO authorizations (and @can in the view)
@@ -215,28 +235,25 @@ class Finder extends Component
         // TODO valdier les inputs
         // TODO doit être teacher du course des keys
         // TODO toutes les keys doivent provenir du même course
-        $this
-            ->keysToEntities($keys)
-            // Remove all descendants of folders contained in the selection.
-            ->filter(function ($entity) use ($keys) {
-                return $entity->getAncestors(false)->pluck('id')->map(
-                    fn ($id) => FinderRowType::Folder."-$id",
-                )->intersect($keys)->isEmpty();
-            })
-            ->each(
-                fn ($entity) => $entity->move($dest ? Folder::find($dest) : null),
-            );
+        $this->keysToEntities($keys)->each(
+            fn ($entity) => $entity->move($dest ? Folder::find($dest) : null),
+        );
 
         $this->flashMessage(trans('courses.finder.menu.move_in.success'));
     }
 
-    private function keysToEntities(array $keys): Collection
+    private function keysToEntities(array $keys, $withoutDescendants = true): Collection
     {
         return collect($keys)
             ->map(function ($key) {
                 [$type, $key] = explode('-', $key);
 
                 return $type === FinderRowType::Card ? Card::find($key) : Folder::find($key);
+            })
+            ->filter(function ($entity) use ($keys, $withoutDescendants) {
+                return $withoutDescendants && $entity->getAncestors(false)->pluck('id')->map(
+                    fn ($id) => FinderRowType::Folder."-$id",
+                )->intersect($keys)->isEmpty();
             });
 
     }

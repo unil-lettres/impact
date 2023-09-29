@@ -141,18 +141,24 @@
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         data-bs-toggle="modal"
                         data-bs-target="#modalMoveIn"
-                        :data-bs-keys="[selectedItems]"
+                        :data-bs-keys="selectedItems"
                     >
                         <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
                         <span class="flex-fill me-5">{{ trans('courses.finder.menu.move_in')}}</span>
                     </li>
-                    <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                    <li
+                        class="dropdown-item d-flex cursor-pointer align-items-center"
+                        wire:click="cloneMultiple(selectedItems)"
+                    >
+                        <i class="fa-solid fa-clone me-2"></i>
                         <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy')}}</span>
                     </li>
                     <li class="dropdown-item d-flex cursor-pointer align-items-center">
                         <span class="flex-fill me-5">{{ trans('courses.finder.menu.clone_in')}}</span>
                     </li>
-                    <li wire:confirm="{{ trans('courses.finder.menu.delete.card.confirm') }}" wire:click="destroySelection()"
+                    <li
+                        wire:confirm="{{ trans('courses.finder.menu.delete.card.confirm') }}"
+                        wire:click="destroyMultiple(selectedItems)"
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                     >
                         <i class="fa-regular fa-trash-can me-2"></i>

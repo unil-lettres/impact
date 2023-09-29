@@ -11,7 +11,9 @@ use Illuminate\Support\Facades\DB;
 
 class Folder extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes {
+        forceDelete as traitForceDelete;
+    }
 
     protected $fillable = [
         'title', 'position', 'course_id', 'parent_id',
@@ -153,6 +155,15 @@ class Folder extends Model
                 ->sortBy('position')
                 ->each(fn ($entity) => $entity->clone($copiedFolder));
         });
+    }
+
+    public function forceDelete()
+    {
+        // Delete cards "manually" because they have custom forceDelete.
+        $this->cards()->each(fn ($card) => $card->forceDelete());
+
+        // Delete the folder.
+        $this->traitForceDelete();
     }
 
     /**

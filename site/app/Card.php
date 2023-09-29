@@ -18,7 +18,10 @@ use Illuminate\Support\Facades\DB;
 
 class Card extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes {
+        forceDelete as traitForceDelete;
+    }
+
     use HasFactory;
 
     const TRANSCRIPTION = '{
@@ -276,7 +279,7 @@ class Card extends Model
         });
 
         // Delete the card.
-        parent::forceDelete();
+        $this->traitForceDelete();
     }
 
     public function getType(): string

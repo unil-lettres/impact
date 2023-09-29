@@ -17,10 +17,7 @@ class FolderObserver
         // Get the next position based on other cards and folders of this course.
         if (is_null($folder->position)) {
             $folder->updateQuietly([
-                'position' => Helpers::getNextPositionForCourse(
-                    $folder->course,
-                    $folder->parent,
-                ),
+                'position' => Helpers::findLastPositionInParent($folder),
             ]);
         }
     }
@@ -32,10 +29,7 @@ class FolderObserver
     {
         if ($folder->wasChanged('parent_id')) {
             $folder->updateQuietly([
-                'position' => Helpers::getNextPositionForCourse(
-                    $folder->course,
-                    $folder->folder
-                ),
+                'position' => Helpers::findLastPositionInParent($folder),
             ]);
         }
     }

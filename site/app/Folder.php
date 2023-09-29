@@ -8,7 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 
 class Folder extends Model
 {
@@ -120,7 +119,7 @@ class Folder extends Model
      * @param  Course|null  $destCourse The new course. Null if the folder
      * should be cloned in the same course.
      */
-    public function clone($destFolder = null, $destCourse = null)
+    public function clone(Folder $destFolder = null, Course $destCourse = null)
     {
         // Can specify only one of these attribute (course will be deduced from
         // folder if specified).
@@ -172,7 +171,7 @@ class Folder extends Model
         if ($folder) {
             // Check that the folder is not moved into itself or into one of its
             // children.
-            $parents = $folder->getAllParents()->push($folder)->pluck('id');
+            $parents = $folder->getAncestors()->pluck('id');
             if ($parents->contains($this->id)) {
                 // TODO throw error
                 return;
@@ -187,11 +186,18 @@ class Folder extends Model
     }
 
     /**
-     * Get all parents of this folder.
+     * Get all ancestors of this folder.
+     *
+     * @param  bool  $self  If true, the current folder will be included in the
+     * ancestors.
      */
-    public function getAllParents(): Collection
+    public function getAncestors(bool $self = true): Collection
     {
         $parents = collect([]);
+
+        if ($self) {
+            $parents->push($this);
+        }
 
         $parent = $this->parent;
         while ($parent) {

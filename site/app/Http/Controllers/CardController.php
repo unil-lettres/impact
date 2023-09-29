@@ -185,7 +185,6 @@ class CardController extends Controller
             'state_id' => $request->get('state'),
             'options' => $options,
         ]);
-        $card->save();
 
         return redirect()
             ->route('cards.show', $card->id)

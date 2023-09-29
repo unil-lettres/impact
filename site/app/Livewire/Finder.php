@@ -215,9 +215,17 @@ class Finder extends Component
         // TODO valdier les inputs
         // TODO doit être teacher du course des keys
         // TODO toutes les keys doivent provenir du même course
-        $this->keysToEntities($keys)->each(
-            fn ($entity) => $entity->move($dest ? Folder::find($dest) : null),
-        );
+        $this
+            ->keysToEntities($keys)
+            // Remove all descendants of folders contained in the selection.
+            ->filter(function ($entity) use ($keys) {
+                return $entity->getAncestors(false)->pluck('id')->map(
+                    fn ($id) => FinderRowType::Folder."-$id",
+                )->intersect($keys)->isEmpty();
+            })
+            ->each(
+                fn ($entity) => $entity->move($dest ? Folder::find($dest) : null),
+            );
 
         $this->flashMessage(trans('courses.finder.menu.move_in.success'));
     }
@@ -227,6 +235,7 @@ class Finder extends Component
         return collect($keys)
             ->map(function ($key) {
                 [$type, $key] = explode('-', $key);
+
                 return $type === FinderRowType::Card ? Card::find($key) : Folder::find($key);
             });
 

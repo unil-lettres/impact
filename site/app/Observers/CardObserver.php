@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Card;
+use App\Course;
 use App\Enums\ActionType;
 use App\Enums\StateType;
 use App\Helpers\Helpers;
@@ -21,10 +22,7 @@ class CardObserver
         $cardUpdate = [];
 
         if (is_null($card->position)) {
-            $cardUpdate['position'] = Helpers::getNextPositionForCourse(
-                $card->course,
-                $card->folder
-            );
+            $cardUpdate['position'] = Helpers::findLastPositionInParent($card);
         }
 
         // If state is not set, set it the private state
@@ -46,12 +44,13 @@ class CardObserver
      */
     public function updated(Card $card): void
     {
+        // Relations that were already loaded before the update will still
+        // have the old values.
+        $card->refresh();
+
         if ($card->wasChanged('folder_id')) {
             $card->updateQuietly([
-                'position' => Helpers::getNextPositionForCourse(
-                    $card->course,
-                    $card->folder
-                ),
+                'position' => Helpers::findLastPositionInParent($card),
             ]);
         }
 

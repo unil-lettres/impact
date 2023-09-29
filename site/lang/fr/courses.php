@@ -45,6 +45,7 @@ return [
     'finder.selected_cards' => 'fiche(s)',
     'finder.select_all' => 'tout séléctionner',
     'finder.copy' => 'copie',
+    'finder.empty' => 'Aucun élément dans cet espace',
     'finder.filter.tags' => 'Etiquettes',
     'finder.filter.editors' => 'Editeurs',
     'finder.filter.states' => 'Etats',

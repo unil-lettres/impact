@@ -45,6 +45,7 @@ return [
     'finder.selected_cards' => 'card(s)',
     'finder.select_all' => 'select all',
     'finder.copy' => 'copy',
+    'finder.empty' => 'No item in this space',
     'finder.filter.tags' => 'Tags',
     'finder.filter.editors' => 'Editors',
     'finder.filter.states' => 'States',

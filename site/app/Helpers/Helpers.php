@@ -17,6 +17,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class Helpers
@@ -385,20 +386,30 @@ class Helpers
     }
 
     /**
-     * Return the next position for a card or folder based on existing cards
-     * or folders.
-     *
-     * @param  Course The course.
-     * @param  Folder The parent folder (if exists).
+     * Return the last available position for a card or folder based on existing
+     * content of the parent. The position of the given card or folder will not
+     * be taken into account.
      */
-    public static function getNextPositionForCourse(Course $course, Folder $parent = null)
-    {
-        $maxCardPosition = Card::where('course_id', $course->id)
-            ->where('folder_id', $parent->id ?? null)
+    public static function findLastPositionInParent(
+        Card|Folder $cardOrFolder,
+    ): int {
+        $cardId = $folderId = null;
+        if ($cardOrFolder instanceof Card) {
+            $parentId = $cardOrFolder->folder_id;
+            $cardId = $cardOrFolder->id;
+        } else {
+            $parentId = $cardOrFolder->parent_id;
+            $folderId = $cardOrFolder->id;
+        }
+
+        $maxCardPosition = Card::where('course_id', $cardOrFolder->course_id)
+            ->where('folder_id', $parentId)
+            ->where('id', '!=', $cardId)
             ->max('position');
 
-        $maxFolderPosition = Folder::where('course_id', $course->id)
-            ->where('parent_id', $parent->id ?? null)
+        $maxFolderPosition = Folder::where('course_id', $cardOrFolder->course_id)
+            ->where('parent_id', $parentId)
+            ->where('id', '!=', $folderId)
             ->max('position');
 
         if (is_null($maxCardPosition ?? $maxFolderPosition)) {
@@ -406,7 +417,6 @@ class Helpers
         }
 
         $position = max($maxCardPosition, $maxFolderPosition);
-
         return $position + 1;
     }
 

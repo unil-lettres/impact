@@ -223,7 +223,7 @@
         @click.outside="selectedItems = []"
         x-init="initSortable($el)"
     >
-        @foreach ($this->rows as $row)
+        @forelse ($this->rows as $row)
             @if ($row->getType() === ('App\\Enums\\FinderRowType')::Folder)
                 <x-finder.folder
                     :folder="$row"
@@ -242,7 +242,13 @@
                     modalMoveId="modalMoveIn"
                 />
             @endif
-        @endforeach
+        @empty
+            <li
+                class="text-center finder-folder border-top border-secondary-subtle row-height cursor-default"
+            >
+            {{trans('courses.finder.empty')}}
+            </li>
+        @endforelse
     </ul>
     <div class="border-top border-secondary-subtle"></div>
     <script data-navigate-once>

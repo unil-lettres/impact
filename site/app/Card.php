@@ -358,13 +358,28 @@ class Card extends Model
      * @param  Folder|null  $folder The new parent folder. Null if the card
      * should be moved to the root folder.
      */
-    public function move(Folder $folder = null)
+    public function move(Folder $folder = null): void
     {
         if ($folder && $folder->course_id !== $this->course_id) {
             // TODO throw error
             return;
         }
-        $this->folder_id = $folder ? $folder->id : null;
-        $this->save();
+        $this->update(['folder_id' => $folder?->id]);
+    }
+
+    /**
+     * Get all ancestors of this card.
+     */
+    public function getAncestors(): \Illuminate\Support\Collection
+    {
+        $parents = collect([]);
+
+        $parent = $this->folder;
+        while ($parent) {
+            $parents->push($parent);
+            $parent = $parent->folder;
+        }
+
+        return $parents;
     }
 }

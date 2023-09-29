@@ -162,6 +162,9 @@ class Folder extends Model
         // Delete cards "manually" because they have custom forceDelete.
         $this->cards()->each(fn ($card) => $card->forceDelete());
 
+        // Delete children folder "manually" because they have custom forceDelete.
+        $this->children()->each(fn ($child) => $child->forceDelete());
+
         // Delete the folder.
         $this->traitForceDelete();
     }

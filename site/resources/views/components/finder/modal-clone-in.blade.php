@@ -8,6 +8,7 @@
     id="{{$id}}"
     tabindex="-1"
     aria-hidden="true"
+    @click.stop
 >
     <div class="modal-dialog">
         <div class="modal-content">

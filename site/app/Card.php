@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Enums\FileStatus;
 use App\Enums\FinderRowType;
 use App\Enums\StatePermission;
 use App\Scopes\HideAttachmentsScope;
@@ -285,6 +286,22 @@ class Card extends Model
     public function getType(): string
     {
         return FinderRowType::Card;
+    }
+
+    /**
+     * Check if the card can be cloned.
+     */
+    public function canClone(Folder $destFolder = null, Course $destCourse = null)
+    {
+        $cloneInAnotherSpace = (false
+            || $destFolder && $destFolder->course->id !== $this->course->id
+            || $destCourse && $destCourse->id !== $this->course->id
+        );
+        if ($cloneInAnotherSpace) {
+            // Check that the source file is ready (not transcoding)
+            return $this->file->status === FileStatus::Ready;
+        }
+        return true;
     }
 
     /**

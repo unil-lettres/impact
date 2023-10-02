@@ -114,6 +114,20 @@ class Folder extends Model
     }
 
     /**
+     * Check if the folder can be cloned.
+     */
+    public function canClone(Folder $destFolder = null, Course $destCourse = null)
+    {
+        // Check that all children can be cloned.
+        return $this
+            ->children
+            ->concat($this->cards)
+            ->every(
+                fn ($entity) => $entity->canClone($destFolder, $destCourse)
+            );
+    }
+
+    /**
      * Clone this folder and all contained cards.
      *
      * @param  Folder|null  $destFolder The new parent folder. Null if the folder

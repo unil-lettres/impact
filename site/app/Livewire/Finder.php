@@ -6,8 +6,10 @@ use App\Card;
 use App\Course;
 use App\Enums\CardBox;
 use App\Enums\FinderRowType;
+use App\Exceptions\CloneException;
 use App\Folder;
 use App\Helpers\Helpers;
+use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\Computed;
@@ -118,6 +120,9 @@ class Finder extends Component
         HTML;
     }
 
+    /**
+     * Add or remove a filter (detail) on the card.
+     */
     public function toggleFilterCardDetail(string $detail)
     {
         if (! in_array($detail, ['name', CardBox::Box2, CardBox::Box3, CardBox::Box4])) {
@@ -222,11 +227,23 @@ class Finder extends Component
         // TODO valdier les inputs
         // TODO doit être teacher du course des keys
         // TODO toutes les keys doivent provenir du même course
-        $this->keysToEntities($keys)->each(
-            fn ($entity) => $entity->clone(null, $dest),
-        );
+        try {
+            $this
+                ->keysToEntities($keys)
+                ->each(fn ($entity) => (false
+                    || $entity->canClone(null, $dest)
+                    || throw new CloneException())
+                )
+                ->each(fn ($entity) => $entity->clone(null, $dest));
 
-        $this->flashMessage(trans('courses.finder.menu.clone_in.success'));
+            $this->flashMessage(trans('courses.finder.menu.clone_in.success'));
+        } catch (CloneException $e) {
+            $this->flashMessage(
+                trans('courses.finder.menu.clone_in.error'),
+                'text-bg-danger',
+            );
+        }
+
     }
 
     public function moveIn(array $keys, int $dest = null)

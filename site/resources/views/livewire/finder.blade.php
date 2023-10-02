@@ -122,8 +122,10 @@
         <div x-show="selectedItems.length > 0" class="bg-light rounded-pill px-3 py-1" @click.stop>
             <a href="#" class="me-2 text-body" @click="selectedItems = []"><i class="fa-solid fa-xmark"></i></a>
             <span>
-                <strong x-text="selectedItems.length"></strong> {{ trans('courses.finder.selected') }}
-                <strong x-text="selectedItems.filter(key => key.includes('card')).length"></strong> {{ trans('courses.finder.selected_cards') }}
+                <strong x-text="selectedItems.length"></strong>
+                {{ trans('courses.finder.selected') }}
+                <strong x-text="selectedItems.filter(key => key.includes('card')).length"></strong>
+                {{ trans('courses.finder.selected_cards') }}
             </span>
             <div class="dropdown d-inline-block" @click.stop>
                 <button
@@ -144,14 +146,18 @@
                         :data-bs-keys="selectedItems"
                     >
                         <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
-                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.move_in')}}</span>
+                        <span class="flex-fill me-5">
+                            {{ trans('courses.finder.menu.move_in')}}
+                        </span>
                     </li>
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         wire:click="cloneMultiple(selectedItems)"
                     >
                         <i class="fa-solid fa-clone me-2"></i>
-                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy')}}</span>
+                        <span class="flex-fill me-5">
+                            {{ trans('courses.finder.menu.copy')}}
+                        </span>
                     </li>
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
@@ -160,7 +166,9 @@
                         :data-bs-keys="selectedItems"
                     >
                         <i class="fa-solid fa-file-import me-2"></i>
-                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.clone_in')}}</span>
+                        <span class="flex-fill me-5">
+                            {{ trans('courses.finder.menu.clone_in')}}
+                        </span>
                     </li>
                     <li
                         wire:confirm="{{ trans('courses.finder.menu.delete.card.confirm') }}"
@@ -168,18 +176,26 @@
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                     >
                         <i class="fa-regular fa-trash-can me-2"></i>
-                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.delete')}}</span>
+                        <span class="flex-fill me-5">
+                            {{ trans('courses.finder.menu.delete')}}
+                        </span>
                     </li>
                     <li><hr class="dropdown-divider"></li>
                     <li class="dropdown-item d-flex cursor-pointer align-items-center">
-                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.print')}}</span>
+                        <span class="flex-fill me-5">
+                            {{ trans('courses.finder.menu.print')}}
+                        </span>
                     </li>
                     <li class="dropdown-item d-flex cursor-pointer align-items-center">
-                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.mail')}}</span>
+                        <span class="flex-fill me-5">
+                            {{ trans('courses.finder.menu.mail')}}
+                        </span>
                     </li>
                 </ul>
             </div>
-            <button class="btn" @click="selectAll" x-show="!isAllSelected()">{{ trans('courses.finder.select_all')}}</button>
+            <button class="btn" @click="selectAll" x-show="!isAllSelected()">
+                {{ trans('courses.finder.select_all')}}
+            </button>
         </div>
     </div>
     <button class="btn" @click="expandAll()">étendre tout</button>
@@ -257,10 +273,8 @@
                 />
             @endif
         @empty
-            <li
-                class="text-center finder-folder border-top border-secondary-subtle row-height cursor-default"
-            >
-            {{trans('courses.finder.empty')}}
+            <li class="text-center finder-folder border-top border-secondary-subtle row-height cursor-default">
+                {{trans('courses.finder.empty')}}
             </li>
         @endforelse
     </ul>
@@ -345,7 +359,9 @@
                     if (!keepSelection) this.selectedItems = [];
                 },
                 closeAllDropDowns(element = null) {
-                    document.querySelectorAll('[data-bs-toggle="dropdown"]').forEach((dropdown) => {
+                    document.querySelectorAll(
+                        '[data-bs-toggle="dropdown"]',
+                    ).forEach((dropdown) => {
                         if (dropdown !== element) {
                             bootstrap.Dropdown.getInstance(dropdown)?.hide();
                         }

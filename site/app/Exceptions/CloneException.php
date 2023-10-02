@@ -7,4 +7,6 @@ use Exception;
 /**
  * Raised when a entity can't be cloned.
  */
-class CloneException extends Exception { }
+class CloneException extends Exception
+{
+}

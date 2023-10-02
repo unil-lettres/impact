@@ -291,8 +291,10 @@ class Card extends Model
     /**
      * Check if the card can be cloned.
      */
-    public function canClone(Folder $destFolder = null, Course $destCourse = null)
-    {
+    public function canClone(
+        Folder $destFolder = null,
+        Course $destCourse = null,
+    ) {
         $cloneInAnotherSpace = (false
             || $destFolder && $destFolder->course->id !== $this->course->id
             || $destCourse && $destCourse->id !== $this->course->id
@@ -301,6 +303,7 @@ class Card extends Model
             // Check that the source file is ready (not transcoding)
             return $this->file->status === FileStatus::Ready;
         }
+
         return true;
     }
 

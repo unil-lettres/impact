@@ -20,7 +20,10 @@
             <i class="d-inline-block width-small">&nbsp;</i>
         @endfor
         <i class="d-inline-block text-center width-small">&nbsp;</i>
-        <a href="{{ route('cards.show', $card->id) }}" class="text-decoration-none text-primary">
+        <a
+            href="{{ route('cards.show', $card->id) }}"
+            class="text-decoration-none text-primary"
+        >
             <i class="d-inline-block fa-solid fa-file-lines text-center width-large"></i>
         </a>
         {{ $card->position }} - {{ $card->title }}{{ $selected ? ' - selected' : '' }}
@@ -68,8 +71,12 @@
                     @click="window.location = '{{ route('cards.show', $card->id) }}'"
                 >
                     <i class="fa-solid fa-square-arrow-up-right me-2"></i>
-                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.open')}}</span>
-                    <span class="text-secondary ms-3 text-lowercase fs-7 fw-light">{{ trans('courses.finder.menu.open.help')}}</span>
+                    <span class="flex-fill me-5">
+                        {{ trans('courses.finder.menu.open')}}
+                    </span>
+                    <span class="text-secondary ms-3 text-lowercase fs-7 fw-light">
+                        {{ trans('courses.finder.menu.open.help')}}
+                    </span>
                 </li>
                 <li><hr class="dropdown-divider"></li>
                 <li
@@ -79,14 +86,18 @@
                     :data-bs-keys="[key]"
                 >
                     <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
-                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.move_in')}}</span>
+                    <span class="flex-fill me-5">
+                        {{ trans('courses.finder.menu.move_in')}}
+                    </span>
                 </li>
                 <li
                     class="dropdown-item d-flex cursor-pointer align-items-center"
                     wire:click="cloneCard({{$card->id}})"
                 >
                     <i class="fa-regular fa-copy me-2"></i>
-                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy')}}</span>
+                    <span class="flex-fill me-5">
+                        {{ trans('courses.finder.menu.copy')}}
+                    </span>
                 </li>
                 <li
                     class="dropdown-item d-flex cursor-pointer align-items-center"
@@ -95,22 +106,32 @@
                     :data-bs-keys="[key]"
                 >
                     <i class="fa-solid fa-file-import me-2"></i>
-                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.clone_in')}}</span>
+                    <span class="flex-fill me-5">
+                        {{ trans('courses.finder.menu.clone_in')}}
+                    </span>
                 </li>
                 @can('forceDelete', $card)
-                    <li wire:confirm="{{ trans('courses.finder.menu.delete.card.confirm') }}" wire:click="destroyCard({{$card->id}})"
+                    <li
+                        wire:confirm="{{ trans('courses.finder.menu.delete.card.confirm') }}"
+                        wire:click="destroyCard({{$card->id}})"
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                     >
                         <i class="fa-regular fa-trash-can me-2"></i>
-                        <span class="flex-fill me-5">{{ trans('courses.finder.menu.delete')}}</span>
+                        <span class="flex-fill me-5">
+                            {{ trans('courses.finder.menu.delete')}}
+                        </span>
                     </li>
                 @endcan
                 <li><hr class="dropdown-divider"></li>
                 <li class="dropdown-item d-flex cursor-pointer align-items-center">
-                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.print')}}</span>
+                    <span class="flex-fill me-5">
+                        {{ trans('courses.finder.menu.print')}}
+                    </span>
                 </li>
                 <li class="dropdown-item d-flex cursor-pointer align-items-center">
-                    <span class="flex-fill me-5">{{ trans('courses.finder.menu.mail')}}</span>
+                    <span class="flex-fill me-5">
+                        {{ trans('courses.finder.menu.mail')}}
+                    </span>
                 </li>
             </ul>
         </div>

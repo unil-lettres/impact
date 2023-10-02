@@ -9,7 +9,6 @@ use App\Enums\FinderRowType;
 use App\Exceptions\CloneException;
 use App\Folder;
 use App\Helpers\Helpers;
-use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\Computed;
@@ -125,7 +124,10 @@ class Finder extends Component
      */
     public function toggleFilterCardDetail(string $detail)
     {
-        if (! in_array($detail, ['name', CardBox::Box2, CardBox::Box3, CardBox::Box4])) {
+        if (! in_array(
+            $detail,
+            ['name', CardBox::Box2, CardBox::Box3, CardBox::Box4],
+        )) {
             return;
         }
 
@@ -179,7 +181,10 @@ class Finder extends Component
         ]);
 
         if ($validator->fails()) {
-            $this->flashMessage($validator->errors()->first(), 'text-bg-danger');
+            $this->flashMessage(
+                $validator->errors()->first(),
+                'text-bg-danger',
+            );
 
             return;
         }
@@ -259,8 +264,10 @@ class Finder extends Component
         $this->flashMessage(trans('courses.finder.menu.move_in.success'));
     }
 
-    private function keysToEntities(array $keys, $withoutDescendants = true): Collection
-    {
+    private function keysToEntities(
+        array $keys,
+        $withoutDescendants = true,
+    ): Collection {
         return collect($keys)
             ->map(function ($key) {
                 [$type, $key] = explode('-', $key);
@@ -268,9 +275,11 @@ class Finder extends Component
                 return $type === FinderRowType::Card ? Card::find($key) : Folder::find($key);
             })
             ->filter(function ($entity) use ($keys, $withoutDescendants) {
-                return $withoutDescendants && $entity->getAncestors(false)->pluck('id')->map(
-                    fn ($id) => FinderRowType::Folder."-$id",
-                )->intersect($keys)->isEmpty();
+                return true
+                    && $withoutDescendants
+                    && $entity->getAncestors(false)->pluck('id')->map(
+                        fn ($id) => FinderRowType::Folder."-$id",
+                    )->intersect($keys)->isEmpty();
             });
 
     }
@@ -299,8 +308,10 @@ class Finder extends Component
         });
     }
 
-    private function flashMessage(string $message, string $bsClass = 'text-bg-success')
-    {
+    private function flashMessage(
+        string $message,
+        string $bsClass = 'text-bg-success',
+    ) {
         session()->flash('message', $message);
         session()->flash('bsClass', $bsClass);
         $this->js(<<<'JS'

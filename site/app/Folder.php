@@ -78,7 +78,8 @@ class Folder extends Model
             $parent = $this->parent();
             while ($parent->get()->isNotEmpty()) {
                 $breadcrumbs->put(
-                    route('folders.show', $parent->first()->id), $parent->first()->title
+                    route('folders.show', $parent->first()->id),
+                    $parent->first()->title,
                 );
                 $parent = $parent->first()->parent();
             }
@@ -116,8 +117,10 @@ class Folder extends Model
     /**
      * Check if the folder can be cloned.
      */
-    public function canClone(Folder $destFolder = null, Course $destCourse = null)
-    {
+    public function canClone(
+        Folder $destFolder = null,
+        Course $destCourse = null,
+    ) {
         // Check that all children can be cloned.
         return $this
             ->children

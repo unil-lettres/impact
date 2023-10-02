@@ -15,7 +15,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
+use InvalidArgumentException;
 
 class Card extends Model
 {
@@ -298,14 +298,18 @@ class Card extends Model
      * should be cloned in the same parent folder.
      * @param  Course|null  $course The new course. Null if the card should be
      * cloned in the same course.
+     *
+     * @throws InvalidArgumentException If both $destFolder and $destCourse are
+     * specified.
      */
     public function clone(Folder $destFolder = null, Course $destCourse = null)
     {
         // Can specify only one of these attribute (course will be deduced from
         // folder if specified).
         if ($destFolder && $destCourse) {
-            // TODO throw error
-            return;
+            throw new InvalidArgumentException(
+                'Cannot specify $destFolder and $destCourse at the same time.',
+            );
         }
 
         if ($destCourse && $destCourse->id === $this->course->id) {
@@ -346,10 +350,11 @@ class Card extends Model
             // and attach them to the card.
             $copiedCard->tags()->createMany(
                 collect($this->tags->toArray())
-                    ->filter(fn ($tag) => !$existingNamesInDest->contains($tag['name']))
+                    ->filter(fn ($tag) => ! $existingNamesInDest->contains($tag['name']))
                     ->map(
                         function ($tag) use ($destCourse) {
                             $tag['course_id'] = $destCourse->id;
+
                             return $tag;
                         },
                     )
@@ -365,7 +370,7 @@ class Card extends Model
 
             // Copy source file.
             static $alreadyCopiedFiles = [];
-            if (key_exists($this->file->id, $alreadyCopiedFiles)) {
+            if (array_key_exists($this->file->id, $alreadyCopiedFiles)) {
                 // Only copy source file once. Avoid having multiple copies of
                 // sources files when cloning multiple cards that have the same
                 // source file. Can still happen when cloning files from
@@ -428,12 +433,16 @@ class Card extends Model
      *
      * @param  Folder|null  $folder The new parent folder. Null if the card
      * should be moved to the root folder.
+     *
+     * @throws InvalidArgumentException If the card is moved into a folder of
+     * another course.
      */
     public function move(Folder $folder = null): void
     {
         if ($folder && $folder->course->id !== $this->course->id) {
-            // TODO throw error
-            return;
+            throw new InvalidArgumentException(
+                'Cannot move into a folder of another space.',
+            );
         }
         $this->update(['folder_id' => $folder?->id]);
     }

@@ -17,7 +17,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class Helpers
@@ -417,6 +416,7 @@ class Helpers
         }
 
         $position = max($maxCardPosition, $maxFolderPosition);
+
         return $position + 1;
     }
 

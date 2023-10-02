@@ -7,6 +7,7 @@ use App\Helpers\Helpers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
+use InvalidArgumentException;
 
 class Folder extends Model
 {
@@ -119,14 +120,18 @@ class Folder extends Model
      * should be cloned in the same parent folder.
      * @param  Course|null  $destCourse The new course. Null if the folder
      * should be cloned in the same course.
+     *
+     * @throws InvalidArgumentException If both $destFolder and $destCourse are
+     * specified.
      */
     public function clone(Folder $destFolder = null, Course $destCourse = null)
     {
         // Can specify only one of these attribute (course will be deduced from
         // folder if specified).
         if ($destFolder && $destCourse) {
-            // TODO throw error
-            return;
+            throw new InvalidArgumentException(
+                'Cannot specify $destFolder and $destCourse at the same time.',
+            );
         }
 
         if ($destCourse && $destCourse->id === $this->course->id) {
@@ -177,12 +182,16 @@ class Folder extends Model
      *
      * @param  Folder|null  $folder The new parent folder. Null if the folder
      * should be moved to the root folder.
+     *
+     * @throws InvalidArgumentException If the folder is moved into a folder of
+     * another course or into itself or into one of its children.
      */
     public function move(Folder $folder = null)
     {
         if ($folder && $folder->course_id !== $this->course_id) {
-            // TODO throw error
-            return;
+            throw new InvalidArgumentException(
+                'Cannot move into a folder of another space.',
+            );
         }
 
         if ($folder) {
@@ -190,8 +199,9 @@ class Folder extends Model
             // children.
             $parents = $folder->getAncestors()->pluck('id');
             if ($parents->contains($this->id)) {
-                // TODO throw error
-                return;
+                throw new InvalidArgumentException(
+                    'Cannot move a folder into itself or into one of its children',
+                );
             } else {
                 $this->parent_id = $folder->id;
             }

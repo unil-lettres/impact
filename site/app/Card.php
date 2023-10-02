@@ -317,6 +317,11 @@ class Card extends Model
                 'course_id' => $destFolder->course_id,
                 'folder_id' => $destFolder->id,
             ];
+        } else {
+            $copyLabel = trans('courses.finder.copy');
+            $values = [
+                'title' => "{$this->title} ($copyLabel)",
+            ];
         }
         $copiedCard = $this->replicate(['position'])->fill($values);
         $copiedCard->save();

@@ -60,7 +60,7 @@ return [
     'finder.menu.close' => 'Fermer',
     'finder.menu.print' => 'Imprimer',
     'finder.menu.copy' => 'Dupliquer',
-    'finder.menu.clone_in' => 'Dupliquer dans...',
+    'finder.menu.clone_in' => 'Dupliquer dans un espace...',
     'finder.menu.clone_in.dialog.title' => 'Dupliquer dans...',
     'finder.menu.clone_in.dialog.prompt' => 'Sélectionnez l\'espace de destination',
     'finder.menu.clone_in.dialog.cancel' => 'Annuler',

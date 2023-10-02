@@ -62,7 +62,7 @@ return [
     'finder.menu.copy' => 'Copy',
     'finder.menu.clone_in' => 'Copy in...',
     'finder.menu.clone_in.success' => 'Items have been successfully copied in the course.',
-    'finder.menu.clone_in.dialog.title' => 'Copy in...',
+    'finder.menu.clone_in.dialog.title' => 'Copy in space...',
     'finder.menu.clone_in.dialog.prompt' => 'Choose the destination course',
     'finder.menu.clone_in.dialog.cancel' => 'Cancel',
     'finder.menu.clone_in.dialog.accept' => 'Copy',

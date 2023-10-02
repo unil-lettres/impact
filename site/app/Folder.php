@@ -7,7 +7,6 @@ use App\Helpers\Helpers;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 class Folder extends Model
 {
@@ -145,16 +144,14 @@ class Folder extends Model
                 'title' => "{$this->title} ($copyLabel)",
             ];
         }
-        DB::transaction(function () use ($values) {
-            $copiedFolder = $this->replicate(['position'])->fill($values);
-            $copiedFolder->save();
+        $copiedFolder = $this->replicate(['position'])->fill($values);
+        $copiedFolder->save();
 
-            // Clone children (folder and cards).
-            $this->children
-                ->concat($this->cards)
-                ->sortBy('position')
-                ->each(fn ($entity) => $entity->clone($copiedFolder));
-        });
+        // Clone children (folder and cards).
+        $this->children
+            ->concat($this->cards)
+            ->sortBy('position')
+            ->each(fn ($entity) => $entity->clone($copiedFolder));
     }
 
     public function forceDelete()

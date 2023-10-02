@@ -128,6 +128,11 @@ class Folder extends Model
             // TODO throw error
             return;
         }
+
+        if ($destCourse && $destCourse->id === $this->course->id) {
+            $destCourse = null;
+        }
+
         if ($destFolder) {
             $values = [
                 'parent_id' => $destFolder->id,
@@ -146,6 +151,7 @@ class Folder extends Model
         }
         $copiedFolder = $this->replicate(['position'])->fill($values);
         $copiedFolder->save();
+        $copiedFolder->refresh();
 
         // Clone children (folder and cards).
         $this->children

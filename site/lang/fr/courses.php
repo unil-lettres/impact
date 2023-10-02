@@ -65,6 +65,7 @@ return [
     'finder.menu.clone_in.dialog.prompt' => 'Sélectionnez l\'espace de destination',
     'finder.menu.clone_in.dialog.cancel' => 'Annuler',
     'finder.menu.clone_in.dialog.accept' => 'Dupliquer',
+    'finder.menu.clone_in.dialog.help' => 'Les documents (case 5), le fichier source (case 1) et les étiquettes seront dupliqués. Les éditeurs ne seront pas exportés.',
     'finder.menu.clone_in.success' => 'Les éléments ont été copiés avec succès dans l\'espace.',
     'finder.menu.delete' => 'Supprimer',
     'finder.menu.delete.folder.confirm' => 'Cela va supprimer le dossier et tout ce qu\'il contient. Êtes-vous sûr ?',

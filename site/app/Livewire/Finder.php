@@ -213,7 +213,7 @@ class Finder extends Component
         $this->keysToEntities($keys)->each(
             fn ($entity) => $entity->forceDelete(),
         );
-        $this->js("selectedItems = []");
+        $this->js('selectedItems = []');
     }
 
     public function cloneIn(array $keys, Course $dest)

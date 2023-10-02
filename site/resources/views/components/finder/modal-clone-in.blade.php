@@ -42,6 +42,9 @@
                                 </option>
                             @endforeach
                         </select>
+                        <div id="recipient-name" class="form-text">
+                        {{ trans('courses.finder.menu.clone_in.dialog.help') }}
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

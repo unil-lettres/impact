@@ -153,7 +153,13 @@
                         <i class="fa-solid fa-clone me-2"></i>
                         <span class="flex-fill me-5">{{ trans('courses.finder.menu.copy')}}</span>
                     </li>
-                    <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                    <li
+                        class="dropdown-item d-flex cursor-pointer align-items-center"
+                        data-bs-toggle="modal"
+                        data-bs-target="#modalCloneIn"
+                        :data-bs-keys="selectedItems"
+                    >
+                        <i class="fa-solid fa-file-import me-2"></i>
                         <span class="flex-fill me-5">{{ trans('courses.finder.menu.clone_in')}}</span>
                     </li>
                     <li

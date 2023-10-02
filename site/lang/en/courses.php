@@ -66,6 +66,7 @@ return [
     'finder.menu.clone_in.dialog.prompt' => 'Choose the destination course',
     'finder.menu.clone_in.dialog.cancel' => 'Cancel',
     'finder.menu.clone_in.dialog.accept' => 'Copy',
+    'finder.menu.clone_in.dialog.help' => 'Documents (box 5), source file (box 1) and tags will be cloned. Editors will not be exported',
     'finder.menu.delete' => 'Delete',
     'finder.menu.delete.folder.confirm' => 'This action will delete the folder and all its content. Are you sure you want to continue?',
     'finder.menu.delete.card.confirm' => 'This action will delete the card. Are you sure you want to continue?',

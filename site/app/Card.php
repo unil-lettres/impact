@@ -15,13 +15,13 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class Card extends Model
 {
     use SoftDeletes {
         forceDelete as traitForceDelete;
     }
-
     use HasFactory;
 
     const TRANSCRIPTION = '{
@@ -269,9 +269,9 @@ class Card extends Model
     public function forceDelete()
     {
         // Delete attachments (only attachments and not regular file).
-        $this->attachments()->each(function ($attachment) {
-            $attachment->forceDelete();
-        });
+        $this->attachments()->each(
+            fn ($attachment) => $attachment->forceDelete(),
+        );
 
         // Remove this card from all enrollments as editors.
         $this->enrollments()->each(function ($enrollment) {
@@ -292,6 +292,8 @@ class Card extends Model
      *
      * All attachments will be cloned as well (but not regular file).
      *
+     * When cloned in a new course, all files and tags will be cloned.
+     *
      * @param  Folder|null  $destFolder The new parent folder. Null if the card
      * should be cloned in the same parent folder.
      * @param  Course|null  $course The new course. Null if the card should be
@@ -305,6 +307,11 @@ class Card extends Model
             // TODO throw error
             return;
         }
+
+        if ($destCourse && $destCourse->id === $this->course->id) {
+            $destCourse = null;
+        }
+
         DB::beginTransaction();
         $values = [];
         if ($destCourse) {
@@ -314,7 +321,7 @@ class Card extends Model
             ];
         } elseif ($destFolder) {
             $values = [
-                'course_id' => $destFolder->course_id,
+                'course_id' => $destFolder->course->id,
                 'folder_id' => $destFolder->id,
             ];
         } else {
@@ -325,16 +332,71 @@ class Card extends Model
         }
         $copiedCard = $this->replicate(['position'])->fill($values);
         $copiedCard->save();
+        $copiedCard->refresh();
+        $destCourse = $copiedCard->course;
 
-        // Attach tags.
-        $copiedCard->tags()->attach($this->tags->pluck('id'));
+        $failed = false;
+        $files = collect([]);
 
-        // Attach editors.
-        $this->enrollments()->each(fn ($enrollment) => $enrollment->addCard($copiedCard));
+        // Is the card copied in another course?
+        if ($copiedCard->course->id !== $this->course->id) {
+            $existingNamesInDest = $destCourse->tags()->pluck('name');
+
+            // Create tags that don't already exists in the destination course
+            // and attach them to the card.
+            $copiedCard->tags()->createMany(
+                collect($this->tags->toArray())
+                    ->filter(fn ($tag) => !$existingNamesInDest->contains($tag['name']))
+                    ->map(
+                        function ($tag) use ($destCourse) {
+                            $tag['course_id'] = $destCourse->id;
+                            return $tag;
+                        },
+                    )
+                    ->toArray(),
+            );
+
+            // Attach tags that already exists in the destination course to the
+            // card.
+            $destCourse
+                ->tags
+                ->filter(fn ($tag) => $existingNamesInDest->contains($tag->name))
+                ->each(fn ($tag) => $tag->cards()->attach($copiedCard->id));
+
+            // Copy source file.
+            static $alreadyCopiedFiles = [];
+            if (key_exists($this->file->id, $alreadyCopiedFiles)) {
+                // Only copy source file once. Avoid having multiple copies of
+                // sources files when cloning multiple cards that have the same
+                // source file. Can still happen when cloning files from
+                // multiple requests.
+                $copiedCard->file_id = $alreadyCopiedFiles[$this->file->id];
+                $copiedCard->save();
+            } else {
+                $copiedSourceFile = $this->file->clone($copiedCard->id);
+                if ($copiedSourceFile) {
+                    $files->push($copiedSourceFile);
+                    $copiedSourceFile->course_id = $copiedCard->course->id;
+                    $copiedSourceFile->save();
+                    $copiedCard->file_id = $copiedSourceFile->id;
+                    $copiedCard->save();
+
+                    $alreadyCopiedFiles[$this->file->id] = $copiedSourceFile->id;
+                } else {
+                    $failed = true;
+                }
+            }
+        } else {
+            // Attach tags.
+            $copiedCard->tags()->attach($this->tags->pluck('id'));
+
+            // Attach editors.
+            $this->enrollments()->each(
+                fn ($enrollment) => $enrollment->addCard($copiedCard),
+            );
+        }
 
         // Clone attachments.
-        $files = collect([]);
-        $failed = false;
         $this->attachments()->each(
             function ($attachment) use ($copiedCard, $files, $failed) {
                 if ($failed) {
@@ -345,6 +407,7 @@ class Card extends Model
                 if ($copiedFile) {
                     $files->push($copiedFile);
                     $copiedFile->card_id = $copiedCard->id;
+                    $copiedFile->course_id = $copiedCard->course->id;
                     $copiedFile->save();
                 } else {
                     $failed = true;
@@ -368,7 +431,7 @@ class Card extends Model
      */
     public function move(Folder $folder = null): void
     {
-        if ($folder && $folder->course_id !== $this->course_id) {
+        if ($folder && $folder->course->id !== $this->course->id) {
             // TODO throw error
             return;
         }

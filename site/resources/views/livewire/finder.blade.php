@@ -176,6 +176,8 @@
             <button class="btn" @click="selectAll" x-show="!isAllSelected()">{{ trans('courses.finder.select_all')}}</button>
         </div>
     </div>
+    <button class="btn" @click="expandAll()">étendre tout</button>
+    <button class="btn" @click="openedFolder = []">collapse all</button>
     <div class="d-flex row-height">
         <div class='flex-fill px-1'>
             <div {!! $this->sortAttributes('title') !!}>
@@ -298,6 +300,17 @@
                     }
 
                     this.closeAllDropDowns(element);
+                },
+                expandAll() {
+                    _.each(
+                        document.querySelectorAll('.finder-folder'),
+                        element => {
+                            const key = element.getAttribute("data-key");
+                            if (!this.openedFolder.includes(key)) {
+                                this.openedFolder.push(key);
+                            }
+                        },
+                    );
                 },
                 toggleOpen(element, key) {
                     this.openedFolder = _.xor(this.openedFolder, [key]);

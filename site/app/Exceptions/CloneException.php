@@ -9,4 +9,11 @@ use Exception;
  */
 class CloneException extends Exception
 {
+    public function __construct(string $message = null)
+    {
+        if (empty($message)) {
+            $message = trans('errors.clone_in');
+        }
+        parent::__construct($message);
+    }
 }

@@ -9,6 +9,10 @@ use App\Enums\FinderRowType;
 use App\Exceptions\CloneException;
 use App\Folder;
 use App\Helpers\Helpers;
+use App\Services\Clone\CloneCardService;
+use App\Services\Clone\CloneFolderService;
+use App\Services\Clone\MassCloneService;
+use App\Services\MoveService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\Computed;
@@ -22,13 +26,9 @@ class Finder extends Component
     const DEFAULT_SORT_DIRECTION = 'asc';
 
     public $course;
-
     public $sortColumn = self::DEFAULT_SORT_COLUMN;
-
     public $sortDirection = self::DEFAULT_SORT_DIRECTION;
-
     public $filters;
-
     public $filterCardDetails;
 
     public function mount()
@@ -155,13 +155,13 @@ class Finder extends Component
     public function cloneCard(Card $card): void
     {
         // TODO authorizations (and @can in the view)
-        $card->clone();
+        (new CloneCardService($card))->clone();
     }
 
     public function cloneFolder(Folder $folder): void
     {
         // TODO authorizations (and @can in the view)
-        $folder->clone();
+        (new CloneFolderService($folder))->clone();
     }
 
     public function cloneMultiple(array $keys): void
@@ -170,7 +170,9 @@ class Finder extends Component
         // TODO valdier les inputs
         // TODO doit être teacher du course des keys
         // TODO toutes les keys doivent provenir du même course
-        $this->keysToEntities($keys)->each(fn ($entity) => $entity->clone());
+        $this->keysToEntities($keys)->each(
+            fn ($entity) => MassCloneService::getCloneService($entity)->clone(),
+        );
     }
 
     public function renameFolder(Folder $folder, string $newName)
@@ -233,22 +235,14 @@ class Finder extends Component
         // TODO doit être teacher du course des keys
         // TODO toutes les keys doivent provenir du même course
         try {
-            $this
-                ->keysToEntities($keys)
-                ->each(fn ($entity) => (false
-                    || $entity->canClone(null, $dest)
-                    || throw new CloneException())
-                )
-                ->each(fn ($entity) => $entity->clone(null, $dest));
-
+            MassCloneService::massCloneCardsAndFolders(
+                $this->keysToEntities($keys),
+                $dest,
+            );
             $this->flashMessage(trans('courses.finder.menu.clone_in.success'));
         } catch (CloneException $e) {
-            $this->flashMessage(
-                trans('courses.finder.menu.clone_in.error'),
-                'text-bg-danger',
-            );
+            $this->flashMessage($e->getMessage(), 'text-bg-danger');
         }
-
     }
 
     public function moveIn(array $keys, int $dest = null)
@@ -258,7 +252,7 @@ class Finder extends Component
         // TODO doit être teacher du course des keys
         // TODO toutes les keys doivent provenir du même course
         $this->keysToEntities($keys)->each(
-            fn ($entity) => $entity->move($dest ? Folder::find($dest) : null),
+            fn ($entity) => MoveService::moveCardOrFolder($entity, $dest ? Folder::find($dest) : null),
         );
 
         $this->flashMessage(trans('courses.finder.menu.move_in.success'));
@@ -275,6 +269,11 @@ class Finder extends Component
                 return $type === FinderRowType::Card ? Card::find($key) : Folder::find($key);
             })
             ->filter(function ($entity) use ($keys, $withoutDescendants) {
+                // Some times, we want only the most "oldest" parent of an item.
+                // When we select a folder, all its children are automatically
+                // selected. So we need to filter out the children. If not,
+                // when perform a move action (or other), we will move all the
+                // children instead of just the parent folder.
                 return true
                     && $withoutDescendants
                     && $entity->getAncestors(false)->pluck('id')->map(

@@ -2,13 +2,11 @@
 
 namespace App;
 
-use App\Enums\StoragePath;
 use App\Scopes\HideAttachmentsScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Support\Facades\Storage;
 
 class File extends Model
 {
@@ -85,32 +83,5 @@ class File extends Model
     public function isAttachment(): bool
     {
         return ! is_null($this->card_id);
-    }
-
-    /**
-     * Clone a file and return it.
-     *
-     * @param  string  $prefix Prefix to add to the filename
-     */
-    public function clone($prefix = ''): ?File
-    {
-        // Clean filename to keep only the name of the file
-        $cleanedFilename = pathinfo($this->filename, PATHINFO_BASENAME);
-        $copiedFilename = substr($prefix.$cleanedFilename, 0, 99);
-
-        $success = Storage::disk('public')->copy(
-            StoragePath::UploadStandard.'/'.$cleanedFilename,
-            StoragePath::UploadStandard.'/'.$copiedFilename,
-        );
-
-        if (! $success) {
-            return null;
-        }
-
-        $file = $this->replicate()->fill(['filename' => $copiedFilename]);
-
-        $file->save();
-
-        return $file;
     }
 }

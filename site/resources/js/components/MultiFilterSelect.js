@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { createRoot } from "react-dom/client";
 
 import MultiSelect from "./MultiSelect";
 import { components } from 'react-select';
-import _ from 'lodash';
+import _, { filter } from 'lodash';
 
 export default class MultiFilterSelect extends MultiSelect {
 
@@ -64,8 +64,84 @@ const ValueContainer = ({ children, getValue, ...props }) => {
     );
 };
 
+const MenuList = props => {
+    const checkedFilters = window.MultiFilterSelect.checkedFilter;
+
+    function handleFilterChange(event) {
+        dispatchToggleFilter(event.target.value, event.target.checked);
+    }
+
+    function dispatchToggleFilter(filter, checked) {
+        const toggleEvent = new CustomEvent('toggle-filter-card-detail', {
+            bubbles: true,
+            cancelable: false,
+            detail: {
+                filter: filter,
+                checked: checked,
+            },
+        });
+        checkedFilters[filter] = checked;
+        setCheckedStates({...checkedFilters});
+        window.dispatchEvent(toggleEvent);
+    }
+
+    const [checkedStates, setCheckedStates] = useState({...checkedFilters});
+
+    function getFilterComponent(filterName, label) {
+        return (
+            <div className="form-check" key={filterName}>
+                <input
+                    onChange={handleFilterChange}
+                    checked={checkedStates[filterName]}
+                    className="form-check-input"
+                    type="checkbox"
+                    value={filterName}
+                ></input>
+                <label
+                    className="form-check-label"
+                    onClick={() => dispatchToggleFilter(filterName, !checkedStates[filterName])}
+                >
+                    {label}
+                </label>
+            </div>
+        );
+    }
+
+    const {name, ...boxes} = checkedFilters;
+    const boxesComponents = _.map(
+        boxes,
+        (__, filterName) => getFilterComponent(
+            filterName,
+            // Box2 => 2
+            filterName.replace(/[^0-9]/g, ""),
+        ),
+    );
+    return (
+        <components.MenuList {...props}>
+            {props.children}
+            <div className="d-flex gap-2 justify-content-evenly flex-column flex-xl-row px-2 pt-1 border-top">
+                <div>
+                    {getFilterComponent('name', window.MultiFilterSelect.dataNameLabel)}
+                </div>
+                <div className='d-flex flex-column flex-lg-row gap-2'>
+                    <div>{window.MultiFilterSelect.dataBoxLabel} :</div>
+                    {boxesComponents}
+                </div>
+            </div>
+        </components.MenuList>
+    );
+};
+
 window.MultiFilterSelect = {
     roots: [],
+
+    // Initialized in Finder.initFilters().
+    // We need to keep checked filter outside of MenuList component cause
+    // it is destroyed each time the menu is closed.
+    checkedFilter: {},
+
+    dataNameLabel: '',
+    dataBoxLabel: '',
     create() {
 
         _.each(this.roots, (root) => {
@@ -103,6 +179,8 @@ window.MultiFilterSelect = {
         if (element) {
             const root = createRoot(element);
             this.roots.push(root);
+            this.dataNameLabel = element.getAttribute('data-name-label');
+            this.dataBoxLabel = element.getAttribute('data-box-label');
 
             const data = element.getAttribute('data');
             const placeholder = element.getAttribute('placeholder');
@@ -118,7 +196,7 @@ window.MultiFilterSelect = {
                     refEl={element}
                     reactAttributes={{
                         hideSelectedOptions: false,
-                        components: { ValueContainer },
+                        components: { ValueContainer, MenuList },
                         styles: {
                             valueContainer: (base, value) => ({
                                 ...base,

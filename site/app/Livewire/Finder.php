@@ -102,6 +102,21 @@ class Finder extends Component
         );
     }
 
+    /**
+     * Add or remove a filter (detail) on the card.
+     */
+    public function toggleFilterCardDetail(string $filter, bool $checked)
+    {
+        if (! in_array(
+            $filter,
+            ['name', CardBox::Box2, CardBox::Box3, CardBox::Box4],
+        )) {
+            return;
+        }
+
+        $this->filterCardDetails[$filter] = $checked;
+    }
+
     public function sortAttributes($column): string
     {
         if ($column === $this->sortColumn) {
@@ -117,27 +132,6 @@ class Finder extends Component
             class='d-flex cursor-pointer gap-2 sort-direction-$directionCss'
             wire:click='sort("$column", "$direction")'
         HTML;
-    }
-
-    /**
-     * Add or remove a filter (detail) on the card.
-     */
-    public function toggleFilterCardDetail(string $detail)
-    {
-        if (! in_array(
-            $detail,
-            ['name', CardBox::Box2, CardBox::Box3, CardBox::Box4],
-        )) {
-            return;
-        }
-
-        if ($this->filterCardDetails->contains($detail)) {
-            $this->filterCardDetails = $this->filterCardDetails->filter(
-                fn (string $_detail) => $_detail !== $detail,
-            );
-        } else {
-            $this->filterCardDetails->push($detail);
-        }
     }
 
     public function clearFilters()
@@ -285,8 +279,13 @@ class Finder extends Component
 
     private function initFilters()
     {
-        // TODO check what is the default checked state on legacy
-        $this->filterCardDetails = collect(['name', 'box2', 'box3', 'box4']);
+        $this->filterCardDetails = collect([
+            'name' => true,
+            CardBox::Box2 => false,
+            CardBox::Box3 => false,
+            CardBox::Box4 => false,
+        ]);
+
         $this->filters = collect([
             'tag' => collect([]),
             'editor' => collect([]),
@@ -294,17 +293,8 @@ class Finder extends Component
             'card' => collect([]),
         ]);
 
-        // Need to update checked state with Javascript because of how checked
-        // attribute works (updating the HTML with the attribute don't show
-        // the checked state visually).
-        collect([
-            'filterCardName',
-            'filterCardCase2',
-            'filterCardCase3',
-            'filterCardCase4',
-        ])->each(function ($filter) {
-            $this->js("document.getElementById('$filter').checked = true;");
-        });
+        $jsonFilters = $this->filterCardDetails->toJson();
+        $this->js("window.MultiFilterSelect.checkedFilter = $jsonFilters");
     }
 
     private function flashMessage(

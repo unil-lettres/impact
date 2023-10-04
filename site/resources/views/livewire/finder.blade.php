@@ -1,4 +1,8 @@
-<div class='finder' x-cloak x-data="finderData">
+<div
+    class='finder'
+    x-cloak x-data="finderData"
+    wire:toggle-filter-card-detail.window="toggleFilterCardDetail(...Object.values($event.detail))"
+>
     <div class="toast-container position-fixed top-0 end-0 p-3">
         <div
             class="toast align-items-center {{session('bsClass')}} border-0 {{session('message') ? 'show' : 'hide'}}"
@@ -60,54 +64,9 @@
                     noOptionsMessage="{{ trans('courses.finder.filter.names.empty') }}"
                     data='{{ json_encode(['record' => 'card', 'options' => collect([])]) }}'
                     placeholder='{{ trans("courses.finder.filter.names") }}'
+                    data-name-label='{{ trans('courses.finder.name') }}'
+                    data-box-label='{{ trans('courses.finder.filter.box') }}'
                 ></div>
-                <div class="d-flex gap-2">
-                    <div class="form-check border-end pe-2">
-                        <label class="form-check-label" for="filterCardName">
-                            {{ trans('courses.finder.name') }}
-                        </label>
-                        <input
-                            wire:click="toggleFilterCardDetail('name')"
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="filterCardName">
-                    </div>
-                    <div>{{ trans('courses.finder.filter.box') }} :</div>
-                    <div class="form-check">
-                        <input
-                            wire:click="toggleFilterCardDetail('{{'App\\Enums\\CardBox'::Box2}}')"
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="filterCardCase2">
-                        <label class="form-check-label" for="filterCardCase2">
-                            2
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                            wire:click="toggleFilterCardDetail('{{'App\\Enums\\CardBox'::Box3}}')"
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="filterCardCase3">
-                        <label class="form-check-label" for="filterCardCase3">
-                            3
-                        </label>
-                    </div>
-                    <div class="form-check">
-                        <input
-                            wire:click="toggleFilterCardDetail('{{'App\\Enums\\CardBox'::Box4}}')"
-                            class="form-check-input"
-                            type="checkbox"
-                            value=""
-                            id="filterCardCase4">
-                        <label class="form-check-label" for="filterCardCase4">
-                            4
-                        </label>
-                    </div>
-                </div>
             </div>
             <div class="text-nowrap">
                 <button

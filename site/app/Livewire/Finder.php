@@ -53,7 +53,8 @@ class Finder extends Component
     {
         return false
             || $this->sortColumn != self::DEFAULT_SORT_COLUMN
-            || $this->sortDirection != self::DEFAULT_SORT_DIRECTION;
+            || $this->sortDirection != self::DEFAULT_SORT_DIRECTION
+            || !$this->filters->every(fn (Collection $value) => $value->isEmpty());
     }
 
     #[Computed]

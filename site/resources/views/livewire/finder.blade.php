@@ -78,7 +78,7 @@
                 </button>
             </div>
         </div>
-        <div x-show="selectedItems.length > 0" class="bg-light rounded-pill px-3 py-1" @click.stop>
+        <div x-show="selectedItems.length > 0" class="bg-light rounded-pill px-3 py-1 text-nowrap overflow-hidden" @click.stop>
             <a href="#" class="me-2 text-body" @click="selectedItems = []"><i class="fa-solid fa-xmark"></i></a>
             <span>
                 <strong x-text="selectedItems.length"></strong>

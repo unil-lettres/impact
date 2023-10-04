@@ -102,19 +102,19 @@ export default class MultiSelect extends Component {
             .then((response) => {
                 console.log(response);
 
-                const newTag = {
-                    value: response?.data?.tag_id,
+                const newEntity = {
+                    value: response?.data?.entity_id,
                     label: inputValue,
                 };
 
                 this.setState((prevState) => ({
                     options: [
                         ...prevState.options,
-                        newTag,
+                        newEntity,
                     ],
                     values: [
                         ...prevState.values,
-                        newTag,
+                        newEntity,
                     ]
                 }));
             })

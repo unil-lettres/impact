@@ -1,4 +1,4 @@
-import React, { Children } from 'react';
+import React from 'react';
 import { createRoot } from "react-dom/client";
 
 import MultiSelect from "./MultiSelect";
@@ -48,7 +48,7 @@ export default class MultiFilterSelect extends MultiSelect {
                 },
             });
             this.props.refEl.dispatchEvent(selectedEvent);
-            resolve();
+            resolve({ data: { entity_id: option } });
         });
     }
 }
@@ -57,12 +57,12 @@ const ValueContainer = ({ children, getValue, ...props }) => {
     const length = getValue().length;
     const label = document.querySelector("[data-filter-label]").getAttribute('data-filter-label');
     return (
-      <components.ValueContainer {...props}>
+        <components.ValueContainer {...props}>
         {children}
         {length > 1 && (<span className='react-select-badge'>{length} {label}</span>)}
-      </components.ValueContainer>
+        </components.ValueContainer>
     );
-  };
+};
 
 window.MultiFilterSelect = {
     roots: [],

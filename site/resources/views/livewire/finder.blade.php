@@ -198,16 +198,22 @@
             </button>
         </div>
     </div>
-    <button class="btn" @click="expandAll()">étendre tout</button>
-    <button class="btn" @click="openedFolder = []">collapse all</button>
     <div class="d-flex row-height">
         <div class='flex-fill px-1'>
-            <div {!! $this->sortAttributes('title') !!}>
-                <div>{{ trans('courses.finder.name') }}</div>
-                <div>
-                    <i class="fa-solid fa-arrow-down"></i>
-                    <i class="fa-solid fa-xmark d-none"></i>
+            <div class="d-flex">
+                <div {!! $this->sortAttributes('title') !!}>
+                    <div>{{ trans('courses.finder.name') }}</div>
+                    <div>
+                        <i class="fa-solid fa-arrow-down"></i>
+                        <i class="fa-solid fa-xmark d-none"></i>
+                    </div>
                 </div>
+                <button class="btn ms-3" @click="expandAll()">
+                    {{ trans('courses.finder.expand_all') }}
+                </button>
+                <button class="btn" @click="openedFolder = []">
+                {{ trans('courses.finder.collapse_all') }}
+                </button>
             </div>
         </div>
         <div class='column-small px-1 d-none d-sm-block'>

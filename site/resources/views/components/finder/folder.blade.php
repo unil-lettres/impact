@@ -74,7 +74,7 @@
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.open')}}
                         </span>
-                        <span class="text-secondary ms-3 text-lowercase fs-7 fw-light">
+                        <span class="text-secondary ms-3 text-lowercase fw-light">
                             {{ trans('courses.finder.menu.open.help')}}
                         </span>
                     </li>
@@ -87,7 +87,7 @@
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.close')}}
                         </span>
-                        <span class="text-secondary ms-3 text-lowercase fs-7 fw-light">
+                        <span class="text-secondary ms-3 text-lowercase fw-light">
                             {{ trans('courses.finder.menu.open.help')}}
                         </span>
                     </li>

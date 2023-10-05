@@ -43,7 +43,7 @@ return [
     'finder.state' => '',
     'finder.selected' => 'selected item(s) including',
     'finder.selected_cards' => 'card(s)',
-    'finder.select_all' => 'select all',
+    'finder.select_all' => 'Select all',
     'finder.copy' => 'copy',
     'finder.empty' => 'No item in this space',
     'finder.collapse_all' => 'Collapse all',

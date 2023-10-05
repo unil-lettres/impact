@@ -43,7 +43,7 @@ return [
     'finder.state' => 'Etat',
     'finder.selected' => 'élément(s) sélectionné(s) dont',
     'finder.selected_cards' => 'fiche(s)',
-    'finder.select_all' => 'tout séléctionner',
+    'finder.select_all' => 'Tout séléctionner',
     'finder.copy' => 'copie',
     'finder.empty' => 'Aucun élément dans cet espace',
     'finder.collapse_all' => 'Tout fermer',

@@ -4,7 +4,6 @@ namespace App\Services\Clone;
 
 use App\Card;
 use App\Course;
-use App\Exceptions\CloneException;
 use App\Folder;
 use Illuminate\Support\Collection;
 
@@ -12,8 +11,7 @@ class MassCloneService
 {
     public static function getCloneService(
         Card|Folder $cardOrFolder,
-    ): CloneCardService|CloneFolderService
-    {
+    ): CloneCardService|CloneFolderService {
         if ($cardOrFolder instanceof Card) {
             return new CloneCardService($cardOrFolder);
         }
@@ -24,8 +22,7 @@ class MassCloneService
     public static function massCloneCardsAndFolders(
         Collection $cardsAndFolders,
         Course $dest,
-    ): void
-    {
+    ): void {
         $cardsAndFolders
             // We must check all entities before cloning any of them.
             ->each(fn ($entity) => static::getCloneService($entity)->checkClone(null, $dest))

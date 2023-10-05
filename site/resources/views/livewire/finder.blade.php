@@ -78,7 +78,7 @@
                 </button>
             </div>
         </div>
-        <div x-show="selectedItems.length > 0" class="bg-light rounded-pill px-3 py-1 text-nowrap overflow-hidden" @click.stop>
+        <div x-show="selectedItems.length > 0" class="bg-light rounded-pill px-3 py-1 text-nowrap" @click.stop>
             <a href="#" class="me-2 text-body" @click="selectedItems = []"><i class="fa-solid fa-xmark"></i></a>
             <span>
                 <strong x-text="selectedItems.length"></strong>
@@ -98,6 +98,17 @@
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </button>
                 <ul class="dropdown-menu">
+                    <li
+                        class="dropdown-item d-flex cursor-pointer align-items-center d-flex d-sm-none"
+                        @click="selectAll"
+                    >
+                        <span class="flex-fill me-5">
+                            {{ trans('courses.finder.select_all')}}
+                        </span>
+                    </li>
+                    <li class="d-block d-sm-none">
+                        <hr class="dropdown-divider">
+                    </li>
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         data-bs-toggle="modal"
@@ -152,7 +163,7 @@
                     </li>
                 </ul>
             </div>
-            <button class="btn" @click="selectAll" x-show="!isAllSelected()">
+            <button class="btn d-none d-sm-inline-block" @click="selectAll" x-show="!isAllSelected()">
                 {{ trans('courses.finder.select_all')}}
             </button>
         </div>

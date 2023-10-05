@@ -26,9 +26,13 @@ class Finder extends Component
     const DEFAULT_SORT_DIRECTION = 'asc';
 
     public $course;
+
     public $sortColumn = self::DEFAULT_SORT_COLUMN;
+
     public $sortDirection = self::DEFAULT_SORT_DIRECTION;
+
     public $filters;
+
     public $filterCardDetails;
 
     public function mount()
@@ -54,7 +58,7 @@ class Finder extends Component
         return false
             || $this->sortColumn != self::DEFAULT_SORT_COLUMN
             || $this->sortDirection != self::DEFAULT_SORT_DIRECTION
-            || !$this->filters->every(fn (Collection $value) => $value->isEmpty());
+            || ! $this->filters->every(fn (Collection $value) => $value->isEmpty());
     }
 
     #[Computed]

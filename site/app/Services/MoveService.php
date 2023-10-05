@@ -15,7 +15,7 @@ class MoveService
      * @param  Folder|null  $dest The new parent folder. Null if the card or
      * folder should be moved to the root folder.
      */
-    public static function moveCardOrFolder(Card|Folder $cardOrFolder, ?Folder $dest = null)
+    public static function moveCardOrFolder(Card|Folder $cardOrFolder, Folder $dest = null)
     {
         if ($cardOrFolder instanceof Card) {
             static::moveCard($cardOrFolder, $dest);
@@ -27,14 +27,14 @@ class MoveService
     /**
      * Move this folder to another folder of the same course.
      *
-     * @param  Folder $folder The folder to move.
+     * @param  Folder  $folder The folder to move.
      * @param  Folder|null  $dest The new parent folder. Null if the folder
      * should be moved to the root folder.
      *
      * @throws InvalidArgumentException If the folder is moved into a folder of
      * another course or into itself or into one of its children.
      */
-    public static function moveFolder(Folder $folder, ?Folder $dest = null): void
+    public static function moveFolder(Folder $folder, Folder $dest = null): void
     {
         if ($dest && $dest->course_id !== $folder->course_id) {
             throw new InvalidArgumentException(
@@ -70,7 +70,7 @@ class MoveService
      * @throws InvalidArgumentException If the card is moved into a folder of
      * another course.
      */
-    public static function moveCard(Card $card, ?Folder $folder = null): void
+    public static function moveCard(Card $card, Folder $folder = null): void
     {
         if ($folder && $folder->course->id !== $card->course->id) {
             throw new InvalidArgumentException(
@@ -79,5 +79,4 @@ class MoveService
         }
         $card->update(['folder_id' => $folder?->id]);
     }
-
 }

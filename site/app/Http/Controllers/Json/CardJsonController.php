@@ -45,7 +45,6 @@ class CardJsonController extends Controller
         $card->update([
             $box => $html,
         ]);
-        $card->save();
 
         return response()->json([
             'success' => $id,
@@ -77,7 +76,6 @@ class CardJsonController extends Controller
                 $request->get('transcription')
             ),
         ]);
-        $card->save();
 
         return response()->json([
             'success' => $id,

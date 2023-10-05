@@ -28,7 +28,6 @@ class CardObserver
             $card->update([
                 'state_id' => $state->id,
             ]);
-            $card->save();
         }
     }
 

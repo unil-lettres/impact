@@ -66,7 +66,7 @@
             >
                 <i class="fa-solid fa-ellipsis-vertical"></i>
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu dropdown-with-icon">
                 <li class="dropdown-item d-flex cursor-pointer align-items-center"
                     @click="window.location = '{{ route('cards.show', $card->id) }}'"
                 >

@@ -48,3 +48,16 @@
     @extend .text-primary;
     color: $niagara!important;
 }
+
+.dropdown-with-icon .dropdown-item > i {
+    width: 25px;
+    text-align: center;
+}
+
+.cursor-default {
+    cursor: default;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

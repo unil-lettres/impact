@@ -18,7 +18,7 @@
     x-data="{ key: '{{ $folder->getType() }}-{{ $folder->id }}'}"
     :data-key="key"
     @click.stop="toggleSelect($event, $el)"
-    @dblclick.stop="toggleOpen($el, key)"
+    wire:dblclick.stop="openFolder({{$folder->id}})"
     wire:key='{{ $folder->getType() }}-{{ $folder->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}
 >
@@ -64,7 +64,7 @@
                 >
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </button>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu dropdown-with-icon">
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         x-show.important="!openedFolder.includes(key)"
@@ -174,16 +174,16 @@
                     :depth="$depth + 1"
                     :lockedMove="$lockedMove"
                     :filters="$filters"
-                    modalCloneId="{{$modalCloneId}}"
-                    modalMoveId="{{$modalMoveId}}"
+                    :modalCloneId="$modalCloneId"
+                    :modalMoveId="$modalMoveId"
                 />
             @else
                 <x-finder.card
                     :card="$row"
                     :depth="$depth + 1"
                     :lockedMove="$lockedMove"
-                    modalCloneId="{{$modalCloneId}}"
-                    modalMoveId="{{$modalMoveId}}"
+                    :modalCloneId="$modalCloneId"
+                    :modalMoveId="$modalMoveId"
                 />
             @endif
         @endforeach

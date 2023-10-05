@@ -78,7 +78,7 @@ Route::middleware(['auth', 'app'])->group(function () {
 
     // Folders
     Route::resource('folders', FolderController::class)->except([
-        'destroy',
+        'destroy', 'edit'
     ]);
 
     // Files

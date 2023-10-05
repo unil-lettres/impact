@@ -53,7 +53,7 @@
                     <button
                         data-bs-dismiss="modal"
                         type="button"
-                        wire:click="moveIn(keys, destFolder)"
+                        wire:click="moveIn(keys, destFolder, reloadAfterSave)"
                         class="btn btn-primary"
                     >
                         {{ trans('courses.finder.menu.move_in.dialog.accept') }}
@@ -69,12 +69,14 @@
             // Contains the selected items on which the action should be performed.
             keys: [],
             _destFolder: null,
+            reloadAfterSave: false,
             get destFolder() { return this._destFolder || null},
             init() {
                 const modal = document.getElementById('{{$id}}');
                 modal.addEventListener('show.bs.modal', event => {
                     const button = event.relatedTarget;
                     this.keys = button.getAttribute('data-bs-keys').split(',');
+                    this.reloadAfterSave = button.hasAttribute('data-bs-reload');
                     this.closeAllDropDowns();
                 });
             },

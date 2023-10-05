@@ -20,7 +20,7 @@
             @can('create', [\App\Folder::class, $course])
                 <a href="{{ route('folders.create', ['course' => $course->id]) }}"
                    class="btn btn-primary">
-                    Créer un dossier
+                   {{ trans('folders.create') }}
                 </a>
             @endcan
             @can('create', [\App\Card::class, $course])
@@ -32,7 +32,11 @@
         @endsection
     @endif
     @section('content')
-        <livewire:finder :course="$course" />
+        <livewire:finder
+            :course="$course"
+            modalCloneId="modalCloneIn"
+            modalMoveId="modalMoveId"
+        />
         <!-- <div id="course">
             <div>
                 @include('shared.folders')

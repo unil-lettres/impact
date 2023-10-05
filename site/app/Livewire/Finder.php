@@ -27,6 +27,12 @@ class Finder extends Component
 
     public $course;
 
+    public $folder;
+
+    public $modalCloneId;
+
+    public $modalMoveId;
+
     public $sortColumn = self::DEFAULT_SORT_COLUMN;
 
     public $sortDirection = self::DEFAULT_SORT_DIRECTION;
@@ -46,7 +52,7 @@ class Finder extends Component
         return Helpers::getFolderContent(
             Course::find($this->course->id),
             $this->filters,
-            null,
+            $this->folder,
             $this->sortColumn,
             $this->sortDirection,
         );
@@ -107,6 +113,11 @@ class Finder extends Component
         );
     }
 
+    public function openFolder(Folder $folder)
+    {
+        return $this->redirect(route('folders.show', $folder->id));
+    }
+
     /**
      * Add or remove a filter (detail) on the card.
      */
@@ -157,10 +168,17 @@ class Finder extends Component
         (new CloneCardService($card))->clone();
     }
 
-    public function cloneFolder(Folder $folder): void
+    public function cloneFolder(
+        Folder $folder,
+        bool $displayFlash = false,
+    ): void
     {
         // TODO authorizations (and @can in the view)
         (new CloneFolderService($folder))->clone();
+
+        if ($displayFlash) {
+            $this->flashMessage(trans('courses.finder.menu.copy.success'));
+        }
     }
 
     public function cloneMultiple(array $keys): void
@@ -174,7 +192,11 @@ class Finder extends Component
         );
     }
 
-    public function renameFolder(Folder $folder, string $newName)
+    public function renameFolder(
+        Folder $folder,
+        string $newName,
+        bool $reloadAfterSave = false,
+    )
     {
         // TODO authorizations (and @can in the view)
         $validator = Validator::make(['newName' => $newName], [
@@ -194,6 +216,10 @@ class Finder extends Component
 
         $folder->title = $validated['newName'];
         $folder->save();
+
+        if ($reloadAfterSave) {
+            return $this->redirect(url()->previous());
+        }
     }
 
     public function render()
@@ -201,11 +227,15 @@ class Finder extends Component
         return view('livewire.finder');
     }
 
-    public function destroyFolder(Folder $folder)
+    public function destroyFolder(Folder $folder, $returnToCourse = false)
     {
         $this->authorize('forceDelete', $folder);
 
         $folder->forceDelete();
+
+        if ($returnToCourse) {
+            return $this->redirect(route('courses.show', $folder->course->id));
+        }
     }
 
     public function destroyCard(Card $card)
@@ -244,7 +274,11 @@ class Finder extends Component
         }
     }
 
-    public function moveIn(array $keys, int $dest = null)
+    public function moveIn(
+        array $keys,
+        int $dest = null,
+        bool $reloadAfterSave = false,
+    )
     {
         // TODO authorizations (and @can in the view)
         // TODO valdier les inputs
@@ -255,6 +289,10 @@ class Finder extends Component
         );
 
         $this->flashMessage(trans('courses.finder.menu.move_in.success'));
+
+        if ($reloadAfterSave) {
+            return $this->redirect(url()->previous());
+        }
     }
 
     private function keysToEntities(

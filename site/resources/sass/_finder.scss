@@ -28,14 +28,6 @@
         line-height: 40px;
     }
 
-    .cursor-default {
-        cursor: default;
-    }
-
-    .cursor-pointer {
-        cursor: pointer;
-    }
-
     .sort-direction {
 
         &-asc {
@@ -106,11 +98,6 @@
 
     .icons {
         width: 40px;
-    }
-
-    .dropdown-item > i {
-        width: 25px;
-        text-align: center;
     }
 
     .background-hover:hover {

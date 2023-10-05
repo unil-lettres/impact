@@ -97,6 +97,7 @@ class FolderController extends Controller
     {
         $this->authorize('view', $folder);
 
+        // TODO remove cards and folders
         return view('folders.show', [
             'folder' => $folder,
             'breadcrumbs' => $folder
@@ -107,34 +108,6 @@ class FolderController extends Controller
             'folders' => $folder
                 ->children()
                 ->get(),
-        ]);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @return Renderable
-     *
-     * @throws AuthorizationException
-     */
-    public function edit(Folder $folder)
-    {
-        $this->authorize('update', $folder);
-
-        // Remove current folder from course folders list
-        $folders = $folder->course
-            ->folders()
-            ->get()
-            ->reject(function ($courseFolder) use ($folder) {
-                return $courseFolder->id === $folder->id;
-            });
-
-        return view('folders.edit', [
-            'folder' => $folder,
-            'folders' => $folders,
-            'parent' => $folder->parent,
-            'breadcrumbs' => $folder
-                ->breadcrumbs(true),
         ]);
     }
 

@@ -2,7 +2,10 @@
     class='finder'
     x-cloak x-data="finderData"
     wire:toggle-filter-card-detail.window="toggleFilterCardDetail(...Object.values($event.detail))"
->
+    wire:finder-destroy-folder.window="destroyFolder($event.detail.folderId, true)"
+    wire:finder-clone-folder.window="cloneFolder($event.detail.folderId, true)"
+    @finder-rename-folder.window="renameFolder($wire, $event.detail.folderId, true)"
+    >
     <div class="toast-container position-fixed top-0 end-0 p-3">
         <div
             class="toast align-items-center {{session('bsClass')}} border-0 {{session('message') ? 'show' : 'hide'}}"
@@ -24,8 +27,8 @@
             </div>
         </div>
     </div>
-    <x-finder.modal-clone-in id="modalCloneIn" :course="$course" />
-    <x-finder.modal-move-in id="modalMoveIn" :course="$course" />
+    <x-finder.modal-clone-in :id="$modalCloneId" :course="$course" />
+    <x-finder.modal-move-in :id="$modalMoveId" :course="$course" />
     <div class="toolsbox mt-3" style="height: 63px;">
         <div
             x-show.important="selectedItems.length === 0"
@@ -237,15 +240,15 @@
                     :sortDirection="$this->sortDirection"
                     :lockedMove="$this->lockedMove"
                     :filters="$this->filters"
-                    modalCloneId="modalCloneIn"
-                    modalMoveId="modalMoveIn"
+                    :modalCloneId="$modalCloneId"
+                    :modalMoveId="$modalMoveId"
                 />
             @else
                 <x-finder.card
                     :card="$row"
                     :lockedMove="$this->lockedMove"
-                    modalCloneId="modalCloneIn"
-                    modalMoveId="modalMoveIn"
+                    :modalCloneId="$modalCloneId"
+                    :modalMoveId="$modalMoveId"
                 />
             @endif
         @empty
@@ -389,10 +392,10 @@
                 isAllSelected() {
                     return this.selectedItems.length === document.querySelectorAll('.finder-folder, .finder-card').length;
                 },
-                renameFolder($wire, folderId) {
+                renameFolder($wire, folderId, reloadAfterSave = false) {
                     const newName = prompt("{{ trans('courses.finder.menu.rename_prompt') }}");
                     if (newName !== null) {
-                        $wire.call("renameFolder", folderId, newName);
+                        $wire.call("renameFolder", folderId, newName, reloadAfterSave);
                     }
                 },
                 initSortable(list) {

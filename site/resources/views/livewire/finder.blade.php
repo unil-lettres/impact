@@ -163,7 +163,7 @@
                     </li>
                 </ul>
             </div>
-            <button class="btn d-none d-sm-inline-block" @click="selectAll" x-show="!isAllSelected()">
+            <button class="btn d-none d-sm-inline-block" @click="selectAll" x-show.important="!isAllSelected()">
                 {{ trans('courses.finder.select_all')}}
             </button>
         </div>
@@ -260,10 +260,13 @@
 
             Alpine.data('finderData', () => ({
                 selectedItems: [],
+                lastSelectedItem: null,
                 openedFolder: [],
-                toggleSelect(element, key) {
+                toggleSelect(event, element, fromShiftSelection = false) {
 
-                    if (this.selectedItems.includes(key)) {
+                    const key = element.getAttribute('data-key')
+
+                    if (!fromShiftSelection && this.selectedItems.includes(key)) {
 
                         // Unselect all children of farthest selected parent
                         // of clicked element.
@@ -288,11 +291,45 @@
                         // Select clicked element and all its children.
                         const keysToSelect = _.map(
                             element.querySelectorAll('.finder-folder, .finder-card'),
-                            children => children.getAttribute('data-key'),
+                            child => child.getAttribute('data-key'),
                         );
                         this.selectedItems = _.uniq(
                             [...this.selectedItems, ...keysToSelect, key]
                         );
+
+                        // Select all elements between last selected item and
+                        // current selected item if shift key is pressed.
+                        if (!fromShiftSelection && event.shiftKey) {
+                            const lastSelectedElement = element.parentNode.querySelector(
+                                `:scope > [data-key="${this.lastSelectedItem}"]`
+                            );
+
+                            // Shift selection works only with elements in the
+                            // same folder.
+                            if (lastSelectedElement) {
+                                let start = false;
+
+                                // Select all element between last selected item
+                                // and current selected item.
+                                _.each(element.parentNode.children, child => {
+                                    if (child === element || child === lastSelectedElement) {
+                                        start = !start;
+                                    }
+                                    if (start) {
+                                        this.toggleSelect(
+                                            event,
+                                            child,
+                                            child.getAttribute('data-key'),
+                                            true,
+                                        );
+                                    }
+                                });
+                            } else {
+                                this.lastSelectedItem = key;
+                            }
+                        } else {
+                            this.lastSelectedItem = key;
+                        }
                     }
 
                     this.closeAllDropDowns(element);

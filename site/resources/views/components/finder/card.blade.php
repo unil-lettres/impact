@@ -6,7 +6,7 @@
     data-type="{{ $card->getType() }}"
     x-data="{ key: '{{ $card->getType() }}-{{ $card->id }}' }"
     :data-key="key"
-    @click.stop="toggleSelect($el, key)"
+    @click.stop="toggleSelect($event, $el)"
     @dblclick.stop="window.location = '{{ route('cards.show', $card->id) }}'"
     :class="!selectedItems.includes(key) || 'selected'"
     wire:key='{{ $card->getType() }}-{{ $card->id }}'

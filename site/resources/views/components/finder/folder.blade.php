@@ -17,7 +17,7 @@
     data-type="{{ $folder->getType() }}"
     x-data="{ key: '{{ $folder->getType() }}-{{ $folder->id }}'}"
     :data-key="key"
-    @click.stop="toggleSelect($el, key)"
+    @click.stop="toggleSelect($event, $el)"
     @dblclick.stop="toggleOpen($el, key)"
     wire:key='{{ $folder->getType() }}-{{ $folder->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}

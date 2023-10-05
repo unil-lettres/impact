@@ -208,40 +208,13 @@ class User extends Authenticatable
     {
         $months = $months ?? config('const.users.validity');
 
-        $validity = is_null($this->validity) ?
-            Carbon::now()->addMonths($months) :
-            Carbon::instance($this->validity)->addMonths($months);
+        // Extend validity, but do not add one to admin accounts
+        $validity = $this->admin ? null : Carbon::now()->addMonths($months);
 
         $this->update([
-            'validity' => $this->skipAdmins($validity),
+            'validity' => $validity,
         ]);
-        $this->save();
 
         return $this->validity;
-    }
-
-    /**
-     * Define the validity of the user account.
-     *
-     * @return DateTime
-     */
-    public function defineValidity(DateTime $validity)
-    {
-        $this->update([
-            'validity' => $this->skipAdmins($validity), ]
-        );
-        $this->save();
-
-        return $this->validity;
-    }
-
-    /**
-     * Avoid adding a validity to admin accounts.
-     *
-     * @return DateTime|null
-     */
-    private function skipAdmins(DateTime $validity)
-    {
-        return $this->admin ? null : $validity;
     }
 }

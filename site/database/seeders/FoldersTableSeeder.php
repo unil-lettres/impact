@@ -27,10 +27,18 @@ class FoldersTableSeeder extends Seeder
             'updated_at' => $now,
         ])->id;
 
-        Folder::create([
+        $testChildFolder = Folder::create([
             'title' => 'Test child folder',
             'course_id' => $secondCourse->id,
             'parent_id' => $testFolder,
+            'created_at' => $now,
+            'updated_at' => $now,
+        ])->id;
+
+        Folder::create([
+            'title' => 'Test grand child folder',
+            'course_id' => $secondCourse->id,
+            'parent_id' => $testChildFolder,
             'created_at' => $now,
             'updated_at' => $now,
         ]);

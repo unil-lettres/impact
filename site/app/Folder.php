@@ -65,8 +65,14 @@ class Folder extends Model
      */
     public function breadcrumbs(bool $self = false)
     {
-        $breadcrumbs = $this->course
-            ->breadcrumbs(true);
+        $breadcrumbs = collect([]);
+
+        if ($self) {
+            // Add the current folder to the breadcrumbs
+            $breadcrumbs->put(
+                route('folders.show', $this->id), $this->title
+            );
+        }
 
         if ($this->parent()->get()->isNotEmpty()) {
             // Iterate through hierarchical parents while a parent exists
@@ -79,13 +85,6 @@ class Folder extends Model
             }
         }
 
-        if ($self) {
-            // Add the current folder to the breadcrumbs
-            $breadcrumbs->put(
-                route('folders.show', $this->id), $this->title
-            );
-        }
-
-        return $breadcrumbs;
+        return $this->course->breadcrumbs(true)->merge($breadcrumbs->reverse());
     }
 }

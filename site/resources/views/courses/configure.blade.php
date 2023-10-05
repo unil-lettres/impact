@@ -17,7 +17,7 @@
                 @method('PUT')
                 @csrf
                 <button type="submit"
-                        class="btn btn-secondary me-1"
+                        class="btn btn-secondary"
                         data-bs-toggle="tooltip"
                         data-placement="top"
                         title="{{ trans('messages.course.archive.info') }}">

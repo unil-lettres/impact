@@ -13,13 +13,13 @@
         @section('actions')
             @can('editConfiguration', $course)
                 <a href="{{ route('courses.configure', $course->id) }}"
-                   class="btn btn-primary me-1">
+                   class="btn btn-primary">
                     {{ trans('courses.configure') }}
                 </a>
             @endcan
             @can('create', [\App\Folder::class, $course])
                 <a href="{{ route('folders.create', ['course' => $course->id]) }}"
-                   class="btn btn-primary me-1">
+                   class="btn btn-primary">
                     Créer un dossier
                 </a>
             @endcan

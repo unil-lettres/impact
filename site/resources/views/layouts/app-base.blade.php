@@ -28,7 +28,7 @@
                                     <div class="text-muted mt-1">@yield('sub-title')</div>
                                 @endif
                             </div>
-                            <div class="align-self-end">
+                            <div class="align-self-end flex-wrap d-flex gap-2">
                                 @yield('actions')
                             </div>
                         </div>

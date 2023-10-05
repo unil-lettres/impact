@@ -18,7 +18,7 @@
             @can('hide', $card)
                 <button type="submit"
                         id="btn-hide-boxes"
-                        class="btn btn-danger me-1"
+                        class="btn btn-danger"
                         data-bs-toggle="tooltip"
                         data-placement="top"
                         title="{{ trans('cards.hide_boxes') }}">

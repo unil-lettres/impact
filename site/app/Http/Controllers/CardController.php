@@ -185,7 +185,6 @@ class CardController extends Controller
             'state_id' => $request->get('state'),
             'options' => $options,
         ]);
-        $card->save();
 
         return redirect()
             ->route('cards.show', $card->id)
@@ -227,7 +226,6 @@ class CardController extends Controller
         $card->update([
             'file_id' => null,
         ]);
-        $card->save();
 
         return redirect()
             ->back()

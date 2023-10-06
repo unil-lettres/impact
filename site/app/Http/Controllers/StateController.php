@@ -109,7 +109,6 @@ class StateController extends Controller
             'permissions' => $permissions,
             'actions' => $actions,
         ]);
-        $state->save();
 
         return redirect()
             ->route('courses.configure.states', [$course_id, 'state' => $state->id])

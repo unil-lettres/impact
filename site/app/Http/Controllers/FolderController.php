@@ -166,7 +166,6 @@ class FolderController extends Controller
             'title' => $request->get('title'),
             'parent_id' => $request->get('parent_id'),
         ]);
-        $folder->save();
 
         return redirect()
             ->back()

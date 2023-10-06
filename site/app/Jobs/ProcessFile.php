@@ -83,7 +83,6 @@ class ProcessFile implements ShouldQueue
         $this->file->update([
             'status' => FileStatus::Failed,
         ]);
-        $this->file->save();
 
         $this->fileUploadService
             ->removeFileFromTempStorage($this->file->filename);
@@ -113,7 +112,6 @@ class ProcessFile implements ShouldQueue
         $this->file->update([
             'status' => FileStatus::Ready,
         ]);
-        $this->file->save();
     }
 
     /**
@@ -140,7 +138,6 @@ class ProcessFile implements ShouldQueue
         $this->file->update([
             'status' => FileStatus::Transcoding,
         ]);
-        $this->file->save();
 
         match ($type) {
             FileType::Video => $this->transcodeVideo(),

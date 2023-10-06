@@ -134,8 +134,6 @@ class FileController extends Controller
             ]);
         }
 
-        $file->save();
-
         return redirect()
             ->back()
             ->with('success', trans('messages.file.updated'));

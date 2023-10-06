@@ -165,7 +165,11 @@ class ProcessFile implements ShouldQueue
         $saveToPathname = $this->fullStandardPath.$this->fileUploadService
             ->getFileName($this->file->filename).'.'.config('const.files.video.extension');
 
-        $format = new X264('libmp3lame', 'libx264');
+        $format = new X264('aac', 'libx264');
+        $format->setAdditionalParameters([
+            // Fix for Apple devices (https://trac.ffmpeg.org/wiki/Encode/H.264#Encodingfordumbplayers)
+            '-pix_fmt', 'yuv420p',
+        ]);
         $format->on('progress', function ($video, $format, $progress) {
             // Update file progress in database every x percent of transcoding
             if ($progress % config('const.files.ffmpeg.progress.update') === 0) {

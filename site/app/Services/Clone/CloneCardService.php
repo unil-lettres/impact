@@ -38,7 +38,7 @@ class CloneCardService
             // Check that the source file is ready (not transcoding).
             if ($this->card->file->status !== FileStatus::Ready) {
                 throw new CloneException(
-                    trans('courses.finder.menu.clone_in.error'),
+                    trans('courses.finder.clone_in.error'),
                 );
             }
         }

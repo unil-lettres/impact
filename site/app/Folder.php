@@ -129,8 +129,10 @@ class Folder extends Model
      *
      * @param  bool  $self  If true, the current folder will be included in the
      * ancestors.
+     * @param  Folder|null  $until  If set, the ancestors will be returned until
+     * this folder.
      */
-    public function getAncestors(bool $self = true): Collection
+    public function getAncestors(bool $self = true, Folder $until = null): Collection
     {
         $parents = collect([]);
 
@@ -139,11 +141,25 @@ class Folder extends Model
         }
 
         $parent = $this->parent;
-        while ($parent) {
+        while ($parent && (! $until || $parent->id !== $until->id)) {
             $parents->push($parent);
             $parent = $parent->parent;
         }
 
         return $parents;
+    }
+
+    /**
+     * Get all children of this folder and children of children recursively.
+     */
+    public function getChildrenRecursive(): Collection
+    {
+        $children = $this->children;
+
+        foreach ($this->children as $child) {
+            $children = $children->merge($child->getChildrenRecursive());
+        }
+
+        return $children;
     }
 }

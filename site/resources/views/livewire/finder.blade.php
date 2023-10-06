@@ -29,6 +29,7 @@
     </div>
     <x-finder.modal-clone-in :id="$modalCloneId" :course="$course" />
     <x-finder.modal-move-in :id="$modalMoveId" :course="$course" />
+    <x-finder.modal-create :id="$modalCreateId" :folder="$folder" :course="$course" />
     <div class="toolsbox mt-3" style="height: 63px;">
         <div
             x-show.important="selectedItems.length === 0"
@@ -120,7 +121,7 @@
                     >
                         <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
                         <span class="flex-fill me-5">
-                            {{ trans('courses.finder.menu.move_in')}}
+                            {{ trans('courses.finder.move_in')}}
                         </span>
                     </li>
                     <li
@@ -140,7 +141,7 @@
                     >
                         <i class="fa-solid fa-file-import me-2"></i>
                         <span class="flex-fill me-5">
-                            {{ trans('courses.finder.menu.clone_in')}}
+                            {{ trans('courses.finder.clone_in')}}
                         </span>
                     </li>
                     <li

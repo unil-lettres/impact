@@ -100,7 +100,7 @@
                     >
                         <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
                         <span class="flex-fill me-5">
-                            {{ trans('courses.finder.menu.move_in')}}
+                            {{ trans('courses.finder.move_in')}}
                         </span>
                     </li>
                     <li
@@ -120,7 +120,7 @@
                     >
                         <i class="fa-solid fa-file-import me-2"></i>
                         <span class="flex-fill me-5">
-                            {{ trans('courses.finder.menu.clone_in')}}
+                            {{ trans('courses.finder.clone_in')}}
                         </span>
                     </li>
                     <li

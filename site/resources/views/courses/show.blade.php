@@ -18,16 +18,24 @@
                 </a>
             @endcan
             @can('create', [\App\Folder::class, $course])
-                <a href="{{ route('folders.create', ['course' => $course->id]) }}"
-                   class="btn btn-primary">
+                <button
+                   class="btn btn-primary"
+                   data-bs-toggle="modal"
+                   data-bs-target="#modalCreate"
+                   data-bs-type="{{('App\\Enums\\FinderRowType')::Folder}}"
+                >
                    {{ trans('folders.create') }}
-                </a>
+                </button>
             @endcan
             @can('create', [\App\Card::class, $course])
-                <a href="{{ route('cards.create', ['course' => $course->id]) }}"
-                   class="btn btn-primary">
+                <button
+                   class="btn btn-primary"
+                   data-bs-toggle="modal"
+                   data-bs-target="#modalCreate"
+                   data-bs-type="{{('App\\Enums\\FinderRowType')::Card}}"
+                >
                     {{ trans('cards.create') }}
-                </a>
+                </button>
             @endcan
         @endsection
     @endif
@@ -36,6 +44,7 @@
             :course="$course"
             modalCloneId="modalCloneIn"
             modalMoveId="modalMoveId"
+            modalCreateId="modalCreate"
         />
         <!-- <div id="course">
             <div>

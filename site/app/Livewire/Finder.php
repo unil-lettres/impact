@@ -33,6 +33,8 @@ class Finder extends Component
 
     public $modalMoveId;
 
+    public $modalCreateId;
+
     public $sortColumn = self::DEFAULT_SORT_COLUMN;
 
     public $sortDirection = self::DEFAULT_SORT_DIRECTION;
@@ -113,6 +115,43 @@ class Finder extends Component
         );
     }
 
+    public function createItem(string $name, string $type, ?int $folderId)
+    {
+        // TODO authorizations (and @can in the view)
+
+        $validated = $this->validatorHelper(
+            [
+                'title' => $name,
+                'type' => $type,
+                'folder_id' => $folderId,
+            ],
+            [
+                'title' => 'required|string|max:255',
+                'type' => 'required|string|in:'.FinderRowType::Card.','.FinderRowType::Folder,
+                'folder_id' => 'nullable|integer|exists:folders,id',
+            ],
+        );
+
+        if (empty($validated)) {
+            return;
+        }
+
+        // TODO valdier les inputs
+        if ($type == FinderRowType::Card) {
+            Card::create([
+                'title' => $name,
+                'course_id' => $this->course->id,
+                'folder_id' => $folderId,
+            ]);
+        } elseif ($type === FinderRowType::Folder) {
+            Folder::create([
+                'title' => $name,
+                'course_id' => $this->course->id,
+                'parent_id' => $folderId,
+            ]);
+        }
+    }
+
     public function openFolder(Folder $folder)
     {
         return $this->redirect(route('folders.show', $folder->id));
@@ -171,8 +210,7 @@ class Finder extends Component
     public function cloneFolder(
         Folder $folder,
         bool $displayFlash = false,
-    ): void
-    {
+    ): void {
         // TODO authorizations (and @can in the view)
         (new CloneFolderService($folder))->clone();
 
@@ -196,23 +234,15 @@ class Finder extends Component
         Folder $folder,
         string $newName,
         bool $reloadAfterSave = false,
-    )
-    {
-        // TODO authorizations (and @can in the view)
-        $validator = Validator::make(['newName' => $newName], [
-            'newName' => 'required|string|max:200',
-        ]);
+    ) {
+        $validated = $this->validatorHelper(
+            ['newName' => $newName],
+            ['newName' => 'required|string|max:200'],
+        );
 
-        if ($validator->fails()) {
-            $this->flashMessage(
-                $validator->errors()->first(),
-                'text-bg-danger',
-            );
-
+        if (empty($validated)) {
             return;
         }
-
-        $validated = $validator->validated();
 
         $folder->title = $validated['newName'];
         $folder->save();
@@ -268,7 +298,7 @@ class Finder extends Component
                 $this->keysToEntities($keys),
                 $dest,
             );
-            $this->flashMessage(trans('courses.finder.menu.clone_in.success'));
+            $this->flashMessage(trans('courses.finder.clone_in.success'));
         } catch (CloneException $e) {
             $this->flashMessage($e->getMessage(), 'text-bg-danger');
         }
@@ -278,8 +308,7 @@ class Finder extends Component
         array $keys,
         int $dest = null,
         bool $reloadAfterSave = false,
-    )
-    {
+    ) {
         // TODO authorizations (and @can in the view)
         // TODO valdier les inputs
         // TODO doit être teacher du course des keys
@@ -288,7 +317,7 @@ class Finder extends Component
             fn ($entity) => MoveService::moveCardOrFolder($entity, $dest ? Folder::find($dest) : null),
         );
 
-        $this->flashMessage(trans('courses.finder.menu.move_in.success'));
+        $this->flashMessage(trans('courses.finder.move_in.success'));
 
         if ($reloadAfterSave) {
             return $this->redirect(url()->previous());
@@ -351,5 +380,25 @@ class Finder extends Component
                 document.getElementById('toast-flash').classList.remove('show');
             }, 5000);
         JS);
+    }
+
+    /**
+     * Validate the array with validators and flash the first error if exists.
+     */
+    private function validatorHelper(array $values, array $validators): array
+    {
+        // TODO authorizations (and @can in the view)
+        $validator = Validator::make($values, $validators);
+
+        if ($validator->fails()) {
+            $this->flashMessage(
+                $validator->errors()->first(),
+                'text-bg-danger',
+            );
+
+            return [];
+        }
+
+        return $validator->validated();
     }
 }

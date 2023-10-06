@@ -13,7 +13,7 @@
             <form wire:submit.prevent="moveIn(keys, destFolder, reloadAfterSave)">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5">
-                        {{ trans('courses.finder.menu.move_in.dialog.title') }}
+                        {{ trans('courses.finder.dialog.move_in.title') }}
                     </h1>
                     <button
                         type="button"
@@ -25,24 +25,23 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label for="{{$id}}-name" class="col-form-label">
-                            {{ trans('courses.finder.menu.move_in.dialog.prompt') }} :
+                            {{ trans('courses.finder.dialog.move_in.prompt') }} :
                         </label>
                         <select
                             id="{{$id}}-name"
                             class="form-select"
                             x-model="_destFolder"
-                            size="8"
                             aria-label="move in destination folder"
                         >
                             <option value="">
-                                {{ trans('courses.finder.menu.move_in.dialog.rootFolder') }}
+                                {{ trans('courses.finder.dialog.rootFolder') }}
                             </option>
-                            @foreach($course->folders->sortBy('title') as $folder)
+                            @foreach(Helpers::getFolderListAbsolutePath($course->folders)->sortBy('title') as $folder)
                                 <option
                                     value="{{$folder->id}}"
                                     x-show="shouldShow('{{$folder->getAncestors()->pluck('id')->implode(',')}}')"
                                 >
-                                    {{$folder->title}}
+                                    {{ $folder->title }}
                                 </option>
                             @endforeach
                         </select>
@@ -50,14 +49,14 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-                        {{ trans('courses.finder.menu.move_in.dialog.cancel') }}
+                        {{ trans('courses.finder.dialog.move_in.cancel') }}
                     </button>
                     <button
                         data-bs-dismiss="modal"
                         type="submit"
                         class="btn btn-primary"
                     >
-                        {{ trans('courses.finder.menu.move_in.dialog.accept') }}
+                        {{ trans('courses.finder.dialog.move_in.accept') }}
                     </button>
                 </div>
             </form>

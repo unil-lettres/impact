@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 class StoreCard extends AbstractRequest
 {
+    // TODO DELETE THIS FILE
     /**
      * Determine if the user is authorized to make this request.
      *

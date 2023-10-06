@@ -18,16 +18,24 @@
                 </a>
             @endcan
             @can('create', [\App\Folder::class, $folder->course])
-                <a href="{{ route('folders.create', ['course' => $folder->course->id]) }}"
-                   class="btn btn-primary">
+                <button
+                   class="btn btn-primary"
+                   data-bs-toggle="modal"
+                   data-bs-target="#modalCreate"
+                   data-bs-type="folder"
+                >
                    {{ trans('folders.create') }}
-                </a>
+                </button>
             @endcan
             @can('create', [\App\Card::class, $folder->course])
-                <a href="{{ route('cards.create', ['course' => $folder->course->id]) }}"
-                   class="btn btn-primary">
+                <button
+                   class="btn btn-primary"
+                   data-bs-toggle="modal"
+                   data-bs-target="#modalCreate"
+                   data-bs-type="{{('App\\Enums\\FinderRowType')::Card}}"
+                >
                     {{ trans('cards.create') }}
-                </a>
+                </button>
             @endcan
             @can('update', $folder)
                 <div class="dropdown">
@@ -53,7 +61,7 @@
                         >
                             <i class="fa-solid fa-clone me-2"></i>
                             <span class="flex-fill me-5">
-                                {{ trans('courses.finder.menu.copy')}}
+                                {{ trans('folders.copy')}}
                             </span>
                         </li>
                         <li
@@ -64,7 +72,7 @@
                         >
                             <i class="fa-solid fa-file-import me-2"></i>
                             <span class="flex-fill me-5">
-                                {{ trans('courses.finder.menu.clone_in')}}
+                                {{ trans('folders.clone_in')}}
                             </span>
                         </li>
                         <li
@@ -83,19 +91,19 @@
                             >
                                 <i class="fa-regular fa-trash-can me-2"></i>
                                 <span class="flex-fill me-5">
-                                    {{ trans('courses.finder.menu.delete')}}
+                                    {{ trans('folders.delete')}}
                                 </span>
                             </li>
                         @endcan
                         <li><hr class="dropdown-divider"></li>
                         <li class="dropdown-item d-flex cursor-pointer align-items-center">
                             <span class="flex-fill me-5">
-                                {{ trans('courses.finder.menu.print')}}
+                                {{ trans('folders.print')}}
                             </span>
                         </li>
                         <li class="dropdown-item d-flex cursor-pointer align-items-center">
                             <span class="flex-fill me-5">
-                                {{ trans('courses.finder.menu.mail')}}
+                                {{ trans('folders.mail')}}
                             </span>
                         </li>
                     </ul>
@@ -109,6 +117,7 @@
             :folder="$folder"
             modalCloneId="modalCloneIn"
             modalMoveId="modalMoveIn"
+            modalCreateId="modalCreate"
         />
         <!-- <div id="folder">
             <div>

@@ -499,4 +499,42 @@ class Helpers
             ])
             ->values();
     }
+
+    /**
+     * Return the title of the folder with the path until the specified folder
+     * or to the root folder.
+     */
+    public static function getFolderAbsolutePath(
+        Folder $folder,
+        Folder $until = null,
+        bool $self = true,
+        string $separator = ' > ',
+    ): string {
+        return $folder
+            ->getAncestors($self, $until)
+            ->reverse()
+            ->pluck('title')
+            ->implode($separator);
+    }
+
+    /**
+     * Return a collection of folders with an added attribute "titleFullPath"
+     * representing the result of the Helpers::getFolderAbsolutePath() function.
+     */
+    public static function getFolderListAbsolutePath(
+        Collection $folders,
+        Folder $until = null,
+        bool $self = true,
+        string $separator = ' > ',
+    ): Collection {
+        return $folders->map(
+            function ($folder) use ($until, $self, $separator) {
+                $folder->titleFullPath = static::getFolderAbsolutePath(
+                    $folder, $until, $self, $separator
+                );
+
+                return $folder;
+            },
+        );
+    }
 }

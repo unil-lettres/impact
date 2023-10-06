@@ -381,7 +381,7 @@ class Helpers
             default => Auth::user()
                 ->enrollmentsAsTeacher()
                 ->map(fn ($enrollment) => $enrollment->course),
-        })->whereNotIn('id', $excludeCourses->pluck('id'));
+        })->whereNotIn('id', $excludeCourses->pluck('id'))->sortBy('name');
     }
 
     /**

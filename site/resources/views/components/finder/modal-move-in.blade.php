@@ -37,7 +37,7 @@
                             <option value="">
                                 {{ trans('courses.finder.menu.move_in.dialog.rootFolder') }}
                             </option>
-                            @foreach($course->folders as $folder)
+                            @foreach($course->folders->sortBy('title') as $folder)
                                 <option
                                     value="{{$folder->id}}"
                                     x-show="shouldShow('{{$folder->getAncestors()->pluck('id')->implode(',')}}')"

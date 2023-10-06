@@ -1,4 +1,5 @@
 @props(['id', 'course'])
+
 <div
     class="modal fade"
     x-data="{{$id}}"
@@ -9,6 +10,7 @@
 >
     <div class="modal-dialog">
         <div class="modal-content">
+            <form wire:submit.prevent="moveIn(keys, destFolder, reloadAfterSave)">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5">
                         {{ trans('courses.finder.menu.move_in.dialog.title') }}
@@ -22,11 +24,11 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">
+                        <label for="{{$id}}-name" class="col-form-label">
                             {{ trans('courses.finder.menu.move_in.dialog.prompt') }} :
                         </label>
                         <select
-                            id="recipient-name"
+                            id="{{$id}}-name"
                             class="form-select"
                             x-model="_destFolder"
                             size="8"
@@ -52,8 +54,7 @@
                     </button>
                     <button
                         data-bs-dismiss="modal"
-                        type="button"
-                        wire:click="moveIn(keys, destFolder, reloadAfterSave)"
+                        type="submit"
                         class="btn btn-primary"
                     >
                         {{ trans('courses.finder.menu.move_in.dialog.accept') }}

@@ -12,6 +12,7 @@
 >
     <div class="modal-dialog">
         <div class="modal-content">
+            <form wire:submit.prevent="cloneIn(keys, destCourse)">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5">
                         {{ trans('courses.finder.menu.clone_in.dialog.title') }}
@@ -25,15 +26,16 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label">
+                        <label for="{{$id}}-name" class="col-form-label">
                             {{ trans('courses.finder.menu.clone_in.dialog.prompt') }} :
                         </label>
                         <select
-                            id="recipient-name"
+                            id="{{$id}}-name"
                             class="form-select"
                             x-model="destCourse"
                             size="8"
                             aria-label="copy in destination folder"
+                            aria-describedby="{{$id}}-name-help"
                         >
                             @foreach($clonableCourses as $clonableCourse)
                                 <option
@@ -43,8 +45,8 @@
                                 </option>
                             @endforeach
                         </select>
-                        <div id="recipient-name" class="form-text">
-                        {{ trans('courses.finder.menu.clone_in.dialog.help') }}
+                        <div id="{{$id}}-name-help" class="form-text">
+                            {{ trans('courses.finder.menu.clone_in.dialog.help') }}
                         </div>
                     </div>
                 </div>
@@ -58,8 +60,7 @@
                     </button>
                     <button
                         data-bs-dismiss="modal"
-                        type="button"
-                        wire:click="cloneIn(keys, destCourse)"
+                        type="submit"
                         class="btn btn-primary"
                     >
                         {{ trans('courses.finder.menu.clone_in.dialog.accept') }}

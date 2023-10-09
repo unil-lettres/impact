@@ -73,7 +73,7 @@
     document.addEventListener('livewire:init', () => {
         Alpine.data('{{$id}}', () => ({
             keys: [],
-            destCourse: null,
+            destCourse: {{$clonableCourses->first()->id}},
             init() {
                 const modal = document.getElementById('{{$id}}');
                 modal.addEventListener('show.bs.modal', event => {

@@ -79,17 +79,19 @@
                     </span>
                 </li>
                 <li><hr class="dropdown-divider"></li>
-                <li
-                    class="dropdown-item d-flex cursor-pointer align-items-center"
-                    data-bs-toggle="modal"
-                    data-bs-target="#{{$modalMoveId}}"
-                    :data-bs-keys="[key]"
-                >
-                    <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
-                    <span class="flex-fill me-5">
-                        {{ trans('courses.finder.move_in')}}
-                    </span>
-                </li>
+                @can('moveCardOrFolder', $card->course)
+                    <li
+                        class="dropdown-item d-flex cursor-pointer align-items-center"
+                        data-bs-toggle="modal"
+                        data-bs-target="#{{$modalMoveId}}"
+                        :data-bs-keys="[key]"
+                    >
+                        <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
+                        <span class="flex-fill me-5">
+                            {{ trans('courses.finder.move_in')}}
+                        </span>
+                    </li>
+                @endcan
                 <li
                     class="dropdown-item d-flex cursor-pointer align-items-center"
                     wire:click="cloneCard({{$card->id}})"

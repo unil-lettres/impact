@@ -128,8 +128,8 @@ class UserTest extends DuskTestCase
                 ->waitForText('Compte utilisateur mis à jour')
                 ->assertSee('Compte utilisateur mis à jour')
                 ->assertSee('Test update user')
-                ->assertInputValue('name', 'Test update user')
-                ->assertInputValue('email', 'test-update-user@example.com');
+                ->assertSee('test-update-user@example.com')
+                ->assertPathIs('/admin/users');
         });
     }
 
@@ -155,8 +155,7 @@ class UserTest extends DuskTestCase
                 ->type('new_password', 'password1')
                 ->type('password_confirm', 'password2')
                 ->press('Mettre à jour le compte')
-                ->waitForText('est obligatoire.')
-                ->assertSee('est obligatoire.')
+                ->waitForText('doivent être identiques.')
                 ->assertSee('doivent être identiques.');
 
             $browser->type('name', 'Test update user with errors')
@@ -218,6 +217,7 @@ class UserTest extends DuskTestCase
                 ->assertSee('Nom')
                 ->assertSee('Email')
                 ->assertSee('Type')
+                ->assertDisabled('type')
                 ->assertInputValue('type', 'aai')
                 ->assertDontSee('Mot de passe actuel')
                 ->assertDontSee('Nouveau mot de passe')
@@ -242,6 +242,7 @@ class UserTest extends DuskTestCase
 
             $browser->click('#users table tbody tr.local .actions span:nth-child(1) a')
                 ->waitForText('Type')
+                ->assertDisabled('type')
                 ->assertInputValue('type', 'local')
                 ->assertSee('Mot de passe actuel')
                 ->assertSee('Nouveau mot de passe')
@@ -290,6 +291,10 @@ class UserTest extends DuskTestCase
             $browser->visit(new Profile())
                 ->profile();
 
+            $browser->assertDisabled('name')
+                ->assertDisabled('email')
+                ->assertDisabled('type');
+
             $browser->assertSee('Nom')
                 ->assertSee('Email')
                 ->assertSee('Type')
@@ -316,11 +321,12 @@ class UserTest extends DuskTestCase
             $browser->visit(new Profile())
                 ->profile();
 
-            $browser->type('name', 'First user updated')
+            $browser->type('old_password', 'password')
+                ->type('new_password', 'password1')
+                ->type('password_confirm', 'password1')
                 ->press('Mettre à jour le compte')
                 ->waitForText('Compte utilisateur mis à jour')
-                ->assertSee('Compte utilisateur mis à jour')
-                ->assertSee('First user updated');
+                ->assertSee('Compte utilisateur mis à jour');
         });
     }
 }

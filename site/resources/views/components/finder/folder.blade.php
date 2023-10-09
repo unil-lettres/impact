@@ -67,15 +67,27 @@
                 <ul class="dropdown-menu dropdown-with-icon">
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
-                        x-show.important="!openedFolder.includes(key)"
-                        @click="toggleOpen($el, key)"
+                        wire:click="openFolder({{$folder->id}})"
                     >
                         <i class="d-inline-block text-center width-large fa-regular fa-folder-open me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.open')}}
                         </span>
                         <span class="text-secondary ms-3 text-lowercase fw-light">
-                            {{ trans('courses.finder.menu.open.help')}}
+                            {{ trans('courses.finder.menu.folder.open.help')}}
+                        </span>
+                    </li>
+                    <li
+                        class="dropdown-item d-flex cursor-pointer align-items-center"
+                        x-show.important="!openedFolder.includes(key)"
+                        @click="toggleOpen($el, key)"
+                    >
+                        <i class="d-inline-block text-center width-large fa-regular fa-folder-open me-2"></i>
+                        <span class="flex-fill me-5">
+                            {{ trans('courses.finder.menu.folder.expand')}}
+                        </span>
+                        <span class="text-secondary ms-3 text-lowercase fw-light">
+                            {{ trans('courses.finder.menu.folder.expand.help')}}
                         </span>
                     </li>
                     <li
@@ -85,10 +97,10 @@
                     >
                         <i class="d-inline-block text-center width-large fa-solid fa-folder me-2"></i>
                         <span class="flex-fill me-5">
-                            {{ trans('courses.finder.menu.close')}}
+                            {{ trans('courses.finder.menu.folder.collapse')}}
                         </span>
                         <span class="text-secondary ms-3 text-lowercase fw-light">
-                            {{ trans('courses.finder.menu.open.help')}}
+                            {{ trans('courses.finder.menu.folder.expand.help')}}
                         </span>
                     </li>
                     <li><hr class="dropdown-divider"></li>

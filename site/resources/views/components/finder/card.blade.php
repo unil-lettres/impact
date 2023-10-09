@@ -75,7 +75,7 @@
                         {{ trans('courses.finder.menu.open')}}
                     </span>
                     <span class="text-secondary ms-3 text-lowercase fw-light">
-                        {{ trans('courses.finder.menu.open.help')}}
+                        {{ trans('courses.finder.menu.card.open.help')}}
                     </span>
                 </li>
                 <li><hr class="dropdown-divider"></li>

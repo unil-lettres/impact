@@ -51,7 +51,7 @@
             {{ $folder->position }} - {{ $folder->title }}
         </div>
         <div class="text-secondary">
-            {{ $folder->getCardsRecursive()->count() }}
+            {{ Helpers::countCardsRecursive($folder, $filters, $sortColumn, $sortDirection) }}
             {{ trans('courses.finder.folder.cards_count')}}
         </div>
         <div class='column-options'>

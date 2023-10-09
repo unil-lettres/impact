@@ -148,15 +148,4 @@ class Folder extends Model
 
         return $children;
     }
-
-    public function getCardsRecursive(): Collection
-    {
-        $cards = $this->cards;
-
-        foreach ($this->children as $child) {
-            $cards = $cards->merge($child->getCardsRecursive());
-        }
-
-        return $cards;
-    }
 }

@@ -7,6 +7,7 @@ use App\Course;
 use App\Enums\CourseType;
 use App\Enums\FileStatus;
 use App\Enums\FileType;
+use App\Enums\FinderRowType;
 use App\Enums\StateType;
 use App\Enums\UserType;
 use App\File;
@@ -536,5 +537,35 @@ class Helpers
                 return $folder;
             },
         );
+    }
+
+    public static function countCardsRecursive(
+        Folder $folder,
+        Collection $filters,
+        string $sortColumn = 'position',
+        string $sortDirection = 'asc',
+    ): int
+    {
+        $content = static::getFolderContent(
+            $folder->course,
+            $filters,
+            $folder,
+            $sortColumn,
+            $sortDirection,
+        );
+        $count = $content
+            ->countBy(fn ($row) => $row->getFinderRowType())
+            ->get(FinderRowType::Card, 0);
+
+        foreach ($folder->children as $child) {
+            $count += static::countCardsRecursive(
+                $child,
+                $filters,
+                $sortColumn,
+                $sortDirection,
+            );
+        }
+
+        return $count;
     }
 }

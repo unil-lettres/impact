@@ -192,8 +192,8 @@ class UserController extends Controller
             case UserType::Local:
                 // Validation rules for a local user
                 $validated = $request->validate([
-                    'name' => 'required|string|max:255',
-                    'email' => 'required|string|email|max:255|unique:users,email,'.$user->id,
+                    'name' => 'sometimes|string|max:255',
+                    'email' => 'sometimes|string|email|max:255|unique:users,email,'.$user->id,
                     'old_password' => ['nullable', 'string'],
                     'new_password' => ['nullable', 'different:old_password', Password::defaults()],
                     'password_confirm' => ['nullable', 'same:new_password'],
@@ -212,13 +212,12 @@ class UserController extends Controller
                 if (array_key_exists('new_password', $validated)) {
                     $user->password = $validated['new_password'];
                 }
-
-                $user->email = $validated['email'];
                 break;
             case UserType::Aai:
                 // Validation rules for an aai user
                 $validated = $request->validate([
-                    'name' => 'required|string|max:255',
+                    'name' => 'sometimes|string|max:255',
+                    'email' => 'sometimes|string|email|max:255|unique:users,email,'.$user->id,
                 ]);
                 break;
             default:
@@ -226,18 +225,27 @@ class UserController extends Controller
                     ->with('error', trans('messages.user.edit.cannot.validate'));
         }
 
-        $user->name = $validated['name'];
+        // Allow change of the following parameters only if the request is
+        // coming from the users administration page. They are not allowed
+        // to be changed from the user profile page.
+        if ($request->route()->named('admin.users.update')) {
+            $user->name = $validated['name'];
+            $user->email = $validated['email'];
 
-        // Allow change of the admin parameter only if the current user is already an admin
-        // and the request is coming from the users administration page. This parameter
-        // is not allowed to be changed from the user profile page.
-        if (auth()->user()->admin && $request->route()->named('admin.users.update')) {
-            $user->admin = (bool) $request->input('admin');
+            // Allow change of the admin parameter only if the current
+            // user is already an admin
+            if (auth()->user()->admin) {
+                $user->admin = (bool) $request->input('admin');
+            }
         }
 
+        // Save the user to the database
         $user->save();
 
-        return redirect()->back()
+        $routeName = $request->route()->named('admin.users.update') ?
+            'admin.users.manage' : 'home';
+
+        return redirect()->route($routeName)
             ->with('success', trans('messages.user.updated'));
     }
 

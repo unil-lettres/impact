@@ -4,6 +4,7 @@ return [
 
     'manage' => 'Gestion des utilisateurs',
     'email' => 'Email',
+    'email.warning' => 'La modification de l\'adresse email d\'un utilisateur AAI peut entraîner des problèmes d\'authentification.',
     'name' => 'Nom',
     'created_at' => 'Date de création',
     'type' => 'Type',

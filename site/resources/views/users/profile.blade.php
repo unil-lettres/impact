@@ -11,11 +11,11 @@
                                 <li>{{ $error }}</li>
                             @endforeach
                         </ul>
-                    </div><br />
+                    </div><br/>
                 @endif
                 <div class="card">
                     <div class="card-header">
-                        <span class="title">{{ $user->name ? $user->name : $user->email }}</span>
+                        <span class="title">{{ $user->name ?: $user->email }}</span>
                     </div>
                     <div class="card-body">
                         <form method="post"
@@ -31,7 +31,8 @@
                                            type="text"
                                            name="name"
                                            value="{{ old('name', $user->name) }}"
-                                           class="form-control"
+                                           class="form-control disabled"
+                                           disabled
                                     >
                                 </div>
                             </div>
@@ -45,8 +46,8 @@
                                            type="email"
                                            name="email"
                                            value="{{ old('email', $user->email) }}"
-                                           class="form-control {{ Helpers::isUserLocal($user) ? '' : 'disabled' }}"
-                                           {{ Helpers::isUserLocal($user) ? '' : 'disabled' }}
+                                           class="form-control disabled"
+                                           disabled
                                     >
                                 </div>
                             </div>
@@ -122,10 +123,12 @@
                                 </div>
                             @endif
 
-                            <hr>
-                            <button type="submit" class="btn btn-primary">
-                                {{ trans('users.update') }}
-                            </button>
+                            @if (Helpers::isUserLocal($user))
+                                <hr>
+                                <button type="submit" class="btn btn-primary">
+                                    {{ trans('users.update') }}
+                                </button>
+                            @endif
                         </form>
                     </div>
                 </div>

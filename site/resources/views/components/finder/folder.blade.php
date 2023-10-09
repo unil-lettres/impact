@@ -8,18 +8,18 @@
     'depth' => 0,
     'lockedMove' => false,
 ])
-@php($rows = $folder->getContent($sortColumn, $sortDirection, $filters))
+@php($rows = Helpers::getFolderContent($folder->course, $filters, $folder, $sortColumn, $sortDirection))
 
 <li
     class="finder-folder border-top border-secondary-subtle row-height cursor-default"
     :class="!selectedItems.includes(key) || 'folder-selected'"
     data-id="{{ $folder->id }}"
-    data-type="{{ $folder->getType() }}"
-    x-data="{ key: '{{ $folder->getType() }}-{{ $folder->id }}'}"
+    data-type="{{ $folder->getFinderRowType() }}"
+    x-data="{ key: '{{ $folder->getFinderRowType() }}-{{ $folder->id }}'}"
     :data-key="key"
     @click.stop="toggleSelect($event, $el)"
     wire:dblclick.stop="openFolder({{$folder->id}})"
-    wire:key='{{ $folder->getType() }}-{{ $folder->id }}'
+    wire:key='{{ $folder->getFinderRowType() }}-{{ $folder->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}
 >
     <div
@@ -49,6 +49,10 @@
                 </i>
             </div>
             {{ $folder->position }} - {{ $folder->title }}
+        </div>
+        <div class="text-secondary">
+            {{ $folder->getCardsRecursive()->count() }}
+            {{ trans('courses.finder.folder.cards_count')}}
         </div>
         <div class='column-options'>
             <div class="dropdown" @click.stop>
@@ -182,7 +186,7 @@
         x-init="initSortable($el)"
     >
         @foreach ($rows as $row)
-            @if ($row->getType() === ('App\\Enums\\FinderRowType')::Folder)
+            @if ($row->getFinderRowType() === ('App\\Enums\\FinderRowType')::Folder)
                 <x-finder.folder
                     :folder="$row"
                     :sortColumn="$sortColumn"

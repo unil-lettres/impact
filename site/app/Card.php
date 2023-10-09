@@ -280,7 +280,7 @@ class Card extends Model
         $this->traitForceDelete();
     }
 
-    public function getType(): string
+    public function getFinderRowType(): string
     {
         return FinderRowType::Card;
     }

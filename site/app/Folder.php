@@ -93,23 +93,9 @@ class Folder extends Model
         return $this->course->breadcrumbs(true)->merge($breadcrumbs->reverse());
     }
 
-    public function getType(): string
+    public function getFinderRowType(): string
     {
         return FinderRowType::Folder;
-    }
-
-    public function getContent(
-        string $sortColumn = 'position',
-        string $sortDirection = 'asc',
-        Collection $filters = null,
-    ): Collection {
-        return Helpers::getFolderContent(
-            $this->course,
-            $filters,
-            $this,
-            $sortColumn,
-            $sortDirection,
-        );
     }
 
     public function forceDelete()
@@ -161,5 +147,16 @@ class Folder extends Model
         }
 
         return $children;
+    }
+
+    public function getCardsRecursive(): Collection
+    {
+        $cards = $this->cards;
+
+        foreach ($this->children as $child) {
+            $cards = $cards->merge($child->getCardsRecursive());
+        }
+
+        return $cards;
     }
 }

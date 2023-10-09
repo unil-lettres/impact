@@ -3,13 +3,13 @@
 <li
     class="finder-card d-flex border-top border-secondary-subtle background-hover cursor-default row-height"
     data-id="{{ $card->id }}"
-    data-type="{{ $card->getType() }}"
-    x-data="{ key: '{{ $card->getType() }}-{{ $card->id }}' }"
+    data-type="{{ $card->getFinderRowType() }}"
+    x-data="{ key: '{{ $card->getFinderRowType() }}-{{ $card->id }}' }"
     :data-key="key"
     @click.stop="toggleSelect($event, $el)"
     @dblclick.stop="window.location = '{{ route('cards.show', $card->id) }}'"
     :class="!selectedItems.includes(key) || 'selected'"
-    wire:key='{{ $card->getType() }}-{{ $card->id }}'
+    wire:key='{{ $card->getFinderRowType() }}-{{ $card->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}
 >
     <div

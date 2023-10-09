@@ -43,6 +43,7 @@ return [
     'finder.state' => 'Etat',
     'finder.selected' => 'élément(s) sélectionné(s) dont',
     'finder.selected_cards' => 'fiche(s)',
+    'finder.folder.cards_count' => 'fiche(s)',
     'finder.select_all' => 'Tout séléctionner',
     'finder.select.help' => 'Sélection multiple: shift + clic',
     'finder.copy' => 'copie',

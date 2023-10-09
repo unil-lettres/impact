@@ -109,7 +109,7 @@
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.select_all')}}
                         </span>
-                    </li>1
+                    </li>
                     <li class="d-block d-sm-none">
                         <hr class="dropdown-divider">
                     </li>
@@ -237,7 +237,7 @@
         x-init="initSortable($el)"
     >
         @forelse ($this->rows as $row)
-            @if ($row->getType() === ('App\\Enums\\FinderRowType')::Folder)
+            @if ($row->getFinderRowType() === ('App\\Enums\\FinderRowType')::Folder)
                 <x-finder.folder
                     :folder="$row"
                     :sortColumn="$this->sortColumn"

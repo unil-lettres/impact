@@ -58,9 +58,13 @@
                                            type="email"
                                            name="email"
                                            value="{{ old('email', $user->email) }}"
-                                           class="form-control {{ Helpers::isUserLocal($user) ? '' : 'disabled' }}"
-                                           {{ Helpers::isUserLocal($user) ? '' : 'disabled' }}
+                                           class="form-control"
                                     >
+                                    @if(!Helpers::isUserLocal($user))
+                                        <div class="form-text text-danger">
+                                            {{ trans('users.email.warning') }}
+                                        </div>
+                                    @endif
                                 </div>
                             </div>
 
@@ -166,8 +170,6 @@
                         <span class="title">{{ trans('enrollments.enrollments') }}</span>
                     </div>
                     <div class="card-body">
-                        <div class="form-text">{{ trans('users.edit.enrollments_are_auto_save') }}</div>
-                        <hr>
                         {{ trans('enrollments.as_teacher') }}
                         <div id="rct-multi-course-teacher-select"
                              class="mb-3"
@@ -177,6 +179,8 @@
                         <div id="rct-multi-course-student-select"
                              data='{{ json_encode(['record' => $user, 'role' => $studentRole, 'options' => $courses, 'defaults' => $coursesAsStudent, 'isDisabled' => $user->admin]) }}'
                         ></div>
+                        <hr>
+                        <div class="form-text">{{ trans('users.edit.enrollments_are_auto_save') }}</div>
                     </div>
                 </div>
             </div>

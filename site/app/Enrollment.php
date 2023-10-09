@@ -60,7 +60,6 @@ class Enrollment extends Model
             $this->update([
                 'cards' => $cards->toArray(),
             ]);
-            $this->save();
 
             return true;
         }
@@ -92,7 +91,6 @@ class Enrollment extends Model
             $this->update([
                 'cards' => $cards->values()->toArray(),
             ]);
-            $this->save();
 
             return true;
         }

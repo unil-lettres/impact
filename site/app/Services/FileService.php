@@ -98,7 +98,6 @@ class FileService
         $card->update([
             'file_id' => $file->id,
         ]);
-        $card->save();
     }
 
     /**
@@ -109,6 +108,5 @@ class FileService
         $file->update([
             'card_id' => $card->id,
         ]);
-        $file->save();
     }
 }

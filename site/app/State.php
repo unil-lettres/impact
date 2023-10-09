@@ -90,7 +90,6 @@ class State extends Model implements Sortable
         $this->update([
             'permissions' => $permissions,
         ]);
-        $this->save();
     }
 
     /**
@@ -128,7 +127,6 @@ class State extends Model implements Sortable
         $this->update([
             'permissions' => $permissions,
         ]);
-        $this->save();
     }
 
     /**

@@ -161,7 +161,6 @@ class CardController extends Controller
         $card->update([
             'file_id' => null,
         ]);
-        $card->save();
 
         return redirect()
             ->back()

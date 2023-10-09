@@ -359,23 +359,23 @@ export default class Transcription extends Component {
                                     <td id={'line-'+index} className="line pe-2 align-top">
                                         { line.number }
                                     </td>
-                                    <td id={'speaker-'+index} className="speaker pe-2 align-top">
-                                        <ContentEditable
-                                            html={ line.speaker ?? "" }
-                                            tagName="span"
-                                            disabled={ !this.state.editable }
-                                            onChange={ this.handleChange({"index": index, "column": "speaker"}) }
-                                        />
-                                    </td>
-                                    <td id={'speech-'+index} className="speech align-top">
-                                        <ContentEditable
-                                            html={ line.speech ?? "" }
-                                            tagName="span"
-                                            disabled={ !this.state.editable }
-                                            onChange={ this.handleChange({"index": index, "column": "speech"}) }
-                                            onKeyDown={ this.handleKeyDown(index) }
-                                        />
-                                    </td>
+                                    <ContentEditable
+                                        id={'speaker-'+index}
+                                        className="speaker pe-2 align-top"
+                                        html={ line.speaker ?? "" }
+                                        tagName="td"
+                                        disabled={ !this.state.editable }
+                                        onChange={ this.handleChange({"index": index, "column": "speaker"}) }
+                                    />
+                                    <ContentEditable
+                                        id={'speech-'+index}
+                                        className="speech align-top"
+                                        html={ line.speech ?? "" }
+                                        tagName="td"
+                                        disabled={ !this.state.editable }
+                                        onChange={ this.handleChange({"index": index, "column": "speech"}) }
+                                        onKeyDown={ this.handleKeyDown(index) }
+                                    />
                                     <td id={'actions-'+index} className="actions">
                                         <span className="action delete-line me-1 d-none"
                                               onClick={ this.deleteLine(index) }

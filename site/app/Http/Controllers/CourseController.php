@@ -111,9 +111,6 @@ class CourseController extends Controller
             ]);
         }
 
-        // Save created course
-        $course->save();
-
         return redirect()
             ->route('admin.courses.manage')
             ->with('success', trans('messages.course.created', ['name' => $course->name]));
@@ -180,7 +177,6 @@ class CourseController extends Controller
             'name' => $request->get('name'),
             'description' => $request->get('description'),
         ]);
-        $course->save();
 
         return redirect()
             ->back()
@@ -217,7 +213,6 @@ class CourseController extends Controller
         $course->update([
             'transcription' => $request->get('type'),
         ]);
-        $course->save();
 
         return redirect()
             ->back()

@@ -109,7 +109,7 @@
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.select_all')}}
                         </span>
-                    </li>
+                    </li>1
                     <li class="d-block d-sm-none">
                         <hr class="dropdown-divider">
                     </li>
@@ -170,6 +170,9 @@
             <button class="btn d-none d-sm-inline-block" @click="selectAll" x-show.important="!isAllSelected()">
                 {{ trans('courses.finder.select_all')}}
             </button>
+            <div class="btn d-none d-lg-inline-block text-secondary">
+                {{ trans('courses.finder.select.help')}}
+            </div>
         </div>
     </div>
     <div class="d-flex row-height">

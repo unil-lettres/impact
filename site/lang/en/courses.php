@@ -73,7 +73,7 @@ return [
     'finder.dialog.clone_in.prompt' => 'Choose the destination course',
     'finder.dialog.clone_in.cancel' => 'Cancel',
     'finder.dialog.clone_in.accept' => 'Copy',
-    'finder.dialog.clone_in.help' => 'Documents (box 5), source file (box 1) and tags will be cloned. Editors will not be exported',
+    'finder.dialog.clone_in.help' => 'Documents (box 5), source file (box 1) and tags will be cloned. Editors will not be exported and the card(s) will be private.',
     'finder.clone_in.success' => 'Item(s) successfully copied in the course.',
     'finder.clone_in.error' => 'Operation aborted due to some cards having media still being processed.',
     'finder.menu.delete' => 'Delete',

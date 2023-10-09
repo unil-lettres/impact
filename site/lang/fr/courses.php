@@ -73,7 +73,7 @@ return [
     'finder.dialog.clone_in.prompt' => 'Sélectionnez l\'espace de destination',
     'finder.dialog.clone_in.cancel' => 'Annuler',
     'finder.dialog.clone_in.accept' => 'Dupliquer',
-    'finder.dialog.clone_in.help' => 'Les documents (case 5), le fichier source (case 1) et les étiquettes seront dupliqués. Les éditeurs ne seront pas exportés.',
+    'finder.dialog.clone_in.help' => 'Les documents (case 5), le fichier source (case 1) et les étiquettes seront dupliqués. Les éditeurs ne seront pas exportés et la/les carte(s) sera/seront privée(s).',
     'finder.clone_in.success' => 'Elément(s) copiés avec succès dans l\'espace.',
     'finder.clone_in.error' => 'L\'opération a été annulée car une ou plusieurs fiches ont des médias en cours de traitement.',
     'finder.menu.delete' => 'Supprimer',

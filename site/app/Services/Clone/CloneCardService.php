@@ -5,6 +5,7 @@ namespace App\Services\Clone;
 use App\Card;
 use App\Course;
 use App\Enums\FileStatus;
+use App\Enums\StateType;
 use App\Exceptions\CloneException;
 use App\Folder;
 use Illuminate\Support\Facades\DB;
@@ -36,7 +37,7 @@ class CloneCardService
         );
         if ($cloneInAnotherSpace) {
             // Check that the source file is ready (not transcoding).
-            if ($this->card->file->status !== FileStatus::Ready) {
+            if ($this->card->file && $this->card->file->status !== FileStatus::Ready) {
                 throw new CloneException(
                     trans('courses.finder.clone_in.error'),
                 );
@@ -83,11 +84,22 @@ class CloneCardService
             $values = [
                 'course_id' => $destCourse->id,
                 'folder_id' => null,
+                'state_id' => $destCourse
+                    ->states
+                    ->where('type', StateType::Private)
+                    ->first()
+                    ->id,
             ];
         } elseif ($destFolder) {
             $values = [
                 'course_id' => $destFolder->course->id,
                 'folder_id' => $destFolder->id,
+                'state_id' => $destFolder
+                    ->course
+                    ->states
+                    ->where('type', StateType::Private)
+                    ->first()
+                    ->id,
             ];
         } else {
             $copyLabel = trans('courses.finder.copy');
@@ -95,6 +107,7 @@ class CloneCardService
                 'title' => "{$this->card->title} ($copyLabel)",
             ];
         }
+
         $copiedCard = $this->card->replicate(['position'])->fill($values);
         $copiedCard->save();
         $copiedCard->refresh();
@@ -131,28 +144,30 @@ class CloneCardService
 
             // Copy source file.
             static $alreadyCopiedFiles = [];
-            if (array_key_exists($this->card->file->id, $alreadyCopiedFiles)) {
-                // Only copy source file once. Avoid having multiple copies of
-                // sources files when cloning multiple cards that have the same
-                // source file. Can still happen when cloning files from
-                // multiple requests.
-                $copiedCard->file_id = $alreadyCopiedFiles[$this->card->file->id];
-                $copiedCard->save();
-            } else {
-                $copiedSourceFile = (new CloneFileService(
-                    $this->card->file,
-                ))->clone($copiedCard->id);
-
-                if ($copiedSourceFile) {
-                    $files->push($copiedSourceFile);
-                    $copiedSourceFile->course_id = $copiedCard->course->id;
-                    $copiedSourceFile->save();
-                    $copiedCard->file_id = $copiedSourceFile->id;
+            if ($this->card->file) {
+                if (array_key_exists($this->card->file->id, $alreadyCopiedFiles)) {
+                    // Only copy source file once. Avoid having multiple copies of
+                    // sources files when cloning multiple cards that have the same
+                    // source file. Can still happen when cloning files from
+                    // multiple requests.
+                    $copiedCard->file_id = $alreadyCopiedFiles[$this->card->file->id];
                     $copiedCard->save();
-
-                    $alreadyCopiedFiles[$this->card->file->id] = $copiedSourceFile->id;
                 } else {
-                    $failed = true;
+                    $copiedSourceFile = (new CloneFileService(
+                        $this->card->file,
+                    ))->clone($copiedCard->id);
+
+                    if ($copiedSourceFile) {
+                        $files->push($copiedSourceFile);
+                        $copiedSourceFile->course_id = $copiedCard->course->id;
+                        $copiedSourceFile->save();
+                        $copiedCard->file_id = $copiedSourceFile->id;
+                        $copiedCard->save();
+
+                        $alreadyCopiedFiles[$this->card->file->id] = $copiedSourceFile->id;
+                    } else {
+                        $failed = true;
+                    }
                 }
             }
         } else {

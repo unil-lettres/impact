@@ -41,7 +41,7 @@
                                     value="{{$folder->id}}"
                                     x-show="shouldShow('{{$folder->getAncestors()->pluck('id')->implode(',')}}')"
                                 >
-                                    {{ $folder->title }}
+                                    {{ $folder->titleFullPath }}
                                 </option>
                             @endforeach
                         </select>

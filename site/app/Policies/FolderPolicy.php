@@ -100,36 +100,4 @@ class FolderPolicy
 
         return false;
     }
-
-    /**
-     * Determine whether the user can select the folder.
-     *
-     * @param  Folder  $folder
-     * @return mixed
-     */
-    public function select(User $user, Course $course, Folder $selected, Folder $folder = null)
-    {
-        // Only folders within the course can be selected
-        if ($selected->course->id !== $course->id) {
-            return false;
-        }
-
-        if ($folder) {
-            // Cannot select own folder as parent
-            if ($folder->id === $selected->id) {
-                return false;
-            }
-        }
-
-        if ($user->admin) {
-            return true;
-        }
-
-        // Only teachers of the course can select a folder
-        if ($user->isTeacher($selected->course)) {
-            return true;
-        }
-
-        return false;
-    }
 }

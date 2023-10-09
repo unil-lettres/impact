@@ -46,11 +46,5 @@
             modalMoveId="modalMoveId"
             modalCreateId="modalCreate"
         />
-        <!-- <div id="course">
-            <div>
-                @include('shared.folders')
-                @include('shared.cards')
-            </div>
-        </div> -->
     @endsection
 @endcan

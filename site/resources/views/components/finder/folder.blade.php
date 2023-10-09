@@ -104,17 +104,19 @@
                         </span>
                     </li>
                     <li><hr class="dropdown-divider"></li>
-                    <li
-                        class="dropdown-item d-flex cursor-pointer align-items-center"
-                        data-bs-toggle="modal"
-                        data-bs-target="#{{$modalMoveId}}"
-                        :data-bs-keys="[key]"
-                    >
-                        <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
-                        <span class="flex-fill me-5">
-                            {{ trans('courses.finder.move_in')}}
-                        </span>
-                    </li>
+                    @can('moveCardOrFolder', $folder->course)
+                        <li
+                            class="dropdown-item d-flex cursor-pointer align-items-center"
+                            data-bs-toggle="modal"
+                            data-bs-target="#{{$modalMoveId}}"
+                            :data-bs-keys="[key]"
+                        >
+                            <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
+                            <span class="flex-fill me-5">
+                                {{ trans('courses.finder.move_in')}}
+                            </span>
+                        </li>
+                    @endcan
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         wire:click="cloneFolder({{$folder->id}})"
@@ -135,6 +137,7 @@
                             {{ trans('courses.finder.clone_in')}}
                         </span>
                     </li>
+                    @can('update', $folder)
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         @click="renameFolder($wire, {{$folder->id}})"
@@ -144,6 +147,7 @@
                             {{ trans('courses.finder.menu.rename')}}
                         </span>
                     </li>
+                    @endcan
                     @can('forceDelete', $folder)
                         <li
                             wire:confirm="{{ trans('courses.finder.menu.delete.folder.confirm') }}"
@@ -151,7 +155,7 @@
                             class="dropdown-item d-flex cursor-pointer align-items-center"
                         >
                             <i class="fa-regular fa-trash-can me-2"></i>
-                            <span class="flex-fill me-5">
+                            <spa    n class="flex-fill me-5">
                                 {{ trans('courses.finder.menu.delete')}}
                             </span>
                         </li>

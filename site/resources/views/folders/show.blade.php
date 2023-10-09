@@ -37,12 +37,12 @@
                     {{ trans('cards.create') }}
                 </button>
             @endcan
-            @can('update', $folder)
                 <div class="dropdown">
                     <button class="btn btn-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="fa-solid fa-ellipsis-vertical"></i>
                     </button>
                     <ul class="dropdown-menu dropdown-with-icon">
+                        @can('moveCardOrFolder', $folder->course)
                         <li
                             data-bs-toggle="modal"
                             data-bs-target="#modalMoveIn"
@@ -55,6 +55,7 @@
                                 {{ trans('folders.move') }}
                             </span>
                         </li>
+                        @endcan
                         <li
                             class="dropdown-item d-flex cursor-pointer align-items-center"
                             onClick="folderUtils.dispatchCustomEvent('finder-clone-folder', {folderId: {{$folder->id}}})"
@@ -75,15 +76,17 @@
                                 {{ trans('folders.clone_in')}}
                             </span>
                         </li>
-                        <li
-                            class="dropdown-item d-flex cursor-pointer align-items-center"
-                            onClick="folderUtils.dispatchCustomEvent('finder-rename-folder', {folderId: {{$folder->id}}})"
-                        >
-                            <i class="fa-solid fa-i-cursor me-2"></i>
-                            <span class="flex-fill me-5">
-                                {{ trans('folders.rename') }}
-                            </span>
-                        </li>
+                        @can('update', $folder)
+                            <li
+                                class="dropdown-item d-flex cursor-pointer align-items-center"
+                                onClick="folderUtils.dispatchCustomEvent('finder-rename-folder', {folderId: {{$folder->id}}})"
+                            >
+                                <i class="fa-solid fa-i-cursor me-2"></i>
+                                <span class="flex-fill me-5">
+                                    {{ trans('folders.rename') }}
+                                </span>
+                            </li>
+                        @endcan
                         @can('forceDelete', $folder)
                             <li
                                 onClick="folderUtils.destroyFolder({{$folder->id}})"
@@ -108,7 +111,6 @@
                         </li>
                     </ul>
                 </div>
-            @endcan
         @endsection
     @endif
     @section('content')
@@ -119,12 +121,6 @@
             modalMoveId="modalMoveIn"
             modalCreateId="modalCreate"
         />
-        <!-- <div id="folder">
-            <div>
-                @include('shared.folders')
-                @include('shared.cards')
-            </div>
-        </div> -->
     @endsection
     @section('scripts-footer')
         <script>

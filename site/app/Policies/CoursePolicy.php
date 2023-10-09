@@ -98,6 +98,21 @@ class CoursePolicy
     }
 
     /**
+     * Determine whether the user can move a card or a folder inside
+     * another folder.
+     */
+    public function moveCardOrFolder(User $user, Course $course): bool
+    {
+        return false;
+        // Only admins & teachers can move cards or folders
+        if ($user->isTeacher($course)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Determine whether the user can update the configuration of the course.
      *
      * @return mixed

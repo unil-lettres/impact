@@ -13,8 +13,10 @@ use App\Services\Clone\CloneCardService;
 use App\Services\Clone\CloneFolderService;
 use App\Services\Clone\MassCloneService;
 use App\Services\MoveService;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -117,8 +119,6 @@ class Finder extends Component
 
     public function createItem(string $name, string $type, ?int $folderId)
     {
-        // TODO authorizations (and @can in the view)
-
         $validated = $this->validatorHelper(
             [
                 'title' => $name,
@@ -128,7 +128,17 @@ class Finder extends Component
             [
                 'title' => 'required|string|max:255',
                 'type' => 'required|string|in:'.FinderRowType::Card.','.FinderRowType::Folder,
-                'folder_id' => 'nullable|integer|exists:folders,id',
+                'folder_id' => [
+                    'nullable',
+                    'integer',
+                    // Parent folder must be in the current course.
+                    Rule::exists('folders', 'id')->where(
+                        fn (Builder $query) => $query->where(
+                            'course_id',
+                            $this->course->id,
+                        )
+                    ),
+                ],
             ],
         );
 
@@ -136,14 +146,17 @@ class Finder extends Component
             return;
         }
 
-        // TODO valdier les inputs
         if ($type == FinderRowType::Card) {
+            $this->authorize('create', [Card::class, $this->course]);
+
             Card::create([
                 'title' => $name,
                 'course_id' => $this->course->id,
                 'folder_id' => $folderId,
             ]);
         } elseif ($type === FinderRowType::Folder) {
+            $this->authorize('create', [Folder::class, $this->course]);
+
             Folder::create([
                 'title' => $name,
                 'course_id' => $this->course->id,
@@ -244,8 +257,11 @@ class Finder extends Component
             return;
         }
 
-        $folder->title = $validated['newName'];
-        $folder->save();
+        $this->authorize('update', $folder);
+
+        $folder->update([
+            'title' => $validated['newName'],
+        ]);
 
         if ($reloadAfterSave) {
             return $this->redirect(url()->previous());
@@ -309,7 +325,9 @@ class Finder extends Component
         int $dest = null,
         bool $reloadAfterSave = false,
     ) {
-        // TODO authorizations (and @can in the view)
+        $this->authorize('moveCardOrFolder', $this->course);
+
+        // TODO authorizations for card (@can) in the view
         // TODO valdier les inputs
         // TODO doit être teacher du course des keys
         // TODO toutes les keys doivent provenir du même course

@@ -17,10 +17,10 @@ use Illuminate\Support\Facades\Auth;
 
 class Card extends Model
 {
+    use HasFactory;
     use SoftDeletes {
         forceDelete as traitForceDelete;
     }
-    use HasFactory;
 
     const TRANSCRIPTION = '{
             "version": 1,

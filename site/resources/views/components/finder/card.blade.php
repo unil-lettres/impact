@@ -1,13 +1,20 @@
 @props(['card', 'modalCloneId', 'modalMoveId', 'selected' => false, 'lockedMove' => false, 'depth' => 0])
 
+@php($canAccess = auth()->user()->can('view', $card))
+
 <li
-    class="finder-card d-flex border-top border-secondary-subtle background-hover cursor-default row-height"
+    class="{{$canAccess ? '' : 'disabled'}} finder-card d-flex border-top border-secondary-subtle background-hover cursor-default row-height"
     data-id="{{ $card->id }}"
     data-type="{{ $card->getFinderRowType() }}"
     x-data="{ key: '{{ $card->getFinderRowType() }}-{{ $card->id }}' }"
     :data-key="key"
-    @click.stop="toggleSelect($event, $el)"
-    @dblclick.stop="window.location = '{{ route('cards.show', $card->id) }}'"
+    @if ($canAccess)
+        @click.stop="toggleSelect($event, $el)"
+        @dblclick.stop="window.location = '{{ route('cards.show', $card->id) }}'"
+    @else
+        @click.stop
+        @dblclick.stop
+    @endif
     :class="!selectedItems.includes(key) || 'selected'"
     wire:key='{{ $card->getFinderRowType() }}-{{ $card->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}
@@ -63,6 +70,7 @@
                 aria-expanded="false"
                 @click.stop="openMenu($el)"
                 @dblclick.stop
+                x-show="{{$canAccess ? 'true' : 'false'}}"
             >
                 <i class="fa-solid fa-ellipsis-vertical"></i>
             </button>
@@ -124,12 +132,14 @@
                         </span>
                     </li>
                 @endcan
-                <li><hr class="dropdown-divider"></li>
-                <li class="dropdown-item d-flex cursor-pointer align-items-center">
-                    <span class="flex-fill me-5">
-                        {{ trans('courses.finder.menu.print')}}
-                    </span>
-                </li>
+                @if ($canAccess)
+                    <li><hr class="dropdown-divider"></li>
+                    <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                        <span class="flex-fill me-5">
+                            {{ trans('courses.finder.menu.print')}}
+                        </span>
+                    </li>
+                @endif
             </ul>
         </div>
     </div>

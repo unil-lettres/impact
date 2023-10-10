@@ -443,7 +443,6 @@ class Helpers
         string $sortDirection = 'asc',
     ): Collection {
 
-        // TODO recupérer uniquement les cartes dont l'utilisateur peut avoir accès.
         $cards = Card::with('tags')->with('state')->with('folder')
             ->where('course_id', $course->id)
             ->where('folder_id', $folder?->id)
@@ -520,6 +519,10 @@ class Helpers
                 }
             );
         }
+
+        // Filter cards by user permissions.
+        $user = Auth::user();
+        $cards = $cards->filter(fn ($card) => $user->can('viewInFinder', $card));
 
         $results = $cards
             ->concat(

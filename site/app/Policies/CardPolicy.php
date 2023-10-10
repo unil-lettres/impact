@@ -61,6 +61,21 @@ class CardPolicy
     }
 
     /**
+     * It works like view policy except that responsibles of the course can view
+     * the card in the finder if the state is set to the 'private' state.
+     *
+     * It will be indicated visually that he cannot open the card though.
+     */
+    public function viewInFinder(User $user, Card $card): bool
+    {
+        // Teachers of the course can view the card if the state is not set to the 'private' type
+        if ($user->isTeacher($card->course) && $card->state?->type === StateType::Private) {
+            return true;
+        }
+        return $this->view($user, $card);
+    }
+
+    /**
      * Determine whether the user can create cards.
      *
      * @return mixed

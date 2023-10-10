@@ -291,9 +291,10 @@
                         );
                         _.pull(this.selectedItems, ...keysToUnselect, key);
                     } else {
-                        // Select clicked element and all its children.
+                        // Select clicked element and all its children, except
+                        // the ones disabled.
                         const keysToSelect = _.map(
-                            element.querySelectorAll('.finder-folder, .finder-card'),
+                            element.querySelectorAll('.finder-folder, .finder-card:not(.disabled)'),
                             child => child.getAttribute('data-key'),
                         );
                         this.selectedItems = _.uniq(

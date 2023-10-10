@@ -20,6 +20,10 @@
         list-style: none;
     }
 
+    .disabled {
+        color: $gray-500;
+    }
+
     .dropdown-menu {
         line-height: var(--bs-body-line-height);
     }
@@ -100,7 +104,7 @@
         width: 40px;
     }
 
-    .background-hover:hover {
+    .background-hover:not(.disabled):hover {
         background-color: var(--bs-gray-200);
     }
 

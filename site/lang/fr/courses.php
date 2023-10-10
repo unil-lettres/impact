@@ -61,7 +61,7 @@ return [
     'finder.filter.box' => 'Case',
     'finder.menu.open' => 'Ouvrir',
     'finder.menu.close' => 'Fermer',
-    'finder.menu.print' => 'Imprimer',
+    'finder.menu.print' => 'Imprimer (TODO)',
     'finder.menu.copy' => 'Dupliquer',
     'finder.menu.copy.success' => 'Elément(s) copié(s) avec succès.',
     'finder.menu.card.open.help' => 'Double-clic / Clic icône',
@@ -91,5 +91,4 @@ return [
     'finder.dialog.create.cancel' => 'Annuler',
     'finder.menu.rename' => 'Renommer...',
     'finder.menu.rename_prompt' => 'Veuillez saisir le nouveau nom du dossier',
-    'finder.menu.mail' => 'Envoi de mail',
 ];

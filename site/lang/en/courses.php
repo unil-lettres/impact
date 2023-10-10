@@ -61,7 +61,7 @@ return [
     'finder.filter.box' => 'Box',
     'finder.menu.open' => 'Open',
     'finder.menu.close' => 'Close',
-    'finder.menu.print' => 'Print',
+    'finder.menu.print' => 'Print (TODO)',
     'finder.menu.copy' => 'Copy',
     'finder.menu.copy.success' => 'Item(s) have been successfully copied.',
     'finder.menu.card.open.help' => 'Double click / Icon click',
@@ -91,5 +91,4 @@ return [
     'finder.dialog.create.cancel' => 'Cancel',
     'finder.menu.rename' => 'Rename...',
     'finder.menu.rename_prompt' => 'Please type the new name of the folder',
-    'finder.menu.mail' => 'Send mail',
 ];

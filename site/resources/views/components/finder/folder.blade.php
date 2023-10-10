@@ -180,11 +180,6 @@
                             {{ trans('courses.finder.menu.print')}}
                         </span>
                     </li>
-                    <li class="dropdown-item d-flex cursor-pointer align-items-center">
-                        <span class="flex-fill me-5">
-                            {{ trans('courses.finder.menu.mail')}}
-                        </span>
-                    </li>
                 </ul>
             </div>
         </div>

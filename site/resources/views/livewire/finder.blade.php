@@ -160,11 +160,6 @@
                             {{ trans('courses.finder.menu.print')}}
                         </span>
                     </li>
-                    <li class="dropdown-item d-flex cursor-pointer align-items-center">
-                        <span class="flex-fill me-5">
-                            {{ trans('courses.finder.menu.mail')}}
-                        </span>
-                    </li>
                 </ul>
             </div>
             <button class="btn d-none d-sm-inline-block" @click="selectAll" x-show.important="!isAllSelected()">

@@ -15,8 +15,8 @@ use Illuminate\Support\Facades\Auth;
 
 class Card extends Model
 {
-    use SoftDeletes;
     use HasFactory;
+    use SoftDeletes;
 
     const TRANSCRIPTION = '{
             "version": 1,

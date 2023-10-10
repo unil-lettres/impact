@@ -104,7 +104,6 @@ class FolderPolicy
     /**
      * Determine whether the user can select the folder.
      *
-     * @param  Folder  $folder
      * @return mixed
      */
     public function select(User $user, Course $course, Folder $selected, Folder $folder = null)

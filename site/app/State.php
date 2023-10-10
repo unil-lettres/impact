@@ -14,9 +14,9 @@ use Spatie\EloquentSortable\SortableTrait;
 
 class State extends Model implements Sortable
 {
+    use HasFactory;
     use SoftDeletes;
     use SortableTrait;
-    use HasFactory;
 
     const PERMISSIONS = '{
             "version": 1,

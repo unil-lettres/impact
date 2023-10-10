@@ -43,7 +43,7 @@ class Finder extends Component
 
     public $filters;
 
-    public $filterCardDetails;
+    public $filterSearchBoxes;
 
     public function mount()
     {
@@ -56,6 +56,7 @@ class Finder extends Component
         return Helpers::getFolderContent(
             Course::find($this->course->id),
             $this->filters,
+            $this->filterSearchBoxes,
             $this->folder,
             $this->sortColumn,
             $this->sortDirection,
@@ -182,7 +183,7 @@ class Finder extends Component
             return;
         }
 
-        $this->filterCardDetails[$filter] = $checked;
+        $this->filterSearchBoxes[$filter] = $checked;
     }
 
     public function sortAttributes($column): string
@@ -369,7 +370,7 @@ class Finder extends Component
 
     private function initFilters()
     {
-        $this->filterCardDetails = collect([
+        $this->filterSearchBoxes = collect([
             'name' => true,
             CardBox::Box2 => false,
             CardBox::Box3 => false,
@@ -380,10 +381,10 @@ class Finder extends Component
             'tag' => collect([]),
             'editor' => collect([]),
             'state' => collect([]),
-            'card' => collect([]),
+            'search' => collect([]),
         ]);
 
-        $jsonFilters = $this->filterCardDetails->toJson();
+        $jsonFilters = $this->filterSearchBoxes->toJson();
         $this->js("window.MultiFilterSelect.checkedFilter = $jsonFilters");
     }
 

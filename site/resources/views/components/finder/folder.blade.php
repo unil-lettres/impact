@@ -1,6 +1,7 @@
 @props([
     'folder',
     'filters',
+    'filterSearchBoxes',
     'modalCloneId',
     'modalMoveId',
     'sortColumn' => 'position',
@@ -8,7 +9,16 @@
     'depth' => 0,
     'lockedMove' => false,
 ])
-@php($rows = Helpers::getFolderContent($folder->course, $filters, $folder, $sortColumn, $sortDirection))
+@php(
+    $rows = Helpers::getFolderContent(
+        $folder->course,
+        $filters,
+        $filterSearchBoxes,
+        $folder,
+        $sortColumn,
+        $sortDirection,
+    )
+)
 
 <li
     class="finder-folder border-top border-secondary-subtle row-height cursor-default"
@@ -51,7 +61,7 @@
             {{ $folder->position }} - {{ $folder->title }}
         </div>
         <div class="text-secondary">
-            {{ Helpers::countCardsRecursive($folder, $filters, $sortColumn, $sortDirection) }}
+            {{ Helpers::countCardsRecursive($folder, $filters, $filterSearchBoxes, $sortColumn, $sortDirection) }}
             {{ trans('courses.finder.folder.cards_count')}}
         </div>
         <div class='column-options'>
@@ -194,6 +204,7 @@
                     :depth="$depth + 1"
                     :lockedMove="$lockedMove"
                     :filters="$filters"
+                    :filterSearchBoxes="$filterSearchBoxes"
                     :modalCloneId="$modalCloneId"
                     :modalMoveId="$modalMoveId"
                 />

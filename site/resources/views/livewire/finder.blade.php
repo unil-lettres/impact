@@ -66,7 +66,7 @@
                     id="rct-multi-filter-select-name"
                     createLabel="{{ trans('courses.finder.filter.names.create') }}"
                     noOptionsMessage="{{ trans('courses.finder.filter.names.empty') }}"
-                    data='{{ json_encode(['record' => 'card', 'options' => collect([])]) }}'
+                    data='{{ json_encode(['record' => 'search', 'options' => collect([])]) }}'
                     placeholder='{{ trans("courses.finder.filter.names") }}'
                     data-name-label='{{ trans('courses.finder.name') }}'
                     data-box-label='{{ trans('courses.finder.filter.box') }}'
@@ -244,6 +244,7 @@
                     :sortDirection="$this->sortDirection"
                     :lockedMove="$this->lockedMove"
                     :filters="$this->filters"
+                    :filterSearchBoxes="$this->filterSearchBoxes"
                     :modalCloneId="$modalCloneId"
                     :modalMoveId="$modalMoveId"
                 />

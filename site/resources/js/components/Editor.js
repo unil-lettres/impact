@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { flushSync } from 'react-dom';
 
 import axios from "axios";
+import _ from "lodash";
 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import BalloonEditor from '@ckeditor/ckeditor5-editor-balloon/src/ballooneditor';
@@ -29,9 +30,10 @@ import FontColorPlugin from '@ckeditor/ckeditor5-font/src/fontcolor';
 import FontSizePlugin from '@ckeditor/ckeditor5-font/src/fontsize';
 import TablePlugin from '@ckeditor/ckeditor5-table/src/table';
 import TableToolbarPlugin from '@ckeditor/ckeditor5-table/src/tabletoolbar';
+import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
+import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
 import HorizontalLinePlugin from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
 import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
-import _ from "lodash";
 
 const editorConfiguration = {
     plugins: [
@@ -56,6 +58,8 @@ const editorConfiguration = {
         FontSizePlugin,
         TablePlugin,
         TableToolbarPlugin,
+        TableCellProperties,
+        TableProperties,
         HighlightPlugin,
         HorizontalLinePlugin,
         ParagraphPlugin
@@ -94,6 +98,12 @@ const editorConfiguration = {
             '|',
             'toggleImageCaption',
             'imageTextAlternative'
+        ]
+    },
+    table: {
+        contentToolbar: [
+            'tableColumn', 'tableRow', 'mergeTableCells',
+            'tableProperties', 'tableCellProperties'
         ]
     }
 };

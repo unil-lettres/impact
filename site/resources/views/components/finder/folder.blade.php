@@ -9,7 +9,7 @@
     'depth' => 0,
     'lockedMove' => false,
 ])
-@php(
+@php
     $rows = Helpers::getFolderContent(
         $folder->course,
         $filters,
@@ -17,8 +17,22 @@
         $folder,
         $sortColumn,
         $sortDirection,
-    )
-)
+    );
+
+    $countCards = Helpers::countCardsRecursive(
+        $folder,
+        $filters,
+        $filterSearchBoxes,
+        $sortColumn,
+        $sortDirection,
+    );
+
+    $hasFilters = $filters->some(fn ($filter) => $filter->isNotEmpty());
+
+    $hasFolderUpdateRights = auth()->user()->can('update', $folder);
+
+    $shouldSeeFolder = $countCards > 0 || !$hasFilters && $hasFolderUpdateRights;
+@endphp
 
 <li
     class="finder-folder border-top border-secondary-subtle row-height cursor-default"
@@ -31,6 +45,9 @@
     wire:dblclick.stop="openFolder({{$folder->id}})"
     wire:key='{{ $folder->getFinderRowType() }}-{{ $folder->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}
+    @if (!$shouldSeeFolder)
+        x-show.important="false"
+    @endif
 >
     <div
         class="d-flex background-hover"
@@ -61,7 +78,7 @@
             {{ $folder->position }} - {{ $folder->title }}
         </div>
         <div class="text-secondary">
-            {{ Helpers::countCardsRecursive($folder, $filters, $filterSearchBoxes, $sortColumn, $sortDirection) }}
+            {{ $countCards }}
             {{ trans('courses.finder.folder.cards_count')}}
         </div>
         <div class='column-options'>

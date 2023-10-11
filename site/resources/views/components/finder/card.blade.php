@@ -100,6 +100,7 @@
                         </span>
                     </li>
                 @endcan
+                @can('clone', $card)
                 <li
                     class="dropdown-item d-flex cursor-pointer align-items-center"
                     wire:click="cloneCard({{$card->id}})"
@@ -109,6 +110,7 @@
                         {{ trans('courses.finder.menu.copy')}}
                     </span>
                 </li>
+                @endcan
                 <li
                     class="dropdown-item d-flex cursor-pointer align-items-center"
                     data-bs-toggle="modal"

@@ -72,7 +72,7 @@ const MenuList = props => {
     }
 
     function dispatchToggleFilter(filter, checked) {
-        const toggleEvent = new CustomEvent('toggle-filter-card-detail', {
+        const toggleEvent = new CustomEvent('toggle-filter-search-box', {
             bubbles: true,
             cancelable: false,
             detail: {

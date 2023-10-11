@@ -148,6 +148,7 @@
                             </span>
                         </li>
                     @endcan
+                    @can('update', $folder)
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         wire:click="cloneFolder({{$folder->id}})"
@@ -157,6 +158,7 @@
                             {{ trans('courses.finder.menu.copy')}}
                         </span>
                     </li>
+                    @endcan
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         data-bs-toggle="modal"

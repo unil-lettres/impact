@@ -64,6 +64,10 @@ class CloneFolderService
             $destCourse = null;
         }
 
+        if (auth()->user()->cannot('update', $this->folder)) {
+            abort(403);
+        }
+
         if ($destFolder) {
             $values = [
                 'parent_id' => $destFolder->id,

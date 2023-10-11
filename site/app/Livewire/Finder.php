@@ -83,13 +83,26 @@ class Finder extends Component
     #[On('sort-updated')]
     public function move(int $id, string $type, int $position)
     {
-        // TODO valdier les inputs
-
         if ($this->lockedMove()) {
             return;
         }
 
-        $entity = $type === FinderRowType::Folder ? Folder::find($id) : Card::Find($id);
+        $validated = $this->validatorHelper(
+            [
+                'type' => $type,
+                'position' => $position,
+            ],
+            [
+                'position' => 'required|integer',
+                'type' => 'required|string|in:'.FinderRowType::Card.','.FinderRowType::Folder,
+            ],
+        );
+
+        if (empty($validated)) {
+            return;
+        }
+
+        $entity = $type === FinderRowType::Folder ? Folder::findOrFail($id) : Card::findOrFail($id);
         $entity->position = $position;
         $entity->save();
     }
@@ -97,7 +110,19 @@ class Finder extends Component
     #[On('add-element-to-filter')]
     public function addElementToFilter(mixed $filter, string $type)
     {
-        // TODO valdier les inputs
+        $validated = $this->validatorHelper(
+            [
+                'type' => $type,
+            ],
+            [
+                'type' => 'required|string|in:'.$this->filters->keys()->join(','),
+            ],
+        );
+
+        if (empty($validated)) {
+            return;
+        }
+
         $this->filters->put(
             $type,
             $this->filters->get($type)->push(
@@ -109,7 +134,19 @@ class Finder extends Component
     #[On('remove-element-to-filter')]
     public function removeElementToFilter(mixed $filter, string $type)
     {
-        // TODO valdier les inputs
+        $validated = $this->validatorHelper(
+            [
+                'type' => $type,
+            ],
+            [
+                'type' => 'required|string|in:'.$this->filters->keys()->join(','),
+            ],
+        );
+
+        if (empty($validated)) {
+            return;
+        }
+
         $this->filters->put(
             $type,
             $this->filters->get($type)->filter(
@@ -172,9 +209,9 @@ class Finder extends Component
     }
 
     /**
-     * Add or remove a filter (detail) on the card.
+     * Add or remove a filter (search box, like name, box 2, etc.) on the card.
      */
-    public function toggleFilterCardDetail(string $filter, bool $checked)
+    public function toggleFilterSearchBox(string $filter, bool $checked)
     {
         if (! in_array(
             $filter,
@@ -210,14 +247,28 @@ class Finder extends Component
 
     public function sort($column, $direction): void
     {
-        // TODO valdier les inputs
+        $validated = $this->validatorHelper(
+            [
+                'column' => $column,
+                'direction' => $direction,
+            ],
+            [
+                'column' => 'required|string|in:title,state_name,created_at,editors_list,tags_list,'.static::DEFAULT_SORT_COLUMN,
+                'direction' => 'required|string|in:asc,desc',
+            ],
+        );
+
+        if (empty($validated)) {
+            return;
+        }
+
         $this->sortColumn = $column;
         $this->sortDirection = $direction;
     }
 
     public function cloneCard(Card $card): void
     {
-        // TODO authorizations (and @can in the view)
+        // Authorizations in CloneCardService.
         (new CloneCardService($card))->clone();
     }
 
@@ -225,7 +276,7 @@ class Finder extends Component
         Folder $folder,
         bool $displayFlash = false,
     ): void {
-        // TODO authorizations (and @can in the view)
+        // Authorizations in CloneFolderService.
         (new CloneFolderService($folder))->clone();
 
         if ($displayFlash) {
@@ -406,7 +457,6 @@ class Finder extends Component
      */
     private function validatorHelper(array $values, array $validators): array
     {
-        // TODO authorizations (and @can in the view)
         $validator = Validator::make($values, $validators);
 
         if ($validator->fails()) {

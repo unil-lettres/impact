@@ -119,6 +119,25 @@ class CardPolicy
     }
 
     /**
+     * Determine whether the user can clone the card.
+     *
+     * @return mixed
+     */
+    public function clone(User $user, Card $card)
+    {
+        if ($user->admin) {
+            return true;
+        }
+
+        // Teachers of the course can clone a card if the state is not set to the 'private' type
+        if ($user->isTeacher($card->course) && $card->state?->type !== StateType::Private) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Determine whether the user can forceDelete the card.
      *
      * @return mixed

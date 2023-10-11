@@ -1,7 +1,7 @@
 <div
     class='finder'
     x-cloak x-data="finderData"
-    wire:toggle-filter-card-detail.window="toggleFilterCardDetail(...Object.values($event.detail))"
+    wire:toggle-filter-search-box.window="toggleFilterSearchBox(...Object.values($event.detail))"
     wire:finder-destroy-folder.window="destroyFolder($event.detail.folderId, true)"
     wire:finder-clone-folder.window="cloneFolder($event.detail.folderId, true)"
     @finder-rename-folder.window="renameFolder($wire, $event.detail.folderId, true)"

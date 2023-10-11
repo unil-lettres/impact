@@ -113,10 +113,11 @@
                     <li class="d-block d-sm-none">
                         <hr class="dropdown-divider">
                     </li>
+                    @can('massActionsForCardAndFolder', $course)
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         data-bs-toggle="modal"
-                        data-bs-target="#modalMoveIn"
+                        data-bs-target='{{"#$modalMoveId"}}'
                         :data-bs-keys="selectedItems"
                     >
                         <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
@@ -136,7 +137,7 @@
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         data-bs-toggle="modal"
-                        data-bs-target="#modalCloneIn"
+                        data-bs-target='{{"#$modalCloneId"}}'
                         :data-bs-keys="selectedItems"
                     >
                         <i class="fa-solid fa-file-import me-2"></i>
@@ -155,6 +156,7 @@
                         </span>
                     </li>
                     <li><hr class="dropdown-divider"></li>
+                    @endcan
                     <li class="dropdown-item d-flex cursor-pointer align-items-center">
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.print')}}

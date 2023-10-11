@@ -268,7 +268,6 @@ class Finder extends Component
 
     public function cloneCard(Card $card): void
     {
-        // Authorizations in CloneCardService.
         (new CloneCardService($card))->clone();
     }
 
@@ -276,7 +275,6 @@ class Finder extends Component
         Folder $folder,
         bool $displayFlash = false,
     ): void {
-        // Authorizations in CloneFolderService.
         (new CloneFolderService($folder))->clone();
 
         if ($displayFlash) {
@@ -286,10 +284,6 @@ class Finder extends Component
 
     public function cloneMultiple(array $keys): void
     {
-        // TODO authorizations (and @can in the view)
-        // TODO valdier les inputs
-        // TODO doit être teacher du course des keys
-        // TODO toutes les keys doivent provenir du même course
         $this->keysToEntities($keys)->each(
             fn ($entity) => MassCloneService::getCloneService($entity)->clone(),
         );
@@ -345,22 +339,17 @@ class Finder extends Component
 
     public function destroyMultiple(array $keys): void
     {
-        // TODO authorizations (and @can in the view)
-        // TODO valdier les inputs
-        // TODO doit être teacher du course des keys
-        // TODO toutes les keys doivent provenir du même course
         $this->keysToEntities($keys)->each(
-            fn ($entity) => $entity->forceDelete(),
+            function ($entity) {
+                $this->authorize('forceDelete', $entity);
+                $entity->forceDelete();
+            }
         );
         $this->js('selectedItems = []');
     }
 
     public function cloneIn(array $keys, Course $dest)
     {
-        // TODO authorizations (and @can in the view)
-        // TODO valdier les inputs
-        // TODO doit être teacher du course des keys
-        // TODO toutes les keys doivent provenir du même course
         try {
             MassCloneService::massCloneCardsAndFolders(
                 $this->keysToEntities($keys),
@@ -379,10 +368,6 @@ class Finder extends Component
     ) {
         $this->authorize('moveCardOrFolder', $this->course);
 
-        // TODO authorizations for card (@can) in the view
-        // TODO valdier les inputs
-        // TODO doit être teacher du course des keys
-        // TODO toutes les keys doivent provenir du même course
         $this->keysToEntities($keys)->each(
             fn ($entity) => MoveService::moveCardOrFolder($entity, $dest ? Folder::find($dest) : null),
         );
@@ -402,7 +387,7 @@ class Finder extends Component
             ->map(function ($key) {
                 [$type, $key] = explode('-', $key);
 
-                return $type === FinderRowType::Card ? Card::find($key) : Folder::find($key);
+                return $type === FinderRowType::Card ? Card::findOrFail($key) : Folder::findOrFail($key);
             })
             ->filter(function ($entity) use ($keys, $withoutDescendants) {
                 // Some times, we want only the most "oldest" parent of an item.

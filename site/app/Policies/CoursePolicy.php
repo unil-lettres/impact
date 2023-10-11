@@ -103,7 +103,6 @@ class CoursePolicy
      */
     public function moveCardOrFolder(User $user, Course $course): bool
     {
-        return false;
         // Only admins & teachers can move cards or folders
         if ($user->isTeacher($course)) {
             return true;
@@ -189,6 +188,45 @@ class CoursePolicy
         // Only admins can delete permanently courses
         return false;
     }
+
+    /**
+    * Determine whether the user can forceDelete a card or a folder of this course.
+    *
+    * @return mixed
+    */
+   public function forceDeleteCardOrCourse(User $user, Course $course)
+   {
+       if ($user->admin) {
+           return true;
+       }
+
+       // Only teachers of the course can delete cards or folders
+       if ($user->isTeacher($course)) {
+           return true;
+       }
+
+       return false;
+   }
+
+   /**
+   * Determine whether the user have the ability to use the mass action (like
+   * cloning multiple cards or folders) of a course.
+   *
+   * @return mixed
+   */
+  public function massActionsForCardAndFolder(User $user, Course $course)
+  {
+      if ($user->admin) {
+          return true;
+      }
+
+      // Only teachers of the course can delete cards or folders
+      if ($user->isTeacher($course)) {
+          return true;
+      }
+
+      return false;
+  }
 
     /**
      * Determine whether the user can send the mail to confirm the deletion of the course.

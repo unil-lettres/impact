@@ -8,6 +8,7 @@ use App\Enums\FileStatus;
 use App\Enums\StateType;
 use App\Exceptions\CloneException;
 use App\Folder;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
@@ -78,7 +79,7 @@ class CloneCardService
             $destCourse = null;
         }
 
-        if (auth()->user()->cannot('clone', $this->card)) {
+        if (Auth::user()->cannot('clone', $this->card)) {
             // Silently skip the clone due to mass action not wished to be
             // aborted. UI should not permit this action anyway.
             return;
@@ -87,6 +88,10 @@ class CloneCardService
         DB::beginTransaction();
         $values = [];
         if ($destCourse) {
+            if (!Auth::user()->isTeacher($destCourse)) {
+                abort(403);
+            }
+
             $values = [
                 'course_id' => $destCourse->id,
                 'folder_id' => null,
@@ -97,6 +102,10 @@ class CloneCardService
                     ->id,
             ];
         } elseif ($destFolder) {
+            if (!Auth::user()->isTeacher($destFolder->course)) {
+                abort(403);
+            }
+
             $values = [
                 'course_id' => $destFolder->course->id,
                 'folder_id' => $destFolder->id,

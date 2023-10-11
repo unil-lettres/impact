@@ -158,7 +158,6 @@
                             {{ trans('courses.finder.menu.copy')}}
                         </span>
                     </li>
-                    @endcan
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         data-bs-toggle="modal"
@@ -170,7 +169,6 @@
                             {{ trans('courses.finder.clone_in')}}
                         </span>
                     </li>
-                    @can('update', $folder)
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         @click="renameFolder($wire, {{$folder->id}})"
@@ -193,7 +191,9 @@
                             </span>
                         </li>
                     @endcan
+                    @canany(['update', 'forceDelete'], $folder)
                     <li><hr class="dropdown-divider"></li>
+                    @endcanany
                     <li class="dropdown-item d-flex cursor-pointer align-items-center">
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.print')}}

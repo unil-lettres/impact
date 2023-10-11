@@ -43,7 +43,7 @@
         <livewire:finder
             :course="$course"
             modalCloneId="modalCloneIn"
-            modalMoveId="modalMoveId"
+            modalMoveId="modalMoveIn"
             modalCreateId="modalCreate"
         />
     @endsection

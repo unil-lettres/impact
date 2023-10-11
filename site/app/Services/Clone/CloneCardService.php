@@ -94,13 +94,16 @@ class CloneCardService
             $values = [
                 'course_id' => $destFolder->course->id,
                 'folder_id' => $destFolder->id,
-                'state_id' => $destFolder
+            ];
+
+            if ($destFolder->course->id !== $this->card->course->id) {
+                $values['state_id'] = $destFolder
                     ->course
                     ->states
                     ->where('type', StateType::Private)
                     ->first()
-                    ->id,
-            ];
+                    ->id;
+            }
         } else {
             $copyLabel = trans('courses.finder.copy');
             $values = [

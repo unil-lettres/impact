@@ -88,7 +88,7 @@ class CloneCardService
         DB::beginTransaction();
         $values = [];
         if ($destCourse) {
-            if (!Auth::user()->isTeacher($destCourse)) {
+            if (! Auth::user()->isTeacher($destCourse)) {
                 abort(403);
             }
 
@@ -102,7 +102,7 @@ class CloneCardService
                     ->id,
             ];
         } elseif ($destFolder) {
-            if (!Auth::user()->isTeacher($destFolder->course)) {
+            if (! Auth::user()->isTeacher($destFolder->course)) {
                 abort(403);
             }
 

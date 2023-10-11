@@ -70,7 +70,7 @@ class CloneFolderService
         }
 
         if ($destFolder) {
-            if (!Auth::user()->isTeacher($destFolder->course)) {
+            if (! Auth::user()->isTeacher($destFolder->course)) {
                 abort(403);
             }
 
@@ -79,7 +79,7 @@ class CloneFolderService
                 'course_id' => $destFolder->course_id,
             ];
         } elseif ($destCourse) {
-            if (!Auth::user()->isTeacher($destCourse)) {
+            if (! Auth::user()->isTeacher($destCourse)) {
                 abort(403);
             }
 

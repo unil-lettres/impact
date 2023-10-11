@@ -72,6 +72,7 @@ class CardPolicy
         if ($user->isTeacher($card->course) && $card->state?->type === StateType::Private) {
             return true;
         }
+
         return $this->view($user, $card);
     }
 

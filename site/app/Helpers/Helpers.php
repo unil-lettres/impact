@@ -20,7 +20,6 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 
 class Helpers
@@ -474,10 +473,10 @@ class Helpers
         if ($filters->get('editor')->isNotEmpty()) {
             $cards = $cards->filter(
                 fn ($card) => $card
-                        ->editors()
-                        ->pluck('id')
-                        ->intersect($filters->get('editor'))
-                        ->isNotEmpty()
+                    ->editors()
+                    ->pluck('id')
+                    ->intersect($filters->get('editor'))
+                    ->isNotEmpty()
             );
         }
 
@@ -494,8 +493,8 @@ class Helpers
                         CardBox::Box2 => match ($course->transcrition) {
                             // Transform ICOR transcription into plain text.
                             TranscriptionType::Icor => collect([])
-                                ->concat(collect($card->box2[TranscriptionType::Icor])->pluck("speaker"))
-                                ->concat(collect($card->box2[TranscriptionType::Icor])->pluck("speech"))
+                                ->concat(collect($card->box2[TranscriptionType::Icor])->pluck('speaker'))
+                                ->concat(collect($card->box2[TranscriptionType::Icor])->pluck('speech'))
                                 ->join(''),
                             default => $card->box2[TranscriptionType::Text] ?? '',
                         },
@@ -511,9 +510,7 @@ class Helpers
                     // Search for the search term in each contents.
                     $found = $filters
                         ->get('search')
-                        ->some(fn ($searchTerm) =>
-                            $contents->some(fn ($content) =>
-                                static::searchTerm($content, $searchTerm)));
+                        ->some(fn ($searchTerm) => $contents->some(fn ($content) => static::searchTerm($content, $searchTerm)));
 
                     return $found;
                 }
@@ -588,8 +585,7 @@ class Helpers
         Collection $filterSearchBoxes,
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
-    ): int
-    {
+    ): int {
         $content = static::getFolderContent(
             $folder->course,
             $filters,

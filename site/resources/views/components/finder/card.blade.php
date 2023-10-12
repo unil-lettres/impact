@@ -8,11 +8,7 @@
     data-type="{{ $card->getFinderRowType() }}"
     x-data="{ key: '{{ $card->getFinderRowType() }}-{{ $card->id }}' }"
     :data-key="key"
-    @if ($canAccess)
-        @click.stop="toggleSelect($event, $el)"
-    @else
-        @click.stop
-    @endif
+    @click.stop="toggleSelect($event, $el)"
     :class="!selectedItems.includes(key) || 'selected'"
     wire:key='{{ $card->getFinderRowType() }}-{{ $card->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}
@@ -28,14 +24,14 @@
         @if ($canAccess)
             <a
                 href="{{ route('cards.show', $card->id) }}"
-                class="text-decoration-none @cannot('update', $card) text-black @endcannot"
+                class="text-decoration-none @can('update', $card) blue-500 @else text-black @endcan"
                 @click.stop
             >
                 <i class="d-inline-block fa-solid fa-file-lines text-center width-large"></i>
             </a>
             <a
                 href="{{ route('cards.show', $card->id) }}"
-                class="legacy @cannot('update', $card) text-black @endcannot"
+                class="legacy text-black"
                 @click.stop
             >
                 {{ $card->title }}
@@ -79,20 +75,22 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
                 @click.stop="openMenu($el)"
-                x-show="{{$canAccess ? 'true' : 'false'}}"
             >
                 <i class="fa-solid fa-ellipsis-vertical"></i>
             </button>
             <ul class="dropdown-menu dropdown-with-icon">
-                <li class="dropdown-item d-flex cursor-pointer align-items-center"
-                    @click="window.location = '{{ route('cards.show', $card->id) }}'"
-                >
-                    <i class="fa-solid fa-square-arrow-up-right me-2"></i>
-                    <span class="flex-fill me-5">
-                        {{ trans('courses.finder.menu.open')}}
-                    </span>
-                </li>
-                <li><hr class="dropdown-divider"></li>
+
+                @if ($canAccess)
+                    <li class="dropdown-item d-flex cursor-pointer align-items-center"
+                        @click="window.location = '{{ route('cards.show', $card->id) }}'"
+                    >
+                        <i class="fa-solid fa-square-arrow-up-right me-2"></i>
+                        <span class="flex-fill me-5">
+                            {{ trans('courses.finder.menu.open')}}
+                        </span>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                @endif
                 @can('moveCardOrFolder', $card->course)
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"

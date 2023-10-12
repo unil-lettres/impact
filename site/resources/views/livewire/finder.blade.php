@@ -295,7 +295,7 @@
                         // Select clicked element and all its children, except
                         // the ones disabled.
                         const keysToSelect = _.map(
-                            element.querySelectorAll('.finder-folder, .finder-card:not(.disabled)'),
+                            element.querySelectorAll('.finder-folder, .finder-card'),
                             child => child.getAttribute('data-key'),
                         );
                         this.selectedItems = _.uniq(

@@ -130,8 +130,8 @@ class CardPolicy
             return true;
         }
 
-        // Teachers of the course can clone a card if the state is not set to the 'private' type
-        if ($user->isTeacher($card->course) && $card->state?->type !== StateType::Private) {
+        // Only teachers of the course can delete cards
+        if ($user->isTeacher($card->course)) {
             return true;
         }
 

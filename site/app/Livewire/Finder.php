@@ -15,6 +15,7 @@ use App\Services\Clone\MassCloneService;
 use App\Services\MoveService;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
@@ -69,7 +70,8 @@ class Finder extends Component
         return false
             || $this->sortColumn != self::DEFAULT_SORT_COLUMN
             || $this->sortDirection != self::DEFAULT_SORT_DIRECTION
-            || ! $this->filters->every(fn (Collection $value) => $value->isEmpty());
+            || ! $this->filters->every(fn (Collection $value) => $value->isEmpty())
+            || Auth::user()->cannot('moveCardOrFolder', $this->course);
     }
 
     #[Computed]
@@ -87,6 +89,8 @@ class Finder extends Component
             return;
         }
 
+        $this->authorize('moveCardOrFolder', $this->course);
+
         $validated = $this->validatorHelper(
             [
                 'type' => $type,
@@ -103,8 +107,9 @@ class Finder extends Component
         }
 
         $entity = $type === FinderRowType::Folder ? Folder::findOrFail($id) : Card::findOrFail($id);
-        $entity->position = $position;
-        $entity->save();
+        $entity->update([
+            'position' => $position,
+        ]);
     }
 
     #[On('add-element-to-filter')]

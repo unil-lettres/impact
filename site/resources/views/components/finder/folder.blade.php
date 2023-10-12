@@ -84,7 +84,7 @@
         <div class='column-options'>
             <div class="dropdown" @click.stop>
                 <button
-                    class="btn border-0"
+                    class="btn border-0 text-black"
                     :class="selectedItems.length > 1 ? 'text-secondary' : ''"
                     style="width:100%"
                     type="button"

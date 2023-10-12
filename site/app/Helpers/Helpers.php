@@ -212,8 +212,7 @@ class Helpers
 
         foreach ($file->cards as $card) {
             $html .= match (true) {
-                // Append the card title without a link because teachers cannot access private cards
-                ! $user->admin && $user->isTeacher($card->course) && $card->state?->type === StateType::Private => '<div>'.$card->title.'</div>',
+                $user->cannot('view', $card) => '<div>'.$card->title.'</div>',
                 default => '<div><a class="legacy" href="'.route('cards.show', $card->id).'">'.$card->title.'</a></div>',
             };
         }
@@ -519,7 +518,7 @@ class Helpers
 
         // Filter cards by user permissions.
         $user = Auth::user();
-        $cards = $cards->filter(fn ($card) => $user->can('viewInFinder', $card));
+        $cards = $cards->filter(fn ($card) => $user->can('index', $card));
 
         $results = $cards
             ->concat(

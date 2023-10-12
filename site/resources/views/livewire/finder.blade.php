@@ -5,7 +5,7 @@
     wire:finder-destroy-folder.window="destroyFolder($event.detail.folderId, true)"
     wire:finder-clone-folder.window="cloneFolder($event.detail.folderId, true)"
     @finder-rename-folder.window="renameFolder($wire, $event.detail.folderId, true)"
-    >
+>
     <div class="toast-container position-fixed top-0 end-0 p-3">
         <div
             class="toast align-items-center {{session('bsClass')}} border-0 {{session('message') ? 'show' : 'hide'}}"

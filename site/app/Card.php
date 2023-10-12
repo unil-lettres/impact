@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Enums\CardBox;
 use App\Enums\FinderRowType;
 use App\Enums\StatePermission;
 use App\Scopes\HideAttachmentsScope;
@@ -238,6 +239,14 @@ class Card extends Model
             StatePermission::TeachersCanShowAndEdit => Auth::user()->isTeacher($this->course),
             default => Auth::user()->admin,
         };
+    }
+
+    /**
+     * Return whether the user can't see any box due to state permission.
+     */
+    public function allBoxesAreHidden(): bool
+    {
+        return CardBox::getAllBoxes()->every(fn ($box) => !$this->boxIsVisible($box));
     }
 
     /**

@@ -66,9 +66,15 @@
         {{ $card->tags_list }}
     </div>
     <div class='column-options'>
+        @if (false
+            || $canAccess
+            || auth()->user()->can('moveCardOrFolder', $card->course)
+            || auth()->user()->can('clone', $card)
+            || auth()->user()->can('forceDelete', $card)
+        )
         <div class="dropdown" @click.stop>
             <button
-                class="btn border-0"
+                class="btn border-0 text-black"
                 :class="selectedItems.length > 1 ? 'text-secondary' : ''"
                 style="width:100%"
                 type="button"
@@ -79,7 +85,6 @@
                 <i class="fa-solid fa-ellipsis-vertical"></i>
             </button>
             <ul class="dropdown-menu dropdown-with-icon">
-
                 @if ($canAccess)
                     <li class="dropdown-item d-flex cursor-pointer align-items-center"
                         @click="window.location = '{{ route('cards.show', $card->id) }}'"
@@ -150,5 +155,6 @@
                 @endif
             </ul>
         </div>
+        @endif
     </div>
 </li>

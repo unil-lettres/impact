@@ -37,6 +37,11 @@ class CardPolicy
             return true;
         }
 
+        // Users that cannot see any box can't access the card, even managers or editors.
+        if ($card->allBoxesAreHidden()) {
+            return false;
+        }
+
         // Editors of the course can view the card
         if ($user->isEditor($card)) {
             return true;
@@ -61,15 +66,13 @@ class CardPolicy
     }
 
     /**
-     * It works like view policy except that responsibles of the course can view
-     * the card in the finder if the state is set to the 'private' state.
-     *
-     * It will be indicated visually that he cannot open the card though.
+     * Works like view policy except that the manager of the course can view
+     * the card in listings.
      */
-    public function viewInFinder(User $user, Card $card): bool
+    public function index(User $user, Card $card): bool
     {
-        // Teachers of the course can view the card if the state is not set to the 'private' type
-        if ($user->isTeacher($card->course) && $card->state?->type === StateType::Private) {
+        // Teachers of the course or editors can always list the card.
+        if ($user->isTeacher($card->course) || $user->isEditor($card)) {
             return true;
         }
 
@@ -104,6 +107,11 @@ class CardPolicy
     {
         if ($user->admin) {
             return true;
+        }
+
+        // Users that cannot see any box can't update the card, even managers or editors.
+        if ($card->allBoxesAreHidden()) {
+            return false;
         }
 
         // Teachers of the course can update the card if the state is not set to the 'private' type

@@ -27,11 +27,16 @@
         <i class="d-inline-block text-center width-small">&nbsp;</i>
         <a
             href="{{ route('cards.show', $card->id) }}"
-            class="text-decoration-none text-primary"
+            class="text-decoration-none @cannot('update', $card) text-black @endcannot"
+            @click.stop
         >
             <i class="d-inline-block fa-solid fa-file-lines text-center width-large"></i>
         </a>
-        <a href="{{ route('cards.show', $card->id) }}" class="legacy">
+        <a
+            href="{{ route('cards.show', $card->id) }}"
+            class="legacy @cannot('update', $card) text-black @endcannot"
+            @click.stop
+        >
             {{ $card->title }}
         </a>
     </div>

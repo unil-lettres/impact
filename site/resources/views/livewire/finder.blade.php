@@ -97,7 +97,6 @@
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                     @click.stop="openMenu($el, true)"
-                    @dblclick.stop
                 >
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </button>

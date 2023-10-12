@@ -42,7 +42,6 @@
     x-data="{ key: '{{ $folder->getFinderRowType() }}-{{ $folder->id }}'}"
     :data-key="key"
     @click.stop="toggleSelect($event, $el)"
-    wire:dblclick.stop="openFolder({{$folder->id}})"
     wire:key='{{ $folder->getFinderRowType() }}-{{ $folder->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}
     @if (!$shouldSeeFolder)
@@ -57,7 +56,6 @@
             <div
                 class="d-inline-block cursor-pointer"
                 @click.stop="toggleOpen($el, key)"
-                @dblclick.stop
             >
                 @for ($i = 0; $i < $depth; $i++)
                     <i class="d-inline-block width-small">&nbsp;</i>
@@ -75,9 +73,11 @@
                     :class="openedFolder.includes(key) ? 'fa-regular fa-folder-open' : 'fa-solid fa-folder'">
                 </i>
             </div>
-            {{ $folder->position }} - {{ $folder->title }}
+            <a class="legacy text-black" href="#" wire:click.stop="openFolder({{$folder->id}})">
+                {{ $folder->title }}
+            </a>
         </div>
-        <div class="text-secondary">
+        <div class="text-secondary text-nowrap">
             {{ $countCards }}
             {{ trans('courses.finder.folder.cards_count')}}
         </div>
@@ -91,7 +91,6 @@
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                     @click.stop="openMenu($el)"
-                    @dblclick.stop
                 >
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </button>
@@ -100,12 +99,9 @@
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         wire:click="openFolder({{$folder->id}})"
                     >
-                        <i class="d-inline-block text-center width-large fa-regular fa-folder-open me-2"></i>
+                        <i class="fa-solid fa-square-arrow-up-right me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.open')}}
-                        </span>
-                        <span class="text-secondary ms-3 text-lowercase fw-light">
-                            {{ trans('courses.finder.menu.folder.open.help')}}
                         </span>
                     </li>
                     <li
@@ -126,7 +122,7 @@
                         x-show.important="openedFolder.includes(key)"
                         @click="toggleOpen($el, key)"
                     >
-                        <i class="d-inline-block text-center width-large fa-solid fa-folder me-2"></i>
+                        <i class="fa-solid fa-folder me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.folder.collapse')}}
                         </span>

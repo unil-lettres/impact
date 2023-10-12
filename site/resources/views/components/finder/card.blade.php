@@ -10,10 +10,8 @@
     :data-key="key"
     @if ($canAccess)
         @click.stop="toggleSelect($event, $el)"
-        @dblclick.stop="window.location = '{{ route('cards.show', $card->id) }}'"
     @else
         @click.stop
-        @dblclick.stop
     @endif
     :class="!selectedItems.includes(key) || 'selected'"
     wire:key='{{ $card->getFinderRowType() }}-{{ $card->id }}'
@@ -33,7 +31,9 @@
         >
             <i class="d-inline-block fa-solid fa-file-lines text-center width-large"></i>
         </a>
-        {{ $card->position }} - {{ $card->title }}{{ $selected ? ' - selected' : '' }}
+        <a href="{{ route('cards.show', $card->id) }}" class="legacy">
+            {{ $card->title }}
+        </a>
     </div>
     <div
         class='column-small text-truncate px-1 d-none d-sm-block fw-light'
@@ -69,7 +69,6 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
                 @click.stop="openMenu($el)"
-                @dblclick.stop
                 x-show="{{$canAccess ? 'true' : 'false'}}"
             >
                 <i class="fa-solid fa-ellipsis-vertical"></i>
@@ -81,9 +80,6 @@
                     <i class="fa-solid fa-square-arrow-up-right me-2"></i>
                     <span class="flex-fill me-5">
                         {{ trans('courses.finder.menu.open')}}
-                    </span>
-                    <span class="text-secondary ms-3 text-lowercase fw-light">
-                        {{ trans('courses.finder.menu.card.open.help')}}
                     </span>
                 </li>
                 <li><hr class="dropdown-divider"></li>

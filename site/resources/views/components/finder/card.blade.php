@@ -6,8 +6,10 @@
     class="{{$canAccess ? '' : 'disabled'}} finder-card d-flex border-top border-secondary-subtle background-hover cursor-default row-height"
     data-id="{{ $card->id }}"
     data-type="{{ $card->getFinderRowType() }}"
-    x-data="{ key: '{{ $card->getFinderRowType() }}-{{ $card->id }}' }"
+    x-data="{ key: '{{ $card->getFinderRowType() }}-{{ $card->id }}', mouseover: false }"
     :data-key="key"
+    @mouseover.stop="mouseover = true"
+    @mouseout.stop="mouseover = false"
     @click.stop="toggleSelect($event, $el)"
     :class="!selectedItems.includes(key) || 'selected'"
     wire:key='{{ $card->getFinderRowType() }}-{{ $card->id }}'
@@ -17,6 +19,12 @@
         class='flex-fill text-truncate px-1 position-relative'
         title="{{ $card->title }}"
     >
+        <input
+            class="opacity-0"
+            :class="(!selectedItems.includes(key) && !mouseover) || 'opacity-100'"
+            type="checkbox"
+            :checked="selectedItems.includes(key)"
+        />
         @for ($i = 0; $i < $depth; $i++)
             <i class="d-inline-block width-small">&nbsp;</i>
         @endfor

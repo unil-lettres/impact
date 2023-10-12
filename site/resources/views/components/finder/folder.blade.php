@@ -39,8 +39,10 @@
     :class="!selectedItems.includes(key) || 'folder-selected'"
     data-id="{{ $folder->id }}"
     data-type="{{ $folder->getFinderRowType() }}"
-    x-data="{ key: '{{ $folder->getFinderRowType() }}-{{ $folder->id }}'}"
+    x-data="{ key: '{{ $folder->getFinderRowType() }}-{{ $folder->id }}', mouseover: false}"
     :data-key="key"
+    @mouseover.stop="mouseover = true"
+    @mouseout.stop="mouseover = false"
     @click.stop="toggleSelect($event, $el)"
     wire:key='{{ $folder->getFinderRowType() }}-{{ $folder->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}
@@ -51,12 +53,20 @@
     <div
         class="d-flex background-hover"
         :class="!selectedItems.includes(key) || 'selected'"
+        title="{{ $folder->title }}"
     >
-        <div class='flex-fill overflow-hidden text-truncate px-1'>
+        <div class='flex-fill text-truncate px-1'>
+            <input
+                class="opacity-0"
+                :class="(!selectedItems.includes(key) && !mouseover) || 'opacity-100'"
+                type="checkbox"
+                :checked="selectedItems.includes(key)"
+            />
             <div
                 class="d-inline-block cursor-pointer"
                 @click.stop="toggleOpen($el, key)"
             >
+
                 @for ($i = 0; $i < $depth; $i++)
                     <i class="d-inline-block width-small">&nbsp;</i>
                 @endfor

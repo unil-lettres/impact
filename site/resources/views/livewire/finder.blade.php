@@ -231,10 +231,10 @@
         @click.outside="selectedItems = []"
         x-init="initSortable($el)"
     >
-        @forelse ($this->rows as $row)
-            @if ($row->getFinderItemType() === ('App\\Enums\\FinderItemType')::Folder)
+        @forelse ($this->items as $item)
+            @if ($item->getFinderItemType() === ('App\\Enums\\FinderItemType')::Folder)
                 <x-finder.folder
-                    :folder="$row"
+                    :folder="$item"
                     :sortColumn="$this->sortColumn"
                     :sortDirection="$this->sortDirection"
                     :lockedMove="$this->lockedMove"
@@ -245,7 +245,7 @@
                 />
             @else
                 <x-finder.card
-                    :card="$row"
+                    :card="$item"
                     :lockedMove="$this->lockedMove"
                     :modalCloneId="$modalCloneId"
                     :modalMoveId="$modalMoveId"
@@ -414,13 +414,13 @@
                             return !evt.dragged.hasAttribute('locked-move');
                         },
                         onUpdate: (evt) => {
-                            _.each(evt.item.parentNode.children, (row, index) => {
-                                row.dispatchEvent(new CustomEvent('sort-updated', {
+                            _.each(evt.item.parentNode.children, (item, index) => {
+                                item.dispatchEvent(new CustomEvent('sort-updated', {
                                     bubbles: true,
                                     cancelable: false,
                                     detail: {
-                                        id: row.getAttribute('data-id'),
-                                        type: row.getAttribute('data-type'),
+                                        id: item.getAttribute('data-id'),
+                                        type: item.getAttribute('data-type'),
                                         position: index,
                                     },
                                 }));

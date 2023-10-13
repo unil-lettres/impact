@@ -21,6 +21,7 @@ class CardObserver
     {
         $cardUpdate = [];
 
+        // Set the last available position for this card in its parent.
         if (is_null($card->position)) {
             $cardUpdate['position'] = Helpers::findLastPositionInParent($card);
         }

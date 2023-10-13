@@ -92,12 +92,18 @@ class Folder extends Model
         return $this->course->breadcrumbs(true)->merge($breadcrumbs->reverse());
     }
 
+    /**
+     * Return the FinderItemType corresponding to the folder.
+     */
     public function getFinderItemType(): string
     {
         return FinderItemType::Folder;
     }
 
-    public function forceDelete()
+    /**
+     * Delete the folder, all cards contained in and all fodlers recursively.
+     */
+    public function forceDelete(): void
     {
         // Delete cards "manually" because they have custom forceDelete.
         $this->cards()->each(fn ($card) => $card->forceDelete());
@@ -110,15 +116,17 @@ class Folder extends Model
     }
 
     /**
-     * Get all ancestors of this folder.
+     * Get all ancestors of this folder (all parents recursively).
      *
      * @param  bool  $self  If true, the current folder will be included in the
      * ancestors.
      * @param  Folder|null  $until  If set, the ancestors will be returned until
      * this folder.
      */
-    public function getAncestors(bool $self = true, Folder $until = null): Collection
-    {
+    public function getAncestors(
+        bool $self = true,
+        Folder $until = null,
+    ): Collection {
         $parents = collect([]);
 
         if ($self) {

@@ -126,7 +126,6 @@
             :folder="$folder"
             modalCloneId="modalCloneIn"
             modalMoveId="modalMoveIn"
-            modalCreateId="modalCreate"
         />
     @endsection
     @section('scripts-footer')

@@ -32,7 +32,7 @@ class CloneFolderService
             ->children
             ->concat($this->folder->cards)
             ->every(
-                fn ($entity) => MassCloneService::getCloneService($entity)->checkClone($destFolder, $destCourse)
+                fn ($item) => MassCloneService::getCloneService($item)->checkClone($destFolder, $destCourse)
             );
     }
 
@@ -101,6 +101,6 @@ class CloneFolderService
         $this->folder->children
             ->concat($this->folder->cards)
             ->sortBy('position')
-            ->each(fn ($entity) => MassCloneService::getCloneService($entity)->clone($copiedFolder));
+            ->each(fn ($item) => MassCloneService::getCloneService($item)->clone($copiedFolder));
     }
 }

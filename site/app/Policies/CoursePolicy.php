@@ -98,8 +98,17 @@ class CoursePolicy
     }
 
     /**
-     * Determine whether the user can move a card or a folder inside
+     * Determine whether the user can move a set of cards and folders inside
      * another folder.
+     *
+     * This policy is in Course and not Card or Folder because the user
+     * can move a set of cards / folders from the course UI.
+     *
+     * By chance, the rights to move cards and folders are always the same
+     * without regards of states or anything else.
+     *
+     * If this change, we should check the rights for every folder and cards
+     * specifically.
      */
     public function moveCardOrFolder(User $user, Course $course): bool
     {
@@ -190,37 +199,17 @@ class CoursePolicy
     }
 
     /**
-     * Determine whether the user can forceDelete a card or a folder of this course.
-     *
-     * @return mixed
-     */
-    public function forceDeleteCardOrCourse(User $user, Course $course)
-    {
-        if ($user->admin) {
-            return true;
-        }
-
-        // Only teachers of the course can delete cards or folders
-        if ($user->isTeacher($course)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
      * Determine whether the user have the ability to use the mass action (like
      * cloning multiple cards or folders) of a course.
+     *
+     * See moveCardOrFolder() for more details on the reason this policy is
+     * in Course instead of Card or Folder.
      *
      * @return mixed
      */
     public function massActionsForCardAndFolder(User $user, Course $course)
     {
-        if ($user->admin) {
-            return true;
-        }
-
-        // Only teachers of the course can delete cards or folders
+        // Only teachers and admin of the course can delete cards or folders.
         if ($user->isTeacher($course)) {
             return true;
         }

@@ -66,7 +66,7 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('users.profile.update');
 
     // Cards
-    Route::resource('cards', CardController::class)->except(['create']);
+    Route::resource('cards', CardController::class)->except(['create', 'store']);
     Route::put('cards/{card}/unlink/file', [CardController::class, 'unlinkFile'])
         ->name('cards.unlink.file');
     Route::put('cards/{card}/editor', [CardJsonController::class, 'editor'])

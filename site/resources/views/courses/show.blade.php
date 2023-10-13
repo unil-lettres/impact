@@ -52,7 +52,6 @@
             :course="$course"
             modalCloneId="modalCloneIn"
             modalMoveId="modalMoveIn"
-            modalCreateId="modalCreate"
         />
     @endsection
 @endcan

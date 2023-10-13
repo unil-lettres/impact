@@ -26,23 +26,61 @@ class Finder extends Component
 
     const DEFAULT_SORT_DIRECTION = 'asc';
 
-    public $course;
+    /**
+     * The course to display the content.
+     */
+    public Course $course;
 
-    public $folder;
+    /**
+     * The folder of the course to display the content.
+     */
+    public ?Folder $folder = null;
 
-    public $modalCloneId;
+    /**
+     * A string corresponding to the id (HTML) of the dialog to be used
+     * for cloning items.
+     */
+    public string $modalCloneId;
 
-    public $modalMoveId;
+    /**
+     * A string corresponding to the id (HTML) of the dialog to be used
+     * for moving items.
+     */
+    public string $modalMoveId;
 
-    public $modalCreateId;
+    /**
+     * The sort column name used to sort the content.
+     */
+    public string $sortColumn = self::DEFAULT_SORT_COLUMN;
 
-    public $sortColumn = self::DEFAULT_SORT_COLUMN;
+    /**
+     * The sort direction used to sort the content.
+     */
+    public string $sortDirection = self::DEFAULT_SORT_DIRECTION;
 
-    public $sortDirection = self::DEFAULT_SORT_DIRECTION;
+    /**
+     * The filters for filtering the content.
+     * A collection with the given format:
+     *   [
+     *      'tags' => [tag_id,...],
+     *      'state' => [state_id,...],
+     *      'editor' => [editor_id,...],
+     *      'search' => [terms (string),...],
+     *   ]
+     */
+    public Collection $filters;
 
-    public $filters;
-
-    public $filterSearchBoxes;
+    /**
+     * The boxes checked for the "search" filter.
+     * A collection with the given format:
+     *   [
+     *      'name' => bool,
+     *      'box2' => bool,
+     *      'box3' => bool,
+     *      'box4' => bool,
+     *   ]
+     */
+    public Collection $filterSearchBoxes;
 
     public function mount()
     {
@@ -55,13 +93,13 @@ class Finder extends Component
     }
 
     #[On('item-created')]
-    public function refreshRows()
+    public function refreshItems()
     {
-        unset($this->rows);
+        unset($this->items);
     }
 
     #[Computed]
-    public function rows(): Collection
+    public function items(): Collection
     {
         return Helpers::getFolderContent(
             Course::find($this->course->id),

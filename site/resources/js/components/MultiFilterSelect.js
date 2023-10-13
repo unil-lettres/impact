@@ -53,6 +53,14 @@ export default class MultiFilterSelect extends MultiSelect {
     }
 }
 
+/**
+ * Used to customize the input of the react select.
+ * It will display the number of selected element at the end of the input.
+ * It is useful to set a fixed width and still knowing that items are selected.
+ *
+ * It is best used with "hideSelectedOptions: false" that highlight the selected
+ * items in the list instead of hiding them when they are selected.
+ */
 const ValueContainer = ({ children, getValue, ...props }) => {
     const length = getValue().length;
     const label = document.querySelector("[data-filter-label]").getAttribute('data-filter-label');
@@ -64,6 +72,12 @@ const ValueContainer = ({ children, getValue, ...props }) => {
     );
 };
 
+/**
+ * Used to customize the dropdown of the react select.
+ *
+ * It adds checkboxes at the end for chosing in which card's boxes we want to
+ * make the filter search in.
+ */
 const MenuList = props => {
     const checkedFilters = window.MultiFilterSelect.checkedFilter;
 
@@ -135,7 +149,6 @@ const MenuList = props => {
 window.MultiFilterSelect = {
     roots: [],
 
-    // Initialized in Finder.initFilters().
     // We need to keep checked filter outside of MenuList component cause
     // it is destroyed each time the menu is closed.
     checkedFilter: {},

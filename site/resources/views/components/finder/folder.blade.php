@@ -10,7 +10,7 @@
     'lockedMove' => false,
 ])
 @php
-    $rows = Helpers::getFolderContent(
+    $items = Helpers::getFolderContent(
         $folder->course,
         $filters,
         $filterSearchBoxes,
@@ -70,7 +70,7 @@
                 @for ($i = 0; $i < $depth; $i++)
                     <i class="d-inline-block width-small">&nbsp;</i>
                 @endfor
-                @if ($rows->count() > 0)
+                @if ($items->count() > 0)
                     <i
                         class="fa-solid fa-caret-down d-inline-block text-center width-small transition-transform"
                         :class="openedFolder.includes(key) || 'rotate'"
@@ -215,10 +215,10 @@
         x-transition
         x-init="initSortable($el)"
     >
-        @foreach ($rows as $row)
-            @if ($row->getFinderItemType() === ('App\\Enums\\FinderItemType')::Folder)
+        @foreach ($items as $item)
+            @if ($item->getFinderItemType() === ('App\\Enums\\FinderItemType')::Folder)
                 <x-finder.folder
-                    :folder="$row"
+                    :folder="$item"
                     :sortColumn="$sortColumn"
                     :sortDirection="$sortDirection"
                     :depth="$depth + 1"
@@ -230,7 +230,7 @@
                 />
             @else
                 <x-finder.card
-                    :card="$row"
+                    :card="$item"
                     :depth="$depth + 1"
                     :lockedMove="$lockedMove"
                     :modalCloneId="$modalCloneId"

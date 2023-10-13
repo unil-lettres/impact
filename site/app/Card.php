@@ -273,7 +273,10 @@ class Card extends Model
         };
     }
 
-    public function forceDelete()
+    /**
+     * Delete the card, editors (via enrollments) and attachments.
+     */
+    public function forceDelete(): void
     {
         // Delete attachments (only attachments and not regular file).
         $this->attachments()->each(
@@ -289,13 +292,16 @@ class Card extends Model
         $this->traitForceDelete();
     }
 
+    /**
+     * Return the FinderItemType corresponding to the card.
+     */
     public function getFinderItemType(): string
     {
         return FinderItemType::Card;
     }
 
     /**
-     * Get all ancestors of this card.
+     * Get all ancestors of this card (all parents recursively).
      */
     public function getAncestors(): \Illuminate\Support\Collection
     {

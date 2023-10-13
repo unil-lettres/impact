@@ -374,8 +374,9 @@ class Helpers
      * @param  Collection<Course>  $excludeCourses Collection of courses that
      * should not be present in the collection results.
      */
-    public static function fetchCoursesAsTeacher(Collection $excludeCourses = null): Collection
-    {
+    public static function fetchCoursesAsTeacher(
+        Collection $excludeCourses = null,
+    ): Collection {
         $excludeCourses = $excludeCourses ?? collect([]);
 
         return (match (Auth::user()->admin) {
@@ -390,6 +391,8 @@ class Helpers
      * Return the last available position for a card or folder based on existing
      * content of the parent. The position of the given card or folder will not
      * be taken into account.
+     *
+     * @param $cardOrFolder The card or folder to get the next position to use.
      */
     public static function findLastPositionInParent(
         Card|Folder $cardOrFolder,
@@ -413,6 +416,7 @@ class Helpers
             ->where('id', '!=', $folderId)
             ->max('position');
 
+        // If there is no items in the parent.
         if (is_null($maxCardPosition ?? $maxFolderPosition)) {
             return 0;
         }
@@ -431,6 +435,13 @@ class Helpers
      * Items are sorted by given sort column and direction.
      *
      * If no folder are given, return the root items.
+     *
+     * @param $course The course to get the content.
+     * @param $filters See Finder->$filters.
+     * @param $filterSearchBoxes See Finder->$filterSearchBoxes.
+     * @param $folder The folder to get the content.
+     * @param $sortColumn The column name to sort by.
+     * @param $sortDirection ASC or DESC.
      */
     public static function getFolderContent(
         Course $course,
@@ -538,7 +549,7 @@ class Helpers
 
     /**
      * Return the title of the folder with the path until the specified folder
-     * or to the root folder.
+     * or to the root folder (grand parent > parent > child).
      */
     public static function getFolderAbsolutePath(
         Folder $folder,
@@ -594,7 +605,7 @@ class Helpers
             $sortDirection,
         );
         $count = $content
-            ->countBy(fn ($row) => $row->getFinderItemType())
+            ->countBy(fn ($item) => $item->getFinderItemType())
             ->get(FinderItemType::Card, 0);
 
         foreach ($folder->children as $child) {

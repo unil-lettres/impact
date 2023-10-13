@@ -24,8 +24,8 @@ class MassCloneService
         Course $dest,
     ): void {
         $cardsAndFolders
-            // We must check all entities before cloning any of them.
-            ->each(fn ($entity) => static::getCloneService($entity)->checkClone(null, $dest))
-            ->each(fn ($entity) => static::getCloneService($entity)->clone(null, $dest));
+            // We must check all items before cloning any of them.
+            ->each(fn ($item) => static::getCloneService($item)->checkClone(null, $dest))
+            ->each(fn ($item) => static::getCloneService($item)->clone(null, $dest));
     }
 }

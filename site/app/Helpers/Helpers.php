@@ -8,7 +8,7 @@ use App\Enums\CardBox;
 use App\Enums\CourseType;
 use App\Enums\FileStatus;
 use App\Enums\FileType;
-use App\Enums\FinderRowType;
+use App\Enums\FinderItemType;
 use App\Enums\StateType;
 use App\Enums\TranscriptionType;
 use App\Enums\UserType;
@@ -594,8 +594,8 @@ class Helpers
             $sortDirection,
         );
         $count = $content
-            ->countBy(fn ($row) => $row->getFinderRowType())
-            ->get(FinderRowType::Card, 0);
+            ->countBy(fn ($row) => $row->getFinderItemType())
+            ->get(FinderItemType::Card, 0);
 
         foreach ($folder->children as $child) {
             $count += static::countCardsRecursive(

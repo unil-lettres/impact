@@ -2,7 +2,7 @@
 
 namespace App;
 
-use App\Enums\FinderRowType;
+use App\Enums\FinderItemType;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
@@ -92,9 +92,9 @@ class Folder extends Model
         return $this->course->breadcrumbs(true)->merge($breadcrumbs->reverse());
     }
 
-    public function getFinderRowType(): string
+    public function getFinderItemType(): string
     {
-        return FinderRowType::Folder;
+        return FinderItemType::Folder;
     }
 
     public function forceDelete()

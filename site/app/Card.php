@@ -3,7 +3,7 @@
 namespace App;
 
 use App\Enums\CardBox;
-use App\Enums\FinderRowType;
+use App\Enums\FinderItemType;
 use App\Enums\StatePermission;
 use App\Scopes\HideAttachmentsScope;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -289,9 +289,9 @@ class Card extends Model
         $this->traitForceDelete();
     }
 
-    public function getFinderRowType(): string
+    public function getFinderItemType(): string
     {
-        return FinderRowType::Card;
+        return FinderItemType::Card;
     }
 
     /**

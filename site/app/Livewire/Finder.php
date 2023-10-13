@@ -5,7 +5,7 @@ namespace App\Livewire;
 use App\Card;
 use App\Course;
 use App\Enums\CardBox;
-use App\Enums\FinderRowType;
+use App\Enums\FinderItemType;
 use App\Exceptions\CloneException;
 use App\Folder;
 use App\Helpers\Helpers;
@@ -107,7 +107,7 @@ class Finder extends Component
             ],
             [
                 'position' => 'required|integer',
-                'type' => 'required|string|in:'.FinderRowType::Card.','.FinderRowType::Folder,
+                'type' => 'required|string|in:'.FinderItemType::Card.','.FinderItemType::Folder,
             ],
         );
 
@@ -115,7 +115,7 @@ class Finder extends Component
             return;
         }
 
-        $entity = $type === FinderRowType::Folder ? Folder::findOrFail($id) : Card::findOrFail($id);
+        $entity = $type === FinderItemType::Folder ? Folder::findOrFail($id) : Card::findOrFail($id);
         $entity->update([
             'position' => $position,
         ]);
@@ -348,7 +348,7 @@ class Finder extends Component
             ->map(function ($key) {
                 [$type, $key] = explode('-', $key);
 
-                return $type === FinderRowType::Card ? Card::findOrFail($key) : Folder::findOrFail($key);
+                return $type === FinderItemType::Card ? Card::findOrFail($key) : Folder::findOrFail($key);
             })
             ->filter(function ($entity) use ($keys, $withoutDescendants) {
                 // Some times, we want only the most "oldest" parent of an item.
@@ -359,7 +359,7 @@ class Finder extends Component
                 return true
                     && $withoutDescendants
                     && $entity->getAncestors(false)->pluck('id')->map(
-                        fn ($id) => FinderRowType::Folder."-$id",
+                        fn ($id) => FinderItemType::Folder."-$id",
                     )->intersect($keys)->isEmpty();
             });
 

@@ -38,13 +38,13 @@
     class="finder-folder border-top border-secondary-subtle row-height cursor-default"
     :class="!selectedItems.includes(key) || 'folder-selected'"
     data-id="{{ $folder->id }}"
-    data-type="{{ $folder->getFinderRowType() }}"
-    x-data="{ key: '{{ $folder->getFinderRowType() }}-{{ $folder->id }}', mouseover: false}"
+    data-type="{{ $folder->getFinderItemType() }}"
+    x-data="{ key: '{{ $folder->getFinderItemType() }}-{{ $folder->id }}', mouseover: false}"
     :data-key="key"
     @mouseover.stop="mouseover = true"
     @mouseout.stop="mouseover = false"
     @click.stop="toggleSelect($event, $el)"
-    wire:key='{{ $folder->getFinderRowType() }}-{{ $folder->id }}'
+    wire:key='{{ $folder->getFinderItemType() }}-{{ $folder->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}
     @if (!$shouldSeeFolder)
         x-show.important="false"
@@ -216,7 +216,7 @@
         x-init="initSortable($el)"
     >
         @foreach ($rows as $row)
-            @if ($row->getFinderRowType() === ('App\\Enums\\FinderRowType')::Folder)
+            @if ($row->getFinderItemType() === ('App\\Enums\\FinderItemType')::Folder)
                 <x-finder.folder
                     :folder="$row"
                     :sortColumn="$sortColumn"

@@ -5,14 +5,14 @@
 <li
     class="{{$canAccess ? '' : 'disabled'}} finder-card d-flex border-top border-secondary-subtle background-hover cursor-default row-height"
     data-id="{{ $card->id }}"
-    data-type="{{ $card->getFinderRowType() }}"
-    x-data="{ key: '{{ $card->getFinderRowType() }}-{{ $card->id }}', mouseover: false }"
+    data-type="{{ $card->getFinderItemType() }}"
+    x-data="{ key: '{{ $card->getFinderItemType() }}-{{ $card->id }}', mouseover: false }"
     :data-key="key"
     @mouseover.stop="mouseover = true"
     @mouseout.stop="mouseover = false"
     @click.stop="toggleSelect($event, $el)"
     :class="!selectedItems.includes(key) || 'selected'"
-    wire:key='{{ $card->getFinderRowType() }}-{{ $card->id }}'
+    wire:key='{{ $card->getFinderItemType() }}-{{ $card->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}
 >
     <div

@@ -232,7 +232,7 @@
         x-init="initSortable($el)"
     >
         @forelse ($this->rows as $row)
-            @if ($row->getFinderRowType() === ('App\\Enums\\FinderRowType')::Folder)
+            @if ($row->getFinderItemType() === ('App\\Enums\\FinderItemType')::Folder)
                 <x-finder.folder
                     :folder="$row"
                     :sortColumn="$this->sortColumn"

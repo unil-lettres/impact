@@ -41,12 +41,12 @@
         <livewire:modal-create
             id="modalCreateFolder"
             :course="$course"
-            :type="('App\\Enums\\FinderRowType')::Folder"
+            :type="('App\\Enums\\FinderItemType')::Folder"
         />
         <livewire:modal-create
             id="modalCreateCard"
             :course="$course"
-            :type="('App\\Enums\\FinderRowType')::Card"
+            :type="('App\\Enums\\FinderItemType')::Card"
         />
         <livewire:finder
             :course="$course"

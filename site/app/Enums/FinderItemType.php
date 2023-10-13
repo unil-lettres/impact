@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-final class FinderRowType
+final class FinderItemType
 {
     const Folder = 'folder';
 

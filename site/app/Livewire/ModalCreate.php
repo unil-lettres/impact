@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Card;
 use App\Course;
-use App\Enums\FinderRowType;
+use App\Enums\FinderItemType;
 use App\Folder;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Validation\Rule;
@@ -25,7 +25,7 @@ class ModalCreate extends Component
 
     /**
      * The type of item to create.
-     * Must be one of App\Enums\FinderRowType "enum".
+     * Must be one of App\Enums\FinderItemType "enum".
      */
     public string $type;
 
@@ -105,8 +105,8 @@ class ModalCreate extends Component
     public function title()
     {
         return match ($this->type) {
-            FinderRowType::Folder => trans('folders.create'),
-            FinderRowType::Card => trans('cards.create'),
+            FinderItemType::Folder => trans('folders.create'),
+            FinderItemType::Card => trans('cards.create'),
         };
     }
 
@@ -122,7 +122,7 @@ class ModalCreate extends Component
     public function create()
     {
         $this->validate();
-        if ($this->type == FinderRowType::Card) {
+        if ($this->type == FinderItemType::Card) {
             $this->authorize('create', [Card::class, $this->course]);
 
             Card::create([
@@ -130,7 +130,7 @@ class ModalCreate extends Component
                 'course_id' => $this->course->id,
                 'folder_id' => $this->destination,
             ]);
-        } elseif ($this->type === FinderRowType::Folder) {
+        } elseif ($this->type === FinderItemType::Folder) {
             $this->authorize('create', [Folder::class, $this->course]);
 
             Folder::create([

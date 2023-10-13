@@ -16,7 +16,7 @@
         >
             <div class="d-flex">
                 <div class="toast-body">
-                {{ session('message') }}
+                {!! session('message') !!}
                 </div>
                 <button
                     type="button"
@@ -29,7 +29,6 @@
     </div>
     <x-finder.modal-clone-in :id="$modalCloneId" :course="$course" />
     <x-finder.modal-move-in :id="$modalMoveId" :course="$course" />
-    <x-finder.modal-create :id="$modalCreateId" :folder="$folder" :course="$course" />
     <div class="toolsbox mt-3" style="height: 63px;">
         <div
             x-show.important="selectedItems.length === 0"

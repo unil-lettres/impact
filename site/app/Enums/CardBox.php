@@ -19,11 +19,11 @@ final class CardBox
     public static function getAllBoxes(): Collection
     {
         return collect([
-            static::Box1,
-            static::Box2,
-            static::Box3,
-            static::Box4,
-            static::Box5,
+            self::Box1,
+            self::Box2,
+            self::Box3,
+            self::Box4,
+            self::Box5,
         ]);
     }
 }

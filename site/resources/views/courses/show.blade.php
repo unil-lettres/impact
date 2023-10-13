@@ -21,8 +21,7 @@
                 <button
                    class="btn btn-primary"
                    data-bs-toggle="modal"
-                   data-bs-target="#modalCreate"
-                   data-bs-type="{{('App\\Enums\\FinderRowType')::Folder}}"
+                   data-bs-target="#modalCreateFolder"
                 >
                    {{ trans('folders.create') }}
                 </button>
@@ -31,8 +30,7 @@
                 <button
                    class="btn btn-primary"
                    data-bs-toggle="modal"
-                   data-bs-target="#modalCreate"
-                   data-bs-type="{{('App\\Enums\\FinderRowType')::Card}}"
+                   data-bs-target="#modalCreateCard"
                 >
                     {{ trans('cards.create') }}
                 </button>
@@ -40,6 +38,16 @@
         @endsection
     @endif
     @section('content')
+        <livewire:modal-create
+            id="modalCreateFolder"
+            :course="$course"
+            :type="('App\\Enums\\FinderRowType')::Folder"
+        />
+        <livewire:modal-create
+            id="modalCreateCard"
+            :course="$course"
+            :type="('App\\Enums\\FinderRowType')::Card"
+        />
         <livewire:finder
             :course="$course"
             modalCloneId="modalCloneIn"

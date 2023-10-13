@@ -13,11 +13,9 @@ use App\Services\Clone\CloneCardService;
 use App\Services\Clone\CloneFolderService;
 use App\Services\Clone\MassCloneService;
 use App\Services\MoveService;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -49,6 +47,17 @@ class Finder extends Component
     public function mount()
     {
         $this->initFilters();
+    }
+
+    public function render()
+    {
+        return view('livewire.finder');
+    }
+
+    #[On('item-created')]
+    public function refreshRows()
+    {
+        unset($this->rows);
     }
 
     #[Computed]
@@ -158,54 +167,6 @@ class Finder extends Component
                 fn (mixed $_filter) => $_filter !== $filter,
             )->values(),
         );
-    }
-
-    public function createItem(string $name, string $type, ?int $folderId)
-    {
-        $validated = $this->validatorHelper(
-            [
-                'title' => $name,
-                'type' => $type,
-                'folder_id' => $folderId,
-            ],
-            [
-                'title' => 'required|string|max:255',
-                'type' => 'required|string|in:'.FinderRowType::Card.','.FinderRowType::Folder,
-                'folder_id' => [
-                    'nullable',
-                    'integer',
-                    // Parent folder must be in the current course.
-                    Rule::exists('folders', 'id')->where(
-                        fn (Builder $query) => $query->where(
-                            'course_id',
-                            $this->course->id,
-                        )
-                    ),
-                ],
-            ],
-        );
-
-        if (empty($validated)) {
-            return;
-        }
-
-        if ($type == FinderRowType::Card) {
-            $this->authorize('create', [Card::class, $this->course]);
-
-            Card::create([
-                'title' => $name,
-                'course_id' => $this->course->id,
-                'folder_id' => $folderId,
-            ]);
-        } elseif ($type === FinderRowType::Folder) {
-            $this->authorize('create', [Folder::class, $this->course]);
-
-            Folder::create([
-                'title' => $name,
-                'course_id' => $this->course->id,
-                'parent_id' => $folderId,
-            ]);
-        }
     }
 
     public function openFolder(Folder $folder)
@@ -319,11 +280,6 @@ class Finder extends Component
         }
     }
 
-    public function render()
-    {
-        return view('livewire.finder');
-    }
-
     public function destroyFolder(Folder $folder, $returnToCourse = false)
     {
         $this->authorize('forceDelete', $folder);
@@ -427,6 +383,13 @@ class Finder extends Component
 
         $jsonFilters = $this->filterSearchBoxes->toJson();
         $this->js("window.MultiFilterSelect.checkedFilter = $jsonFilters");
+    }
+
+    #[On('flash-message')]
+    public function flash(array $errors, string $bsClass = 'text-bg-success')
+    {
+        $message = collect($errors)->values()->flatten()->join('<br />');
+        $this->flashMessage($message, $bsClass);
     }
 
     private function flashMessage(

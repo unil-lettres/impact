@@ -111,12 +111,12 @@ class CardTest extends DuskTestCase
 
             $browser->clickLink('First space');
 
-            $browser->clickLink('Créer une fiche');
-
-            $browser->type('title', 'My new card')
+            $browser
                 ->press('Créer une fiche')
-                ->waitForText('Fiche créée: My new card')
-                ->assertSee('Fiche créée: My new card')
+                ->waitForText('Créer une fiche')
+                ->type('#modalCreateCard-name', 'My new card')
+                ->click('#modalCreateCard [type="submit"]')
+                ->waitForText('My new card')
                 ->assertSee('My new card');
         });
     }
@@ -136,15 +136,23 @@ class CardTest extends DuskTestCase
 
             $browser->clickLink('Second space');
 
-            $browser->clickLink('Créer une fiche');
+            $browser
+                ->press('Créer une fiche')
+                ->waitForText('Créer une fiche');
 
-            $browser->type('title', 'My new card in folder');
-            $browser->click('#rct-single-folder-select')
-                ->waitForText('Test folder')
-                ->click('#react-select-2-option-0');
-            $browser->press('Créer une fiche')
-                ->waitForText('Fiche créée: My new card in folder')
-                ->assertSee('Fiche créée: My new card in folder');
+            $browser
+                ->type('#modalCreateCard-name', 'My new card in folder')
+                ->select('#modalCreateCard-folder-id', '1')
+                ->click('#modalCreateCard [type="submit"]')
+                ->waitForText('2 fiche(s)')
+                ->assertSee('2 fiche(s)');
+
+
+            $browser
+                ->visit('folders/1')
+                ->waitForText('My new card in folder')
+                ->assertSee('My new card in folder');
+
         });
     }
 

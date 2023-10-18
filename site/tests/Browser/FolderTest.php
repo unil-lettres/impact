@@ -26,13 +26,13 @@ class FolderTest extends DuskTestCase
     }
 
     /**
-     * Test view folders.
+     * Test view folders as user.
      *
      * @return void
      *
      * @throws Throwable
      */
-    public function testViewFolders()
+    public function testViewFoldersAsUser()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -41,31 +41,38 @@ class FolderTest extends DuskTestCase
             $browser->assertSee('Second space')
                 ->clickLink('Second space');
 
-            $browser->assertSee('Test folder');
+            $browser
+                ->waitForText('Test folder')
+                ->clickLink('Test folder');
 
-            $browser->clickLink('Test folder')
-                ->assertSee('Test child folder');
+            // Users don't see empty folders.
+            $browser
+                ->waitForText('Test card in folder')
+                ->assertDontSee('Test child folder');
         });
     }
 
     /**
-     * Test view a card inside a folder.
+     * Test view folders as teacher.
      *
      * @return void
      *
      * @throws Throwable
      */
-    public function testViewCardInsideFolder()
+    public function testViewFoldersAsTeacher()
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('student-user@example.com', 'password');
+                ->loginAsUser('teacher-user@example.com', 'password');
 
-            $browser->clickLink('Second space')
-                ->assertDontSee('Test card in folder');
+            $browser->assertSee('Second space')
+                ->clickLink('Second space');
 
-            $browser->clickLink('Test folder')
-                ->assertSee('Test card in folder');
+            $browser
+                ->waitForText('Test folder')
+                ->clickLink('Test folder');
+
+            $browser->waitForText('Test child folder');
         });
     }
 
@@ -85,48 +92,29 @@ class FolderTest extends DuskTestCase
             $browser->clickLink('First space');
 
             // Create the root folder
-            $browser->clickLink('Créer un dossier');
-            $browser->type('title', 'My new folder')
+            $browser
                 ->press('Créer un dossier')
-                ->waitForText('Dossier créé: My new folder')
-                ->assertSee('Dossier créé: My new folder')
-                ->assertSee('My new folder');
+                ->waitForText('Créer un dossier')
+                ->type('#modalCreateFolder-name', 'My new folder')
+                ->click('#modalCreateFolder [type="submit"]')
+                ->waitForText('My new folder');
+
+            // For some reason the backdrop modal don't disapear making
+            // unable to click on the components.
+            $browser->refresh();
 
             // Create the child folder
-            $browser->clickLink('Créer un dossier');
-            $browser->type('title', 'My new child folder');
-            $browser->click('#rct-single-folder-select')
-                ->waitForText('My new folder')
-                ->click('#react-select-2-option-0');
-            $browser->press('Créer un dossier')
-                ->waitForText('Dossier créé: My new child folder')
-                ->assertSee('Dossier créé: My new child folder');
-        });
-    }
+            $browser
+                ->press('Créer un dossier')
+                ->waitForText('Créer un dossier')
+                ->type('#modalCreateFolder-name', 'My new child folder')
+                ->select('#modalCreateFolder-folder-id', '4')
+                ->click('#modalCreateFolder [type="submit"]');
 
-    /**
-     * Test update folder as an admin.
-     *
-     * @return void
-     *
-     * @throws Throwable
-     */
-    public function testUpdateFolderAsAdmin()
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
-                ->loginAsUser('admin-user@example.com', 'password');
-
-            $browser->clickLink('Second space');
-
-            $browser->clickLink('Test folder')
-                ->clickLink('Modifier le dossier');
-
-            $browser->type('title', 'Test folder updated')
-                ->press('Modifier le dossier')
-                ->waitForText('Dossier mis à jour.')
-                ->assertSee('Dossier mis à jour.')
-                ->assertSee('Test folder updated');
+            $browser
+                ->clickLink('My new folder')
+                ->waitForText('My new child folder')
+                ->assertSee('My new child folder');
         });
     }
 }

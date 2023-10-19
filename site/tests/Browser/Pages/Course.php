@@ -33,7 +33,13 @@ class Course extends Page
     {
         return [
             '@element' => '#selector',
+            '@multi-menu' => '.toolsbox .dropdown',
         ];
+    }
+
+    public function waitUntilLoaded(Browser $browser)
+    {
+        $browser->waitForText('Tout ouvrir');
     }
 
     public function createCard(Browser $browser, string $title) {

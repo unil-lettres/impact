@@ -150,7 +150,7 @@ class CardTest extends DuskTestCase
 
             $browser
                 ->visit(new Folder('Test folder'))
-                ->waitForText('My new card in folder')
+                ->waitUntilLoaded()
                 ->assertSee('My new card in folder');
 
         });

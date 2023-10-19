@@ -2,9 +2,15 @@
 
 namespace Tests\Browser;
 
+use App\Card;
+use App\Course;
+use App\Enums\FinderItemType;
+use App\Livewire\ModalCreate;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
+use Livewire\Livewire;
+use Tests\Browser\Pages\Course as PagesCourse;
 use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
 use Throwable;
@@ -289,6 +295,89 @@ class CourseTest extends DuskTestCase
                 ->assertDontSee('Effacer texte')
                 ->assertPresent('#rct-editor-box2')
                 ->assertNotPresent('#rct-transcription');
+        });
+    }
+
+    public function testFilters(): void
+    {
+        $this->browse(function (Browser $browser) {
+
+            $browser
+                ->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $page = new PagesCourse('First space');
+            $page->createCard($browser, 'Test card without tag');
+
+            $browser
+                ->visit($page)
+                ->waitForText('Test card without tag');
+
+            $browser
+                ->click('.rct-multi-filter-select[placeholder="Etiquettes"]')
+                ->click('#react-select-2-option-0');
+
+            $browser
+                ->waitUntilMissingText('Test card without tag')
+                ->press('Tout effacer')
+                ->waitForText('Test card without tag');
+        });
+    }
+
+    public function testMultiSelect(): void
+    {
+        $this->browse(function (Browser $browser) {
+
+            $browser
+                ->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser
+                ->visit(new PagesCourse('Second space'))
+                ->waitUntilLoaded()
+                ->click('.finder-folder')
+                ->press('Tout séléctionner');
+
+            $browser->assertSee('11 élément(s) sélectionné(s) dont 8 fiche(s)');
+        });
+    }
+
+    public function testClone(): void
+    {
+        $this->browse(function (Browser $browser) {
+
+            $browser
+                ->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser
+                ->visit(new PagesCourse('Second space'))
+                ->waitUntilLoaded()
+                ->click('.finder-folder')
+                ->click('@multi-menu')
+                ->click('@multi-copy-option');
+
+            $browser->waitForText('Test folder (copie)');
+        });
+    }
+
+    public function testDelete(): void
+    {
+        $this->browse(function (Browser $browser) {
+
+            $browser
+                ->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser
+                ->visit(new PagesCourse('Second space'))
+                ->waitUntilLoaded()
+                ->click('.finder-folder')
+                ->click('@multi-menu')
+                ->click('@multi-delete-option')
+                ->acceptDialog();
+
+            $browser->waitUntilMissingText('Test folder');
         });
     }
 }

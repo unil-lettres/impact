@@ -3,12 +3,13 @@
 namespace Tests\Browser\Pages;
 
 use App\Folder as AppFolder;
+use Laravel\Dusk\Browser;
 
 class Folder extends Page
 {
     private AppFolder $folder;
 
-    public function __construct(string $folderName){
+    public function __construct(private string $folderName){
         $this->folder = AppFolder::where('title', $folderName)->first();
     }
 
@@ -20,6 +21,11 @@ class Folder extends Page
     public function url()
     {
         return "/folders/{$this->folder->id}";
+    }
+
+    public function waitUntilLoaded(Browser $browser)
+    {
+        $browser->waitForText($this->folderName);
     }
 
     /**

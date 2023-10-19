@@ -126,6 +126,7 @@
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         wire:click="cloneMultiple(selectedItems)"
+                        dusk="multi-copy-option"
                     >
                         <i class="fa-solid fa-clone me-2"></i>
                         <span class="flex-fill me-5">
@@ -147,6 +148,7 @@
                         wire:confirm="{{ trans('courses.finder.menu.delete.card.confirm') }}"
                         wire:click="destroyMultiple(selectedItems)"
                         class="dropdown-item d-flex cursor-pointer align-items-center"
+                        dusk="multi-delete-option"
                     >
                         <i class="fa-regular fa-trash-can me-2"></i>
                         <span class="flex-fill me-5">

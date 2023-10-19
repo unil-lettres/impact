@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use App\Folder;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
@@ -104,11 +105,13 @@ class FolderTest extends DuskTestCase
             $browser->refresh();
 
             // Create the child folder
+            $folderId = Folder::where('title', 'My new folder')->first()->id;
+
             $browser
                 ->press('Créer un dossier')
                 ->waitForText('Créer un dossier')
                 ->type('#modalCreateFolder-name', 'My new child folder')
-                ->select('#modalCreateFolder-folder-id', '4')
+                ->select('#modalCreateFolder-folder-id', $folderId)
                 ->click('#modalCreateFolder [type="submit"]');
 
             $browser

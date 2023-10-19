@@ -147,7 +147,6 @@ class CardTest extends DuskTestCase
                 ->waitForText('2 fiche(s)')
                 ->assertSee('2 fiche(s)');
 
-
             $browser
                 ->visit('folders/1')
                 ->waitForText('My new card in folder')

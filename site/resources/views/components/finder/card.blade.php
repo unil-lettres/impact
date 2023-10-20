@@ -6,6 +6,7 @@
     class="{{$canAccess ? '' : 'disabled'}} finder-card d-flex border-top border-secondary-subtle background-hover cursor-default row-height"
     data-id="{{ $card->id }}"
     data-type="{{ $card->getFinderItemType() }}"
+    dusk="finder-card-{{ $card->id }}"
     x-data="{ key: '{{ $card->getFinderItemType() }}-{{ $card->id }}', mouseover: false }"
     :data-key="key"
     @mouseover.stop="mouseover = true"

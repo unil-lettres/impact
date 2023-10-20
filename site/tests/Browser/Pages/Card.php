@@ -3,6 +3,7 @@
 namespace Tests\Browser\Pages;
 
 use App\Card as AppCard;
+use Laravel\Dusk\Browser;
 
 class Card extends Page
 {
@@ -14,20 +15,32 @@ class Card extends Page
 
     /**
      * Get the URL for the page.
-     *
-     * @return string
      */
-    public function url()
+    public function url() : string
     {
         return "/cards/{$this->card->id}";
     }
 
     /**
-     * Get the element shortcuts for the page.
-     *
-     * @return array
+     * Wait to the finder to be fully loaded.
      */
-    public function elements()
+    public function waitUntilLoaded(Browser $browser): void
+    {
+        $browser->waitForText($this->card->title);
+    }
+
+    /**
+     * Return the id of the card.
+     */
+    public function id(): int
+    {
+        return $this->card->id;
+    }
+
+    /**
+     * Get the element shortcuts for the page.
+     */
+    public function elements(): array
     {
         return [
             '@element' => '#selector',

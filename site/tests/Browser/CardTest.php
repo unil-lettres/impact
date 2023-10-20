@@ -141,15 +141,17 @@ class CardTest extends DuskTestCase
                 ->press('Créer une fiche')
                 ->waitForText('Créer une fiche');
 
+            $folderPage = new Folder('Test folder');
+
             $browser
                 ->type('#modalCreateCard-name', 'My new card in folder')
-                ->select('#modalCreateCard-folder-id', '1')
+                ->select('#modalCreateCard-folder-id', $folderPage->id())
                 ->click('#modalCreateCard [type="submit"]')
                 ->waitForText('2 fiche(s)')
                 ->assertSee('2 fiche(s)');
 
             $browser
-                ->visit(new Folder('Test folder'))
+                ->visit($folderPage)
                 ->waitUntilLoaded()
                 ->assertSee('My new card in folder');
 

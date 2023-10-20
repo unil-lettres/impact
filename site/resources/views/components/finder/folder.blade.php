@@ -39,6 +39,7 @@
     :class="!selectedItems.includes(key) || 'folder-selected'"
     data-id="{{ $folder->id }}"
     data-type="{{ $folder->getFinderItemType() }}"
+    dusk="finder-folder-{{ $folder->id }}"
     x-data="{ key: '{{ $folder->getFinderItemType() }}-{{ $folder->id }}', mouseover: false}"
     :data-key="key"
     @mouseover.stop="mouseover = true"

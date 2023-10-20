@@ -9,31 +9,38 @@ class Folder extends Page
 {
     private AppFolder $folder;
 
-    public function __construct(private string $folderName){
+    public function __construct(string $folderName){
         $this->folder = AppFolder::where('title', $folderName)->first();
     }
 
     /**
      * Get the URL for the page.
-     *
-     * @return string
      */
-    public function url()
+    public function url(): string
     {
         return "/folders/{$this->folder->id}";
     }
 
-    public function waitUntilLoaded(Browser $browser)
+    /**
+     * Wait to the finder to be fully loaded.
+     */
+    public function waitUntilLoaded(Browser $browser): void
     {
-        $browser->waitForText($this->folderName);
+        $browser->waitForText($this->folder->title);
+    }
+
+    /**
+     * Return the id of the folder.
+     */
+    public function id(): int
+    {
+        return $this->folder->id;
     }
 
     /**
      * Get the element shortcuts for the page.
-     *
-     * @return array
      */
-    public function elements()
+    public function elements(): array
     {
         return [
             '@element' => '#selector',

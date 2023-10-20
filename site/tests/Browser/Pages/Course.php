@@ -16,20 +16,24 @@ class Course extends Page
 
     /**
      * Get the URL for the page.
-     *
-     * @return string
      */
-    public function url()
+    public function url(): string
     {
         return "/courses/{$this->course->id}";
     }
 
     /**
-     * Get the element shortcuts for the page.
-     *
-     * @return array
+     * Return the id of the course.
      */
-    public function elements()
+    public function id(): int
+    {
+        return $this->course->id;
+    }
+
+    /**
+     * Get the element shortcuts for the page.
+     */
+    public function elements(): array
     {
         return [
             '@element' => '#selector',
@@ -37,12 +41,19 @@ class Course extends Page
         ];
     }
 
-    public function waitUntilLoaded(Browser $browser)
+    /**
+     * Wait for the finder to be fully loaded.
+     */
+    public function waitUntilLoaded(Browser $browser): void
     {
         $browser->waitForText('Tout ouvrir');
     }
 
-    public function createCard(Browser $browser, string $title) {
+    /**
+     * Create a card for this course with the given title.
+     */
+    public function createCard(Browser $browser, string $title): void
+    {
         Card::factory()->create([
             'title' => $title,
             'course_id' => $this->course->id,

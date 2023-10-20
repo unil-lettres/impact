@@ -200,7 +200,7 @@ class CardTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('admin-user@example.com', 'password');;
+                ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit(new Card('Test card features'));
 

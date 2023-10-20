@@ -10,7 +10,8 @@ class Course extends Page
 {
     private AppCourse $course;
 
-    public function __construct(string $courseName){
+    public function __construct(string $courseName)
+    {
         $this->course = AppCourse::where('name', $courseName)->first();
     }
 

@@ -10,7 +10,7 @@
     'lockedMove' => false,
 ])
 @php
-    $items = Helpers::getFolderContent(
+    $items = Helpers::getFolderItems(
         $folder->course,
         $filters,
         $filterSearchBoxes,
@@ -19,7 +19,7 @@
         $sortDirection,
     );
 
-    $countCards = Helpers::countCardsRecursive(
+    $countCards = Helpers::numberOfItemsInFolder(
         $folder,
         $filters,
         $filterSearchBoxes,

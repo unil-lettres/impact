@@ -8,10 +8,10 @@ use App\Enums\CardBox;
 use App\Enums\FinderItemType;
 use App\Exceptions\CloneException;
 use App\Folder;
-use App\Helpers\Helpers;
 use App\Services\Clone\CloneCardService;
 use App\Services\Clone\CloneFolderService;
 use App\Services\Clone\MassCloneService;
+use App\Services\FinderItemsService;
 use App\Services\MoveService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -60,25 +60,11 @@ class Finder extends Component
 
     /**
      * The filters for filtering the content.
-     * A collection with the given format:
-     *   [
-     *      'tags' => [tag_id,...],
-     *      'state' => [state_id,...],
-     *      'editor' => [editor_id,...],
-     *      'search' => [terms (string),...],
-     *   ]
      */
     public Collection $filters;
 
     /**
      * The boxes checked for the "search" filter.
-     * A collection with the given format:
-     *   [
-     *      'name' => bool,
-     *      'box2' => bool,
-     *      'box3' => bool,
-     *      'box4' => bool,
-     *   ]
      */
     public Collection $filterSearchBoxes;
 
@@ -101,7 +87,7 @@ class Finder extends Component
     #[Computed]
     public function items(): Collection
     {
-        return Helpers::getFolderContent(
+        return FinderItemsService::getItems(
             Course::find($this->course->id),
             $this->filters,
             $this->filterSearchBoxes,
@@ -138,7 +124,7 @@ class Finder extends Component
 
         $this->authorize('moveCardOrFolder', $this->course);
 
-        $validated = $this->validatorHelper(
+        $success = $this->validateAndFlash(
             [
                 'type' => $type,
                 'position' => $position,
@@ -149,7 +135,7 @@ class Finder extends Component
             ],
         );
 
-        if (empty($validated)) {
+        if (!$success) {
             return;
         }
 
@@ -162,7 +148,7 @@ class Finder extends Component
     #[On('add-element-to-filter')]
     public function addElementToFilter(mixed $filter, string $type)
     {
-        $validated = $this->validatorHelper(
+        $success = $this->validateAndFlash(
             [
                 'type' => $type,
             ],
@@ -171,10 +157,9 @@ class Finder extends Component
             ],
         );
 
-        if (empty($validated)) {
+        if (!$success) {
             return;
         }
-
         $this->filters->put(
             $type,
             $this->filters->get($type)->push(
@@ -186,7 +171,7 @@ class Finder extends Component
     #[On('remove-element-to-filter')]
     public function removeElementToFilter(mixed $filter, string $type)
     {
-        $validated = $this->validatorHelper(
+        $success = $this->validateAndFlash(
             [
                 'type' => $type,
             ],
@@ -195,7 +180,7 @@ class Finder extends Component
             ],
         );
 
-        if (empty($validated)) {
+        if (!$success) {
             return;
         }
 
@@ -205,6 +190,13 @@ class Finder extends Component
                 fn (mixed $_filter) => $_filter !== $filter,
             )->values(),
         );
+    }
+
+    #[On('flash-message')]
+    public function flash(array $errors, string $bsClass = 'text-bg-success')
+    {
+        $message = collect($errors)->values()->flatten()->join('<br />');
+        $this->flashMessage($message, $bsClass);
     }
 
     public function openFolder(Folder $folder)
@@ -227,23 +219,6 @@ class Finder extends Component
         $this->filterSearchBoxes[$filter] = $checked;
     }
 
-    public function sortAttributes($column): string
-    {
-        if ($column === $this->sortColumn) {
-            [$directionCss, $direction, $column] = match ($this->sortDirection) {
-                'asc' => ['desc', 'desc', $column],
-                'desc' => ['remove', 'asc', 'position'],
-            };
-        } else {
-            $direction = $directionCss = 'asc';
-        }
-
-        return <<<HTML
-            class='d-flex cursor-pointer gap-2 sort-direction-$directionCss'
-            wire:click='sort("$column", "$direction")'
-        HTML;
-    }
-
     public function clearFilters()
     {
         $this->initFilters();
@@ -251,7 +226,7 @@ class Finder extends Component
 
     public function sort($column, $direction): void
     {
-        $validated = $this->validatorHelper(
+        $success = $this->validateAndFlash(
             [
                 'column' => $column,
                 'direction' => $direction,
@@ -262,7 +237,7 @@ class Finder extends Component
             ],
         );
 
-        if (empty($validated)) {
+        if (!$success) {
             return;
         }
 
@@ -298,20 +273,18 @@ class Finder extends Component
         string $newName,
         bool $reloadAfterSave = false,
     ) {
-        $validated = $this->validatorHelper(
+        $success = $this->validateAndFlash(
             ['newName' => $newName],
             ['newName' => 'required|string|max:200'],
         );
 
-        if (empty($validated)) {
+        if (!$success) {
             return;
         }
 
         $this->authorize('update', $folder);
 
-        $folder->update([
-            'title' => $validated['newName'],
-        ]);
+        $folder->update([ 'title' => $newName ]);
 
         if ($reloadAfterSave) {
             return $this->redirect(url()->previous());
@@ -378,6 +351,10 @@ class Finder extends Component
         }
     }
 
+    /**
+     * Return a collection of Cards and Folders models corresponding to
+     * the given keys' list.
+     */
     private function keysToEntities(
         array $keys,
         $withoutDescendants = true,
@@ -423,19 +400,14 @@ class Finder extends Component
         $this->js("window.MultiFilterSelect.checkedFilter = $jsonFilters");
     }
 
-    #[On('flash-message')]
-    public function flash(array $errors, string $bsClass = 'text-bg-success')
-    {
-        $message = collect($errors)->values()->flatten()->join('<br />');
-        $this->flashMessage($message, $bsClass);
-    }
-
     private function flashMessage(
         string $message,
         string $bsClass = 'text-bg-success',
     ) {
         session()->flash('message', $message);
         session()->flash('bsClass', $bsClass);
+
+        // Hide the toast after x milliseconds.
         $this->js(<<<'JS'
            setTimeout(function(){
                 document.getElementById('toast-flash').classList.remove('show');
@@ -446,7 +418,7 @@ class Finder extends Component
     /**
      * Validate the array with validators and flash the first error if exists.
      */
-    private function validatorHelper(array $values, array $validators): array
+    private function validateAndFlash(array $values, array $validators): bool
     {
         $validator = Validator::make($values, $validators);
 
@@ -456,9 +428,9 @@ class Finder extends Component
                 'text-bg-danger',
             );
 
-            return [];
+            return false;
         }
 
-        return $validator->validated();
+        return !empty($validator->validated());
     }
 }

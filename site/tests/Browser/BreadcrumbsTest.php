@@ -40,7 +40,7 @@ class BreadcrumbsTest extends DuskTestCase
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser
-                ->visit(new Folder("Test grand child folder"))
+                ->visit(new Folder('Test grand child folder'))
                 ->assertSee('Liste des espaces / Second space / Test folder / Test child folder');
         });
     }

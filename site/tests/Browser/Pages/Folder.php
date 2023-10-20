@@ -9,7 +9,8 @@ class Folder extends Page
 {
     private AppFolder $folder;
 
-    public function __construct(string $folderName){
+    public function __construct(string $folderName)
+    {
         $this->folder = AppFolder::where('title', $folderName)->first();
     }
 

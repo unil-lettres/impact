@@ -4,16 +4,15 @@ namespace App\Helpers;
 
 use App\Card;
 use App\Course;
-use App\Enums\CardBox;
 use App\Enums\CourseType;
 use App\Enums\FileStatus;
 use App\Enums\FileType;
 use App\Enums\FinderItemType;
 use App\Enums\StateType;
-use App\Enums\TranscriptionType;
 use App\Enums\UserType;
 use App\File;
 use App\Folder;
+use App\Services\FinderItemsService;
 use App\State;
 use App\User;
 use Illuminate\Support\Carbon;
@@ -427,127 +426,6 @@ class Helpers
     }
 
     /**
-     * Return a collection of cards and folders contained inside the given
-     * folder.
-     *
-     * Cards are filtered by given filters.
-     *
-     * Items are sorted by given sort column and direction.
-     *
-     * If no folder are given, return the root items.
-     *
-     * @param $course The course to get the content.
-     * @param $filters See Finder->$filters.
-     * @param $filterSearchBoxes See Finder->$filterSearchBoxes.
-     * @param $folder The folder to get the content.
-     * @param $sortColumn The column name to sort by.
-     * @param $sortDirection ASC or DESC.
-     */
-    public static function getFolderContent(
-        Course $course,
-        Collection $filters,
-        Collection $filterSearchBoxes,
-        Folder $folder = null,
-        string $sortColumn = 'position',
-        string $sortDirection = 'asc',
-    ): Collection {
-
-        $cards = Card::with('tags')->with('state')->with('folder')
-            ->where('course_id', $course->id)
-            ->where('folder_id', $folder?->id)
-            ->where(function ($query) use ($filters) {
-                // Filter specified tags id.
-                $filterTags = $filters->get('tag');
-                if ($filterTags->isNotEmpty()) {
-                    return $query->whereHas('tags', function ($query) use ($filterTags) {
-                        $query->whereIn('tag_id', $filterTags);
-                    });
-                }
-
-                return $query;
-            })
-            ->where(function ($query) use ($filters) {
-                // Filter specified states id.
-                $filterStates = $filters->get('state');
-                if ($filterStates->isNotEmpty()) {
-                    return $query->whereIn('state_id', $filterStates);
-                }
-
-                return $query;
-            })
-            ->get();
-
-        // Filter specified editors id.
-        // Due to how editors are implemented, we do this directly in the
-        // collection.
-        if ($filters->get('editor')->isNotEmpty()) {
-            $cards = $cards->filter(
-                fn ($card) => $card
-                    ->editors()
-                    ->pluck('id')
-                    ->intersect($filters->get('editor'))
-                    ->isNotEmpty()
-            );
-        }
-
-        // Filter specified search terms.
-        $checkedBoxes = $filterSearchBoxes->filter(fn ($box) => $box)->keys();
-
-        if ($checkedBoxes->isNotEmpty() && $filters->get('search')->isNotEmpty()) {
-            $cards = $cards->filter(
-                function ($card) use ($course, $filters, $checkedBoxes) {
-                    // Get each contents of the card associated to the corresponding
-                    // checked boxes (name: title, box2: ICOR or text, etc.).
-                    $contents = collect([
-                        'name' => $card->title,
-                        CardBox::Box2 => match ($course->transcrition) {
-                            // Transform ICOR transcription into plain text.
-                            TranscriptionType::Icor => collect([])
-                                ->concat(collect($card->box2[TranscriptionType::Icor])->pluck('speaker'))
-                                ->concat(collect($card->box2[TranscriptionType::Icor])->pluck('speech'))
-                                ->join(''),
-                            default => $card->box2[TranscriptionType::Text] ?? '',
-                        },
-                        CardBox::Box3 => $card->box3 ?? '',
-                        CardBox::Box4 => $card->box4 ?? '',
-                    ]);
-
-                    // Get only the contents associated to the checked boxes.
-                    $contents = $contents->filter(
-                        fn ($value, $key) => $checkedBoxes->contains($key),
-                    );
-
-                    // Search for the search term in each contents.
-                    $found = $filters
-                        ->get('search')
-                        ->some(fn ($searchTerm) => $contents->some(fn ($content) => static::searchTerm($content, $searchTerm)));
-
-                    return $found;
-                }
-            );
-        }
-
-        // Filter cards by user permissions.
-        $user = Auth::user();
-        $cards = $cards->filter(fn ($card) => $user->can('index', $card));
-
-        $results = $cards
-            ->concat(
-                // Get all folders, folders are not affected by filters.
-                Folder::where('course_id', $course->id)
-                    ->where('parent_id', $folder?->id)
-                    ->get()
-            )
-            ->sortBy([
-                [$sortColumn, $sortDirection],
-                ['id', 'asc'],
-            ])
-            ->values();
-
-        return $results;
-    }
-
-    /**
      * Return the title of the folder with the path until the specified folder
      * or to the root folder (grand parent > parent > child).
      */
@@ -586,52 +464,69 @@ class Helpers
     }
 
     /**
-     * Return the number of cards contained in the given folder and its
-     * children recursively.
+     * Helper for FinderItemsService::getItems(...) function.
      */
-    public static function countCardsRecursive(
-        Folder $folder,
+    public static function getFolderItems(
+        Course $course,
         Collection $filters,
         Collection $filterSearchBoxes,
+        Folder $folder = null,
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
-    ): int {
-        $content = static::getFolderContent(
-            $folder->course,
+    ): Collection
+    {
+        return FinderItemsService::getItems(
+            $course,
             $filters,
             $filterSearchBoxes,
             $folder,
             $sortColumn,
             $sortDirection,
         );
-        $count = $content
-            ->countBy(fn ($item) => $item->getFinderItemType())
-            ->get(FinderItemType::Card, 0);
-
-        foreach ($folder->children as $child) {
-            $count += static::countCardsRecursive(
-                $child,
-                $filters,
-                $filterSearchBoxes,
-                $sortColumn,
-                $sortDirection,
-            );
-        }
-
-        return $count;
     }
 
     /**
-     * Search $term inside $text. Case insensitive and without spaces.
-     * HTML tags are stripped in $text.
-     *
-     * Return if the term is found or not.
+     * Helper for FinderItemsService::countCardsRecursive(...) function.
      */
-    private static function searchTerm(string $text, string $term): bool
-    {
-        return str_contains(
-            strtoupper(str_replace(' ', '', strip_tags($text))),
-            strtoupper(str_replace(' ', '', $term)),
+    public static function numberOfItemsInFolder(
+        Folder $folder,
+        Collection $filters,
+        Collection $filterSearchBoxes,
+        string $sortColumn = 'position',
+        string $sortDirection = 'asc',
+    ): int {
+        return FinderItemsService::countCardsRecursive(
+            $folder,
+            $filters,
+            $filterSearchBoxes,
+            $sortColumn,
+            $sortDirection,
         );
+    }
+
+    /**
+     * Return the HTML attributes needed for sorting column in regards with
+     * the current ordering state.
+     */
+    public static function finderSortHTMLAttributes(
+        $selectedColumn,
+        $currentColumn,
+        $currentDirection,
+    ): string
+    {
+        $column = $selectedColumn;
+        if ($selectedColumn === $currentColumn) {
+            [$directionCss, $direction, $column] = match ($currentDirection) {
+                'asc' => ['desc', 'desc', $selectedColumn],
+                'desc' => ['remove', 'asc', 'position'],
+            };
+        } else {
+            $direction = $directionCss = 'asc';
+        }
+
+        return <<<HTML
+            class='d-flex cursor-pointer gap-2 sort-direction-$directionCss'
+            wire:click='sort("$column", "$direction")'
+        HTML;
     }
 }

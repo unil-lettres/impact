@@ -177,7 +177,7 @@
     <div class="d-flex row-height">
         <div class='flex-fill px-1'>
             <div class="d-flex">
-                <div {!! $this->sortAttributes('title') !!}>
+                <div {!! Helpers::finderSortHTMLAttributes('title', $this->sortColumn, $this->sortDirection) !!}>
                     <div>{{ trans('courses.finder.name') }}</div>
                     <div>
                         <i class="fa-solid fa-arrow-down"></i>
@@ -193,7 +193,7 @@
             </div>
         </div>
         <div class='column-small px-1 d-none d-sm-block'>
-            <div {!! $this->sortAttributes('state_name') !!}>
+            <div {!! Helpers::finderSortHTMLAttributes('state_name', $this->sortColumn, $this->sortDirection) !!}>
                 <div>{{ trans('courses.finder.state') }}</div>
                 <div>
                     <i class="fa-solid fa-arrow-down"></i>
@@ -202,7 +202,7 @@
             </div>
         </div>
         <div class='column-small px-1 d-none d-xl-block'>
-            <div {!! $this->sortAttributes('created_at') !!}>
+            <div {!! Helpers::finderSortHTMLAttributes('created_at', $this->sortColumn, $this->sortDirection) !!}>
                 <div>{{ trans('courses.finder.created') }}</div>
                 <div>
                     <i class="fa-solid fa-arrow-down"></i>
@@ -211,7 +211,7 @@
             </div>
         </div>
         <div class='column-medium px-1 d-none d-lg-block'>
-            <div {!! $this->sortAttributes('editors_list') !!}>
+            <div {!! Helpers::finderSortHTMLAttributes('editors_list', $this->sortColumn, $this->sortDirection) !!}>
                 <div>{{ trans('courses.finder.editors') }}</div>
                 <div>
                     <i class="fa-solid fa-arrow-down"></i>
@@ -220,7 +220,7 @@
             </div>
         </div>
         <div class='column-medium px-1 d-none d-lg-block'>
-            <div {!! $this->sortAttributes('tags_list') !!}>
+            <div {!! Helpers::finderSortHTMLAttributes('tags_list', $this->sortColumn, $this->sortDirection) !!}>
                 <div>{{ trans('courses.finder.tags') }}</div>
                 <div>
                     <i class="fa-solid fa-arrow-down"></i>

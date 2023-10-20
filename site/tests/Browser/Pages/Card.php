@@ -9,14 +9,15 @@ class Card extends Page
 {
     private AppCard $card;
 
-    public function __construct(string $cardName){
+    public function __construct(string $cardName)
+    {
         $this->card = AppCard::where('title', $cardName)->first();
     }
 
     /**
      * Get the URL for the page.
      */
-    public function url() : string
+    public function url(): string
     {
         return "/cards/{$this->card->id}";
     }

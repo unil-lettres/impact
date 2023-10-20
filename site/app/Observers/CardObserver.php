@@ -3,15 +3,16 @@
 namespace App\Observers;
 
 use App\Card;
-use App\Course;
 use App\Enums\ActionType;
 use App\Enums\StateType;
-use App\Helpers\Helpers;
 use App\Mail\StateSelected;
+use App\Traits\FindLastPosition;
 use Illuminate\Support\Facades\Mail;
 
 class CardObserver
 {
+    use FindLastPosition;
+
     /**
      * Handle the Card "created" event.
      *
@@ -23,7 +24,7 @@ class CardObserver
 
         // Set the last available position for this card in its parent.
         if (is_null($card->position)) {
-            $cardUpdate['position'] = Helpers::findLastPositionInParent($card);
+            $cardUpdate['position'] = $this->findLastPositionInParent($card);
         }
 
         // If state is not set, set it the private state
@@ -51,7 +52,7 @@ class CardObserver
 
         if ($card->wasChanged('folder_id')) {
             $card->updateQuietly([
-                'position' => Helpers::findLastPositionInParent($card),
+                'position' => $this->findLastPositionInParent($card),
             ]);
         }
 

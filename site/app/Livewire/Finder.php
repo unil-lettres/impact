@@ -135,7 +135,7 @@ class Finder extends Component
             ],
         );
 
-        if (!$success) {
+        if (! $success) {
             return;
         }
 
@@ -157,7 +157,7 @@ class Finder extends Component
             ],
         );
 
-        if (!$success) {
+        if (! $success) {
             return;
         }
         $this->filters->put(
@@ -180,7 +180,7 @@ class Finder extends Component
             ],
         );
 
-        if (!$success) {
+        if (! $success) {
             return;
         }
 
@@ -237,7 +237,7 @@ class Finder extends Component
             ],
         );
 
-        if (!$success) {
+        if (! $success) {
             return;
         }
 
@@ -278,13 +278,13 @@ class Finder extends Component
             ['newName' => 'required|string|max:200'],
         );
 
-        if (!$success) {
+        if (! $success) {
             return;
         }
 
         $this->authorize('update', $folder);
 
-        $folder->update([ 'title' => $newName ]);
+        $folder->update(['title' => $newName]);
 
         if ($reloadAfterSave) {
             return $this->redirect(url()->previous());
@@ -431,6 +431,6 @@ class Finder extends Component
             return false;
         }
 
-        return !empty($validator->validated());
+        return ! empty($validator->validated());
     }
 }

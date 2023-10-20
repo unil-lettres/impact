@@ -3,10 +3,12 @@
 namespace App\Observers;
 
 use App\Folder;
-use App\Helpers\Helpers;
+use App\Traits\FindLastPosition;
 
 class FolderObserver
 {
+    use FindLastPosition;
+
     /**
      * Handle the Folder "created" event.
      *
@@ -17,7 +19,7 @@ class FolderObserver
         // Get the next position based on other cards and folders of this course.
         if (is_null($folder->position)) {
             $folder->updateQuietly([
-                'position' => Helpers::findLastPositionInParent($folder),
+                'position' => $this->findLastPositionInParent($folder),
             ]);
         }
     }
@@ -29,7 +31,7 @@ class FolderObserver
     {
         if ($folder->wasChanged('parent_id')) {
             $folder->updateQuietly([
-                'position' => Helpers::findLastPositionInParent($folder),
+                'position' => $this->findLastPositionInParent($folder),
             ]);
         }
     }

@@ -7,7 +7,6 @@ use App\Course;
 use App\Enums\CourseType;
 use App\Enums\FileStatus;
 use App\Enums\FileType;
-use App\Enums\FinderItemType;
 use App\Enums\StateType;
 use App\Enums\UserType;
 use App\File;
@@ -387,45 +386,6 @@ class Helpers
     }
 
     /**
-     * Return the last available position for a card or folder based on existing
-     * content of the parent. The position of the given card or folder will not
-     * be taken into account.
-     *
-     * @param $cardOrFolder The card or folder to get the next position to use.
-     */
-    public static function findLastPositionInParent(
-        Card|Folder $cardOrFolder,
-    ): int {
-        $cardId = $folderId = null;
-        if ($cardOrFolder instanceof Card) {
-            $parentId = $cardOrFolder->folder_id;
-            $cardId = $cardOrFolder->id;
-        } else {
-            $parentId = $cardOrFolder->parent_id;
-            $folderId = $cardOrFolder->id;
-        }
-
-        $maxCardPosition = Card::where('course_id', $cardOrFolder->course_id)
-            ->where('folder_id', $parentId)
-            ->where('id', '!=', $cardId)
-            ->max('position');
-
-        $maxFolderPosition = Folder::where('course_id', $cardOrFolder->course_id)
-            ->where('parent_id', $parentId)
-            ->where('id', '!=', $folderId)
-            ->max('position');
-
-        // If there is no items in the parent.
-        if (is_null($maxCardPosition ?? $maxFolderPosition)) {
-            return 0;
-        }
-
-        $position = max($maxCardPosition, $maxFolderPosition);
-
-        return $position + 1;
-    }
-
-    /**
      * Return the title of the folder with the path until the specified folder
      * or to the root folder (grand parent > parent > child).
      */
@@ -473,8 +433,7 @@ class Helpers
         Folder $folder = null,
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
-    ): Collection
-    {
+    ): Collection {
         return FinderItemsService::getItems(
             $course,
             $filters,
@@ -512,8 +471,7 @@ class Helpers
         $selectedColumn,
         $currentColumn,
         $currentDirection,
-    ): string
-    {
+    ): string {
         $column = $selectedColumn;
         if ($selectedColumn === $currentColumn) {
             [$directionCss, $direction, $column] = match ($currentDirection) {

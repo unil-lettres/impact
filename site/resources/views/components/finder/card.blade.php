@@ -1,4 +1,11 @@
-@props(['card', 'modalCloneId', 'modalMoveId', 'selected' => false, 'lockedMove' => false, 'depth' => 0])
+@props([
+    'card',
+    'modalCloneId',
+    'modalMoveId',
+    'selected' => false,
+    'lockedMove' => false,
+    'depth' => 0,
+])
 
 @php($canAccess = auth()->user()->can('view', $card))
 

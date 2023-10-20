@@ -101,15 +101,19 @@ class Finder extends Component
     public function lockedMove(): bool
     {
         return false
+            // Should be the default sort order (position):
             || $this->sortColumn != self::DEFAULT_SORT_COLUMN
             || $this->sortDirection != self::DEFAULT_SORT_DIRECTION
+            // No filter must be selected.
             || ! $this->filters->every(fn (Collection $value) => $value->isEmpty())
+            // Must have the authorization.
             || Auth::user()->cannot('moveCardOrFolder', $this->course);
     }
 
     #[Computed]
     public function editors(): Collection
     {
+        // Return the list of editors for all cards of the course.
         return $this->course->cards->map(
             fn (Card $card) => $card->editors(),
         )->flatten(1)->unique('id');
@@ -291,7 +295,7 @@ class Finder extends Component
         }
     }
 
-    public function destroyFolder(Folder $folder, $returnToCourse = false)
+    public function destroyFolder(Folder $folder, bool $returnToCourse = false)
     {
         $this->authorize('forceDelete', $folder);
 

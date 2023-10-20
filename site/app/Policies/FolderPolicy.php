@@ -83,6 +83,25 @@ class FolderPolicy
     }
 
     /**
+     * Determine whether the user can manage (clone, move, etc.) the folder.
+     *
+     * @return mixed
+     */
+    public function manage(User $user, Folder $folder)
+    {
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers of the course can update folders
+        if ($user->isTeacher($folder->course)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Determine whether the user can forceDelete the folder.
      *
      * @return mixed

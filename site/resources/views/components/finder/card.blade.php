@@ -82,95 +82,84 @@
         {{ $card->tags_list }}
     </div>
     <div class='column-options'>
-        @if (false
-            || $canAccess
-            || auth()->user()->can('moveCardOrFolder', $card->course)
-            || auth()->user()->can('clone', $card)
-            || auth()->user()->can('forceDelete', $card)
-        )
-        <div class="dropdown" @click.stop>
-            <button
-                class="btn border-0 text-black"
-                :class="selectedItems.length > 1 ? 'text-secondary' : ''"
-                style="width:100%"
-                type="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                @click.stop="openMenu($el)"
-            >
-                <i class="fa-solid fa-ellipsis-vertical"></i>
-            </button>
-            <ul class="dropdown-menu dropdown-with-icon">
-                @if ($canAccess)
-                    <li class="dropdown-item d-flex cursor-pointer align-items-center"
-                        @click="window.location = '{{ route('cards.show', $card->id) }}'"
-                    >
-                        <i class="fa-solid fa-square-arrow-up-right me-2"></i>
-                        <span class="flex-fill me-5">
-                            {{ trans('courses.finder.menu.open')}}
-                        </span>
-                    </li>
-                    <li><hr class="dropdown-divider"></li>
-                @endif
-                @can('moveCardOrFolder', $card->course)
-                    <li
-                        class="dropdown-item d-flex cursor-pointer align-items-center"
-                        data-bs-toggle="modal"
-                        data-bs-target="#{{$modalMoveId}}"
-                        :data-bs-keys="[key]"
-                    >
-                        <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
-                        <span class="flex-fill me-5">
-                            {{ trans('courses.finder.move_in')}}
-                        </span>
-                    </li>
-                @endcan
-                @can('clone', $card)
-                <li
-                    class="dropdown-item d-flex cursor-pointer align-items-center"
-                    wire:click="cloneCard({{$card->id}})"
+        @if (auth()->user()->can('manage', $card) || $canAccess)
+            <div class="dropdown" @click.stop>
+                <button
+                    class="btn border-0 text-black"
+                    :class="selectedItems.length > 1 ? 'text-secondary' : ''"
+                    style="width:100%"
+                    type="button"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    @click.stop="openMenu($el)"
                 >
-                    <i class="fa-regular fa-copy me-2"></i>
-                    <span class="flex-fill me-5">
-                        {{ trans('courses.finder.menu.copy')}}
-                    </span>
-                </li>
-                <li
-                    class="dropdown-item d-flex cursor-pointer align-items-center"
-                    data-bs-toggle="modal"
-                    data-bs-target="#{{$modalCloneId}}"
-                    :data-bs-keys="[key]"
-                >
-                    <i class="fa-solid fa-file-import me-2"></i>
-                    <span class="flex-fill me-5">
-                        {{ trans('courses.finder.clone_in')}}
-                    </span>
-                </li>
-                @endcan
-                @can('forceDelete', $card)
-                    <li
-                        wire:confirm="{{ trans('courses.finder.menu.delete.card.confirm') }}"
-                        wire:click="destroyCard({{$card->id}})"
-                        class="dropdown-item d-flex cursor-pointer align-items-center"
-                    >
-                        <i class="fa-regular fa-trash-can me-2"></i>
-                        <span class="flex-fill me-5">
-                            {{ trans('courses.finder.menu.delete')}}
-                        </span>
-                    </li>
-                @endcan
-                @if ($canAccess)
-                    @canany(['clone', 'forceDelete'], $card)
-                    <li><hr class="dropdown-divider"></li>
-                    @endcanany
-                    <li class="dropdown-item d-flex cursor-pointer align-items-center">
-                        <span class="flex-fill me-5">
-                            {{ trans('courses.finder.menu.print')}}
-                        </span>
-                    </li>
-                @endif
-            </ul>
-        </div>
+                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                </button>
+                <ul class="dropdown-menu dropdown-with-icon">
+                    @if ($canAccess)
+                        <li class="dropdown-item d-flex cursor-pointer align-items-center"
+                            @click="window.location = '{{ route('cards.show', $card->id) }}'"
+                        >
+                            <i class="fa-solid fa-square-arrow-up-right me-2"></i>
+                            <span class="flex-fill me-5">
+                                {{ trans('courses.finder.menu.open')}}
+                            </span>
+                        </li>
+                        <li><hr class="dropdown-divider"></li>
+                    @endif
+                    @can('manage', $card)
+                        <li
+                            class="dropdown-item d-flex cursor-pointer align-items-center"
+                            data-bs-toggle="modal"
+                            data-bs-target="#{{$modalMoveId}}"
+                            :data-bs-keys="[key]"
+                        >
+                            <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
+                            <span class="flex-fill me-5">
+                                {{ trans('courses.finder.move_in')}}
+                            </span>
+                        </li>
+                        <li
+                            class="dropdown-item d-flex cursor-pointer align-items-center"
+                            wire:click="cloneCard({{$card->id}})"
+                        >
+                            <i class="fa-regular fa-copy me-2"></i>
+                            <span class="flex-fill me-5">
+                                {{ trans('courses.finder.menu.copy')}}
+                            </span>
+                        </li>
+                        <li
+                            class="dropdown-item d-flex cursor-pointer align-items-center"
+                            data-bs-toggle="modal"
+                            data-bs-target="#{{$modalCloneId}}"
+                            :data-bs-keys="[key]"
+                        >
+                            <i class="fa-solid fa-file-import me-2"></i>
+                            <span class="flex-fill me-5">
+                                {{ trans('courses.finder.clone_in')}}
+                            </span>
+                        </li>
+                        <li
+                            wire:confirm="{{ trans('courses.finder.menu.delete.card.confirm') }}"
+                            wire:click="destroyCard({{$card->id}})"
+                            class="dropdown-item d-flex cursor-pointer align-items-center"
+                        >
+                            <i class="fa-regular fa-trash-can me-2"></i>
+                            <span class="flex-fill me-5">
+                                {{ trans('courses.finder.menu.delete')}}
+                            </span>
+                        </li>
+                        @if ($canAccess) <li><hr class="dropdown-divider"></li> @endif
+                    @endcan
+                    @if ($canAccess)
+                        <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                            <span class="flex-fill me-5">
+                                {{ trans('courses.finder.menu.print')}}
+                            </span>
+                        </li>
+                    @endif
+                </ul>
+            </div>
         @endif
     </div>
 </li>

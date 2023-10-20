@@ -43,7 +43,7 @@ class MoveService
             );
         }
 
-        if (Auth::user()->cannot('moveCardOrFolder', $folder->course)) {
+        if (Auth::user()->cannot('manage', $folder)) {
             abort(403);
         }
 
@@ -83,7 +83,7 @@ class MoveService
             );
         }
 
-        if (Auth::user()->cannot('moveCardOrFolder', $card->course)) {
+        if (Auth::user()->cannot('manage', $card)) {
             abort(403);
         }
 

@@ -65,7 +65,7 @@ class CloneFolderService
             $destCourse = null;
         }
 
-        if (Auth::user()->cannot('update', $this->folder)) {
+        if (Auth::user()->cannot('manage', $this->folder)) {
             abort(403);
         }
 

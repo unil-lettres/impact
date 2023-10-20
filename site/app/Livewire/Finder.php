@@ -105,9 +105,14 @@ class Finder extends Component
             || $this->sortColumn != self::DEFAULT_SORT_COLUMN
             || $this->sortDirection != self::DEFAULT_SORT_DIRECTION
             // No filter must be selected.
-            || ! $this->filters->every(fn (Collection $value) => $value->isEmpty())
+            || ! $this->filters->every(
+                fn (Collection $value) => $value->isEmpty()
+            )
             // Must have the authorization.
-            || Auth::user()->cannot('moveCardOrFolder', $this->course);
+            || Auth::user()->cannot(
+                'massActionsForCardAndFolder',
+                $this->course,
+            );
     }
 
     #[Computed]
@@ -126,7 +131,7 @@ class Finder extends Component
             return;
         }
 
-        $this->authorize('moveCardOrFolder', $this->course);
+        $this->authorize('massActionsForCardAndFolder', $this->course);
 
         $success = $this->validateAndFlash(
             [
@@ -143,7 +148,11 @@ class Finder extends Component
             return;
         }
 
-        $entity = $type === FinderItemType::Folder ? Folder::findOrFail($id) : Card::findOrFail($id);
+        $entity = $type === (
+            FinderItemType::Folder
+            ? Folder::findOrFail($id)
+            : Card::findOrFail($id)
+        );
         $entity->update([
             'position' => $position,
         ]);
@@ -342,10 +351,13 @@ class Finder extends Component
         int $dest = null,
         bool $reloadAfterSave = false,
     ) {
-        $this->authorize('moveCardOrFolder', $this->course);
+        $this->authorize('massActionsForCardAndFolder', $this->course);
 
         $this->keysToEntities($keys)->each(
-            fn ($entity) => MoveService::moveCardOrFolder($entity, $dest ? Folder::find($dest) : null),
+            fn ($entity) => MoveService::moveCardOrFolder(
+                $entity,
+                $dest ? Folder::find($dest) : null,
+            ),
         );
 
         $this->flashMessage(trans('courses.finder.move_in.success'));
@@ -367,7 +379,10 @@ class Finder extends Component
             ->map(function ($key) {
                 [$type, $key] = explode('-', $key);
 
-                return $type === FinderItemType::Card ? Card::findOrFail($key) : Folder::findOrFail($key);
+                return
+                    $type === FinderItemType::Card
+                    ? Card::findOrFail($key)
+                    : Folder::findOrFail($key);
             })
             ->filter(function ($entity) use ($keys, $withoutDescendants) {
                 // Some times, we want only the most "oldest" parent of an item.

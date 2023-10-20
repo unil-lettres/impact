@@ -128,17 +128,17 @@ class CardPolicy
     }
 
     /**
-     * Determine whether the user can clone the card.
+     * Determine whether the user can manage the card (move, clone, etc.).
      *
      * @return mixed
      */
-    public function clone(User $user, Card $card)
+    public function manage(User $user, Card $card)
     {
         if ($user->admin) {
             return true;
         }
 
-        // Only teachers of the course can delete cards
+        // Only teachers of the course can manage cards
         if ($user->isTeacher($card->course)) {
             return true;
         }

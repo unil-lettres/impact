@@ -79,7 +79,7 @@ class CloneCardService
             $destCourse = null;
         }
 
-        if (Auth::user()->cannot('clone', $this->card)) {
+        if (Auth::user()->cannot('manage', $this->card)) {
             // Silently skip the clone due to mass action not wished to be
             // aborted. UI should not permit this action anyway.
             return;

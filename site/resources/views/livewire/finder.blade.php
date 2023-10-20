@@ -117,6 +117,7 @@
                         data-bs-toggle="modal"
                         data-bs-target='{{"#$modalMoveId"}}'
                         :data-bs-keys="selectedItems"
+                        dusk="multi-movein-option"
                     >
                         <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
                         <span class="flex-fill me-5">
@@ -138,6 +139,7 @@
                         data-bs-toggle="modal"
                         data-bs-target='{{"#$modalCloneId"}}'
                         :data-bs-keys="selectedItems"
+                        dusk="multi-clonein-option"
                     >
                         <i class="fa-solid fa-file-import me-2"></i>
                         <span class="flex-fill me-5">

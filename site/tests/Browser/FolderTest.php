@@ -73,7 +73,9 @@ class FolderTest extends DuskTestCase
                 ->waitForText('Test folder')
                 ->clickLink('Test folder');
 
-            $browser->waitForText('Test child folder');
+            $browser
+                ->waitForText('Test child folder')
+                ->assertSee('Test child folder');
         });
     }
 

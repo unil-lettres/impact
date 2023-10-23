@@ -4,7 +4,6 @@ namespace App\Services\Clone;
 
 use App\Course;
 use App\Folder;
-use Illuminate\Support\Facades\Auth;
 use InvalidArgumentException;
 
 class CloneFolderService
@@ -70,24 +69,12 @@ class CloneFolderService
             $destCourse = null;
         }
 
-        if (Auth::user()->cannot('manage', $this->folder)) {
-            abort(403);
-        }
-
         if ($destFolder) {
-            if (! Auth::user()->isTeacher($destFolder->course)) {
-                abort(403);
-            }
-
             $values = [
                 'parent_id' => $destFolder->id,
                 'course_id' => $destFolder->course_id,
             ];
         } elseif ($destCourse) {
-            if (! Auth::user()->isTeacher($destCourse)) {
-                abort(403);
-            }
-
             $values = [
                 'parent_id' => null,
                 'course_id' => $destCourse->id,

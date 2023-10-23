@@ -4,7 +4,6 @@ namespace App\Services;
 
 use App\Card;
 use App\Folder;
-use Illuminate\Support\Facades\Auth;
 use InvalidArgumentException;
 
 class MoveService
@@ -45,10 +44,6 @@ class MoveService
             );
         }
 
-        if (Auth::user()->cannot('manage', $folder)) {
-            abort(403);
-        }
-
         if ($dest) {
             // Check that the folder is not moved into itself or into one of its
             // children.
@@ -83,10 +78,6 @@ class MoveService
             throw new InvalidArgumentException(
                 'Cannot move into a folder of another space.',
             );
-        }
-
-        if (Auth::user()->cannot('manage', $card)) {
-            abort(403);
         }
 
         $card->update(['folder_id' => $folder?->id]);

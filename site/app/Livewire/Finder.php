@@ -243,6 +243,9 @@ class Finder extends Component
         $this->filterSearchBoxes[$filter] = $checked;
     }
 
+    /**
+     * Reinitialise all filters and sort to their default values.
+     */
     public function clearFiltersAndSort(): void
     {
         $this->initFilters();
@@ -251,6 +254,9 @@ class Finder extends Component
         $this->sortDirection = static::DEFAULT_SORT_DIRECTION;
     }
 
+    /**
+     * Change the sorting column and direction.
+     */
     public function sort(string $column, string $direction): void
     {
         $success = $this->validateAndFlash(
@@ -272,15 +278,27 @@ class Finder extends Component
         $this->sortDirection = $direction;
     }
 
+    /**
+     * Clone a card.
+     */
     public function cloneCard(Card $card): void
     {
+        $this->authorize('manage', $card);
+
         (new CloneCardService($card))->clone();
     }
 
+    /**
+     * Clone a folder. If $displayFlash is true, a flash message will be
+     * displayed when the folder is cloned.
+     */
     public function cloneFolder(
         Folder $folder,
         bool $displayFlash = false,
     ): void {
+        // We do not check folder's children since it's the same as the parent.
+        $this->authorize('manage', $folder);
+
         (new CloneFolderService($folder))->clone();
 
         if ($displayFlash) {
@@ -288,13 +306,20 @@ class Finder extends Component
         }
     }
 
+    /**
+     * Clone all items in the $keys array ($keys is 'card-1', 'folder-2', etc.).
+     */
     public function cloneMultiple(array $keys): void
     {
-        $this->keysToEntities($keys)->each(
-            fn ($entity) => MassCloneService::getCloneService($entity)->clone(),
-        );
+        $this->keysToEntities($keys)
+            ->each(fn ($item) => $this->authorize('manage', $item))
+            ->each(fn ($entity) => MassCloneService::getCloneService($entity)->clone());
     }
 
+    /**
+     * Rename a foder. Reload the page if $reloadAfterSave is true (useful for
+     * update the folder's name if not reactive).
+     */
     public function renameFolder(
         Folder $folder,
         string $newName,
@@ -318,6 +343,11 @@ class Finder extends Component
         }
     }
 
+    /**
+     * Delete the folder and all it's content recursively.
+     * If $returnToCourse is true, redirect to the course page after deletion (
+     * useful to avoid an error 404 if the user is on the folder's page).
+     */
     public function destroyFolder(
         Folder $folder,
         bool $returnToCourse = false,
@@ -331,6 +361,9 @@ class Finder extends Component
         }
     }
 
+    /**
+     * Delete the card.
+     */
     public function destroyCard(Card $card): void
     {
         $this->authorize('forceDelete', $card);
@@ -338,6 +371,9 @@ class Finder extends Component
         $card->forceDelete();
     }
 
+    /**
+     * Delete all items in the $keys array ($keys is 'card-1', 'folder-2', etc.).
+     */
     public function destroyMultiple(array $keys): void
     {
         $this->keysToEntities($keys)->each(
@@ -349,19 +385,31 @@ class Finder extends Component
         $this->js('selectedItems = []');
     }
 
+    /**
+     * Clone all items in the $keys array ($keys is 'card-1', 'folder-2', etc.).
+     */
     public function cloneIn(array $keys, Course $dest): void
     {
+        if (! Auth::user()->isTeacher($dest)) {
+            abort(403);
+        }
+
+        $items = $this->keysToEntities($keys);
+        $items->each(fn ($item) => $this->authorize('manage', $item));
+
         try {
-            MassCloneService::massCloneCardsAndFolders(
-                $this->keysToEntities($keys),
-                $dest,
-            );
+            MassCloneService::massCloneCardsAndFolders($items, $dest);
             $this->flashMessage(trans('courses.finder.clone_in.success'));
         } catch (CloneException $e) {
             $this->flashMessage($e->getMessage(), 'text-bg-danger');
         }
     }
 
+    /**
+     * Move all items in the $keys array ($keys is 'card-1', 'folder-2', etc.).
+     * Reload the page if $reloadAfterSave is true (useful for update the
+     * breadcrumbs if the moved folder is the current displayed page).
+     */
     public function moveIn(
         array $keys,
         int $dest = null,
@@ -372,7 +420,7 @@ class Finder extends Component
         $this->keysToEntities($keys)->each(
             fn ($entity) => MoveService::moveCardOrFolder(
                 $entity,
-                $dest ? Folder::find($dest) : null,
+                $dest ? Folder::findOrFail($dest) : null,
             ),
         );
 
@@ -415,6 +463,9 @@ class Finder extends Component
 
     }
 
+    /**
+     * Initialize the filters and the search boxes to their default values.
+     */
     private function initFilters(): void
     {
         $this->filterSearchBoxes = collect([
@@ -435,6 +486,10 @@ class Finder extends Component
         $this->js("window.MultiFilterSelect.checkedFilter = $jsonFilters");
     }
 
+    /**
+     * Display a flash message with the given message and bootstrap class.
+     * The flash message will automatically hide after some time.
+     */
     private function flashMessage(
         string $message,
         string $bsClass = 'text-bg-success',

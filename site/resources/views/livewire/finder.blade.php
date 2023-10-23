@@ -74,7 +74,7 @@
             <div class="text-nowrap">
                 <button
                     class="btn"
-                    wire:click="clearFilters"
+                    wire:click="clearFiltersAndSort"
                     @click="window.MultiFilterSelect.create()"
                 >
                     {{ trans('courses.finder.filter.clear') }}

@@ -232,9 +232,12 @@ class Finder extends Component
         $this->filterSearchBoxes[$filter] = $checked;
     }
 
-    public function clearFilters()
+    public function clearFiltersAndSort()
     {
         $this->initFilters();
+
+        $this->sortColumn = static::DEFAULT_SORT_COLUMN;
+        $this->sortDirection = static::DEFAULT_SORT_DIRECTION;
     }
 
     public function sort($column, $direction): void

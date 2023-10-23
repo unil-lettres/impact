@@ -148,11 +148,11 @@ class Finder extends Component
             return;
         }
 
-        $entity = $type === (
+        $entity = $type ===
             FinderItemType::Folder
             ? Folder::findOrFail($id)
-            : Card::findOrFail($id)
-        );
+            : Card::findOrFail($id);
+
         $entity->update([
             'position' => $position,
         ]);

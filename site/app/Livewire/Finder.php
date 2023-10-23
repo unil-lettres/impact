@@ -79,7 +79,7 @@ class Finder extends Component
     }
 
     #[On('item-created')]
-    public function refreshItems()
+    public function refreshItems(): void
     {
         unset($this->items);
     }
@@ -101,13 +101,15 @@ class Finder extends Component
     public function lockedMove(): bool
     {
         return false
-            // Should be the default sort order (position):
+            // Should be the default sort order.
             || $this->sortColumn != self::DEFAULT_SORT_COLUMN
             || $this->sortDirection != self::DEFAULT_SORT_DIRECTION
+
             // No filter must be selected.
             || ! $this->filters->every(
                 fn (Collection $value) => $value->isEmpty()
             )
+
             // Must have the authorization.
             || Auth::user()->cannot(
                 'massActionsForCardAndFolder',
@@ -125,7 +127,7 @@ class Finder extends Component
     }
 
     #[On('sort-updated')]
-    public function move(int $id, string $type, int $position)
+    public function move(int $id, string $type, int $position): void
     {
         if ($this->lockedMove()) {
             return;
@@ -148,10 +150,11 @@ class Finder extends Component
             return;
         }
 
-        $entity = $type ===
-            FinderItemType::Folder
+        $entity = (
+            $type === FinderItemType::Folder
             ? Folder::findOrFail($id)
-            : Card::findOrFail($id);
+            : Card::findOrFail($id)
+        );
 
         $entity->update([
             'position' => $position,
@@ -159,7 +162,7 @@ class Finder extends Component
     }
 
     #[On('add-element-to-filter')]
-    public function addElementToFilter(mixed $filter, string $type)
+    public function addElementToFilter(mixed $filter, string $type): void
     {
         $success = $this->validateAndFlash(
             [
@@ -173,6 +176,7 @@ class Finder extends Component
         if (! $success) {
             return;
         }
+
         $this->filters->put(
             $type,
             $this->filters->get($type)->push(
@@ -182,7 +186,7 @@ class Finder extends Component
     }
 
     #[On('remove-element-to-filter')]
-    public function removeElementToFilter(mixed $filter, string $type)
+    public function removeElementToFilter(mixed $filter, string $type): void
     {
         $success = $this->validateAndFlash(
             [
@@ -206,33 +210,40 @@ class Finder extends Component
     }
 
     #[On('flash-message')]
-    public function flash(array $lines, string $bsClass = 'text-bg-success')
-    {
+    public function flash(
+        array $lines,
+        string $bsClass = 'text-bg-success',
+    ): void {
         $message = collect($lines)->values()->flatten()->join('<br />');
         $this->flashMessage($message, $bsClass);
     }
 
-    public function openFolder(Folder $folder)
+    public function openFolder(Folder $folder): void
     {
-        return $this->redirect(route('folders.show', $folder->id));
+        $this->redirect(route('folders.show', $folder->id));
     }
 
     /**
      * Add or remove a filter (search box, like name, box 2, etc.) on the card.
      */
-    public function toggleFilterSearchBox(string $filter, bool $checked)
+    public function toggleFilterSearchBox(string $filter, bool $checked): void
     {
-        if (! in_array(
-            $filter,
-            ['name', CardBox::Box2, CardBox::Box3, CardBox::Box4],
-        )) {
+        $success = $this->validateAndFlash(
+            [
+                'type' => $filter,
+            ],
+            [
+                'type' => 'required|string|in:name,'.CardBox::Box2.','.CardBox::Box3.','.CardBox::Box4,
+            ],
+        );
+        if (! $success) {
             return;
         }
 
         $this->filterSearchBoxes[$filter] = $checked;
     }
 
-    public function clearFiltersAndSort()
+    public function clearFiltersAndSort(): void
     {
         $this->initFilters();
 
@@ -240,7 +251,7 @@ class Finder extends Component
         $this->sortDirection = static::DEFAULT_SORT_DIRECTION;
     }
 
-    public function sort($column, $direction): void
+    public function sort(string $column, string $direction): void
     {
         $success = $this->validateAndFlash(
             [
@@ -288,7 +299,7 @@ class Finder extends Component
         Folder $folder,
         string $newName,
         bool $reloadAfterSave = false,
-    ) {
+    ): void {
         $success = $this->validateAndFlash(
             ['newName' => $newName],
             ['newName' => 'required|string|max:200'],
@@ -303,22 +314,24 @@ class Finder extends Component
         $folder->update(['title' => $newName]);
 
         if ($reloadAfterSave) {
-            return $this->redirect(url()->previous());
+            $this->redirect(url()->previous());
         }
     }
 
-    public function destroyFolder(Folder $folder, bool $returnToCourse = false)
-    {
+    public function destroyFolder(
+        Folder $folder,
+        bool $returnToCourse = false,
+    ): void {
         $this->authorize('forceDelete', $folder);
 
         $folder->forceDelete();
 
         if ($returnToCourse) {
-            return $this->redirect(route('courses.show', $folder->course->id));
+            $this->redirect(route('courses.show', $folder->course->id));
         }
     }
 
-    public function destroyCard(Card $card)
+    public function destroyCard(Card $card): void
     {
         $this->authorize('forceDelete', $card);
 
@@ -336,7 +349,7 @@ class Finder extends Component
         $this->js('selectedItems = []');
     }
 
-    public function cloneIn(array $keys, Course $dest)
+    public function cloneIn(array $keys, Course $dest): void
     {
         try {
             MassCloneService::massCloneCardsAndFolders(
@@ -353,7 +366,7 @@ class Finder extends Component
         array $keys,
         int $dest = null,
         bool $reloadAfterSave = false,
-    ) {
+    ): void {
         $this->authorize('massActionsForCardAndFolder', $this->course);
 
         $this->keysToEntities($keys)->each(
@@ -366,7 +379,7 @@ class Finder extends Component
         $this->flashMessage(trans('courses.finder.move_in.success'));
 
         if ($reloadAfterSave) {
-            return $this->redirect(url()->previous());
+            $this->redirect(url()->previous());
         }
     }
 
@@ -376,7 +389,7 @@ class Finder extends Component
      */
     private function keysToEntities(
         array $keys,
-        $withoutDescendants = true,
+        bool $withoutDescendants = true,
     ): Collection {
         return collect($keys)
             ->map(function ($key) {
@@ -402,7 +415,7 @@ class Finder extends Component
 
     }
 
-    private function initFilters()
+    private function initFilters(): void
     {
         $this->filterSearchBoxes = collect([
             'name' => true,
@@ -425,7 +438,7 @@ class Finder extends Component
     private function flashMessage(
         string $message,
         string $bsClass = 'text-bg-success',
-    ) {
+    ): void {
         session()->flash('message', $message);
         session()->flash('bsClass', $bsClass);
 

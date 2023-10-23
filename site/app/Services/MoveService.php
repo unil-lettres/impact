@@ -16,8 +16,10 @@ class MoveService
      * @param  Folder|null  $dest The new parent folder. Null if the card or
      * folder should be moved to the root folder.
      */
-    public static function moveCardOrFolder(Card|Folder $cardOrFolder, Folder $dest = null)
-    {
+    public static function moveCardOrFolder(
+        Card|Folder $cardOrFolder,
+        Folder $dest = null,
+    ): void {
         if ($cardOrFolder instanceof Card) {
             static::moveCard($cardOrFolder, $dest);
         } else {

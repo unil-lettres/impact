@@ -32,7 +32,12 @@ class CloneFolderService
             ->children
             ->concat($this->folder->cards)
             ->every(
-                fn ($item) => MassCloneService::getCloneService($item)->checkClone($destFolder, $destCourse)
+                fn ($item) => (
+                    MassCloneService::getCloneService($item)->checkClone(
+                        $destFolder,
+                        $destCourse,
+                    )
+                )
             );
     }
 
@@ -50,7 +55,7 @@ class CloneFolderService
     public function clone(
         Folder $destFolder = null,
         Course $destCourse = null,
-    ) {
+    ): void {
         $this->checkClone($destFolder, $destCourse);
 
         // Can specify only one of these attribute (course will be deduced from

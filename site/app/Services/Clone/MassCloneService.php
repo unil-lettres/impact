@@ -9,6 +9,9 @@ use Illuminate\Support\Collection;
 
 class MassCloneService
 {
+    /**
+     * Return the corresponding service for the given parameter.
+     */
     public static function getCloneService(
         Card|Folder $cardOrFolder,
     ): CloneCardService|CloneFolderService {
@@ -19,6 +22,13 @@ class MassCloneService
         return new CloneFolderService($cardOrFolder);
     }
 
+    /**
+     * Clone all cards and folders of the given collection in the destination
+     * course.
+     *
+     * Check every items before cloning. If one item check fails, no clone are
+     * performed.
+     */
     public static function massCloneCardsAndFolders(
         Collection $cardsAndFolders,
         Course $dest,

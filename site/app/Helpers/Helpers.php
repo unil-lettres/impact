@@ -465,20 +465,26 @@ class Helpers
 
     /**
      * Return the HTML attributes needed for sorting column in regards with
-     * the current ordering state.
+     * the current ordering state for the "finder" view.
      */
     public static function finderSortHTMLAttributes(
-        $selectedColumn,
-        $currentColumn,
-        $currentDirection,
+        string $selectedColumn,
+        string $currentColumn,
+        string $currentDirection,
     ): string {
+        // We have 3 cycling states: asc => desc => remove.
+
         $column = $selectedColumn;
         if ($selectedColumn === $currentColumn) {
+            // If the selected column is the current selected, we take the
+            // next state.
             [$directionCss, $direction, $column] = match ($currentDirection) {
                 'asc' => ['desc', 'desc', $selectedColumn],
                 'desc' => ['remove', 'asc', 'position'],
             };
         } else {
+            // If the selected column is not the current selected, we reset
+            // states for this new column.
             $direction = $directionCss = 'asc';
         }
 

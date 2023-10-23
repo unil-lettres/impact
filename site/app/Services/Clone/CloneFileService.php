@@ -20,7 +20,7 @@ class CloneFileService
      *
      * @param  string  $prefix Prefix to add to the filename.
      */
-    public function clone($prefix = ''): ?File
+    public function clone(string $prefix = ''): ?File
     {
         // Clean filename to keep only the name of the file
         $cleanedFilename = pathinfo($this->file->filename, PATHINFO_BASENAME);

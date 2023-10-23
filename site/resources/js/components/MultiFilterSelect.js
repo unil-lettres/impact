@@ -5,8 +5,24 @@ import MultiSelect from "./MultiSelect";
 import { components } from 'react-select';
 import _ from 'lodash';
 
+/**
+ * Dispatch events when selecting / deselecting items in the react select
+ * component.
+ *
+ * Events dispatched:
+ *  - add-element-to-filter: when an item is selected or created.
+ *  - remove-element-to-filter: when an item is deselected.
+ *
+ * Events "detail" (custom informations for the custom event):
+ *  - filter: the value (id) of the selected item
+ *  - type: the record given when creating the react component
+ *
+ * Note about Promises:
+ * Due to how MultiSelect is implemented, we must return Promises here even
+ * if we don't do any async action. The promises will just resolve "instantly"
+ * after dispatching the event.
+ */
 export default class MultiFilterSelect extends MultiSelect {
-
     select = (record, option) => {
         return new Promise((resolve) => {
             const selectedEvent = new CustomEvent('add-element-to-filter', {
@@ -81,10 +97,25 @@ const ValueContainer = ({ children, getValue, ...props }) => {
 const MenuList = props => {
     const checkedFilters = window.MultiFilterSelect.checkedFilter;
 
+    /**
+     * React handler for input changes.
+     */
     function handleFilterChange(event) {
         dispatchToggleFilter(event.target.value, event.target.checked);
     }
 
+    /**
+     * Dispatch the 'toggle-filter-search-box' event to the window object that
+     * notify that a filter is checked or unchecked.
+     *
+     * This event has the following detail (custom data) object:
+     *
+     * filter: the name of the checked filter box
+     * checked: if the box was checked or unchecked
+     *
+     * @param {string} filter
+     * @param {bool} checked
+     */
     function dispatchToggleFilter(filter, checked) {
         const toggleEvent = new CustomEvent('toggle-filter-search-box', {
             bubbles: true,
@@ -94,13 +125,21 @@ const MenuList = props => {
                 checked: checked,
             },
         });
-        checkedFilters[filter] = checked;
-        setCheckedStates({...checkedFilters});
+        window.MultiFilterSelect.checkedFilter[filter] = checked;
+        setCheckedStates({...window.MultiFilterSelect.checkedFilter});
         window.dispatchEvent(toggleEvent);
     }
 
-    const [checkedStates, setCheckedStates] = useState({...checkedFilters});
+    const [checkedStates, setCheckedStates] = useState(
+        {...window.MultiFilterSelect.checkedFilter},
+    );
 
+    /**
+     * @param {string} filterName the filter's name associated with this component
+     * @param {string} label the label for the checkbox
+     * @returns a react component with a checkbox to enable or disable the
+     *          specified filter name
+     */
     function getFilterComponent(filterName, label) {
         return (
             <div className="form-check" key={filterName}>
@@ -121,7 +160,7 @@ const MenuList = props => {
         );
     }
 
-    const {name, ...boxes} = checkedFilters;
+    const {name, ...boxes} = window.MultiFilterSelect.checkedFilter;
     const boxesComponents = _.map(
         boxes,
         (__, filterName) => getFilterComponent(
@@ -147,19 +186,20 @@ const MenuList = props => {
 };
 
 window.MultiFilterSelect = {
+    // For keeping track of every react components mounted.
     roots: [],
 
-    // We need to keep checked filter outside of MenuList component cause
-    // it is destroyed each time the menu is closed.
+    // We need to keep in this "global" scope what filters are checked.
+    // The MenuList component of react select is destroyed each time
+    // the menu is close so we lose the react state.
     checkedFilter: {},
 
     dataNameLabel: '',
     dataBoxLabel: '',
     create() {
 
-        _.each(this.roots, (root) => {
-            root.unmount();
-        });
+        // Unmount and reinit mounted react components.
+        _.each(this.roots, root => root.unmount());
         this.roots = [];
 
         const elements = document.querySelectorAll('.rct-multi-filter-select');
@@ -175,7 +215,11 @@ window.MultiFilterSelect = {
                     placeholder={placeholder}
                     refEl={element}
                     reactAttributes={{
+                        // Enable toggle state in the menu list (default
+                        // behavior removes items from the menu list when
+                        // selected).
                         hideSelectedOptions: false,
+
                         components: { ValueContainer },
                         styles: {
                             valueContainer: (base, value) => ({
@@ -208,7 +252,11 @@ window.MultiFilterSelect = {
                     placeholder={placeholder}
                     refEl={element}
                     reactAttributes={{
+                        // Enable toggle state in the menu list (default
+                        // behavior removes items from the menu list when
+                        // selected).
                         hideSelectedOptions: false,
+
                         components: { ValueContainer, MenuList },
                         styles: {
                             valueContainer: (base, value) => ({

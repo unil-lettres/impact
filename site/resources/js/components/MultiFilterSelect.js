@@ -3,7 +3,7 @@ import { createRoot } from "react-dom/client";
 
 import MultiSelect from "./MultiSelect";
 import { components } from 'react-select';
-import _, { filter } from 'lodash';
+import _ from 'lodash';
 
 export default class MultiFilterSelect extends MultiSelect {
 

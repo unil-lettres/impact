@@ -50,6 +50,7 @@ return [
     'finder.empty' => 'Aucun élément dans cet espace',
     'finder.collapse_all' => 'Tout fermer',
     'finder.expand_all' => 'Tout ouvrir',
+    'finder.move.disabled' => 'Les éléments ne peuvent pas être réorganisés lorsqu\'un filtre ou un tri est actif.',
     'finder.filter.tags' => 'Etiquettes',
     'finder.filter.editors' => 'Editeurs',
     'finder.filter.states' => 'Etats',

@@ -206,9 +206,9 @@ class Finder extends Component
     }
 
     #[On('flash-message')]
-    public function flash(array $errors, string $bsClass = 'text-bg-success')
+    public function flash(array $lines, string $bsClass = 'text-bg-success')
     {
-        $message = collect($errors)->values()->flatten()->join('<br />');
+        $message = collect($lines)->values()->flatten()->join('<br />');
         $this->flashMessage($message, $bsClass);
     }
 
@@ -428,7 +428,11 @@ class Finder extends Component
 
         // Hide the toast after x milliseconds.
         $this->js(<<<'JS'
-           setTimeout(function(){
+            if (window.flashTimer) {
+                clearTimeout(window.flashTimer);
+            }
+
+           window.flashTimer = setTimeout(function(){
                 document.getElementById('toast-flash').classList.remove('show');
             }, 5000);
         JS);

@@ -405,7 +405,19 @@
                 },
                 initSortable(list) {
                     Sortable.create(list, {
-                        onStart: () => {
+                        disabled: {{Auth::user()->cannot('massActionsForCardAndFolder', $this->course) ? 'true' : 'false'}},
+                        onStart: (evt) => {
+                            // Display a message if the user cannot move items.
+                            if (evt.item.hasAttribute('locked-move')) {
+                                this.$dispatch(
+                                    'flash-message',
+                                    {
+                                        lines: ["{{ trans('courses.finder.move.disabled') }}"],
+                                        bsClass: 'text-bg-danger',
+                                    },
+                                );
+                            }
+
                             // Hide selected elements while dragging.
                             list.closest('.finder').classList.add('hide-select');
                         },

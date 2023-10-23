@@ -49,6 +49,7 @@ return [
     'finder.empty' => 'No item in this space',
     'finder.collapse_all' => 'Collapse all',
     'finder.expand_all' => 'Expand all',
+    'finder.move.disabled' => 'Items cannot be moved when a filter or a sort is activ.',
     'finder.select.help' => 'Mass select: shift + clic',
     'finder.filter.tags' => 'Tags',
     'finder.filter.editors' => 'Editors',

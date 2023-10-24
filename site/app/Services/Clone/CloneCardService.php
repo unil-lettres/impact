@@ -63,7 +63,7 @@ class CloneCardService
     public function clone(
         Folder $destFolder = null,
         Course $destCourse = null,
-    ): Card|null {
+    ): ?Card {
         $this->checkClone($destFolder, $destCourse);
 
         // Can specify only one of these attribute (course will be deduced from
@@ -208,9 +208,11 @@ class CloneCardService
         if ($failed) {
             $files->each(fn ($file) => $file->forceDelete());
             DB::rollBack();
+
             return null;
         } else {
             DB::commit();
+
             return $copiedCard;
         }
     }

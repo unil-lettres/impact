@@ -1,7 +1,7 @@
 FROM php:8.2-fpm-bullseye
 
 ENV NODE_VERSION=18
-ENV COMPOSER_VERSION=2.2
+ENV COMPOSER_VERSION=2.6
 
 # Update repositories
 RUN apt-get update

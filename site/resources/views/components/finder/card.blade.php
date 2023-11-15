@@ -57,9 +57,9 @@
     </div>
     <div
         class='column-small text-truncate px-1 d-none d-sm-block fw-light'
-        title="{{ $card->state->name }}"
+        title="{{ $card->state?->name }}"
     >
-        {{ $card->state->name }}
+        {{ $card->state?->name }}
     </div>
     <div
         class='column-small text-truncate px-1 d-none d-xl-block fw-light'

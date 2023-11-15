@@ -39,6 +39,7 @@
                 <div
                     wire:ignore
                     class="rct-multi-filter-select"
+                    noOptionsMessage="{{ trans('courses.finder.filter.empty') }}"
                     data='{{ json_encode(['record' => 'tag', 'options' => $course->tags]) }}'
                     placeholder='{{ trans("courses.finder.filter.tags") }}'
                 ></div>
@@ -47,6 +48,7 @@
                 <div
                     wire:ignore
                     class="rct-multi-filter-select"
+                    noOptionsMessage="{{ trans('courses.finder.filter.empty') }}"
                     data='{{ json_encode(['record' => 'editor', 'options' => $this->editors]) }}'
                     placeholder='{{ trans("courses.finder.filter.editors") }}'
                 ></div>
@@ -55,6 +57,7 @@
                 <div
                     wire:ignore
                     class="rct-multi-filter-select"
+                    noOptionsMessage="{{ trans('courses.finder.filter.empty') }}"
                     data='{{ json_encode(['record' => 'state', 'options' => $course->states]) }}'
                     placeholder='{{ trans("courses.finder.filter.states") }}'
                 ></div>

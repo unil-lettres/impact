@@ -209,10 +209,12 @@ window.MultiFilterSelect = {
 
             const data = element.getAttribute('data');
             const placeholder = element.getAttribute('placeholder');
+            const noOptionsMessage = element.getAttribute('noOptionsMessage');
             root.render(
                 <MultiFilterSelect
                     data={data}
                     placeholder={placeholder}
+                    noOptionsMessage={noOptionsMessage}
                     refEl={element}
                     reactAttributes={{
                         // Enable toggle state in the menu list (default

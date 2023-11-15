@@ -7,10 +7,8 @@
     'depth' => 0,
 ])
 
-@php($canAccess = auth()->user()->can('view', $card))
-
 <li
-    class="{{$canAccess ? '' : 'disabled'}} finder-card d-flex border-top border-secondary-subtle background-hover cursor-default row-height"
+    class="@cannot('view', $card) disabled @endcan finder-card d-flex border-top border-secondary-subtle background-hover cursor-default row-height"
     data-id="{{ $card->id }}"
     data-type="{{ $card->getFinderItemType() }}"
     dusk="finder-card-{{ $card->id }}"
@@ -37,7 +35,7 @@
             <i class="d-inline-block width-small">&nbsp;</i>
         @endfor
         <i class="d-inline-block text-center width-small">&nbsp;</i>
-        @if ($canAccess)
+        @can('view', $card)
             <a
                 href="{{ route('cards.show', $card->id) }}"
                 class="text-decoration-none @can('update', $card) blue-500 @else text-black @endcan"
@@ -55,7 +53,7 @@
         @else
             <i class="d-inline-block fa-solid fa-file-lines text-center width-large"></i>
             <span class="text-secondary">{{ $card->title }}</span>
-        @endif
+        @endcan
     </div>
     <div
         class='column-small text-truncate px-1 d-none d-sm-block fw-light'
@@ -82,7 +80,7 @@
         {{ $card->tags_list }}
     </div>
     <div class='column-options'>
-        @if (auth()->user()->can('manage', $card) || $canAccess)
+        @canany(['view', 'manage'], $card)
             <div class="dropdown" @click.stop>
                 <button
                     class="btn border-0 text-black"
@@ -96,7 +94,7 @@
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-with-icon">
-                    @if ($canAccess)
+                    @can('view', $card)
                         <li class="dropdown-item d-flex cursor-pointer align-items-center"
                             @click="window.location = '{{ route('cards.show', $card->id) }}'"
                         >
@@ -106,7 +104,7 @@
                             </span>
                         </li>
                         <li><hr class="dropdown-divider"></li>
-                    @endif
+                    @endcan
                     @can('manage', $card)
                         <li
                             class="dropdown-item d-flex cursor-pointer align-items-center"
@@ -149,17 +147,17 @@
                                 {{ trans('courses.finder.menu.delete')}}
                             </span>
                         </li>
-                        @if ($canAccess) <li><hr class="dropdown-divider"></li> @endif
+                        @can('view', $card)<li><hr class="dropdown-divider"></li> @endcan
                     @endcan
-                    @if ($canAccess)
+                    @can('view', $card)
                         <li class="dropdown-item d-flex cursor-pointer align-items-center">
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.menu.print')}}
                             </span>
                         </li>
-                    @endif
+                    @endcan
                 </ul>
             </div>
-        @endif
+        @endcanany
     </div>
 </li>

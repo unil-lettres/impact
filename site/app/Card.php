@@ -155,6 +155,7 @@ class Card extends Model
 
     /**
      * Get a string of all editors joined by a comma (',').
+     * This attribute allow to sort by editors within a Collection.
      */
     protected function editorsList(): Attribute
     {
@@ -165,6 +166,7 @@ class Card extends Model
 
     /**
      * Get the name of the state.
+     * This attribute allow to sort by state name within a Collection.
      */
     protected function stateName(): Attribute
     {
@@ -173,6 +175,7 @@ class Card extends Model
 
     /**
      * Get a string of all tags joined by a comma (',').
+     * This attribute allow to sort by tags within a Collection.
      */
     protected function tagsList(): Attribute
     {

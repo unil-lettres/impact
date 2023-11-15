@@ -6,10 +6,12 @@ use App\Card;
 use App\Course;
 use App\Enums\FinderItemType;
 use App\Folder;
+use App\Helpers\Helpers;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
+use Livewire\Attributes\On;
 
 class ModalCreate extends Component
 {
@@ -93,21 +95,32 @@ class ModalCreate extends Component
     }
 
     #[Computed]
-    public function children()
-    {
-        return
-            $this->folder
-            ? $this->folder->getChildrenRecursive()
-            : $this->course->folders;
-    }
-
-    #[Computed]
     public function title()
     {
         return match ($this->type) {
             FinderItemType::Folder => trans('folders.create'),
             FinderItemType::Card => trans('cards.create'),
         };
+    }
+
+    #[Computed]
+    public function foldersDestination()
+    {
+        $children =
+            $this->folder
+            ? $this->folder->getChildrenRecursive()
+            : $this->course->folders;
+
+        return Helpers::getFolderListAbsolutePath(
+            $children,
+            $this->folder,
+        )->sortBy('titleFullPath');
+    }
+
+    #[On('item-created')]
+    public function handleItemCreated(): void
+    {
+        unset($this->foldersDestination);
     }
 
     public function resetValues()
@@ -141,6 +154,12 @@ class ModalCreate extends Component
         }
 
         $this->resetValues();
-        $this->dispatch('item-created')->to(Finder::class);
+
+        // We need to dispatch this event to all other ModalCreate components to
+        // update their list of destinations folders.
+        $this
+            ->dispatch('item-created')
+            ->to(Finder::class)
+            ->to(ModalCreate::class);
     }
 }

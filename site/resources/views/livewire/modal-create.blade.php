@@ -45,7 +45,7 @@
                                     {{ trans('courses.finder.dialog.rootFolder') }}
                                 @endif
                             </option>
-                            @foreach(Helpers::getFolderListAbsolutePath($this->children, $folder)->sortBy('titleFullPath') as $_folder)
+                            @foreach($this->foldersDestination as $_folder)
                                 <option value="{{$_folder->id}}">
                                     {{ $_folder->titleFullPath }}
                                 </option>

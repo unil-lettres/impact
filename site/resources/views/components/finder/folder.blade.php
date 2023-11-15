@@ -1,39 +1,3 @@
-@props([
-    'folder',
-    'filters',
-    'filterSearchBoxes',
-    'modalCloneId',
-    'modalMoveId',
-    'sortColumn' => 'position',
-    'sortDirection' => 'asc',
-    'depth' => 0,
-    'lockedMove' => false,
-])
-@php
-    $items = Helpers::getFolderItems(
-        $folder->course,
-        $filters,
-        $filterSearchBoxes,
-        $folder,
-        $sortColumn,
-        $sortDirection,
-    );
-
-    $countCards = Helpers::numberOfItemsInFolder(
-        $folder,
-        $filters,
-        $filterSearchBoxes,
-        $sortColumn,
-        $sortDirection,
-    );
-
-    $hasFilters = $filters->some(fn ($filter) => $filter->isNotEmpty());
-
-    $hasFolderUpdateRights = auth()->user()->can('update', $folder);
-
-    $shouldSeeFolder = $countCards > 0 || !$hasFilters && $hasFolderUpdateRights;
-@endphp
-
 <li
     class="finder-folder border-top border-secondary-subtle row-height cursor-default"
     :class="!selectedItems.includes(key) || 'folder-selected'"
@@ -47,9 +11,6 @@
     @click.stop="toggleSelect($event, $el)"
     wire:key='{{ $folder->getFinderItemType() }}-{{ $folder->id }}'
     {{ $lockedMove ? 'locked-move' : '' }}
-    @if (!$shouldSeeFolder)
-        x-show.important="false"
-    @endif
 >
     <div
         class="d-flex background-hover"

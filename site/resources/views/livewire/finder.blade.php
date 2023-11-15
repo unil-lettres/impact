@@ -242,20 +242,20 @@
             @if ($item->getFinderItemType() === ('App\\Enums\\FinderItemType')::Folder)
                 <x-finder.folder
                     :folder="$item"
-                    :sortColumn="$this->sortColumn"
-                    :sortDirection="$this->sortDirection"
-                    :lockedMove="$this->lockedMove"
-                    :filters="$this->filters"
-                    :filterSearchBoxes="$this->filterSearchBoxes"
-                    :modalCloneId="$modalCloneId"
-                    :modalMoveId="$modalMoveId"
+                    :locked-move="$this->lockedMove"
+                    :$sortColumn
+                    :$sortDirection
+                    :$filters
+                    :$filterSearchBoxes
+                    :$modalCloneId
+                    :$modalMoveId
                 />
             @else
                 <x-finder.card
                     :card="$item"
-                    :lockedMove="$this->lockedMove"
-                    :modalCloneId="$modalCloneId"
-                    :modalMoveId="$modalMoveId"
+                    :locked-move="$this->lockedMove"
+                    :$modalCloneId
+                    :$modalMoveId
                 />
             @endif
         @empty

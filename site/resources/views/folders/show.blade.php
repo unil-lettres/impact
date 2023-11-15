@@ -1,6 +1,7 @@
 @extends('layouts.app-base')
 
 @section('title')
+    <i class="fa-solid fa-folder"></i>
     {{ $folder->title }}
 @endsection
 @can('view', $folder)

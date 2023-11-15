@@ -81,6 +81,22 @@ class CardObserver
     }
 
     /**
+     * Handle the "forceDeleting" event.
+     */
+    public function forceDeleting(Card $card): void
+    {
+        // Delete attachments (only attachments and not regular file).
+        $card->attachments()->each(
+            fn ($attachment) => $attachment->forceDelete(),
+        );
+
+        // Remove this card from all enrollments as editors.
+        $card->enrollments()->each(
+            fn ($enrollment) => $enrollment->removeCard($card),
+        );
+    }
+
+    /**
      * Send an email to the teachers of the course
      */
     private function sendEmailAction(Card $card, array $action): void

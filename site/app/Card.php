@@ -19,9 +19,7 @@ use Illuminate\Support\Facades\Auth;
 class Card extends Model
 {
     use HasFactory;
-    use SoftDeletes {
-        forceDelete as traitForceDelete;
-    }
+    use SoftDeletes;
 
     const TRANSCRIPTION = '{
             "version": 1,
@@ -274,25 +272,6 @@ class Card extends Model
             StatePermission::AllCanShowTeachersCanEdit, StatePermission::TeachersCanShowAndEdit => Auth::user()->isTeacher($this->course),
             default => Auth::user()->admin,
         };
-    }
-
-    /**
-     * Delete the card, editors (via enrollments) and attachments.
-     */
-    public function forceDelete(): void
-    {
-        // Delete attachments (only attachments and not regular file).
-        $this->attachments()->each(
-            fn ($attachment) => $attachment->forceDelete(),
-        );
-
-        // Remove this card from all enrollments as editors.
-        $this->enrollments()->each(function ($enrollment) {
-            $enrollment->removeCard($this);
-        });
-
-        // Delete the card.
-        $this->traitForceDelete();
     }
 
     /**

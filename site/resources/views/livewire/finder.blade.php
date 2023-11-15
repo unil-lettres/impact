@@ -58,7 +58,7 @@
                     wire:ignore
                     class="rct-multi-filter-select"
                     noOptionsMessage="{{ trans('courses.finder.filter.empty') }}"
-                    data='{{ json_encode(['record' => 'state', 'options' => $course->states]) }}'
+                    data='{{ json_encode(['record' => 'state', 'options' => $course->states->sortBy('position')->values()]) }}'
                     placeholder='{{ trans("courses.finder.filter.states") }}'
                 ></div>
             </div>

@@ -80,6 +80,7 @@ return [
     'finder.menu.delete' => 'Supprimer',
     'finder.menu.delete.folder.confirm' => 'Cela va supprimer le dossier et tout ce qu\'il contient. Êtes-vous sûr ?',
     'finder.menu.delete.card.confirm' => 'Cela va supprimer la fiche. Êtes-vous sûr ?',
+    'finder.menu.delete.all.confirm' => 'Cela va supprimer tous les éléments sélectionnés (fiches, dossiers et leur contenu). Êtes-vous sûr ?',
     'finder.move_in' => 'Déplacer dans un dossier...',
     'finder.move_in.success' => 'Elément(s) déplacé(s) avec succès.',
     'finder.dialog.move_in.title' => 'Déplacer dans...',

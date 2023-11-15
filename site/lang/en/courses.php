@@ -80,6 +80,7 @@ return [
     'finder.menu.delete' => 'Delete',
     'finder.menu.delete.folder.confirm' => 'This action will delete the folder and all its content. Are you sure you want to continue?',
     'finder.menu.delete.card.confirm' => 'This action will delete the card. Are you sure you want to continue?',
+    'finder.menu.delete.all.confirm' => 'This will delete all selected items (cards, folders and their content). Are you sure you want to continue?',
     'finder.move_in' => 'Move in folder...',
     'finder.move_in.success' => 'Item(s) successfully moved.',
     'finder.dialog.rootFolder' => 'None (root)',

@@ -150,7 +150,7 @@
                         </span>
                     </li>
                     <li
-                        wire:confirm="{{ trans('courses.finder.menu.delete.card.confirm') }}"
+                        wire:confirm="{{ trans('courses.finder.menu.delete.all.confirm') }}"
                         wire:click="destroyMultiple(selectedItems)"
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         dusk="multi-delete-option"

@@ -38,6 +38,8 @@ class CardObserver
             $cardUpdate['state_id'] = $state->id;
         }
 
+        // We update quietly since we don't want to trigger the updated event
+        // to avoid recalculation of the position.
         $card->updateQuietly($cardUpdate);
     }
 
@@ -51,6 +53,7 @@ class CardObserver
         $card->refresh();
 
         if ($card->wasChanged('folder_id')) {
+            // We update quietly to avoid recursion.
             $card->updateQuietly([
                 'position' => $this->findLastPositionInParent($card),
             ]);

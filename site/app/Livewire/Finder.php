@@ -317,7 +317,7 @@ class Finder extends Component
     }
 
     /**
-     * Rename a foder. Reload the page if $reloadAfterSave is true (useful for
+     * Rename a folder. Reload the page if $reloadAfterSave is true (useful for
      * update the folder's name if not reactive).
      */
     public function renameFolder(

@@ -35,4 +35,16 @@ class FolderObserver
             ]);
         }
     }
+
+    /**
+     * Handle the Folder "forceDeleting" event.
+     */
+    public function forceDeleting(Folder $folder): void
+    {
+        // Delete cards "manually" because they have custom forceDelete.
+        $folder->cards()->each(fn ($card) => $card->forceDelete());
+
+        // Delete children folder "manually" because they have custom forceDelete.
+        $folder->children()->each(fn ($child) => $child->forceDelete());
+    }
 }

@@ -9,9 +9,7 @@ use Illuminate\Support\Collection;
 
 class Folder extends Model
 {
-    use SoftDeletes {
-        forceDelete as traitForceDelete;
-    }
+    use SoftDeletes;
 
     protected $fillable = [
         'title', 'position', 'course_id', 'parent_id',
@@ -98,21 +96,6 @@ class Folder extends Model
     public function getFinderItemType(): string
     {
         return FinderItemType::Folder;
-    }
-
-    /**
-     * Delete the folder, all cards contained in and all fodlers recursively.
-     */
-    public function forceDelete(): void
-    {
-        // Delete cards "manually" because they have custom forceDelete.
-        $this->cards()->each(fn ($card) => $card->forceDelete());
-
-        // Delete children folder "manually" because they have custom forceDelete.
-        $this->children()->each(fn ($child) => $child->forceDelete());
-
-        // Delete the folder.
-        $this->traitForceDelete();
     }
 
     /**

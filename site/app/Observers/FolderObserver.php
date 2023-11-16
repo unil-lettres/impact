@@ -51,4 +51,3 @@ class FolderObserver
         $folder->children()->each(fn ($child) => $child->forceDelete());
     }
 }
-

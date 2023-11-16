@@ -2,12 +2,12 @@
 
 namespace App\View\Components\Finder;
 
+use App\Folder as AppFolder;
 use App\Helpers\Helpers;
 use Closure;
 use Illuminate\Contracts\View\View;
-use Illuminate\View\Component;
 use Illuminate\Support\Collection;
-use App\Folder as AppFolder;
+use Illuminate\View\Component;
 
 class Folder extends Component
 {
@@ -34,8 +34,7 @@ class Folder extends Component
         public string $sortDirection = 'asc',
         public int $depth = 0,
         public bool $lockedMove = false,
-    )
-    {
+    ) {
         $this->items = Helpers::getFolderItems(
             $folder->course,
             $filters,
@@ -73,6 +72,6 @@ class Folder extends Component
 
         $hasFolderUpdateRights = auth()->user()->can('update', $this->folder);
 
-        return $this->countCards > 0 || !$hasFilters && $hasFolderUpdateRights;
+        return $this->countCards > 0 || ! $hasFilters && $hasFolderUpdateRights;
     }
 }

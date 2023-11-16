@@ -10,8 +10,8 @@ use App\Helpers\Helpers;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Validation\Rule;
 use Livewire\Attributes\Computed;
-use Livewire\Component;
 use Livewire\Attributes\On;
+use Livewire\Component;
 
 class ModalCreate extends Component
 {

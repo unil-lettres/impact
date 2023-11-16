@@ -8,6 +8,7 @@ use App\Enums\FileStatus;
 use App\Enums\StateType;
 use App\Exceptions\CloneException;
 use App\Folder;
+use App\Services\FileStorageService;
 use Illuminate\Support\Facades\DB;
 use InvalidArgumentException;
 
@@ -64,6 +65,8 @@ class CloneCardService
         Folder $destFolder = null,
         Course $destCourse = null,
     ): ?Card {
+        $fileStorageService = new FileStorageService();
+
         $this->checkClone($destFolder, $destCourse);
 
         // Can specify only one of these attribute (course will be deduced from
@@ -156,9 +159,10 @@ class CloneCardService
                     $copiedCard->file_id = $alreadyCopiedFiles[$this->card->file->id];
                     $copiedCard->save();
                 } else {
-                    $copiedSourceFile = (new CloneFileService(
+                    $copiedSourceFile = $fileStorageService->clone(
                         $this->card->file,
-                    ))->clone($copiedCard->id);
+                        $copiedCard->id,
+                    );
 
                     if ($copiedSourceFile) {
                         $files->push($copiedSourceFile);
@@ -185,14 +189,15 @@ class CloneCardService
 
         // Clone attachments.
         $this->card->attachments()->each(
-            function ($attachment) use ($copiedCard, $files, $failed) {
+            function ($attachment) use ($fileStorageService, $copiedCard, $files, $failed) {
                 if ($failed) {
                     return;
                 }
 
-                $copiedFile = (new CloneFileService(
+                $copiedFile = $fileStorageService->clone(
                     $attachment,
-                ))->clone($copiedCard->id);
+                    $copiedCard->id,
+                );
 
                 if ($copiedFile) {
                     $files->push($copiedFile);

@@ -4,11 +4,12 @@ namespace App\Services;
 
 use App\Enums\FileType;
 use App\Enums\StoragePath;
+use App\File;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
-class FileUploadService
+class FileStorageService
 {
     public function __construct()
     {
@@ -132,5 +133,29 @@ class FileUploadService
             ->delete(
                 StoragePath::UploadStandard.'/'.$cleanedFilename
             );
+    }
+
+    /**
+     * Clone a file and return it.
+     */
+    public function clone(File $file, string $prefix = ''): ?File
+    {
+        // Clean filename to keep only the name of the file
+        $cleanedFilename = $this->getBaseName($file->filename);
+        $copiedFilename = substr($prefix.$cleanedFilename, 0, 99);
+
+        $success = Storage::disk('public')->copy(
+            StoragePath::UploadStandard.'/'.$cleanedFilename,
+            StoragePath::UploadStandard.'/'.$copiedFilename,
+        );
+
+        if (! $success) {
+            return null;
+        }
+
+        $file = $file->replicate()->fill(['filename' => $copiedFilename]);
+        $file->save();
+
+        return $file;
     }
 }

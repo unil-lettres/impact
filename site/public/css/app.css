@@ -23874,6 +23874,10 @@ readers do not read off random characters that represent icons */
   color: #0d6efd;
 }
 
+.z-index-backdrop {
+  z-index: 1050;
+}
+
 a.legacy {
   text-decoration: none;
 }

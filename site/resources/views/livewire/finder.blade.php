@@ -1,5 +1,5 @@
 <div
-    class='finder'
+    class='finder position-relative'
     x-cloak x-data="finderData"
     wire:toggle-filter-search-box.window="toggleFilterSearchBox(...Object.values($event.detail))"
     wire:finder-destroy-folder.window="destroyFolder($event.detail.folderId, true)"
@@ -265,5 +265,16 @@
         @endforelse
     </ul>
     <div class="border-top border-secondary-subtle"></div>
+    <div
+        class="bg-secondary-subtle opacity-50 z-index-backdrop position-absolute top-0 start-0 bottom-0 end-0"
+        wire:loading.delay.longer
+    >
+        <div
+            class="spinner-grow text-niagara position-absolute top-50 start-50 translate-middle"
+            role="status"
+        >
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
     @include('livewire.finder-js')
 </div>

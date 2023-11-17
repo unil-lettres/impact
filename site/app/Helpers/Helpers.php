@@ -429,7 +429,7 @@ class Helpers
     public static function getFolderItems(
         Course $course,
         Collection $filters,
-        Collection $filterSearchBoxes,
+        array $filterSearchBoxes,
         Folder $folder = null,
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
@@ -450,7 +450,7 @@ class Helpers
     public static function numberOfItemsInFolder(
         Folder $folder,
         Collection $filters,
-        Collection $filterSearchBoxes,
+        array $filterSearchBoxes,
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
     ): int {

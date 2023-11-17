@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 
 class Finder extends Component
@@ -25,6 +26,14 @@ class Finder extends Component
     const DEFAULT_SORT_COLUMN = 'position';
 
     const DEFAULT_SORT_DIRECTION = 'asc';
+
+    const DEFAULT_SEARCH_BOX_NAME = true;
+
+    const DEFAULT_SEARCH_BOX_2 = false;
+
+    const DEFAULT_SEARCH_BOX_3 = false;
+
+    const DEFAULT_SEARCH_BOX_4 = false;
 
     /**
      * The course to display the content.
@@ -51,26 +60,52 @@ class Finder extends Component
     /**
      * The sort column name used to sort the content.
      */
+    #[Url(as: 'sc')]
     public string $sortColumn = self::DEFAULT_SORT_COLUMN;
 
     /**
      * The sort direction used to sort the content.
      */
+    #[Url(as: 'sd')]
     public string $sortDirection = self::DEFAULT_SORT_DIRECTION;
 
     /**
      * The filters for filtering the content.
      */
-    public Collection $filters;
+    #[Url(as: 'q')]
+    public array $arrayFilters;
 
     /**
      * The boxes checked for the "search" filter.
      */
-    public Collection $filterSearchBoxes;
+    #[Url(as: 'b')]
+    public array $filterSearchBoxes = [
+        'name' => self::DEFAULT_SEARCH_BOX_NAME,
+        CardBox::Box2 => self::DEFAULT_SEARCH_BOX_2,
+        CardBox::Box3 => self::DEFAULT_SEARCH_BOX_3,
+        CardBox::Box4 => self::DEFAULT_SEARCH_BOX_4,
+    ];
 
     public function mount()
     {
-        $this->initFilters();
+        // Query string return "true" or "false" as string, we need to convert it.
+        $this->filterSearchBoxes = collect($this->filterSearchBoxes)->map(
+            fn ($checked) => $checked === 'true' || $checked === true
+        )->toArray();
+
+        // Initialize keys that are not presents in query string.
+        // Need to map the values of query string to int for ids.
+        $mapToInt = fn ($key) => array_map(
+            fn ($id) => (int) $id, $this->arrayFilters[$key] ?? []
+        );
+        $this->arrayFilters = [
+            'tag' => $mapToInt('tag'),
+            'editor' => $mapToInt('editor'),
+            'state' => $mapToInt('state'),
+            'search' => $this->arrayFilters['search'] ?? [],
+        ];
+
+        $this->addJsForFilters();
     }
 
     public function render()
@@ -82,6 +117,13 @@ class Finder extends Component
     public function refreshItems(): void
     {
         unset($this->items);
+    }
+
+    #[Computed]
+    public function filters(): Collection
+    {
+        return collect($this->arrayFilters)
+            ->map(fn ($value) => collect($value));
     }
 
     #[Computed]
@@ -177,12 +219,14 @@ class Finder extends Component
             return;
         }
 
-        $this->filters->put(
-            $type,
-            $this->filters->get($type)->push(
-                $filter,
-            )->uniqueStrict()->values(),
-        );
+        $this->arrayFilters[$type] = $this->filters
+            ->get($type)
+            ->push($filter)
+            ->uniqueStrict()
+            ->values()
+            ->toArray();
+
+        unset($this->filters);
     }
 
     #[On('remove-element-to-filter')]
@@ -201,12 +245,13 @@ class Finder extends Component
             return;
         }
 
-        $this->filters->put(
-            $type,
-            $this->filters->get($type)->filter(
-                fn (mixed $_filter) => $_filter !== $filter,
-            )->values(),
-        );
+        $this->arrayFilters[$type] = $this->filters
+            ->get($type)
+            ->filter(fn (mixed $_filter) => $_filter !== $filter)
+            ->values()
+            ->toArray();
+
+        unset($this->filters);
     }
 
     #[On('flash-message')]
@@ -216,6 +261,17 @@ class Finder extends Component
     ): void {
         $message = collect($lines)->values()->flatten()->join('<br />');
         $this->flashMessage($message, $bsClass);
+    }
+
+    /**
+     * Return an array of items to be given to react multi select to
+     * initialize options and defaults values.
+     */
+    public function filterSearchOptions(): array
+    {
+        return $this->filters->get('search')->map(
+            fn ($search) => ['id' => $search, 'name' => $search],
+        )->toArray();
     }
 
     public function openFolder(Folder $folder): void
@@ -248,7 +304,7 @@ class Finder extends Component
      */
     public function clearFiltersAndSort(): void
     {
-        $this->initFilters();
+        $this->reinitFilters();
 
         $this->sortColumn = static::DEFAULT_SORT_COLUMN;
         $this->sortDirection = static::DEFAULT_SORT_DIRECTION;
@@ -466,23 +522,28 @@ class Finder extends Component
     /**
      * Initialize the filters and the search boxes to their default values.
      */
-    private function initFilters(): void
+    private function reinitFilters(): void
     {
-        $this->filterSearchBoxes = collect([
-            'name' => true,
-            CardBox::Box2 => false,
-            CardBox::Box3 => false,
-            CardBox::Box4 => false,
-        ]);
+        $this->filterSearchBoxes = [
+            'name' => self::DEFAULT_SEARCH_BOX_NAME,
+            CardBox::Box2 => self::DEFAULT_SEARCH_BOX_2,
+            CardBox::Box3 => self::DEFAULT_SEARCH_BOX_3,
+            CardBox::Box4 => self::DEFAULT_SEARCH_BOX_4,
+        ];
 
-        $this->filters = collect([
-            'tag' => collect([]),
-            'editor' => collect([]),
-            'state' => collect([]),
-            'search' => collect([]),
-        ]);
+        $this->arrayFilters = [
+            'tag' => [],
+            'editor' => [],
+            'state' => [],
+            'search' => [],
+        ];
 
-        $jsonFilters = $this->filterSearchBoxes->toJson();
+        $this->addJsForFilters();
+    }
+
+    private function addJsForFilters()
+    {
+        $jsonFilters = collect($this->filterSearchBoxes)->toJson();
         $this->js("window.MultiFilterSelect.checkedFilter = $jsonFilters");
     }
 

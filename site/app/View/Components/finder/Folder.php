@@ -27,7 +27,7 @@ class Folder extends Component
     public function __construct(
         public AppFolder $folder,
         public Collection $filters,
-        public Collection $filterSearchBoxes,
+        public array $filterSearchBoxes,
         public string $modalCloneId,
         public string $modalMoveId,
         public string $sortColumn = 'position',

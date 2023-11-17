@@ -95,8 +95,6 @@ const ValueContainer = ({ children, getValue, ...props }) => {
  * make the filter search in.
  */
 const MenuList = props => {
-    const checkedFilters = window.MultiFilterSelect.checkedFilter;
-
     /**
      * React handler for input changes.
      */

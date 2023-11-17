@@ -47,7 +47,7 @@ class FinderItemsService
     public static function getItems(
         Course $course,
         Collection $filters,
-        Collection $filterSearchBoxes,
+        array $filterSearchBoxes,
         Folder $folder = null,
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
@@ -92,7 +92,7 @@ class FinderItemsService
         }
 
         // Filter specified search terms.
-        $checkedBoxes = $filterSearchBoxes->filter(fn ($box) => $box)->keys();
+        $checkedBoxes = collect($filterSearchBoxes)->filter(fn ($box) => $box)->keys();
 
         if ($checkedBoxes->isNotEmpty() && $filters->get('search')->isNotEmpty()) {
             $cards = $cards->filter(
@@ -121,7 +121,9 @@ class FinderItemsService
                     // Search for the search term in each contents.
                     $found = $filters
                         ->get('search')
-                        ->some(fn ($searchTerm) => $contents->some(fn ($content) => static::searchTerm($content, $searchTerm)));
+                        ->some(fn ($searchTerm) => $contents->some(
+                            fn ($content) => static::searchTerm($content, $searchTerm)
+                        ));
 
                     return $found;
                 }
@@ -155,7 +157,7 @@ class FinderItemsService
     public static function countCardsRecursive(
         Folder $folder,
         Collection $filters,
-        Collection $filterSearchBoxes,
+        array $filterSearchBoxes,
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
     ): int {

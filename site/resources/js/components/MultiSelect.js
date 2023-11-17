@@ -11,7 +11,12 @@ export default class MultiSelect extends Component {
     constructor(props) {
         super(props);
 
-        let data = JSON.parse(this.props.data);
+        const data = JSON.parse(this.props.data);
+
+        // Don't use defaults values if noDefaults is set to true.
+        if (this.props?.noDefaults) {
+            data.defaults = [];
+        }
 
         this.state = {
             record: data.record,

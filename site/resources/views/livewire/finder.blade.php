@@ -78,7 +78,6 @@
                 <button
                     class="btn"
                     wire:click="clearFiltersAndSort"
-                    @click="window.MultiFilterSelect.create()"
                 >
                     {{ trans('courses.finder.filter.clear') }}
                 </button>

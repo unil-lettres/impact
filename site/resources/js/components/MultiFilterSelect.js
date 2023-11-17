@@ -194,7 +194,7 @@ window.MultiFilterSelect = {
 
     dataNameLabel: '',
     dataBoxLabel: '',
-    create() {
+    create(noDefaults = false) {
 
         // Unmount and reinit mounted react components.
         _.each(this.roots, root => root.unmount());
@@ -212,6 +212,7 @@ window.MultiFilterSelect = {
                 <MultiFilterSelect
                     data={data}
                     placeholder={placeholder}
+                    noDefaults={noDefaults}
                     noOptionsMessage={noOptionsMessage}
                     refEl={element}
                     reactAttributes={{
@@ -250,6 +251,7 @@ window.MultiFilterSelect = {
                     createLabel={createLabel}
                     noOptionsMessage={noOptionsMessage}
                     placeholder={placeholder}
+                    noDefaults={noDefaults}
                     refEl={element}
                     reactAttributes={{
                         // Enable toggle state in the menu list (default

@@ -537,8 +537,15 @@ class Finder extends Component
             'state' => [],
             'search' => [],
         ];
+        unset($this->filters);
 
         $this->addJsForFilters();
+
+        // We set "noDefaults" to true because react components have "wire:ignore"
+        // attribute that lead to defaults values not being updated when
+        // filters are cleared. So we indicate to react select that it should
+        // not use the defaults values.
+        $this->js('window.MultiFilterSelect.create(true)');
     }
 
     private function addJsForFilters()

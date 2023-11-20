@@ -1,0 +1,156 @@
+
+.finder {
+
+    &:not(.hide-select) {
+        .selected {
+            background-color: $gray-200!important;
+        }
+
+        .selected .background-hover:hover,
+        .selected.background-hover:hover {
+            background-color: $gray-400!important;
+        }
+    }
+
+    [x-cloak] { display: none !important; }
+
+    ul:not(.dropdown-menu) {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .disabled {
+        color: $gray-500;
+    }
+
+    .dropdown-menu {
+        line-height: var(--bs-body-line-height);
+    }
+
+    .row-height {
+        line-height: 40px;
+    }
+
+    .sort-direction {
+
+        &-asc {
+            i.fa-arrow-down {
+                transition: all 0.3s ease;
+                color: $gray-500;
+            }
+            &:hover {
+                i.fa-arrow-down {
+                    color: $primary;
+                    transform: translateY(2px);
+                }
+            }
+        }
+
+        &-desc {
+            i.fa-arrow-down {
+                transition: all 0.3s ease;
+                color: $primary;
+            }
+            &:hover {
+                i.fa-arrow-down {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+
+        &-remove {
+            i.fa-arrow-down {
+                transition: all 0.3s ease;
+                color: $primary;
+                transform: rotate(180deg);
+            }
+            &:hover {
+                i.fa-arrow-down {
+                    display: none;
+                }
+
+                i.fa-xmark {
+                    color: $primary;
+                    display: inline-block!important;
+                }
+            }
+        }
+    }
+
+    position: relative;
+
+    .width-small {
+        width: 10px;
+    }
+
+    .width-large {
+        width: 20px;
+    }
+
+    .column-medium {
+        flex: 0 0 290px;
+    }
+
+    .column-small {
+        flex: 0 0 100px;
+    }
+
+    .column-options {
+        flex: 0 0 40px;
+    }
+
+    .icons {
+        width: 40px;
+    }
+
+    .background-hover:hover {
+        background-color: var(--bs-gray-200);
+    }
+
+    .modal-backdrop {
+        --bs-backdrop-zindex: 1050;
+        --bs-backdrop-bg: #fff;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: var(--bs-backdrop-zindex);
+        width: 100%;
+        height: 100%;
+        background-color: var(--bs-backdrop-bg);
+      }
+
+    .transition-transform {
+        transition: transform 0.3s ease;
+    }
+
+    .rotate {
+        transform: rotate(-90deg);
+    }
+
+    .filter-select {
+        flex: 1 1 200px;
+        min-width: 0;
+    }
+
+    .react-select-badge {
+        background: rgb(2,0,36);
+        background: linear-gradient(90deg, rgba(2,0,36,0) 0%, rgba(255,255,255,1) 16%);
+        position: absolute;
+        right: 0;
+        padding: 2px 13px 2px 27px;
+        white-space: nowrap;
+    }
+}
+
+@include media-breakpoint-down(xxl) {
+    .finder .column-medium {
+        flex: 0 0 220px;
+    }
+ }
+
+ @include media-breakpoint-down(xl) {
+    .finder .column-medium {
+        flex: 0 0 190px;
+    }
+}

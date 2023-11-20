@@ -43,3 +43,29 @@
 .selected-bg {
     background-color: #80808014;
 }
+
+.text-niagara {
+    @extend .text-primary;
+    color: $niagara!important;
+}
+
+.dropdown-with-icon .dropdown-item > i {
+    width: 25px;
+    text-align: center;
+}
+
+.cursor-default {
+    cursor: default;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.blue-500 {
+    color: $blue-500;
+}
+
+.z-index-backdrop {
+    z-index: $zindex-modal-backdrop;
+}

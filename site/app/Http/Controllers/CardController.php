@@ -3,13 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Card;
-use App\Course;
 use App\Enums\FileStatus;
-use App\Folder;
-use App\Http\Requests\CreateCard;
 use App\Http\Requests\CreateCardExport;
 use App\Http\Requests\DestroyCard;
-use App\Http\Requests\StoreCard;
 use App\Http\Requests\UpdateCard;
 use App\Services\ExportBoxService;
 use App\State;
@@ -32,67 +28,6 @@ class CardController extends Controller
     public function index()
     {
         $this->authorize('viewAny', Card::class);
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return RedirectResponse|Renderable
-     *
-     * @throws AuthorizationException
-     */
-    public function create(CreateCard $request)
-    {
-        // Retrieve the course of the card
-        $course = Course::findOrFail($request->input('course'));
-
-        $this->authorize('create', [
-            Card::class,
-            $course,
-        ]);
-
-        return view('cards.create', [
-            'course' => $course,
-            'breadcrumbs' => $course
-                ->breadcrumbs(true),
-            'folders' => $course
-                ->folders()
-                ->get(),
-        ]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @return RedirectResponse
-     *
-     * @throws AuthorizationException
-     */
-    public function store(StoreCard $request)
-    {
-        $course = Course::findOrFail($request->input('course_id'));
-
-        $this->authorize('create', [
-            Card::class,
-            $course,
-        ]);
-
-        // Check also folder select policy if a folder is selected
-        if ($request->input('folder_id')) {
-            $this->authorize('select', [
-                Folder::class,
-                $course,
-                Folder::findOrFail($request->input('folder_id')),
-            ]);
-        }
-
-        // Create new card
-        $card = new Card($request->all());
-        $card->save();
-
-        return redirect()
-            ->route('courses.show', $request->input('course_id'))
-            ->with('success', trans('messages.card.created', ['title' => $card->title]));
     }
 
     /**

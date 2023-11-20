@@ -30,7 +30,7 @@ class TagJsonController extends Controller
         ]);
         $card->tags()->attach($tag);
 
-        return response()->json(['tag_id' => $tag->id], 200);
+        return response()->json(['entity_id' => $tag->id], 200);
     }
 
     /**

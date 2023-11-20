@@ -18,7 +18,7 @@
             @can('hide', $card)
                 <button type="submit"
                         id="btn-hide-boxes"
-                        class="btn btn-danger me-1"
+                        class="btn btn-danger"
                         data-bs-toggle="tooltip"
                         data-placement="top"
                         title="{{ trans('cards.hide_boxes') }}">
@@ -65,5 +65,18 @@
             $(this).find('i').toggleClass(['fa-eye-slash', 'fa-eye']);
             $('.hidden').toggle();
         });
+    </script>
+    <script data-navigate-once>
+        document.addEventListener('livewire:init', () => {
+            // Customizing Livewire page expiration behavior (avoid confirm() dialog on logout)
+            // https://livewire.laravel.com/docs/javascript#customizing-page-expiration-behavior
+            Livewire.hook('request', ({ fail }) => {
+                fail(({ status, preventDefault }) => {
+                    if (status === 419) {
+                        preventDefault()
+                    }
+                })
+            })
+        })
     </script>
 @endsection

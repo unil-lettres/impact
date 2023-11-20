@@ -5,6 +5,9 @@ namespace Tests\Browser;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
+use Tests\Browser\Pages\Card;
+use Tests\Browser\Pages\Course;
+use Tests\Browser\Pages\Folder;
 use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
 use Throwable;
@@ -109,14 +112,13 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('teacher-user@example.com', 'password');
 
-            $browser->clickLink('First space');
-
-            $browser->clickLink('Créer une fiche');
-
-            $browser->type('title', 'My new card')
+            $browser
+                ->visit(new Course('First space'))
                 ->press('Créer une fiche')
-                ->waitForText('Fiche créée: My new card')
-                ->assertSee('Fiche créée: My new card')
+                ->waitForText('Créer une fiche')
+                ->type('#modalCreateCard-name', 'My new card')
+                ->click('#modalCreateCard [type="submit"]')
+                ->waitForText('My new card')
                 ->assertSee('My new card');
         });
     }
@@ -134,17 +136,25 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->clickLink('Second space');
+            $browser
+                ->visit(new Course('Second space'))
+                ->press('Créer une fiche')
+                ->waitForText('Créer une fiche');
 
-            $browser->clickLink('Créer une fiche');
+            $folderPage = new Folder('Test folder');
 
-            $browser->type('title', 'My new card in folder');
-            $browser->click('#rct-single-folder-select')
-                ->waitForText('Test folder')
-                ->click('#react-select-2-option-0');
-            $browser->press('Créer une fiche')
-                ->waitForText('Fiche créée: My new card in folder')
-                ->assertSee('Fiche créée: My new card in folder');
+            $browser
+                ->type('#modalCreateCard-name', 'My new card in folder')
+                ->select('#modalCreateCard-folder-id', $folderPage->id())
+                ->click('#modalCreateCard [type="submit"]')
+                ->waitForText('2 fiche(s)')
+                ->assertSee('2 fiche(s)');
+
+            $browser
+                ->visit($folderPage)
+                ->waitUntilLoaded()
+                ->assertSee('My new card in folder');
+
         });
     }
 
@@ -161,11 +171,7 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->assertSee('Second space')
-                ->clickLink('Second space');
-
-            $browser->assertSee('Test card hidden boxes')
-                ->clickLink('Test card hidden boxes');
+            $browser->visit(new Card('Test card hidden boxes'));
 
             $browser->click('#btn-hide-boxes')
                 ->assertDontSee('Source')
@@ -196,11 +202,7 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->assertSee('Second space')
-                ->clickLink('Second space');
-
-            $browser->assertSee('Test card features')
-                ->clickLink('Test card features');
+            $browser->visit(new Card('Test card features'));
 
             $browser->click('#edit-box3')
                 ->assertSee('Annuler')
@@ -227,11 +229,7 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->assertSee('Second space')
-                ->clickLink('Second space');
-
-            $browser->assertSee('Test card features')
-                ->clickLink('Test card features');
+            $browser->visit(new Card('Test card features'));
 
             $browser->click('#edit-box4')
                 ->assertSee('Annuler')
@@ -259,11 +257,7 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->assertSee('Second space')
-                ->clickLink('Second space');
-
-            $browser->assertSee('Test card with processing file')
-                ->clickLink('Test card with processing file');
+            $browser->visit(new Card('Test card with processing file'));
 
             $browser->with('.box1', function (Browser $browser) {
                 $browser->assertSee('Le fichier est en cours de traitement');
@@ -285,11 +279,7 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->assertSee('Second space')
-                ->clickLink('Second space');
-
-            $browser->assertSee('Test card with failed file')
-                ->clickLink('Test card with failed file');
+            $browser->visit(new Card('Test card with failed file'));
 
             $browser->with('.box1', function (Browser $browser) {
                 $browser->assertSee('Le traitement du fichier a échoué');
@@ -311,11 +301,7 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->assertSee('Second space')
-                ->clickLink('Second space');
-
-            $browser->assertSee('Test card with file')
-                ->clickLink('Test card with file');
+            $browser->visit(new Card('Test card with file'));
 
             $browser->with('.box1', function (Browser $browser) {
                 $browser->assertPresent('#rct-player');

@@ -83,6 +83,25 @@ class FolderPolicy
     }
 
     /**
+     * Determine whether the user can manage (clone, move, etc.) the folder.
+     *
+     * @return mixed
+     */
+    public function manage(User $user, Folder $folder)
+    {
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers of the course can update folders
+        if ($user->isTeacher($folder->course)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Determine whether the user can forceDelete the folder.
      *
      * @return mixed
@@ -95,37 +114,6 @@ class FolderPolicy
 
         // Only teachers of the course can delete folders
         if ($user->isTeacher($folder->course)) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * Determine whether the user can select the folder.
-     *
-     * @return mixed
-     */
-    public function select(User $user, Course $course, Folder $selected, Folder $folder = null)
-    {
-        // Only folders within the course can be selected
-        if ($selected->course->id !== $course->id) {
-            return false;
-        }
-
-        if ($folder) {
-            // Cannot select own folder as parent
-            if ($folder->id === $selected->id) {
-                return false;
-            }
-        }
-
-        if ($user->admin) {
-            return true;
-        }
-
-        // Only teachers of the course can select a folder
-        if ($user->isTeacher($selected->course)) {
             return true;
         }
 

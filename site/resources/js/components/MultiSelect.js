@@ -11,7 +11,12 @@ export default class MultiSelect extends Component {
     constructor(props) {
         super(props);
 
-        let data = JSON.parse(this.props.data);
+        const data = JSON.parse(this.props.data);
+
+        // Don't use defaults values if noDefaults is set to true.
+        if (this.props?.noDefaults) {
+            data.defaults = [];
+        }
 
         this.state = {
             record: data.record,
@@ -77,6 +82,11 @@ export default class MultiSelect extends Component {
                 event?.removedValue,
                 (prevState) => _.reject(prevState.values, option),
             ],
+            'deselect-option': [
+                this.remove,
+                event?.option,
+                (prevState) => _.reject(prevState.values, option),
+            ],
         }[event.action] || [undefined, undefined, _.identity];
 
         this.setState({ isLoading: true });
@@ -97,26 +107,26 @@ export default class MultiSelect extends Component {
             .then((response) => {
                 console.log(response);
 
-                const newTag = {
-                    value: response.data.tag_id,
+                const newEntity = {
+                    value: response?.data?.entity_id,
                     label: inputValue,
                 };
 
                 this.setState((prevState) => ({
                     options: [
                         ...prevState.options,
-                        newTag,
+                        newEntity,
                     ],
                     values: [
                         ...prevState.values,
-                        newTag,
+                        newEntity,
                     ]
                 }));
             })
             .catch((error) => {
 
                 // Request form validation failed.
-                if (error.response.status === 422) {
+                if (error?.response?.status === 422) {
                     alert(error.response.data.message);
                 }
 
@@ -126,8 +136,8 @@ export default class MultiSelect extends Component {
                 this.setState({ isLoading: false });
             });
     }
-
     render() {
+
         let attributes = {
             isMulti: true,
             components: animatedComponents,
@@ -140,7 +150,16 @@ export default class MultiSelect extends Component {
             onChange: this.handleChange,
             options: this.state.options,
             isDisabled: this.state.isDisabled,
+            ...(this.props.reactAttributes || []),
         };
+
+        if (this.props.placeholder) {
+            attributes.placeholder = this.props.placeholder;
+        }
+
+        if (this.props.noOptionsMessage) {
+            attributes.noOptionsMessage = () => this.props.noOptionsMessage;
+        }
 
         if (this.props.canCreate) {
 

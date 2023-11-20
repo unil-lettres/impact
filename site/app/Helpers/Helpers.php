@@ -10,6 +10,8 @@ use App\Enums\FileType;
 use App\Enums\StateType;
 use App\Enums\UserType;
 use App\File;
+use App\Folder;
+use App\Services\FinderItemsService;
 use App\State;
 use App\User;
 use Illuminate\Support\Carbon;
@@ -208,8 +210,7 @@ class Helpers
 
         foreach ($file->cards as $card) {
             $html .= match (true) {
-                // Append the card title without a link because teachers cannot access private cards
-                ! $user->admin && $user->isTeacher($card->course) && $card->state?->type === StateType::Private => '<div>'.$card->title.'</div>',
+                $user->cannot('view', $card) => '<div>'.$card->title.'</div>',
                 default => '<div><a class="legacy" href="'.route('cards.show', $card->id).'">'.$card->title.'</a></div>',
             };
         }
@@ -364,15 +365,16 @@ class Helpers
     }
 
     /**
-     * Return a collection of courses from user's enrollments.
+     * Return a collection of courses from teacher's enrollments.
      *
      * Return all courses if user is admin.
      *
      * @param  Collection<Course>  $excludeCourses Collection of courses that
      * should not be present in the collection results.
      */
-    public static function fetchUserCourses(Collection $excludeCourses = null): Collection
-    {
+    public static function fetchCoursesAsTeacher(
+        Collection $excludeCourses = null,
+    ): Collection {
         $excludeCourses = $excludeCourses ?? collect([]);
 
         return (match (Auth::user()->admin) {
@@ -380,6 +382,115 @@ class Helpers
             default => Auth::user()
                 ->enrollmentsAsTeacher()
                 ->map(fn ($enrollment) => $enrollment->course),
-        })->whereNotIn('id', $excludeCourses->pluck('id'));
+        })->whereNotIn('id', $excludeCourses->pluck('id'))->sortBy('name');
+    }
+
+    /**
+     * Return the title of the folder with the path until the specified folder
+     * or to the root folder (grand parent > parent > child).
+     */
+    public static function getFolderAbsolutePath(
+        Folder $folder,
+        Folder $until = null,
+        bool $self = true,
+        string $separator = ' > ',
+    ): string {
+        return $folder
+            ->getAncestors($self, $until)
+            ->reverse()
+            ->pluck('title')
+            ->implode($separator);
+    }
+
+    /**
+     * Return a collection of folders with an added attribute "titleFullPath"
+     * representing the result of the Helpers::getFolderAbsolutePath() function.
+     */
+    public static function getFolderListAbsolutePath(
+        Collection $folders,
+        Folder $until = null,
+        bool $self = true,
+        string $separator = ' > ',
+    ): Collection {
+        return $folders->map(
+            function ($folder) use ($until, $self, $separator) {
+                $folder->titleFullPath = static::getFolderAbsolutePath(
+                    $folder, $until, $self, $separator
+                );
+
+                return $folder;
+            },
+        );
+    }
+
+    /**
+     * Helper for FinderItemsService::getItems(...) function.
+     */
+    public static function getFolderItems(
+        Course $course,
+        Collection $filters,
+        array $filterSearchBoxes,
+        Folder $folder = null,
+        string $sortColumn = 'position',
+        string $sortDirection = 'asc',
+    ): Collection {
+        return FinderItemsService::getItems(
+            $course,
+            $filters,
+            $filterSearchBoxes,
+            $folder,
+            $sortColumn,
+            $sortDirection,
+        );
+    }
+
+    /**
+     * Helper for FinderItemsService::countCardsRecursive(...) function.
+     */
+    public static function numberOfItemsInFolder(
+        Folder $folder,
+        Collection $filters,
+        array $filterSearchBoxes,
+        string $sortColumn = 'position',
+        string $sortDirection = 'asc',
+    ): int {
+        return FinderItemsService::countCardsRecursive(
+            $folder,
+            $filters,
+            $filterSearchBoxes,
+            $sortColumn,
+            $sortDirection,
+        );
+    }
+
+    /**
+     * Return the HTML attributes needed for sorting column in regards with
+     * the current ordering state for the "finder" view.
+     */
+    public static function finderSortHTMLAttributes(
+        string $selectedColumn,
+        string $currentColumn,
+        string $currentDirection,
+    ): string {
+        // We have 3 cycling states: asc => desc => remove.
+
+        $column = $selectedColumn;
+        if ($selectedColumn === $currentColumn) {
+            // If the selected column is the current selected, we take the
+            // next state.
+            [$directionCss, $direction, $column] = match ($currentDirection) {
+                'asc' => ['desc', 'desc', $selectedColumn],
+                'desc' => ['remove', 'asc', 'position'],
+            };
+        } else {
+            // If the selected column is not the current selected, we reset
+            // states for this new column.
+            $direction = $directionCss = 'asc';
+        }
+
+        return <<<HTML
+            class='d-flex cursor-pointer gap-2 sort-direction-$directionCss'
+            wire:click='sort("$column", "$direction")'
+        HTML;
     }
 }

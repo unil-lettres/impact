@@ -37,6 +37,11 @@ class CardPolicy
             return true;
         }
 
+        // Users that cannot see any box can't access the card, even managers or editors.
+        if ($card->allBoxesAreHidden()) {
+            return false;
+        }
+
         // Editors of the course can view the card
         if ($user->isEditor($card)) {
             return true;
@@ -58,6 +63,20 @@ class CardPolicy
         }
 
         return false;
+    }
+
+    /**
+     * Works like view policy except that the manager of the course can view
+     * the card in listings.
+     */
+    public function index(User $user, Card $card): bool
+    {
+        // Teachers of the course or editors can always list the card.
+        if ($user->isTeacher($card->course) || $user->isEditor($card)) {
+            return true;
+        }
+
+        return $this->view($user, $card);
     }
 
     /**
@@ -90,6 +109,11 @@ class CardPolicy
             return true;
         }
 
+        // Users that cannot see any box can't update the card, even managers or editors.
+        if ($card->allBoxesAreHidden()) {
+            return false;
+        }
+
         // Teachers of the course can update the card if the state is not set to the 'private' type
         if ($user->isTeacher($card->course) && $card->state?->type !== StateType::Private) {
             return true;
@@ -97,6 +121,25 @@ class CardPolicy
 
         // Editors of the course can update card if the state is not set to the 'archived' type
         if ($user->isEditor($card) && $card->state?->type !== StateType::Archived) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can manage the card (move, clone, etc.).
+     *
+     * @return mixed
+     */
+    public function manage(User $user, Card $card)
+    {
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only teachers of the course can manage cards
+        if ($user->isTeacher($card->course)) {
             return true;
         }
 

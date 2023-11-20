@@ -92,7 +92,7 @@ class TagTest extends TestCase
             ['name' => 'a_new_tag', 'card_id' => $card->id]
         );
 
-        $tagId = $response['tag_id'];
+        $tagId = $response['entity_id'];
 
         $this->assertDatabaseHas(
             'card_tag',

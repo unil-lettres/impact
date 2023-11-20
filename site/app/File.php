@@ -18,7 +18,17 @@ class File extends Model
      * @var array
      */
     protected $fillable = [
-        'name', 'filename', 'status', 'progress', 'type', 'size', 'width', 'height', 'length', 'course_id', 'card_id',
+        'name',
+        'filename',
+        'status',
+        'progress',
+        'type',
+        'size',
+        'width',
+        'height',
+        'length',
+        'course_id',
+        'card_id',
     ];
 
     protected $casts = [

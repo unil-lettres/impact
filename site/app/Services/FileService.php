@@ -16,14 +16,14 @@ class FileService
 
     private bool $attachment;
 
-    private FileUploadService $fileUploadService;
+    private FileStorageService $fileStorageService;
 
     public function __construct(?Course $course, ?Card $card, bool $attachment)
     {
         $this->course = $course;
         $this->card = $card;
         $this->attachment = $attachment;
-        $this->fileUploadService = new FileUploadService();
+        $this->fileStorageService = new FileStorageService();
     }
 
     /**
@@ -32,7 +32,7 @@ class FileService
     public function prepareFile(UploadedFile $uploadedFile): File
     {
         // Move file to temp storage
-        $path = $this->fileUploadService
+        $path = $this->fileStorageService
             ->moveFileToStoragePath(
                 $uploadedFile,
                 true
@@ -78,12 +78,12 @@ class FileService
         $course_id = $course?->id;
 
         return File::create([
-            'name' => $this->fileUploadService
+            'name' => $this->fileStorageService
                 ->getFileName($filename),
-            'filename' => $this->fileUploadService
+            'filename' => $this->fileStorageService
                 ->getBaseName($path),
             'status' => FileStatus::Processing,
-            'type' => $this->fileUploadService
+            'type' => $this->fileStorageService
                 ->fileType($mimeType),
             'size' => $size,
             'course_id' => $course_id,

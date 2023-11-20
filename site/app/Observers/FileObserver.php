@@ -3,7 +3,7 @@
 namespace App\Observers;
 
 use App\File;
-use App\Services\FileUploadService;
+use App\Services\FileStorageService;
 
 class FileObserver
 {
@@ -16,8 +16,8 @@ class FileObserver
     {
         if ($file->isForceDeleting()) {
             // Remove the binary associated with the file record
-            $fileUploadService = new FileUploadService();
-            $fileUploadService
+            $fileStorageService = new FileStorageService();
+            $fileStorageService
                 ->removeFileFromStandardStorage($file->filename);
         }
     }

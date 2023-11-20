@@ -66,7 +66,7 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('users.profile.update');
 
     // Cards
-    Route::resource('cards', CardController::class);
+    Route::resource('cards', CardController::class)->except(['create', 'store']);
     Route::put('cards/{card}/unlink/file', [CardController::class, 'unlinkFile'])
         ->name('cards.unlink.file');
     Route::put('cards/{card}/editor', [CardJsonController::class, 'editor'])
@@ -77,7 +77,7 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('cards.export');
 
     // Folders
-    Route::resource('folders', FolderController::class);
+    Route::resource('folders', FolderController::class)->only(['show']);
 
     // Files
     Route::resource('files', FileController::class)->only([

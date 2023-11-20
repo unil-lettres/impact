@@ -176,6 +176,23 @@ class CoursePolicy
     }
 
     /**
+     * Determine whether the user can move a set of cards and folders inside
+     * another folder.
+     *
+     * This policy is in Course and not Card or Folder because the user
+     * can move a set of cards / folders from the course UI.
+     */
+    public function massActionsForCardAndFolder(User $user, Course $course)
+    {
+        // Only teachers and admin of the course can delete cards or folders.
+        if ($user->isTeacher($course)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Determine whether the user can send the mail to confirm the deletion of the course.
      *
      * @return mixed

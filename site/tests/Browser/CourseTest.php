@@ -5,6 +5,9 @@ namespace Tests\Browser;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
+use Tests\Browser\Pages\Card as PagesCard;
+use Tests\Browser\Pages\Course as PagesCourse;
+use Tests\Browser\Pages\Folder as PagesFolder;
 use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
 use Throwable;
@@ -289,6 +292,158 @@ class CourseTest extends DuskTestCase
                 ->assertDontSee('Effacer texte')
                 ->assertPresent('#rct-editor-box2')
                 ->assertNotPresent('#rct-transcription');
+        });
+    }
+
+    public function testFilters(): void
+    {
+        $this->browse(function (Browser $browser) {
+
+            $browser
+                ->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $page = new PagesCourse('First space');
+            $page->createCard($browser, 'Test card without tag');
+
+            $browser
+                ->visit($page)
+                ->waitUntilLoaded()
+                ->click('.rct-multi-filter-select[placeholder="Etiquettes"]')
+                ->click('#react-select-2-option-0');
+
+            $browser
+                ->waitUntilMissingText('Test card without tag')
+                ->press('Tout effacer')
+                ->waitForText('Test card without tag')
+                ->assertSee('Test card without tag');
+        });
+    }
+
+    public function testMultiSelect(): void
+    {
+        $this->browse(function (Browser $browser) {
+
+            $browser
+                ->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser
+                ->visit(new PagesCourse('Second space'))
+                ->waitUntilLoaded()
+                ->click('.finder-folder')
+                ->press('Tout séléctionner');
+
+            $browser->assertSee('11 élément(s) sélectionné(s) dont 8 fiche(s)');
+        });
+    }
+
+    public function testClone(): void
+    {
+        $this->browse(function (Browser $browser) {
+
+            $browser
+                ->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser
+                ->visit(new PagesCourse('Second space'))
+                ->waitUntilLoaded()
+                ->click('.finder-folder')
+                ->click('@multi-menu')
+                ->click('@multi-copy-option');
+
+            $browser
+                ->waitForText('Test folder (copie)')
+                ->assertSee('Test folder (copie)');
+        });
+    }
+
+    public function testDelete(): void
+    {
+        $this->browse(function (Browser $browser) {
+
+            $browser
+                ->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser
+                ->visit(new PagesCourse('Second space'))
+                ->waitUntilLoaded()
+                ->click('.finder-folder')
+                ->click('@multi-menu')
+                ->click('@multi-delete-option')
+                ->acceptDialog();
+
+            $browser
+                ->waitUntilMissingText('Test folder')
+                ->assertDontSee('Test folder');
+        });
+    }
+
+    public function testMoveIn(): void
+    {
+        $this->browse(function (Browser $browser) {
+
+            $browser
+                ->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $pageCourse = new PagesCourse('Second space');
+            $pageCard = new PagesCard('Test card second space not assigned');
+            $pageFolder = new PagesFolder('Test folder');
+
+            $browser
+                ->visit($pageCourse)
+                ->waitUntilLoaded()
+                ->click("@finder-card-{$pageCard->id()}")
+                ->click('@multi-menu')
+                ->click('@multi-movein-option');
+
+            $browser
+                ->waitForText('Déplacer dans...')
+                ->select('#modalMoveIn-name', $pageFolder->id())
+                ->press('Déplacer')
+                ->waitUntilMissingText('Test card second space not assigned')
+                ->assertSee('Elément(s) déplacé(s) avec succès.');
+
+            $browser
+                ->visit($pageFolder)
+                ->waitForText('Test card second space not assigned')
+                ->assertSee('Test card second space not assigned');
+        });
+    }
+
+    public function testCloneIn(): void
+    {
+        $this->browse(function (Browser $browser) {
+
+            $browser
+                ->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $pageCourse = new PagesCourse('Second space');
+            $pageCourseDest = new PagesCourse('First space');
+            $pageCard = new PagesCard('Test card second space not assigned');
+
+            $browser
+                ->visit($pageCourse)
+                ->waitUntilLoaded()
+                ->click("@finder-card-{$pageCard->id()}")
+                ->click('@multi-menu')
+                ->click('@multi-clonein-option');
+
+            $browser
+                ->waitForText('Dupliquer dans...')
+                ->select('#modalCloneIn-name', $pageCourseDest->id())
+                ->press('Dupliquer')
+                ->waitForText('Elément(s) copiés avec succès dans l\'espace.')
+                ->assertSee('Elément(s) copiés avec succès dans l\'espace.');
+
+            $browser
+                ->visit($pageCourseDest)
+                ->waitForText('Test card second space not assigned')
+                ->assertSee('Test card second space not assigned');
         });
     }
 }

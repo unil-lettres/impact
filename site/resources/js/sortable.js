@@ -1,5 +1,8 @@
-import Sortable from 'sortablejs';
+import Sortable from "sortablejs";
 import axios from "axios";
+import _ from "lodash";
+
+window.Sortable = Sortable;
 
 // States
 let statesList = document.getElementById('states-list');

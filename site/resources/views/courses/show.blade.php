@@ -13,30 +13,45 @@
         @section('actions')
             @can('editConfiguration', $course)
                 <a href="{{ route('courses.configure', $course->id) }}"
-                   class="btn btn-primary me-1">
+                   class="btn btn-primary">
                     {{ trans('courses.configure') }}
                 </a>
             @endcan
             @can('create', [\App\Folder::class, $course])
-                <a href="{{ route('folders.create', ['course' => $course->id]) }}"
-                   class="btn btn-primary me-1">
-                    Créer un dossier
-                </a>
+                <button
+                   class="btn btn-primary"
+                   data-bs-toggle="modal"
+                   data-bs-target="#modalCreateFolder"
+                >
+                   {{ trans('folders.create') }}
+                </button>
             @endcan
             @can('create', [\App\Card::class, $course])
-                <a href="{{ route('cards.create', ['course' => $course->id]) }}"
-                   class="btn btn-primary">
+                <button
+                   class="btn btn-primary"
+                   data-bs-toggle="modal"
+                   data-bs-target="#modalCreateCard"
+                >
                     {{ trans('cards.create') }}
-                </a>
+                </button>
             @endcan
         @endsection
     @endif
     @section('content')
-        <div id="course">
-            <div>
-                @include('shared.folders')
-                @include('shared.cards')
-            </div>
-        </div>
+        <livewire:modal-create
+            id="modalCreateFolder"
+            :course="$course"
+            :type="('App\\Enums\\FinderItemType')::Folder"
+        />
+        <livewire:modal-create
+            id="modalCreateCard"
+            :course="$course"
+            :type="('App\\Enums\\FinderItemType')::Card"
+        />
+        <livewire:finder
+            :course="$course"
+            modalCloneId="modalCloneIn"
+            modalMoveId="modalMoveIn"
+        />
     @endsection
 @endcan

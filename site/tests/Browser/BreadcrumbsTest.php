@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
+use Tests\Browser\Pages\Folder;
 use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
 use Throwable;
@@ -38,25 +39,9 @@ class BreadcrumbsTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->clickLink('Second space')
-                ->assertSee('Liste des espaces');
-
-            $browser->clickLink('Test folder')
-                ->assertSee('Liste des espaces / Second space');
-
-            $browser->clickLink('Test card in folder')
-                ->assertSee('Liste des espaces / Second space / Test folder');
-
-            $browser->back();
-
-            $browser->clickLink('Test child folder')
-                ->assertSee('Liste des espaces / Second space / Test folder');
-
-            $browser->clickLink('Test grand child folder')
-                ->assertSee('Liste des espaces / Second space / Test folder');
-
-            $browser->clickLink('Modifier le dossier')
-                ->assertSee('Liste des espaces / Second space / Test folder / Test child folder / Test grand child folder');
+            $browser
+                ->visit(new Folder('Test grand child folder'))
+                ->assertSee('Liste des espaces / Second space / Test folder / Test child folder');
         });
     }
 }

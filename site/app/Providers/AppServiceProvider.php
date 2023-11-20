@@ -5,9 +5,11 @@ namespace App\Providers;
 use App\Card;
 use App\Course;
 use App\File;
+use App\Folder;
 use App\Observers\CardObserver;
 use App\Observers\CourseObserver;
 use App\Observers\FileObserver;
+use App\Observers\FolderObserver;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -36,6 +38,7 @@ class AppServiceProvider extends ServiceProvider
         File::observe(FileObserver::class);
         Course::observe(CourseObserver::class);
         Card::observe(CardObserver::class);
+        Folder::observe(FolderObserver::class);
         Paginator::useBootstrap();
 
         // Define default password validation rules

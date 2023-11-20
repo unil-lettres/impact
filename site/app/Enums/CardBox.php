@@ -2,6 +2,8 @@
 
 namespace App\Enums;
 
+use Illuminate\Support\Collection;
+
 final class CardBox
 {
     const Box1 = 'box1';
@@ -13,4 +15,15 @@ final class CardBox
     const Box4 = 'box4';
 
     const Box5 = 'box5';
+
+    public static function getAllBoxes(): Collection
+    {
+        return collect([
+            self::Box1,
+            self::Box2,
+            self::Box3,
+            self::Box4,
+            self::Box5,
+        ]);
+    }
 }

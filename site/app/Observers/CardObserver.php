@@ -6,10 +6,13 @@ use App\Card;
 use App\Enums\ActionType;
 use App\Enums\StateType;
 use App\Mail\StateSelected;
+use App\Traits\FindLastPosition;
 use Illuminate\Support\Facades\Mail;
 
 class CardObserver
 {
+    use FindLastPosition;
+
     /**
      * Handle the Card "created" event.
      *
@@ -17,6 +20,13 @@ class CardObserver
      */
     public function created(Card $card)
     {
+        $cardUpdate = [];
+
+        // Set the last available position for this card in its parent.
+        if (is_null($card->position)) {
+            $cardUpdate['position'] = $this->findLastPositionInParent($card);
+        }
+
         // If state is not set, set it the private state
         if (! $card->state) {
             $state = $card
@@ -25,10 +35,12 @@ class CardObserver
                     'type', StateType::Private
                 )->first();
 
-            $card->update([
-                'state_id' => $state->id,
-            ]);
+            $cardUpdate['state_id'] = $state->id;
         }
+
+        // We update quietly since we don't want to trigger the updated event
+        // to avoid recalculation of the position.
+        $card->updateQuietly($cardUpdate);
     }
 
     /**
@@ -36,6 +48,17 @@ class CardObserver
      */
     public function updated(Card $card): void
     {
+        // Relations that were already loaded before the update will still
+        // have the old values.
+        $card->refresh();
+
+        if ($card->wasChanged('folder_id')) {
+            // We update quietly to avoid recursion.
+            $card->updateQuietly([
+                'position' => $this->findLastPositionInParent($card),
+            ]);
+        }
+
         // Check if the state of the card has changed and if was already set
         if ($card->wasChanged('state_id') && $card->getOriginal('state_id')) {
             // Loop through the actions of the new state
@@ -58,6 +81,22 @@ class CardObserver
                 }
             }
         }
+    }
+
+    /**
+     * Handle the "forceDeleting" event.
+     */
+    public function forceDeleting(Card $card): void
+    {
+        // Delete attachments (only attachments and not regular file).
+        $card->attachments()->each(
+            fn ($attachment) => $attachment->forceDelete(),
+        );
+
+        // Remove this card from all enrollments as editors.
+        $card->enrollments()->each(
+            fn ($enrollment) => $enrollment->removeCard($card),
+        );
     }
 
     /**

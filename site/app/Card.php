@@ -2,8 +2,11 @@
 
 namespace App;
 
+use App\Enums\CardBox;
+use App\Enums\FinderItemType;
 use App\Enums\StatePermission;
 use App\Scopes\HideAttachmentsScope;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -54,7 +57,16 @@ class Card extends Model
         }';
 
     protected $fillable = [
-        'title', 'box2', 'box3', 'box4', 'course_id', 'state_id', 'folder_id', 'file_id', 'options',
+        'title',
+        'box2',
+        'box3',
+        'box4',
+        'course_id',
+        'state_id',
+        'folder_id',
+        'file_id',
+        'options',
+        'position',
     ];
 
     protected $casts = [
@@ -119,20 +131,55 @@ class Card extends Model
     }
 
     /**
-     * Get the editors of this card.
-     *
-     * @return Collection
+     * Return a collection of enrollements that have this card.
      */
-    public function editors()
+    public function enrollments(): Collection
     {
-        $enrollments = $this->course->enrollments()->get()
+        return $this->course->enrollments()->get()
             ->filter(function ($enrollment) {
                 return $enrollment->cards ? in_array($this->id, $enrollment->cards) : false;
             });
+    }
 
-        return $enrollments->map(function ($enrollment) {
+    /**
+     * Get the editors of this card.
+     */
+    public function editors(): Collection
+    {
+        return $this->enrollments()->map(function ($enrollment) {
             return $enrollment->user;
-        });
+        })->sortBy('name');
+    }
+
+    /**
+     * Get a string of all editors joined by a comma (',').
+     * This attribute allow to sort by editors within a Collection.
+     */
+    protected function editorsList(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->editors()->pluck('name')->join(', '),
+        );
+    }
+
+    /**
+     * Get the name of the state.
+     * This attribute allow to sort by state name within a Collection.
+     */
+    protected function stateName(): Attribute
+    {
+        return Attribute::make(get: fn () => $this->state->name);
+    }
+
+    /**
+     * Get a string of all tags joined by a comma (',').
+     * This attribute allow to sort by tags within a Collection.
+     */
+    protected function tagsList(): Attribute
+    {
+        return Attribute::make(
+            get: fn () => $this->tags()->pluck('name')->join(', '),
+        );
     }
 
     /**
@@ -196,6 +243,14 @@ class Card extends Model
     }
 
     /**
+     * Return whether the user can't see any box due to state permission.
+     */
+    public function allBoxesAreHidden(): bool
+    {
+        return CardBox::getAllBoxes()->every(fn ($box) => ! $this->boxIsVisible($box));
+    }
+
+    /**
      * Return whether a box can be edited by the current user.
      * The current state of the card is used to determine the editability.
      */
@@ -217,5 +272,29 @@ class Card extends Model
             StatePermission::AllCanShowTeachersCanEdit, StatePermission::TeachersCanShowAndEdit => Auth::user()->isTeacher($this->course),
             default => Auth::user()->admin,
         };
+    }
+
+    /**
+     * Return the FinderItemType corresponding to the card.
+     */
+    public function getFinderItemType(): string
+    {
+        return FinderItemType::Card;
+    }
+
+    /**
+     * Get all ancestors of this card (all parents recursively).
+     */
+    public function getAncestors(): \Illuminate\Support\Collection
+    {
+        $parents = collect([]);
+
+        $parent = $this->folder;
+        while ($parent) {
+            $parents->push($parent);
+            $parent = $parent->folder;
+        }
+
+        return $parents;
     }
 }

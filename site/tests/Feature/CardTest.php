@@ -4,7 +4,6 @@ namespace Tests\Feature;
 
 use App\Card;
 use App\Course;
-use App\Enums\FileStatus;
 use App\Services\Clone\CloneCardService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;

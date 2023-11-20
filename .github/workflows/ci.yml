@@ -11,7 +11,8 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        php-versions: [ '8.1', '8.2' ]
+        php-versions: [ '8.2' ]
+        composer-version: [ '2.6' ]
         mariadb-version: [ '10.6' ]
         node-version: [ '18' ]
 
@@ -42,6 +43,7 @@ jobs:
           php-version: ${{ matrix.php-versions }}
           extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, bcmath, soap, intl, gd, exif, iconv, imagick
           coverage: none
+          tools: composer:${{ matrix.composer-version }}
 
       - name: Show PHP version
         run: php -v

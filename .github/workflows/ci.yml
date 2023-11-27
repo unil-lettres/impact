@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        php-versions: [ '8.2' ]
+        php-versions: [ '8.2', '8.3' ]
         composer-version: [ '2.6' ]
         mariadb-version: [ '10.6' ]
         node-version: [ '18' ]

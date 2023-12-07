@@ -23,8 +23,8 @@ class CloneFolderService
      * @throws CloneException If the folder cannot be cloned.
      */
     public function checkClone(
-        Folder $destFolder = null,
-        Course $destCourse = null,
+        ?Folder $destFolder = null,
+        ?Course $destCourse = null,
     ): void {
         // Check that all children can be cloned.
         $this->folder
@@ -52,8 +52,8 @@ class CloneFolderService
      * specified.
      */
     public function clone(
-        Folder $destFolder = null,
-        Course $destCourse = null,
+        ?Folder $destFolder = null,
+        ?Course $destCourse = null,
     ): void {
         $this->checkClone($destFolder, $destCourse);
 

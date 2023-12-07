@@ -373,7 +373,7 @@ class Helpers
      * should not be present in the collection results.
      */
     public static function fetchCoursesAsTeacher(
-        Collection $excludeCourses = null,
+        ?Collection $excludeCourses = null,
     ): Collection {
         $excludeCourses = $excludeCourses ?? collect([]);
 
@@ -391,7 +391,7 @@ class Helpers
      */
     public static function getFolderAbsolutePath(
         Folder $folder,
-        Folder $until = null,
+        ?Folder $until = null,
         bool $self = true,
         string $separator = ' > ',
     ): string {
@@ -408,7 +408,7 @@ class Helpers
      */
     public static function getFolderListAbsolutePath(
         Collection $folders,
-        Folder $until = null,
+        ?Folder $until = null,
         bool $self = true,
         string $separator = ' > ',
     ): Collection {
@@ -430,7 +430,7 @@ class Helpers
         Course $course,
         Collection $filters,
         array $filterSearchBoxes,
-        Folder $folder = null,
+        ?Folder $folder = null,
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
     ): Collection {

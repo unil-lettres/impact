@@ -48,7 +48,7 @@ class FinderItemsService
         Course $course,
         Collection $filters,
         array $filterSearchBoxes,
-        Folder $folder = null,
+        ?Folder $folder = null,
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
     ): Collection {

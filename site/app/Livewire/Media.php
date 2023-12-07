@@ -11,13 +11,13 @@ use Livewire\Component;
 
 class Media extends Component
 {
-    #[Rule('required')]
+    #[Validate('required')]
     public Card $card;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public string $reference;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public bool $mediaStatusIsActive = false;
 
     /*

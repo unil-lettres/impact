@@ -158,7 +158,7 @@ class State extends Model implements Sortable
      * @param  string|null  $type (App\Enums\ActionType)
      * @return array
      */
-    public function getActionsData(string $type = null)
+    public function getActionsData(?string $type = null)
     {
         if (! $this->actions) {
             return [];
@@ -185,7 +185,7 @@ class State extends Model implements Sortable
      * @param  string|null  $type (App\Enums\ActionType)
      * @return array|null
      */
-    public function getActionData(int $index, string $type = null)
+    public function getActionData(int $index, ?string $type = null)
     {
         $actions = $this->getActionsData($type);
 

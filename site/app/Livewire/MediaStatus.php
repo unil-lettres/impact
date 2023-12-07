@@ -9,10 +9,10 @@ use Livewire\Component;
 
 class MediaStatus extends Component
 {
-    #[Rule('required')]
+    #[Validate('required')]
     public Card $card;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public int $progress;
 
     public function mount(Card $card)

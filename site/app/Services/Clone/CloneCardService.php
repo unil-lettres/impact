@@ -29,8 +29,8 @@ class CloneCardService
      * @throws CloneException If the card cannot be cloned.
      */
     public function checkClone(
-        Folder $destFolder = null,
-        Course $destCourse = null,
+        ?Folder $destFolder = null,
+        ?Course $destCourse = null,
     ): void {
         $cloneInAnotherSpace = (false
             || $destFolder && $destFolder->course->id !== $this->card->course->id
@@ -62,8 +62,8 @@ class CloneCardService
      * specified.
      */
     public function clone(
-        Folder $destFolder = null,
-        Course $destCourse = null,
+        ?Folder $destFolder = null,
+        ?Course $destCourse = null,
     ): ?Card {
         $fileStorageService = new FileStorageService();
 

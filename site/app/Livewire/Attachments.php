@@ -14,10 +14,10 @@ use Livewire\Component;
 
 class Attachments extends Component
 {
-    #[Rule('required')]
+    #[Validate('required')]
     public Card $card;
 
-    #[Rule('required')]
+    #[Validate('required')]
     public string $reference;
 
     public function mount(Card $card, string $reference)

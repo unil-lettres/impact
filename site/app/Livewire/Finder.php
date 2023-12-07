@@ -468,7 +468,7 @@ class Finder extends Component
      */
     public function moveIn(
         array $keys,
-        int $dest = null,
+        ?int $dest = null,
         bool $reloadAfterSave = false,
     ): void {
         $this->authorize('massActionsForCardAndFolder', $this->course);

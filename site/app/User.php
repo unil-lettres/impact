@@ -204,7 +204,7 @@ class User extends Authenticatable
      *
      * @return DateTime
      */
-    public function extendValidity(int $months = null)
+    public function extendValidity(?int $months = null)
     {
         $months = $months ?? config('const.users.validity');
 

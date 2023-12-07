@@ -108,7 +108,7 @@ class Folder extends Model
      */
     public function getAncestors(
         bool $self = true,
-        Folder $until = null,
+        ?Folder $until = null,
     ): Collection {
         $parents = collect([]);
 

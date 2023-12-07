@@ -28,6 +28,7 @@
                                     <tr>
                                         <th>{{ trans('files.name') }}</th>
                                         <th>{{ trans('files.type') }}</th>
+                                        <th>{{ trans('files.size') }}</th>
                                         <th>{{ trans('files.status') }}</th>
                                         <th>{{ trans('files.used') }}</th>
                                         <th>{{ trans('files.created_at') }}</th>
@@ -40,6 +41,13 @@
                                             <tr class="{{ $file->type }} {{ $file->status }} {{ Helpers::fileState($file) }}">
                                                 <td>{{ Helpers::truncate($file->name) }}</td>
                                                 <td>{{ Helpers::fileType($file->type) }}</td>
+                                                <td>
+                                                    @if(Helpers::isFileStatus($file, \App\Enums\FileStatus::Ready))
+                                                        {{ Number::fileSize($file->size, precision: 2) }}
+                                                    @else
+                                                        -
+                                                    @endif
+                                                </td>
                                                 <td>{!! Helpers::fileStatusBadge($file) !!}</td>
                                                 <td>
                                                     <span style="cursor: pointer"

@@ -8,6 +8,7 @@ return [
     'name' => 'Name',
     'filename' => 'Filename',
     'type' => 'Type',
+    'size' => 'Size',
     'size_in' => 'Size (in byte)',
     'status' => 'Status',
     'width' => 'Width',

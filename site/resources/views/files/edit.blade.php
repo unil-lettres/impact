@@ -113,7 +113,7 @@
                                         <label for="size" class="col-md-3 col-form-label">
                                             {{ trans('files.size_in') }}
                                         </label>
-                                        <div class="col-md-7">
+                                        <div class="col-md-9">
                                             <input id="size"
                                                    type="number"
                                                    name="size"
@@ -121,9 +121,6 @@
                                                    class="form-control"
                                                    disabled
                                             >
-                                        </div>
-                                        <div class="col-md-2">
-                                            = {{ Number::fileSize($file->size, precision: 2) }}
                                         </div>
                                     </div>
                                 @endif

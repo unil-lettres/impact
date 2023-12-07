@@ -9,6 +9,7 @@ use App\Scopes\HideAttachmentsScope;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Attachments extends Component

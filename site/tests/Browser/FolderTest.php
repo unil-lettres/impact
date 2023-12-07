@@ -114,7 +114,7 @@ class FolderTest extends DuskTestCase
             $folderId = Folder::where('title', 'My new folder')->first()->id;
 
             $browser
-                ->pause(1000)
+                ->pause(1000) // Avoid "element not interactable" issue
                 ->type('#modalCreateFolder-name', 'My new child folder')
                 ->select('#modalCreateFolder-folder-id', $folderId)
                 ->click('#modalCreateFolder [type="submit"]');

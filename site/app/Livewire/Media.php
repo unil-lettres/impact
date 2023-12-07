@@ -6,6 +6,7 @@ use App\Card;
 use App\Enums\FileStatus;
 use App\Helpers\Helpers;
 use Illuminate\Contracts\Support\Renderable;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class Media extends Component

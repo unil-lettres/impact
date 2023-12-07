@@ -4,6 +4,7 @@ namespace App\Livewire;
 
 use App\Card;
 use Illuminate\Contracts\Support\Renderable;
+use Livewire\Attributes\Validate;
 use Livewire\Component;
 
 class MediaStatus extends Component

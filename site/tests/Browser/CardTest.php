@@ -144,6 +144,7 @@ class CardTest extends DuskTestCase
             $folderPage = new Folder('Test folder');
 
             $browser
+                ->pause(1000)
                 ->type('#modalCreateCard-name', 'My new card in folder')
                 ->select('#modalCreateCard-folder-id', $folderPage->id())
                 ->click('#modalCreateCard [type="submit"]')

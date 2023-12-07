@@ -102,16 +102,19 @@ class FolderTest extends DuskTestCase
                 ->click('#modalCreateFolder [type="submit"]')
                 ->waitForText('My new folder');
 
-            // For some reason the backdrop modal don't disapear making
+            // For some reason the backdrop modal don't disappear making
             // unable to click on the components.
             $browser->refresh();
 
-            // Create the child folder
+            $browser
+                ->press('Créer un dossier')
+                ->waitForText('Créer un dossier');
+
+            // Find the root folder id
             $folderId = Folder::where('title', 'My new folder')->first()->id;
 
             $browser
-                ->press('Créer un dossier')
-                ->waitForText('Créer un dossier')
+                ->pause(1000)
                 ->type('#modalCreateFolder-name', 'My new child folder')
                 ->select('#modalCreateFolder-folder-id', $folderId)
                 ->click('#modalCreateFolder [type="submit"]');

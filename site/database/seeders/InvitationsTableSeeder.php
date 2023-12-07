@@ -9,6 +9,7 @@ use App\Invitation;
 use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class InvitationsTableSeeder extends Seeder
@@ -26,7 +27,7 @@ class InvitationsTableSeeder extends Seeder
         $userTeacher = User::create([
             'name' => 'Invitation user teacher',
             'email' => 'invitation-user-teacher@example.com',
-            'password' => bcrypt('password'),
+            'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
@@ -37,7 +38,7 @@ class InvitationsTableSeeder extends Seeder
         $userStudent = User::create([
             'name' => 'Invitation user student',
             'email' => 'invitation-user-student@example.com',
-            'password' => bcrypt('password'),
+            'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,

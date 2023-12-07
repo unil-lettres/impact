@@ -8,6 +8,7 @@ use App\Enums\EnrollmentRole;
 use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class StatesTableSeeder extends Seeder
@@ -31,7 +32,7 @@ class StatesTableSeeder extends Seeder
         $teacherUser = User::create([
             'name' => 'States teacher user',
             'email' => 'states-teacher-user@example.com',
-            'password' => bcrypt('password'),
+            'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
@@ -40,7 +41,7 @@ class StatesTableSeeder extends Seeder
         $studentUser = User::create([
             'name' => 'States student user',
             'email' => 'states-student-user@example.com',
-            'password' => bcrypt('password'),
+            'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,

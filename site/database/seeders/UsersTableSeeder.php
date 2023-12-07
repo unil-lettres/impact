@@ -6,6 +6,7 @@ use App\Enums\UserType;
 use App\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 
 class UsersTableSeeder extends Seeder
@@ -22,7 +23,7 @@ class UsersTableSeeder extends Seeder
         $admin = User::create([
             'name' => 'Admin user',
             'email' => 'admin-user@example.com',
-            'password' => bcrypt('password'),
+            'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
@@ -32,7 +33,7 @@ class UsersTableSeeder extends Seeder
         User::create([
             'name' => 'First user',
             'email' => 'first-user@example.com',
-            'password' => bcrypt('password'),
+            'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
@@ -43,7 +44,7 @@ class UsersTableSeeder extends Seeder
         User::create([
             'name' => 'Invalid user',
             'email' => 'invalid-user@example.com',
-            'password' => bcrypt('password'),
+            'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,

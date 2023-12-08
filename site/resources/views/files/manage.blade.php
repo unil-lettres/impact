@@ -36,11 +36,10 @@
                                         <td>{{ Helpers::truncate($file->name) }}</td>
                                         <td>{{ Helpers::fileType($file->type) }}</td>
                                         <td>
-                                            @if(Helpers::isFileStatus($file, \App\Enums\FileStatus::Ready))
-                                                {{ Number::fileSize($file->size, precision: 2) }}
-                                            @else
-                                                -
-                                            @endif
+                                            {{
+                                                Helpers::isFileStatus($file, \App\Enums\FileStatus::Ready) ?
+                                                Number::fileSize($file->size, precision: 2) : '-'
+                                            }}
                                         </td>
                                         <td>{!! Helpers::fileStatusBadge($file) !!}</td>
                                         <td>{{ $file->course ? Helpers::truncate($file->course->name) : '-' }}</td>

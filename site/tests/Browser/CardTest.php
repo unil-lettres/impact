@@ -116,6 +116,7 @@ class CardTest extends DuskTestCase
                 ->visit(new Course('First space'))
                 ->press('Créer une fiche')
                 ->waitForText('Créer une fiche')
+                ->pause(1000) // Avoid "element not interactable" issue
                 ->type('#modalCreateCard-name', 'My new card')
                 ->click('#modalCreateCard [type="submit"]')
                 ->waitForText('My new card')

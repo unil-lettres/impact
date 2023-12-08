@@ -5,32 +5,39 @@ namespace App\Services;
 use App\Enums\FileType;
 use App\Enums\StoragePath;
 use App\File;
+use FFMpeg\FFProbe;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class FileStorageService
 {
+    public string $fullTempPath;
+
+    public string $fullStandardPath;
+
     public function __construct()
     {
         Storage::disk('public')
             ->makeDirectory(StoragePath::UploadStandard);
-
         Storage::disk('public')
             ->makeDirectory(StoragePath::UploadTemp);
+
+        $this->fullTempPath = Storage::disk('public')
+            ->path('uploads/tmp/');
+        $this->fullStandardPath = Storage::disk('public')
+            ->path('uploads/files/');
     }
 
     /**
      * Return file type from given mime type.
      */
-    public function fileType(string $mimeType): string
+    public function fileType(string $mimeType, string $fileFullTempPath): string
     {
-        if (Str::is('video/*', $mimeType)) {
-            return FileType::Video;
-        }
-
-        if (Str::is('audio/*', $mimeType)) {
-            return FileType::Audio;
+        if (Str::is('audio/*', $mimeType) || Str::is('video/*', $mimeType)) {
+            return $this->probeType(
+                $fileFullTempPath
+            );
         }
 
         if (Str::is('image/*', $mimeType)) {
@@ -157,5 +164,35 @@ class FileStorageService
         $file->save();
 
         return $file;
+    }
+
+    /**
+     * Check for audio/video tracks to determine file type.
+     */
+    private function probeType(string $fileFullTempPath): string
+    {
+        $ffprobe = FFProbe::create();
+
+        // Get number of video track(s)
+        $videoTracks = $ffprobe
+            ->streams($fileFullTempPath)
+            ->videos()
+            ->count();
+
+        // Get number of audio track(s)
+        $audioTracks = $ffprobe
+            ->streams($fileFullTempPath)
+            ->audios()
+            ->count();
+
+        if ($videoTracks > 0) {
+            return FileType::Video;
+        }
+
+        if ($audioTracks > 0) {
+            return FileType::Audio;
+        }
+
+        return FileType::Other;
     }
 }

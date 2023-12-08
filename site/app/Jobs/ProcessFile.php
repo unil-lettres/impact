@@ -19,7 +19,6 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
 
 class ProcessFile implements ShouldQueue
 {
@@ -28,10 +27,6 @@ class ProcessFile implements ShouldQueue
     protected File $file;
 
     protected FileStorageService $fileStorageService;
-
-    protected string $fullTempPath;
-
-    protected string $fullStandardPath;
 
     /**
      * Number of seconds the job can run before timing out.
@@ -45,10 +40,6 @@ class ProcessFile implements ShouldQueue
     {
         $this->file = $file;
         $this->fileStorageService = new FileStorageService();
-        $this->fullTempPath = Storage::disk('public')
-            ->path('uploads/tmp/');
-        $this->fullStandardPath = Storage::disk('public')
-            ->path('uploads/files/');
         $this->timeout = config('const.files.ffmpeg.timeout');
     }
 
@@ -161,9 +152,14 @@ class ProcessFile implements ShouldQueue
             ]
         );
         $ffprobe = FFProbe::create();
-        $openFromPathname = $this->fullTempPath.$this->file->filename;
-        $saveToPathname = $this->fullStandardPath.$this->fileStorageService
-            ->getFileName($this->file->filename).'.'.config('const.files.video.extension');
+
+        $openFromPathname =
+            $this->fileStorageService->fullTempPath.
+            $this->file->filename;
+        $saveToPathname =
+            $this->fileStorageService->fullStandardPath.
+            $this->fileStorageService->getFileName($this->file->filename).
+            '.'.config('const.files.video.extension');
 
         $format = new X264('aac', 'libx264');
         $format->setAdditionalParameters([
@@ -236,9 +232,14 @@ class ProcessFile implements ShouldQueue
             ]
         );
         $ffprobe = FFProbe::create();
-        $openFromPathname = $this->fullTempPath.$this->file->filename;
-        $saveToPathname = $this->fullStandardPath.$this->fileStorageService
-            ->getFileName($this->file->filename).'.'.config('const.files.audio.extension');
+
+        $openFromPathname =
+            $this->fileStorageService->fullTempPath.
+            $this->file->filename;
+        $saveToPathname =
+            $this->fileStorageService->fullStandardPath.
+            $this->fileStorageService->getFileName($this->file->filename).
+            '.'.config('const.files.audio.extension');
 
         $format = new Mp3();
         $format->on('progress', function ($audio, $format, $progress) {

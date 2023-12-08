@@ -77,6 +77,10 @@ class FileService
 
         $course_id = $course?->id;
 
+        $fileFullTempPath =
+            $this->fileStorageService->fullTempPath.
+            $this->fileStorageService->getBaseName($path);
+
         return File::create([
             'name' => $this->fileStorageService
                 ->getFileName($filename),
@@ -84,7 +88,10 @@ class FileService
                 ->getBaseName($path),
             'status' => FileStatus::Processing,
             'type' => $this->fileStorageService
-                ->fileType($mimeType),
+                ->fileType(
+                    $mimeType,
+                    $fileFullTempPath
+                ),
             'size' => $size,
             'course_id' => $course_id,
         ]);

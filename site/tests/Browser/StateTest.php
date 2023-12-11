@@ -136,10 +136,9 @@ class StateTest extends DuskTestCase
                 ->type('description', 'Updated public description state');
 
             $browser->scrollTo('@state-update-button') // Scroll to avoid "Element is not clickable at point" error
-                ->press('Mettre à jour l\'état');
-
-            $browser->refresh() // Avoid page not yet updated issue
-                ->waitForText('Updated state')
+                ->pause(1) // Avoid page not yet refreshed issue
+                ->press('Mettre à jour l\'état')
+                ->waitForText('État mis à jour.')
                 ->assertSee('Updated state')
                 ->assertSee('Updated public description state');
         });

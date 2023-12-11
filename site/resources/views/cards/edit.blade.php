@@ -25,15 +25,15 @@
 
                 <div class="row">
                     <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
+                        @include('cards.edit.settings')
+                        @include('cards.edit.editors')
+                    </div>
+                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
                         @include('cards.edit.box1', ['reference' => 'box1'])
                         @include('cards.edit.box2', ['reference' => 'box2'])
                         @include('cards.edit.box3', ['reference' => 'box3'])
                         @include('cards.edit.box4', ['reference' => 'box4'])
                         @include('cards.edit.box5', ['reference' => 'box5'])
-                    </div>
-                    <div class="col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                        @include('cards.edit.settings')
-                        @include('cards.edit.editors')
                     </div>
                 </div>
 

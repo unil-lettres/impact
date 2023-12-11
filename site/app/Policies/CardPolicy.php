@@ -232,7 +232,7 @@ class CardPolicy
             return true;
         }
 
-        // Only teachers of the course can hide parts of the card
+        // Only teachers of the course can set the parameters of the card
         if ($user->isTeacher($card->course)) {
             return true;
         }

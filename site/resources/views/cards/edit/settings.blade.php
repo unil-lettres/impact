@@ -8,12 +8,16 @@
                 {{ trans('cards.title') }}
             </label>
             <div class="col-md-8">
-                <input id="title"
-                       type="text"
-                       name="title"
-                       value="{{ old('title', $card->title) }}"
-                       class="form-control"
-                >
+                @if(Helpers::areCardSettingsEditable($card))
+                    <input id="title"
+                           type="text"
+                           name="title"
+                           value="{{ old('title', $card->title) }}"
+                           class="form-control"
+                    >
+                @else
+                    <div>{{ $card->title ?? '-' }}</div>
+                @endif
             </div>
         </div>
 
@@ -22,14 +26,14 @@
                 {{ trans('cards.state') }}
             </label>
             <div class="col-md-8">
-                @if(Helpers::isStateSelectEditable($card))
+                @if(Helpers::areCardSettingsEditable($card))
                     <input id="state" name="state" type="hidden" value="{{ $card->state ? $card->state->id : '' }}">
                     <div id="rct-single-state-select"
                          reference="state"
                          data='{{ json_encode(['options' => $states, 'default' => $card->state, 'clearable' => false, 'message' => Auth::user()->isTeacher($card->course) ? null : ['content' => trans('cards.state_cannot_cancel'), 'type' => 'text-danger']]) }}'
                     ></div>
                 @else
-                    <div>{{ $card->state ? $card->state->name : '' }}</div>
+                    <div>{{ $card->state ? $card->state->name : '-' }}</div>
                 @endif
             </div>
         </div>
@@ -39,9 +43,13 @@
                 {{ trans('cards.date') }}
             </label>
             <div class="col-md-8">
-                <div id="rct-date-picker"
-                     data='{{ json_encode(['locale' => Helpers::currentLocal(), 'name' => 'presentation_date', 'default' => $card->options['presentation_date'] ?? null]) }}'
-                ></div>
+                @if(Helpers::areCardSettingsEditable($card))
+                    <div id="rct-date-picker"
+                         data='{{ json_encode(['locale' => Helpers::currentLocal(), 'name' => 'presentation_date', 'default' => $card->options['presentation_date'] ?? null]) }}'
+                    ></div>
+                @else
+                    <div>{{ $card->options['presentation_date'] ?? '-' }}</div>
+                @endif
             </div>
         </div>
 
@@ -50,11 +58,15 @@
                 {{ trans('cards.tags') }}
             </label>
             <div class="col-md-8">
-                <div id="rct-multi-tag-select"
-                        createLabel="{{ trans('general.create_select_option_label') }}"
-                        data='{{ json_encode(['record' => $card, 'options' => $card->course->tags, 'defaults' => $card->tags ]) }}'
-                ></div>
-                <div class="form-text">{{ trans('cards.edit.tags_are_auto_save') }}</div>
+                @if(Helpers::areCardSettingsEditable($card))
+                    <div id="rct-multi-tag-select"
+                            createLabel="{{ trans('general.create_select_option_label') }}"
+                            data='{{ json_encode(['record' => $card, 'options' => $card->course->tags, 'defaults' => $card->tags ]) }}'
+                    ></div>
+                    <div class="form-text">{{ trans('cards.edit.tags_are_auto_save') }}</div>
+                @else
+                    <div>{{ $card->tags->isEmpty() ? '-' : $card->tags->implode('name', ', ') }}</div>
+                @endif
             </div>
         </div>
 

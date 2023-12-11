@@ -1,9 +1,9 @@
-@can('parameters', $card)
-    <div class="card">
-        <div class="card-header">
-            {{ trans('cards.editors') }}
-        </div>
-        <div class="card-body">
+<div class="card">
+    <div class="card-header">
+        {{ trans('cards.editors') }}
+    </div>
+    <div class="card-body">
+        @can('parameters', $card)
             <p>{{ trans('cards.choose_editors') }}</p>
 
             @if ($students->isNotEmpty())
@@ -18,6 +18,8 @@
                     {{ trans('cards.editors.not_found') }}
                 </p>
             @endif
-        </div>
+        @else
+            <div>{{ $students->isEmpty() ? '' : $students->implode('name', ', ') }}</div>
+        @endcan
     </div>
-@endcan
+</div>

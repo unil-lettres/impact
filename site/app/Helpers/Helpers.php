@@ -341,9 +341,9 @@ class Helpers
     }
 
     /**
-     * Return whether the current state of the card should be displayed in read only mode
+     * Return whether the settings of the card should be displayed in read only mode
      */
-    public static function isStateSelectEditable(Card $card): bool
+    public static function areCardSettingsEditable(Card $card): bool
     {
         if (! $card->state) {
             return false;

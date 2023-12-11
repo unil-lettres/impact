@@ -27,6 +27,20 @@ class UpdateCard extends AbstractRequest
         return [
             'card' => 'required|integer|exists:cards,id',
             'title' => 'required|string|max:255',
+            'emails' => [
+                'sometimes',
+                Rule::in(['on']),
+            ],
+            'presentation_date' => [
+                'nullable',
+                'date_format:d/m/Y',
+            ],
+            'state' => [
+                'required',
+                'integer',
+                'exists:states,id',
+                new StateAvailability,
+            ],
             'box1-hidden' => [
                 'sometimes',
                 Rule::in(['on']),
@@ -47,29 +61,15 @@ class UpdateCard extends AbstractRequest
                 'sometimes',
                 Rule::in(['on']),
             ],
-            'box3-title' => 'required|string|max:255',
+            'box3-title' => 'sometimes|string|max:255',
             'box4-hidden' => [
                 'sometimes',
                 Rule::in(['on']),
             ],
-            'box4-title' => 'required|string|max:255',
+            'box4-title' => 'sometimes|string|max:255',
             'box5-hidden' => [
                 'sometimes',
                 Rule::in(['on']),
-            ],
-            'emails' => [
-                'sometimes',
-                Rule::in(['on']),
-            ],
-            'presentation_date' => [
-                'nullable',
-                'date_format:d/m/Y',
-            ],
-            'state' => [
-                'required',
-                'integer',
-                'exists:states,id',
-                new StateAvailability,
             ],
         ];
     }

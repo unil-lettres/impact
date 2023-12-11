@@ -5,7 +5,7 @@ return [
     'manage' => 'Gérer les invitations',
     'email' => 'Email',
     'created_at' => 'Date de création',
-    'link' => 'Lien de l\'invitation',
+    'link' => 'Lien de l\'invitation (cliquer pour garder le lien visible)',
     'pending' => 'Invitations en attente',
     'create' => 'Créer une invitation',
     'select_space' => 'Sélectionner un espace',

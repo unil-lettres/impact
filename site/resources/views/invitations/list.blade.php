@@ -33,42 +33,43 @@
                                 <td class="actions">
                                     @can('view', $invitation)
                                         <span>
-                                                <button type="button"
-                                                        class="btn btn-primary base-popover"
-                                                        title="{{ trans('invitations.link') }}"
-                                                        data-bs-html="true"
-                                                        data-bs-toggle="popover"
-                                                        data-bs-content="{{ $invitation->getLink() }}">
-                                                    <i class="far fa-share-square"></i>
-                                                </button>
-                                            </span>
+                                            <button type="button"
+                                                    class="btn btn-primary base-popover"
+                                                    title="{{ trans('invitations.link') }}"
+                                                    data-bs-html="true"
+                                                    data-bs-toggle="popover"
+                                                    data-bs-trigger="hover click"
+                                                    data-bs-content="<em>{{ $invitation->getLink() }}</em>">
+                                                <i class="far fa-share-square"></i>
+                                            </button>
+                                        </span>
                                     @endcan
                                     @can('mail', $invitation)
                                         <span>
-                                                <a href="{{ route('send.invite', $invitation->id) }}"
-                                                   data-bs-toggle="tooltip"
-                                                   data-placement="top"
-                                                   class="btn btn-primary"
-                                                   title="{{ trans('invitations.send') }}">
-                                                    <i class="far fa-paper-plane"></i>
-                                                </a>
-                                            </span>
+                                            <a href="{{ route('send.invite', $invitation->id) }}"
+                                               data-bs-toggle="tooltip"
+                                               data-placement="top"
+                                               class="btn btn-primary"
+                                               title="{{ trans('invitations.send') }}">
+                                                <i class="far fa-paper-plane"></i>
+                                            </a>
+                                        </span>
                                     @endcan
                                     @can('forceDelete', $invitation)
                                         <span>
-                                                <form class="with-delete-confirm" method="post"
-                                                      action="{{ route('invitations.destroy', $invitation->id) }}">
-                                                    @method('DELETE')
-                                                    @csrf
-                                                    <button type="submit"
-                                                            class="btn btn-danger"
-                                                            data-bs-toggle="tooltip"
-                                                            data-placement="top"
-                                                            title="{{ trans('invitations.delete') }}">
-                                                        <i class="far fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
-                                            </span>
+                                            <form class="with-delete-confirm" method="post"
+                                                  action="{{ route('invitations.destroy', $invitation->id) }}">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button type="submit"
+                                                        class="btn btn-danger"
+                                                        data-bs-toggle="tooltip"
+                                                        data-placement="top"
+                                                        title="{{ trans('invitations.delete') }}">
+                                                    <i class="far fa-trash-alt"></i>
+                                                </button>
+                                            </form>
+                                        </span>
                                     @endcan
                                 </td>
                             </tr>

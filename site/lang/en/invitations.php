@@ -5,7 +5,7 @@ return [
     'manage' => 'Manage invitations',
     'email' => 'Email',
     'created_at' => 'Creation date',
-    'link' => 'Invitation link',
+    'link' => 'Invitation link (click to keep the link visible)',
     'pending' => 'Pending invitations',
     'create' => 'Create an invitation',
     'select_space' => 'Select the space',

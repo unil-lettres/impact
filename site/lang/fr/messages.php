@@ -58,5 +58,7 @@ return [
     'tag.renamed' => 'Étiquette renommée.',
     'tag.cloned' => 'Étiquettes reprises.',
     'tag.cloned.none' => 'Toutes les étiquettes existent déjà dans cet espace.',
+    'select.option' => 'Sélectionner',
+    'no.option' => 'Aucune option disponible',
 
 ];

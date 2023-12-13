@@ -8,7 +8,6 @@ use App\Enums\CardBox;
 use App\Enums\FinderItemType;
 use App\Enums\TranscriptionType;
 use App\Folder;
-use App\User;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 

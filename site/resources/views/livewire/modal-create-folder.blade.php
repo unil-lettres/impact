@@ -8,66 +8,13 @@
         <div class="modal-content">
             <form wire:submit="create">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5">{{ trans('folders.create') }}</h1>
-                    <button
-                        type="button"
-                        class="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                    ></button>
+                    @include('livewire.modal-create-header')
                 </div>
                 <div class="modal-body">
-                    <div class="mb-3">
-                        <label for="{{$id}}-name" class="form-label">
-                            {{ trans('courses.name') }}
-                        </label>
-                        <input
-                            id="{{$id}}-name"
-                            type="text"
-                            class="form-control"
-                            wire:model="name"
-                            autocomplete="off"
-                        />
-                    </div>
-                    <div class="mb-3">
-                        <label for="{{$id}}-folder-id" class="control-label form-label">
-                            {{ trans('folders.location') }}
-                        </label>
-                        <select
-                            id="{{$id}}-folder-id"
-                            class="form-select"
-                            wire:model="destination"
-                        >
-                            <option value="{{$folder?->id}}">
-                                @if ($folder)
-                                    {{ $folder->title.' '.trans('folders.location.current') }}
-                                @else
-                                    {{ trans('courses.finder.dialog.rootFolder') }}
-                                @endif
-                            </option>
-                            @foreach($this->foldersDestination as $_folder)
-                                <option value="{{$_folder->id}}">
-                                    {{ $_folder->titleFullPath }}
-                                </option>
-                            @endforeach
-                        </select>
-                    </div>
+                    @include('livewire.modal-create-common-fields')
                 </div>
                 <div class="modal-footer">
-                    <button
-                        type="button"
-                        class="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                    >
-                        {{ trans('courses.finder.dialog.create.cancel') }}
-                    </button>
-                    <button
-                        data-bs-dismiss="modal"
-                        type="submit"
-                        class="btn btn-primary"
-                    >
-                        {{ trans('courses.finder.dialog.create.create') }}
-                    </button>
+                    @include('livewire.modal-create-footer')
                 </div>
             </form>
         </div>

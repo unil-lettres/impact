@@ -88,6 +88,12 @@ class ModalCreateFolder extends Component
     }
 
     #[Computed]
+    public function title()
+    {
+        return trans('folders.create');
+    }
+
+    #[Computed]
     public function foldersDestination(): Collection
     {
         $children =

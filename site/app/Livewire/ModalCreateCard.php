@@ -102,6 +102,12 @@ class ModalCreateCard extends Component
     }
 
     #[Computed]
+    public function title()
+    {
+        return trans('cards.create');
+    }
+
+    #[Computed]
     public function foldersDestination(): Collection
     {
         $children =
@@ -180,6 +186,7 @@ class ModalCreateCard extends Component
             'folder_id' => $this->destination,
         ]);
 
+        // Make selected users editors of the card
         foreach ($this->editors as $id => $name) {
             $enrollment = Enrollment::where('course_id', $this->course->id)
                 ->where('user_id', $id)

@@ -93,7 +93,6 @@ export default class MultiSelect extends Component {
 
         action(this.state.record, option)
             .then((response) => {
-                console.log(response);
                 this.setState((prevState) => ({ values: getValues(prevState) }));
             })
             .catch((error) => console.error(error))
@@ -105,8 +104,6 @@ export default class MultiSelect extends Component {
 
         this.create(this.state.record, inputValue)
             .then((response) => {
-                console.log(response);
-
                 const newEntity = {
                     value: response?.data?.entity_id,
                     label: inputValue,
@@ -124,7 +121,6 @@ export default class MultiSelect extends Component {
                 }));
             })
             .catch((error) => {
-
                 // Request form validation failed.
                 if (error?.response?.status === 422) {
                     alert(error.response.data.message);
@@ -137,7 +133,6 @@ export default class MultiSelect extends Component {
             });
     }
     render() {
-
         let attributes = {
             isMulti: true,
             components: animatedComponents,

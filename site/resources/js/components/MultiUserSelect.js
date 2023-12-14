@@ -7,8 +7,6 @@ import _ from "lodash";
 export default class MultiUserSelect extends MultiSelect {
     select = (record, option) => {
         return new Promise((resolve) => {
-            console.log('select', option);
-
             if(option.value) {
                 const selectedEvent = new CustomEvent('add-editor', {
                     bubbles: true,
@@ -27,8 +25,6 @@ export default class MultiUserSelect extends MultiSelect {
 
     remove = (record, option) => {
         return new Promise((resolve) => {
-            console.log('remove', option);
-
             if(option.value) {
                 if(option.value) {
                     const selectedEvent = new CustomEvent('remove-editor', {

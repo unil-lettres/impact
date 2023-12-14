@@ -109,18 +109,31 @@ class CardTest extends DuskTestCase
     public function testCreateCardAsTeacher()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser
+                ->visit(new Login())
                 ->loginAsUser('teacher-user@example.com', 'password');
 
             $browser
                 ->visit(new Course('First space'))
                 ->press('Créer une fiche')
-                ->waitForText('Créer une fiche')
+                ->waitForText('Créer une fiche');
+
+            $cardName = 'My new card';
+            $editorName = 'Teacher user';
+
+            $browser
                 ->pause(1000) // Avoid "element not interactable" issue with modal
-                ->type('#modalCreateCard-name', 'My new card')
-                ->click('#modalCreateCard [type="submit"]')
-                ->waitForText('My new card')
-                ->assertSee('My new card');
+                ->type('#modalCreateCard-name', $cardName)
+                ->click('#rct-multi-user-select')
+                ->waitForText($editorName)
+                ->click('#rct-multi-user-select [id$=listbox] > div > div:first-child') // Click on the first and only option ($editorName)
+                ->assertSee(trans('messages.no.option')) // No more options available
+                ->click('#modalCreateCard [type="submit"]');
+
+            $browser
+                ->waitForText($cardName)
+                ->assertSee($cardName)
+                ->assertSee($editorName);
         });
     }
 
@@ -134,7 +147,8 @@ class CardTest extends DuskTestCase
     public function testCreateCardIntoFolder()
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser
+                ->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser
@@ -143,20 +157,26 @@ class CardTest extends DuskTestCase
                 ->waitForText('Créer une fiche');
 
             $folderPage = new Folder('Test folder');
+            $cardName = 'My new card in folder';
+            $editorName = 'Student user';
 
             $browser
                 ->pause(1000) // Avoid "element not interactable" issue with modal
-                ->type('#modalCreateCard-name', 'My new card in folder')
+                ->type('#modalCreateCard-name', $cardName)
                 ->select('#modalCreateCard-folder-id', $folderPage->id())
-                ->click('#modalCreateCard [type="submit"]')
-                ->waitForText('2 fiche(s)')
-                ->assertSee('2 fiche(s)');
+                ->click('#rct-multi-user-select')
+                ->waitForText($editorName)
+                ->click('#rct-multi-user-select [id$=listbox] > div > div:nth-child(2)') // Click on the second option ($editorName)
+                ->assertDontSee(trans('messages.no.option')) // More options should be available
+                ->click('#modalCreateCard [type="submit"]');
 
             $browser
+                ->waitForText('2 fiche(s)')
+                ->assertSee('2 fiche(s)')
                 ->visit($folderPage)
                 ->waitUntilLoaded()
-                ->assertSee('My new card in folder');
-
+                ->assertSee($cardName)
+                ->assertSee($editorName);
         });
     }
 

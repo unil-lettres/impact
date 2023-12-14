@@ -8,7 +8,7 @@
         <div class="modal-content">
             <form wire:submit="create">
                 <div class="modal-header">
-                    @include('livewire.modal-create-header')
+                    @include('livewire.modal-create-header', ['type' => App\Enums\FinderItemType::Card])
                 </div>
                 <div class="modal-body">
                     @include('livewire.modal-create-common-fields')
@@ -20,7 +20,7 @@
                         <div
                             wire:ignore
                             id="rct-multi-user-select"
-                            data='{{ json_encode(['record' => $id.'-editors', 'options' => $this->enrolledUsers]) }}'
+                            data='{{ json_encode(['record' => $id.'-editors', 'options' => $this->enrolledUsers()]) }}'
                             placeholder='{{ trans("messages.select.option") }}'
                             noOptionsMessage="{{ trans('messages.no.option') }}"
                         ></div>

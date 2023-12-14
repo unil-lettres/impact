@@ -181,6 +181,39 @@ class CardTest extends DuskTestCase
     }
 
     /**
+     * Test cannot create a card without selecting editor(s).
+     *
+     * @return void
+     *
+     * @throws Throwable
+     */
+    public function testCannotCreateCardWithoutEditors()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser
+                ->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser
+                ->visit(new Course('Second space'))
+                ->press('Créer une fiche')
+                ->waitForText('Créer une fiche');
+
+            $cardName = 'My new card with error';
+
+            $browser
+                ->pause(1000) // Avoid "element not interactable" issue with modal
+                ->type('#modalCreateCard-name', $cardName)
+                ->click('#modalCreateCard [type="submit"]');
+
+            $browser
+                ->waitForText('Le champ rédacteurs est obligatoire.')
+                ->assertSee('Le champ rédacteurs est obligatoire.')
+                ->assertDontSee($cardName);
+        });
+    }
+
+    /**
      * Test hide/show card boxes.
      *
      * @return void

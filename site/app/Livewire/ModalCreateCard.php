@@ -116,7 +116,7 @@ class ModalCreateCard extends ModalCreate
         $this->resetValues();
         $this->resetEditors();
 
-        // We need to dispatch this event to other components
+        // We need to dispatch events to other components
         // to update their list of folders & items.
         $this
             ->dispatch('item-created')

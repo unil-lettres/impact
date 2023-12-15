@@ -48,13 +48,13 @@ class ModalCreateFolder extends ModalCreate
 
         $this->resetValues();
 
-        // We need to dispatch this event to other components
+        // We need to dispatch events to other components
         // to update their list of folders & items.
         $this
             ->dispatch('item-created')
             ->to(Finder::class); // Already triggered by validate(), but we keep it for clarity.
         $this
-            ->dispatch('item-created')
+            ->dispatch('update-folders')
             ->to(ModalCreateCard::class);
     }
 }

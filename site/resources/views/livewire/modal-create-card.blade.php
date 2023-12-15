@@ -8,7 +8,7 @@
         <div class="modal-content">
             <form wire:submit="create">
                 <div class="modal-header">
-                    @include('livewire.modal-create-header', ['type' => App\Enums\FinderItemType::Card])
+                    @include('livewire.modal-create-header', ['title' => trans('cards.create')])
                 </div>
                 <div class="modal-body">
                     @include('livewire.modal-create-common-fields')
@@ -42,7 +42,7 @@
             // Reinitialize the editors react-select component every time
             // we open the modal, to prevent persisting old component
             // (with old values).
-            window.MultiUserSelect.create();
+            window.MultiEditorModalSelect.create();
 
             // Reset the editors property of the component, to prevent
             // persisting old values.

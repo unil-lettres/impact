@@ -1,4 +1,4 @@
-<h1 class="modal-title fs-5">{{ $this->title($type) }}</h1>
+<h1 class="modal-title fs-5">{{ $title }}</h1>
 <button
     type="button"
     class="btn-close"

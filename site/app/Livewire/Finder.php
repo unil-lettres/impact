@@ -616,10 +616,10 @@ class Finder extends Component
     private function dispatchToModals()
     {
         $this
-            ->dispatch('item-created')
+            ->dispatch('update-folders')
             ->to(ModalCreateCard::class);
         $this
-            ->dispatch('item-created')
+            ->dispatch('update-folders')
             ->to(ModalCreateFolder::class);
     }
 }

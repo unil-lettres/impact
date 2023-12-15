@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { createRoot } from "react-dom/client";
 
 import MultiSelect from "./MultiSelect";
 import _ from "lodash";
 
-export default class MultiUserSelect extends MultiSelect {
+export default class MultiEditorModalSelect extends MultiSelect {
     select = (record, option) => {
         return new Promise((resolve) => {
             if(option.value) {
@@ -26,17 +26,15 @@ export default class MultiUserSelect extends MultiSelect {
     remove = (record, option) => {
         return new Promise((resolve) => {
             if(option.value) {
-                if(option.value) {
-                    const selectedEvent = new CustomEvent('remove-editor', {
-                        bubbles: true,
-                        cancelable: false,
-                        detail: {
-                            id: option.value,
-                            name: option.label,
-                        },
-                    });
-                    this.props.refEl.dispatchEvent(selectedEvent);
-                }
+                const selectedEvent = new CustomEvent('remove-editor', {
+                    bubbles: true,
+                    cancelable: false,
+                    detail: {
+                        id: option.value,
+                        name: option.label,
+                    },
+                });
+                this.props.refEl.dispatchEvent(selectedEvent);
             }
 
             resolve();
@@ -44,7 +42,7 @@ export default class MultiUserSelect extends MultiSelect {
     }
 }
 
-window.MultiUserSelect = {
+window.MultiEditorModalSelect = {
     // For keeping track of every react components mounted.
     roots: [],
 
@@ -62,7 +60,7 @@ window.MultiUserSelect = {
             const placeholder = element.getAttribute('placeholder');
             const noOptionsMessage = element.getAttribute('noOptionsMessage');
             root.render(
-                <MultiUserSelect
+                <MultiEditorModalSelect
                     data={ data }
                     placeholder={placeholder}
                     noOptionsMessage={noOptionsMessage}
@@ -74,4 +72,4 @@ window.MultiUserSelect = {
     }
 };
 
-window.MultiUserSelect.create();
+window.MultiEditorModalSelect.create();

@@ -8,7 +8,7 @@
         <div class="modal-content">
             <form wire:submit="create">
                 <div class="modal-header">
-                    @include('livewire.modal-create-header', ['type' => App\Enums\FinderItemType::Folder])
+                    @include('livewire.modal-create-header', ['title' => trans('folders.create')])
                 </div>
                 <div class="modal-body">
                     @include('livewire.modal-create-common-fields')

@@ -3,7 +3,6 @@
 namespace App\Livewire;
 
 use App\Course;
-use App\Enums\FinderItemType;
 use App\Folder;
 use App\Helpers\Helpers;
 use Illuminate\Support\Collection;
@@ -77,8 +76,8 @@ class ModalCreate extends Component
         )->sortBy('titleFullPath');
     }
 
-    #[On('item-created')]
-    public function handleItemCreated(): void
+    #[On('update-folders')]
+    public function handleUpdateFolders(): void
     {
         unset($this->foldersDestination);
     }
@@ -87,18 +86,5 @@ class ModalCreate extends Component
     {
         $this->name = '';
         $this->destination = $this->folder->id ?? null;
-    }
-
-    /**
-     * Title of the component. Used in the modal view.
-     *
-     * @param  string  $type (\App\Enums\FinderItemType)
-     */
-    public function title(string $type): string
-    {
-        return match ($type) {
-            FinderItemType::Folder => trans('folders.create'),
-            FinderItemType::Card => trans('cards.create'),
-        };
     }
 }

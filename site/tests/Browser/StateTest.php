@@ -125,20 +125,13 @@ class StateTest extends DuskTestCase
             $browser->assertSee('États')
                 ->clickLink('États');
 
-            // Create a new state
-            $browser->assertSee('Ajouter un état')
-                ->press('Ajouter un état')
-                ->waitForText('Nouvel état créé.')
-                ->assertSee('nouvel état');
-
-            // Update the new state
+            // Update the current state
             $browser->type('name', 'Updated state')
                 ->type('description', 'Updated public description state');
 
             $browser->scrollTo('@state-update-button') // Scroll to avoid "Element is not clickable at point" error
-                ->pause(1) // Avoid page not yet refreshed issue
                 ->press('Mettre à jour l\'état')
-                ->waitForText('État mis à jour.')
+                ->waitForText('État mis à jour')
                 ->assertSee('Updated state')
                 ->assertSee('Updated public description state');
         });

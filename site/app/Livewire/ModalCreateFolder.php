@@ -52,7 +52,7 @@ class ModalCreateFolder extends ModalCreate
         // to update their list of folders & items.
         $this
             ->dispatch('item-created')
-            ->to(Finder::class); // Already triggers by validate(), but we keep it for clarity.
+            ->to(Finder::class); // Already triggered by validate(), but we keep it for clarity.
         $this
             ->dispatch('item-created')
             ->to(ModalCreateCard::class);

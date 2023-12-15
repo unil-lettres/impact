@@ -11,10 +11,8 @@ class CourseObserver
 {
     /**
      * Handle the course "created" event.
-     *
-     * @return void
      */
-    public function created(Course $course)
+    public function created(Course $course): void
     {
         // Create the "private" state
         State::create([
@@ -78,10 +76,8 @@ class CourseObserver
 
     /**
      * Handle the course "deleting" event.
-     *
-     * @return void
      */
-    public function deleting(Course $course)
+    public function deleting(Course $course): void
     {
         if (! $course->isForceDeleting()) {
             // Soft delete all related enrollments
@@ -109,10 +105,8 @@ class CourseObserver
 
     /**
      * Handle the course "restored" event.
-     *
-     * @return void
      */
-    public function restored(Course $course)
+    public function restored(Course $course): void
     {
         // Restore all related enrollments
         foreach ($course->enrollments()->withTrashed()->get() as $enrollment) {

@@ -9,10 +9,8 @@ class FileObserver
 {
     /**
      * Handle the file "deleted" event.
-     *
-     * @return void
      */
-    public function deleted(File $file)
+    public function deleted(File $file): void
     {
         if ($file->isForceDeleting()) {
             // Remove the binary associated with the file record

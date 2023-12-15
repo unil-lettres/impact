@@ -16,5 +16,7 @@ return [
     'mail.create.info' => 'Vous avez été invité à créer un compte sur <a href="http://wp.unil.ch/impact/" target="_blank">Impact</a>.',
     'mail.create.sent_by' => 'Invitation envoyée par',
     'mail.create.link' => 'Veuillez utiliser le lien ci-dessous afin de finaliser votre inscription.',
+    'already.pending' => 'Une invitation pour cette adresse e-mail est en attente, veuillez attendre que l\'utilisateur s\'inscrive.',
+    'user.exists' => 'Un utilisateur avec cette adresse e-mail existe déjà, veuillez l\'ajouter manuellement au cours.',
 
 ];

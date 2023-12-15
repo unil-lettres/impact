@@ -611,7 +611,7 @@ class Finder extends Component
 
     /**
      * Dispatch events to the modal components to
-     * update their list of destinations folders.
+     * update their list of folders.
      */
     private function dispatchToModals()
     {

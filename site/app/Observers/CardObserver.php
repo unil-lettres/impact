@@ -15,10 +15,8 @@ class CardObserver
 
     /**
      * Handle the Card "created" event.
-     *
-     * @return void
      */
-    public function created(Card $card)
+    public function created(Card $card): void
     {
         $cardUpdate = [];
 

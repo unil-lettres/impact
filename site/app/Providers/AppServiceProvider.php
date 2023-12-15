@@ -10,6 +10,8 @@ use App\Observers\CardObserver;
 use App\Observers\CourseObserver;
 use App\Observers\FileObserver;
 use App\Observers\FolderObserver;
+use App\Observers\UserObserver;
+use App\User;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -39,6 +41,8 @@ class AppServiceProvider extends ServiceProvider
         Course::observe(CourseObserver::class);
         Card::observe(CardObserver::class);
         Folder::observe(FolderObserver::class);
+        User::observe(UserObserver::class);
+
         Paginator::useBootstrap();
 
         // Define default password validation rules

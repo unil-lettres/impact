@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\InvitationUniqueness;
+
 class StoreInvitation extends AbstractRequest
 {
     /**
@@ -22,7 +24,11 @@ class StoreInvitation extends AbstractRequest
     public function rules()
     {
         return [
-            'email' => 'required|email|unique:invitations|unique:users',
+            'email' => [
+                'required',
+                'email',
+                new InvitationUniqueness,
+            ],
             'course' => 'required|integer|exists:courses,id',
         ];
     }

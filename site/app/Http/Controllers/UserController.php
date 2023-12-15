@@ -264,6 +264,9 @@ class UserController extends Controller
         $this->authorize('delete', $user);
 
         $email = $user->email;
+        // Delete the record from the database. Any invitation
+        // related to the user email address will be deleted
+        // with the UserObserver "deleted" event.
         $user->delete();
 
         return redirect()->back()

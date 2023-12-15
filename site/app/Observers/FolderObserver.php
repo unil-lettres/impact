@@ -11,10 +11,8 @@ class FolderObserver
 
     /**
      * Handle the Folder "created" event.
-     *
-     * @return void
      */
-    public function created(Folder $folder)
+    public function created(Folder $folder): void
     {
         // Get the next position based on other cards and folders of this course.
         if (is_null($folder->position)) {

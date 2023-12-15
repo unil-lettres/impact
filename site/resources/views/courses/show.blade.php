@@ -38,15 +38,13 @@
         @endsection
     @endif
     @section('content')
-        <livewire:modal-create
+        <livewire:modal-create-folder
             id="modalCreateFolder"
             :course="$course"
-            :type="('App\\Enums\\FinderItemType')::Folder"
         />
-        <livewire:modal-create
+        <livewire:modal-create-card
             id="modalCreateCard"
             :course="$course"
-            :type="('App\\Enums\\FinderItemType')::Card"
         />
         <livewire:finder
             :course="$course"

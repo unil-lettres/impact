@@ -103,7 +103,7 @@
                         </span>
                     </li>
                     <li><hr class="dropdown-divider"></li>
-                    @can('manage', $folder->course)
+                    @can('editConfiguration', $folder->course)
                         <li
                             class="dropdown-item d-flex cursor-pointer align-items-center"
                             data-bs-toggle="modal"
@@ -150,7 +150,7 @@
                             class="dropdown-item d-flex cursor-pointer align-items-center"
                         >
                             <i class="fa-regular fa-trash-can me-2"></i>
-                            <spa    n class="flex-fill me-5">
+                            <span class="flex-fill me-5">
                                 {{ trans('courses.finder.menu.delete')}}
                             </span>
                         </li>

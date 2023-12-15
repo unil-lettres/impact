@@ -17,6 +17,7 @@ require('./components/MultiEditorSelect');
 require('./components/MultiEnrollmentSelect');
 require('./components/MultiTagSelect');
 require('./components/MultiFilterSelect');
+require('./components/MultiEditorModalSelect');
 require('./components/SingleCourseSelect');
 require('./components/SingleFolderSelect');
 require('./components/SingleFileSelect');

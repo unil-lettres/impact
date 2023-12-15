@@ -4,6 +4,8 @@ namespace App\Services\Clone;
 
 use App\Card;
 use App\Course;
+use App\Enrollment;
+use App\Enums\EnrollmentRole;
 use App\Enums\FileStatus;
 use App\Enums\StateType;
 use App\Exceptions\CloneException;
@@ -55,10 +57,10 @@ class CloneCardService
      *
      * @param  Folder|null  $destFolder The new parent folder. Null if the card
      * should be cloned in the same parent folder.
-     * @param  Course|null  $course The new course. Null if the card should be
+     * @param  Course|null  $destCourse The new course. Null if the card should be
      * cloned in the same course.
      *
-     * @throws InvalidArgumentException If both $destFolder and $destCourse are
+     * @throws InvalidArgumentException|CloneException If both $destFolder and $destCourse are
      * specified.
      */
     public function clone(
@@ -176,6 +178,18 @@ class CloneCardService
                         $failed = true;
                     }
                 }
+            }
+
+            // Add editor.
+            $currentUser = auth()->user();
+            $enrollments = Enrollment::where('course_id', $destCourse->id)
+                ->where('user_id', $currentUser->id)
+                ->where('role', EnrollmentRole::Teacher);
+
+            // Current user becomes an editor of the new card. If the enrollment
+            // exists and if the user is not an admin.
+            if ($enrollments->exists() && ! $currentUser->admin) {
+                $enrollments->first()->addCard($copiedCard);
             }
         } else {
             // Attach tags.

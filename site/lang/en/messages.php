@@ -57,5 +57,7 @@ return [
     'tag.renamed' => 'Tag renamed.',
     'tag.cloned' => 'Tags retrieved.',
     'tag.cloned.none' => 'All tags already exist in this course.',
+    'select.option' => 'Select',
+    'no.option' => 'No available option',
 
 ];

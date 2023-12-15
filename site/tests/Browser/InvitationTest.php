@@ -197,9 +197,11 @@ class InvitationTest extends DuskTestCase
             $browser->visit(new Invitations())
                 ->invitations();
 
-            $browser->click('#invitations table tbody tr:first-child .actions span:nth-child(2) a')
-                ->waitForText('Mail d\'invitation envoyé à')
-                ->assertSee('Mail d\'invitation envoyé à');
+            $browser->waitForText(trans('invitations.pending'))
+                ->assertSee(trans('invitations.pending'))
+                ->click('#invitations table tbody tr:first-child .actions span:nth-child(2) a')
+                ->waitForText('Mail d\'invitation envoyé')
+                ->assertSee('Mail d\'invitation envoyé');
         });
     }
 

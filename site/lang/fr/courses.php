@@ -60,7 +60,6 @@ return [
     'finder.filter.clear' => 'Tout effacer',
     'finder.filter_label' => 'élément(s)',
     'finder.filter.box' => 'Case',
-    'finder.filter.empty' => 'Aucune option disponible',
     'finder.menu.open' => 'Ouvrir',
     'finder.menu.close' => 'Fermer',
     'finder.menu.print' => 'Imprimer (TODO)',

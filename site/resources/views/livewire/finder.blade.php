@@ -39,7 +39,7 @@
                 <div
                     wire:ignore
                     class="rct-multi-filter-select"
-                    noOptionsMessage="{{ trans('courses.finder.filter.empty') }}"
+                    noOptionsMessage="{{ trans('messages.no.option') }}"
                     data='{{ json_encode(['record' => 'tag', 'options' => $course->tags, 'defaults' => $this->filters->get("tag")->map(fn ($id) => 'App\\Tag'::find($id))->toArray()]) }}'
                     placeholder='{{ trans("courses.finder.filter.tags") }}'
                 ></div>
@@ -48,7 +48,7 @@
                 <div
                     wire:ignore
                     class="rct-multi-filter-select"
-                    noOptionsMessage="{{ trans('courses.finder.filter.empty') }}"
+                    noOptionsMessage="{{ trans('messages.no.option') }}"
                     data='{{ json_encode(['record' => 'editor', 'options' => $this->editors, 'defaults' => $this->filters->get("editor")->map(fn ($id) => 'App\\User'::find($id))->toArray()]) }}'
                     placeholder='{{ trans("courses.finder.filter.editors") }}'
                 ></div>
@@ -57,7 +57,7 @@
                 <div
                     wire:ignore
                     class="rct-multi-filter-select"
-                    noOptionsMessage="{{ trans('courses.finder.filter.empty') }}"
+                    noOptionsMessage="{{ trans('messages.no.option') }}"
                     data='{{ json_encode(['record' => 'state', 'options' => $course->states->sortBy('position')->values(), 'defaults' => $this->filters->get("state")->map(fn ($id) => 'App\\State'::find($id))->toArray()]) }}'
                     placeholder='{{ trans("courses.finder.filter.states") }}'
                 ></div>

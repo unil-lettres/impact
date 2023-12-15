@@ -357,6 +357,8 @@ class Finder extends Component
 
         (new CloneFolderService($folder))->clone();
 
+        $this->dispatchToModals();
+
         if ($displayFlash) {
             $this->flashMessage(trans('courses.finder.menu.copy.success'));
         }
@@ -370,6 +372,8 @@ class Finder extends Component
         $this->keysToEntities($keys)
             ->each(fn ($item) => $this->authorize('manage', $item))
             ->each(fn ($entity) => MassCloneService::getCloneService($entity)->clone());
+
+        $this->dispatchToModals();
     }
 
     /**
@@ -394,6 +398,8 @@ class Finder extends Component
 
         $folder->update(['title' => $newName]);
 
+        $this->dispatchToModals();
+
         if ($reloadAfterSave) {
             $this->redirect(url()->previous());
         }
@@ -411,6 +417,8 @@ class Finder extends Component
         $this->authorize('forceDelete', $folder);
 
         $folder->forceDelete();
+
+        $this->dispatchToModals();
 
         if ($returnToCourse) {
             $this->redirect(route('courses.show', $folder->course->id));
@@ -438,6 +446,9 @@ class Finder extends Component
                 $entity->forceDelete();
             }
         );
+
+        $this->dispatchToModals();
+
         $this->js('selectedItems = []');
     }
 
@@ -479,6 +490,8 @@ class Finder extends Component
                 $dest ? Folder::findOrFail($dest) : null,
             ),
         );
+
+        $this->dispatchToModals();
 
         $this->flashMessage(trans('courses.finder.move_in.success'));
 
@@ -594,5 +607,19 @@ class Finder extends Component
         }
 
         return ! empty($validator->validated());
+    }
+
+    /**
+     * Dispatch events to the modal components to
+     * update their list of folders.
+     */
+    private function dispatchToModals()
+    {
+        $this
+            ->dispatch('update-folders')
+            ->to(ModalCreateCard::class);
+        $this
+            ->dispatch('update-folders')
+            ->to(ModalCreateFolder::class);
     }
 }

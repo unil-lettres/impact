@@ -33,11 +33,12 @@ abstract class DuskTestCase extends BaseTestCase
     {
         $server = 'http://localhost:9515';
 
-        if (! env('CI')) {
-            // Change the remote web driver server for docker environment
+        // Specific setup for local docker environment
+        if (env('DOCKER_RUNNING', false)) {
+            // Change the remote web driver server
             $server = 'http://impact-selenium:4444/wd/hub';
 
-            // Setup & seed the database for docker environment
+            // Setup & seed the database
             Artisan::call('migrate:fresh --database=testing --seed');
 
             // Install the version of ChromeDriver that matches the detected version of Chrome

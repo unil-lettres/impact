@@ -60,5 +60,7 @@ return [
     'tag.cloned.none' => 'Toutes les étiquettes existent déjà dans cet espace.',
     'select.option' => 'Sélectionner',
     'no.option' => 'Aucune option disponible',
+    'enrollment.cannot.enroll.twice' => 'Impossible d\'inscrire deux fois le même utilisateur au même espace.',
+    'enrollment.cannot.delete.self' => 'Il n\'est pas possible de supprimer sa propre inscription.',
 
 ];

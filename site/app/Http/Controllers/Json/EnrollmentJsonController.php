@@ -45,6 +45,14 @@ class EnrollmentJsonController extends Controller
         $course = Course::findOrFail($request->course_id);
         $user = User::findOrFail($request->user_id);
 
+        // User cannot enroll for the same course twice
+        if ($user->enrollments()->where('course_id', $course->id)->exists()) {
+            return response()->json([
+                'type' => 'cannot.enroll.twice',
+                'message' => trans('messages.enrollment.cannot.enroll.twice'),
+            ], 403);
+        }
+
         $this->authorize('create', [
             Enrollment::class,
             $course,
@@ -113,6 +121,14 @@ class EnrollmentJsonController extends Controller
             ->where('user_id', $request->user_id)
             ->where('role', $request->role)
             ->firstOrFail();
+
+        // User cannot delete own enrollment
+        if (auth()->user()->id === $enrollment->user->id) {
+            return response()->json([
+                'type' => 'cannot.delete.self',
+                'message' => trans('messages.enrollment.cannot.delete.self'),
+            ], 403);
+        }
 
         $this->authorize('forceDelete', $enrollment);
 

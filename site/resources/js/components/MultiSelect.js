@@ -30,6 +30,8 @@ export default class MultiSelect extends Component {
             ),
             isLoading: false,
             isDisabled: data.isDisabled ?? false,
+            message: data.message ?
+                data.message : null,
         };
     }
 
@@ -89,7 +91,10 @@ export default class MultiSelect extends Component {
             ],
         }[event.action] || [undefined, undefined, _.identity];
 
-        this.setState({ isLoading: true });
+        this.setState({
+            isLoading: true,
+            message: null,
+        });
 
         action(this.state.record, option)
             .then((response) => {
@@ -166,6 +171,14 @@ export default class MultiSelect extends Component {
             return <CreatableSelect {...attributes} />;
         }
 
-        return <Select {...attributes} />;
+        return(
+            <div>
+                <Select {...attributes} />
+                {this.state.message && (
+                    // Available types: https://getbootstrap.com/docs/5.0/utilities/colors/#colors
+                    <div className={this.state.message.type}>{this.state.message.content}</div>
+                )}
+            </div>
+        );
     }
 }

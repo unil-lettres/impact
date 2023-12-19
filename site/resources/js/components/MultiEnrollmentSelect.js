@@ -20,7 +20,14 @@ class MultiEnrollmentSelect extends MultiSelect {
         return axios.post(
             '/enrollments',
             { course_id, user_id, 'role': this.role },
-        );
+        ).catch(error => {
+            if (error?.response?.data?.type) {
+                console.log(error.response.data.type);
+                this.printError(error.response.data.message);
+            }
+
+            return Promise.reject(error);
+        });
     }
 
     remove = (record, option) => {
@@ -32,7 +39,25 @@ class MultiEnrollmentSelect extends MultiSelect {
         return axios.delete(
             '/enrollments',
             { data: { course_id, user_id, 'role': this.role } },
-        );
+        ).catch(error => {
+            if (error?.response?.data?.type) {
+                console.log(error.response.data.type);
+                this.printError(error.response.data.message);
+            }
+
+            return Promise.reject(error);
+        });
+    }
+
+    printError(message) {
+        if(message || null) {
+            this.setState({
+                message: {
+                    type: 'text-danger',
+                    content: message,
+                }
+            });
+        }
     }
 }
 

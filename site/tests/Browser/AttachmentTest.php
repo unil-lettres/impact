@@ -1,6 +1,6 @@
 <?php
 
-namespace Browser;
+namespace Tests\Browser;
 
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
@@ -95,12 +95,16 @@ class AttachmentTest extends DuskTestCase
             $browser->assertSee('Test card with file')
                 ->clickLink('Test card with file');
 
+            $browser->waitForText('My attachment')
+                ->assertSee('My attachment');
+
             $browser->with('.box5 .attachments-list div:first-child', function ($attachment) {
                 $attachment->click('button.btn-danger')
                     ->waitForDialog($seconds = null)
                     ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
                     ->acceptDialog();
             });
+
             $browser->waitForText('Pas d\'annexes')
                 ->assertSee('Pas d\'annexes')
                 ->assertDontSee('My attachment');

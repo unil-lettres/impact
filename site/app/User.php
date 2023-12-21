@@ -147,7 +147,7 @@ class User extends Authenticatable
      */
     public function cards()
     {
-        return $this->enrollmentsAsStudent()
+        return $this->enrollments
             ->map(function ($enrollment) {
                 return Card::findMany($enrollment->cards);
             })

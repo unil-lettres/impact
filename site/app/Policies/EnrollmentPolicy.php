@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Course;
 use App\Enrollment;
-use App\Enums\EnrollmentRole;
 use App\Helpers\Helpers;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -106,11 +105,6 @@ class EnrollmentPolicy
     public function cards(User $user, Enrollment $enrollment)
     {
         // TODO: update for invitations & mass enrollment
-
-        // Cannot edit the cards of an enrollment with a teacher role
-        if ($enrollment->role === EnrollmentRole::Teacher) {
-            return false;
-        }
 
         if ($user->admin) {
             return true;

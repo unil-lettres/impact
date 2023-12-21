@@ -6,20 +6,20 @@
         @can('parameters', $card)
             <p>{{ trans('cards.choose_editors') }}</p>
 
-            @if ($students->isNotEmpty())
+            @if ($users->isNotEmpty())
                 <div class="col-12 mb-3">
                     <div id="rct-multi-editor-select"
-                         data='{{ json_encode(['record' => $card, 'options' => $students, 'defaults' => $editors]) }}'
+                         data='{{ json_encode(['record' => $card, 'options' => $users, 'defaults' => $editors]) }}'
                     ></div>
                     <div class="form-text">{{ trans('cards.edit.editors_are_auto_save') }}</div>
                 </div>
             @else
                 <p class="text-secondary">
-                    {{ trans('cards.editors.not_found') }}
+                    {{ trans('cards.users.not_found') }}
                 </p>
             @endif
         @else
-            <div>{{ $students->isEmpty() ? '' : $students->implode('name', ', ') }}</div>
+            <div>{{ $editors->isEmpty() ? '' : $editors->implode('name', ', ') }}</div>
         @endcan
     </div>
 </div>

@@ -1,6 +1,6 @@
 <?php
 
-namespace Browser;
+namespace Tests\Browser;
 
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;

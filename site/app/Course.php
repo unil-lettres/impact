@@ -105,12 +105,10 @@ class Course extends Model
     }
 
     /**
-     * Get all the enrollments for a specific role (EnrollmentRole) of this course.
+     * Get all the users of this course.
      * If withTrashed is true, also return the enrollments that have been soft deleted.
-     *
-     * @param  string  $role App\Enums\EnrollmentRole
      */
-    public function enrollmentsForRole(string $role, bool $withTrashed = false): Collection
+    public function users(bool $withTrashed = false): Collection
     {
         $enrollments = match ($withTrashed) {
             true => $this->enrollments()->withTrashed(),
@@ -118,8 +116,8 @@ class Course extends Model
         };
 
         return $enrollments->get()
-            ->filter(function ($enrollment) use ($role) {
-                return $enrollment->user && $enrollment->role === $role;
+            ->map(function ($enrollment) {
+                return $enrollment->user;
             });
     }
 
@@ -231,5 +229,24 @@ class Course extends Model
         }
 
         return $breadcrumbs;
+    }
+
+    /**
+     * Get all the enrollments for a specific role (EnrollmentRole) of this course.
+     * If withTrashed is true, also return the enrollments that have been soft deleted.
+     *
+     * @param  string  $role App\Enums\EnrollmentRole
+     */
+    private function enrollmentsForRole(string $role, bool $withTrashed = false): Collection
+    {
+        $enrollments = match ($withTrashed) {
+            true => $this->enrollments()->withTrashed(),
+            default => $this->enrollments(),
+        };
+
+        return $enrollments->get()
+            ->filter(function ($enrollment) use ($role) {
+                return $enrollment->user && $enrollment->role === $role;
+            });
     }
 }

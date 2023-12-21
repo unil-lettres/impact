@@ -77,8 +77,8 @@ class CardController extends Controller
                 ->breadcrumbs(true),
             'editors' => $card
                 ->editors(),
-            'students' => $card->course
-                ->students(),
+            'users' => $card->course
+                ->users(),
             'files' => $files,
             'states' => $states
                 ->ordered()

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Json;
 use App\Card;
 use App\Course;
 use App\Enrollment;
-use App\Enums\EnrollmentRole;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\DestroyEnrollment;
 use App\Http\Requests\StoreEnrollment;
@@ -78,7 +77,7 @@ class EnrollmentJsonController extends Controller
     public function attach(UpdateEnrollmentCards $request): JsonResponse
     {
         $card = Card::findOrFail($request->card_id);
-        $enrollment = $this->retrieveStudentEnrollment(
+        $enrollment = $this->retrieveEnrollment(
             $request->user_id, $card
         );
 
@@ -97,7 +96,7 @@ class EnrollmentJsonController extends Controller
     public function detach(UpdateEnrollmentCards $request): JsonResponse
     {
         $card = Card::findOrFail($request->card_id);
-        $enrollment = $this->retrieveStudentEnrollment(
+        $enrollment = $this->retrieveEnrollment(
             $request->user_id, $card
         );
 
@@ -138,17 +137,16 @@ class EnrollmentJsonController extends Controller
     }
 
     /**
-     * Retrieve the student enrollment associated with the given course and
-     * user.
+     * Retrieve the enrollment associated with the given
+     * course and user.
      *
      * @throws ModelNotFoundException
      */
-    private function retrieveStudentEnrollment(
+    private function retrieveEnrollment(
         int $userId, Card $card
     ): Enrollment {
         return Enrollment::where('course_id', $card->course->id)
             ->where('user_id', $userId)
-            ->where('role', EnrollmentRole::Student)
             ->firstOrFail();
     }
 }

@@ -247,7 +247,8 @@ class Card extends Model
      */
     public function allBoxesAreHidden(): bool
     {
-        return CardBox::getAllBoxes()->every(fn ($box) => ! $this->boxIsVisible($box));
+        return CardBox::getAllBoxes()
+            ->every(fn ($box) => ! $this->boxIsVisible($box));
     }
 
     /**

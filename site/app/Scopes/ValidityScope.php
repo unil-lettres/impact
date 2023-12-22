@@ -19,7 +19,8 @@ class ValidityScope implements Scope
         match (true) {
             $model instanceof Enrollment => $builder
                 ->whereHas('user', function ($query) {
-                    $query->where('validity', '>=', now())
+                    $query
+                        ->where('validity', '>=', Carbon::now())
                         ->orWhere('validity', null);
                 }),
             default => $builder // User::class

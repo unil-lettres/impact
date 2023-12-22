@@ -2,7 +2,6 @@
 
 namespace App\Http\Middleware;
 
-use App\Helpers\Helpers;
 use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +22,7 @@ class IsValid
         }
 
         // Check if the account is still valid
-        if (Helpers::isUserValid(auth()->user())) {
+        if (auth()->user()->isValid()) {
             return $next($request);
         }
 

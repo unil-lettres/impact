@@ -16,7 +16,7 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="title">{{ $user->name ? $user->name : $user->email }}</span>
-                        @unless (Helpers::isUserValid($user))
+                        @unless ($user->isValid())
                             <span class="badge bg-danger">{{ trans('users.expired') }}</span>
                         @endunless
 
@@ -94,7 +94,7 @@
                                                    type="text"
                                                    name="validity"
                                                    value="{{ $user->validity->format('d/m/Y H:i:s') }}"
-                                                   class="form-control disabled {{ Helpers::isUserValid($user) ? '' : 'account-expired' }}"
+                                                   class="form-control disabled {{ $user->isValid() ? '' : 'account-expired' }}"
                                                    disabled
                                             >
                                         </div>

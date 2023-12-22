@@ -8,6 +8,8 @@ use App\Enums\StateType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
@@ -63,7 +65,7 @@ class State extends Model implements Sortable
     /**
      * Get the course of this card.
      */
-    public function course()
+    public function course(): HasOne
     {
         return $this->hasOne('App\Course', 'id', 'course_id');
     }
@@ -71,7 +73,7 @@ class State extends Model implements Sortable
     /**
      * Get the cards of this state.
      */
-    public function cards()
+    public function cards(): HasMany
     {
         return $this->hasMany('App\Card', 'state_id')
             ->orderBy('created_at', 'desc');
@@ -82,7 +84,7 @@ class State extends Model implements Sortable
      *
      * @param  int  $permission (App\Enums\StatePermission)
      */
-    public function updatePermission(string $box, int $permission)
+    public function updatePermission(string $box, int $permission): void
     {
         $permissions = $this->permissions;
         $permissions[$box] = $permission;
@@ -115,7 +117,7 @@ class State extends Model implements Sortable
      *
      * @param  int  $permission (App\Enums\StatePermission)
      */
-    public function updatePermissions(int $permission)
+    public function updatePermissions(int $permission): void
     {
         $permissions = $this->permissions;
         $permissions['box1'] = $permission;
@@ -156,9 +158,8 @@ class State extends Model implements Sortable
      * Get all actions for this state, or only for a specific type
      *
      * @param  string|null  $type (App\Enums\ActionType)
-     * @return array
      */
-    public function getActionsData(?string $type = null)
+    public function getActionsData(?string $type = null): array
     {
         if (! $this->actions) {
             return [];
@@ -183,9 +184,8 @@ class State extends Model implements Sortable
      * Get the data of a specific action if available
      *
      * @param  string|null  $type (App\Enums\ActionType)
-     * @return array|null
      */
-    public function getActionData(int $index, ?string $type = null)
+    public function getActionData(int $index, ?string $type = null): ?array
     {
         $actions = $this->getActionsData($type);
 

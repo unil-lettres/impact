@@ -66,7 +66,7 @@
             $('.hidden').toggle();
         });
     </script>
-    <script data-navigate-once>
+    <script>
         document.addEventListener('livewire:init', () => {
             // Customizing Livewire page expiration behavior (avoid confirm() dialog on logout)
             // https://livewire.laravel.com/docs/javascript#customizing-page-expiration-behavior

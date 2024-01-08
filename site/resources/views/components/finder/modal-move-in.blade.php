@@ -63,38 +63,39 @@
         </div>
     </div>
 </div>
-<script data-navigate-once>
-    document.addEventListener('livewire:init', () => {
-        Alpine.data('{{$id}}', () => ({
-            // Contains the selected items on which the action should be performed.
-            keys: [],
-            _destFolder: null,
-            reloadAfterSave: false,
-            get destFolder() { return this._destFolder || null},
-            init() {
-                const modal = document.getElementById('{{$id}}');
-                modal.addEventListener('show.bs.modal', event => {
-                    const button = event.relatedTarget;
-                    this.keys = button.getAttribute('data-bs-keys').split(',');
-                    this.reloadAfterSave = button.hasAttribute('data-bs-reload');
-                    this.closeAllDropDowns();
-                });
-            },
-            /**
-             * Return if the destination folder should be visible depending on
-             * the keys. We don't want to move a folder into itself or into
-             * one of its children.
-             *
-             * @param foldersId List of the folder with its parents that
-             * should be checked.
-             */
-            shouldShow(foldersId) {
-                const folders = foldersId.split(',');
-                return !_.find(
-                    folders,
-                    folder => this.keys.includes(`folder-${folder}`),
-                );
-            }
-        }));
-    });
+
+@script
+<script>
+    Alpine.data('{{$id}}', () => ({
+        // Contains the selected items on which the action should be performed.
+        keys: [],
+        _destFolder: null,
+        reloadAfterSave: false,
+        get destFolder() { return this._destFolder || null},
+        init() {
+            const modal = document.getElementById('{{$id}}');
+            modal.addEventListener('show.bs.modal', event => {
+                const button = event.relatedTarget;
+                this.keys = button.getAttribute('data-bs-keys').split(',');
+                this.reloadAfterSave = button.hasAttribute('data-bs-reload');
+                this.closeAllDropDowns();
+            });
+        },
+        /**
+         * Return if the destination folder should be visible depending on
+         * the keys. We don't want to move a folder into itself or into
+         * one of its children.
+         *
+         * @param foldersId List of the folder with its parents that
+         * should be checked.
+         */
+        shouldShow(foldersId) {
+            const folders = foldersId.split(',');
+            return !_.find(
+                folders,
+                folder => this.keys.includes(`folder-${folder}`),
+            );
+        }
+    }));
 </script>
+@endscript

@@ -137,7 +137,7 @@
                         </li>
                         <li
                             class="dropdown-item d-flex cursor-pointer align-items-center"
-                            @click="renameFolder($wire, {{$folder->id}})"
+                            @click="renameFolder({{$folder->id}})"
                         >
                             <i class="fa-solid fa-i-cursor me-2"></i>
                             <span class="flex-fill me-5">

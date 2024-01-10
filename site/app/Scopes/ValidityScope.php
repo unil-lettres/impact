@@ -15,15 +15,21 @@ class ValidityScope implements Scope
      */
     public function apply(Builder $builder, Model $model): void
     {
-        // Ensure the user has a valid account
         match (true) {
+            // For enrollments, ensure the related user has a valid account
+            // and the related course is active
             $model instanceof Enrollment => $builder
                 ->whereHas('user', function ($query) {
                     $query
                         ->where('validity', '>=', Carbon::now())
                         ->orWhere('validity', null);
+                })
+                ->whereHas('course', function ($query) {
+                    $query
+                        ->whereNull('deleted_at');
                 }),
-            default => $builder // User::class
+            // For users, ensure the related user has a valid account
+            default => $builder
                 ->where('validity', '>=', Carbon::now())
                 ->orWhere('validity', null),
         };

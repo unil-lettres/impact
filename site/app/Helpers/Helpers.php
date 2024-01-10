@@ -14,7 +14,6 @@ use App\Folder;
 use App\Services\FinderItemsService;
 use App\State;
 use App\User;
-use Illuminate\Support\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Auth;
@@ -32,30 +31,6 @@ class Helpers
         }
 
         return App::getLocale() ?? '';
-    }
-
-    /**
-     * Check the validity of a user account
-     */
-    public static function isUserValid(User $user): bool
-    {
-        // Check if user is an admin
-        if ($user->admin) {
-            return true;
-        }
-
-        // Check if user account has an expiration date
-        if (is_null($user->validity)) {
-            return true;
-        }
-
-        // Check if user account is still valid
-        $validity = Carbon::instance($user->validity);
-        if ($validity->isFuture()) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -369,7 +344,7 @@ class Helpers
      *
      * Return all courses if user is admin.
      *
-     * @param  Collection<Course>  $excludeCourses Collection of courses that
+     * @param  Collection|null  $excludeCourses Collection of courses that
      * should not be present in the collection results.
      */
     public static function fetchCoursesAsTeacher(

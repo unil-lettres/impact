@@ -36,20 +36,16 @@ class Invitation extends Model
 
     /**
      * Generate an invitation token.
-     *
-     * @return string
      */
-    public function generateInvitationToken()
+    public function generateInvitationToken(): string
     {
         return substr(md5(rand(0, 9).$this->email.time()), 0, 32);
     }
 
     /**
      * Get invitation link.
-     *
-     * @return string
      */
-    public function getLink()
+    public function getLink(): string
     {
         return urldecode(url('invitations/register').'?token='.$this->invitation_token);
     }

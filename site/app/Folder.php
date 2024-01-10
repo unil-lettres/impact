@@ -58,17 +58,15 @@ class Folder extends Model
     }
 
     /**
-     * Get the breadcrumbs for this folder
+     * Get the breadcrumbs for this folder.
      *
-     * Define if the breadcrumbs should contain the current folder
-     *
-     * @param  bool  $self
+     * The "self" parameter defines if the breadcrumbs should
+     * include the current folder or not.
      *
      * This function will return a Collection and should contain
      * a path as the key, and a name as the value.
-     * @return Collection
      */
-    public function breadcrumbs(bool $self = false)
+    public function breadcrumbs(bool $self = false): Collection
     {
         $breadcrumbs = collect([]);
 

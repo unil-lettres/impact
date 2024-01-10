@@ -91,8 +91,9 @@ class CardObserver
             fn ($attachment) => $attachment->forceDelete(),
         );
 
-        // Remove this card from all enrollments as editors.
-        $card->enrollments()->each(
+        // Remove this card from all enrollments, even the ones with
+        // an invalid user.
+        $card->enrollments(true)->each(
             fn ($enrollment) => $enrollment->removeCard($card),
         );
     }

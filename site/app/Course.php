@@ -5,11 +5,11 @@ namespace App;
 use App\Enums\EnrollmentRole;
 use App\Enums\StateType;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 class Course extends Model
 {
@@ -25,22 +25,17 @@ class Course extends Model
     ];
 
     /**
-     * Get method override for the name attribute
-     *
-     * @return string
+     * Get method override for the name attribute.
      */
-    public function getNameAttribute()
+    public function getNameAttribute(): string
     {
         return $this->attributes['name'] ? $this->attributes['name'] : 'No name';
     }
 
     /**
      * Scope a query to only include local courses.
-     *
-     * @param  Builder  $query
-     * @return Builder
      */
-    public function scopeLocal($query)
+    public function scopeLocal(Builder $query): Builder
     {
         return $query->where('type', 'local');
     }
@@ -75,7 +70,7 @@ class Course extends Model
     /**
      * Get the folders of this course.
      */
-    public function folders()
+    public function folders(): HasMany
     {
         return $this->hasMany('App\Folder', 'course_id')
             ->orderBy('created_at', 'desc');
@@ -99,9 +94,13 @@ class Course extends Model
             ->orderBy('created_at', 'desc');
     }
 
+    /**
+     * Get the tags of this course.
+     */
     public function tags(): HasMany
     {
-        return $this->hasMany(Tag::class, 'course_id')->orderBy('name');
+        return $this->hasMany(Tag::class, 'course_id')
+            ->orderBy('name');
     }
 
     /**
@@ -184,10 +183,8 @@ class Course extends Model
 
     /**
      * Get the root folders of this course
-     *
-     * @return Collection
      */
-    public function rootFolders()
+    public function rootFolders(): Collection
     {
         return $this->folders()->where('parent_id', null)
             ->get();
@@ -195,27 +192,23 @@ class Course extends Model
 
     /**
      * Get the root cards of this course
-     *
-     * @return Collection
      */
-    public function rootCards()
+    public function rootCards(): Collection
     {
         return $this->cards()->where('folder_id', null)
             ->get();
     }
 
     /**
-     * Get the breadcrumbs for this course
+     * Get the breadcrumbs for this course.
      *
-     * Define if the breadcrumbs should contain the current course
-     *
-     * @param  bool  $self
+     * The "self" parameter defines if the breadcrumbs should
+     * include the current course or not.
      *
      * This function will return a Collection and should contain
      * a path as the key, and a name as the value.
-     * @return \Illuminate\Support\Collection
      */
-    public function breadcrumbs(bool $self = false)
+    public function breadcrumbs(bool $self = false): Collection
     {
         $breadcrumbs = collect([
             route('home') => trans('courses.list'),

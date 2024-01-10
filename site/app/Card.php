@@ -6,14 +6,15 @@ use App\Enums\CardBox;
 use App\Enums\FinderItemType;
 use App\Enums\StatePermission;
 use App\Scopes\HideAttachmentsScope;
+use App\Scopes\ValidityScope;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
 
 class Card extends Model
@@ -131,13 +132,20 @@ class Card extends Model
     }
 
     /**
-     * Return a collection of enrollements that have this card.
+     * Return a collection of enrollments containing this card.
+     * If withInvalidUsers is true, also return the enrollments that have invalid users.
      */
-    public function enrollments(): Collection
+    public function enrollments(bool $withInvalidUsers = false): Collection
     {
-        return $this->course->enrollments()->get()
+        $enrollments = match ($withInvalidUsers) {
+            true => $this->course->enrollments()
+                ->withoutGlobalScope(ValidityScope::class),
+            default => $this->course->enrollments(),
+        };
+
+        return $enrollments->get()
             ->filter(function ($enrollment) {
-                return $enrollment->cards ? in_array($this->id, $enrollment->cards) : false;
+                return $enrollment->hasCard($this);
             });
     }
 
@@ -183,17 +191,15 @@ class Card extends Model
     }
 
     /**
-     * Get the breadcrumbs for this card
+     * Get the breadcrumbs for this card.
      *
-     * Define if the breadcrumbs should contain the current card
-     *
-     * @param  bool  $self
+     * The "self" parameter defines if the breadcrumbs should
+     * include the current card or not.
      *
      * This function will return a Collection and should contain
      * a path as the key, and a name as the value.
-     * @return \Illuminate\Support\Collection
      */
-    public function breadcrumbs(bool $self = false)
+    public function breadcrumbs(bool $self = false): Collection
     {
         if ($this->folder()->get()->isEmpty()) {
             // If the card has no folder, only return the course breadcrumbs
@@ -286,7 +292,7 @@ class Card extends Model
     /**
      * Get all ancestors of this card (all parents recursively).
      */
-    public function getAncestors(): \Illuminate\Support\Collection
+    public function getAncestors(): Collection
     {
         $parents = collect([]);
 

@@ -53,14 +53,14 @@
                         <tbody>
                             @foreach ($users->items() as $user)
                                 @can('view', $user)
-                                    <tr class="{{ $user->type }}{{ Helpers::isUserValid($user) ? '' : ' invalid' }}">
+                                    <tr class="{{ $user->type }}{{ $user->isValid() ? '' : ' invalid' }}">
                                         <td>
                                             {{ $user->email }}
                                             <div>
                                                 @if ($user->admin)
                                                     <span class="badge bg-primary">{{ trans('users.admin') }}</span>
                                                 @endif
-                                                @unless (Helpers::isUserValid($user))
+                                                @unless ($user->isValid())
                                                     <span class="badge bg-danger">{{ trans('users.expired') }}</span>
                                                 @endunless
                                             </div>

@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -83,33 +84,33 @@ class Card extends Model
     /**
      * Get the course of this card.
      */
-    public function course(): HasOne
+    public function course(): BelongsTo
     {
-        return $this->hasOne('App\Course', 'id', 'course_id');
+        return $this->belongsTo(Course::class);
     }
 
     /**
      * Get the folder of this card.
      */
-    public function folder(): HasOne
+    public function folder(): BelongsTo
     {
-        return $this->hasOne('App\Folder', 'id', 'folder_id');
+        return $this->belongsTo(Folder::class);
     }
 
     /**
-     * Get the file of this card.
+     * Get the file of this card (regular).
      */
-    public function file(): HasOne
+    public function file(): BelongsTo
     {
-        return $this->hasOne('App\File', 'id', 'file_id');
+        return $this->belongsTo(File::class);
     }
 
     /**
      * Get the state of this card.
      */
-    public function state(): HasOne
+    public function state(): BelongsTo
     {
-        return $this->hasOne('App\State', 'id', 'state_id');
+        return $this->belongsTo(State::class);
     }
 
     /**
@@ -125,7 +126,7 @@ class Card extends Model
      */
     public function attachments(): HasMany
     {
-        return $this->hasMany('App\File', 'card_id')
+        return $this->hasMany(File::class)
             ->withoutGlobalScope(HideAttachmentsScope::class)
             ->orderBy('created_at', 'desc');
     }

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Enrollment extends Model
@@ -21,17 +22,17 @@ class Enrollment extends Model
     /**
      * Get the course of this enrollment.
      */
-    public function course()
+    public function course(): BelongsTo
     {
-        return $this->hasOne('App\Course', 'id', 'course_id');
+        return $this->belongsTo(Course::class);
     }
 
     /**
      * Get the user of this enrollment.
      */
-    public function user()
+    public function user(): BelongsTo
     {
-        return $this->hasOne('App\User', 'id', 'user_id');
+        return $this->belongsTo(User::class);
     }
 
     /**

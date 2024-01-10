@@ -8,6 +8,8 @@ use App\Enums\StateType;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\EloquentSortable\Sortable;
 use Spatie\EloquentSortable\SortableTrait;
@@ -63,17 +65,17 @@ class State extends Model implements Sortable
     /**
      * Get the course of this card.
      */
-    public function course()
+    public function course(): BelongsTo
     {
-        return $this->hasOne('App\Course', 'id', 'course_id');
+        return $this->belongsTo(Course::class);
     }
 
     /**
      * Get the cards of this state.
      */
-    public function cards()
+    public function cards(): HasMany
     {
-        return $this->hasMany('App\Card', 'state_id')
+        return $this->hasMany(Card::class)
             ->orderBy('created_at', 'desc');
     }
 

@@ -8,6 +8,7 @@ use DateTime;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
@@ -71,18 +72,18 @@ class User extends Authenticatable
     /**
      * Get the invitations created by the user.
      */
-    public function invitations()
+    public function invitations(): HasMany
     {
-        return $this->hasMany('App\Invitation', 'creator_id')
+        return $this->hasMany(Invitation::class, 'creator_id')
             ->orderBy('created_at', 'desc');
     }
 
     /**
      * Get the enrollments of this user.
      */
-    public function enrollments()
+    public function enrollments(): HasMany
     {
-        return $this->hasMany('App\Enrollment', 'user_id')
+        return $this->hasMany(Enrollment::class)
             ->orderBy('created_at', 'desc');
     }
 

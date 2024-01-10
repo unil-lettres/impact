@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Invitation extends Model
@@ -20,17 +21,17 @@ class Invitation extends Model
     /**
      * Get the user who created the invitation.
      */
-    public function creator()
+    public function creator(): BelongsTo
     {
-        return $this->hasOne('App\User', 'id', 'creator_id');
+        return $this->belongsTo(User::class, 'creator_id');
     }
 
     /**
      * Get the course linked to the invitation.
      */
-    public function course()
+    public function course(): BelongsTo
     {
-        return $this->hasOne('App\Course', 'id', 'course_id');
+        return $this->belongsTo(Course::class);
     }
 
     /**

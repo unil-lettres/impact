@@ -6,13 +6,14 @@ use App\Enums\FinderItemType;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
 class Folder extends Model
 {
-    use SoftDeletes;
     use HasFactory;
+    use SoftDeletes;
 
     protected $fillable = [
         'title', 'position', 'course_id', 'parent_id',
@@ -25,7 +26,7 @@ class Folder extends Model
     /**
      * Get the course of this folder.
      */
-    public function course() : BelongsTo
+    public function course(): BelongsTo
     {
         return $this->belongsTo(Course::class);
     }
@@ -33,26 +34,26 @@ class Folder extends Model
     /**
      * Get the parent of this folder.
      */
-    public function parent()
+    public function parent(): BelongsTo
     {
-        return $this->hasOne('App\Folder', 'id', 'parent_id');
+        return $this->belongsTo(Folder::class, 'parent_id');
     }
 
     /**
      * Get the children of this folder.
      */
-    public function children()
+    public function children(): HasMany
     {
-        return $this->hasMany('App\Folder', 'parent_id')
+        return $this->hasMany(Folder::class, 'parent_id')
             ->orderBy('created_at', 'desc');
     }
 
     /**
      * Get the cards of this folder.
      */
-    public function cards()
+    public function cards(): HasMany
     {
-        return $this->hasMany('App\Card', 'folder_id')
+        return $this->hasMany(Card::class)
             ->orderBy('created_at', 'desc');
     }
 

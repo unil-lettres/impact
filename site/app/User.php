@@ -70,7 +70,7 @@ class User extends Authenticatable
      */
     public function invitations(): HasMany
     {
-        return $this->hasMany('App\Invitation', 'creator_id')
+        return $this->hasMany(Invitation::class, 'creator_id')
             ->orderBy('created_at', 'desc');
     }
 
@@ -79,7 +79,7 @@ class User extends Authenticatable
      */
     public function enrollments(): HasMany
     {
-        return $this->hasMany('App\Enrollment', 'user_id')
+        return $this->hasMany(Enrollment::class)
             ->orderBy('created_at', 'desc');
     }
 

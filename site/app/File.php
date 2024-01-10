@@ -4,8 +4,8 @@ namespace App;
 
 use App\Scopes\HideAttachmentsScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class File extends Model
@@ -46,17 +46,17 @@ class File extends Model
     /**
      * Get the course of this file.
      */
-    public function course(): HasOne
+    public function course(): BelongsTo
     {
-        return $this->hasOne('App\Course', 'id', 'course_id');
+        return $this->belongsTo(Course::class);
     }
 
     /**
      * Get the card of this file (attachment).
      */
-    public function card(): HasOne
+    public function card(): BelongsTo
     {
-        return $this->hasOne('App\Card', 'id', 'card_id');
+        return $this->belongsTo(Card::class);
     }
 
     /**
@@ -64,7 +64,7 @@ class File extends Model
      */
     public function cards(): HasMany
     {
-        return $this->hasMany('App\Card', 'file_id')
+        return $this->hasMany(Card::class)
             ->orderBy('created_at', 'desc');
     }
 

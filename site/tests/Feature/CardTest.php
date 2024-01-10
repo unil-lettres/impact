@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Card;
 use App\Course;
+use App\Folder;
 use App\Services\Clone\CloneCardService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -50,12 +51,20 @@ class CardTest extends TestCase
 
     public function testCardPositionCorrectlyInitialized()
     {
-        $course = Course::factory()->hasCards(3)->hasFolders(7)->create();
+        $course = Course::factory()->create();
 
-        $this->assertEquals(0, $course->cards->first()->position);
-        $this->assertEquals(2, $course->cards->last()->position);
-        $this->assertEquals(3, $course->folders->first()->position);
-        $this->assertEquals(9, $course->folders->last()->position);
+        // We create sequentially entities for the observer to set the position
+        // correctly.
+
+        for ($i = 0; $i < 3; $i++) {
+            $card = Card::factory()->for($course)->create();
+            $this->assertEquals($i, $card->position);
+        }
+
+        for (; $i < 7; $i++) {
+            $folder = Folder::factory()->for($course)->create();
+            $this->assertEquals($i, $folder->position);
+        }
     }
 
     public function testCloneCardInsideFolder()

@@ -45,7 +45,7 @@ class Course extends Model
      */
     public function cards(): HasMany
     {
-        return $this->hasMany('App\Card', 'course_id')
+        return $this->hasMany(Card::class)
             ->orderBy('created_at', 'desc');
     }
 
@@ -54,7 +54,7 @@ class Course extends Model
      */
     public function enrollments(): HasMany
     {
-        return $this->hasMany('App\Enrollment', 'course_id')
+        return $this->hasMany(Enrollment::class)
             ->orderBy('created_at', 'desc');
     }
 
@@ -63,7 +63,7 @@ class Course extends Model
      */
     public function invitations(): HasMany
     {
-        return $this->hasMany('App\Invitation', 'course_id')
+        return $this->hasMany(Invitation::class)
             ->orderBy('created_at', 'desc');
     }
 
@@ -81,7 +81,7 @@ class Course extends Model
      */
     public function files(): HasMany
     {
-        return $this->hasMany('App\File', 'course_id')
+        return $this->hasMany(File::class)
             ->orderBy('created_at', 'desc');
     }
 
@@ -90,7 +90,7 @@ class Course extends Model
      */
     public function states(): HasMany
     {
-        return $this->hasMany('App\State', 'course_id')
+        return $this->hasMany(State::class)
             ->orderBy('created_at', 'desc');
     }
 

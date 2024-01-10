@@ -3,14 +3,16 @@
 namespace App;
 
 use App\Enums\FinderItemType;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
 class Folder extends Model
 {
+    use HasFactory;
     use SoftDeletes;
 
     protected $fillable = [
@@ -24,17 +26,17 @@ class Folder extends Model
     /**
      * Get the course of this folder.
      */
-    public function course(): HasOne
+    public function course(): BelongsTo
     {
-        return $this->hasOne('App\Course', 'id', 'course_id');
+        return $this->belongsTo(Course::class);
     }
 
     /**
      * Get the parent of this folder.
      */
-    public function parent(): HasOne
+    public function parent(): BelongsTo
     {
-        return $this->hasOne('App\Folder', 'id', 'parent_id');
+        return $this->belongsTo(Folder::class, 'parent_id');
     }
 
     /**
@@ -42,7 +44,7 @@ class Folder extends Model
      */
     public function children(): HasMany
     {
-        return $this->hasMany('App\Folder', 'parent_id')
+        return $this->hasMany(Folder::class, 'parent_id')
             ->orderBy('created_at', 'desc');
     }
 
@@ -51,7 +53,7 @@ class Folder extends Model
      */
     public function cards(): HasMany
     {
-        return $this->hasMany('App\Card', 'folder_id')
+        return $this->hasMany(Card::class)
             ->orderBy('created_at', 'desc');
     }
 

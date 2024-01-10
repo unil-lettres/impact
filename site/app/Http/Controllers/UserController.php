@@ -239,7 +239,7 @@ class UserController extends Controller
 
                 // If the user becomes an admin, ensure the validity is null
                 // (admin users have no validity)
-                if($user->admin) {
+                if ($user->admin) {
                     $user->validity = null;
                 }
             }

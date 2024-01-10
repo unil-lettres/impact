@@ -236,6 +236,12 @@ class UserController extends Controller
             // user is already an admin
             if (auth()->user()->admin) {
                 $user->admin = (bool) $request->input('admin');
+
+                // If the user becomes an admin, ensure the validity is null
+                // (admin users have no validity)
+                if($user->admin) {
+                    $user->validity = null;
+                }
             }
         }
 

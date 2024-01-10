@@ -3,13 +3,16 @@
 namespace App;
 
 use App\Enums\FinderItemType;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
 class Folder extends Model
 {
     use SoftDeletes;
+    use HasFactory;
 
     protected $fillable = [
         'title', 'position', 'course_id', 'parent_id',
@@ -22,9 +25,9 @@ class Folder extends Model
     /**
      * Get the course of this folder.
      */
-    public function course()
+    public function course() : BelongsTo
     {
-        return $this->hasOne('App\Course', 'id', 'course_id');
+        return $this->belongsTo(Course::class);
     }
 
     /**

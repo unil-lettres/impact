@@ -69,19 +69,20 @@
         </div>
     </div>
 </div>
-<script data-navigate-once>
-    document.addEventListener('livewire:init', () => {
-        Alpine.data('{{$id}}', () => ({
-            keys: [],
-            destCourse: {{$clonableCourses->first()->id ?? 'null'}},
-            init() {
-                const modal = document.getElementById('{{$id}}');
-                modal.addEventListener('show.bs.modal', event => {
-                    const button = event.relatedTarget;
-                    this.keys = button.getAttribute('data-bs-keys').split(',');
-                    this.closeAllDropDowns();
-                });
-            }
-        }));
-    });
+
+@script
+<script>
+    Alpine.data('{{$id}}', () => ({
+        keys: [],
+        destCourse: {{$clonableCourses->first()->id ?? 'null'}},
+        init() {
+            const modal = document.getElementById('{{$id}}');
+            modal.addEventListener('show.bs.modal', event => {
+                const button = event.relatedTarget;
+                this.keys = button.getAttribute('data-bs-keys').split(',');
+                this.closeAllDropDowns();
+            });
+        }
+    }));
 </script>
+@endscript

@@ -34,22 +34,22 @@
     </div>
 </div>
 
-<script data-navigate-once>
-    document.addEventListener('livewire:init', () => {
-        const modal = document.getElementById('{{$id}}');
-        const inputName = document.getElementById('{{$id}}-name');
-        modal.addEventListener('show.bs.modal', event => {
-            // Reinitialize the editors react-select component every time
-            // we open the modal, to prevent persisting old component
-            // (with old values).
-            window.MultiEditorModalSelect.create();
+@script
+<script>
+    const modal = document.getElementById('{{$id}}');
+    const inputName = document.getElementById('{{$id}}-name');
+    modal.addEventListener('show.bs.modal', event => {
+        // Reinitialize the editors react-select component every time
+        // we open the modal, to prevent persisting old component
+        // (with old values).
+        window.MultiEditorModalSelect.create();
 
-            // Reset the editors property of the component, to prevent
-            // persisting old values.
-            @this.resetEditors(true);
-        });
-        modal.addEventListener('shown.bs.modal', event => {
-            inputName.focus();
-        });
+        // Reset the editors property of the component, to prevent
+        // persisting old values.
+        $wire.resetEditors(true);
+    });
+    modal.addEventListener('shown.bs.modal', event => {
+        inputName.focus();
     });
 </script>
+@endscript

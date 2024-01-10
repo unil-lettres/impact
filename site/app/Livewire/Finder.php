@@ -105,6 +105,13 @@ class Finder extends Component
             'search' => $this->arrayFilters['search'] ?? [],
         ];
 
+        // Check each filters from the query string and keep only valid ids.
+        collect(['tag', 'state', 'editor'])->each(
+            fn ($key) => $this->arrayFilters[$key] = $this->validateFilterIds(
+                $this->arrayFilters[$key], $key
+            )->values()->toArray()
+        );
+
         $this->addJsForFilters();
     }
 
@@ -215,7 +222,14 @@ class Finder extends Component
             ],
         );
 
+        $success &= $this->validateFilterIds([$filter], $type)->isNotEmpty();
+
         if (! $success) {
+            $this->flashMessage(
+                trans('courses.finder.filter.error'),
+                'text-bg-danger',
+            );
+
             return;
         }
 
@@ -607,6 +621,30 @@ class Finder extends Component
         }
 
         return ! empty($validator->validated());
+    }
+
+    /**
+     * Check if the filter ids are valid for the given type (aka they belong
+     * to the current course).
+     *
+     * Return the list of ids that are valid.
+     *
+     * @param  array<int>  $filterIds
+     * @return array<int> valide ids
+     */
+    private function validateFilterIds(array $filterIds, string $type): Collection
+    {
+        return match ($type) {
+            'tag' => $this->course->tags()->whereIn('id', $filterIds)->get()->pluck('id'),
+
+            // $this->editors() return a collection, this is why it is treated
+            // differently.
+            'editor' => $this->editors->pluck('id')->intersect($filterIds),
+
+            'state' => $this->course->states()->whereIn('id', $filterIds)->get()->pluck('id'),
+
+            default => collect([]),
+        };
     }
 
     /**

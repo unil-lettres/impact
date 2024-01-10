@@ -1,4 +1,5 @@
-<script data-navigate-once>
+@script
+<script>
     const finderDataObject = {
         /**
          * Contains the list of selected items (ex. 'card-2').
@@ -176,7 +177,7 @@
          * Open a prompt and aks the user to change the name of the
          * given folder.
          */
-        renameFolder($wire, folderId, reloadAfterSave = false) {
+        renameFolder(folderId, reloadAfterSave = false) {
             const newName = prompt("{{ trans('courses.finder.menu.rename_prompt') }}");
             if (newName !== null) {
                 $wire.call("renameFolder", folderId, newName, reloadAfterSave);
@@ -230,7 +231,6 @@
         }
     };
 
-    document.addEventListener('livewire:init', () => {
-        Alpine.data('finderData', () => finderDataObject);
-    });
+    Alpine.data('finderData', () => finderDataObject);
 </script>
+@endscript

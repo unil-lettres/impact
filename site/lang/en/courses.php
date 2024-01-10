@@ -60,6 +60,7 @@ return [
     'finder.filter.clear' => 'Clear all',
     'finder.filter_label' => 'item(s)',
     'finder.filter.box' => 'Box',
+    'finder.filter.error' => 'An error occured while filtering. Please refresh the page.',
     'finder.menu.open' => 'Open',
     'finder.menu.close' => 'Close',
     'finder.menu.print' => 'Print (TODO)',

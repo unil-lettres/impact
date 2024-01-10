@@ -53,8 +53,8 @@
                             @foreach ($courses->items() as $course)
                                 @can('view', $course)
                                     <tr class="{{ $course->type }}{{ !$course->isActive() ? ' invalid' : '' }}">
-                                        <td>
-                                            {{ $course->name }}
+                                        <td title="{{ $course->name }}">
+                                            {{ Helpers::truncate($course->name, 60) }}
                                             @unless ($course->isActive())
                                                 <span class="badge bg-danger">{{ trans('courses.disabled') }}</span>
                                             @endunless

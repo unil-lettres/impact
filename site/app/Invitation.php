@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Invitation extends Model
@@ -20,7 +21,7 @@ class Invitation extends Model
     /**
      * Get the user who created the invitation.
      */
-    public function creator()
+    public function creator(): HasOne
     {
         return $this->hasOne('App\User', 'id', 'creator_id');
     }
@@ -28,27 +29,23 @@ class Invitation extends Model
     /**
      * Get the course linked to the invitation.
      */
-    public function course()
+    public function course(): HasOne
     {
         return $this->hasOne('App\Course', 'id', 'course_id');
     }
 
     /**
      * Generate an invitation token.
-     *
-     * @return string
      */
-    public function generateInvitationToken()
+    public function generateInvitationToken(): string
     {
         return substr(md5(rand(0, 9).$this->email.time()), 0, 32);
     }
 
     /**
      * Get invitation link.
-     *
-     * @return string
      */
-    public function getLink()
+    public function getLink(): string
     {
         return urldecode(url('invitations/register').'?token='.$this->invitation_token);
     }

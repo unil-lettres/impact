@@ -2,7 +2,9 @@
 
 namespace App;
 
+use App\Scopes\ValidityScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Enrollment extends Model
@@ -19,9 +21,17 @@ class Enrollment extends Model
     ];
 
     /**
+     * The "booted" method of the model.
+     */
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new ValidityScope());
+    }
+
+    /**
      * Get the course of this enrollment.
      */
-    public function course()
+    public function course(): HasOne
     {
         return $this->hasOne('App\Course', 'id', 'course_id');
     }
@@ -29,28 +39,24 @@ class Enrollment extends Model
     /**
      * Get the user of this enrollment.
      */
-    public function user()
+    public function user(): HasOne
     {
         return $this->hasOne('App\User', 'id', 'user_id');
     }
 
     /**
      * Check if the enrollment has a specific card.
-     *
-     * @return bool
      */
-    public function hasCard(Card $card)
+    public function hasCard(Card $card): bool
     {
-        return $this->cards ? in_array($card->id, $this->cards) : false;
+        return $this->cards && in_array($card->id, $this->cards);
     }
 
     /**
      * Add a card to the enrollment if the card doesn't exist in the enrollment cards.
      * Return true if a card was added, false otherwise.
-     *
-     * @return bool
      */
-    public function addCard(Card $card)
+    public function addCard(Card $card): bool
     {
         if (! $this->hasCard($card)) {
             $cards = collect($this->cards);
@@ -70,10 +76,8 @@ class Enrollment extends Model
     /**
      * Remove a card from the enrollment if the card exist in the enrollment cards.
      * Return true if a card was removed, false otherwise.
-     *
-     * @return bool
      */
-    public function removeCard(Card $card)
+    public function removeCard(Card $card): bool
     {
         if ($this->hasCard($card)) {
             $cards = collect($this->cards);

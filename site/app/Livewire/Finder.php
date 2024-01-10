@@ -627,10 +627,10 @@ class Finder extends Component
      * Check if the filter ids are valid for the given type (aka they belong
      * to the current course).
      *
-     * Return true if the filter ids are valid, false otherwise.
+     * Return the list of ids that are valid.
      *
      * @param  array<int>  $filterIds
-     * @return Collection<Tag|Editor|State>
+     * @return array<int> valide ids
      */
     private function validateFilterIds(array $filterIds, string $type): Collection
     {

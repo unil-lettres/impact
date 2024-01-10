@@ -2,6 +2,7 @@
 
 namespace App\Scopes;
 
+use App\Enrollment;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Scope;
@@ -11,13 +12,26 @@ class ValidityScope implements Scope
 {
     /**
      * Apply the scope to a given Eloquent query builder.
-     *
-     * @return void
      */
-    public function apply(Builder $builder, Model $model)
+    public function apply(Builder $builder, Model $model): void
     {
-        // Ensure the user has a valid account
-        $builder->where('validity', '>=', Carbon::now())
-            ->orWhere('validity', null);
+        match (true) {
+            // For enrollments, ensure the related user has a valid account
+            // and the related course is active
+            $model instanceof Enrollment => $builder
+                ->whereHas('user', function ($query) {
+                    $query
+                        ->where('validity', '>=', Carbon::now())
+                        ->orWhere('validity', null);
+                })
+                ->whereHas('course', function ($query) {
+                    $query
+                        ->whereNull('deleted_at');
+                }),
+            // For users, ensure the related user has a valid account
+            default => $builder
+                ->where('validity', '>=', Carbon::now())
+                ->orWhere('validity', null),
+        };
     }
 }

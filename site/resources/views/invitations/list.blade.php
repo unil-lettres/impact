@@ -27,8 +27,8 @@
                             <tr>
                                 <td>{{ $invitation->email }}</td>
                                 <td>{{ $invitation->created_at->format('d/m/Y H:i:s') }}</td>
-                                <td>
-                                    {{ Helpers::truncate($invitation->course->name) }}
+                                <td title="{{ $invitation->course->name }}">
+                                    {{ Helpers::truncate($invitation->course->name, 25) }}
                                 </td>
                                 <td class="actions">
                                     @can('view', $invitation)

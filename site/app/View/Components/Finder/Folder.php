@@ -62,7 +62,7 @@ class Folder extends Component
     }
 
     /**
-     * If the component shoudl render. It should not if the folder is empty and
+     * If the component should render. It should not if the folder is empty and
      * the user cannot edit folders in the course or if the folder is empty due
      * to filters (all cards inside the folder are filtered).
      */

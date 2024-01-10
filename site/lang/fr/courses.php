@@ -60,6 +60,7 @@ return [
     'finder.filter.clear' => 'Tout effacer',
     'finder.filter_label' => 'élément(s)',
     'finder.filter.box' => 'Case',
+    'finder.filter.error' => 'Une erreur est survenue lors de la mise à jour des filtres. Veuillez rafraîchir la page.',
     'finder.menu.open' => 'Ouvrir',
     'finder.menu.close' => 'Fermer',
     'finder.menu.print' => 'Imprimer (TODO)',

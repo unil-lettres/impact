@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Course;
 use App\Enrollment;
-use App\Helpers\Helpers;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -66,7 +65,7 @@ class EnrollmentPolicy
         }
 
         // Enrolled user should be valid
-        if (! Helpers::isUserValid($enrolledUser)) {
+        if (! $enrolledUser->isValid()) {
             return false;
         }
 

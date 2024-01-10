@@ -16,7 +16,7 @@
                 <div class="card">
                     <div class="card-header">
                         <span class="title">{{ $user->name ? $user->name : $user->email }}</span>
-                        @unless (Helpers::isUserValid($user))
+                        @unless ($user->isValid())
                             <span class="badge bg-danger">{{ trans('users.expired') }}</span>
                         @endunless
 
@@ -94,7 +94,7 @@
                                                    type="text"
                                                    name="validity"
                                                    value="{{ $user->validity->format('d/m/Y H:i:s') }}"
-                                                   class="form-control disabled {{ Helpers::isUserValid($user) ? '' : 'account-expired' }}"
+                                                   class="form-control disabled {{ $user->isValid() ? '' : 'account-expired' }}"
                                                    disabled
                                             >
                                         </div>
@@ -173,11 +173,11 @@
                         {{ trans('enrollments.as_teacher') }}
                         <div id="rct-multi-course-teacher-select"
                              class="mb-3"
-                             data='{{ json_encode(['record' => $user, 'role' => $teacherRole, 'options' => $courses, 'defaults' => $coursesAsTeacher, 'isDisabled' => $user->admin]) }}'
+                             data='{{ json_encode(['record' => $user, 'role' => $teacherRole, 'options' => $courses, 'defaults' => $coursesAsTeacher, 'isDisabled' => $user->admin || !$user->isValid()]) }}'
                         ></div>
                         {{ trans('enrollments.as_student') }}
                         <div id="rct-multi-course-student-select"
-                             data='{{ json_encode(['record' => $user, 'role' => $studentRole, 'options' => $courses, 'defaults' => $coursesAsStudent, 'isDisabled' => $user->admin]) }}'
+                             data='{{ json_encode(['record' => $user, 'role' => $studentRole, 'options' => $courses, 'defaults' => $coursesAsStudent, 'isDisabled' => $user->admin || !$user->isValid()]) }}'
                         ></div>
                         <hr>
                         <div class="form-text">{{ trans('users.edit.enrollments_are_auto_save') }}</div>

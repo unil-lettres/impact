@@ -4,6 +4,8 @@ namespace App;
 
 use App\Enums\FinderItemType;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 
@@ -22,7 +24,7 @@ class Folder extends Model
     /**
      * Get the course of this folder.
      */
-    public function course()
+    public function course(): HasOne
     {
         return $this->hasOne('App\Course', 'id', 'course_id');
     }
@@ -30,7 +32,7 @@ class Folder extends Model
     /**
      * Get the parent of this folder.
      */
-    public function parent()
+    public function parent(): HasOne
     {
         return $this->hasOne('App\Folder', 'id', 'parent_id');
     }
@@ -38,7 +40,7 @@ class Folder extends Model
     /**
      * Get the children of this folder.
      */
-    public function children()
+    public function children(): HasMany
     {
         return $this->hasMany('App\Folder', 'parent_id')
             ->orderBy('created_at', 'desc');
@@ -47,24 +49,22 @@ class Folder extends Model
     /**
      * Get the cards of this folder.
      */
-    public function cards()
+    public function cards(): HasMany
     {
         return $this->hasMany('App\Card', 'folder_id')
             ->orderBy('created_at', 'desc');
     }
 
     /**
-     * Get the breadcrumbs for this folder
+     * Get the breadcrumbs for this folder.
      *
-     * Define if the breadcrumbs should contain the current folder
-     *
-     * @param  bool  $self
+     * The "self" parameter defines if the breadcrumbs should
+     * include the current folder or not.
      *
      * This function will return a Collection and should contain
      * a path as the key, and a name as the value.
-     * @return Collection
      */
-    public function breadcrumbs(bool $self = false)
+    public function breadcrumbs(bool $self = false): Collection
     {
         $breadcrumbs = collect([]);
 

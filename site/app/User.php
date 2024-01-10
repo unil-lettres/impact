@@ -3,14 +3,16 @@
 namespace App;
 
 use App\Enums\EnrollmentRole;
+use App\Enums\UserType;
 use App\Scopes\ValidityScope;
 use DateTime;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Collection;
 
 class User extends Authenticatable
 {
@@ -49,21 +51,16 @@ class User extends Authenticatable
 
     /**
      * The "booted" method of the model.
-     *
-     * @return void
      */
-    protected static function booted()
+    protected static function booted(): void
     {
         static::addGlobalScope(new ValidityScope());
     }
 
     /**
      * Scope a query to exclude admin users.
-     *
-     * @param  Builder  $query
-     * @return Builder
      */
-    public function scopeWithoutAdmins($query)
+    public function scopeWithoutAdmins(Builder $query): Builder
     {
         return $query->where('admin', false);
     }
@@ -71,7 +68,7 @@ class User extends Authenticatable
     /**
      * Get the invitations created by the user.
      */
-    public function invitations()
+    public function invitations(): HasMany
     {
         return $this->hasMany('App\Invitation', 'creator_id')
             ->orderBy('created_at', 'desc');
@@ -80,7 +77,7 @@ class User extends Authenticatable
     /**
      * Get the enrollments of this user.
      */
-    public function enrollments()
+    public function enrollments(): HasMany
     {
         return $this->hasMany('App\Enrollment', 'user_id')
             ->orderBy('created_at', 'desc');
@@ -88,10 +85,8 @@ class User extends Authenticatable
 
     /**
      * Get the user enrollments with a teaching role.
-     *
-     * @return Collection
      */
-    public function enrollmentsAsTeacher()
+    public function enrollmentsAsTeacher(): Collection
     {
         return $this->enrollments()
             ->where('role', EnrollmentRole::Teacher)
@@ -101,10 +96,8 @@ class User extends Authenticatable
 
     /**
      * Get the user enrollments with a student role.
-     *
-     * @return Collection
      */
-    public function enrollmentsAsStudent()
+    public function enrollmentsAsStudent(): Collection
     {
         return $this->enrollments()
             ->where('role', EnrollmentRole::Student)
@@ -113,11 +106,9 @@ class User extends Authenticatable
     }
 
     /**
-     * Retrieve all the users with a teacher role
-     *
-     * @return Collection
+     * Retrieve all the users with a teacher role.
      */
-    public static function teachers()
+    public static function teachers(): Collection
     {
         return Enrollment::where('role', EnrollmentRole::Teacher)->get()
             ->map(function ($enrollment) {
@@ -127,11 +118,9 @@ class User extends Authenticatable
     }
 
     /**
-     * Retrieve all the users with a student role
-     *
-     * @return Collection
+     * Retrieve all the users with a student role.
      */
-    public static function students()
+    public static function students(): Collection
     {
         return Enrollment::where('role', EnrollmentRole::Student)->get()
             ->map(function ($enrollment) {
@@ -142,10 +131,8 @@ class User extends Authenticatable
 
     /**
      * Get the cards with editing rights for the user.
-     *
-     * @return \Illuminate\Support\Collection
      */
-    public function cards()
+    public function cards(): Collection
     {
         return $this->enrollments
             ->map(function ($enrollment) {
@@ -156,10 +143,8 @@ class User extends Authenticatable
 
     /**
      * Check if the user is an editor of the given card.
-     *
-     * @return bool
      */
-    public function isEditor(Card $card)
+    public function isEditor(Card $card): bool
     {
         if ($this->admin) {
             return true;
@@ -171,10 +156,8 @@ class User extends Authenticatable
 
     /**
      * Check if the user is a teacher of the given course.
-     *
-     * @return bool
      */
-    public function isTeacher(Course $course)
+    public function isTeacher(Course $course): bool
     {
         if ($this->admin) {
             return true;
@@ -186,10 +169,8 @@ class User extends Authenticatable
 
     /**
      * Check if the user is a student of the given course.
-     *
-     * @return bool
      */
-    public function isStudent(Course $course)
+    public function isStudent(Course $course): bool
     {
         if ($this->admin) {
             return true;
@@ -200,19 +181,44 @@ class User extends Authenticatable
     }
 
     /**
-     * Extend the validity of the user account.
-     *
-     * @return DateTime
+     * Check the validity of the user account.
      */
-    public function extendValidity(?int $months = null)
+    public function isValid(): bool
     {
+        // Check if user is an admin
+        if ($this->admin) {
+            return true;
+        }
+
+        // Check if user account has an expiration date
+        if (is_null($this->validity)) {
+            return true;
+        }
+
+        // Check if user account is still valid
+        $validity = Carbon::instance($this->validity);
+        if ($validity->isFuture()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Extend the validity of the user account.
+     */
+    public function extendValidity(?int $months = null): ?DateTime
+    {
+        // Admins and AAI users have no validity
+        if ($this->admin || $this->type === UserType::Aai) {
+            return null;
+        }
+
         $months = $months ?? config('const.users.validity');
 
-        // Extend validity, but do not add one to admin accounts
-        $validity = $this->admin ? null : Carbon::now()->addMonths($months);
-
         $this->update([
-            'validity' => $validity,
+            'validity' => Carbon::now()
+                ->addMonths($months),
         ]);
 
         return $this->validity;

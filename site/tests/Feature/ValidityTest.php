@@ -72,7 +72,7 @@ class ValidityTest extends TestCase
     /**
      * Test the user account is about to expire email content.
      */
-    public function testAccountValidityEmailContent()
+    public function testAccountValidityEmailContent(): void
     {
         $days = config('const.users.account.expiring');
 

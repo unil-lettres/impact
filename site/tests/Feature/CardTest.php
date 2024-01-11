@@ -15,7 +15,7 @@ class CardTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    public function testCardCanBeCreated()
+    public function testCardCanBeCreated(): void
     {
         $cardData = [
             'title' => fake()->title,
@@ -27,7 +27,7 @@ class CardTest extends TestCase
         $this->assertDatabaseHas('cards', $cardData);
     }
 
-    public function testCardCanBeUpdated()
+    public function testCardCanBeUpdated(): void
     {
         $card = Card::factory()->create();
 
@@ -40,7 +40,7 @@ class CardTest extends TestCase
         $this->assertDatabaseHas('cards', $cardDataUpdated);
     }
 
-    public function testCardCanBeDeleted()
+    public function testCardCanBeDeleted(): void
     {
         $card = Card::factory()->create();
 
@@ -49,7 +49,7 @@ class CardTest extends TestCase
         $this->assertSoftDeleted($card);
     }
 
-    public function testCardPositionCorrectlyInitialized()
+    public function testCardPositionCorrectlyInitialized(): void
     {
         $course = Course::factory()->create();
 
@@ -67,7 +67,7 @@ class CardTest extends TestCase
         }
     }
 
-    public function testCloneCardInsideFolder()
+    public function testCloneCardInsideFolder(): void
     {
         $course = Course::factory()->hasFolders(1)->hasCards(1)->create();
         $folder = $course->folders->first();

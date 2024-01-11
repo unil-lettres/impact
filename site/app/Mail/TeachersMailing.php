@@ -4,21 +4,21 @@ namespace App\Mail;
 
 use App\User;
 use Illuminate\Bus\Queueable;
-use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Collection;
 
 class TeachersMailing extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public $user;
+    public User $user;
 
-    public $courses;
+    public Collection $courses;
 
     public $subject;
 
-    public $content;
+    public string $content;
 
     /**
      * Create a new message instance.
@@ -44,12 +44,9 @@ class TeachersMailing extends Mailable
     }
 
     /**
-     * Clean content & replace placeholder
-     *
-     * @param  string  $content
-     * @return string
+     * Clean content & replace placeholder.
      */
-    private function processContent($content)
+    private function processContent(string $content): string
     {
         // Replace {{espaces}} placeholder with courses if found
         $content = str_replace(
@@ -67,11 +64,9 @@ class TeachersMailing extends Mailable
     }
 
     /**
-     * Return an HTML list of the courses
-     *
-     * @return string
+     * Return an HTML list of the courses.
      */
-    private function coursesAsHtmlList()
+    private function coursesAsHtmlList(): string
     {
         if ($this->courses) {
             $html = '';

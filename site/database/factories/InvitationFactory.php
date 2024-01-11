@@ -3,18 +3,19 @@
 namespace Database\Factories;
 
 use App\Course;
-use App\State;
+use App\Invitation;
+use App\User;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Carbon;
 
-class StateFactory extends Factory
+class InvitationFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = State::class;
+    protected $model = Invitation::class;
 
     /**
      * Define the model's default state.
@@ -22,16 +23,16 @@ class StateFactory extends Factory
     public function definition(): array
     {
         $now = Carbon::now();
+        $email = fake()->unique()->safeEmail;
 
         return [
-            'name' => fake()->word(),
-            'position' => fake()->randomDigitNotNull(),
+            'email' => $email,
+            'invitation_token' => substr(md5(rand(0, 9).$email.time()), 0, 32),
+            'creator_id' => User::factory(),
             'course_id' => Course::factory(),
-            'permissions' => json_decode(State::PERMISSIONS, true),
-            'actions' => json_decode(State::ACTIONS, true),
+            'registered_at' => null,
             'created_at' => $now,
             'updated_at' => $now,
-            'deleted_at' => null,
         ];
     }
 }

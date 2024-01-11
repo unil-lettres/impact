@@ -126,7 +126,7 @@ class TagTest extends TestCase
         );
     }
 
-    public function testOrderTags()
+    public function testOrderTags(): void
     {
         $admin = User::factory()->admin()->create();
 

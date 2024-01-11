@@ -14,12 +14,16 @@ class CourseConfirmDelete extends Mailable
 
     public Course $course;
 
+    public string $fromEmail;
+
     /**
      * Create a new message instance.
      */
     public function __construct(Course $course)
     {
         $this->course = $course;
+
+        $this->fromEmail = Auth::user()?->email || config('mail.from.address');
     }
 
     /**
@@ -30,7 +34,7 @@ class CourseConfirmDelete extends Mailable
     public function build()
     {
         return $this->subject(trans('courses.mail.confirm_delete.subject'))
-            ->from(Auth::user()->email)
+            ->from($this->fromEmail)
             ->view('mails.courses.confirm_delete');
     }
 }

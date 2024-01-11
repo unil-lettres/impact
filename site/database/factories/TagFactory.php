@@ -2,19 +2,22 @@
 
 namespace Database\Factories;
 
+use App\Tag;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Tag>
- */
 class TagFactory extends Factory
 {
     /**
-     * Define the model's default state.
+     * The name of the factory's corresponding model.
      *
-     * @return array<string, mixed>
+     * @var string
      */
-    public function definition()
+    protected $model = Tag::class;
+
+    /**
+     * Define the model's default state.
+     */
+    public function definition(): array
     {
         return [
             // Using uuid() to avoid occasional collisions word() would cause

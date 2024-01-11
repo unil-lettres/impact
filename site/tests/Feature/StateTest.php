@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Card;
 use App\Course;
 use App\Enums\StateType;
+use App\Mail\StateSelected;
 use App\State;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -15,7 +16,7 @@ class StateTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    public function testStateCanBeCreated()
+    public function testStateCanBeCreated(): void
     {
         $stateData = [
             'name' => fake()->word(),
@@ -27,7 +28,7 @@ class StateTest extends TestCase
         $this->assertDatabaseHas('states', $stateData);
     }
 
-    public function testCourseDefaultStatesShouldBeAutomaticallyCreated()
+    public function testCourseDefaultStatesShouldBeAutomaticallyCreated(): void
     {
         $course = Course::factory()->create();
 
@@ -36,7 +37,7 @@ class StateTest extends TestCase
         $this->assertEquals(4, $course->states->count());
     }
 
-    public function testCardStateShouldBeAutomaticallySettedToPrivate()
+    public function testCardStateShouldBeAutomaticallySettedToPrivate(): void
     {
         $card = Card::factory()->create();
 
@@ -51,7 +52,7 @@ class StateTest extends TestCase
         $this->assertEquals($default_state->id, $card->state_id);
     }
 
-    public function testStateCanBeUpdated()
+    public function testStateCanBeUpdated(): void
     {
         $state = State::factory()->create();
 
@@ -64,12 +65,33 @@ class StateTest extends TestCase
         $this->assertDatabaseHas('states', $stateDataUpdated);
     }
 
-    public function testStateCanBeDeleted()
+    public function testStateCanBeDeleted(): void
     {
         $state = State::factory()->create();
 
         $state->delete();
 
         $this->assertSoftDeleted($state);
+    }
+
+    /**
+     * Test the state selected email content.
+     */
+    public function testStateSelectedEmailContent(): void
+    {
+        $card = Card::factory()
+            ->create();
+
+        $subject = $this->faker->sentence(3);
+        $content = '{{title}} {{url}}';
+
+        $mailable = new StateSelected(
+            $card,
+            $subject,
+            $content
+        );
+
+        $mailable->assertSeeInHtml($card->title);
+        $mailable->assertSeeInHtml(url("/cards/{$card->id}"));
     }
 }

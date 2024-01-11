@@ -31,6 +31,9 @@ return [
 
     'users' => [
         'validity' => env('USER_VALIDITY', 12),
+        'account' => [
+            'expiring' => env('USER_ACCOUNT_EXPIRING', 15),
+        ],
     ],
 
 ];

@@ -24,5 +24,7 @@ return [
     'update' => 'Mettre à jour le compte',
     'registrations' => 'Inscriptions',
     'edit.enrollments_are_auto_save' => 'Les inscriptions sont enregistrées automatiquement lorsque vous en ajoutez ou en enlevez.',
+    'email.account.validity.subject' => '[Impact] Votre compte utilisateur expire bientôt',
+    'email.account.validity.content' => 'Votre compte expirera dans :days jours, veuillez <a href=":url" target="_blank">vous connecter</a> pour prolonger automatiquement sa validité ou récupérer vos données dès que possible.',
 
 ];

@@ -66,6 +66,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Scope a query to exclude aai users.
+     */
+    public function scopeWithoutAais(Builder $query): Builder
+    {
+        return $query->where('type', '!=', UserType::Aai);
+    }
+
+    /**
      * Get the invitations created by the user.
      */
     public function invitations(): HasMany
@@ -222,5 +230,33 @@ class User extends Authenticatable
         ]);
 
         return $this->validity;
+    }
+
+    /**
+     * Check if the account is expiring in a specified number of days.
+     */
+    public function isAccountExpiringIn(?int $days = null): bool
+    {
+        // Admins and AAI users have no validity
+        if ($this->admin || $this->type === UserType::Aai) {
+            return false;
+        }
+
+        // Account already expired
+        if (! $this->isValid()) {
+            return false;
+        }
+
+        // Cannot expire if the account has no validity
+        if (is_null($this->validity)) {
+            return false;
+        }
+
+        $days = $days ?? config('const.users.account.expiring');
+
+        $validity = Carbon::instance($this->validity);
+
+        return Carbon::now()
+            ->diffInDays($validity) === $days;
     }
 }

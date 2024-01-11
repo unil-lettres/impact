@@ -24,5 +24,7 @@ return [
     'update' => 'Update account',
     'registrations' => 'Registrations',
     'edit.enrollments_are_auto_save' => 'Enrollments are automatically saved when you add or remove them.',
+    'email.account.validity.subject' => '[Impact] User account expiring soon',
+    'email.account.validity.content' => 'Dear user,<br><br>Your account will expire in :days days, please <a href=":url" target="_blank">login</a> to automatically extend its validity or retrieve your data as soon as possible.',
 
 ];

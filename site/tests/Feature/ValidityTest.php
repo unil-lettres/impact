@@ -12,10 +12,8 @@ class ValidityTest extends TestCase
 
     /**
      * Test invalid user.
-     *
-     * @return void
      */
-    public function testInvalidUser()
+    public function testInvalidUser(): void
     {
         $user = User::factory()
             ->invalid()
@@ -28,10 +26,8 @@ class ValidityTest extends TestCase
 
     /**
      * Test extend user account validity.
-     *
-     * @return void
      */
-    public function testExtendAccountValidity()
+    public function testExtendAccountValidity(): void
     {
         $user = User::factory()
             ->invalid()
@@ -50,10 +46,8 @@ class ValidityTest extends TestCase
 
     /**
      * Test validity not applied to admins.
-     *
-     * @return void
      */
-    public function testNoValidityForAdmins()
+    public function testNoValidityForAdmins(): void
     {
         $user = User::factory()
             ->admin()
@@ -63,5 +57,14 @@ class ValidityTest extends TestCase
         $this->actingAs($user)
             ->get('/')
             ->assertOk();
+    }
+
+    /**
+     * Test the command sending an email if a user account is about to expire.
+     */
+    public function testCommandEmailAccountValidity(): void
+    {
+        $this->artisan('email:account:validity')
+            ->assertExitCode(0);
     }
 }

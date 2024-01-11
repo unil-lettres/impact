@@ -12,12 +12,7 @@ class CourseConfirmDelete extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * The request instance.
-     *
-     * @var Course
-     */
-    public $course;
+    public Course $course;
 
     /**
      * Create a new message instance.

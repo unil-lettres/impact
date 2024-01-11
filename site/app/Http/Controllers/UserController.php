@@ -18,6 +18,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
@@ -199,8 +200,8 @@ class UserController extends Controller
                     'password_confirm' => ['nullable', 'same:new_password'],
                 ]);
 
-                // Remove empty and null values from the array data
-                $validated = array_filter($validated, 'strlen');
+                // Remove null values from the array data
+                $validated = Arr::whereNotNull($validated);
 
                 // If the user entered an old password, check if it's matching the db
                 if (array_key_exists('old_password', $validated) &&

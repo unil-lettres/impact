@@ -110,7 +110,9 @@ class Course extends Model
     public function users(bool $withTrashed = false): Collection
     {
         $enrollments = match ($withTrashed) {
-            true => $this->enrollments()->withTrashed(),
+            true => $this->enrollments()
+                ->withTrashed()
+                ->withoutGlobalScopes(),
             default => $this->enrollments(),
         };
 
@@ -233,7 +235,9 @@ class Course extends Model
     private function enrollmentsForRole(string $role, bool $withTrashed = false): Collection
     {
         $enrollments = match ($withTrashed) {
-            true => $this->enrollments()->withTrashed(),
+            true => $this->enrollments()
+                ->withTrashed()
+                ->withoutGlobalScopes(),
             default => $this->enrollments(),
         };
 

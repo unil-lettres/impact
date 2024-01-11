@@ -19,10 +19,8 @@ class UserFactory extends Factory
 
     /**
      * Define the model's default state.
-     *
-     * @return array
      */
-    public function definition()
+    public function definition(): array
     {
         return [
             'name' => fake()->name,
@@ -35,10 +33,8 @@ class UserFactory extends Factory
 
     /**
      * Indicate that the user is an admin.
-     *
-     * @return Factory
      */
-    public function admin()
+    public function admin(): Factory
     {
         return $this->state(function (array $attributes) {
             return [
@@ -49,16 +45,30 @@ class UserFactory extends Factory
 
     /**
      * Indicate that the user has an invalid account.
-     *
-     * @return Factory
      */
-    public function invalid()
+    public function invalid(): Factory
     {
         $now = Carbon::now();
 
         return $this->state(function (array $attributes) use ($now) {
             return [
                 'validity' => $now->subDays(1),
+            ];
+        });
+    }
+
+    /**
+     * Indicate that the user account if expiring in a specified number of days.
+     */
+    public function expireIn(?int $days): Factory
+    {
+        $now = Carbon::now();
+
+        $days = $days ?? config('const.users.account.expiring');
+
+        return $this->state(function (array $attributes) use ($now, $days) {
+            return [
+                'validity' => $now->addDays($days),
             ];
         });
     }

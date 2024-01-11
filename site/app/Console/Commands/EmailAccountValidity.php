@@ -31,7 +31,7 @@ class EmailAccountValidity extends Command
         // Array of days before account expiration.
         // Each day will trigger an email to the
         // user if the account validity matches.
-        $days = [15, 7];
+        $days = [config('const.users.account.expiring'), 7];
 
         User::withoutAdmins()
             ->withoutAais()

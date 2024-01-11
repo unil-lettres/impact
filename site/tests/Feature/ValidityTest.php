@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Mail\AccountValidity;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -66,5 +67,22 @@ class ValidityTest extends TestCase
     {
         $this->artisan('email:account:validity')
             ->assertExitCode(0);
+    }
+
+    /**
+     * Test the user account is about to expire email content.
+     */
+    public function testAccountValidityEmailContent()
+    {
+        $days = config('const.users.account.expiring');
+
+        $user = User::factory()
+            ->expireIn($days)
+            ->create();
+
+        $mailable = new AccountValidity($user, $days);
+
+        $mailable->assertSeeInHtml(route('home'));
+        $mailable->assertSeeInHtml($days);
     }
 }

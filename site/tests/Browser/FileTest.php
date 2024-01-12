@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
+use Tests\Browser\Pages\Course;
 use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
 use Throwable;
@@ -28,18 +29,15 @@ class FileTest extends DuskTestCase
     /**
      * Test list files as an admin.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testListFilesAsAdmin()
+    public function testListFilesAsAdmin(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->clickLink('Admin')
-                ->clickLink('Fichiers');
+            $browser->visit('/admin/files');
 
             $browser->assertSee('Test video file')
                 ->assertSee('Test audio file')
@@ -52,19 +50,16 @@ class FileTest extends DuskTestCase
     /**
      * Test list files as a teacher.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testListFilesAsTeacher()
+    public function testListFilesAsTeacher(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('teacher-user@example.com', 'password');
 
-            $browser->clickLink('Second space')
-                ->clickLink('Configuration de l\'espace')
-                ->clickLink('Fichiers');
+            $browser->on(new Course('Second space'))
+                ->filesIndex();
 
             $browser->assertSee('Test video file')
                 ->assertDontSee('Test audio file')
@@ -75,21 +70,18 @@ class FileTest extends DuskTestCase
     }
 
     /**
-     * Test show linked card as a teacher
-     *
-     * @return void
+     * Test show linked card as a teacher.
      *
      * @throws Throwable
      */
-    public function testShowLinkedCardAsTeacher()
+    public function testShowLinkedCardAsTeacher(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('teacher-user@example.com', 'password');
 
-            $browser->clickLink('Second space')
-                ->clickLink('Configuration de l\'espace')
-                ->clickLink('Fichiers');
+            $browser->on(new Course('Second space'))
+                ->filesIndex();
 
             $browser->with('#files table tbody tr.ready.used', function ($used) {
                 $used->click('span.base-popover');
@@ -104,18 +96,15 @@ class FileTest extends DuskTestCase
     /**
      * Test edit file.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testEditFile()
+    public function testEditFile(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->clickLink('Admin')
-                ->clickLink('Fichiers');
+            $browser->visit('/admin/files');
 
             $browser->click('#files table tbody tr.ready .actions span:nth-child(1) a')
                 ->type('name', 'Test file updated')
@@ -133,18 +122,15 @@ class FileTest extends DuskTestCase
     /**
      * Test can play a file with the ready status.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testCanPlayReadyFile()
+    public function testCanPlayReadyFile(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->clickLink('Admin')
-                ->clickLink('Fichiers');
+            $browser->visit('/admin/files');
 
             $browser->click('#files table tbody tr.ready .actions span:nth-child(1) a')
                 ->assertInputValue('status', 'ready')
@@ -155,18 +141,15 @@ class FileTest extends DuskTestCase
     /**
      * Test cannot play a file with the failed status.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testCannotPlayFailedFile()
+    public function testCannotPlayFailedFile(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->clickLink('Admin')
-                ->clickLink('Fichiers');
+            $browser->visit('/admin/files');
 
             $browser->click('#files table tbody tr.failed .actions span:nth-child(1) a')
                 ->assertInputValue('status', 'failed')
@@ -177,18 +160,15 @@ class FileTest extends DuskTestCase
     /**
      * Test cannot play a file with the transcoding status.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testCannotPlayTranscodingFile()
+    public function testCannotPlayTranscodingFile(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->clickLink('Admin')
-                ->clickLink('Fichiers');
+            $browser->visit('/admin/files');
 
             $browser->click('#files table tbody tr.transcoding .actions span:nth-child(1) a')
                 ->assertInputValue('status', 'transcoding')
@@ -199,18 +179,15 @@ class FileTest extends DuskTestCase
     /**
      * Test cannot edit the course of a used file.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testCannotEditCourseOfUsedFile()
+    public function testCannotEditCourseOfUsedFile(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->clickLink('Admin')
-                ->clickLink('Fichiers');
+            $browser->visit('/admin/files');
 
             $browser->click('#files table tbody tr.ready.used .actions span:nth-child(1) a')
                 ->assertSee('Test card with file')
@@ -222,18 +199,15 @@ class FileTest extends DuskTestCase
     /**
      * Test can edit the course of an unused file.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testCanEditCourseOfUnusedFile()
+    public function testCanEditCourseOfUnusedFile(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->clickLink('Admin')
-                ->clickLink('Fichiers');
+            $browser->visit('/admin/files');
 
             $browser->click('#files table tbody tr.unused .actions span:nth-child(1) a')
                 ->assertSee('Aucune fiche trouvée')
@@ -246,18 +220,15 @@ class FileTest extends DuskTestCase
     /**
      * Test can delete an unused file.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testCanDeleteUnusedFile()
+    public function testCanDeleteUnusedFile(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->clickLink('Admin')
-                ->clickLink('Fichiers');
+            $browser->visit('/admin/files');
 
             $browser->with('#files table tbody tr.unused', function ($unused) {
                 $unused->click('form.with-delete-confirm button')

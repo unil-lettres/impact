@@ -28,11 +28,9 @@ class LoginTest extends DuskTestCase
     /**
      * Test basic login.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testBasicLogin()
+    public function testBasicLogin(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -46,11 +44,9 @@ class LoginTest extends DuskTestCase
     /**
      * Test basic admin login.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testBasicAdminLogin()
+    public function testBasicAdminLogin(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -67,11 +63,9 @@ class LoginTest extends DuskTestCase
     /**
      * Test invalid user.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testInvalidUser()
+    public function testInvalidUser(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())

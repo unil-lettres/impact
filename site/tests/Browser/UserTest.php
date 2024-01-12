@@ -29,17 +29,15 @@ class UserTest extends DuskTestCase
     /**
      * Test list users.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testListUsers()
+    public function testListUsers(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->clickLink('Admin');
+            $browser->visit('/admin/users');
 
             $browser->assertSee('Gestion des utilisateurs');
             $browser->assertSee('first-user@example.com');
@@ -50,20 +48,18 @@ class UserTest extends DuskTestCase
     /**
      * Test create user.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testCreateUser()
+    public function testCreateUser(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->clickLink('Admin');
+            $browser->visit('/admin/users');
 
-            $browser->assertSee('Créer un utilisateur');
-            $browser->clickLink('Créer un utilisateur');
+            $browser->assertSee('Créer un utilisateur')
+                ->clickLink('Créer un utilisateur');
 
             $browser->type('name', 'Test create user')
                 ->type('email', 'test-create-user@example.com')
@@ -80,11 +76,9 @@ class UserTest extends DuskTestCase
     /**
      * Test create user with error.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testCreateUserWithError()
+    public function testCreateUserWithError(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -106,17 +100,15 @@ class UserTest extends DuskTestCase
     /**
      * Test edit user.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testEditUser()
+    public function testEditUser(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->clickLink('Admin');
+            $browser->visit('/admin/users');
 
             $browser->click('#users table tbody tr:first-child .actions span:nth-child(1) a')
                 ->type('name', 'Test update user')
@@ -136,11 +128,9 @@ class UserTest extends DuskTestCase
     /**
      * Test edit user with errors.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testEditUserWithErrors()
+    public function testEditUserWithErrors(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -172,11 +162,9 @@ class UserTest extends DuskTestCase
     /**
      * Test expired user.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testExpiredUser()
+    public function testExpiredUser(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -200,11 +188,9 @@ class UserTest extends DuskTestCase
     /**
      * Test AAI user.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testAaiUser()
+    public function testAaiUser(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -228,11 +214,9 @@ class UserTest extends DuskTestCase
     /**
      * Test local user.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testLocalUser()
+    public function testLocalUser(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -253,11 +237,9 @@ class UserTest extends DuskTestCase
     /**
      * Test delete user.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testDeleteUser()
+    public function testDeleteUser(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -278,11 +260,9 @@ class UserTest extends DuskTestCase
     /**
      * Test local user profile.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testLocalUserProfile()
+    public function testLocalUserProfile(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -308,11 +288,9 @@ class UserTest extends DuskTestCase
     /**
      * Test editing local user profile.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testEditLocalUserProfile()
+    public function testEditLocalUserProfile(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())

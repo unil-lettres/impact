@@ -31,11 +31,9 @@ class CourseTest extends DuskTestCase
     /**
      * Test list courses as simple user.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testListCoursesAsUser()
+    public function testListCoursesAsUser(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -53,11 +51,9 @@ class CourseTest extends DuskTestCase
     /**
      * Test list courses as an admin user.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testListCoursesAsAdmin()
+    public function testListCoursesAsAdmin(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -75,18 +71,16 @@ class CourseTest extends DuskTestCase
     /**
      * Test view course as a teacher.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testViewCourseAsTeacher()
+    public function testViewCourseAsTeacher(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('teacher-user@example.com', 'password');
 
             $browser->assertSee('First space')
-                ->clickLink('First space');
+                ->visit(new PagesCourse('First space'));
 
             $browser->assertSee('Configuration de l\'espace')
                 ->assertSee('Créer une fiche');
@@ -96,18 +90,16 @@ class CourseTest extends DuskTestCase
     /**
      * Test view course as a student.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testViewCourseAsStudent()
+    public function testViewCourseAsStudent(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('student-user@example.com', 'password');
 
             $browser->assertSee('Second space')
-                ->clickLink('Second space');
+                ->visit(new PagesCourse('Second space'));
 
             $browser->assertDontSee('Configuration de l\'espace')
                 ->assertDontSee('Créer une fiche');
@@ -117,11 +109,9 @@ class CourseTest extends DuskTestCase
     /**
      * Test create a course.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testCreateCourse()
+    public function testCreateCourse(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -143,11 +133,9 @@ class CourseTest extends DuskTestCase
     /**
      * Test edit a local course.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testEditLocalCourse()
+    public function testEditLocalCourse(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -171,11 +159,9 @@ class CourseTest extends DuskTestCase
     /**
      * Test edit an external course.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testEditExternalCourse()
+    public function testEditExternalCourse(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -199,11 +185,9 @@ class CourseTest extends DuskTestCase
     /**
      * Test disable a course.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testDisableCourse()
+    public function testDisableCourse(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -225,11 +209,9 @@ class CourseTest extends DuskTestCase
     /**
      * Test delete a course.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testDeleteCourse()
+    public function testDeleteCourse(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -250,20 +232,15 @@ class CourseTest extends DuskTestCase
     /**
      * Test change the transcription type.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testChangeTranscriptionType()
+    public function testChangeTranscriptionType(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->assertSee('Second space')
-                ->clickLink('Second space')
-                ->assertSee('Test card features')
-                ->clickLink('Test card features');
+            $browser->visit(new PagesCard('Test card features'));
 
             $browser->click('#edit-box2')
                 ->assertSee('Annuler')
@@ -272,8 +249,7 @@ class CourseTest extends DuskTestCase
                 ->assertPresent('#rct-transcription')
                 ->assertNotPresent('#rct-editor-box2');
 
-            $browser->assertSee('Second space')
-                ->clickLink('Second space')
+            $browser->visit(new PagesCourse('Second space'))
                 ->clickLink('Configuration de l\'espace')
                 ->assertSee('Type de transcription');
 
@@ -281,10 +257,7 @@ class CourseTest extends DuskTestCase
                 ->press('Mettre à jour la configuration')
                 ->assertSee('Configuration de l\'espace mise à jour.');
 
-            $browser->assertSee('Second space')
-                ->clickLink('Second space')
-                ->assertSee('Test card features')
-                ->clickLink('Test card features');
+            $browser->visit(new PagesCard('Test card features'));
 
             $browser->click('#edit-box2')
                 ->assertSee('Annuler')

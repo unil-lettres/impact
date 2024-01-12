@@ -47,4 +47,12 @@ class Card extends Page
             '@element' => '#selector',
         ];
     }
+
+    /**
+     * Navigate to the card configuration view.
+     */
+    public function edit(Browser $browser): void
+    {
+        $browser->visit("{$this->url()}/edit");
+    }
 }

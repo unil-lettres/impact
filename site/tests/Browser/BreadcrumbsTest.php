@@ -29,11 +29,9 @@ class BreadcrumbsTest extends DuskTestCase
     /**
      * Test view folders.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testViewBreadcrumbs()
+    public function testViewBreadcrumbs(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())

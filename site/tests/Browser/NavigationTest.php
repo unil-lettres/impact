@@ -28,11 +28,9 @@ class NavigationTest extends DuskTestCase
     /**
      * Test the responsiveness of the navigation bar.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testResponsiveNavbar()
+    public function testResponsiveNavbar(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())

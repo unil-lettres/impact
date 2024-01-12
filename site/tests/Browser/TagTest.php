@@ -5,6 +5,8 @@ namespace Tests\Browser;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
+use Tests\Browser\Pages\Card;
+use Tests\Browser\Pages\Course;
 use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
 
@@ -33,7 +35,8 @@ class TagTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/courses/1/configure/tags');
+            $browser->on(new Course('First space'))
+                ->tagsIndex();
 
             // Create
             $tagName = 'a_new_tag';
@@ -74,7 +77,8 @@ class TagTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/courses/1/configure/tags');
+            $browser->on(new Course('First space'))
+                ->tagsIndex();
 
             $browser->click('#rct-single-course-select')
                 ->waitForText('Second space')
@@ -100,7 +104,8 @@ class TagTest extends DuskTestCase
             $browser->visit(new Login())
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/cards/4/edit');
+            $browser->on(new Card('Test card first space'))
+                ->edit();
 
             $newTag = 'a_new_tag';
 

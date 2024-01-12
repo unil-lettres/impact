@@ -28,11 +28,9 @@ class LocalizationTest extends DuskTestCase
     /**
      * Test basic localization.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testBasicLocalization()
+    public function testBasicLocalization(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/');

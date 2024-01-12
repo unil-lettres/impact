@@ -31,18 +31,15 @@ class CardTest extends DuskTestCase
     /**
      * Test list user cards.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testListUserCards()
+    public function testListUserCards(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('student-user@example.com', 'password');
 
-            $browser->assertSee('Second space')
-                ->clickLink('Second space');
+            $browser->visit(new Course('Second space'));
 
             $browser->assertSee('Test card second space')
                 ->assertDontSee('Test card second space not assigned');
@@ -52,18 +49,15 @@ class CardTest extends DuskTestCase
     /**
      * Test view card as an editor.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testViewCardAsEditor()
+    public function testViewCardAsEditor(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('student-user@example.com', 'password');
 
-            $browser->assertSee('Second space')
-                ->clickLink('Second space');
+            $browser->visit(new Course('Second space'));
 
             $browser->assertSee('Test card second space')
                 ->assertDontSee('Test card second space not assigned')
@@ -77,18 +71,15 @@ class CardTest extends DuskTestCase
     /**
      * Test view card as a teacher.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testViewCardAsTeacher()
+    public function testViewCardAsTeacher(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('teacher-user@example.com', 'password');
 
-            $browser->assertSee('First space')
-                ->clickLink('First space');
+            $browser->visit(new Course('First space'));
 
             $browser->assertSee('Test card first space')
                 ->assertDontSee('Test card second space')
@@ -102,11 +93,9 @@ class CardTest extends DuskTestCase
     /**
      * Test create card as a teacher.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testCreateCardAsTeacher()
+    public function testCreateCardAsTeacher(): void
     {
         $this->browse(function (Browser $browser) {
             $browser
@@ -140,11 +129,9 @@ class CardTest extends DuskTestCase
     /**
      * Test create card into a specific folder.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testCreateCardIntoFolder()
+    public function testCreateCardIntoFolder(): void
     {
         $this->browse(function (Browser $browser) {
             $browser
@@ -183,11 +170,9 @@ class CardTest extends DuskTestCase
     /**
      * Test cannot create a card without selecting editor(s).
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testCannotCreateCardWithoutEditors()
+    public function testCannotCreateCardWithoutEditors(): void
     {
         $this->browse(function (Browser $browser) {
             $browser
@@ -216,11 +201,9 @@ class CardTest extends DuskTestCase
     /**
      * Test hide/show card boxes.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testHideCardBoxes()
+    public function testHideCardBoxes(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -245,13 +228,11 @@ class CardTest extends DuskTestCase
     }
 
     /**
-     * Test saving some text in text editor
-     *
-     * @return void
+     * Test saving some text in text editor.
      *
      * @throws Throwable
      */
-    public function testSaveTextInTextEditor()
+    public function testSaveTextInTextEditor(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -272,13 +253,11 @@ class CardTest extends DuskTestCase
     }
 
     /**
-     * Test canceling some text in text editor
-     *
-     * @return void
+     * Test canceling some text in text editor.
      *
      * @throws Throwable
      */
-    public function testCancelTextInTextEditor()
+    public function testCancelTextInTextEditor(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -300,13 +279,11 @@ class CardTest extends DuskTestCase
 
     /**
      * Test showing processing status message in source viewer
-     * when the file has the "processing" or "transcoding" status
-     *
-     * @return void
+     * when the file has the "processing" or "transcoding" status.
      *
      * @throws Throwable
      */
-    public function testShowProcessingStatusInSourceViewer()
+    public function testShowProcessingStatusInSourceViewer(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -322,13 +299,11 @@ class CardTest extends DuskTestCase
 
     /**
      * Test showing failed status message in source viewer
-     * when the file has the "failed" status
-     *
-     * @return void
+     * when the file has the "failed" status.
      *
      * @throws Throwable
      */
-    public function testShowFailedStatusInSourceViewer()
+    public function testShowFailedStatusInSourceViewer(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -344,13 +319,11 @@ class CardTest extends DuskTestCase
 
     /**
      * Test showing the media player in source viewer
-     * when the file has the "ready" status
-     *
-     * @return void
+     * when the file has the "ready" status.
      *
      * @throws Throwable
      */
-    public function testShowPlayerInSourceViewer()
+    public function testShowPlayerInSourceViewer(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())

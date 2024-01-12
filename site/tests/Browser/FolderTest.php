@@ -6,6 +6,8 @@ use App\Folder;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
+use Tests\Browser\Pages\Course;
+use Tests\Browser\Pages\Folder as PagesFolder;
 use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
 use Throwable;
@@ -29,18 +31,15 @@ class FolderTest extends DuskTestCase
     /**
      * Test view folders as user.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testViewFoldersAsUser()
+    public function testViewFoldersAsUser(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('student-user@example.com', 'password');
 
-            $browser->assertSee('Second space')
-                ->clickLink('Second space');
+            $browser->visit(new Course('Second space'));
 
             $browser
                 ->waitForText('Test folder')
@@ -56,23 +55,17 @@ class FolderTest extends DuskTestCase
     /**
      * Test view folders as teacher.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testViewFoldersAsTeacher()
+    public function testViewFoldersAsTeacher(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('teacher-user@example.com', 'password');
 
-            $browser->assertSee('Second space')
-                ->clickLink('Second space');
+            $browser->visit(new PagesFolder('Test folder'));
 
-            $browser
-                ->waitForText('Test folder')
-                ->clickLink('Test folder');
-
+            // Managers should see empty folders.
             $browser
                 ->waitForText('Test child folder')
                 ->assertSee('Test child folder');
@@ -82,17 +75,15 @@ class FolderTest extends DuskTestCase
     /**
      * Test create folders as a teacher.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testCreateFoldersAsTeacher()
+    public function testCreateFoldersAsTeacher(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('teacher-user@example.com', 'password');
 
-            $browser->clickLink('First space');
+            $browser->visit(new Course('First space'));
 
             // Create the root folder
             $browser

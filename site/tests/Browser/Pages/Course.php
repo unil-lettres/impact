@@ -60,4 +60,28 @@ class Course extends Page
             'course_id' => $this->course->id,
         ]);
     }
+
+    /**
+     * Navigate to the course files index view.
+     */
+    public function filesIndex(Browser $browser): void
+    {
+        $browser->visit("{$this->url()}/configure/files");
+    }
+
+    /**
+     * Navigate to the course states index view.
+     */
+    public function statesIndex(Browser $browser): void
+    {
+        $browser->visit("{$this->url()}/configure/states");
+    }
+
+    /**
+     * Navigate to the course tags index view.
+     */
+    public function tagsIndex(Browser $browser): void
+    {
+        $browser->visit("{$this->url()}/configure/tags");
+    }
 }

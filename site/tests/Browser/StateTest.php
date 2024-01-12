@@ -5,6 +5,7 @@ namespace Tests\Browser;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
+use Tests\Browser\Pages\Course;
 use Tests\Browser\Pages\Login;
 use Tests\DuskTestCase;
 use Throwable;
@@ -28,18 +29,15 @@ class StateTest extends DuskTestCase
     /**
      * Test can view states management as teacher.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testTeachersCanViewStatesManagement()
+    public function testTeachersCanViewStatesManagement(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('states-teacher-user@example.com', 'password');
 
-            $browser->assertSee('Test states')
-                ->clickLink('Test states');
+            $browser->visit(new Course('Test states'));
 
             $browser->assertSee('Configuration de l\'espace')
                 ->clickLink('Configuration de l\'espace');
@@ -57,18 +55,15 @@ class StateTest extends DuskTestCase
     /**
      * Test cannot view states management as student.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testStudentsCannotViewStatesManagement()
+    public function testStudentsCannotViewStatesManagement(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('states-student-user@example.com', 'password');
 
-            $browser->assertSee('Test states')
-                ->clickLink('Test states');
+            $browser->visit(new Course('Test states'));
 
             $browser->assertDontSee('Configuration de l\'espace');
         });
@@ -77,24 +72,16 @@ class StateTest extends DuskTestCase
     /**
      * Test create new state.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testCreateNewState()
+    public function testCreateNewState(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('states-teacher-user@example.com', 'password');
 
-            $browser->assertSee('Test states')
-                ->clickLink('Test states');
-
-            $browser->assertSee('Configuration de l\'espace')
-                ->clickLink('Configuration de l\'espace');
-
-            $browser->assertSee('États')
-                ->clickLink('États');
+            $browser->on(new Course('Test states'))
+                ->statesIndex();
 
             $browser->assertSee('Ajouter un état')
                 ->press('Ajouter un état')
@@ -106,24 +93,16 @@ class StateTest extends DuskTestCase
     /**
      * Test update state.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testUpdateState()
+    public function testUpdateState(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('states-teacher-user@example.com', 'password');
 
-            $browser->assertSee('Test states')
-                ->clickLink('Test states');
-
-            $browser->assertSee('Configuration de l\'espace')
-                ->clickLink('Configuration de l\'espace');
-
-            $browser->assertSee('États')
-                ->clickLink('États');
+            $browser->on(new Course('Test states'))
+                ->statesIndex();
 
             // Update the current state
             $browser->type('name', 'Updated state')
@@ -139,24 +118,16 @@ class StateTest extends DuskTestCase
     /**
      * Test delete state.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testDeleteState()
+    public function testDeleteState(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('states-teacher-user@example.com', 'password');
 
-            $browser->assertSee('Test states')
-                ->clickLink('Test states');
-
-            $browser->assertSee('Configuration de l\'espace')
-                ->clickLink('Configuration de l\'espace');
-
-            $browser->assertSee('États')
-                ->clickLink('États');
+            $browser->on(new Course('Test states'))
+                ->statesIndex();
 
             // Create a new state
             $browser->assertSee('Ajouter un état')
@@ -177,24 +148,16 @@ class StateTest extends DuskTestCase
     /**
      * Test open state has a default email action.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testOpenStateHasEmailAction()
+    public function testOpenStateHasEmailAction(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('states-teacher-user@example.com', 'password');
 
-            $browser->assertSee('Test states')
-                ->clickLink('Test states');
-
-            $browser->assertSee('Configuration de l\'espace')
-                ->clickLink('Configuration de l\'espace');
-
-            $browser->assertSee('États')
-                ->clickLink('États');
+            $browser->on(new Course('Test states'))
+                ->statesIndex();
 
             $browser->assertSee('ouvert')
                 ->clickLink('ouvert')
@@ -207,24 +170,16 @@ class StateTest extends DuskTestCase
     /**
      * Test public state has a default email action.
      *
-     * @return void
-     *
      * @throws Throwable
      */
-    public function testPublicStateHasEmailAction()
+    public function testPublicStateHasEmailAction(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
                 ->loginAsUser('states-teacher-user@example.com', 'password');
 
-            $browser->assertSee('Test states')
-                ->clickLink('Test states');
-
-            $browser->assertSee('Configuration de l\'espace')
-                ->clickLink('Configuration de l\'espace');
-
-            $browser->assertSee('États')
-                ->clickLink('États');
+            $browser->on(new Course('Test states'))
+                ->statesIndex();
 
             $browser->assertSee('public')
                 ->clickLink('public')

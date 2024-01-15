@@ -170,6 +170,11 @@ class Card extends Model
             return false;
         }
 
+        // Admins can remove any editor
+        if (Auth::user()->admin) {
+            return true;
+        }
+
         // Check if the card state is set to private and
         // if the user is the only editor of the card
         if ($this->state->type === StateType::Private &&

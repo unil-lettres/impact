@@ -161,7 +161,7 @@ class Card extends Model
     }
 
     /**
-     * Check if a user can be removed of the editors of this card.
+     * Check if a user can be removed from the editors of this card.
      */
     public function canRemoveEditor(User $user): bool
     {

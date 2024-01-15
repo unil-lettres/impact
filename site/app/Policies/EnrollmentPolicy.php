@@ -69,11 +69,6 @@ class EnrollmentPolicy
             return false;
         }
 
-        // Enrolled user cannot be an admin
-        if ($enrolledUser->admin) {
-            return false;
-        }
-
         if ($user->admin) {
             return true;
         }
@@ -124,13 +119,13 @@ class EnrollmentPolicy
      */
     public function forceDelete(User $user, Enrollment $enrollment)
     {
+        if ($user->admin) {
+            return true;
+        }
+
         // User cannot delete own enrollment
         if ($user->id === $enrollment->user->id) {
             return false;
-        }
-
-        if ($user->admin) {
-            return true;
         }
 
         // Only teachers can delete enrollments

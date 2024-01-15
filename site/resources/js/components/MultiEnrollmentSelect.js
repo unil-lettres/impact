@@ -48,17 +48,6 @@ class MultiEnrollmentSelect extends MultiSelect {
             return Promise.reject(error);
         });
     }
-
-    printError(message) {
-        if(message || null) {
-            this.setState({
-                message: {
-                    type: 'text-danger',
-                    content: message,
-                }
-            });
-        }
-    }
 }
 
 const elementIdCourseThr = 'rct-multi-course-teacher-select';

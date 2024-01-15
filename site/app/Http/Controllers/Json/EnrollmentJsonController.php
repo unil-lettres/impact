@@ -100,6 +100,14 @@ class EnrollmentJsonController extends Controller
             $request->user_id, $card
         );
 
+        // A private card must have at least one editor, except for admins
+        if (! auth()->user()->admin && ! $card->canRemoveEditor($enrollment->user)) {
+            return response()->json([
+                'type' => 'editor.missing',
+                'message' => trans('messages.enrollment.editor.missing'),
+            ], 403);
+        }
+
         $this->authorize('cards', $enrollment);
 
         $success = $enrollment->removeCard($card);
@@ -121,11 +129,22 @@ class EnrollmentJsonController extends Controller
             ->where('role', $request->role)
             ->firstOrFail();
 
-        // User cannot delete own enrollment
-        if (auth()->user()->id === $enrollment->user->id) {
+        // User cannot delete own enrollment, except for admins
+        if (! auth()->user()->admin && auth()->user()->id === $enrollment->user->id) {
             return response()->json([
                 'type' => 'cannot.delete.self',
                 'message' => trans('messages.enrollment.cannot.delete.self'),
+            ], 403);
+        }
+
+        // Check if the user is the only editor of a private card, except for admins
+        $card = $enrollment->user->cards()
+            ->where('course_id', '=', $enrollment->course->id)
+            ->firstWhere(fn ($card) => ! $card->canRemoveEditor($enrollment->user));
+        if (! auth()->user()->admin && $card) {
+            return response()->json([
+                'type' => 'editor.missing',
+                'message' => trans('messages.enrollment.editor.missing')." ($card->title)",
             ], 403);
         }
 

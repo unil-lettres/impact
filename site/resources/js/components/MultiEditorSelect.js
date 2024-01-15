@@ -10,14 +10,28 @@ export default class MultiEditorSelect extends MultiSelect {
         return axios.put(
             '/enrollments/attach',
             {'card_id': record.id, 'user_id': option.value},
-        );
+        ).catch(error => {
+            if (error?.response?.data?.type) {
+                console.log(error.response.data.type);
+                this.printError(error.response.data.message);
+            }
+
+            return Promise.reject(error);
+        });
     }
 
     remove = (record, option) => {
         return axios.put(
             '/enrollments/detach',
             {'card_id': record.id, 'user_id': option.value},
-        );
+        ).catch(error => {
+            if (error?.response?.data?.type) {
+                console.log(error.response.data.type);
+                this.printError(error.response.data.message);
+            }
+
+            return Promise.reject(error);
+        });
     }
 }
 

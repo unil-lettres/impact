@@ -151,8 +151,7 @@ class CourseController extends Controller
 
         return view('courses.edit', [
             'course' => $course,
-            'users' => User::withoutAdmins()
-                ->get(),
+            'users' => User::all(),
             'teacherRole' => EnrollmentRole::Teacher,
             'usersAsTeacher' => $course->teachers(),
             'studentRole' => EnrollmentRole::Student,

@@ -4,7 +4,6 @@ namespace App\Http\Requests;
 
 use App\Enums\EnrollmentRole;
 use App\Rules\EnrollmentUniqueness;
-use App\Rules\RefuteAdmins;
 use Illuminate\Validation\Rule;
 
 class StoreEnrollment extends AbstractRequest
@@ -35,12 +34,7 @@ class StoreEnrollment extends AbstractRequest
                 ),
                 new EnrollmentUniqueness,
             ],
-            'user_id' => [
-                'required',
-                'integer',
-                'exists:users,id',
-                new RefuteAdmins,
-            ],
+            'user_id' => 'required|integer|exists:users,id',
             'course_id' => 'required|integer|exists:courses,id',
         ];
     }

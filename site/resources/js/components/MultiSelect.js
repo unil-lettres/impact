@@ -71,6 +71,17 @@ export default class MultiSelect extends Component {
         return new Promise();
     }
 
+    printError(message) {
+        if(message || null) {
+            this.setState({
+                message: {
+                    type: 'text-danger',
+                    content: message,
+                }
+            });
+        }
+    }
+
     handleChange = (selectedOptions, event) => {
         // Available react-select actions: https://github.com/JedWatson/react-select/issues/3451
         const [action, option, getValues] = {

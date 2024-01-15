@@ -5,6 +5,7 @@ namespace App;
 use App\Enums\CardBox;
 use App\Enums\FinderItemType;
 use App\Enums\StatePermission;
+use App\Enums\StateType;
 use App\Scopes\HideAttachmentsScope;
 use App\Scopes\ValidityScope;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -157,6 +158,26 @@ class Card extends Model
         return $this->enrollments()->map(function ($enrollment) {
             return $enrollment->user;
         })->sortBy('name');
+    }
+
+    /**
+     * Check if a user can be removed of the editors of this card.
+     */
+    public function canRemoveEditor(User $user): bool
+    {
+        // Check if the user is an editor of the card
+        if (! $user->isEditor($this)) {
+            return false;
+        }
+
+        // Check if the card state is set to private and
+        // if the user is the only editor of the card
+        if ($this->state->type === StateType::Private &&
+            $this->editors()->where('id', '!=', $user->id)->isEmpty()) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

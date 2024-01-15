@@ -38,8 +38,7 @@ class UserController extends Controller
             'course' => $course,
             'breadcrumbs' => $course
                 ->breadcrumbs(true),
-            'users' => User::withoutAdmins()
-                ->get(),
+            'users' => User::all(),
             'teacherRole' => EnrollmentRole::Teacher,
             'usersAsTeacher' => $course->teachers(),
             'studentRole' => EnrollmentRole::Student,

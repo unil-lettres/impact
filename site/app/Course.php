@@ -155,7 +155,7 @@ class Course extends Model
             ->where('user_id', $user->id)
             ->first();
 
-        return $enrollment ? $enrollment->role : null;
+        return $enrollment?->role;
     }
 
     /**
@@ -165,7 +165,7 @@ class Course extends Model
      */
     public function isActive()
     {
-        return $this->trashed() ? false : true;
+        return ! $this->trashed();
     }
 
     /**

@@ -61,5 +61,6 @@ return [
     'no.option' => 'No available option',
     'enrollment.cannot.enroll.twice' => 'Cannot enroll the same user in the same space twice.',
     'enrollment.cannot.delete.self' => 'Cannot delete yourself from the space.',
+    'enrollment.editor.missing' => 'A private card must have at least one editor',
 
 ];

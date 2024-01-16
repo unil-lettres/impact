@@ -137,7 +137,7 @@ class EnrollmentJsonController extends Controller
             ], 403);
         }
 
-        // Check if the user is the only editor of a private card
+        // Check if the user is the last editor of a private card
         $card = $enrollment->user->cards()
             ->where('course_id', '=', $enrollment->course->id)
             ->firstWhere(fn ($card) => ! $card->canRemoveEditor($enrollment->user));

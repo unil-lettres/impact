@@ -176,7 +176,7 @@ class Card extends Model
         }
 
         // Check if the card state is set to private and
-        // if the user is the only editor of the card
+        // if the user is the last editor of the card
         if ($this->state->type === StateType::Private &&
             $this->editors()->where('id', '!=', $user->id)->isEmpty()) {
             return false;

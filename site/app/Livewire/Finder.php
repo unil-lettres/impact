@@ -222,7 +222,9 @@ class Finder extends Component
             ],
         );
 
-        $success &= $this->validateFilterIds([$filter], $type)->isNotEmpty();
+        if (in_array($type, ['tag', 'state', 'editor'])) {
+            $success &= $this->validateFilterIds([$filter], $type)->isNotEmpty();
+        }
 
         if (! $success) {
             $this->flashMessage(

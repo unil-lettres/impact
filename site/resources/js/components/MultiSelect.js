@@ -33,6 +33,8 @@ export default class MultiSelect extends Component {
             message: data.message ?
                 data.message : null,
         };
+
+        this.updateReference(this.state.values);
     }
 
     /**
@@ -102,6 +104,9 @@ export default class MultiSelect extends Component {
             ],
         }[event.action] || [undefined, undefined, _.identity];
 
+        // Handle reference props.
+        this.updateReference(selectedOptions);
+
         this.setState({
             isLoading: true,
             message: null,
@@ -113,6 +118,15 @@ export default class MultiSelect extends Component {
             })
             .catch((error) => console.error(error))
             .finally(() => this.setState({ isLoading: false }));
+    }
+
+    updateReference(options) {
+        // Handle reference props by setting value on a input HTML element.
+        if(this.props.reference) {
+            document.getElementById(
+                this.props.reference
+            ).value = options.map(option => option.value).join(',');
+        }
     }
 
     handleCreate = (inputValue) => {

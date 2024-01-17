@@ -600,7 +600,7 @@ class Finder extends Component
                 clearTimeout(window.flashTimer);
             }
 
-           window.flashTimer = setTimeout(function(){
+            window.flashTimer = setTimeout(function(){
                 document.getElementById('toast-flash').classList.remove('show');
             }, 5000);
         JS);

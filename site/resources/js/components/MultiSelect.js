@@ -44,7 +44,7 @@ export default class MultiSelect extends Component {
      * @returns A Promise.
      */
     select = (record, option) => {
-        return new Promise();
+        return Promise.resolve();
     }
 
     /**
@@ -56,7 +56,7 @@ export default class MultiSelect extends Component {
      * @returns A Promise.
      */
     remove = (record, option) => {
-        return new Promise();
+        return Promise.resolve();
     }
 
     /**
@@ -68,7 +68,7 @@ export default class MultiSelect extends Component {
      * @returns A Promise.
      */
     create = (record, name) => {
-        return new Promise();
+        return Promise.resolve();
     }
 
     printError(message) {

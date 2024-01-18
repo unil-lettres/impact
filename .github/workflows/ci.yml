@@ -75,12 +75,17 @@ jobs:
         run: ./vendor/bin/pint --test -v
         continue-on-error: true
 
-      - name: Serve
+      - name: Upgrade Chrome driver
         working-directory: ./site
-        run: |
-          php artisan dusk:chrome-driver --detect
-          ./vendor/laravel/dusk/bin/chromedriver-linux &
-          php artisan serve &
+        run: php artisan dusk:chrome-driver --detect
+
+      - name: Start Chrome driver
+        working-directory: ./site
+        run: ./vendor/laravel/dusk/bin/chromedriver-linux &
+
+      - name: Run Laravel server
+        working-directory: ./site
+        run: php artisan serve --no-reload &
 
       - name: Execute browser tests
         id: app-test-browser
@@ -92,7 +97,16 @@ jobs:
         working-directory: ./site
         run: php artisan test
 
-      - name: Expose failed tests
-        if: ${{ failure() }}
-        working-directory: ./site
-        run: php artisan email:failure
+      - name: Screenshots of failed tests
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: screenshots-failed-tests
+          path: site/tests/Browser/screenshots
+
+      - name: Logs of failed tests
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs-failed-tests
+          path: site/tests/Browser/console

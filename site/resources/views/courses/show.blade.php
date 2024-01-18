@@ -50,6 +50,7 @@
             :course="$course"
             modalCloneId="modalCloneIn"
             modalMoveId="modalMoveIn"
+            modalSetEditors="modalSetEditors"
         />
     @endsection
 @endcan

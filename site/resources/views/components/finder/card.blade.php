@@ -2,6 +2,7 @@
     'card',
     'modalCloneId',
     'modalMoveId',
+    'modalSetEditors',
     'selected' => false,
     'lockedMove' => false,
     'depth' => 0,
@@ -135,6 +136,18 @@
                             <i class="fa-solid fa-file-import me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.clone_in')}}
+                            </span>
+                        </li>
+                        <li
+                            class="dropdown-item d-flex cursor-pointer align-items-center"
+                            data-bs-toggle="modal"
+                            data-bs-target="#{{$modalSetEditors}}"
+                            data-bs-editors="{{$card->editors()->map( fn ($e) => ['id' => $e->id, 'name' => $e->name], )->values()}}"
+                            :data-bs-card-id="key"
+                            >
+                            <i class="fas fa-user-edit me-2"></i>
+                            <span class="flex-fill me-5">
+                                {{ trans('courses.finder.menu.editors')}}
                             </span>
                         </li>
                         <li

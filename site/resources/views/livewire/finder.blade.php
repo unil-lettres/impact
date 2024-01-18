@@ -29,6 +29,7 @@
     </div>
     <x-finder.modal-clone-in :id="$modalCloneId" :course="$course" />
     <x-finder.modal-move-in :id="$modalMoveId" :course="$course" />
+    <x-finder.modal-set-editors :id="$modalSetEditors" :course="$course" />
     <div class="toolsbox mt-3" style="height: 63px;">
         <div
             x-show.important="selectedItems.length === 0"
@@ -49,7 +50,7 @@
                     wire:ignore
                     class="rct-multi-filter-select"
                     noOptionsMessage="{{ trans('messages.no.option') }}"
-                    data='{{ json_encode(['record' => 'editor', 'options' => $this->editors, 'defaults' => $this->filters->get("editor")->map(fn ($id) => 'App\\User'::find($id))->toArray()]) }}'
+                    data='{{ json_encode(['record' => 'editor', 'options' => $this->assignedEditors, 'defaults' => $this->filters->get("editor")->map(fn ($id) => 'App\\User'::find($id))->toArray()]) }}'
                     placeholder='{{ trans("courses.finder.filter.editors") }}'
                 ></div>
             </div>
@@ -248,6 +249,7 @@
                     :$filterSearchBoxes
                     :$modalCloneId
                     :$modalMoveId
+                    :$modalSetEditors
                 />
             @else
                 <x-finder.card
@@ -255,6 +257,7 @@
                     :locked-move="$this->lockedMove"
                     :$modalCloneId
                     :$modalMoveId
+                    :$modalSetEditors
                 />
             @endif
         @empty

@@ -183,6 +183,7 @@
                     :$filterSearchBoxes
                     :$modalCloneId
                     :$modalMoveId
+                    :$modalSetEditors
                 />
             @else
                 <x-finder.card
@@ -191,6 +192,7 @@
                     :locked-move="$lockedMove"
                     :$modalCloneId
                     :$modalMoveId
+                    :$modalSetEditors
                 />
             @endif
         @endforeach

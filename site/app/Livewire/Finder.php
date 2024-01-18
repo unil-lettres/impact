@@ -58,6 +58,12 @@ class Finder extends Component
     public string $modalMoveId;
 
     /**
+     * A string corresponding to the id (HTML) of the dialog to be used
+     * for setting editors for a card.
+     */
+    public string $modalSetEditors;
+
+    /**
      * The sort column name used to sort the content.
      */
     #[Url(as: 'sc')]
@@ -167,7 +173,7 @@ class Finder extends Component
     }
 
     #[Computed]
-    public function editors(): Collection
+    public function assignedEditors(): Collection
     {
         // Return the list of editors for all cards of the course.
         return $this->course->cards->map(
@@ -277,6 +283,25 @@ class Finder extends Component
     ): void {
         $message = collect($lines)->values()->flatten()->join('<br />');
         $this->flashMessage($message, $bsClass);
+    }
+
+    public function enrolledUsers(): Collection
+    {
+        return $this->course->enrollments->pluck('user')->pluck('name', 'id')->map(
+            fn ($name, $id) => ['id' => $id, 'name' => e($name)],
+        )->values();
+    }
+
+    /**
+     * Update the list of editors for the given cards.
+     *
+     * @param  Card  $card
+     * @param  array<int>  $editorsId
+     */
+    public function changeEditors(Card $card, array $editorsId): null
+    {
+        // TODO validate editors
+        dd($editorsId);
     }
 
     /**
@@ -639,9 +664,9 @@ class Finder extends Component
         return match ($type) {
             'tag' => $this->course->tags()->whereIn('id', $filterIds)->get()->pluck('id'),
 
-            // $this->editors() return a collection, this is why it is treated
+            // $this->assignedEditors() return a collection, this is why it is treated
             // differently.
-            'editor' => $this->editors->pluck('id')->intersect($filterIds),
+            'editor' => $this->assignedEditors->pluck('id')->intersect($filterIds),
 
             'state' => $this->course->states()->whereIn('id', $filterIds)->get()->pluck('id'),
 

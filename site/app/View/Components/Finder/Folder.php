@@ -30,6 +30,7 @@ class Folder extends Component
         public array $filterSearchBoxes,
         public string $modalCloneId,
         public string $modalMoveId,
+        public string $modalSetEditors,
         public string $sortColumn = 'position',
         public string $sortDirection = 'asc',
         public int $depth = 0,

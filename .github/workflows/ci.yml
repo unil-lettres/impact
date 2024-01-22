@@ -1,6 +1,7 @@
 name: ci
 on: [push, pull_request]
 env:
+  MAIL_HOST: ${{ secrets.MAIL_HOST }}
   MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
   MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
   CI: gha
@@ -101,12 +102,12 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: screenshots-failed-tests
+          name: screenshots-failed-tests-${{ matrix.php-versions }}
           path: site/tests/Browser/screenshots
 
       - name: Logs of failed tests
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: logs-failed-tests
+          name: logs-failed-tests-${{ matrix.php-versions }}
           path: site/tests/Browser/console

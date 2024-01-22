@@ -5,6 +5,7 @@ namespace App\Mail;
 use App\Card;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Headers;
 use Illuminate\Queue\SerializesModels;
 
 class StateSelected extends Mailable
@@ -27,6 +28,18 @@ class StateSelected extends Mailable
         $this->card = $card;
         $this->subject = $subject;
         $this->content = $this->processContent($content);
+    }
+
+    /**
+     * Get the message headers.
+     */
+    public function headers(): Headers
+    {
+        return new Headers(
+            text: [
+                'X-Tags' => 'Impact',
+            ],
+        );
     }
 
     /**

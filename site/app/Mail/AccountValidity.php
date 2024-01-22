@@ -8,6 +8,7 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Attachment;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Mail\Mailables\Headers;
 use Illuminate\Queue\SerializesModels;
 
 class AccountValidity extends Mailable
@@ -25,6 +26,18 @@ class AccountValidity extends Mailable
     {
         $this->user = $user;
         $this->days = $days;
+    }
+
+    /**
+     * Get the message headers.
+     */
+    public function headers(): Headers
+    {
+        return new Headers(
+            text: [
+                'X-Tags' => 'Impact',
+            ],
+        );
     }
 
     /**

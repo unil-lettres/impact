@@ -5,6 +5,7 @@ namespace App\Mail;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Headers;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Collection;
 
@@ -29,6 +30,18 @@ class TeachersMailing extends Mailable
         $this->courses = $courses;
         $this->subject = $subject;
         $this->content = $this->processContent($content);
+    }
+
+    /**
+     * Get the message headers.
+     */
+    public function headers(): Headers
+    {
+        return new Headers(
+            text: [
+                'X-Tags' => 'Impact',
+            ],
+        );
     }
 
     /**

@@ -5,6 +5,7 @@ namespace App\Mail;
 use App\Course;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
+use Illuminate\Mail\Mailables\Headers;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,6 +25,18 @@ class CourseConfirmDelete extends Mailable
         $this->course = $course;
 
         $this->fromEmail = Auth::user()?->email || config('mail.from.address');
+    }
+
+    /**
+     * Get the message headers.
+     */
+    public function headers(): Headers
+    {
+        return new Headers(
+            text: [
+                'X-Tags' => 'Impact',
+            ],
+        );
     }
 
     /**

@@ -149,6 +149,18 @@
                         </span>
                     </li>
                     <li
+                        class="dropdown-item d-flex cursor-pointer align-items-center"
+                        data-bs-toggle="modal"
+                        data-bs-target='#modalUpdateState'
+                        :data-bs-cards="selectedItems.filter(key => key.includes('card')).map(key => key.replace('card-', ''))"
+                        dusk="multi-updatestate-option"
+                    >
+                        <i class="fas fa-unlock me-2"></i>
+                        <span class="flex-fill me-5">
+                            {{ trans('courses.finder.dialog.update_state.title')}}
+                        </span>
+                    </li>
+                    <li
                         wire:confirm="{{ trans('courses.finder.menu.delete.all.confirm') }}"
                         wire:click="destroyMultiple(selectedItems)"
                         class="dropdown-item d-flex cursor-pointer align-items-center"

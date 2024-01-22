@@ -107,6 +107,10 @@
             :course="$folder->course"
             :folder="$folder"
         />
+        <livewire:modal-update-state
+            id="modalUpdateState"
+            :course="$folder->course"
+        />
         <livewire:finder
             :course="$folder->course"
             :folder="$folder"

@@ -145,7 +145,7 @@
                                 data-bs-cards="{{ $card->id }}"
                                 data-bs-state="{{ $card->state->id }}"
                             >
-                                <i class="fas fa-unlock me-2"></i>
+                                <i class="fa-solid fa-timeline me-2"></i>
                                 <span class="flex-fill me-5">
                                     {{ trans('courses.finder.dialog.update_state.title')}}
                                 </span>

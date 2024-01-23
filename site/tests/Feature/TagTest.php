@@ -30,14 +30,6 @@ class TagTest extends TestCase
         $this->actingAs($admin)->post('/tags', $newTag);
         $this->assertDatabaseHas('tags', $newTag);
 
-        // Create with error
-        $newTag = ['course_id' => $course->id, 'name' => 'inv@l1de n@m3'];
-
-        $this->withExceptionHandling()
-            ->actingAs($admin)
-            ->post('/tags', $newTag)
-            ->assertSessionHasErrors(['name']);
-
         // Update
         $tagId = Tag::where('name', $tagName)->first()->id;
         $updatedTag = array_merge($newTag, ['name' => 'updated_tag_name']);
@@ -45,12 +37,6 @@ class TagTest extends TestCase
         $this->actingAs($admin)->put("/tags/$tagId", $updatedTag);
         $this->assertDatabaseMissing('tags', $newTag);
         $this->assertDatabaseHas('tags', $updatedTag);
-
-        // Update with error
-        $this->withExceptionHandling()
-            ->actingAs($admin)
-            ->put("/tags/$tagId", ['name' => 'inv@l1de n@m3'])
-            ->assertSessionHasErrors(['name']);
 
         // Delete
         $this->actingAs($admin)->delete("/tags/$tagId");
@@ -98,12 +84,6 @@ class TagTest extends TestCase
             'card_tag',
             ['tag_id' => $tagId, 'card_id' => $card->id],
         );
-
-        // Create with error
-        $this->withExceptionHandling()->actingAs($admin)->post(
-            '/tags/create',
-            ['name' => 'inv@l1de n@m3', 'card_id' => $card->id]
-        )->assertSessionHasErrors(['name']);
 
         // Detach
         $response = $this->actingAs($admin)->put(

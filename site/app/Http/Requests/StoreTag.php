@@ -29,7 +29,6 @@ class StoreTag extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                'alpha_dash',
                 Rule::unique('tags', 'name')->where(
                     fn (Builder $query) => $query->where(
                         'course_id', $this->input('course_id')

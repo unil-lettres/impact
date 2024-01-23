@@ -128,26 +128,17 @@ class CloneCardService
         if ($copiedCard->course->id !== $this->card->course->id) {
             $existingNamesInDest = $destCourse->tags()->pluck('name');
 
-            // Create tags that don't already exists in the destination course
-            // and attach them to the card.
-            $copiedCard->tags()->createMany(
+            // Create tags that don't already exists in the destination course.
+            $destCourse->tags()->createMany(
                 collect($this->card->tags->toArray())
                     ->filter(fn ($tag) => ! $existingNamesInDest->contains($tag['name']))
-                    ->map(
-                        function ($tag) use ($destCourse) {
-                            $tag['course_id'] = $destCourse->id;
-
-                            return $tag;
-                        },
-                    )
                     ->toArray(),
             );
 
-            // Attach tags that already exists in the destination course to the
-            // card.
+            // Attach tags to the new card.
             $destCourse
                 ->tags
-                ->filter(fn ($tag) => $existingNamesInDest->contains($tag->name))
+                ->filter(fn ($tag) => $this->card->tags->pluck('name')->contains($tag->name))
                 ->each(fn ($tag) => $tag->cards()->attach($copiedCard->id));
 
             // Copy source file.

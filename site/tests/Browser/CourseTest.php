@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use App\State;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
@@ -417,6 +418,36 @@ class CourseTest extends DuskTestCase
                 ->visit($pageCourseDest)
                 ->waitForText('Test card second space not assigned')
                 ->assertSee('Test card second space not assigned');
+        });
+    }
+
+    public function testEditState(): void
+    {
+        $this->browse(function (Browser $browser) {
+
+            $browser
+                ->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $pageCourse = new PagesCourse('Second space');
+            $pageCard = new PagesCard('Test card second space not assigned');
+            $archivedState = State::where('name', 'archivé')->where('course_id', $pageCourse->id())->first();
+
+            $browser
+                ->visit($pageCourse)
+                ->assertDontSee('archivé') // To be sure our futur assertion is correct (should not have any archived card).
+                ->waitUntilLoaded()
+                ->click("@finder-card-{$pageCard->id()}")
+                ->click('@multi-menu')
+                ->click('@multi-updatestate-option');
+
+            $browser
+                ->waitForText('Modifier l\'état...')
+                ->select('#modalUpdateState select', $archivedState->id)
+                ->press('Modifier')
+                ->waitForText('État mis à jour.')
+                ->assertSee('État mis à jour.')
+                ->assertSee('archivé');
         });
     }
 }

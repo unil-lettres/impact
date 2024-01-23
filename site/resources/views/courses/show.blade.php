@@ -46,6 +46,10 @@
             id="modalCreateCard"
             :course="$course"
         />
+        <livewire:modal-update-state
+            id="modalUpdateState"
+            :course="$course"
+        />
         <livewire:finder
             :course="$course"
             modalCloneId="modalCloneIn"

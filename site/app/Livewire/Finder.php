@@ -120,7 +120,7 @@ class Finder extends Component
         return view('livewire.finder');
     }
 
-    #[On('item-created')]
+    #[On('items-updated')]
     public function refreshItems(): void
     {
         unset($this->items);

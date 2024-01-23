@@ -119,7 +119,7 @@ class ModalCreateCard extends ModalCreate
         // We need to dispatch events to other components
         // to update their list of folders & items.
         $this
-            ->dispatch('item-created')
+            ->dispatch('items-updated')
             ->to(Finder::class); // Already triggered by validate(), but we keep it for clarity.
     }
 }

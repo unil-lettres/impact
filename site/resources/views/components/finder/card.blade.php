@@ -137,6 +137,20 @@
                                 {{ trans('courses.finder.clone_in')}}
                             </span>
                         </li>
+                        @can('update', $card)
+                            <li
+                                class="dropdown-item d-flex cursor-pointer align-items-center"
+                                data-bs-toggle="modal"
+                                data-bs-target="#modalUpdateState"
+                                data-bs-cards="{{ $card->id }}"
+                                data-bs-state="{{ $card->state->id }}"
+                            >
+                                <i class="fas fa-unlock me-2"></i>
+                                <span class="flex-fill me-5">
+                                    {{ trans('courses.finder.dialog.update_state.title')}}
+                                </span>
+                            </li>
+                        @endcan
                         <li
                             wire:confirm="{{ trans('courses.finder.menu.delete.card.confirm') }}"
                             wire:click="destroyCard({{$card->id}})"

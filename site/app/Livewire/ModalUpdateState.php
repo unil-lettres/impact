@@ -46,9 +46,9 @@ class ModalUpdateState extends Component
     /**
      * Initialize the properties.
      *
-     * @param array<int> $cardsId
+     * @param  array<int>  $cardsId
      */
-    public function init(array $cardsId, int $stateId = null)
+    public function init(array $cardsId, ?int $stateId = null)
     {
         $this->cards = collect(
             array_map(fn ($id) => Card::findOrFail($id), $cardsId),
@@ -63,7 +63,7 @@ class ModalUpdateState extends Component
     public function update()
     {
         // Check that the state and cards belongs to the course.
-        $invalid = !$this->course->states->pluck('id')->contains($this->state);
+        $invalid = ! $this->course->states->pluck('id')->contains($this->state);
 
         if (is_null($this->state)) {
             $this
@@ -73,6 +73,7 @@ class ModalUpdateState extends Component
                     'text-bg-warning',
                 )
                 ->to(Finder::class);
+
             return;
         }
 
@@ -88,12 +89,13 @@ class ModalUpdateState extends Component
                     'text-bg-danger',
                 )
                 ->to(Finder::class);
+
             return;
         }
 
         try {
-            $this->cards->each(fn($card) => $this->authorize('update', $card));
-        } catch(AuthorizationException) {
+            $this->cards->each(fn ($card) => $this->authorize('update', $card));
+        } catch (AuthorizationException) {
             $this
                 ->dispatch(
                     'flash-message',
@@ -101,11 +103,12 @@ class ModalUpdateState extends Component
                     'text-bg-danger',
                 )
                 ->to(Finder::class);
+
             return;
         }
 
         // Update the state for each cards.
-        $this->cards->each(function($card) {
+        $this->cards->each(function ($card) {
             $card->state_id = $this->state;
             $card->save();
         });

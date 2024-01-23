@@ -101,7 +101,7 @@
                 >
                     <i class="fa-solid fa-ellipsis-vertical"></i>
                 </button>
-                <ul class="dropdown-menu">
+                <ul class="dropdown-menu dropdown-with-icon">
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center d-flex d-sm-none"
                         @click="selectAll"
@@ -155,7 +155,7 @@
                         :data-bs-cards="selectedItems.filter(key => key.includes('card')).map(key => key.replace('card-', ''))"
                         dusk="multi-updatestate-option"
                     >
-                        <i class="fa-solid fa-arrows-split-up-and-left me-2"></i>
+                        <i class="fa-solid fa-timeline me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.dialog.update_state.title')}}
                         </span>

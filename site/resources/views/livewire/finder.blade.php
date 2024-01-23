@@ -155,7 +155,7 @@
                         :data-bs-cards="selectedItems.filter(key => key.includes('card')).map(key => key.replace('card-', ''))"
                         dusk="multi-updatestate-option"
                     >
-                        <i class="fas fa-unlock me-2"></i>
+                        <i class="fa-solid fa-arrows-split-up-and-left me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.dialog.update_state.title')}}
                         </span>

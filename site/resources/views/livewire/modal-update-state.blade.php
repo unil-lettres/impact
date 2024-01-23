@@ -19,9 +19,9 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label class="control-label form-label">
+                        <label class="control-label form-label w-100">
                             {{ trans("cards.state") }}
-                            <select wire:model="state">
+                            <select wire:model="state" class="form-select">
                                     <option value="-1" class="empty-option" hidden="true"></option>
                                 @foreach ($course->states as $state)
                                     <option value="{{ $state->id }}">{{ $state->name }}</option>

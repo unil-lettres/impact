@@ -10,7 +10,7 @@ return [
     'move' => 'Déplacer le dossier',
     'copy' => 'Dupliquer le dossier',
     'clone_in' => 'Dupliquer le dossier dans un espace',
-    'print' => 'Imprimer le contenu du dossier',
+    'print' => 'Imprimer les fiches de ce dossier',
     'delete' => 'Supprimer le dossier',
     'not_found' => 'Aucun dossier trouvé',
 

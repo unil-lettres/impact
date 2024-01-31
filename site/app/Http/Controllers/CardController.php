@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Card;
+use App\Course;
 use App\Enums\FileStatus;
 use App\Http\Requests\CreateCardExport;
 use App\Http\Requests\DestroyCard;
@@ -12,7 +13,10 @@ use App\State;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use InvalidArgumentException;
 use PhpOffice\PhpWord\Exception\Exception;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -194,5 +198,41 @@ class CardController extends Controller
                 $service->export()
             )
             ->deleteFileAfterSend();
+    }
+
+    public function print(Request $request): View
+    {
+        // Request must have a list of ids for cards and / or a course id.
+        // If a course is given, an introduction page will be printed with
+        // a table of content.
+        //      If a list of cards is given, only these cards will be printed.
+        //      If no cards are given, all cards from the course will be printed.
+        // If no course is given, all cards from the list will be printed without
+        // the introduction page.
+        // All others combination throw an InvalidArgumentException.
+        $course = Course::find($request->get('course'));
+        $cards = Card::findMany($request->get('cards'));
+
+        if ($cards->isEmpty()) {
+
+            if ($course) {
+                $cards = $course->cards;
+            } else {
+                throw new InvalidArgumentException('Invalid course ids');
+            }
+
+        } else {
+            // Check if all cards exist.
+            if ($cards->count() !== count($request->get('cards'))) {
+                throw new InvalidArgumentException('Invalid card ids');
+            }
+
+            // Check if all cards belong to the course.
+            if ($course && $cards->contains('course_id', '!==', $course->id)) {
+                throw new InvalidArgumentException('Invalid card ids');
+            }
+        }
+
+        return view('cards.print', ['course' => $course, 'cards' => $cards->sortBy('title')]);
     }
 }

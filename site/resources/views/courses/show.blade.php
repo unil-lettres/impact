@@ -35,6 +35,23 @@
                     {{ trans('cards.create') }}
                 </button>
             @endcan
+            <div class="dropdown">
+            <button class="btn btn-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-ellipsis-vertical"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-with-icon">
+                <li
+                    class="dropdown-item d-flex cursor-pointer align-items-center @if($course->cards->isEmpty()) disabled @endif"
+                    @if ($course->cards->isNotEmpty())
+                        data-trigger-print="{{ route('cards.print', ['course' => $course->id])}}"
+                    @endif
+                >
+                    <i class="fa-solid fa-print me-2"></i>
+                    <span class="flex-fill me-5">
+                        {{ trans('courses.print')}}
+                    </span>
+                </li>
+            </ul>
         @endsection
     @endif
     @section('content')

@@ -66,6 +66,8 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('users.profile.update');
 
     // Cards
+    Route::get('cards/print', [CardController::class, 'print'])
+        ->name('cards.print');
     Route::resource('cards', CardController::class)->except(['create', 'store']);
     Route::put('cards/{card}/unlink/file', [CardController::class, 'unlinkFile'])
         ->name('cards.unlink.file');

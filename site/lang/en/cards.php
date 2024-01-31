@@ -4,6 +4,9 @@ return [
 
     'title' => 'Title',
     'cards' => 'Cards',
+    'print.title' => 'Cards list',
+    'print.loading.head' => 'The cards to be printed are being prepared.',
+    'print.loading.thanks' => 'Thank you for your patience.',
     'card(s)' => '{0} -|{1} :count card|{2,*} :count cards',
     'create' => 'Create a card',
     'delete' => 'delete',

@@ -42,17 +42,6 @@
         }
 
         tbody tr {
-            font-size: 12px;
-            font-family: courier, serif;
-            line-height: 1.2;
-            height: 20px;
-
-            td.line,
-            td.speaker {
-                max-width: 35px;
-                min-width: 35px;
-            }
-
             td.actions {
                 max-width: 35px;
                 min-width: 35px;
@@ -109,5 +98,31 @@
             // Avoid width issue with date picker
             display: block;
         }
+    }
+}
+
+#print-card {
+    .break-page {
+        break-after: page;
+    }
+}
+
+#card, #print-card {
+    .box2 {
+        tbody tr {
+            font-size: 12px;
+            line-height: 1.2;
+            height: 20px;
+
+            td.line,
+            td.speaker {
+                max-width: 35px;
+                min-width: 35px;
+            }
+        }
+    }
+
+    .box2 tbody tr, .font-transcription {
+        font-family: courier, serif;
     }
 }

@@ -88,7 +88,13 @@
                 </li>
                 <li><hr class="dropdown-divider"></li>
                 @endcan
-                <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                <li
+                    class="dropdown-item d-flex cursor-pointer align-items-center @if($folder->cards->isEmpty()) disabled @endif"
+                    @if ($folder->cards->isNotEmpty())
+                        data-trigger-print="{{ route('cards.print', ['course' => $folder->course->id, 'cards' => $folder->cards->pluck('id')->toArray()])}}"
+                    @endif
+                >
+                    <i class="fa-solid fa-print me-2"></i>
                     <span class="flex-fill me-5">
                         {{ trans('folders.print')}}
                     </span>

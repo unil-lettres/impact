@@ -4,6 +4,9 @@ return [
 
     'title' => 'Titre',
     'cards' => 'Fiches',
+    'print.title' => 'Liste des fiches',
+    'print.loading.head' => 'Les fiches à imprimer sont en préparation.',
+    'print.loading.thanks' => 'Merci de patienter.',
     'card(s)' => '{0} -|{1} :count fiche|{2,*} :count fiches',
     'create' => 'Créer une fiche',
     'delete' => 'supprimer',

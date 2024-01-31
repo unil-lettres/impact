@@ -164,7 +164,11 @@
                         @can('view', $card)<li><hr class="dropdown-divider"></li> @endcan
                     @endcan
                     @can('view', $card)
-                        <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                        <li
+                            class="dropdown-item d-flex cursor-pointer align-items-center"
+                            @click="closeAllDropDowns(); window.printable.open('{{ route('cards.print', ['cards' => [$card->id]])}}');"
+                        >
+                            <i class="fa-solid fa-print me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.menu.print')}}
                             </span>

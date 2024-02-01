@@ -21,7 +21,7 @@
                 {{ trans('messages.card.empty') }}
             </p>
             <div id="rct-editor-{{ $reference }}"
-                 data='{{ json_encode(['cardId' => $card->id, 'content' => $card->$reference, 'locale' => Helpers::currentLocal(), 'editLabel' => trans('cards.edit'), 'saveLabel' => trans('cards.save')]) }}'
+                 data='{{ json_encode(['cardId' => $card->id, 'content' => $card->$reference, 'locale' => Helpers::currentLocal(), 'editLabel' => trans('cards.edit'), 'saveLabel' => trans('cards.save'), 'placeholder' => trans('cards.add_content')]) }}'
                  reference='{{ $reference }}'
             ></div>
         </div>

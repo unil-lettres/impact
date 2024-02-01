@@ -106,7 +106,6 @@ const editorConfiguration = {
             'tableProperties', 'tableCellProperties'
         ]
     },
-    placeholder: 'Type here...',
 };
 
 export default class Editor extends Component {
@@ -144,6 +143,7 @@ export default class Editor extends Component {
 
     updateEditorConfiguration(data) {
         editorConfiguration.language = data.locale ?? 'fr';
+        editorConfiguration.placeholder = data.placeholder ?? '';
     }
 
     initVariables(data) {
@@ -263,7 +263,7 @@ export default class Editor extends Component {
                 <CKEditor
                     editor={ this.editor }
                     data={ this.state.html }
-                    config={ this.config }
+                    config={ editorConfiguration }
                     onReady={ editor => {
                         this.editor = editor
                         //console.log(Array.from( editor.ui.componentFactory.names() ));

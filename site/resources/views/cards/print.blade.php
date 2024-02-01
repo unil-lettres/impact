@@ -37,7 +37,7 @@
             </div>
             @endif
         @foreach ($cards as $card) @can('view', $card)
-            <div class="m-4 break-page">
+            <div class="m-4 @if (!$loop->last) break-page @endif">
                 <h1 class="fw-normal fs-4">{{ $card->title }}</h1>
                 <div class="d-flex gap-4">
                     <div><span class="fw-bold">{{trans('cards.state')}}:</span> {{ $card->state->name }}</div>

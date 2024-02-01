@@ -192,7 +192,7 @@
         },
 
         /**
-         * Genrate the url for print selected cards.
+         * Generate the url to print selected cards.
          */
         generatePrintUrl() {
             const selectedCards = _.filter(
@@ -207,7 +207,7 @@
                 }).join('&');
 
                 const encodedUrl = encodeURI(url);
-                return `{{ route('cards.print', ['course' => $course->id]) }}&${encodedUrl}`;
+                return `{{ route('cards.print') }}?${encodedUrl}`;
             }
         },
 

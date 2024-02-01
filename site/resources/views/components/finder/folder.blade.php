@@ -157,9 +157,9 @@
                         <li><hr class="dropdown-divider"></li>
                     @endcan
                     <li
-                        class="dropdown-item d-flex cursor-pointer align-items-center @if($folder->cards->isEmpty()) disabled @endif"
-                        @if ($folder->cards->isNotEmpty())
-                            @click="closeAllDropDowns(); window.printable.open('{{ route('cards.print', ['course' => $folder->course->id, 'cards' => $folder->cards->pluck('id')->toArray()])}}');"
+                        class="dropdown-item d-flex cursor-pointer align-items-center @if($folder->getCardsRecursive()->isEmpty()) disabled @endif"
+                        @if ($folder->getCardsRecursive()->isNotEmpty())
+                            @click="closeAllDropDowns(); window.printable.open('{{ route('cards.print', ['folder' => $folder->id])}}');"
                         @endif
                     >
                         <span class="flex-fill me-5">

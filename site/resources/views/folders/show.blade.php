@@ -30,8 +30,14 @@
                 {{ trans('cards.create') }}
             </button>
         @endcan
-        <div class="dropdown">
-            <button class="btn btn-primary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+        <div class="dropdown" x-data="{ disabledPrint: true }">
+            <button
+                class="btn btn-primary"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+                @click="disabledPrint = !document.getElementsByClassName('finder-card').length"
+            >
                 <i class="fa-solid fa-ellipsis-vertical"></i>
             </button>
             <ul class="dropdown-menu dropdown-with-icon">
@@ -89,10 +95,9 @@
                 <li><hr class="dropdown-divider"></li>
                 @endcan
                 <li
-                    class="dropdown-item d-flex cursor-pointer align-items-center @if($folder->cards->isEmpty()) disabled @endif"
-                    @if ($folder->cards->isNotEmpty())
-                        data-trigger-print="{{ route('cards.print', ['course' => $folder->course->id, 'cards' => $folder->cards->pluck('id')->toArray()])}}"
-                    @endif
+                    class="dropdown-item d-flex cursor-pointer align-items-center"
+                    data-trigger-print="{{ route('cards.print', ['folder' => $folder->id])}}"
+                    :class="disabledPrint && 'disabled'"
                 >
                     <i class="fa-solid fa-print me-2"></i>
                     <span class="flex-fill me-5">

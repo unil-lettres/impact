@@ -20,19 +20,19 @@
             </div>
         </div>
         <div id='print-card' class="d-none d-print-block">
-            @if ($course)
+            @if ($header)
             <div class="m-4 break-page">
-                <h1 class="fw-normal fs-3 text-center">{{ $course->name }}</h1>
+                <h1 class="fw-normal fs-3 text-center">{{ $header }}</h1>
                 <h2 class="fw-normal fs-4">{{ trans('cards.print.title')}}</h2>
                 <ul>
-                    @foreach($cards as $card)
+                    @foreach($cards as $card) @can('index', $card)
                         <li>
                             {{ $card->title }}
                             @cannot('view', $card)
                                 <i class="far fa-eye-slash"></i>
                             @endcan
                         </li>
-                    @endforeach
+                    @endcan @endforeach
                 </ul>
             </div>
             @endif

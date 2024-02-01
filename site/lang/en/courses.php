@@ -10,7 +10,7 @@ return [
     'create' => 'Create a space',
     'update' => 'Update the space',
     'edit' => 'Edit the space',
-    'print' => 'Print cards in the space',
+    'print' => 'Print cards in the space...',
     'disable' => 'Disable the space',
     'enable' => 'Enable the space',
     'archive' => 'Archive the space',

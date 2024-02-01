@@ -140,4 +140,19 @@ class Folder extends Model
 
         return $children;
     }
+
+
+    /**
+     * Get all cards of this folder and cards of children recursively.
+     */
+    public function getCardsRecursive(): Collection
+    {
+        $cards = $this->cards;
+
+        foreach ($this->children as $child) {
+            $cards = $cards->merge($child->getCardsRecursive());
+        }
+
+        return $cards;
+    }
 }

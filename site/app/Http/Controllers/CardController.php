@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Card;
 use App\Course;
 use App\Enums\FileStatus;
+use App\Folder;
 use App\Http\Requests\CreateCardExport;
 use App\Http\Requests\DestroyCard;
 use App\Http\Requests\UpdateCard;
@@ -202,37 +203,38 @@ class CardController extends Controller
 
     public function print(Request $request): View
     {
-        // Request must have a list of ids for cards and / or a course id.
-        // If a course is given, an introduction page will be printed with
-        // a table of content.
-        //      If a list of cards is given, only these cards will be printed.
-        //      If no cards are given, all cards from the course will be printed.
-        // If no course is given, all cards from the list will be printed without
-        // the introduction page.
-        // All others combination throw an InvalidArgumentException.
+        // Authorizations are done in the view.
+
         $course = Course::find($request->get('course'));
+        $folder = Folder::find($request->get('folder'));
         $cards = Card::findMany($request->get('cards'));
+        $cards = $cards->count() > 0 ? $cards : null;
 
-        if ($cards->isEmpty()) {
-
-            if ($course) {
-                $cards = $course->cards;
-            } else {
-                throw new InvalidArgumentException('Invalid course ids');
-            }
-
-        } else {
-            // Check if all cards exist.
-            if ($cards->count() !== count($request->get('cards'))) {
-                throw new InvalidArgumentException('Invalid card ids');
-            }
-
-            // Check if all cards belong to the course.
-            if ($course && $cards->contains('course_id', '!==', $course->id)) {
-                throw new InvalidArgumentException('Invalid card ids');
-            }
+        // Check that only one of the three parameters is set.
+        if (count(array_filter([$course, $folder, $cards])) !== 1) {
+            throw new InvalidArgumentException('Invalid parameters');
         }
 
-        return view('cards.print', ['course' => $course, 'cards' => $cards->sortBy('title')]);
+        [$header, $printedCards] = match(true) {
+            !is_null($course) => [$course->name, $course->cards],
+            !is_null($folder) => [$folder->course->name, $folder->getCardsRecursive()],
+            !is_null($cards) => [$cards->first()->course->name, $cards],
+            default => throw new InvalidArgumentException('Invalid parameters'),
+        };
+
+        // Check that all cards belongs to the same course.
+        if ($printedCards->pluck('course_id')->unique()->count() !== 1) {
+            throw new InvalidArgumentException('Invalid parameters');
+        }
+
+        // Don't print the introduction page if there is only one card.
+        if ($printedCards->count() === 1) {
+            $header = null;
+        }
+
+        return view('cards.print', [
+            'header' => $header,
+            'cards' => $printedCards->sortBy('title'),
+        ]);
     }
 }

@@ -6,7 +6,7 @@ import axios from "axios";
 import _ from "lodash";
 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import BalloonEditor from '@ckeditor/ckeditor5-editor-balloon/src/ballooneditor';
+import InlineEditor from '@ckeditor/ckeditor5-editor-inline/src/inlineeditor';
 
 import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
 import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
@@ -105,7 +105,8 @@ const editorConfiguration = {
             'tableColumn', 'tableRow', 'mergeTableCells',
             'tableProperties', 'tableCellProperties'
         ]
-    }
+    },
+    placeholder: 'Type here...',
 };
 
 export default class Editor extends Component {
@@ -146,8 +147,7 @@ export default class Editor extends Component {
     }
 
     initVariables(data) {
-        this.editor = BalloonEditor;
-        this.config = editorConfiguration;
+        this.editor = InlineEditor;
         this.cardId = data.cardId;
         this.editButtonId = 'edit-' + this.props.reference;
         this.editButton = document.getElementById(this.editButtonId);

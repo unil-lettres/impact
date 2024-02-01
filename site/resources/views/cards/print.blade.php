@@ -15,8 +15,8 @@
 
         <div class="d-print-none d-flex align-items-center justify-content-center vh-100 text-center">
             <div class="fs-4 ">
-                <div>{{ trans('cards.print.loading.head')}}</div>
-                <div>{{ trans('cards.print.loading.thanks')}}</div>
+                <div>{{ trans('cards.print.page.head')}}</div>
+                <div>{!! trans('cards.print.page.button', ['click_here' => '<a href="javascript:print()">'.trans('cards.print.page.click_here').'</a>'])!!}</div>
             </div>
         </div>
         <div id='print-card' class="d-none d-print-block">

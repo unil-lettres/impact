@@ -37,13 +37,20 @@ window.printable = window.printable || {
         const printWindow = window.open(url, target);
 
         if (closeAfterPrint) {
+            // This don't work on Firefox since Firefox trigger afterprint
+            // immediatly after the print dialog is opened instead of closed.
             printWindow.addEventListener("afterprint", () => {
                 printWindow.close();
             });
         }
 
-        printWindow.focus();
-        printWindow.print();
+        // On Firefox, the print dialog open and close immediatly when the page
+        // is loaded. We wait for the window to be loaded before triggering
+        // the print dialog.
+        printWindow.addEventListener("load", () => {
+            printWindow.focus();
+            printWindow.print();
+        });
     }
 };
 

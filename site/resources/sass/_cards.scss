@@ -11,11 +11,12 @@
     .box3,
     .box4 {
         .card-body {
-            padding: 1rem !important;
+            padding-right: 0.5rem !important;
+            padding-left: 0.5rem !important;
         }
 
         .editing {
-            border: 1px dashed #80808059;
+            border: 1px solid rgba(215, 215, 215, 0.35);
         }
     }
 

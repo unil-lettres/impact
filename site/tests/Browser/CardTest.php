@@ -115,7 +115,7 @@ class CardTest extends DuskTestCase
                 ->type('#modalCreateCard-name', $cardName)
                 ->click('#rct-multi-user-select')
                 ->waitForText($editorName)
-                ->click('#rct-multi-user-select [id$=listbox] > div > div:first-child') // Click on the first and only option ($editorName)
+                ->click('#rct-multi-user-select div[role="listbox"] > div:first-child') // Click on the first and only option ($editorName)
                 ->assertSee(trans('messages.no.option')) // No more options available
                 ->click('#modalCreateCard [type="submit"]');
 
@@ -153,7 +153,7 @@ class CardTest extends DuskTestCase
                 ->select('#modalCreateCard-folder-id', $folderPage->id())
                 ->click('#rct-multi-user-select')
                 ->waitForText($editorName)
-                ->click('#rct-multi-user-select [id$=listbox] > div > div:nth-child(2)') // Click on the second option ($editorName)
+                ->click('#rct-multi-user-select div[role="listbox"] > div:nth-child(2)') // Click on the second option ($editorName)
                 ->assertDontSee(trans('messages.no.option')) // More options should be available
                 ->click('#modalCreateCard [type="submit"]');
 

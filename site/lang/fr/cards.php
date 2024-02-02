@@ -50,5 +50,6 @@ return [
     'no_emails' => 'Ne pas envoyer d\'emails',
     'edit.tags_are_auto_save' => 'Les étiquettes sont enregistrées automatiquement lorsque vous les ajoutez ou les enlevez.',
     'edit.editors_are_auto_save' => 'Les rédacteurs sont enregistrés automatiquement lorsque vous en ajoutez ou en enlevez.',
+    'add_content' => 'Ajouter du contenu...',
 
 ];

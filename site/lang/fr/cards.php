@@ -4,6 +4,10 @@ return [
 
     'title' => 'Titre',
     'cards' => 'Fiches',
+    'print.title' => 'Liste des fiches',
+    'print.page.head' => 'Page d\'impression des fiches',
+    'print.page.button' => 'Si rien ne se passe, :click_here pour ouvrir la boîte de dialogue d\'impression.',
+    'print.page.click_here' => 'cliquez ici',
     'card(s)' => '{0} -|{1} :count fiche|{2,*} :count fiches',
     'create' => 'Créer une fiche',
     'delete' => 'supprimer',

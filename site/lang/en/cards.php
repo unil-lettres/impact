@@ -4,6 +4,10 @@ return [
 
     'title' => 'Title',
     'cards' => 'Cards',
+    'print.title' => 'Cards list',
+    'print.page.head' => 'Cards print page',
+    'print.page.button' => 'If nothing happens, :click_here to open the print dialog box.',
+    'print.page.click_here' => 'click here',
     'card(s)' => '{0} -|{1} :count card|{2,*} :count cards',
     'create' => 'Create a card',
     'delete' => 'delete',

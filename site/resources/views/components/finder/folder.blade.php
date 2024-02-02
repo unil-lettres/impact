@@ -156,8 +156,14 @@
                         </li>
                         <li><hr class="dropdown-divider"></li>
                     @endcan
-                    <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                    <li
+                        class="dropdown-item d-flex cursor-pointer align-items-center @if($folder->getCardsRecursive()->isEmpty()) disabled @endif"
+                        @if ($folder->getCardsRecursive()->isNotEmpty())
+                            @click="closeAllDropDowns(); window.printable.open('{{ route('cards.print', ['folder' => $folder->id])}}');"
+                        @endif
+                    >
                         <span class="flex-fill me-5">
+                            <i class="fa-solid fa-print me-2"></i>
                             {{ trans('courses.finder.menu.print')}}
                         </span>
                     </li>

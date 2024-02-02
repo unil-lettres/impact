@@ -185,6 +185,33 @@
         },
 
         /**
+         * Return if there is cards in the current selection or not.
+         */
+        hasCardsInSelection() {
+            return _.some(this.selectedItems, item => item.startsWith('card-'));
+        },
+
+        /**
+         * Generate the url to print selected cards.
+         */
+        generatePrintUrl() {
+            const selectedCards = _.filter(
+                this.selectedItems,
+                item => item.startsWith('card-'),
+            );
+
+            if (selectedCards.length > 0) {
+                const url = selectedCards.map((item) => {
+                    const cardId = item.replace('card-', '');
+                    return `cards[]=${cardId}`;
+                }).join('&');
+
+                const encodedUrl = encodeURI(url);
+                return `{{ route('cards.print') }}?${encodedUrl}`;
+            }
+        },
+
+        /**
          * Initialize the Sortable plugin.
          */
         initSortable(list) {

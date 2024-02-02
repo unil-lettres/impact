@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Card;
+use App\Course;
 use App\Enums\FileStatus;
+use App\Folder;
 use App\Http\Requests\CreateCardExport;
 use App\Http\Requests\DestroyCard;
 use App\Http\Requests\UpdateCard;
@@ -12,7 +14,10 @@ use App\State;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use InvalidArgumentException;
 use PhpOffice\PhpWord\Exception\Exception;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -194,5 +199,42 @@ class CardController extends Controller
                 $service->export()
             )
             ->deleteFileAfterSend();
+    }
+
+    public function print(Request $request): View
+    {
+        // Authorizations are done in the view.
+
+        $course = Course::find($request->get('course'));
+        $folder = Folder::find($request->get('folder'));
+        $cards = Card::findMany($request->get('cards'));
+        $cards = $cards->count() > 0 ? $cards : null;
+
+        // Check that only one of the three parameters is set.
+        if (count(array_filter([$course, $folder, $cards])) !== 1) {
+            throw new InvalidArgumentException('Invalid parameters');
+        }
+
+        [$header, $printedCards] = match(true) {
+            !is_null($course) => [$course->name, $course->cards],
+            !is_null($folder) => [$folder->course->name, $folder->getCardsRecursive()],
+            !is_null($cards) => [$cards->first()->course->name, $cards],
+            default => throw new InvalidArgumentException('Invalid parameters'),
+        };
+
+        // Check that all cards belongs to the same course.
+        if ($printedCards->pluck('course_id')->unique()->count() !== 1) {
+            throw new InvalidArgumentException('Invalid parameters');
+        }
+
+        // Don't print the introduction page if there is only one card.
+        if ($printedCards->count() === 1) {
+            $header = null;
+        }
+
+        return view('cards.print', [
+            'header' => $header,
+            'cards' => $printedCards->sortBy('title'),
+        ]);
     }
 }

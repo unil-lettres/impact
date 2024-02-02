@@ -150,6 +150,7 @@
                     </li>
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
+                        :class="hasCardsInSelection() || 'disabled'"
                         data-bs-toggle="modal"
                         data-bs-target='#modalUpdateState'
                         :data-bs-cards="selectedItems.filter(key => key.includes('card')).map(key => key.replace('card-', ''))"
@@ -173,7 +174,12 @@
                     </li>
                     <li><hr class="dropdown-divider"></li>
                     @endcan
-                    <li class="dropdown-item d-flex cursor-pointer align-items-center">
+                    <li
+                        class="dropdown-item d-flex cursor-pointer align-items-center"
+                        :class="hasCardsInSelection() || 'disabled'"
+                        @click="closeAllDropDowns(); window.printable.open(generatePrintUrl());"
+                    >
+                        <i class="fa-solid fa-print me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.print')}}
                         </span>

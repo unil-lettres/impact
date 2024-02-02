@@ -43,13 +43,13 @@ class CloneFolderService
     /**
      * Clone this folder and all contained cards.
      *
-     * @param  Folder|null  $destFolder The new parent folder. Null if the folder
-     * should be cloned in the same parent folder.
-     * @param  Course|null  $destCourse The new course. Null if the folder
-     * should be cloned in the same course.
+     * @param  Folder|null  $destFolder  The new parent folder. Null if the folder
+     *                                   should be cloned in the same parent folder.
+     * @param  Course|null  $destCourse  The new course. Null if the folder
+     *                                   should be cloned in the same course.
      *
      * @throws InvalidArgumentException If both $destFolder and $destCourse are
-     * specified.
+     *                                  specified.
      */
     public function clone(
         ?Folder $destFolder = null,

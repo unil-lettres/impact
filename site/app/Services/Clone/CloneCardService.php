@@ -55,13 +55,13 @@ class CloneCardService
      *
      * When cloned in a new course, all files and tags will be cloned.
      *
-     * @param  Folder|null  $destFolder The new parent folder. Null if the card
-     * should be cloned in the same parent folder.
-     * @param  Course|null  $destCourse The new course. Null if the card should be
-     * cloned in the same course.
+     * @param  Folder|null  $destFolder  The new parent folder. Null if the card
+     *                                   should be cloned in the same parent folder.
+     * @param  Course|null  $destCourse  The new course. Null if the card should be
+     *                                   cloned in the same course.
      *
      * @throws InvalidArgumentException|CloneException If both $destFolder and $destCourse are
-     * specified.
+     *                                                 specified.
      */
     public function clone(
         ?Folder $destFolder = null,

@@ -104,9 +104,9 @@ class Folder extends Model
      * Get all ancestors of this folder (all parents recursively).
      *
      * @param  bool  $self  If true, the current folder will be included in the
-     * ancestors.
+     *                      ancestors.
      * @param  Folder|null  $until  If set, the ancestors will be returned until
-     * this folder.
+     *                              this folder.
      */
     public function getAncestors(
         bool $self = true,

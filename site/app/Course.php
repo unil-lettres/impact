@@ -230,7 +230,7 @@ class Course extends Model
      * Get all the enrollments for a specific role (EnrollmentRole) of this course.
      * If withTrashed is true, also return the enrollments that have been soft deleted.
      *
-     * @param  string  $role App\Enums\EnrollmentRole
+     * @param  string  $role  App\Enums\EnrollmentRole
      */
     private function enrollmentsForRole(string $role, bool $withTrashed = false): Collection
     {

@@ -141,7 +141,6 @@ class Folder extends Model
         return $children;
     }
 
-
     /**
      * Get all cards of this folder and cards of children recursively.
      */

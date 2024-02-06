@@ -24,7 +24,7 @@ class CourseConfirmDelete extends Mailable
     {
         $this->course = $course;
 
-        $this->fromEmail = Auth::user()?->email || config('mail.from.address');
+        $this->fromEmail = Auth::user()?->email ?: config('mail.from.address');
     }
 
     /**

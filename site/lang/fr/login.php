@@ -7,7 +7,7 @@ return [
     'aai' => 'Connexion avec SWITCHaai',
     'aai_info' => 'Service de connexion pour les utilisateurs des hautes écoles qui sont <a class="legacy" href="https://www.switch.ch/aai/participants/homeorgs/" target="_blank">membres de la fédération SWITCHaai.</a>',
     'login' => 'Se connecter',
-    'register' => 'Créer un nouvel utilisateur',
+    'register' => 'Créer un nouvel utilisateur local',
     'admin' => 'Admin',
     'email' => 'E-Mail',
     'verify_email' => 'Vérifiez votre adresse email',

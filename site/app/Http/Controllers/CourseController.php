@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Enrollment;
 use App\Enums\CoursesFilter;
 use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
+use App\Enums\UserType;
 use App\Http\Requests\DestroyCourse;
 use App\Http\Requests\DisableCourse;
 use App\Http\Requests\EnableCourse;
@@ -15,6 +17,7 @@ use App\Http\Requests\StoreCourse;
 use App\Http\Requests\UpdateConfiguration;
 use App\Http\Requests\UpdateCourse;
 use App\Mail\CourseConfirmDelete;
+use App\Services\MoodleService;
 use App\User;
 use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -93,16 +96,59 @@ class CourseController extends Controller
     {
         $this->authorize('create', Course::class);
 
-        if ($request->get('external_id')) {
+        $externalId = $request->get('external_id') ?: null;
+
+        if ($externalId) {
+            // If external space already exists, return with error
+            if (Course::where('external_id', $externalId)->exists()) {
+                return redirect()
+                    ->route('admin.courses.manage')
+                    ->with('error', trans('messages.moodle.course.exists'));
+            }
+
+            // Get course data from Moodle
+            $courseData = (new MoodleService())
+                ->getCourse($externalId);
+
+            // If request fails or no data is found, return with error
+            if (! $courseData) {
+                return redirect()
+                    ->route('admin.courses.manage')
+                    ->with('error', trans('messages.moodle.error', ['moodleId' => $externalId]));
+            }
+
             // Create new external course
-            // TODO: retrieve data from the specified Moodle course if it exists
-            // TODO: create student & teacher enrollments
             $course = Course::create([
-                'name' => 'Retrieved name from Moodle',
-                'description' => 'Retrieved description from Moodle',
+                'name' => $courseData['shortname'] ?: 'No name',
+                'description' => $courseData['fullname'] ?: null,
                 'type' => CourseType::External,
-                'external_id' => $request->get('external_id'),
+                'external_id' => $externalId,
             ]);
+
+            // Get users data from Moodle, then create new users if
+            // needed and finally create enrollments.
+            (new MoodleService())
+                ->getUsers($externalId)?->each(
+                    function ($user) use ($course) {
+                        $email = $user['email'] ?: null;
+                        $firstname = $user['firstname'] ?: '';
+                        $lastname = $user['lastname'] ?: '';
+                        $role = $user['role'] ?: null;
+
+                        if ($email && $role) {
+                            $user = User::firstOrCreate(
+                                ['email' => $email],
+                                ['name' => $firstname.' '.$lastname, 'type' => UserType::Aai]
+                            );
+
+                            Enrollment::create([
+                                'role' => $role,
+                                'course_id' => $course->id,
+                                'user_id' => $user->id,
+                            ]);
+                        }
+                    }
+                );
         } else {
             // Create new local course
             $course = Course::create([

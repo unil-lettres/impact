@@ -65,4 +65,7 @@ return [
     'enrollment.editor.missing' => 'Une fiche privée doit avoir au moins un éditeur',
     'error.refresh' => 'Une erreur est survenue, veuillez recharger la page.',
     'update.no_effect' => 'Les données n\'ont pas été modifiées.',
+    'moodle.error' => 'Erreur lors de la récupération des données (Moodle ID: :moodleId).',
+    'moodle.course.exists' => 'Cet espace existe déjà dans la base de données.',
+
 ];

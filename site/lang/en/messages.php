@@ -64,5 +64,7 @@ return [
     'enrollment.editor.missing' => 'A private card must have at least one editor',
     'error.refresh' => 'An error occurred, please refresh the page.',
     'update.no_effect' => 'Data have not been changed.',
+    'moodle.error' => 'Error while fetching data (Moodle ID: :moodleId).',
+    'moodle.course.exists' => 'This space already exists in the database.',
 
 ];

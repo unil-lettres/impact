@@ -158,11 +158,11 @@ class CourseTest extends DuskTestCase
     }
 
     /**
-     * Test edit an external course.
+     * Test cannot edit an external course.
      *
      * @throws Throwable
      */
-    public function testEditExternalCourse(): void
+    public function testCannotEditExternalCourse(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -170,16 +170,8 @@ class CourseTest extends DuskTestCase
 
             $browser->visit('/admin/courses');
 
-            $browser->click('#courses table tbody tr.external .actions span:nth-child(1) a')
-                ->assertSee('Identifiant Moodle')
-                ->type('name', 'External space updated')
-                ->type('description', 'External space description updated')
-                ->press('Mettre à jour l\'espace')
-                ->waitForText('Espace mis à jour.')
-                ->assertSee('Espace mis à jour.')
-                ->assertSee('External space updated')
-                ->assertInputValue('name', 'External space updated')
-                ->assertInputValue('description', 'External space description updated');
+            // Check that the edit link is not present for external courses
+            $browser->assertNotPresent('#courses table tbody tr.external .actions span a[aria-label="Modifier l\'espace"]');
         });
     }
 

@@ -4,7 +4,7 @@ namespace App\Enums;
 
 final class EnrollmentRole
 {
-    const Student = 'student';
+    const Student = 'member';
 
-    const Teacher = 'teacher';
+    const Teacher = 'manager';
 }

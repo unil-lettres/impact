@@ -37,13 +37,13 @@ class CardPolicy
             return true;
         }
 
-        // Users that cannot see any box can't access the card, even managers or editors.
+        // Users that cannot see any box can't access the card, even managers or holders.
         if ($card->allBoxesAreHidden()) {
             return false;
         }
 
-        // Editors of the course can view the card
-        if ($user->isEditor($card)) {
+        // Holders of the course can view the card
+        if ($user->isHolder($card)) {
             return true;
         }
 
@@ -71,8 +71,8 @@ class CardPolicy
      */
     public function index(User $user, Card $card): bool
     {
-        // Managers of the course or editors can always list the card.
-        if ($user->isManager($card->course) || $user->isEditor($card)) {
+        // Managers of the course or holders can always list the card.
+        if ($user->isManager($card->course) || $user->isHolder($card)) {
             return true;
         }
 
@@ -109,7 +109,7 @@ class CardPolicy
             return true;
         }
 
-        // Users that cannot see any box can't update the card, even managers or editors.
+        // Users that cannot see any box can't update the card, even managers or holders.
         if ($card->allBoxesAreHidden()) {
             return false;
         }
@@ -119,8 +119,8 @@ class CardPolicy
             return true;
         }
 
-        // Editors of the course can update card if the state is not set to the 'archived' type
-        if ($user->isEditor($card) && $card->state?->type !== StateType::Archived) {
+        // Holders of the course can update card if the state is not set to the 'archived' type
+        if ($user->isHolder($card) && $card->state?->type !== StateType::Archived) {
             return true;
         }
 

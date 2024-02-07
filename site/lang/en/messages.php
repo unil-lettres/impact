@@ -61,7 +61,7 @@ return [
     'no.option' => 'No available option',
     'enrollment.cannot.enroll.twice' => 'Cannot enroll the same user in the same space twice.',
     'enrollment.cannot.delete.self' => 'Cannot delete yourself from the space.',
-    'enrollment.editor.missing' => 'A private card must have at least one holder.',
+    'enrollment.holder.missing' => 'A private card must have at least one holder.',
     'error.refresh' => 'An error occurred, please refresh the page.',
     'update.no_effect' => 'Data have not been changed.',
     'moodle.error' => 'Error while fetching data (Moodle ID: :moodleId).',

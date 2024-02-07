@@ -80,8 +80,8 @@ class CardController extends Controller
             'card' => $card,
             'breadcrumbs' => $card
                 ->breadcrumbs(true),
-            'editors' => $card
-                ->editors(),
+            'holders' => $card
+                ->holders(),
             'users' => $card->course
                 ->users(),
             'files' => $files,

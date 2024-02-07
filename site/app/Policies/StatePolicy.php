@@ -49,8 +49,8 @@ class StatePolicy
             return true;
         }
 
-        // Editors of the course can view a non managers_only state
-        if ($user->isEditor($state->course) && ! $state->managers_only) {
+        // Holders of the course can view a non managers_only state
+        if ($user->isHolder($state->course) && ! $state->managers_only) {
             return true;
         }
 

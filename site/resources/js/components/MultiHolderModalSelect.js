@@ -4,11 +4,11 @@ import { createRoot } from "react-dom/client";
 import MultiSelect from "./MultiSelect";
 import _ from "lodash";
 
-export default class MultiEditorModalSelect extends MultiSelect {
+export default class MultiHolderModalSelect extends MultiSelect {
     select = (record, option) => {
         return new Promise((resolve) => {
             if(option.value) {
-                const selectedEvent = new CustomEvent('add-editor', {
+                const selectedEvent = new CustomEvent('add-holder', {
                     bubbles: true,
                     cancelable: false,
                     detail: {
@@ -26,7 +26,7 @@ export default class MultiEditorModalSelect extends MultiSelect {
     remove = (record, option) => {
         return new Promise((resolve) => {
             if(option.value) {
-                const selectedEvent = new CustomEvent('remove-editor', {
+                const selectedEvent = new CustomEvent('remove-holder', {
                     bubbles: true,
                     cancelable: false,
                     detail: {
@@ -42,7 +42,7 @@ export default class MultiEditorModalSelect extends MultiSelect {
     }
 }
 
-window.MultiEditorModalSelect = {
+window.MultiHolderModalSelect = {
     // For keeping track of every react components mounted.
     roots: [],
 
@@ -60,7 +60,7 @@ window.MultiEditorModalSelect = {
             const placeholder = element.getAttribute('placeholder');
             const noOptionsMessage = element.getAttribute('noOptionsMessage');
             root.render(
-                <MultiEditorModalSelect
+                <MultiHolderModalSelect
                     data={ data }
                     placeholder={placeholder}
                     noOptionsMessage={noOptionsMessage}
@@ -72,4 +72,4 @@ window.MultiEditorModalSelect = {
     }
 };
 
-window.MultiEditorModalSelect.create();
+window.MultiHolderModalSelect.create();

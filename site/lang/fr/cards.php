@@ -14,9 +14,9 @@ return [
     'unlink' => 'Dissocier',
     'not_found' => 'Aucune fiche trouvée',
     'my_cards' => 'Mes fiches',
-    'editors' => 'Titulaire(s)',
+    'holders' => 'Titulaire(s)',
     'configure' => 'Configuration de la fiche',
-    'choose_editors' => 'Vous pouvez choisir les titulaires de la fiche parmi les utilisateurs suivants.',
+    'choose_holders' => 'Vous pouvez choisir les titulaires de la fiche parmi les utilisateurs suivants.',
     'users.not_found' => 'Aucun utilisateur disponible',
     'send_mails' => 'Par défaut, un email est envoyé à chaque changement d\'état d\'une fiche.',
     'update.configuration' => 'Mettre à jour la configuration',
@@ -49,7 +49,7 @@ return [
     'tags' => 'Étiquettes',
     'no_emails' => 'Ne pas envoyer d\'emails',
     'edit.tags_are_auto_save' => 'Les étiquettes sont enregistrées automatiquement lorsque vous les ajoutez ou les enlevez.',
-    'edit.editors_are_auto_save' => 'Les titulaires sont enregistrés automatiquement lorsque vous en ajoutez ou en enlevez.',
+    'edit.holders_are_auto_save' => 'Les titulaires sont enregistrés automatiquement lorsque vous en ajoutez ou en enlevez.',
     'add_content' => 'Ajouter du contenu...',
 
 ];

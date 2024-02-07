@@ -150,9 +150,9 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user is an editor of the given card.
+     * Check if the user is an holder of the given card.
      */
-    public function isEditor(Card $card): bool
+    public function isHolder(Card $card): bool
     {
         if ($this->admin) {
             return true;

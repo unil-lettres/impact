@@ -31,7 +31,7 @@ class FinderItemsService
      *   [
      *      'tags' => [tag_id,...],
      *      'state' => [state_id,...],
-     *      'editor' => [editor_id,...],
+     *      'holder' => [holder_id,...],
      *      'search' => [terms (string),...],
      *   ]
      *
@@ -77,15 +77,15 @@ class FinderItemsService
             })
             ->get();
 
-        // Filter specified editors id.
-        // Due to how editors are implemented, we do this directly in the
+        // Filter specified holders id.
+        // Due to how holders are implemented, we do this directly in the
         // collection.
-        if ($filters->get('editor')->isNotEmpty()) {
+        if ($filters->get('holder')->isNotEmpty()) {
             $cards = $cards->filter(
                 fn ($card) => $card
-                    ->editors()
+                    ->holders()
                     ->pluck('id')
-                    ->intersect($filters->get('editor'))
+                    ->intersect($filters->get('holder'))
                     ->isNotEmpty()
             );
         }

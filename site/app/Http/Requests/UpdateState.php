@@ -9,9 +9,9 @@ use Illuminate\Validation\Rule;
 class UpdateState extends AbstractRequest
 {
     const BOX_ALLOWED_PERMISSIONS = [
-        StatePermission::EditorsCanShowAndEdit,
-        StatePermission::ManagersAndEditorsCanShowAndEdit,
-        StatePermission::AllCanShowManagersAndEditorsCanEdit,
+        StatePermission::HoldersCanShowAndEdit,
+        StatePermission::ManagersAndHoldersCanShowAndEdit,
+        StatePermission::AllCanShowManagersAndHoldersCanEdit,
         StatePermission::AllCanShowManagersCanEdit,
         StatePermission::ManagersCanShowAndEdit,
     ];

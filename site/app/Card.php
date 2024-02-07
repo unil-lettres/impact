@@ -151,9 +151,9 @@ class Card extends Model
     }
 
     /**
-     * Get the editors of this card.
+     * Get the holders of this card.
      */
-    public function editors(): Collection
+    public function holders(): Collection
     {
         return $this->enrollments()->map(function ($enrollment) {
             return $enrollment->user;
@@ -161,24 +161,24 @@ class Card extends Model
     }
 
     /**
-     * Check if a user can be removed from the editors of this card.
+     * Check if a user can be removed from the holders of this card.
      */
-    public function canRemoveEditor(User $user): bool
+    public function canRemoveHolder(User $user): bool
     {
-        // Check if the user is an editor of the card
-        if (! $user->isEditor($this)) {
+        // Check if the user is an holder of the card
+        if (! $user->isHolder($this)) {
             return false;
         }
 
-        // Admins can remove any editor
+        // Admins can remove any holder
         if (Auth::user()->admin) {
             return true;
         }
 
         // Check if the card state is set to private and
-        // if the user is the last editor of the card
+        // if the user is the last holder of the card
         if ($this->state->type === StateType::Private &&
-            $this->editors()->where('id', '!=', $user->id)->isEmpty()) {
+            $this->holders()->where('id', '!=', $user->id)->isEmpty()) {
             return false;
         }
 
@@ -186,13 +186,13 @@ class Card extends Model
     }
 
     /**
-     * Get a string of all editors joined by a comma (',').
-     * This attribute allow to sort by editors within a Collection.
+     * Get a string of all holders joined by a comma (',').
+     * This attribute allow to sort by holders within a Collection.
      */
-    protected function editorsList(): Attribute
+    protected function holdersList(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->editors()->pluck('name')->join(', '),
+            get: fn () => $this->holders()->pluck('name')->join(', '),
         );
     }
 
@@ -265,10 +265,10 @@ class Card extends Model
 
         // Check if user role is allowed to see the box
         return match ($this->state->getPermission($box)) {
-            StatePermission::ManagersCanShowAndEditEditorsCanShow => Auth::user()->isManager($this->course) || Auth::user()->isEditor($this),
-            StatePermission::EditorsCanShowAndEdit => Auth::user()->isEditor($this),
-            StatePermission::ManagersAndEditorsCanShowAndEdit => Auth::user()->isManager($this->course) || Auth::user()->isEditor($this),
-            StatePermission::AllCanShowManagersAndEditorsCanEdit, StatePermission::AllCanShowManagersCanEdit => Auth::user()->isManager($this->course) || Auth::user()->isEditor($this) || Auth::user()->isMember($this->course),
+            StatePermission::ManagersCanShowAndEditHoldersCanShow => Auth::user()->isManager($this->course) || Auth::user()->isHolder($this),
+            StatePermission::HoldersCanShowAndEdit => Auth::user()->isHolder($this),
+            StatePermission::ManagersAndHoldersCanShowAndEdit => Auth::user()->isManager($this->course) || Auth::user()->isHolder($this),
+            StatePermission::AllCanShowManagersAndHoldersCanEdit, StatePermission::AllCanShowManagersCanEdit => Auth::user()->isManager($this->course) || Auth::user()->isHolder($this) || Auth::user()->isMember($this->course),
             StatePermission::ManagersCanShowAndEdit => Auth::user()->isManager($this->course),
             default => Auth::user()->admin,
         };
@@ -299,9 +299,9 @@ class Card extends Model
 
         // Check if user role is allowed to edit the box
         return match ($this->state->getPermission($box)) {
-            StatePermission::ManagersCanShowAndEditEditorsCanShow => Auth::user()->isManager($this->course),
-            StatePermission::EditorsCanShowAndEdit => Auth::user()->isEditor($this),
-            StatePermission::ManagersAndEditorsCanShowAndEdit, StatePermission::AllCanShowManagersAndEditorsCanEdit => Auth::user()->isManager($this->course) || Auth::user()->isEditor($this),
+            StatePermission::ManagersCanShowAndEditHoldersCanShow => Auth::user()->isManager($this->course),
+            StatePermission::HoldersCanShowAndEdit => Auth::user()->isHolder($this),
+            StatePermission::ManagersAndHoldersCanShowAndEdit, StatePermission::AllCanShowManagersAndHoldersCanEdit => Auth::user()->isManager($this->course) || Auth::user()->isHolder($this),
             StatePermission::AllCanShowManagersCanEdit, StatePermission::ManagersCanShowAndEdit => Auth::user()->isManager($this->course),
             default => Auth::user()->admin,
         };

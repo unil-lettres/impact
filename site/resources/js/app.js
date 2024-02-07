@@ -14,11 +14,11 @@ require('./printable');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-require('./components/MultiEditorSelect');
+require('./components/MultiHolderSelect');
 require('./components/MultiEnrollmentSelect');
 require('./components/MultiTagSelect');
 require('./components/MultiFilterSelect');
-require('./components/MultiEditorModalSelect');
+require('./components/MultiHolderModalSelect');
 require('./components/SingleCourseSelect');
 require('./components/SingleFolderSelect');
 require('./components/SingleFileSelect');

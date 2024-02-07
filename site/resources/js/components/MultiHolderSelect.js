@@ -4,7 +4,7 @@ import { createRoot } from "react-dom/client";
 import axios from "axios";
 import MultiSelect from "./MultiSelect";
 
-export default class MultiEditorSelect extends MultiSelect {
+export default class MultiHolderSelect extends MultiSelect {
 
     select = (record, option) => {
         return axios.put(
@@ -35,10 +35,10 @@ export default class MultiEditorSelect extends MultiSelect {
     }
 }
 
-const elementId = 'rct-multi-editor-select';
+const elementId = 'rct-multi-holder-select';
 if (document.getElementById(elementId)) {
     const root = createRoot(document.getElementById(elementId));
 
     let data = document.getElementById(elementId).getAttribute('data');
-    root.render(<MultiEditorSelect data={ data } />);
+    root.render(<MultiHolderSelect data={ data } />);
 }

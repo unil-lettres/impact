@@ -15,8 +15,8 @@ return [
     'not_found' => 'No cards found',
     'my_cards' => 'My cards',
     'configure' => 'Card configuration',
-    'editors' => 'Holder(s)',
-    'choose_editors' => 'You can choose the holders of the card from the following users.',
+    'holders' => 'Holder(s)',
+    'choose_holders' => 'You can choose the holders of the card from the following users.',
     'users.not_found' => 'No user is available',
     'send_mails' => 'By default, an email is sent whenever the status of a card changes.',
     'update.configuration' => 'Update configuration',
@@ -49,7 +49,7 @@ return [
     'tags' => 'Tags',
     'no_emails' => 'Do not send emails',
     'edit.tags_are_auto_save' => 'Tags are automatically saved when you add or remove them.',
-    'edit.editors_are_auto_save' => 'Holders are automatically saved when you add or remove them.',
+    'edit.holders_are_auto_save' => 'Holders are automatically saved when you add or remove them.',
     'add_content' => 'Add content...',
 
 ];

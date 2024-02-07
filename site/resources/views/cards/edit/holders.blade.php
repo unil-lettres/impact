@@ -1,17 +1,17 @@
 <div class="card">
     <div class="card-header">
-        {{ trans('cards.editors') }}
+        {{ trans('cards.holders') }}
     </div>
     <div class="card-body">
         @can('parameters', $card)
-            <p>{{ trans('cards.choose_editors') }}</p>
+            <p>{{ trans('cards.choose_holders') }}</p>
 
             @if ($users->isNotEmpty())
                 <div class="col-12 mb-3">
-                    <div id="rct-multi-editor-select"
-                         data='{{ json_encode(['record' => $card, 'options' => $users, 'defaults' => $editors]) }}'
+                    <div id="rct-multi-holder-select"
+                         data='{{ json_encode(['record' => $card, 'options' => $users, 'defaults' => $holders]) }}'
                     ></div>
-                    <div class="form-text">{{ trans('cards.edit.editors_are_auto_save') }}</div>
+                    <div class="form-text">{{ trans('cards.edit.holders_are_auto_save') }}</div>
                 </div>
             @else
                 <p class="text-secondary">
@@ -19,7 +19,7 @@
                 </p>
             @endif
         @else
-            <div>{{ $editors->isEmpty() ? '' : $editors->implode('name', ', ') }}</div>
+            <div>{{ $holders->isEmpty() ? '' : $holders->implode('name', ', ') }}</div>
         @endcan
     </div>
 </div>

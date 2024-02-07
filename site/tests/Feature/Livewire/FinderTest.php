@@ -21,7 +21,7 @@ class FinderTest extends TestCase
         // Invalid query params are removed from filters.
         $emptyFilters = [
             'tag' => [],
-            'editor' => [],
+            'holder' => [],
             'state' => [],
             'search' => [],
         ];
@@ -42,7 +42,7 @@ class FinderTest extends TestCase
 
         $filters = [
             'tag' => [],
-            'editor' => [],
+            'holder' => [],
             'state' => [$stateId],
             'search' => [],
         ];
@@ -60,7 +60,7 @@ class FinderTest extends TestCase
 
         $emptyFilters = [
             'tag' => [],
-            'editor' => [],
+            'holder' => [],
             'state' => [],
             'search' => [],
         ];
@@ -79,7 +79,7 @@ class FinderTest extends TestCase
 
         $emptyFilters = [
             'tag' => [],
-            'editor' => [],
+            'holder' => [],
             'state' => [$stateId],
             'search' => [],
         ];

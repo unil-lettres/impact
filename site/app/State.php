@@ -22,11 +22,11 @@ class State extends Model implements Sortable
 
     const PERMISSIONS = '{
             "version": 1,
-            "box1": '.StatePermission::EditorsCanShowAndEdit.',
-            "box2": '.StatePermission::EditorsCanShowAndEdit.',
-            "box3": '.StatePermission::EditorsCanShowAndEdit.',
-            "box4": '.StatePermission::EditorsCanShowAndEdit.',
-            "box5": '.StatePermission::EditorsCanShowAndEdit.'
+            "box1": '.StatePermission::HoldersCanShowAndEdit.',
+            "box2": '.StatePermission::HoldersCanShowAndEdit.',
+            "box3": '.StatePermission::HoldersCanShowAndEdit.',
+            "box4": '.StatePermission::HoldersCanShowAndEdit.',
+            "box5": '.StatePermission::HoldersCanShowAndEdit.'
         }';
 
     const ACTIONS = '{
@@ -213,7 +213,7 @@ class State extends Model implements Sortable
      */
     public static function isPermissionPublic(int $permission): bool
     {
-        return $permission === StatePermission::AllCanShowManagersAndEditorsCanEdit ||
+        return $permission === StatePermission::AllCanShowManagersAndHoldersCanEdit ||
             $permission === StatePermission::AllCanShowManagersCanEdit;
     }
 }

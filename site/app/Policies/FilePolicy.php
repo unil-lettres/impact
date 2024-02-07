@@ -140,8 +140,8 @@ class FilePolicy
             return true;
         }
 
-        // Editors can upload a file within a card
-        if ($card && $user->isEditor($card)) {
+        // Holders can upload a file within a card
+        if ($card && $user->isHolder($card)) {
             return true;
         }
 

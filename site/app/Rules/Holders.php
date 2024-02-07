@@ -9,7 +9,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Support\Arr;
 use Illuminate\Translation\PotentiallyTranslatedString;
 
-class Editors implements DataAwareRule, ValidationRule
+class Holders implements DataAwareRule, ValidationRule
 {
     /**
      * All of the data under validation.

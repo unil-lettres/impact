@@ -14,13 +14,13 @@
                     @include('livewire.modal-create-common-fields')
 
                     <div class="mb-3">
-                        <label for="{{$id}}-editors" class="control-label form-label">
-                            {{ trans("cards.editors") }}
+                        <label for="{{$id}}-holders" class="control-label form-label">
+                            {{ trans("cards.holders") }}
                         </label>
                         <div
                             wire:ignore
                             id="rct-multi-user-select"
-                            data='{{ json_encode(['record' => $id.'-editors', 'options' => $this->enrolledUsers()]) }}'
+                            data='{{ json_encode(['record' => $id.'-holders', 'options' => $this->enrolledUsers()]) }}'
                             placeholder='{{ trans("messages.select.option") }}'
                             noOptionsMessage="{{ trans('messages.no.option') }}"
                         ></div>
@@ -39,14 +39,14 @@
     const modal = document.getElementById('{{$id}}');
     const inputName = document.getElementById('{{$id}}-name');
     modal.addEventListener('show.bs.modal', event => {
-        // Reinitialize the editors react-select component every time
+        // Reinitialize the holders react-select component every time
         // we open the modal, to prevent persisting old component
         // (with old values).
-        window.MultiEditorModalSelect.create();
+        window.MultiHolderModalSelect.create();
 
-        // Reset the editors property of the component, to prevent
+        // Reset the holders property of the component, to prevent
         // persisting old values.
-        $wire.resetEditors(true);
+        $wire.resetHolders(true);
     });
     modal.addEventListener('shown.bs.modal', event => {
         inputName.focus();

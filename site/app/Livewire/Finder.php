@@ -100,13 +100,13 @@ class Finder extends Component
         );
         $this->arrayFilters = [
             'tag' => $mapToInt('tag'),
-            'editor' => $mapToInt('editor'),
+            'holder' => $mapToInt('holder'),
             'state' => $mapToInt('state'),
             'search' => $this->arrayFilters['search'] ?? [],
         ];
 
         // Check each filters from the query string and keep only valid ids.
-        collect(['tag', 'state', 'editor'])->each(
+        collect(['tag', 'state', 'holder'])->each(
             fn ($key) => $this->arrayFilters[$key] = $this->validateFilterIds(
                 $this->arrayFilters[$key], $key
             )->values()->toArray()
@@ -167,11 +167,11 @@ class Finder extends Component
     }
 
     #[Computed]
-    public function editors(): Collection
+    public function holders(): Collection
     {
-        // Return the list of editors for all cards of the course.
+        // Return the list of holders for all cards of the course.
         return $this->course->cards->map(
-            fn (Card $card) => $card->editors(),
+            fn (Card $card) => $card->holders(),
         )->flatten(1)->unique('id');
     }
 
@@ -222,7 +222,7 @@ class Finder extends Component
             ],
         );
 
-        if (in_array($type, ['tag', 'state', 'editor'])) {
+        if (in_array($type, ['tag', 'state', 'holder'])) {
             $success &= $this->validateFilterIds([$filter], $type)->isNotEmpty();
         }
 
@@ -337,7 +337,7 @@ class Finder extends Component
                 'direction' => $direction,
             ],
             [
-                'column' => 'required|string|in:title,state_name,created_at,editors_list,tags_list,'.static::DEFAULT_SORT_COLUMN,
+                'column' => 'required|string|in:title,state_name,created_at,holders_list,tags_list,'.static::DEFAULT_SORT_COLUMN,
                 'direction' => 'required|string|in:asc,desc',
             ],
         );
@@ -562,7 +562,7 @@ class Finder extends Component
 
         $this->arrayFilters = [
             'tag' => [],
-            'editor' => [],
+            'holder' => [],
             'state' => [],
             'search' => [],
         ];
@@ -639,9 +639,9 @@ class Finder extends Component
         return match ($type) {
             'tag' => $this->course->tags()->whereIn('id', $filterIds)->get()->pluck('id'),
 
-            // $this->editors() return a collection, this is why it is treated
+            // $this->holders() return a collection, this is why it is treated
             // differently.
-            'editor' => $this->editors->pluck('id')->intersect($filterIds),
+            'holder' => $this->holders->pluck('id')->intersect($filterIds),
 
             'state' => $this->course->states()->whereIn('id', $filterIds)->get()->pluck('id'),
 

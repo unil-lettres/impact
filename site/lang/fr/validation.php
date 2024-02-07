@@ -146,7 +146,7 @@ return [
 
     'attributes' => [
         'name' => 'nom',
-        'editors' => 'titulaires',
+        'holders' => 'titulaires',
         'course' => 'espace',
     ],
 

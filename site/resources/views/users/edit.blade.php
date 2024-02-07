@@ -175,9 +175,9 @@
                              class="mb-3"
                              data='{{ json_encode(['record' => $user, 'role' => $teacherRole, 'options' => $courses, 'defaults' => $coursesAsTeacher, 'isDisabled' => !$user->isValid()]) }}'
                         ></div>
-                        {{ trans('enrollments.as_student') }}
-                        <div id="rct-multi-course-student-select"
-                             data='{{ json_encode(['record' => $user, 'role' => $studentRole, 'options' => $courses, 'defaults' => $coursesAsStudent, 'isDisabled' => !$user->isValid()]) }}'
+                        {{ trans('enrollments.as_member') }}
+                        <div id="rct-multi-course-member-select"
+                             data='{{ json_encode(['record' => $user, 'role' => $memberRole, 'options' => $courses, 'defaults' => $coursesAsMember, 'isDisabled' => !$user->isValid()]) }}'
                         ></div>
                         <hr>
                         <div class="form-text">{{ trans('users.edit.enrollments_are_auto_save') }}</div>

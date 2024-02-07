@@ -58,7 +58,7 @@ if (document.getElementById(elementIdCourseThr)) {
     root.render(<MultiEnrollmentSelect data={ data } context='course' />);
 }
 
-const elementIdCourseSdt = 'rct-multi-course-student-select';
+const elementIdCourseSdt = 'rct-multi-course-member-select';
 if (document.getElementById(elementIdCourseSdt)) {
     const root = createRoot(document.getElementById(elementIdCourseSdt));
 
@@ -74,7 +74,7 @@ if (document.getElementById(elementIdUserThr)) {
     root.render(<MultiEnrollmentSelect data={ data } context='user' />);
 }
 
-const elementIdUserStd = 'rct-multi-user-student-select';
+const elementIdUserStd = 'rct-multi-user-member-select';
 if (document.getElementById(elementIdUserStd)) {
     const root = createRoot(document.getElementById(elementIdUserStd));
 

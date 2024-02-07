@@ -268,7 +268,7 @@ class Card extends Model
             StatePermission::TeachersCanShowAndEditEditorsCanShow => Auth::user()->isTeacher($this->course) || Auth::user()->isEditor($this),
             StatePermission::EditorsCanShowAndEdit => Auth::user()->isEditor($this),
             StatePermission::TeachersAndEditorsCanShowAndEdit => Auth::user()->isTeacher($this->course) || Auth::user()->isEditor($this),
-            StatePermission::AllCanShowTeachersAndEditorsCanEdit, StatePermission::AllCanShowTeachersCanEdit => Auth::user()->isTeacher($this->course) || Auth::user()->isEditor($this) || Auth::user()->isStudent($this->course),
+            StatePermission::AllCanShowTeachersAndEditorsCanEdit, StatePermission::AllCanShowTeachersCanEdit => Auth::user()->isTeacher($this->course) || Auth::user()->isEditor($this) || Auth::user()->isMember($this->course),
             StatePermission::TeachersCanShowAndEdit => Auth::user()->isTeacher($this->course),
             default => Auth::user()->admin,
         };

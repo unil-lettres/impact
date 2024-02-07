@@ -34,8 +34,8 @@ class InvitationsTableSeeder extends Seeder
             'validity' => Carbon::now()->addMonths(config('const.users.validity')),
         ])->id;
 
-        // Create user with student enrollment to test invitations
-        $userStudent = User::create([
+        // Create user with member enrollment to test invitations
+        $userMember = User::create([
             'name' => 'Invitation user member',
             'email' => 'invitation-user-member@example.com',
             'password' => Hash::make('password'),
@@ -60,11 +60,11 @@ class InvitationsTableSeeder extends Seeder
             'user_id' => $userTeacher,
         ]);
 
-        // Create student enrollment to test invitations
+        // Create member enrollment to test invitations
         Enrollment::create([
-            'role' => EnrollmentRole::Student,
+            'role' => EnrollmentRole::Member,
             'course_id' => $course,
-            'user_id' => $userStudent,
+            'user_id' => $userMember,
         ]);
 
         Invitation::create([

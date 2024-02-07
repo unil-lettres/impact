@@ -200,8 +200,8 @@ class CourseController extends Controller
             'users' => User::all(),
             'teacherRole' => EnrollmentRole::Teacher,
             'usersAsTeacher' => $course->teachers(),
-            'studentRole' => EnrollmentRole::Student,
-            'usersAsStudent' => $course->students(),
+            'memberRole' => EnrollmentRole::Member,
+            'usersAsMember' => $course->members(),
         ]);
     }
 

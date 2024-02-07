@@ -62,7 +62,7 @@ class CoursesTableSeeder extends Seeder
             'updated_at' => $now,
         ])->id;
 
-        $studentUser = User::create([
+        $memberUser = User::create([
             'name' => 'Member user',
             'email' => 'member-user@example.com',
             'password' => Hash::make('password'),
@@ -84,15 +84,15 @@ class CoursesTableSeeder extends Seeder
         ]);
 
         Enrollment::create([
-            'role' => EnrollmentRole::Student,
+            'role' => EnrollmentRole::Member,
             'course_id' => $secondCourse,
-            'user_id' => $studentUser,
+            'user_id' => $memberUser,
         ]);
 
         Enrollment::create([
-            'role' => EnrollmentRole::Student,
+            'role' => EnrollmentRole::Member,
             'course_id' => $deactivatedCourse,
-            'user_id' => $studentUser,
+            'user_id' => $memberUser,
         ]);
     }
 }

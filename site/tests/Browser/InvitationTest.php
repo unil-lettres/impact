@@ -104,7 +104,7 @@ class InvitationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testStudentCannotListInvitations(): void
+    public function testMemberCannotListInvitations(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())

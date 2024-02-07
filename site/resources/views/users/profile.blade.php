@@ -152,10 +152,10 @@
                                     @endforeach
                                 </ul>
                             @endif
-                            @if ($user->enrollmentsAsStudent()->isNotEmpty())
-                                {{ trans('enrollments.as_student') }}
+                            @if ($user->enrollmentsAsMember()->isNotEmpty())
+                                {{ trans('enrollments.as_member') }}
                                 <ul>
-                                    @foreach ($user->enrollmentsAsStudent() as $enrollment)
+                                    @foreach ($user->enrollmentsAsMember() as $enrollment)
                                         <li>
                                             <a href="{{ route('courses.show', $enrollment->course->id) }}">
                                                 {{ $enrollment->course->name }}

@@ -26,8 +26,8 @@ class AttachmentPolicy
             return true;
         }
 
-        // Teachers and students of the course can view the attachments
-        if ($user->isTeacher($course) || $user->isStudent($course)) {
+        // Teachers and members of the course can view the attachments
+        if ($user->isTeacher($course) || $user->isMember($course)) {
             return true;
         }
 
@@ -45,8 +45,8 @@ class AttachmentPolicy
             return true;
         }
 
-        // Teachers and students of the course can view the attachment
-        if ($user->isTeacher($attachment->course) || $user->isStudent($attachment->course)) {
+        // Teachers and members of the course can view the attachment
+        if ($user->isTeacher($attachment->course) || $user->isMember($attachment->course)) {
             return true;
         }
 

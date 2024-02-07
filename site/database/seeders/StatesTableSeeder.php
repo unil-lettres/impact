@@ -38,7 +38,7 @@ class StatesTableSeeder extends Seeder
             'updated_at' => $now,
         ])->id;
 
-        $studentUser = User::create([
+        $memberUser = User::create([
             'name' => 'States member user',
             'email' => 'states-member-user@example.com',
             'password' => Hash::make('password'),
@@ -54,9 +54,9 @@ class StatesTableSeeder extends Seeder
         ]);
 
         Enrollment::create([
-            'role' => EnrollmentRole::Student,
+            'role' => EnrollmentRole::Member,
             'course_id' => $course,
-            'user_id' => $studentUser,
+            'user_id' => $memberUser,
         ]);
     }
 }

@@ -41,8 +41,8 @@ class UserController extends Controller
             'users' => User::all(),
             'teacherRole' => EnrollmentRole::Teacher,
             'usersAsTeacher' => $course->teachers(),
-            'studentRole' => EnrollmentRole::Student,
-            'usersAsStudent' => $course->students(),
+            'memberRole' => EnrollmentRole::Member,
+            'usersAsMember' => $course->members(),
         ]);
     }
 
@@ -140,7 +140,7 @@ class UserController extends Controller
                 return $enrollment->course;
             });
 
-        $coursesAsStudent = $user->enrollmentsAsStudent()
+        $coursesAsMember = $user->enrollmentsAsMember()
             ->map(function ($enrollment) {
                 return $enrollment->course;
             });
@@ -151,8 +151,8 @@ class UserController extends Controller
                 ->get(),
             'teacherRole' => EnrollmentRole::Teacher,
             'coursesAsTeacher' => $coursesAsTeacher,
-            'studentRole' => EnrollmentRole::Student,
-            'coursesAsStudent' => $coursesAsStudent,
+            'memberRole' => EnrollmentRole::Member,
+            'coursesAsMember' => $coursesAsMember,
         ]);
     }
 

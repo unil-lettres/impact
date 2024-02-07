@@ -44,7 +44,7 @@ class CoursePolicy
     public function view(User $user, Course $course)
     {
         // Return true if user is enrolled in the specific course. The role is not relevant.
-        if ($user->admin || $user->isTeacher($course) || $user->isStudent($course)) {
+        if ($user->admin || $user->isTeacher($course) || $user->isMember($course)) {
             return true;
         }
 

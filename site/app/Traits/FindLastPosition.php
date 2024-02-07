@@ -12,7 +12,7 @@ trait FindLastPosition
      * content of the parent. The position of the given card or folder will not
      * be taken into account.
      *
-     * @param  $cardOrFolder  Card|Folder The card or folder to get the next position to use.
+     * @param    $cardOrFolder  Card|Folder The card or folder to get the next position to use.
      */
     public static function findLastPositionInParent(
         Card|Folder $cardOrFolder,

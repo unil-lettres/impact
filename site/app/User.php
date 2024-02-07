@@ -103,12 +103,12 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the user enrollments with a student role.
+     * Get the user enrollments with a member role.
      */
-    public function enrollmentsAsStudent(): Collection
+    public function enrollmentsAsMember(): Collection
     {
         return $this->enrollments()
-            ->where('role', EnrollmentRole::Student)
+            ->where('role', EnrollmentRole::Member)
             ->orderBy('created_at', 'desc')
             ->get();
     }
@@ -126,11 +126,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Retrieve all the users with a student role.
+     * Retrieve all the users with a member role.
      */
-    public static function students(): Collection
+    public static function members(): Collection
     {
-        return Enrollment::where('role', EnrollmentRole::Student)->get()
+        return Enrollment::where('role', EnrollmentRole::Member)->get()
             ->map(function ($enrollment) {
                 return $enrollment->user;
             })
@@ -176,15 +176,15 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user is a student of the given course.
+     * Check if the user is a member of the given course.
      */
-    public function isStudent(Course $course): bool
+    public function isMember(Course $course): bool
     {
         if ($this->admin) {
             return true;
         }
 
-        return $this->enrollmentsAsStudent()
+        return $this->enrollmentsAsMember()
             ->contains('course_id', $course->id);
     }
 

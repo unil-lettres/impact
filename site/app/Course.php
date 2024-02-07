@@ -134,11 +134,11 @@ class Course extends Model
     }
 
     /**
-     * Get all the students of this course.
+     * Get all the members of this course.
      */
-    public function students(bool $withTrashed = false): Collection
+    public function members(bool $withTrashed = false): Collection
     {
-        return $this->enrollmentsForRole(EnrollmentRole::Student, $withTrashed)
+        return $this->enrollmentsForRole(EnrollmentRole::Member, $withTrashed)
             ->map(function ($enrollment) {
                 return $enrollment->user;
             });

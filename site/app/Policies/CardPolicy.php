@@ -52,13 +52,13 @@ class CardPolicy
             return true;
         }
 
-        // Students of the course can view the card if the state is set to the 'archived' type
-        if ($user->isStudent($card->course) && $card->state?->type === StateType::Archived) {
+        // Members of the course can view the card if the state is set to the 'archived' type
+        if ($user->isMember($card->course) && $card->state?->type === StateType::Archived) {
             return true;
         }
 
-        // Students of the course can view the card, if the state has at least one public permission
-        if ($user->isStudent($card->course) && $card->state?->hasPublicPermission()) {
+        // Members of the course can view the card, if the state has at least one public permission
+        if ($user->isMember($card->course) && $card->state?->hasPublicPermission()) {
             return true;
         }
 

@@ -53,11 +53,11 @@ class StateTest extends DuskTestCase
     }
 
     /**
-     * Test cannot view states management as student.
+     * Test cannot view states management as member.
      *
      * @throws Throwable
      */
-    public function testStudentsCannotViewStatesManagement(): void
+    public function testMembersCannotViewStatesManagement(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())

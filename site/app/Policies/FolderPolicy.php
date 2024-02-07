@@ -36,8 +36,8 @@ class FolderPolicy
             return true;
         }
 
-        // Only teachers or students of the course can view the folder
-        if ($user->isTeacher($folder->course) || $user->isStudent($folder->course)) {
+        // Only teachers or members of the course can view the folder
+        if ($user->isTeacher($folder->course) || $user->isMember($folder->course)) {
             return true;
         }
 

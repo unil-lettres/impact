@@ -53,11 +53,11 @@ class FolderTest extends DuskTestCase
     }
 
     /**
-     * Test view folders as teacher.
+     * Test view folders as manager.
      *
      * @throws Throwable
      */
-    public function testViewFoldersAsTeacher(): void
+    public function testViewFoldersAsManager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -73,11 +73,11 @@ class FolderTest extends DuskTestCase
     }
 
     /**
-     * Test create folders as a teacher.
+     * Test create folders as a manager.
      *
      * @throws Throwable
      */
-    public function testCreateFoldersAsTeacher(): void
+    public function testCreateFoldersAsManager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())

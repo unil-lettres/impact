@@ -99,14 +99,14 @@ class CardObserver
     }
 
     /**
-     * Send an email to the teachers of the course
+     * Send an email to the managers of the course
      */
     private function sendEmailAction(Card $card, array $action): void
     {
-        // Send the state changed email to the teachers of the course
+        // Send the state changed email to the managers of the course
         Mail::to(
-            $card->course->teachers()->map(function ($teacher) {
-                return $teacher->email;
+            $card->course->managers()->map(function ($manager) {
+                return $manager->email;
             })
         )->send(
             new StateSelected(

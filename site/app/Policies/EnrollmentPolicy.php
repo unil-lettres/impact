@@ -42,8 +42,8 @@ class EnrollmentPolicy
             return true;
         }
 
-        // Only teachers can find enrollments
-        if ($user->isTeacher($enrollment->course)) {
+        // Only managers can find enrollments
+        if ($user->isManager($enrollment->course)) {
             return true;
         }
 
@@ -73,8 +73,8 @@ class EnrollmentPolicy
             return true;
         }
 
-        // Only teachers can create enrollments
-        if ($user->isTeacher($enrolledCourse)) {
+        // Only managers can create enrollments
+        if ($user->isManager($enrolledCourse)) {
             return true;
         }
 
@@ -104,8 +104,8 @@ class EnrollmentPolicy
             return true;
         }
 
-        // Only teachers can update the cards of an enrollment
-        if ($user->isTeacher($enrollment->course)) {
+        // Only managers can update the cards of an enrollment
+        if ($user->isManager($enrollment->course)) {
             return true;
         }
 
@@ -128,8 +128,8 @@ class EnrollmentPolicy
             return false;
         }
 
-        // Only teachers can delete enrollments
-        if ($user->isTeacher($enrollment->course)) {
+        // Only managers can delete enrollments
+        if ($user->isManager($enrollment->course)) {
             return true;
         }
 

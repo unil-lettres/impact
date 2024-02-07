@@ -69,11 +69,11 @@ class CardTest extends DuskTestCase
     }
 
     /**
-     * Test view card as a teacher.
+     * Test view card as a manager.
      *
      * @throws Throwable
      */
-    public function testViewCardAsTeacher(): void
+    public function testViewCardAsManager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
@@ -91,11 +91,11 @@ class CardTest extends DuskTestCase
     }
 
     /**
-     * Test create card as a teacher.
+     * Test create card as a manager.
      *
      * @throws Throwable
      */
-    public function testCreateCardAsTeacher(): void
+    public function testCreateCardAsManager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser

@@ -2,19 +2,19 @@
     {{ $activeState->permissions[$box] == \App\Enums\StatePermission::EditorsCanShowAndEdit ? 'selected' : '' }}>
     {{ trans('states.permission2') }}
 </option>
-<option value="{{ \App\Enums\StatePermission::TeachersAndEditorsCanShowAndEdit }}"
-    {{ $activeState->permissions[$box] == \App\Enums\StatePermission::TeachersAndEditorsCanShowAndEdit ? 'selected' : '' }}>
+<option value="{{ \App\Enums\StatePermission::ManagersAndEditorsCanShowAndEdit }}"
+    {{ $activeState->permissions[$box] == \App\Enums\StatePermission::ManagersAndEditorsCanShowAndEdit ? 'selected' : '' }}>
     {{ trans('states.permission3') }}
 </option>
-<option value="{{ \App\Enums\StatePermission::AllCanShowTeachersAndEditorsCanEdit }}"
-    {{ $activeState->permissions[$box] == \App\Enums\StatePermission::AllCanShowTeachersAndEditorsCanEdit ? 'selected' : '' }}>
+<option value="{{ \App\Enums\StatePermission::AllCanShowManagersAndEditorsCanEdit }}"
+    {{ $activeState->permissions[$box] == \App\Enums\StatePermission::AllCanShowManagersAndEditorsCanEdit ? 'selected' : '' }}>
     {{ trans('states.permission4') }}
 </option>
-<option value="{{ \App\Enums\StatePermission::AllCanShowTeachersCanEdit }}"
-    {{ $activeState->permissions[$box] == \App\Enums\StatePermission::AllCanShowTeachersCanEdit ? 'selected' : '' }}>
+<option value="{{ \App\Enums\StatePermission::AllCanShowManagersCanEdit }}"
+    {{ $activeState->permissions[$box] == \App\Enums\StatePermission::AllCanShowManagersCanEdit ? 'selected' : '' }}>
     {{ trans('states.permission5') }}
 </option>
-<option value="{{ \App\Enums\StatePermission::TeachersCanShowAndEdit }}"
-    {{ $activeState->permissions[$box] == \App\Enums\StatePermission::TeachersCanShowAndEdit ? 'selected' : '' }}>
+<option value="{{ \App\Enums\StatePermission::ManagersCanShowAndEdit }}"
+    {{ $activeState->permissions[$box] == \App\Enums\StatePermission::ManagersCanShowAndEdit ? 'selected' : '' }}>
     {{ trans('states.permission6') }}
 </option>

@@ -140,10 +140,10 @@
                     </div>
                     <div class="card-body">
                         @if ($user->enrollments()->count() > 0)
-                            @if ($user->enrollmentsAsTeacher()->isNotEmpty())
-                                {{ trans('enrollments.as_teacher') }}
+                            @if ($user->enrollmentsAsManager()->isNotEmpty())
+                                {{ trans('enrollments.as_manager') }}
                                 <ul>
-                                    @foreach ($user->enrollmentsAsTeacher() as $enrollment)
+                                    @foreach ($user->enrollmentsAsManager() as $enrollment)
                                         <li>
                                             <a href="{{ route('courses.show', $enrollment->course->id) }}">
                                                 {{ $enrollment->course->name }}

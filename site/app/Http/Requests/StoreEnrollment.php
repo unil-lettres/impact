@@ -30,7 +30,7 @@ class StoreEnrollment extends AbstractRequest
                 'required',
                 'string',
                 Rule::in(
-                    [EnrollmentRole::Member, EnrollmentRole::Teacher]
+                    [EnrollmentRole::Member, EnrollmentRole::Manager]
                 ),
                 new EnrollmentUniqueness,
             ],

@@ -82,7 +82,7 @@ class InvitationController extends Controller
             $courses = Course::local()
                 ->get();
         } else {
-            $courses = Auth::user()->enrollmentsAsTeacher()
+            $courses = Auth::user()->enrollmentsAsManager()
                 ->filter(function ($enrollment) {
                     return $enrollment->course->type === CourseType::Local;
                 })

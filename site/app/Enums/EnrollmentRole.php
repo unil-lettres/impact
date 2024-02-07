@@ -6,5 +6,5 @@ final class EnrollmentRole
 {
     const Member = 'member';
 
-    const Teacher = 'manager';
+    const Manager = 'manager';
 }

@@ -3,7 +3,7 @@
 namespace Tests\Feature;
 
 use App\Course;
-use App\Mail\TeachersMailing;
+use App\Mail\ManagersMailing;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -28,7 +28,7 @@ class AdminTest extends TestCase
         $subject = $this->faker->sentence(3);
         $content = '{{espaces}}';
 
-        $mailable = new TeachersMailing(
+        $mailable = new ManagersMailing(
             $user,
             $subject,
             $content,

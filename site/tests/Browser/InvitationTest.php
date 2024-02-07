@@ -84,7 +84,7 @@ class InvitationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testTeacherViewOwnInvitations(): void
+    public function testManagerViewOwnInvitations(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())

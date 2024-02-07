@@ -90,7 +90,7 @@
                                                         <a href="{{ route('admin.courses.send.confirm.delete', $course->id) }}"
                                                            data-bs-toggle="tooltip"
                                                            data-placement="top"
-                                                           class="btn btn-primary{{ $course->teachers(true)->count() > 0 ? '' : ' disabled' }}"
+                                                           class="btn btn-primary{{ $course->managers(true)->count() > 0 ? '' : ' disabled' }}"
                                                            title="{{ trans('courses.send_confirm_delete') }}">
                                                             <i class="far fa-paper-plane"></i>
                                                         </a>

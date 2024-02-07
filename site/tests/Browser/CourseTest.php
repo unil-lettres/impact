@@ -70,11 +70,11 @@ class CourseTest extends DuskTestCase
     }
 
     /**
-     * Test view course as a teacher.
+     * Test view course as a manager.
      *
      * @throws Throwable
      */
-    public function testViewCourseAsTeacher(): void
+    public function testViewCourseAsManager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())

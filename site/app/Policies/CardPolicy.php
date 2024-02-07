@@ -47,8 +47,8 @@ class CardPolicy
             return true;
         }
 
-        // Teachers of the course can view the card if the state is not set to the 'private' type
-        if ($user->isTeacher($card->course) && $card->state?->type !== StateType::Private) {
+        // Managers of the course can view the card if the state is not set to the 'private' type
+        if ($user->isManager($card->course) && $card->state?->type !== StateType::Private) {
             return true;
         }
 
@@ -71,8 +71,8 @@ class CardPolicy
      */
     public function index(User $user, Card $card): bool
     {
-        // Teachers of the course or editors can always list the card.
-        if ($user->isTeacher($card->course) || $user->isEditor($card)) {
+        // Managers of the course or editors can always list the card.
+        if ($user->isManager($card->course) || $user->isEditor($card)) {
             return true;
         }
 
@@ -90,8 +90,8 @@ class CardPolicy
             return true;
         }
 
-        // Only teachers of the course can create new cards
-        if ($user->isTeacher($course)) {
+        // Only managers of the course can create new cards
+        if ($user->isManager($course)) {
             return true;
         }
 
@@ -114,8 +114,8 @@ class CardPolicy
             return false;
         }
 
-        // Teachers of the course can update the card if the state is not set to the 'private' type
-        if ($user->isTeacher($card->course) && $card->state?->type !== StateType::Private) {
+        // Managers of the course can update the card if the state is not set to the 'private' type
+        if ($user->isManager($card->course) && $card->state?->type !== StateType::Private) {
             return true;
         }
 
@@ -138,8 +138,8 @@ class CardPolicy
             return true;
         }
 
-        // Only teachers of the course can manage cards
-        if ($user->isTeacher($card->course)) {
+        // Only managers of the course can manage cards
+        if ($user->isManager($card->course)) {
             return true;
         }
 
@@ -157,8 +157,8 @@ class CardPolicy
             return true;
         }
 
-        // Only teachers of the course can delete cards
-        if ($user->isTeacher($card->course)) {
+        // Only managers of the course can delete cards
+        if ($user->isManager($card->course)) {
             return true;
         }
 
@@ -176,8 +176,8 @@ class CardPolicy
             return true;
         }
 
-        // Only teachers of the course can unlink files
-        if ($user->isTeacher($card->course)) {
+        // Only managers of the course can unlink files
+        if ($user->isManager($card->course)) {
             return true;
         }
 
@@ -213,8 +213,8 @@ class CardPolicy
             return true;
         }
 
-        // Only teachers of the course can hide parts of the card
-        if ($user->isTeacher($card->course)) {
+        // Only managers of the course can hide parts of the card
+        if ($user->isManager($card->course)) {
             return true;
         }
 
@@ -232,8 +232,8 @@ class CardPolicy
             return true;
         }
 
-        // Only teachers of the course can set the parameters of the card
-        if ($user->isTeacher($card->course)) {
+        // Only managers of the course can set the parameters of the card
+        if ($user->isManager($card->course)) {
             return true;
         }
 

@@ -40,7 +40,7 @@ class CourseObserver
             'actions' => $actions,
         ]);
         $openState->updatePermissions(
-            StatePermission::TeachersAndEditorsCanShowAndEdit
+            StatePermission::ManagersAndEditorsCanShowAndEdit
         );
 
         // Create the "public" state with an email action
@@ -58,7 +58,7 @@ class CourseObserver
             'actions' => $actions,
         ]);
         $publicState->updatePermissions(
-            StatePermission::AllCanShowTeachersAndEditorsCanEdit
+            StatePermission::AllCanShowManagersAndEditorsCanEdit
         );
 
         // Create the "archived" state
@@ -70,7 +70,7 @@ class CourseObserver
             'course_id' => $course->id,
         ]);
         $archivedState->updatePermissions(
-            StatePermission::AllCanShowTeachersCanEdit
+            StatePermission::AllCanShowManagersCanEdit
         );
     }
 

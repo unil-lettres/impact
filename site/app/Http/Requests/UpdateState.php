@@ -10,10 +10,10 @@ class UpdateState extends AbstractRequest
 {
     const BOX_ALLOWED_PERMISSIONS = [
         StatePermission::EditorsCanShowAndEdit,
-        StatePermission::TeachersAndEditorsCanShowAndEdit,
-        StatePermission::AllCanShowTeachersAndEditorsCanEdit,
-        StatePermission::AllCanShowTeachersCanEdit,
-        StatePermission::TeachersCanShowAndEdit,
+        StatePermission::ManagersAndEditorsCanShowAndEdit,
+        StatePermission::AllCanShowManagersAndEditorsCanEdit,
+        StatePermission::AllCanShowManagersCanEdit,
+        StatePermission::ManagersCanShowAndEdit,
     ];
 
     /**

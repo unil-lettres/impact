@@ -67,10 +67,10 @@
                         <div class="card-body">
                             <div class="form-text">{{ trans('users.edit.enrollments_are_auto_save') }}</div>
                             <hr>
-                            {{ trans('enrollments.as_teacher') }}
-                            <div id="rct-multi-user-teacher-select"
+                            {{ trans('enrollments.as_manager') }}
+                            <div id="rct-multi-user-manager-select"
                                  class="mb-3"
-                                 data='{{ json_encode(['record' => $course, 'role' => $teacherRole, 'options' => $users, 'defaults' => $usersAsTeacher, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
+                                 data='{{ json_encode(['record' => $course, 'role' => $managerRole, 'options' => $users, 'defaults' => $usersAsManager, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
                             ></div>
                             {{ trans('enrollments.as_member') }}
                             <div id="rct-multi-user-member-select"

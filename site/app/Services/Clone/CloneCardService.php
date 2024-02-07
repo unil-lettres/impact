@@ -175,7 +175,7 @@ class CloneCardService
             $currentUser = auth()->user();
             $enrollments = Enrollment::where('course_id', $destCourse->id)
                 ->where('user_id', $currentUser->id)
-                ->where('role', EnrollmentRole::Teacher);
+                ->where('role', EnrollmentRole::Manager);
 
             // Current user becomes an editor of the new card. If the enrollment
             // exists and if the user is not an admin.

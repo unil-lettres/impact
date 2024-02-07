@@ -23,8 +23,8 @@ class InvitationsTableSeeder extends Seeder
     {
         $now = Carbon::now();
 
-        // Create user with teacher enrollment to test invitations
-        $userTeacher = User::create([
+        // Create user with manager enrollment to test invitations
+        $userManager = User::create([
             'name' => 'Invitation user manager',
             'email' => 'invitation-user-manager@example.com',
             'password' => Hash::make('password'),
@@ -53,11 +53,11 @@ class InvitationsTableSeeder extends Seeder
             'deleted_at' => null,
         ])->id;
 
-        // Create teacher enrollment to test invitations
+        // Create manager enrollment to test invitations
         Enrollment::create([
-            'role' => EnrollmentRole::Teacher,
+            'role' => EnrollmentRole::Manager,
             'course_id' => $course,
-            'user_id' => $userTeacher,
+            'user_id' => $userManager,
         ]);
 
         // Create member enrollment to test invitations
@@ -71,7 +71,7 @@ class InvitationsTableSeeder extends Seeder
             'email' => 'test-invitation@example.com',
             'invitation_token' => 'b9c757bc9e735ccb9597813cd905631b',
             'registered_at' => null,
-            'creator_id' => $userTeacher,
+            'creator_id' => $userManager,
             'course_id' => $course,
             'created_at' => $now,
             'updated_at' => $now,
@@ -80,7 +80,7 @@ class InvitationsTableSeeder extends Seeder
         Invitation::create([
             'email' => 'test-invitation-registered@example.com',
             'invitation_token' => '544da5bd0f5fd72b880146fed9545cbe',
-            'creator_id' => $userTeacher,
+            'creator_id' => $userManager,
             'course_id' => $course,
             'registered_at' => $now,
             'created_at' => $now,
@@ -90,7 +90,7 @@ class InvitationsTableSeeder extends Seeder
         Invitation::create([
             'email' => 'test-invitation-user@example.com',
             'invitation_token' => '5c10872ae15b1f30d7db409bbf6983f4',
-            'creator_id' => $userTeacher,
+            'creator_id' => $userManager,
             'course_id' => $course,
             'registered_at' => null,
             'created_at' => $now,

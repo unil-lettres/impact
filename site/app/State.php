@@ -50,7 +50,7 @@ class State extends Model implements Sortable
     ];
 
     /**
-     * Scope a query to remove the states that are only available for teachers.
+     * Scope a query to remove the states that are only available for managers.
      */
     public function scopeLimited(Builder $query, Card $card): void
     {
@@ -213,7 +213,7 @@ class State extends Model implements Sortable
      */
     public static function isPermissionPublic(int $permission): bool
     {
-        return $permission === StatePermission::AllCanShowTeachersAndEditorsCanEdit ||
-            $permission === StatePermission::AllCanShowTeachersCanEdit;
+        return $permission === StatePermission::AllCanShowManagersAndEditorsCanEdit ||
+            $permission === StatePermission::AllCanShowManagersCanEdit;
     }
 }

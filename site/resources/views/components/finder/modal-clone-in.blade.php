@@ -1,6 +1,6 @@
 @props(['id', 'course'])
 
-@php($clonableCourses = Helpers::fetchCoursesAsTeacher(collect([$course])))
+@php($clonableCourses = Helpers::fetchCoursesAsManager(collect([$course])))
 
 <div
     class="modal fade"

@@ -29,7 +29,7 @@ class StatesTableSeeder extends Seeder
             'deleted_at' => null,
         ])->id;
 
-        $teacherUser = User::create([
+        $managerUser = User::create([
             'name' => 'States manager user',
             'email' => 'states-manager-user@example.com',
             'password' => Hash::make('password'),
@@ -48,9 +48,9 @@ class StatesTableSeeder extends Seeder
         ])->id;
 
         Enrollment::create([
-            'role' => EnrollmentRole::Teacher,
+            'role' => EnrollmentRole::Manager,
             'course_id' => $course,
-            'user_id' => $teacherUser,
+            'user_id' => $managerUser,
         ]);
 
         Enrollment::create([

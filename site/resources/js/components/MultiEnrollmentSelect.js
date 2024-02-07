@@ -50,7 +50,7 @@ class MultiEnrollmentSelect extends MultiSelect {
     }
 }
 
-const elementIdCourseThr = 'rct-multi-course-teacher-select';
+const elementIdCourseThr = 'rct-multi-course-manager-select';
 if (document.getElementById(elementIdCourseThr)) {
     const root = createRoot(document.getElementById(elementIdCourseThr));
 
@@ -66,7 +66,7 @@ if (document.getElementById(elementIdCourseSdt)) {
     root.render(<MultiEnrollmentSelect data={ data } context='course' />);
 }
 
-const elementIdUserThr = 'rct-multi-user-teacher-select';
+const elementIdUserThr = 'rct-multi-user-manager-select';
 if (document.getElementById(elementIdUserThr)) {
     const root = createRoot(document.getElementById(elementIdUserThr));
 

@@ -27,11 +27,11 @@ class StateTest extends DuskTestCase
     }
 
     /**
-     * Test can view states management as teacher.
+     * Test can view states management as manager.
      *
      * @throws Throwable
      */
-    public function testTeachersCanViewStatesManagement(): void
+    public function testManagersCanViewStatesManagement(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())

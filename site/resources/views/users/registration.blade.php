@@ -15,11 +15,11 @@
                 <div class="col-md-12 col-lg-6">
                     <div class="card">
                         <div class="card-header">
-                            <span class="title">{{ trans('enrollments.as_teacher') }}</span>
+                            <span class="title">{{ trans('enrollments.as_manager') }}</span>
                         </div>
                         <div class="card-body">
-                            <div id="rct-multi-user-teacher-select"
-                                 data='{{ json_encode(['record' => $course, 'role' => $teacherRole, 'options' => $users, 'defaults' => $usersAsTeacher, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
+                            <div id="rct-multi-user-manager-select"
+                                 data='{{ json_encode(['record' => $course, 'role' => $managerRole, 'options' => $users, 'defaults' => $usersAsManager, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
                             ></div>
                             <div class="form-text">{{ trans('users.edit.enrollments_are_auto_save') }}</div>
                         </div>

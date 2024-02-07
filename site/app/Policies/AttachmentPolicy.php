@@ -26,8 +26,8 @@ class AttachmentPolicy
             return true;
         }
 
-        // Teachers and members of the course can view the attachments
-        if ($user->isTeacher($course) || $user->isMember($course)) {
+        // Managers and members of the course can view the attachments
+        if ($user->isManager($course) || $user->isMember($course)) {
             return true;
         }
 
@@ -45,8 +45,8 @@ class AttachmentPolicy
             return true;
         }
 
-        // Teachers and members of the course can view the attachment
-        if ($user->isTeacher($attachment->course) || $user->isMember($attachment->course)) {
+        // Managers and members of the course can view the attachment
+        if ($user->isManager($attachment->course) || $user->isMember($attachment->course)) {
             return true;
         }
 
@@ -69,10 +69,10 @@ class AttachmentPolicy
             return true;
         }
 
-        // Teachers of the course or editors of the card can deleted
+        // Managers of the course or editors of the card can deleted
         // the attachment if the attachments box is editable
         if (
-            ($user->isTeacher($attachment->course) || $user->isEditor($attachment->card))
+            ($user->isManager($attachment->course) || $user->isEditor($attachment->card))
             && $attachment->card->boxIsEditable(CardBox::Box5)
         ) {
             return true;
@@ -92,10 +92,10 @@ class AttachmentPolicy
             return true;
         }
 
-        // Teachers of the course or editors of the card can deleted
+        // Managers of the course or editors of the card can deleted
         // the attachment if the attachments box is editable
         if (
-            ($user->isTeacher($course) || $user->isEditor($card))
+            ($user->isManager($course) || $user->isEditor($card))
             && $card->boxIsEditable(CardBox::Box5)
         ) {
             return true;

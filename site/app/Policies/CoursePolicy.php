@@ -44,7 +44,7 @@ class CoursePolicy
     public function view(User $user, Course $course)
     {
         // Return true if user is enrolled in the specific course. The role is not relevant.
-        if ($user->admin || $user->isTeacher($course) || $user->isMember($course)) {
+        if ($user->admin || $user->isManager($course) || $user->isMember($course)) {
             return true;
         }
 
@@ -93,8 +93,8 @@ class CoursePolicy
      */
     public function editConfiguration(User $user, Course $course)
     {
-        // Only admins & teachers can configure courses
-        if ($user->admin || $user->isTeacher($course)) {
+        // Only admins & managers can configure courses
+        if ($user->admin || $user->isManager($course)) {
             return true;
         }
 
@@ -108,8 +108,8 @@ class CoursePolicy
      */
     public function updateConfiguration(User $user, Course $course)
     {
-        // Only admins & teachers can update the configuration of the course
-        if ($user->admin || $user->isTeacher($course)) {
+        // Only admins & managers can update the configuration of the course
+        if ($user->admin || $user->isManager($course)) {
             return true;
         }
 
@@ -138,8 +138,8 @@ class CoursePolicy
      */
     public function archive(User $user, Course $course)
     {
-        // Only admins & teachers can archive courses
-        if ($user->admin || $user->isTeacher($course)) {
+        // Only admins & managers can archive courses
+        if ($user->admin || $user->isManager($course)) {
             return true;
         }
 
@@ -153,8 +153,8 @@ class CoursePolicy
      */
     public function disable(User $user, Course $course)
     {
-        // Only admins & teachers can disable courses
-        if ($user->admin || $user->isTeacher($course)) {
+        // Only admins & managers can disable courses
+        if ($user->admin || $user->isManager($course)) {
             return true;
         }
 
@@ -200,8 +200,8 @@ class CoursePolicy
      */
     public function massActionsForCardAndFolder(User $user, Course $course)
     {
-        // Only teachers and admin of the course can delete cards or folders.
-        if ($user->admin || $user->isTeacher($course)) {
+        // Only managers and admin of the course can delete cards or folders.
+        if ($user->admin || $user->isManager($course)) {
             return true;
         }
 

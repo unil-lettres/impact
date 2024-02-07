@@ -170,10 +170,10 @@
                         <span class="title">{{ trans('enrollments.enrollments') }}</span>
                     </div>
                     <div class="card-body">
-                        {{ trans('enrollments.as_teacher') }}
-                        <div id="rct-multi-course-teacher-select"
+                        {{ trans('enrollments.as_manager') }}
+                        <div id="rct-multi-course-manager-select"
                              class="mb-3"
-                             data='{{ json_encode(['record' => $user, 'role' => $teacherRole, 'options' => $courses, 'defaults' => $coursesAsTeacher, 'isDisabled' => !$user->isValid()]) }}'
+                             data='{{ json_encode(['record' => $user, 'role' => $managerRole, 'options' => $courses, 'defaults' => $coursesAsManager, 'isDisabled' => !$user->isValid()]) }}'
                         ></div>
                         {{ trans('enrollments.as_member') }}
                         <div id="rct-multi-course-member-select"

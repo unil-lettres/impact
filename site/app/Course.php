@@ -123,11 +123,11 @@ class Course extends Model
     }
 
     /**
-     * Get all the teachers of this course.
+     * Get all the managers of this course.
      */
-    public function teachers(bool $withTrashed = false): Collection
+    public function managers(bool $withTrashed = false): Collection
     {
-        return $this->enrollmentsForRole(EnrollmentRole::Teacher, $withTrashed)
+        return $this->enrollmentsForRole(EnrollmentRole::Manager, $withTrashed)
             ->map(function ($enrollment) {
                 return $enrollment->user;
             });

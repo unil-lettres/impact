@@ -94,10 +94,10 @@ class User extends Authenticatable
     /**
      * Get the user enrollments with a teaching role.
      */
-    public function enrollmentsAsTeacher(): Collection
+    public function enrollmentsAsManager(): Collection
     {
         return $this->enrollments()
-            ->where('role', EnrollmentRole::Teacher)
+            ->where('role', EnrollmentRole::Manager)
             ->orderBy('created_at', 'desc')
             ->get();
     }
@@ -114,11 +114,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Retrieve all the users with a teacher role.
+     * Retrieve all the users with a manager role.
      */
-    public static function teachers(): Collection
+    public static function managers(): Collection
     {
-        return Enrollment::where('role', EnrollmentRole::Teacher)->get()
+        return Enrollment::where('role', EnrollmentRole::Manager)->get()
             ->map(function ($enrollment) {
                 return $enrollment->user;
             })
@@ -163,15 +163,15 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user is a teacher of the given course.
+     * Check if the user is a manager of the given course.
      */
-    public function isTeacher(Course $course): bool
+    public function isManager(Course $course): bool
     {
         if ($this->admin) {
             return true;
         }
 
-        return $this->enrollmentsAsTeacher()
+        return $this->enrollmentsAsManager()
             ->contains('course_id', $course->id);
     }
 

@@ -473,7 +473,7 @@ class Finder extends Component
      */
     public function cloneIn(array $keys, Course $dest): void
     {
-        if (! Auth::user()->isTeacher($dest)) {
+        if (! Auth::user()->isManager($dest)) {
             abort(403);
         }
 

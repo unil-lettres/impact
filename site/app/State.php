@@ -35,7 +35,7 @@ class State extends Model implements Sortable
         }';
 
     protected $fillable = [
-        'name', 'description', 'position', 'permissions', 'course_id', 'type', 'teachers_only', 'actions',
+        'name', 'description', 'position', 'permissions', 'course_id', 'type', 'managers_only', 'actions',
     ];
 
     protected $casts = [
@@ -54,7 +54,7 @@ class State extends Model implements Sortable
      */
     public function scopeLimited(Builder $query, Card $card): void
     {
-        $query->where('teachers_only', false)
+        $query->where('managers_only', false)
             ->where('type', '!=', StateType::Archived);
 
         if ($card->state) {

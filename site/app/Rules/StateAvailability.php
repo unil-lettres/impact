@@ -40,7 +40,7 @@ class StateAvailability implements DataAwareRule, ValidationRule
         }
 
         if (! Auth::user()->isTeacher($card->course)) {
-            if ($state->type === StateType::Archived || $state->teachers_only) {
+            if ($state->type === StateType::Archived || $state->managers_only) {
                 $fail('The selected state is not available to the current user.');
             }
         }

@@ -49,8 +49,8 @@ class StatePolicy
             return true;
         }
 
-        // Editors of the course can view a non teacher_only state
-        if ($user->isEditor($state->course) && ! $state->teachers_only) {
+        // Editors of the course can view a non managers_only state
+        if ($user->isEditor($state->course) && ! $state->managers_only) {
             return true;
         }
 

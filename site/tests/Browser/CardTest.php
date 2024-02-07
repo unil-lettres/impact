@@ -37,7 +37,7 @@ class CardTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('student-user@example.com', 'password');
+                ->loginAsUser('member-user@example.com', 'password');
 
             $browser->visit(new Course('Second space'));
 
@@ -55,7 +55,7 @@ class CardTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('student-user@example.com', 'password');
+                ->loginAsUser('member-user@example.com', 'password');
 
             $browser->visit(new Course('Second space'));
 
@@ -77,7 +77,7 @@ class CardTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('teacher-user@example.com', 'password');
+                ->loginAsUser('manager-user@example.com', 'password');
 
             $browser->visit(new Course('First space'));
 
@@ -100,7 +100,7 @@ class CardTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
             $browser
                 ->visit(new Login())
-                ->loginAsUser('teacher-user@example.com', 'password');
+                ->loginAsUser('manager-user@example.com', 'password');
 
             $browser
                 ->visit(new Course('First space'))
@@ -108,7 +108,7 @@ class CardTest extends DuskTestCase
                 ->waitForText('Créer une fiche');
 
             $cardName = 'My new card';
-            $editorName = 'Teacher user';
+            $editorName = 'Manager user';
 
             $browser
                 ->pause(1000) // Avoid "element not interactable" issue with modal
@@ -145,7 +145,7 @@ class CardTest extends DuskTestCase
 
             $folderPage = new Folder('Test folder');
             $cardName = 'My new card in folder';
-            $editorName = 'Student user';
+            $editorName = 'Member user';
 
             $browser
                 ->pause(1000) // Avoid "element not interactable" issue with modal
@@ -192,8 +192,8 @@ class CardTest extends DuskTestCase
                 ->click('#modalCreateCard [type="submit"]');
 
             $browser
-                ->waitForText('Le champ rédacteurs est obligatoire.')
-                ->assertSee('Le champ rédacteurs est obligatoire.')
+                ->waitForText('Le champ titulaires est obligatoire.')
+                ->assertSee('Le champ titulaires est obligatoire.')
                 ->assertDontSee($cardName);
         });
     }

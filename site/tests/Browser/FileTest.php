@@ -56,7 +56,7 @@ class FileTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('teacher-user@example.com', 'password');
+                ->loginAsUser('manager-user@example.com', 'password');
 
             $browser->on(new Course('Second space'))
                 ->filesIndex();
@@ -78,7 +78,7 @@ class FileTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('teacher-user@example.com', 'password');
+                ->loginAsUser('manager-user@example.com', 'password');
 
             $browser->on(new Course('Second space'))
                 ->filesIndex();

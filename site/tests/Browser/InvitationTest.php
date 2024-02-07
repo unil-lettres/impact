@@ -88,7 +88,7 @@ class InvitationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('invitation-user-teacher@example.com', 'password');
+                ->loginAsUser('invitation-user-manager@example.com', 'password');
 
             $browser->visit(new Invitations())
                 ->invitations();
@@ -108,7 +108,7 @@ class InvitationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('invitation-user-student@example.com', 'password');
+                ->loginAsUser('invitation-user-member@example.com', 'password');
 
             $browser->click('.navbar ul li.auth')
                 ->assertDontSee('Gérer les invitations');
@@ -127,7 +127,7 @@ class InvitationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('invitation-user-teacher@example.com', 'password');
+                ->loginAsUser('invitation-user-manager@example.com', 'password');
 
             $browser->visit(new Invitations())
                 ->invitations();
@@ -157,7 +157,7 @@ class InvitationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('invitation-user-teacher@example.com', 'password');
+                ->loginAsUser('invitation-user-manager@example.com', 'password');
 
             $browser->visit(new Invitations())
                 ->invitations();
@@ -177,7 +177,7 @@ class InvitationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('invitation-user-teacher@example.com', 'password');
+                ->loginAsUser('invitation-user-manager@example.com', 'password');
 
             $browser->visit(new Invitations())
                 ->invitations();
@@ -199,7 +199,7 @@ class InvitationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('invitation-user-teacher@example.com', 'password');
+                ->loginAsUser('invitation-user-manager@example.com', 'password');
 
             $browser->visit(new Invitations())
                 ->invitations();

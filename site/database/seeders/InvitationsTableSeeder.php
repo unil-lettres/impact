@@ -25,8 +25,8 @@ class InvitationsTableSeeder extends Seeder
 
         // Create user with teacher enrollment to test invitations
         $userTeacher = User::create([
-            'name' => 'Invitation user teacher',
-            'email' => 'invitation-user-teacher@example.com',
+            'name' => 'Invitation user manager',
+            'email' => 'invitation-user-manager@example.com',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
@@ -36,8 +36,8 @@ class InvitationsTableSeeder extends Seeder
 
         // Create user with student enrollment to test invitations
         $userStudent = User::create([
-            'name' => 'Invitation user student',
-            'email' => 'invitation-user-student@example.com',
+            'name' => 'Invitation user member',
+            'email' => 'invitation-user-member@example.com',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,

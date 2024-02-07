@@ -26,7 +26,7 @@ class CardsTableSeeder extends Seeder
         $firstCourse = Course::where('name', 'First space')->first();
         $secondCourse = Course::where('name', 'Second space')->first();
         $testFolder = Folder::where('title', 'Test folder')->first();
-        $studentUser = User::where('email', 'student-user@example.com')->first();
+        $studentUser = User::where('email', 'member-user@example.com')->first();
         $enrollment = Enrollment::where('course_id', $secondCourse->id)
             ->where('user_id', $studentUser->id)
             ->where('role', EnrollmentRole::Student)

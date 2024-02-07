@@ -30,8 +30,8 @@ class StatesTableSeeder extends Seeder
         ])->id;
 
         $teacherUser = User::create([
-            'name' => 'States teacher user',
-            'email' => 'states-teacher-user@example.com',
+            'name' => 'States manager user',
+            'email' => 'states-manager-user@example.com',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
@@ -39,8 +39,8 @@ class StatesTableSeeder extends Seeder
         ])->id;
 
         $studentUser = User::create([
-            'name' => 'States student user',
-            'email' => 'states-student-user@example.com',
+            'name' => 'States member user',
+            'email' => 'states-member-user@example.com',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,

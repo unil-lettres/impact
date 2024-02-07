@@ -54,8 +54,8 @@ class CoursesTableSeeder extends Seeder
         ])->id;
 
         $teacherUser = User::create([
-            'name' => 'Teacher user',
-            'email' => 'teacher-user@example.com',
+            'name' => 'Manager user',
+            'email' => 'manager-user@example.com',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
@@ -63,8 +63,8 @@ class CoursesTableSeeder extends Seeder
         ])->id;
 
         $studentUser = User::create([
-            'name' => 'Student user',
-            'email' => 'student-user@example.com',
+            'name' => 'Member user',
+            'email' => 'member-user@example.com',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,

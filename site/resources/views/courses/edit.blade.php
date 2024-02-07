@@ -32,6 +32,7 @@
                                         <input type="text"
                                                id="name"
                                                name="name"
+                                               @if(Helpers::isCourseExternal($course)) disabled @endif
                                                value="{{ old('name', $course->name) }}"
                                                class="form-control"
                                                autofocus
@@ -44,13 +45,16 @@
                                     <textarea class="form-control"
                                               name="description"
                                               id="description"
+                                              @if(Helpers::isCourseExternal($course)) disabled @endif
                                               rows="3">{{ old('description', $course->description) }}</textarea>
                                 </div>
 
-                                <button type="submit"
-                                        class="btn btn-primary">
-                                    {{ trans('courses.update') }}
-                                </button>
+                                @if(Helpers::isCourseLocal($course))
+                                    <button type="submit"
+                                            class="btn btn-primary">
+                                        {{ trans('courses.update') }}
+                                    </button>
+                                @endif
                             </form>
                         </div>
                     </div>

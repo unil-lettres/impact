@@ -85,7 +85,7 @@ class CardJsonController extends Controller
     /**
      * Box2 data initialization based on the transcription type.
      *
-     * @param  string  $type (App\Enums\TranscriptionType)
+     * @param  string  $type  (App\Enums\TranscriptionType)
      */
     private function initBox2Data(Card $card, string $type, mixed $content): array
     {

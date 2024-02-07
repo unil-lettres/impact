@@ -36,4 +36,9 @@ return [
         ],
     ],
 
+    'moodle' => [
+        'url' => env('MOODLE_URL', null),
+        'token' => env('MOODLE_TOKEN', null),
+    ],
+
 ];

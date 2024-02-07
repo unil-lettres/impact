@@ -34,27 +34,29 @@
                           rows="3"></textarea>
             </div>
 
-            <div class="mb-3">
-                <a data-bs-toggle="collapse"
-                   href="#collapseExternalId"
-                   role="button"
-                   aria-expanded="false"
-                   aria-controls="collapseExternalId">
-                    {{ trans('courses.create_from_moodle') }}
-                </a>
-                <i class="far fa-question-circle"
-                   data-bs-toggle="tooltip"
-                   data-placement="top"
-                   title="{{ trans('courses.external.help') }}">
-                </i>
-            </div>
-            <div class="col-12 mb-3 collapse" id="collapseExternalId">
-                <input type="number"
-                       name="external_id"
-                       id="external_id"
-                       class="form-control col-md-3"
-                >
-            </div>
+            @if (\App\Services\MoodleService::isConfigured())
+                <div class="mb-3">
+                    <a data-bs-toggle="collapse"
+                       href="#collapseExternalId"
+                       role="button"
+                       aria-expanded="false"
+                       aria-controls="collapseExternalId">
+                        {{ trans('courses.create_from_moodle') }}
+                    </a>
+                    <i class="far fa-question-circle"
+                       data-bs-toggle="tooltip"
+                       data-placement="top"
+                       title="{{ trans('courses.external.help') }}">
+                    </i>
+                </div>
+                <div class="col-12 mb-3 collapse" id="collapseExternalId">
+                    <input type="number"
+                           name="external_id"
+                           id="external_id"
+                           class="form-control col-md-3"
+                    >
+                </div>
+            @endif
 
             <button type="submit"
                     class="btn btn-primary">

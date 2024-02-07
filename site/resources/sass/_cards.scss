@@ -15,7 +15,12 @@
             padding-left: 0.5rem !important;
         }
 
-        .editing {
+        .card-body:has([id^="rct-editor"]) {
+            margin-top: 0.2rem;
+            margin-bottom: 0.2rem;
+        }
+
+        [id^="rct-editor"].editing {
             border: 1px solid rgba(215, 215, 215, 0.35);
         }
     }

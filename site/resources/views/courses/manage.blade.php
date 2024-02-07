@@ -58,6 +58,9 @@
                                             @unless ($course->isActive())
                                                 <span class="badge bg-danger">{{ trans('courses.disabled') }}</span>
                                             @endunless
+                                            @if (Helpers::isCourseExternal($course))
+                                                <div class="text-secondary">{{ trans('courses.moodle_id', ['id' => $course->external_id]) }}</div>
+                                            @endif
                                         </td>
                                         <td>
                                             {{ Helpers::courseType($course->type) }}

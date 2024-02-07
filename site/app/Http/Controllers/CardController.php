@@ -215,10 +215,10 @@ class CardController extends Controller
             throw new InvalidArgumentException('Invalid parameters');
         }
 
-        [$header, $printedCards] = match(true) {
-            !is_null($course) => [$course->name, $course->cards],
-            !is_null($folder) => [$folder->course->name, $folder->getCardsRecursive()],
-            !is_null($cards) => [$cards->first()->course->name, $cards],
+        [$header, $printedCards] = match (true) {
+            ! is_null($course) => [$course->name, $course->cards],
+            ! is_null($folder) => [$folder->course->name, $folder->getCardsRecursive()],
+            ! is_null($cards) => [$cards->first()->course->name, $cards],
             default => throw new InvalidArgumentException('Invalid parameters'),
         };
 

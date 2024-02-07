@@ -82,7 +82,7 @@ class State extends Model implements Sortable
     /**
      * Update the permission of a specific box
      *
-     * @param  int  $permission (App\Enums\StatePermission)
+     * @param  int  $permission  (App\Enums\StatePermission)
      */
     public function updatePermission(string $box, int $permission): void
     {
@@ -115,7 +115,7 @@ class State extends Model implements Sortable
     /**
      * Update the permission of all boxes
      *
-     * @param  int  $permission (App\Enums\StatePermission)
+     * @param  int  $permission  (App\Enums\StatePermission)
      */
     public function updatePermissions(int $permission): void
     {
@@ -157,7 +157,7 @@ class State extends Model implements Sortable
     /**
      * Get all actions for this state, or only for a specific type
      *
-     * @param  string|null  $type (App\Enums\ActionType)
+     * @param  string|null  $type  (App\Enums\ActionType)
      */
     public function getActionsData(?string $type = null): array
     {
@@ -183,7 +183,7 @@ class State extends Model implements Sortable
     /**
      * Get the data of a specific action if available
      *
-     * @param  string|null  $type (App\Enums\ActionType)
+     * @param  string|null  $type  (App\Enums\ActionType)
      */
     public function getActionData(int $index, ?string $type = null): ?array
     {

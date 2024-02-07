@@ -136,7 +136,7 @@ class Helpers
     /**
      * Check whether the file has a specific status
      *
-     * @param  string  $status (App\Enums\FileStatus)
+     * @param  string  $status  (App\Enums\FileStatus)
      */
     public static function isFileStatus(?File $file, string $status): bool
     {
@@ -274,7 +274,7 @@ class Helpers
     /**
      * Return whether the state has an action of a certain type
      *
-     * @param  string  $type (App\Enums\ActionType)
+     * @param  string  $type  (App\Enums\ActionType)
      */
     public static function stateHasActionOfType(State $state, string $type): bool
     {
@@ -344,8 +344,8 @@ class Helpers
      *
      * Return all courses if user is admin.
      *
-     * @param  Collection|null  $excludeCourses Collection of courses that
-     * should not be present in the collection results.
+     * @param  Collection|null  $excludeCourses  Collection of courses that
+     *                                           should not be present in the collection results.
      */
     public static function fetchCoursesAsTeacher(
         ?Collection $excludeCourses = null,

@@ -3,26 +3,13 @@
 namespace App\Policies;
 
 use App\Course;
+use App\Helpers\Helpers;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CoursePolicy
 {
     use HandlesAuthorization;
-
-    /**
-     * Authorize all actions for admins
-     *
-     * @return bool
-     */
-    public function before($user, $ability)
-    {
-        if ($user->admin) {
-            return true;
-        }
-
-        return null;
-    }
 
     /**
      * Determine whether the user can view any courses.
@@ -42,6 +29,10 @@ class CoursePolicy
     public function manage(User $user)
     {
         // Only admins can manage courses
+        if ($user->admin) {
+            return true;
+        }
+
         return false;
     }
 
@@ -53,7 +44,7 @@ class CoursePolicy
     public function view(User $user, Course $course)
     {
         // Return true if user is enrolled in the specific course. The role is not relevant.
-        if ($user->isTeacher($course) || $user->isStudent($course)) {
+        if ($user->admin || $user->isTeacher($course) || $user->isStudent($course)) {
             return true;
         }
 
@@ -68,6 +59,10 @@ class CoursePolicy
     public function create(User $user)
     {
         // Only admins can create courses
+        if ($user->admin) {
+            return true;
+        }
+
         return false;
     }
 
@@ -78,7 +73,16 @@ class CoursePolicy
      */
     public function update(User $user, Course $course)
     {
+        // Only local courses can be updated
+        if (Helpers::isCourseExternal($course)) {
+            return false;
+        }
+
         // Only admins can update courses
+        if ($user->admin) {
+            return true;
+        }
+
         return false;
     }
 
@@ -90,7 +94,7 @@ class CoursePolicy
     public function editConfiguration(User $user, Course $course)
     {
         // Only admins & teachers can configure courses
-        if ($user->isTeacher($course)) {
+        if ($user->admin || $user->isTeacher($course)) {
             return true;
         }
 
@@ -105,7 +109,7 @@ class CoursePolicy
     public function updateConfiguration(User $user, Course $course)
     {
         // Only admins & teachers can update the configuration of the course
-        if ($user->isTeacher($course)) {
+        if ($user->admin || $user->isTeacher($course)) {
             return true;
         }
 
@@ -120,6 +124,10 @@ class CoursePolicy
     public function enable(User $user)
     {
         // Only admins can enable courses
+        if ($user->admin) {
+            return true;
+        }
+
         return false;
     }
 
@@ -131,7 +139,7 @@ class CoursePolicy
     public function archive(User $user, Course $course)
     {
         // Only admins & teachers can archive courses
-        if ($user->isTeacher($course)) {
+        if ($user->admin || $user->isTeacher($course)) {
             return true;
         }
 
@@ -146,7 +154,7 @@ class CoursePolicy
     public function disable(User $user, Course $course)
     {
         // Only admins & teachers can disable courses
-        if ($user->isTeacher($course)) {
+        if ($user->admin || $user->isTeacher($course)) {
             return true;
         }
 
@@ -161,6 +169,10 @@ class CoursePolicy
     public function restore(User $user, Course $course)
     {
         // Only admins can restore courses
+        if ($user->admin) {
+            return true;
+        }
+
         return false;
     }
 
@@ -172,6 +184,10 @@ class CoursePolicy
     public function forceDelete(User $user)
     {
         // Only admins can delete permanently courses
+        if ($user->admin) {
+            return true;
+        }
+
         return false;
     }
 
@@ -185,7 +201,7 @@ class CoursePolicy
     public function massActionsForCardAndFolder(User $user, Course $course)
     {
         // Only teachers and admin of the course can delete cards or folders.
-        if ($user->isTeacher($course)) {
+        if ($user->admin || $user->isTeacher($course)) {
             return true;
         }
 
@@ -200,6 +216,10 @@ class CoursePolicy
     public function mailConfirmDelete(User $user, Course $course)
     {
         // Only admins can send the mail to confirm the deletion of the course
+        if ($user->admin) {
+            return true;
+        }
+
         return false;
     }
 }

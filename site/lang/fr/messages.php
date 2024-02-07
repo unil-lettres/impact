@@ -62,7 +62,7 @@ return [
     'no.option' => 'Aucune option disponible',
     'enrollment.cannot.enroll.twice' => 'Impossible d\'inscrire deux fois le même utilisateur au même espace.',
     'enrollment.cannot.delete.self' => 'Il n\'est pas possible de supprimer sa propre inscription.',
-    'enrollment.editor.missing' => 'Une fiche privée doit avoir au moins un éditeur',
+    'enrollment.editor.missing' => 'Une fiche privée doit avoir au moins un titulaire.',
     'error.refresh' => 'Une erreur est survenue, veuillez recharger la page.',
     'update.no_effect' => 'Les données n\'ont pas été modifiées.',
 ];

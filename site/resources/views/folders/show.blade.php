@@ -76,7 +76,7 @@
                 </li>
                 <li
                     class="dropdown-item d-flex cursor-pointer align-items-center"
-                    onClick="folderUtils.dispatchCustomEvent('finder-rename-folder', {folderId: {{$folder->id}}})"
+                    onClick="folderUtils.dispatchCustomEvent('finder-rename-folder', {folderId: {{$folder->id}}, title: '{{$folder->title}}'})"
                 >
                     <i class="fa-solid fa-i-cursor me-2"></i>
                     <span class="flex-fill me-5">

@@ -5,7 +5,7 @@ return [
     'title' => 'Titre',
     'location' => 'Emplacement',
     'location.current' => '(dossier actuel)',
-    'create' => 'Créer un dossier...',
+    'create' => 'Créer un dossier',
     'rename' => 'Renommer le dossier...',
     'move' => 'Déplacer le dossier...',
     'copy' => 'Dupliquer le dossier',

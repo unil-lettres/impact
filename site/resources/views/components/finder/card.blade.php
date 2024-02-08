@@ -150,6 +150,15 @@
                                     {{ trans('courses.finder.dialog.update_state.title')}}
                                 </span>
                             </li>
+                            <li
+                                class="dropdown-item d-flex cursor-pointer align-items-center"
+                                @click="renameCard({{$card->id}})"
+                            >
+                                <i class="fa-solid fa-i-cursor me-2"></i>
+                                <span class="flex-fill me-5">
+                                    {{ trans('courses.finder.menu.rename')}}
+                                </span>
+                            </li>
                         @endcan
                         <li
                             wire:confirm="{{ trans('courses.finder.menu.delete.card.confirm') }}"

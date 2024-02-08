@@ -185,6 +185,17 @@
         },
 
         /**
+         * Open a prompt and aks the user to change the name of the
+         * given card.
+         */
+        renameCard(cardId) {
+            const newName = prompt("{{ trans('courses.finder.menu.rename_prompt') }}");
+            if (newName !== null) {
+                $wire.call("renameCard", cardId, newName);
+            }
+        },
+
+        /**
          * Return if there is cards in the current selection or not.
          */
         hasCardsInSelection() {

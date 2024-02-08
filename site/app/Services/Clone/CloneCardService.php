@@ -171,13 +171,13 @@ class CloneCardService
                 }
             }
 
-            // Add editor.
+            // Add holder.
             $currentUser = auth()->user();
             $enrollments = Enrollment::where('course_id', $destCourse->id)
                 ->where('user_id', $currentUser->id)
-                ->where('role', EnrollmentRole::Teacher);
+                ->where('role', EnrollmentRole::Manager);
 
-            // Current user becomes an editor of the new card. If the enrollment
+            // Current user becomes an holder of the new card. If the enrollment
             // exists and if the user is not an admin.
             if ($enrollments->exists() && ! $currentUser->admin) {
                 $enrollments->first()->addCard($copiedCard);
@@ -186,7 +186,7 @@ class CloneCardService
             // Attach tags.
             $copiedCard->tags()->attach($this->card->tags->pluck('id'));
 
-            // Attach editors.
+            // Attach holders.
             $this->card->enrollments()->each(
                 fn ($enrollment) => $enrollment->addCard($copiedCard),
             );

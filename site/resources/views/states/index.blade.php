@@ -126,20 +126,20 @@
                                         </div>
                                     </div>
                                     <div class="col-12 mb-3 row">
-                                        <label for="teachers_only" class="col-md-3 col-form-label">
-                                            {{ trans('states.teachers_only') }}
+                                        <label for="managers_only" class="col-md-3 col-form-label">
+                                            {{ trans('states.managers_only') }}
                                             <i class="far fa-question-circle"
                                                data-bs-toggle="tooltip"
                                                data-placement="top"
-                                               title="{{ trans('states.teachers_only_help') }}">
+                                               title="{{ trans('states.managers_only_help') }}">
                                             </i>
                                         </label>
                                         <div class="col-md-9">
                                             <div class="form-check">
-                                                <input id="teachers_only"
+                                                <input id="managers_only"
                                                        type="checkbox"
-                                                       name="teachers_only"
-                                                       {{ old('teachers_only', $activeState->teachers_only) ? 'checked' : '' }}
+                                                       name="managers_only"
+                                                       {{ old('managers_only', $activeState->managers_only) ? 'checked' : '' }}
                                                        class="form-check-input"
                                                 >
                                             </div>

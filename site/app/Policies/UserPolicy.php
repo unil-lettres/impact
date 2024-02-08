@@ -35,8 +35,8 @@ class UserPolicy
             return false;
         }
 
-        // Only the teachers of the course can view the listing of the registered users
-        if ($user->isTeacher($course)) {
+        // Only the managers of the course can view the listing of the registered users
+        if ($user->isManager($course)) {
             return true;
         }
 

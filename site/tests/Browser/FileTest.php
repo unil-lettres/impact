@@ -48,15 +48,15 @@ class FileTest extends DuskTestCase
     }
 
     /**
-     * Test list files as a teacher.
+     * Test list files as a manager.
      *
      * @throws Throwable
      */
-    public function testListFilesAsTeacher(): void
+    public function testListFilesAsManager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('teacher-user@example.com', 'password');
+                ->loginAsUser('manager-user@example.com', 'password');
 
             $browser->on(new Course('Second space'))
                 ->filesIndex();
@@ -70,15 +70,15 @@ class FileTest extends DuskTestCase
     }
 
     /**
-     * Test show linked card as a teacher.
+     * Test show linked card as a manager.
      *
      * @throws Throwable
      */
-    public function testShowLinkedCardAsTeacher(): void
+    public function testShowLinkedCardAsManager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('teacher-user@example.com', 'password');
+                ->loginAsUser('manager-user@example.com', 'password');
 
             $browser->on(new Course('Second space'))
                 ->filesIndex();

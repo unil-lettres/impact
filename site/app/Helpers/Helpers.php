@@ -324,7 +324,7 @@ class Helpers
             return false;
         }
 
-        if ($card->state->type === StateType::Archived && ! Auth::user()->isTeacher($card->course)) {
+        if ($card->state->type === StateType::Archived && ! Auth::user()->isManager($card->course)) {
             return false;
         }
 
@@ -340,14 +340,14 @@ class Helpers
     }
 
     /**
-     * Return a collection of courses from teacher's enrollments.
+     * Return a collection of courses from manager's enrollments.
      *
      * Return all courses if user is admin.
      *
      * @param  Collection|null  $excludeCourses  Collection of courses that
      *                                           should not be present in the collection results.
      */
-    public static function fetchCoursesAsTeacher(
+    public static function fetchCoursesAsManager(
         ?Collection $excludeCourses = null,
     ): Collection {
         $excludeCourses = $excludeCourses ?? collect([]);
@@ -355,7 +355,7 @@ class Helpers
         return (match (Auth::user()->admin) {
             true => Course::all(),
             default => Auth::user()
-                ->enrollmentsAsTeacher()
+                ->enrollmentsAsManager()
                 ->map(fn ($enrollment) => $enrollment->course),
         })->whereNotIn('id', $excludeCourses->pluck('id'))->sortBy('name');
     }

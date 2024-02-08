@@ -37,7 +37,7 @@ class FolderTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('student-user@example.com', 'password');
+                ->loginAsUser('member-user@example.com', 'password');
 
             $browser->visit(new Course('Second space'));
 
@@ -53,15 +53,15 @@ class FolderTest extends DuskTestCase
     }
 
     /**
-     * Test view folders as teacher.
+     * Test view folders as manager.
      *
      * @throws Throwable
      */
-    public function testViewFoldersAsTeacher(): void
+    public function testViewFoldersAsManager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('teacher-user@example.com', 'password');
+                ->loginAsUser('manager-user@example.com', 'password');
 
             $browser->visit(new PagesFolder('Test folder'));
 
@@ -73,15 +73,15 @@ class FolderTest extends DuskTestCase
     }
 
     /**
-     * Test create folders as a teacher.
+     * Test create folders as a manager.
      *
      * @throws Throwable
      */
-    public function testCreateFoldersAsTeacher(): void
+    public function testCreateFoldersAsManager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('teacher-user@example.com', 'password');
+                ->loginAsUser('manager-user@example.com', 'password');
 
             $browser->visit(new Course('First space'));
 

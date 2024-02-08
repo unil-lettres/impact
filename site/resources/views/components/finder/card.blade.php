@@ -69,9 +69,9 @@
     </div>
     <div
         class='column-medium text-truncate px-1 d-none d-lg-block fw-light'
-        title="{{ $card->editors_list }}"
+        title="{{ $card->holders_list }}"
     >
-        {{ $card->editors_list }}
+        {{ $card->holders_list }}
     </div>
     <div
         class='column-medium text-truncate px-1 d-none d-lg-block fw-light'

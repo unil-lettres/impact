@@ -94,31 +94,31 @@ class User extends Authenticatable
     /**
      * Get the user enrollments with a teaching role.
      */
-    public function enrollmentsAsTeacher(): Collection
+    public function enrollmentsAsManager(): Collection
     {
         return $this->enrollments()
-            ->where('role', EnrollmentRole::Teacher)
+            ->where('role', EnrollmentRole::Manager)
             ->orderBy('created_at', 'desc')
             ->get();
     }
 
     /**
-     * Get the user enrollments with a student role.
+     * Get the user enrollments with a member role.
      */
-    public function enrollmentsAsStudent(): Collection
+    public function enrollmentsAsMember(): Collection
     {
         return $this->enrollments()
-            ->where('role', EnrollmentRole::Student)
+            ->where('role', EnrollmentRole::Member)
             ->orderBy('created_at', 'desc')
             ->get();
     }
 
     /**
-     * Retrieve all the users with a teacher role.
+     * Retrieve all the users with a manager role.
      */
-    public static function teachers(): Collection
+    public static function managers(): Collection
     {
-        return Enrollment::where('role', EnrollmentRole::Teacher)->get()
+        return Enrollment::where('role', EnrollmentRole::Manager)->get()
             ->map(function ($enrollment) {
                 return $enrollment->user;
             })
@@ -126,11 +126,11 @@ class User extends Authenticatable
     }
 
     /**
-     * Retrieve all the users with a student role.
+     * Retrieve all the users with a member role.
      */
-    public static function students(): Collection
+    public static function members(): Collection
     {
-        return Enrollment::where('role', EnrollmentRole::Student)->get()
+        return Enrollment::where('role', EnrollmentRole::Member)->get()
             ->map(function ($enrollment) {
                 return $enrollment->user;
             })
@@ -150,9 +150,9 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user is an editor of the given card.
+     * Check if the user is an holder of the given card.
      */
-    public function isEditor(Card $card): bool
+    public function isHolder(Card $card): bool
     {
         if ($this->admin) {
             return true;
@@ -163,28 +163,28 @@ class User extends Authenticatable
     }
 
     /**
-     * Check if the user is a teacher of the given course.
+     * Check if the user is a manager of the given course.
      */
-    public function isTeacher(Course $course): bool
+    public function isManager(Course $course): bool
     {
         if ($this->admin) {
             return true;
         }
 
-        return $this->enrollmentsAsTeacher()
+        return $this->enrollmentsAsManager()
             ->contains('course_id', $course->id);
     }
 
     /**
-     * Check if the user is a student of the given course.
+     * Check if the user is a member of the given course.
      */
-    public function isStudent(Course $course): bool
+    public function isMember(Course $course): bool
     {
         if ($this->admin) {
             return true;
         }
 
-        return $this->enrollmentsAsStudent()
+        return $this->enrollmentsAsMember()
             ->contains('course_id', $course->id);
     }
 

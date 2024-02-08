@@ -53,18 +53,18 @@ class CoursesTableSeeder extends Seeder
             'deleted_at' => null,
         ])->id;
 
-        $teacherUser = User::create([
-            'name' => 'Teacher user',
-            'email' => 'teacher-user@example.com',
+        $managerUser = User::create([
+            'name' => 'Manager user',
+            'email' => 'manager-user@example.com',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
         ])->id;
 
-        $studentUser = User::create([
-            'name' => 'Student user',
-            'email' => 'student-user@example.com',
+        $memberUser = User::create([
+            'name' => 'Member user',
+            'email' => 'member-user@example.com',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
@@ -72,27 +72,27 @@ class CoursesTableSeeder extends Seeder
         ])->id;
 
         Enrollment::create([
-            'role' => EnrollmentRole::Teacher,
+            'role' => EnrollmentRole::Manager,
             'course_id' => $firstCourse,
-            'user_id' => $teacherUser,
+            'user_id' => $managerUser,
         ]);
 
         Enrollment::create([
-            'role' => EnrollmentRole::Teacher,
+            'role' => EnrollmentRole::Manager,
             'course_id' => $secondCourse,
-            'user_id' => $teacherUser,
+            'user_id' => $managerUser,
         ]);
 
         Enrollment::create([
-            'role' => EnrollmentRole::Student,
+            'role' => EnrollmentRole::Member,
             'course_id' => $secondCourse,
-            'user_id' => $studentUser,
+            'user_id' => $memberUser,
         ]);
 
         Enrollment::create([
-            'role' => EnrollmentRole::Student,
+            'role' => EnrollmentRole::Member,
             'course_id' => $deactivatedCourse,
-            'user_id' => $studentUser,
+            'user_id' => $memberUser,
         ]);
     }
 }

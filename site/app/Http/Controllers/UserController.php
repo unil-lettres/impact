@@ -39,10 +39,10 @@ class UserController extends Controller
             'breadcrumbs' => $course
                 ->breadcrumbs(true),
             'users' => User::all(),
-            'teacherRole' => EnrollmentRole::Teacher,
-            'usersAsTeacher' => $course->teachers(),
-            'studentRole' => EnrollmentRole::Student,
-            'usersAsStudent' => $course->students(),
+            'managerRole' => EnrollmentRole::Manager,
+            'usersAsManager' => $course->managers(),
+            'memberRole' => EnrollmentRole::Member,
+            'usersAsMember' => $course->members(),
         ]);
     }
 
@@ -135,12 +135,12 @@ class UserController extends Controller
 
         $this->authorize('update', $user);
 
-        $coursesAsTeacher = $user->enrollmentsAsTeacher()
+        $coursesAsManager = $user->enrollmentsAsManager()
             ->map(function ($enrollment) {
                 return $enrollment->course;
             });
 
-        $coursesAsStudent = $user->enrollmentsAsStudent()
+        $coursesAsMember = $user->enrollmentsAsMember()
             ->map(function ($enrollment) {
                 return $enrollment->course;
             });
@@ -149,10 +149,10 @@ class UserController extends Controller
             'user' => $user,
             'courses' => Course::local()
                 ->get(),
-            'teacherRole' => EnrollmentRole::Teacher,
-            'coursesAsTeacher' => $coursesAsTeacher,
-            'studentRole' => EnrollmentRole::Student,
-            'coursesAsStudent' => $coursesAsStudent,
+            'managerRole' => EnrollmentRole::Manager,
+            'coursesAsManager' => $coursesAsManager,
+            'memberRole' => EnrollmentRole::Member,
+            'coursesAsMember' => $coursesAsMember,
         ]);
     }
 

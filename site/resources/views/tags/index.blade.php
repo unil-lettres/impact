@@ -22,7 +22,7 @@
 @endcan
 
 @section('content')
-@php($clonableCourses = Helpers::fetchCoursesAsTeacher(collect([$course])))
+@php($clonableCourses = Helpers::fetchCoursesAsManager(collect([$course])))
 <div id="tags">
     @if ($errors->any())
         <div class="row">

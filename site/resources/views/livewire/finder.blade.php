@@ -49,8 +49,8 @@
                     wire:ignore
                     class="rct-multi-filter-select"
                     noOptionsMessage="{{ trans('messages.no.option') }}"
-                    data='{{ json_encode(['record' => 'editor', 'options' => $this->editors, 'defaults' => $this->filters->get("editor")->map(fn ($id) => 'App\\User'::find($id))->toArray()]) }}'
-                    placeholder='{{ trans("courses.finder.filter.editors") }}'
+                    data='{{ json_encode(['record' => 'holder', 'options' => $this->holders, 'defaults' => $this->filters->get("holder")->map(fn ($id) => 'App\\User'::find($id))->toArray()]) }}'
+                    placeholder='{{ trans("courses.finder.filter.holders") }}'
                 ></div>
             </div>
             <div class="filter-select">
@@ -231,8 +231,8 @@
             </div>
         </div>
         <div class='column-medium px-1 d-none d-lg-block'>
-            <div {!! Helpers::finderSortHTMLAttributes('editors_list', $this->sortColumn, $this->sortDirection) !!}>
-                <div>{{ trans('courses.finder.editors') }}</div>
+            <div {!! Helpers::finderSortHTMLAttributes('holders_list', $this->sortColumn, $this->sortDirection) !!}>
+                <div>{{ trans('courses.finder.holders') }}</div>
                 <div>
                     <i class="fa-solid fa-arrow-down"></i>
                     <i class="fa-solid fa-xmark d-none"></i>

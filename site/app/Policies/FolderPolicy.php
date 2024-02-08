@@ -36,8 +36,8 @@ class FolderPolicy
             return true;
         }
 
-        // Only teachers or students of the course can view the folder
-        if ($user->isTeacher($folder->course) || $user->isStudent($folder->course)) {
+        // Only managers or members of the course can view the folder
+        if ($user->isManager($folder->course) || $user->isMember($folder->course)) {
             return true;
         }
 
@@ -55,8 +55,8 @@ class FolderPolicy
             return true;
         }
 
-        // Only teachers of the course can create new folders
-        if ($user->isTeacher($course)) {
+        // Only managers of the course can create new folders
+        if ($user->isManager($course)) {
             return true;
         }
 
@@ -74,8 +74,8 @@ class FolderPolicy
             return true;
         }
 
-        // Only teachers of the course can update folders
-        if ($user->isTeacher($folder->course)) {
+        // Only managers of the course can update folders
+        if ($user->isManager($folder->course)) {
             return true;
         }
 
@@ -93,8 +93,8 @@ class FolderPolicy
             return true;
         }
 
-        // Only teachers of the course can update folders
-        if ($user->isTeacher($folder->course)) {
+        // Only managers of the course can update folders
+        if ($user->isManager($folder->course)) {
             return true;
         }
 
@@ -112,8 +112,8 @@ class FolderPolicy
             return true;
         }
 
-        // Only teachers of the course can delete folders
-        if ($user->isTeacher($folder->course)) {
+        // Only managers of the course can delete folders
+        if ($user->isManager($folder->course)) {
             return true;
         }
 

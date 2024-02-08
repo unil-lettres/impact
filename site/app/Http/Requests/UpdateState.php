@@ -9,11 +9,11 @@ use Illuminate\Validation\Rule;
 class UpdateState extends AbstractRequest
 {
     const BOX_ALLOWED_PERMISSIONS = [
-        StatePermission::EditorsCanShowAndEdit,
-        StatePermission::TeachersAndEditorsCanShowAndEdit,
-        StatePermission::AllCanShowTeachersAndEditorsCanEdit,
-        StatePermission::AllCanShowTeachersCanEdit,
-        StatePermission::TeachersCanShowAndEdit,
+        StatePermission::HoldersCanShowAndEdit,
+        StatePermission::ManagersAndHoldersCanShowAndEdit,
+        StatePermission::AllCanShowManagersAndHoldersCanEdit,
+        StatePermission::AllCanShowManagersCanEdit,
+        StatePermission::ManagersCanShowAndEdit,
     ];
 
     /**
@@ -38,7 +38,7 @@ class UpdateState extends AbstractRequest
             'state' => 'required|integer|exists:states,id',
             'name' => 'string|required|max:255',
             'description' => 'string|max:3000|nullable',
-            'teachers_only' => [
+            'managers_only' => [
                 'sometimes',
                 Rule::in(['on']),
             ],

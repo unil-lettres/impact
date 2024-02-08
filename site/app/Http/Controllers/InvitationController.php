@@ -82,7 +82,7 @@ class InvitationController extends Controller
             $courses = Course::local()
                 ->get();
         } else {
-            $courses = Auth::user()->enrollmentsAsTeacher()
+            $courses = Auth::user()->enrollmentsAsManager()
                 ->filter(function ($enrollment) {
                     return $enrollment->course->type === CourseType::Local;
                 })
@@ -235,9 +235,9 @@ class InvitationController extends Controller
         // Add default validity for the new user
         $user->extendValidity();
 
-        // Create a student enrollment for the new user
+        // Create a member enrollment for the new user
         Enrollment::create([
-            'role' => EnrollmentRole::Student,
+            'role' => EnrollmentRole::Member,
             'course_id' => $invitation->course_id,
             'user_id' => $user->id,
         ]);

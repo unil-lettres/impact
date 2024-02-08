@@ -37,7 +37,7 @@ class CardTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('student-user@example.com', 'password');
+                ->loginAsUser('member-user@example.com', 'password');
 
             $browser->visit(new Course('Second space'));
 
@@ -47,15 +47,15 @@ class CardTest extends DuskTestCase
     }
 
     /**
-     * Test view card as an editor.
+     * Test view card as an holder.
      *
      * @throws Throwable
      */
-    public function testViewCardAsEditor(): void
+    public function testViewCardAsHolder(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('student-user@example.com', 'password');
+                ->loginAsUser('member-user@example.com', 'password');
 
             $browser->visit(new Course('Second space'));
 
@@ -69,15 +69,15 @@ class CardTest extends DuskTestCase
     }
 
     /**
-     * Test view card as a teacher.
+     * Test view card as a manager.
      *
      * @throws Throwable
      */
-    public function testViewCardAsTeacher(): void
+    public function testViewCardAsManager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('teacher-user@example.com', 'password');
+                ->loginAsUser('manager-user@example.com', 'password');
 
             $browser->visit(new Course('First space'));
 
@@ -91,16 +91,16 @@ class CardTest extends DuskTestCase
     }
 
     /**
-     * Test create card as a teacher.
+     * Test create card as a manager.
      *
      * @throws Throwable
      */
-    public function testCreateCardAsTeacher(): void
+    public function testCreateCardAsManager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser
                 ->visit(new Login())
-                ->loginAsUser('teacher-user@example.com', 'password');
+                ->loginAsUser('manager-user@example.com', 'password');
 
             $browser
                 ->visit(new Course('First space'))
@@ -108,21 +108,21 @@ class CardTest extends DuskTestCase
                 ->waitForText('Créer une fiche');
 
             $cardName = 'My new card';
-            $editorName = 'Teacher user';
+            $holderName = 'Manager user';
 
             $browser
                 ->pause(1000) // Avoid "element not interactable" issue with modal
                 ->type('#modalCreateCard-name', $cardName)
                 ->click('#rct-multi-user-select')
-                ->waitForText($editorName)
-                ->click('#rct-multi-user-select div[role="listbox"] > div:first-child') // Click on the first and only option ($editorName)
+                ->waitForText($holderName)
+                ->click('#rct-multi-user-select div[role="listbox"] > div:first-child') // Click on the first and only option ($holderName)
                 ->assertSee(trans('messages.no.option')) // No more options available
                 ->click('#modalCreateCard [type="submit"]');
 
             $browser
                 ->waitForText($cardName)
                 ->assertSee($cardName)
-                ->assertSee($editorName);
+                ->assertSee($holderName);
         });
     }
 
@@ -145,15 +145,15 @@ class CardTest extends DuskTestCase
 
             $folderPage = new Folder('Test folder');
             $cardName = 'My new card in folder';
-            $editorName = 'Student user';
+            $holderName = 'Member user';
 
             $browser
                 ->pause(1000) // Avoid "element not interactable" issue with modal
                 ->type('#modalCreateCard-name', $cardName)
                 ->select('#modalCreateCard-folder-id', $folderPage->id())
                 ->click('#rct-multi-user-select')
-                ->waitForText($editorName)
-                ->click('#rct-multi-user-select div[role="listbox"] > div:nth-child(2)') // Click on the second option ($editorName)
+                ->waitForText($holderName)
+                ->click('#rct-multi-user-select div[role="listbox"] > div:nth-child(2)') // Click on the second option ($holderName)
                 ->assertDontSee(trans('messages.no.option')) // More options should be available
                 ->click('#modalCreateCard [type="submit"]');
 
@@ -163,16 +163,16 @@ class CardTest extends DuskTestCase
                 ->visit($folderPage)
                 ->waitUntilLoaded()
                 ->assertSee($cardName)
-                ->assertSee($editorName);
+                ->assertSee($holderName);
         });
     }
 
     /**
-     * Test cannot create a card without selecting editor(s).
+     * Test cannot create a card without selecting holder(s).
      *
      * @throws Throwable
      */
-    public function testCannotCreateCardWithoutEditors(): void
+    public function testCannotCreateCardWithoutHolders(): void
     {
         $this->browse(function (Browser $browser) {
             $browser
@@ -192,8 +192,8 @@ class CardTest extends DuskTestCase
                 ->click('#modalCreateCard [type="submit"]');
 
             $browser
-                ->waitForText('Le champ rédacteurs est obligatoire.')
-                ->assertSee('Le champ rédacteurs est obligatoire.')
+                ->waitForText('Le champ titulaires est obligatoire.')
+                ->assertSee('Le champ titulaires est obligatoire.')
                 ->assertDontSee($cardName);
         });
     }
@@ -257,7 +257,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCancelTextInTextEditor(): void
+    public function testCancelTextInTextHolder(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())

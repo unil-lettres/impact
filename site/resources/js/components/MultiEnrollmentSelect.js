@@ -50,7 +50,7 @@ class MultiEnrollmentSelect extends MultiSelect {
     }
 }
 
-const elementIdCourseThr = 'rct-multi-course-teacher-select';
+const elementIdCourseThr = 'rct-multi-course-manager-select';
 if (document.getElementById(elementIdCourseThr)) {
     const root = createRoot(document.getElementById(elementIdCourseThr));
 
@@ -58,7 +58,7 @@ if (document.getElementById(elementIdCourseThr)) {
     root.render(<MultiEnrollmentSelect data={ data } context='course' />);
 }
 
-const elementIdCourseSdt = 'rct-multi-course-student-select';
+const elementIdCourseSdt = 'rct-multi-course-member-select';
 if (document.getElementById(elementIdCourseSdt)) {
     const root = createRoot(document.getElementById(elementIdCourseSdt));
 
@@ -66,7 +66,7 @@ if (document.getElementById(elementIdCourseSdt)) {
     root.render(<MultiEnrollmentSelect data={ data } context='course' />);
 }
 
-const elementIdUserThr = 'rct-multi-user-teacher-select';
+const elementIdUserThr = 'rct-multi-user-manager-select';
 if (document.getElementById(elementIdUserThr)) {
     const root = createRoot(document.getElementById(elementIdUserThr));
 
@@ -74,7 +74,7 @@ if (document.getElementById(elementIdUserThr)) {
     root.render(<MultiEnrollmentSelect data={ data } context='user' />);
 }
 
-const elementIdUserStd = 'rct-multi-user-student-select';
+const elementIdUserStd = 'rct-multi-user-member-select';
 if (document.getElementById(elementIdUserStd)) {
     const root = createRoot(document.getElementById(elementIdUserStd));
 

@@ -67,14 +67,14 @@
                         <div class="card-body">
                             <div class="form-text">{{ trans('users.edit.enrollments_are_auto_save') }}</div>
                             <hr>
-                            {{ trans('enrollments.as_teacher') }}
-                            <div id="rct-multi-user-teacher-select"
+                            {{ trans('enrollments.as_manager') }}
+                            <div id="rct-multi-user-manager-select"
                                  class="mb-3"
-                                 data='{{ json_encode(['record' => $course, 'role' => $teacherRole, 'options' => $users, 'defaults' => $usersAsTeacher, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
+                                 data='{{ json_encode(['record' => $course, 'role' => $managerRole, 'options' => $users, 'defaults' => $usersAsManager, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
                             ></div>
-                            {{ trans('enrollments.as_student') }}
-                            <div id="rct-multi-user-student-select"
-                                 data='{{ json_encode(['record' => $course, 'role' => $studentRole, 'options' => $users, 'defaults' => $usersAsStudent, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
+                            {{ trans('enrollments.as_member') }}
+                            <div id="rct-multi-user-member-select"
+                                 data='{{ json_encode(['record' => $course, 'role' => $memberRole, 'options' => $users, 'defaults' => $usersAsMember, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
                             ></div>
                         </div>
                     </div>

@@ -32,8 +32,8 @@ class InvitationPolicy
      */
     public function viewAny(User $user)
     {
-        // Only teachers of a course can view invitations
-        if ($user->enrollmentsAsTeacher()->isNotEmpty()) {
+        // Only managers of a course can view invitations
+        if ($user->enrollmentsAsManager()->isNotEmpty()) {
             return true;
         }
 
@@ -71,13 +71,13 @@ class InvitationPolicy
      */
     public function create(User $user, ?Course $course)
     {
-        // Only teachers of a course can view the invitation creation form
-        if (! $course && $user->enrollmentsAsTeacher()->isNotEmpty()) {
+        // Only managers of a course can view the invitation creation form
+        if (! $course && $user->enrollmentsAsManager()->isNotEmpty()) {
             return true;
         }
 
-        // Only teachers of the course can store new invitations
-        if ($course && $user->isTeacher($course)) {
+        // Only managers of the course can store new invitations
+        if ($course && $user->isManager($course)) {
             return true;
         }
 

@@ -29,18 +29,18 @@ class StatesTableSeeder extends Seeder
             'deleted_at' => null,
         ])->id;
 
-        $teacherUser = User::create([
-            'name' => 'States teacher user',
-            'email' => 'states-teacher-user@example.com',
+        $managerUser = User::create([
+            'name' => 'States manager user',
+            'email' => 'states-manager-user@example.com',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
             'updated_at' => $now,
         ])->id;
 
-        $studentUser = User::create([
-            'name' => 'States student user',
-            'email' => 'states-student-user@example.com',
+        $memberUser = User::create([
+            'name' => 'States member user',
+            'email' => 'states-member-user@example.com',
             'password' => Hash::make('password'),
             'remember_token' => Str::random(10),
             'created_at' => $now,
@@ -48,15 +48,15 @@ class StatesTableSeeder extends Seeder
         ])->id;
 
         Enrollment::create([
-            'role' => EnrollmentRole::Teacher,
+            'role' => EnrollmentRole::Manager,
             'course_id' => $course,
-            'user_id' => $teacherUser,
+            'user_id' => $managerUser,
         ]);
 
         Enrollment::create([
-            'role' => EnrollmentRole::Student,
+            'role' => EnrollmentRole::Member,
             'course_id' => $course,
-            'user_id' => $studentUser,
+            'user_id' => $memberUser,
         ]);
     }
 }

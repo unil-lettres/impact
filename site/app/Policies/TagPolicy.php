@@ -13,8 +13,8 @@ class TagPolicy
      */
     public function viewAny(User $user, Course $course): bool
     {
-        // Only admins & teachers can view a tag.
-        if ($user->isTeacher($course)) {
+        // Only admins & managers can view a tag.
+        if ($user->isManager($course)) {
             return true;
         }
 
@@ -26,8 +26,8 @@ class TagPolicy
      */
     public function create(User $user, Course $course): bool
     {
-        // Only admins & teachers can create a tag.
-        if ($user->isTeacher($course)) {
+        // Only admins & managers can create a tag.
+        if ($user->isManager($course)) {
             return true;
         }
 
@@ -39,8 +39,8 @@ class TagPolicy
      */
     public function update(User $user, Tag $tag): bool
     {
-        // Only admins & teachers can update a tag.
-        if ($user->isTeacher($tag->course)) {
+        // Only admins & managers can update a tag.
+        if ($user->isManager($tag->course)) {
             return true;
         }
 
@@ -52,8 +52,8 @@ class TagPolicy
      */
     public function delete(User $user, Tag $tag): bool
     {
-        // Only admins & teachers can delete a tag.
-        if ($user->isTeacher($tag->course)) {
+        // Only admins & managers can delete a tag.
+        if ($user->isManager($tag->course)) {
             return true;
         }
 
@@ -67,8 +67,8 @@ class TagPolicy
      */
     public function clone(User $user, Course $fromCourse, Course $toCourse)
     {
-        // Only admins & teachers can clone tags to another course.
-        if ($user->isTeacher($fromCourse) && $user->isTeacher($toCourse)) {
+        // Only admins & managers can clone tags to another course.
+        if ($user->isManager($fromCourse) && $user->isManager($toCourse)) {
             return true;
         }
 

@@ -100,11 +100,11 @@ class EnrollmentJsonController extends Controller
             $request->user_id, $card
         );
 
-        // A private card must have at least one editor
-        if (! $card->canRemoveEditor($enrollment->user)) {
+        // A private card must have at least one holder
+        if (! $card->canRemoveHolder($enrollment->user)) {
             return response()->json([
-                'type' => 'editor.missing',
-                'message' => trans('messages.enrollment.editor.missing'),
+                'type' => 'holder.missing',
+                'message' => trans('messages.enrollment.holder.missing'),
             ], 403);
         }
 
@@ -137,14 +137,14 @@ class EnrollmentJsonController extends Controller
             ], 403);
         }
 
-        // Check if the user is the last editor of a private card
+        // Check if the user is the last holder of a private card
         $card = $enrollment->user->cards()
             ->where('course_id', '=', $enrollment->course->id)
-            ->firstWhere(fn ($card) => ! $card->canRemoveEditor($enrollment->user));
+            ->firstWhere(fn ($card) => ! $card->canRemoveHolder($enrollment->user));
         if ($card) {
             return response()->json([
-                'type' => 'editor.missing',
-                'message' => trans('messages.enrollment.editor.missing')." ($card->title)",
+                'type' => 'holder.missing',
+                'message' => trans('messages.enrollment.holder.missing')." ($card->title)",
             ], 403);
         }
 

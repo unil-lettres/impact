@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SendMailingMail;
-use App\Mail\TeachersMailing;
+use App\Mail\ManagersMailing;
 use App\User;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Http\RedirectResponse;
@@ -55,21 +55,21 @@ class AdminController extends Controller
     }
 
     /**
-     * Send the mailing to the teachers.
+     * Send the mailing to the managers.
      *
      * @return RedirectResponse
      */
     public function mailMailing(SendMailingMail $request)
     {
-        foreach (User::teachers() as $teacher) {
-            $courses = $teacher->enrollmentsAsTeacher()
+        foreach (User::managers() as $manager) {
+            $courses = $manager->enrollmentsAsManager()
                 ->map(function ($enrollment) {
                     return $enrollment->course;
                 });
 
-            Mail::to($teacher->email)
+            Mail::to($manager->email)
                 ->send(
-                    new TeachersMailing(
+                    new ManagersMailing(
                         Auth::user(),
                         $request->get('subject'),
                         $request->get('content'),

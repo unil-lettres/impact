@@ -27,15 +27,15 @@ class StateTest extends DuskTestCase
     }
 
     /**
-     * Test can view states management as teacher.
+     * Test can view states management as manager.
      *
      * @throws Throwable
      */
-    public function testTeachersCanViewStatesManagement(): void
+    public function testManagersCanViewStatesManagement(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('states-teacher-user@example.com', 'password');
+                ->loginAsUser('states-manager-user@example.com', 'password');
 
             $browser->visit(new Course('Test states'));
 
@@ -53,15 +53,15 @@ class StateTest extends DuskTestCase
     }
 
     /**
-     * Test cannot view states management as student.
+     * Test cannot view states management as member.
      *
      * @throws Throwable
      */
-    public function testStudentsCannotViewStatesManagement(): void
+    public function testMembersCannotViewStatesManagement(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('states-student-user@example.com', 'password');
+                ->loginAsUser('states-member-user@example.com', 'password');
 
             $browser->visit(new Course('Test states'));
 
@@ -78,7 +78,7 @@ class StateTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('states-teacher-user@example.com', 'password');
+                ->loginAsUser('states-manager-user@example.com', 'password');
 
             $browser->on(new Course('Test states'))
                 ->statesIndex();
@@ -99,7 +99,7 @@ class StateTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('states-teacher-user@example.com', 'password');
+                ->loginAsUser('states-manager-user@example.com', 'password');
 
             $browser->on(new Course('Test states'))
                 ->statesIndex();
@@ -124,7 +124,7 @@ class StateTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('states-teacher-user@example.com', 'password');
+                ->loginAsUser('states-manager-user@example.com', 'password');
 
             $browser->on(new Course('Test states'))
                 ->statesIndex();
@@ -154,7 +154,7 @@ class StateTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('states-teacher-user@example.com', 'password');
+                ->loginAsUser('states-manager-user@example.com', 'password');
 
             $browser->on(new Course('Test states'))
                 ->statesIndex();
@@ -176,7 +176,7 @@ class StateTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('states-teacher-user@example.com', 'password');
+                ->loginAsUser('states-manager-user@example.com', 'password');
 
             $browser->on(new Course('Test states'))
                 ->statesIndex();

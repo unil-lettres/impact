@@ -30,8 +30,8 @@ class FilePolicy
             return false;
         }
 
-        // Only the teachers of the course can view the listing of the files
-        if ($user->isTeacher($course)) {
+        // Only the managers of the course can view the listing of the files
+        if ($user->isManager($course)) {
             return true;
         }
 
@@ -68,8 +68,8 @@ class FilePolicy
             return false;
         }
 
-        // Only the teachers of the linked course can view the file
-        if ($user->isTeacher($file->course)) {
+        // Only the managers of the linked course can view the file
+        if ($user->isManager($file->course)) {
             return true;
         }
 
@@ -116,8 +116,8 @@ class FilePolicy
             return false;
         }
 
-        // Only the teachers of the linked course can deleted the file
-        if ($user->isTeacher($file->course)) {
+        // Only the managers of the linked course can deleted the file
+        if ($user->isManager($file->course)) {
             return true;
         }
 
@@ -135,13 +135,13 @@ class FilePolicy
             return true;
         }
 
-        // Teachers can upload a file within a course
-        if ($course && $user->isTeacher($course)) {
+        // Managers can upload a file within a course
+        if ($course && $user->isManager($course)) {
             return true;
         }
 
-        // Editors can upload a file within a card
-        if ($card && $user->isEditor($card)) {
+        // Holders can upload a file within a card
+        if ($card && $user->isHolder($card)) {
             return true;
         }
 
@@ -165,7 +165,7 @@ class FilePolicy
         }
 
         // The file can only be moved to a course that the user teaches
-        if ($user->isTeacher($course)) {
+        if ($user->isManager($course)) {
             return true;
         }
 

@@ -29,7 +29,7 @@ class DestroyEnrollment extends AbstractRequest
                 'required',
                 'string',
                 Rule::in(
-                    [EnrollmentRole::Student, EnrollmentRole::Teacher]
+                    [EnrollmentRole::Member, EnrollmentRole::Manager]
                 ),
             ],
             'user_id' => 'required|integer|exists:users,id',

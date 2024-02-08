@@ -105,7 +105,7 @@ class StateController extends Controller
         $state->update([
             'name' => $request->get('name'),
             'description' => $request->get('description'),
-            'teachers_only' => (bool) $request->get('teachers_only'),
+            'managers_only' => (bool) $request->get('managers_only'),
             'permissions' => $permissions,
             'actions' => $actions,
         ]);

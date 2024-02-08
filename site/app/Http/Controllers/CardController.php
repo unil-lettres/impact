@@ -65,8 +65,8 @@ class CardController extends Controller
     {
         $this->authorize('update', $card);
 
-        // If the user is not a teacher or an admin, only show states with the limited scope
-        $states = match (Auth::user()->isTeacher($card->course)) {
+        // If the user is not a manager or an admin, only show states with the limited scope
+        $states = match (Auth::user()->isManager($card->course)) {
             true => State::where('course_id', $card->course->id),
             default => State::limited($card)->where('course_id', $card->course->id),
         };
@@ -80,8 +80,8 @@ class CardController extends Controller
             'card' => $card,
             'breadcrumbs' => $card
                 ->breadcrumbs(true),
-            'editors' => $card
-                ->editors(),
+            'holders' => $card
+                ->holders(),
             'users' => $card->course
                 ->users(),
             'files' => $files,

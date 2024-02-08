@@ -4,7 +4,7 @@ namespace App\Livewire;
 
 use App\Card;
 use App\Enrollment;
-use App\Rules\Editors;
+use App\Rules\Holders;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -16,7 +16,7 @@ class ModalCreateCard extends ModalCreate
     /**
      * List of users able to edit a card.
      */
-    public array $editors = [];
+    public array $holders = [];
 
     public function render()
     {
@@ -27,10 +27,10 @@ class ModalCreateCard extends ModalCreate
     {
         return [
             'name' => 'required|min:1|max:255',
-            'editors' => [
+            'holders' => [
                 'required',
                 'array',
-                new Editors,
+                new Holders,
             ],
             'destination' => [
                 'nullable',
@@ -46,21 +46,21 @@ class ModalCreateCard extends ModalCreate
         ];
     }
 
-    #[On('add-editor')]
-    public function addEditor(int $id, string $name): void
+    #[On('add-holder')]
+    public function addHolder(int $id, string $name): void
     {
-        $this->editors = Arr::add($this->editors, $id, $name);
+        $this->holders = Arr::add($this->holders, $id, $name);
 
         // Skip the re-render of the component to avoid
         // the modal form to disappear.
         $this->skipRender();
     }
 
-    #[On('remove-editor')]
-    public function removeEditor(int $id, string $name): void
+    #[On('remove-holder')]
+    public function removeHolder(int $id, string $name): void
     {
-        if (Arr::exists($this->editors, $id)) {
-            $this->editors = Arr::except($this->editors, [$id]);
+        if (Arr::exists($this->holders, $id)) {
+            $this->holders = Arr::except($this->holders, [$id]);
         }
 
         // Skip the re-render of the component to avoid
@@ -76,11 +76,11 @@ class ModalCreateCard extends ModalCreate
         )->flatten(1)->unique('id');
     }
 
-    public function resetEditors(bool $skipRender = false): void
+    public function resetHolders(bool $skipRender = false): void
     {
-        // We reset the editors property separately because
+        // We reset the holders property separately because
         // it is called when the modal is shown.
-        $this->editors = [];
+        $this->holders = [];
 
         if ($skipRender) {
             // Skip the re-render of the component to avoid
@@ -104,8 +104,8 @@ class ModalCreateCard extends ModalCreate
             'folder_id' => $this->destination,
         ]);
 
-        // Make selected users editors of the card
-        foreach ($this->editors as $id => $name) {
+        // Make selected users holders of the card
+        foreach ($this->holders as $id => $name) {
             $enrollment = Enrollment::where('course_id', $this->course->id)
                 ->where('user_id', $id)
                 ->first();
@@ -114,7 +114,7 @@ class ModalCreateCard extends ModalCreate
         }
 
         $this->resetValues();
-        $this->resetEditors();
+        $this->resetHolders();
 
         // We need to dispatch events to other components
         // to update their list of folders & items.

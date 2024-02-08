@@ -22,11 +22,11 @@ class State extends Model implements Sortable
 
     const PERMISSIONS = '{
             "version": 1,
-            "box1": '.StatePermission::EditorsCanShowAndEdit.',
-            "box2": '.StatePermission::EditorsCanShowAndEdit.',
-            "box3": '.StatePermission::EditorsCanShowAndEdit.',
-            "box4": '.StatePermission::EditorsCanShowAndEdit.',
-            "box5": '.StatePermission::EditorsCanShowAndEdit.'
+            "box1": '.StatePermission::HoldersCanShowAndEdit.',
+            "box2": '.StatePermission::HoldersCanShowAndEdit.',
+            "box3": '.StatePermission::HoldersCanShowAndEdit.',
+            "box4": '.StatePermission::HoldersCanShowAndEdit.',
+            "box5": '.StatePermission::HoldersCanShowAndEdit.'
         }';
 
     const ACTIONS = '{
@@ -35,7 +35,7 @@ class State extends Model implements Sortable
         }';
 
     protected $fillable = [
-        'name', 'description', 'position', 'permissions', 'course_id', 'type', 'teachers_only', 'actions',
+        'name', 'description', 'position', 'permissions', 'course_id', 'type', 'managers_only', 'actions',
     ];
 
     protected $casts = [
@@ -50,11 +50,11 @@ class State extends Model implements Sortable
     ];
 
     /**
-     * Scope a query to remove the states that are only available for teachers.
+     * Scope a query to remove the states that are only available for managers.
      */
     public function scopeLimited(Builder $query, Card $card): void
     {
-        $query->where('teachers_only', false)
+        $query->where('managers_only', false)
             ->where('type', '!=', StateType::Archived);
 
         if ($card->state) {
@@ -213,7 +213,7 @@ class State extends Model implements Sortable
      */
     public static function isPermissionPublic(int $permission): bool
     {
-        return $permission === StatePermission::AllCanShowTeachersAndEditorsCanEdit ||
-            $permission === StatePermission::AllCanShowTeachersCanEdit;
+        return $permission === StatePermission::AllCanShowManagersAndHoldersCanEdit ||
+            $permission === StatePermission::AllCanShowManagersCanEdit;
     }
 }

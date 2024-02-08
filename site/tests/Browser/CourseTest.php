@@ -38,7 +38,7 @@ class CourseTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('student-user@example.com', 'password');
+                ->loginAsUser('member-user@example.com', 'password');
 
             $browser->assertSee('Liste des espaces')
                 ->assertPathIs('/');
@@ -70,15 +70,15 @@ class CourseTest extends DuskTestCase
     }
 
     /**
-     * Test view course as a teacher.
+     * Test view course as a manager.
      *
      * @throws Throwable
      */
-    public function testViewCourseAsTeacher(): void
+    public function testViewCourseAsManager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('teacher-user@example.com', 'password');
+                ->loginAsUser('manager-user@example.com', 'password');
 
             $browser->assertSee('First space')
                 ->visit(new PagesCourse('First space'));
@@ -89,15 +89,15 @@ class CourseTest extends DuskTestCase
     }
 
     /**
-     * Test view course as a student.
+     * Test view course as a member.
      *
      * @throws Throwable
      */
-    public function testViewCourseAsStudent(): void
+    public function testViewCourseAsMember(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())
-                ->loginAsUser('student-user@example.com', 'password');
+                ->loginAsUser('member-user@example.com', 'password');
 
             $browser->assertSee('Second space')
                 ->visit(new PagesCourse('Second space'));

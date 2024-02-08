@@ -24,8 +24,8 @@ class StatePolicy
             return false;
         }
 
-        // Only the teachers of the course & admins can view the listing of the states
-        if ($user->isTeacher($course) || $user->admin) {
+        // Only the managers of the course & admins can view the listing of the states
+        if ($user->isManager($course) || $user->admin) {
             return true;
         }
 
@@ -44,13 +44,13 @@ class StatePolicy
             return false;
         }
 
-        // Teachers of the course & admins can view a state
-        if ($user->isTeacher($state->course) || $user->admin) {
+        // Managers of the course & admins can view a state
+        if ($user->isManager($state->course) || $user->admin) {
             return true;
         }
 
-        // Editors of the course can view a non teacher_only state
-        if ($user->isEditor($state->course) && ! $state->teachers_only) {
+        // Holders of the course can view a non managers_only state
+        if ($user->isHolder($state->course) && ! $state->managers_only) {
             return true;
         }
 
@@ -69,8 +69,8 @@ class StatePolicy
             return false;
         }
 
-        // Only the teachers of the course & admins can create states
-        if ($user->isTeacher($course) || $user->admin) {
+        // Only the managers of the course & admins can create states
+        if ($user->isManager($course) || $user->admin) {
             return true;
         }
 
@@ -94,8 +94,8 @@ class StatePolicy
             return false;
         }
 
-        // Only the teachers of the course & admins can update states
-        if ($user->isTeacher($state->course) || $user->admin) {
+        // Only the managers of the course & admins can update states
+        if ($user->isManager($state->course) || $user->admin) {
             return true;
         }
 
@@ -119,8 +119,8 @@ class StatePolicy
             return false;
         }
 
-        // Only the teachers of the course & admins can delete states
-        if ($user->isTeacher($state->course) || $user->admin) {
+        // Only the managers of the course & admins can delete states
+        if ($user->isManager($state->course) || $user->admin) {
             return true;
         }
 
@@ -144,8 +144,8 @@ class StatePolicy
             return false;
         }
 
-        // Only the teachers of the course & admins can change a state position
-        if ($user->isTeacher($state->course) || $user->admin) {
+        // Only the managers of the course & admins can change a state position
+        if ($user->isManager($state->course) || $user->admin) {
             return true;
         }
 

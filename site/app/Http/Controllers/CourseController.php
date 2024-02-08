@@ -198,10 +198,10 @@ class CourseController extends Controller
         return view('courses.edit', [
             'course' => $course,
             'users' => User::all(),
-            'teacherRole' => EnrollmentRole::Teacher,
-            'usersAsTeacher' => $course->teachers(),
-            'studentRole' => EnrollmentRole::Student,
-            'usersAsStudent' => $course->students(),
+            'managerRole' => EnrollmentRole::Manager,
+            'usersAsManager' => $course->managers(),
+            'memberRole' => EnrollmentRole::Member,
+            'usersAsMember' => $course->members(),
         ]);
     }
 
@@ -355,10 +355,10 @@ class CourseController extends Controller
 
         $this->authorize('mailConfirmDelete', $course);
 
-        // Send the confirmation mail to the teachers of the course
+        // Send the confirmation mail to the managers of the course
         Mail::to(
-            $course->teachers(true)->map(function ($teacher) {
-                return $teacher->email;
+            $course->managers(true)->map(function ($manager) {
+                return $manager->email;
             })
         )->send(new CourseConfirmDelete($course));
 

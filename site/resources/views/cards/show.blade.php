@@ -1,7 +1,7 @@
 @extends('layouts.app-base')
 
 @section('title')
-    {{ $card->title }}
+    <livewire:card-title :card="$card" />
 @endsection
 
 @section('sub-title')

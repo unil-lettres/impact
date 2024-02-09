@@ -149,6 +149,7 @@ return [
         'holders' => 'titulaires',
         'course' => 'espace',
         'newName' => 'nom',
+        'title' => 'titre',
     ],
 
 ];

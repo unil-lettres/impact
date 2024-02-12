@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use Illuminate\Http\Client\Response;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
 
@@ -12,6 +13,8 @@ class MoodleService
 
     public string $token;
 
+    private string $format = 'json';
+
     public function __construct()
     {
         $this->url = config('const.moodle.url');
@@ -19,9 +22,9 @@ class MoodleService
     }
 
     /**
-     * Retrieve Moodle course data by id.
+     * Retrieve the data of a Moodle course by id.
      */
-    public function getCourse(int $courseId): ?array
+    public function getCourse(int $courseId, bool $withUsers = true): ?array
     {
         if (! $this->isConfigured()) {
             return null;
@@ -31,21 +34,22 @@ class MoodleService
             'wstoken' => $this->token,
             'wsfunction' => 'local_impactsync_get_courses',
             'courseids' => $courseId,
-            'moodlewsrestformat' => 'json',
+            'courseusers' => $withUsers ? 1 : 0,
+            'moodlewsrestformat' => $this->format,
         ]);
 
         if (! $this->isResponseValid($response)) {
             return null;
         }
 
-        return $response->collect()
-            ->first();
+        return $withUsers ?
+            $this->processUsers($response->collect())->first() : $response->collect()->first();
     }
 
     /**
-     * Retrieve Moodle users data by course id.
+     * Retrieve the data of multiple Moodle courses by id.
      */
-    public function getUsers(int $courseId): ?Collection
+    public function getCourses(array $courseIds, bool $withUsers = true): ?Collection
     {
         if (! $this->isConfigured()) {
             return null;
@@ -53,16 +57,18 @@ class MoodleService
 
         $response = Http::get($this->url, [
             'wstoken' => $this->token,
-            'wsfunction' => 'local_impactsync_course_get_enrolled_users',
-            'courseid' => $courseId,
-            'moodlewsrestformat' => 'json',
+            'wsfunction' => 'local_impactsync_get_courses',
+            'courseids' => Arr::join($courseIds, ','),
+            'courseusers' => $withUsers ? 1 : 0,
+            'moodlewsrestformat' => $this->format,
         ]);
 
         if (! $this->isResponseValid($response)) {
             return null;
         }
 
-        return $response->collect();
+        return $withUsers ?
+            $this->processUsers($response->collect()) : $response->collect();
     }
 
     /**
@@ -83,5 +89,34 @@ class MoodleService
         }
 
         return true;
+    }
+
+    /**
+     * Process the users of the courses to match the application
+     * roles & remove duplicates.
+     */
+    private function processUsers(Collection $courses): Collection
+    {
+        return $courses->map(function ($course) {
+            if (isset($course['users'])) {
+                // Remove duplicate users (keep only the teacher if the user is both teacher & student)
+                $users = collect($course['users']);
+                $teachers = $users->where('role', 'teacher');
+                $students = $users->where('role', 'student')
+                    ->reject(fn ($student) => $teachers->contains('email', $student['email']));
+                $course['users'] = $students->concat($teachers)->all();
+
+                // Match the Moodle roles with the Impact roles
+                foreach ($course['users'] as &$user) {
+                    $user['role'] = match ($user['role']) {
+                        'teacher' => 'manager',
+                        'student' => 'member',
+                        default => $user['role'],
+                    };
+                }
+            }
+
+            return $course;
+        });
     }
 }

@@ -23,8 +23,6 @@
                             @can('forceDelete', [\App\Policies\AttachmentPolicy::class, $attachment])
                                 <button type="submit"
                                         class="btn btn-sm btn-danger"
-                                        data-bs-toggle="tooltip"
-                                        data-placement="top"
                                         title="{{ trans('files.delete') }}"
                                         wire:confirm="{{ trans('messages.confirm.delete') }}"
                                         wire:click="delete({{ $attachment->id }})">

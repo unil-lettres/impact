@@ -5,11 +5,13 @@
                 <span class="fw-bolder me-auto">2. {{ trans('cards.transcription') }}</span>
                 <span class="d-none" id="edit-failed-{{ $reference }}">[ {{ trans('messages.card.editor.failed') }} ]</span>
 
-                @can('update', $card)
-                    <div id="sync-{{ $reference }}"><livewire:toggle-source-sync :card="$card" /></div>
-                @endcan
-
                 @if($card->boxIsEditable($reference))
+                    @can('parameters', $card)
+                        <livewire:toggle-box-visibility :card="$card" box="box2" />
+                    @endcan
+                    @can('update', $card)
+                        <div id="sync-{{ $reference }}"><livewire:toggle-source-sync :card="$card" /></div>
+                    @endcan
 
                     @if($card->course->transcription === \App\Enums\TranscriptionType::Icor)
                         <button class="btn btn-primary"

@@ -27,6 +27,7 @@ return [
     'cancel' => 'Cancel',
     'save' => 'Save',
     'hide_boxes' => 'Hide/show boxes marked as hidden',
+    'hide_boxe.tooltip' => 'Masquer/afficher cette case',
     'hide' => 'Hide',
     'select_source' => 'Source selection',
     'external_link' => 'External link',

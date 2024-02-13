@@ -153,6 +153,7 @@ export default class Editor extends Component {
         this.editButton = document.getElementById(this.editButtonId);
         this.cancelButtonId = 'cancel-' + this.props.reference;
         this.cancelButton = document.getElementById(this.cancelButtonId);
+        this.hideButton = document.getElementById('hide-' + this.props.reference);
         this.editorId = 'rct-editor-' + this.props.reference;
         this.editorErrorMsgId = 'edit-failed-' + this.props.reference;
         this.editorEmptyTranscriptionMsgId = 'empty-' + this.props.reference;
@@ -175,6 +176,7 @@ export default class Editor extends Component {
                     this.editButton.classList.add('btn-success');
                     this.editButton.innerText = this.saveLabel;
                     this.cancelButton.classList.remove("d-none");
+                    this.hideButton.classList.add("d-none");
                     break;
                 case false:
                 default:
@@ -183,6 +185,7 @@ export default class Editor extends Component {
                     this.editButton.classList.add('btn-primary');
                     this.editButton.textContent = this.editLabel;
                     this.cancelButton.classList.add("d-none");
+                    this.hideButton.classList.remove("d-none");
 
                     // If editor is empty, then add the empty message
                     if(!this.state.html) {

@@ -18,11 +18,11 @@
             @can('hide', $card)
                 <button type="submit"
                         id="btn-hide-boxes"
-                        class="btn btn-danger"
+                        class="btn btn-primary enabled"
                         data-bs-toggle="tooltip"
                         data-placement="top"
                         title="{{ trans('cards.hide_boxes') }}">
-                    <i class="far fa-eye-slash"></i>
+                    <i class="far fa-eye"></i>
                 </button>
             @endcan
             @can('update', $card)
@@ -61,8 +61,8 @@
     <script type="text/javascript">
         // Hide or show boxes on button click
         $('#btn-hide-boxes').on('click', function() {
-            $(this).toggleClass(['btn-danger', 'btn-success']);
-            $(this).find('i').toggleClass(['fa-eye-slash', 'fa-eye']);
+            $(this).toggleClass(['btn-secondary', 'btn-primary']);
+            $(this).toggleClass('enabled');
             $('.hidden').toggle();
         });
     </script>

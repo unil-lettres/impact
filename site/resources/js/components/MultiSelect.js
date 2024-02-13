@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Select from "react-select";
+import Select, { components } from "react-select";
 import CreatableSelect from 'react-select/creatable';
 import makeAnimated from 'react-select/animated';
 import _ from "lodash";

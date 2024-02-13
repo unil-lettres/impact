@@ -33,15 +33,15 @@ class ToggleBoxVisibility extends Component
 
         $this->js(<<<JS
             if ($isHidden) {
-                $(".card.$this->box").addClass('hidden');
+                $(".card.$this->box").addClass('hide-on-read-only');
 
                 if ($('#btn-hide-boxes').hasClass('enabled')) {
-                    $(".card.$this->box").show();
-                } else {
                     $(".card.$this->box").hide();
+                } else {
+                    $(".card.$this->box").show();
                 }
             } else {
-                $(".card.$this->box").removeClass('hidden');
+                $(".card.$this->box").removeClass('hide-on-read-only');
                 $(".card.$this->box").show();
             }
         JS);

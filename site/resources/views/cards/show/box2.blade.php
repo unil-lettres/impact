@@ -1,46 +1,53 @@
 @if($card->boxIsVisible($reference))
-    <div class="card {{ $reference }} {{ Helpers::isHidden($card, $reference) ? 'hidden' : '' }}">
+    <div class="card {{ $reference }} {{ Helpers::isHidden($card, $reference) ? 'hide-on-read-only' : '' }}">
         <div class="card-header">
-            <div class="d-flex gap-2 align-items-center">
+            <div class="d-flex align-items-center">
                 <span class="fw-bolder me-auto">2. {{ trans('cards.transcription') }}</span>
-                <span class="d-none" id="edit-failed-{{ $reference }}">[ {{ trans('messages.card.editor.failed') }} ]</span>
+                    <div class="d-flex gap-2">
+                        <span class="d-none" id="edit-failed-{{ $reference }}">[ {{ trans('messages.card.editor.failed') }} ]</span>
 
-                @if($card->boxIsEditable($reference))
-                    @can('parameters', $card)
-                        <div id="hide-{{ $reference }}">
-                            <livewire:toggle-box-visibility :card="$card" box="box2" />
-                        </div>
-                    @endcan
-                    @can('update', $card)
-                        <div id="sync-{{ $reference }}"><livewire:toggle-source-sync :card="$card" /></div>
-                    @endcan
+                        @if($card->boxIsEditable($reference))
 
-                    @if($card->course->transcription === \App\Enums\TranscriptionType::Icor)
-                        <button class="btn btn-primary"
-                                id="export-{{ $reference }}"
-                                format="docx"
-                                data-bs-toggle="tooltip"
-                                data-placement="top"
-                                title="{{ trans('cards.export') }}">
-                            <i class="far fa-arrow-alt-circle-down"></i>
-                        </button>
+                            @can('parameters', $card)
+                                <div id="hide-{{ $reference }}" class="hide-on-read-only">
+                                    <livewire:toggle-box-visibility :card="$card" box="box2" />
+                                </div>
+                            @endcan
+                            @can('update', $card)
+                                <div id="sync-{{ $reference }}" class="hide-on-read-only">
+                                    <livewire:toggle-source-sync :card="$card" />
+                                </div>
+                            @endcan
 
-                        <button class="btn btn-danger d-none"
-                                id="clear-{{ $reference }}">
-                            {{ trans('cards.clear_transcription') }}
-                        </button>
-                    @endif
+                            @if($card->course->transcription === \App\Enums\TranscriptionType::Icor)
+                                <div class="hide-on-read-only">
+                                    <button class="btn btn-primary"
+                                            id="export-{{ $reference }}"
+                                            format="docx"
+                                            data-bs-toggle="tooltip"
+                                            data-placement="top"
+                                            title="{{ trans('cards.export') }}">
+                                        <i class="far fa-arrow-alt-circle-down"></i>
+                                    </button>
+                                </div>
 
-                    <button class="btn btn-secondary d-none"
-                            id="cancel-{{ $reference }}">
-                        {{ trans('cards.cancel') }}
-                    </button>
+                                <button class="btn btn-danger d-none"
+                                        id="clear-{{ $reference }}">
+                                    {{ trans('cards.clear_transcription') }}
+                                </button>
+                            @endif
 
-                    <button class="btn btn-primary"
-                            id="edit-{{ $reference }}">
-                        {{ trans('cards.edit') }}
-                    </button>
-                @endif
+                            <button class="btn btn-secondary d-none"
+                                    id="cancel-{{ $reference }}">
+                                {{ trans('cards.cancel') }}
+                            </button>
+
+                            <button class="btn btn-primary"
+                                    id="edit-{{ $reference }}">
+                                {{ trans('cards.edit') }}
+                            </button>
+                        @endif
+                </div>
             </div>
         </div>
         <div id="transcription-viewer" class="card-body">

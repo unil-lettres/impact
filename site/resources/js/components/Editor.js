@@ -141,6 +141,17 @@ export default class Editor extends Component {
         }
     }
 
+    componentDidUpdate() {
+        const btnHideBoxes = document.getElementById('btn-hide-boxes');
+        if (btnHideBoxes) {
+            if (this.state.editable) {
+                btnHideBoxes.classList.add('disabled');
+            } else {
+                btnHideBoxes.classList.remove('disabled');
+            }
+        }
+    }
+
     updateEditorConfiguration(data) {
         editorConfiguration.language = data.locale ?? 'fr';
         editorConfiguration.placeholder = data.placeholder ?? '';

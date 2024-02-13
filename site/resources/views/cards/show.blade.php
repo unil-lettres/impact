@@ -18,7 +18,7 @@
             @can('hide', $card)
                 <button type="submit"
                         id="btn-hide-boxes"
-                        class="btn btn-secondary enabled"
+                        class="btn btn-secondary"
                         data-bs-toggle="tooltip"
                         data-placement="top"
                         title="{{ trans('cards.hide_boxes') }}">
@@ -63,7 +63,7 @@
         $('#btn-hide-boxes').on('click', function() {
             $(this).toggleClass(['btn-primary', 'btn-secondary']);
             $(this).toggleClass('enabled');
-            $('.hidden').toggle();
+            $('.hide-on-read-only').toggle();
         });
     </script>
     <script>

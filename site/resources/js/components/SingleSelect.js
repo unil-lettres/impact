@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 import Select from "react-select";
 import makeAnimated from 'react-select/animated';
 
-const animatedComponents = makeAnimated();
+const AnimatedComponents = makeAnimated();
 
 export default class SingleSelect extends Component {
     constructor(props){
@@ -50,7 +50,7 @@ export default class SingleSelect extends Component {
         return (
             <div>
                 <Select
-                    components={animatedComponents}
+                    components={AnimatedComponents}
                     isClearable={this.state.clearable}
                     closeMenuOnSelect={true}
                     isDisabled={this.state.disabled}

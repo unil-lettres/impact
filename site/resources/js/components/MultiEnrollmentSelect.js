@@ -2,13 +2,37 @@ import React from 'react';
 import { createRoot } from "react-dom/client";
 
 import MultiSelect from "./MultiSelect";
+import _ from "lodash";
 
 class MultiEnrollmentSelect extends MultiSelect {
     constructor(props) {
         super(props);
 
         const data = JSON.parse(this.props.data);
+
         this.role = data.role;
+
+        // Override options & values state properties to
+        // add an "isFixed" property when needed.
+        this.state = {
+            ...this.state,
+            options: _.map(
+                data.options,
+                option => ({
+                    value: option.id,
+                    label: option.name,
+                    ...(this.props.context === 'course' ? { isFixed: option.type === 'external' } : {}),
+                })
+            ),
+            values: _.map(
+                data.defaults,
+                option => ({
+                    value: option.id,
+                    label: option.name,
+                    ...(this.props.context === 'course' ? { isFixed: option.type === 'external' } : {}),
+                })
+            ),
+        };
     }
 
     select = (record, option) => {

@@ -5,7 +5,7 @@ import CreatableSelect from 'react-select/creatable';
 import makeAnimated from 'react-select/animated';
 import _ from "lodash";
 
-const animatedComponents = makeAnimated();
+const AnimatedComponents = makeAnimated();
 
 export default class MultiSelect extends Component {
     constructor(props) {
@@ -22,11 +22,19 @@ export default class MultiSelect extends Component {
             record: data.record,
             options: _.map(
                 data.options,
-                (option) => ({ value: option.id, label: option.name })
+                option => ({
+                    value: option.id,
+                    label: option.name,
+                    ...(Object.hasOwn(option, 'isFixed') ? { isFixed: option.isFixed } : {}),
+                })
             ),
             values: _.map(
                 data.defaults,
-                (option) => ({ value: option.id, label: option.name }),
+                option => ({
+                    value: option.id,
+                    label: option.name,
+                    ...(Object.hasOwn(option, 'isFixed') ? { isFixed: option.isFixed } : {}),
+                })
             ),
             isLoading: false,
             isDisabled: data.isDisabled ?? false,
@@ -162,10 +170,11 @@ export default class MultiSelect extends Component {
                 this.setState({ isLoading: false });
             });
     }
+
     render() {
         let attributes = {
             isMulti: true,
-            components: animatedComponents,
+            components: {AnimatedComponents},
             isClearable: false,
             closeMenuOnSelect: false,
             escapeClearsValue: false,
@@ -175,6 +184,19 @@ export default class MultiSelect extends Component {
             onChange: this.handleChange,
             options: this.state.options,
             isDisabled: this.state.isDisabled,
+            styles: {
+                multiValue: (base, state) => {
+                    return state.data.isFixed ? { ...base, backgroundColor: 'gray' } : base;
+                },
+                multiValueLabel: (base, state) => {
+                    return state.data.isFixed
+                        ? { ...base, fontWeight: 'bold', color: 'white', paddingRight: 6 }
+                        : base;
+                },
+                multiValueRemove: (base, state) => {
+                    return state.data.isFixed ? { ...base, display: 'none' } : base;
+                },
+            },
             ...(this.props.reactAttributes || []),
         };
 

@@ -1,19 +1,11 @@
 import React, { Component } from 'react';
 
-import Select, { components } from "react-select";
+import Select from "react-select";
 import CreatableSelect from 'react-select/creatable';
 import makeAnimated from 'react-select/animated';
 import _ from "lodash";
 
 const AnimatedComponents = makeAnimated();
-
-const MultiValueRemove = (props) => {
-    if (props.data.isFixed) {
-        return null;
-    }
-
-    return <components.MultiValueRemove {...props} />;
-};
 
 export default class MultiSelect extends Component {
     constructor(props) {
@@ -181,7 +173,7 @@ export default class MultiSelect extends Component {
     render() {
         let attributes = {
             isMulti: true,
-            components: { AnimatedComponents, MultiValueRemove },
+            components: {AnimatedComponents},
             isClearable: false,
             closeMenuOnSelect: false,
             escapeClearsValue: false,

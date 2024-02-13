@@ -22,19 +22,20 @@ export default class MultiSelect extends Component {
             record: data.record,
             options: _.map(
                 data.options,
-                (option) => ({
+                option => ({
                     value: option.id,
                     label: option.name,
-                    ...(option.type === 'external' ? { isFixed: true } : {})
+                    ...(Object.hasOwn(option, 'isFixed') ? { isFixed: option.isFixed } : {}),
                 })
             ),
             values: _.map(
                 data.defaults,
-                (option) => ({
+                option => ({
                     value: option.id,
                     label: option.name,
-                    ...(option.type === 'external' ? { isFixed: true } : {})
-                })            ),
+                    ...(Object.hasOwn(option, 'isFixed') ? { isFixed: option.isFixed } : {}),
+                })
+            ),
             isLoading: false,
             isDisabled: data.isDisabled ?? false,
             message: data.message ?

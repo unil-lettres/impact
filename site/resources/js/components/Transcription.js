@@ -59,6 +59,7 @@ export default class Transcription extends Component {
         this.exportButton = document.getElementById('export-' + this.props.reference);
         this.deleteButton = document.getElementById('clear-' + this.props.reference);
         this.syncButton = document.getElementById('sync-' + this.props.reference);
+        this.hideButton = document.getElementById('hide-' + this.props.reference);
         this.card = data.card;
         this.version = data.card.box2.version;
         this.editorId = 'rct-transcription';
@@ -106,6 +107,7 @@ export default class Transcription extends Component {
                     this.deleteButton.classList.remove("d-none");
                     this.exportButton.classList.add("d-none");
                     this.syncButton.classList.add("d-none");
+                    this.hideButton.classList.add("d-none");
 
                     // If transcription is empty, then add the first line
                     if(!this.validate(this.state.lines)) {
@@ -122,6 +124,7 @@ export default class Transcription extends Component {
                     this.deleteButton.classList.add("d-none");
                     this.exportButton.classList.remove("d-none");
                     this.syncButton.classList.remove("d-none");
+                    this.hideButton.classList.remove("d-none");
 
                     // If transcription is empty, then add the empty message
                     if(!this.validate(this.state.lines)) {

@@ -7,7 +7,9 @@
 
                 @if($card->boxIsEditable($reference))
                     @can('parameters', $card)
-                        <livewire:toggle-box-visibility :card="$card" box="box2" />
+                        <div id="hide-{{ $reference }}">
+                            <livewire:toggle-box-visibility :card="$card" box="box2" />
+                        </div>
                     @endcan
                     @can('update', $card)
                         <div id="sync-{{ $reference }}"><livewire:toggle-source-sync :card="$card" /></div>

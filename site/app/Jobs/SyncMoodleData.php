@@ -52,7 +52,8 @@ class SyncMoodleData implements ShouldQueue
             ->getCourses($externalIds);
 
         if ($availableCourses) {
-            // List the courses from Impact that are not in the Moodle database anymore
+            // List the Impact external courses that are
+            // not in the Moodle database anymore.
             $orphans = collect($externalIds)->diff(
                 $availableCourses->pluck('id')->filter()
             );

@@ -187,7 +187,7 @@ export default class Editor extends Component {
                     this.editButton.classList.add('btn-success');
                     this.editButton.innerText = this.saveLabel;
                     this.cancelButton.classList.remove("d-none");
-                    this.hideButton.classList.add("d-none");
+                    this.hideButton?.classList.add("d-none");
                     break;
                 case false:
                 default:
@@ -196,7 +196,7 @@ export default class Editor extends Component {
                     this.editButton.classList.add('btn-primary');
                     this.editButton.textContent = this.editLabel;
                     this.cancelButton.classList.add("d-none");
-                    this.hideButton.classList.remove("d-none");
+                    this.hideButton?.classList.remove("d-none");
 
                     // If editor is empty, then add the empty message
                     if(!this.state.html) {

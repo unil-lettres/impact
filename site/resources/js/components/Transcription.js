@@ -106,8 +106,8 @@ export default class Transcription extends Component {
                     this.cancelButton.classList.remove("d-none");
                     this.deleteButton.classList.remove("d-none");
                     this.exportButton.classList.add("d-none");
-                    this.syncButton.classList.add("d-none");
-                    this.hideButton.classList.add("d-none");
+                    this.syncButton?.classList.add("d-none");
+                    this.hideButton?.classList.add("d-none");
 
                     // If transcription is empty, then add the first line
                     if(!this.validate(this.state.lines)) {
@@ -123,8 +123,8 @@ export default class Transcription extends Component {
                     this.cancelButton.classList.add("d-none");
                     this.deleteButton.classList.add("d-none");
                     this.exportButton.classList.remove("d-none");
-                    this.syncButton.classList.remove("d-none");
-                    this.hideButton.classList.remove("d-none");
+                    this.syncButton?.classList.remove("d-none");
+                    this.hideButton?.classList.remove("d-none");
 
                     // If transcription is empty, then add the empty message
                     if(!this.validate(this.state.lines)) {

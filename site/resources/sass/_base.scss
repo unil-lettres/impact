@@ -69,3 +69,13 @@
 .z-index-backdrop {
     z-index: $zindex-modal-backdrop;
 }
+
+.show-icon-on-hover {
+    i[class*=" fa"] {
+        display: none;
+    }
+
+    &:hover i[class*=" fa"] {
+        display: inline;
+    }
+}

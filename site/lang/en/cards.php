@@ -26,7 +26,8 @@ return [
     'edit' => 'Edit',
     'cancel' => 'Cancel',
     'save' => 'Save',
-    'hide_boxes' => 'Hide/show boxes marked as hidden',
+    'hide_boxes' => 'Hide / show boxes marked as hidden',
+    'hide_boxe.tooltip' => 'Hide / show this box',
     'hide' => 'Hide',
     'select_source' => 'Source selection',
     'external_link' => 'External link',
@@ -51,5 +52,8 @@ return [
     'edit.tags_are_auto_save' => 'Tags are automatically saved when you add or remove them.',
     'edit.holders_are_auto_save' => 'Holders are automatically saved when you add or remove them.',
     'add_content' => 'Add content...',
+    'rename.label' => 'New name',
+    'rename.submit' => 'Save',
+    'rename.cancel' => 'Cancel',
 
 ];

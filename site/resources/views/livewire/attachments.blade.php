@@ -22,9 +22,7 @@
                         <span class="float-end">
                             @can('forceDelete', [\App\Policies\AttachmentPolicy::class, $attachment])
                                 <button type="submit"
-                                        class="btn btn-sm btn-danger"
-                                        data-bs-toggle="tooltip"
-                                        data-placement="top"
+                                        class="btn btn-sm btn-danger hide-on-read-only"
                                         title="{{ trans('files.delete') }}"
                                         wire:confirm="{{ trans('messages.confirm.delete') }}"
                                         wire:click="delete({{ $attachment->id }})">
@@ -46,3 +44,19 @@
         </p>
     @endif
 </div>
+
+@script
+<script>
+    Livewire.hook('morph.updated', ({ el, component, toEl }) => {
+
+        // When read only mode is active, each poll will remove the display none
+        // on delete buttons. We need to hide them again.
+        if (el.classList.contains('hide-on-read-only')) {
+            const btnHideBoxes = document.getElementById('btn-hide-boxes');
+            if (btnHideBoxes && btnHideBoxes.classList.contains('enabled')) {
+                $(el).hide();
+            }
+        }
+    });
+</script>
+@endscript

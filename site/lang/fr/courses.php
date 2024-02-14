@@ -96,5 +96,5 @@ return [
     'finder.dialog.create.create' => 'Créer',
     'finder.dialog.create.cancel' => 'Annuler',
     'finder.menu.rename' => 'Renommer...',
-    'finder.menu.rename_prompt' => 'Veuillez saisir le nouveau nom du dossier',
+    'finder.menu.rename_prompt' => 'Veuillez saisir le nouveau nom',
 ];

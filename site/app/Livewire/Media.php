@@ -6,6 +6,7 @@ use App\Card;
 use App\Enums\FileStatus;
 use App\Helpers\Helpers;
 use Illuminate\Contracts\Support\Renderable;
+use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
 
@@ -49,6 +50,15 @@ class Media extends Component
         }
 
         return $this->card->file->status.'-'.$this->card->file->progress ?? '0';
+    }
+
+    #[On('card-udpate')]
+    public function cardUpdate(): void
+    {
+        $this->card->refresh();
+        $this->card->loadMissing('file');
+
+        $this->js("window.CardPlayer.refresh($this->card)");
     }
 
     public function render(): Renderable

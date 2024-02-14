@@ -69,6 +69,12 @@ class Card extends Model
         'file_id',
         'options',
         'position',
+        'options->box2->sync',
+        'options->box1->hidden',
+        'options->box2->hidden',
+        'options->box3->hidden',
+        'options->box4->hidden',
+        'options->box5->hidden',
     ];
 
     protected $casts = [

@@ -177,10 +177,21 @@
          * Open a prompt and aks the user to change the name of the
          * given folder.
          */
-        renameFolder(folderId, reloadAfterSave = false) {
-            const newName = prompt("{{ trans('courses.finder.menu.rename_prompt') }}");
+        renameFolder(folderId, title, reloadAfterSave = false) {
+            const newName = prompt("{{ trans('courses.finder.menu.rename_prompt') }}", title);
             if (newName !== null) {
                 $wire.call("renameFolder", folderId, newName, reloadAfterSave);
+            }
+        },
+
+        /**
+         * Open a prompt and aks the user to change the name of the
+         * given card.
+         */
+        renameCard(cardId, title) {
+            const newName = prompt("{{ trans('courses.finder.menu.rename_prompt') }}", title);
+            if (newName !== null) {
+                $wire.call("renameCard", cardId, newName);
             }
         },
 

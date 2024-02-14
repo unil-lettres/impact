@@ -7,6 +7,8 @@ use Illuminate\Validation\Rule;
 
 class UpdateCard extends AbstractRequest
 {
+    const TITLE_VALIDATION = 'required|string|max:255';
+
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -26,7 +28,7 @@ class UpdateCard extends AbstractRequest
     {
         return [
             'card' => 'required|integer|exists:cards,id',
-            'title' => 'required|string|max:255',
+            'title' => static::TITLE_VALIDATION,
             'emails' => [
                 'sometimes',
                 Rule::in(['on']),

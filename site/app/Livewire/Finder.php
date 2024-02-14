@@ -8,6 +8,7 @@ use App\Enums\CardBox;
 use App\Enums\FinderItemType;
 use App\Exceptions\CloneException;
 use App\Folder;
+use App\Http\Requests\UpdateCard;
 use App\Services\Clone\CloneCardService;
 use App\Services\Clone\CloneFolderService;
 use App\Services\Clone\MassCloneService;
@@ -419,6 +420,25 @@ class Finder extends Component
         if ($reloadAfterSave) {
             $this->redirect(url()->previous());
         }
+    }
+
+    /**
+     * Rename a card.
+     */
+    public function renameCard(Card $card, string $newName): void
+    {
+        $success = $this->validateAndFlash(
+            ['newName' => $newName],
+            ['newName' => UpdateCard::TITLE_VALIDATION],
+        );
+
+        if (! $success) {
+            return;
+        }
+
+        $this->authorize('update', $card);
+
+        $card->update(['title' => $newName]);
     }
 
     /**

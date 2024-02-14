@@ -96,5 +96,5 @@ return [
     'finder.dialog.create.create' => 'Create',
     'finder.dialog.create.cancel' => 'Cancel',
     'finder.menu.rename' => 'Rename...',
-    'finder.menu.rename_prompt' => 'Please type the new name of the folder',
+    'finder.menu.rename_prompt' => 'Please type the new name',
 ];

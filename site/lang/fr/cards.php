@@ -26,7 +26,8 @@ return [
     'edit' => 'Éditer',
     'cancel' => 'Annuler',
     'save' => 'Sauver',
-    'hide_boxes' => 'Masquer/afficher les cases indiquées comme cachées',
+    'hide_boxes' => 'Masquer / afficher les cases indiquées comme cachées',
+    'hide_boxe.tooltip' => 'Masquer / afficher cette case',
     'hide' => 'Cacher',
     'select_source' => 'Sélection de la source',
     'external_link' => 'Lien externe',
@@ -51,5 +52,8 @@ return [
     'edit.tags_are_auto_save' => 'Les étiquettes sont enregistrées automatiquement lorsque vous les ajoutez ou les enlevez.',
     'edit.holders_are_auto_save' => 'Les titulaires sont enregistrés automatiquement lorsque vous en ajoutez ou en enlevez.',
     'add_content' => 'Ajouter du contenu...',
+    'rename.label' => 'Nouveau nom',
+    'rename.submit' => 'Modifier',
+    'rename.cancel' => 'Annuler',
 
 ];

@@ -9,14 +9,13 @@ import MimeType from 'mime-types/index';
 export default class Player extends Component {
     constructor (props) {
         super(props)
-
         let data = JSON.parse(this.props.data);
 
-        this.initVariables(data);
+        this.initVariables(data, this.props.initCard);
     }
 
-    initVariables(data) {
-        this.card = data.card;
+    initVariables(data, initCard) {
+        this.card = initCard ?? data.card;
         this.isLocal = data.isLocal ?? true;
         this.locale = data.locale ?? 'fr';
         this.type = this.isLocal ? this.card.file.type : this.guessMediaType(data.url);
@@ -164,10 +163,40 @@ export default class Player extends Component {
     }
 }
 
-const elementId = 'rct-player';
-if (document.getElementById(elementId)) {
-    const root = createRoot(document.getElementById(elementId));
+window.CardPlayer = {
+    root: null,
 
-    let data = document.getElementById(elementId).getAttribute('data');
-    root.render(<Player data={ data } />);
-}
+    get elementId() {
+        return 'rct-player';
+    },
+
+    /**
+     * Initialize the react component Player.
+     *
+     * @param {card} card JSON representation of a Card. Override the one
+     * given in data if presents.
+     */
+    init: function(card = null) {
+        if (document.getElementById(this.elementId)) {
+            this.root = createRoot(document.getElementById(this.elementId));
+
+            let data = document.getElementById(this.elementId).getAttribute('data');
+            this.root.render(<Player data={ data } initCard={ card } />);
+        }
+    },
+
+    /**
+     * Refresh the react component with the given card.
+     *
+     * Can be used when the card model changes and the component need to be
+     * updated accordingly.
+     *
+     * @param {Card} card The updated card.
+     */
+    refresh: function(card) {
+        this.root.unmount();
+        this.init(card);
+    },
+};
+
+window.CardPlayer.init();

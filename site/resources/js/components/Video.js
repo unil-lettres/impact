@@ -4,6 +4,9 @@ import videojs from 'video.js'
 import 'video.js/dist/video-js.css';
 import offset from  'videojs-offset/dist/videojs-offset';
 
+// Plugins
+videojs.registerPlugin("offset", offset);
+
 export default class VideoPlayer extends Component {
     componentDidMount() {
         // Instantiate Video.js
@@ -13,7 +16,6 @@ export default class VideoPlayer extends Component {
         );
 
         // Add offset if available
-        videojs.registerPlugin("offset", offset);
         if(this.props.offset.start || this.props.offset.end) {
             this.player.offset({
                 start: this.props.offset.start,

@@ -4,7 +4,7 @@
     wire:toggle-filter-search-box.window="toggleFilterSearchBox(...Object.values($event.detail))"
     wire:finder-destroy-folder.window="destroyFolder($event.detail.folderId, true)"
     wire:finder-clone-folder.window="cloneFolder($event.detail.folderId, true)"
-    @finder-rename-folder.window="renameFolder($event.detail.folderId, true)"
+    @finder-rename-folder.window="renameFolder($event.detail.folderId, $event.detail.title, true)"
 >
     <div class="toast-container position-fixed top-0 end-0 p-3">
         <div

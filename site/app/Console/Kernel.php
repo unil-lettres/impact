@@ -28,6 +28,8 @@ class Kernel extends ConsoleKernel
 
         $schedule->command('email:account:validity')
             ->dailyAt('01:00');
+        $schedule->command('moodle:sync')
+            ->everyThirtyMinutes();
     }
 
     /**

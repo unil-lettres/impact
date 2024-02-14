@@ -39,6 +39,9 @@ return [
     'moodle' => [
         'url' => env('MOODLE_URL', null),
         'token' => env('MOODLE_TOKEN', null),
+        'sync' => [
+            'timeout' => env('MOODLE_SYNC_TIMEOUT', 600),
+        ],
     ],
 
 ];

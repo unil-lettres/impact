@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Course;
 use App\Enrollment;
+use App\Enums\CourseType;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -64,6 +65,11 @@ class EnrollmentPolicy
             return false;
         }
 
+        // Enrolled course type should be local
+        if ($enrolledCourse->type !== CourseType::Local) {
+            return false;
+        }
+
         // Enrolled user should be valid
         if (! $enrolledUser->isValid()) {
             return false;
@@ -119,6 +125,11 @@ class EnrollmentPolicy
      */
     public function forceDelete(User $user, Enrollment $enrollment)
     {
+        // Enrolled course type should be local
+        if ($enrollment->course->type !== CourseType::Local) {
+            return false;
+        }
+
         if ($user->admin) {
             return true;
         }

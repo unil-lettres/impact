@@ -107,11 +107,11 @@ class CourseController extends Controller
             }
 
             // Get course data from Moodle
-            $courseData = (new MoodleService())
+            $moodleCourse = (new MoodleService())
                 ->getCourse($externalId);
 
             // If request fails or no data is found, return with error
-            if (! $courseData) {
+            if (! $moodleCourse) {
                 return redirect()
                     ->route('admin.courses.manage')
                     ->with('error', trans('messages.moodle.error', ['moodleId' => $externalId]));
@@ -119,36 +119,34 @@ class CourseController extends Controller
 
             // Create new external course
             $course = Course::create([
-                'name' => $courseData['shortname'] ?: 'No name',
-                'description' => $courseData['fullname'] ?: null,
+                'name' => $moodleCourse['shortname'] ?: 'No name',
+                'description' => $moodleCourse['fullname'] ?: null,
                 'type' => CourseType::External,
                 'external_id' => $externalId,
             ]);
 
-            // Get users data from Moodle, then create new users if
-            // needed and finally create enrollments.
-            (new MoodleService())
-                ->getUsers($externalId)?->each(
-                    function ($user) use ($course) {
-                        $email = $user['email'] ?: null;
-                        $firstname = $user['firstname'] ?: '';
-                        $lastname = $user['lastname'] ?: '';
-                        $role = $user['role'] ?: null;
+            $moodleUsers = collect($moodleCourse['users']) ?? collect();
 
-                        if ($email && $role) {
-                            $user = User::firstOrCreate(
-                                ['email' => $email],
-                                ['name' => $firstname.' '.$lastname, 'type' => UserType::Aai]
-                            );
+            // Create enrollments and users if needed
+            $moodleUsers->each(function ($moodleUser) use ($course) {
+                $email = $moodleUser['email'] ?: null;
+                $firstname = $moodleUser['firstname'] ?: '';
+                $lastname = $moodleUser['lastname'] ?: '';
+                $role = $moodleUser['role'] ?? null;
 
-                            Enrollment::create([
-                                'role' => $role,
-                                'course_id' => $course->id,
-                                'user_id' => $user->id,
-                            ]);
-                        }
-                    }
-                );
+                if ($email && $role) {
+                    $moodleUser = User::firstOrCreate(
+                        ['email' => $email],
+                        ['name' => $firstname.' '.$lastname, 'type' => UserType::Aai]
+                    );
+
+                    Enrollment::create([
+                        'role' => $role,
+                        'course_id' => $course->id,
+                        'user_id' => $moodleUser->id,
+                    ]);
+                }
+            });
         } else {
             // Create new local course
             $course = Course::create([

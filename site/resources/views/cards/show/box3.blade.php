@@ -8,7 +8,6 @@
                         <span class="d-none" id="edit-failed-{{ $reference }}">[ {{ trans('messages.card.editor.failed') }} ]</span>
 
                         @if($card->boxIsEditable($reference))
-
                             @can('parameters', $card)
                                 <div id="hide-{{ $reference }}">
                                     <livewire:toggle-box-visibility :card="$card" box="box3" />

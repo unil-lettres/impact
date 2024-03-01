@@ -122,7 +122,7 @@ export default class Editor extends Component {
             editable: !disabled
         };
 
-        this.edit = this.edit.bind(this)
+        this.edit = this.edit.bind(this);
         this.cancel = this.cancel.bind(this);
         this.onEditorChange = this.onEditorChange.bind(this);
 
@@ -138,17 +138,6 @@ export default class Editor extends Component {
 
         if(this.cancelButton) {
             this.cancelButton.addEventListener('click', this.cancel, false);
-        }
-    }
-
-    componentDidUpdate() {
-        const btnHideBoxes = document.getElementById('btn-hide-boxes');
-        if (btnHideBoxes) {
-            if (this.state.editable) {
-                btnHideBoxes.classList.add('disabled');
-            } else {
-                btnHideBoxes.classList.remove('disabled');
-            }
         }
     }
 

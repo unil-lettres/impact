@@ -33,6 +33,7 @@
                                name="box2-sync"
                                {{ old('box2-sync', $card->options['box2']['sync']) ? 'checked' : '' }}
                                class="form-check-input"
+                               {{ $card->course->transcription !== \App\Enums\TranscriptionType::Icor ? 'disabled' : '' }}
                         >
                     </div>
                 </div>

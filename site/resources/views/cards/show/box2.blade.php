@@ -3,25 +3,31 @@
         <div class="card-header">
             <div class="d-flex align-items-center">
                 <span class="fw-bolder me-auto">2. {{ trans('cards.transcription') }}</span>
-                    <div class="d-flex gap-2">
+                    <div class="d-flex">
                         <span class="d-none" id="edit-failed-{{ $reference }}">[ {{ trans('messages.card.editor.failed') }} ]</span>
 
                         @if($card->boxIsEditable($reference))
-
                             @can('parameters', $card)
-                                <div id="hide-{{ $reference }}" class="hide-on-read-only">
-                                    <livewire:toggle-box-visibility :card="$card" box="box2" />
-                                </div>
-                            @endcan
-                            @can('update', $card)
-                                <div id="sync-{{ $reference }}" class="hide-on-read-only">
-                                    <livewire:toggle-source-sync :card="$card" />
+                                <div class="hide-on-read-only">
+                                    <div id="hide-{{ $reference }}"
+                                         class="ms-2">
+                                        <livewire:toggle-box-visibility :card="$card" box="box2" />
+                                    </div>
                                 </div>
                             @endcan
 
                             @if($card->course->transcription === \App\Enums\TranscriptionType::Icor)
+                                @can('update', $card)
+                                    <div class="hide-on-read-only">
+                                        <div id="sync-{{ $reference }}"
+                                             class="ms-2">
+                                            <livewire:toggle-source-sync :card="$card" />
+                                        </div>
+                                    </div>
+                                @endcan
+
                                 <div class="hide-on-read-only">
-                                    <button class="btn btn-primary"
+                                    <button class="btn btn-primary ms-2"
                                             id="export-{{ $reference }}"
                                             format="docx"
                                             data-bs-toggle="tooltip"
@@ -31,21 +37,27 @@
                                     </button>
                                 </div>
 
-                                <button class="btn btn-danger d-none"
-                                        id="clear-{{ $reference }}">
-                                    {{ trans('cards.clear_transcription') }}
-                                </button>
+                                <div class="hide-on-read-only">
+                                    <button class="btn btn-danger d-none ms-2"
+                                            id="clear-{{ $reference }}">
+                                        {{ trans('cards.clear_transcription') }}
+                                    </button>
+                                </div>
                             @endif
 
-                            <button class="btn btn-secondary d-none"
-                                    id="cancel-{{ $reference }}">
-                                {{ trans('cards.cancel') }}
-                            </button>
+                            <div class="hide-on-read-only">
+                                <button class="btn btn-secondary d-none ms-2"
+                                        id="cancel-{{ $reference }}">
+                                    {{ trans('cards.cancel') }}
+                                </button>
+                            </div>
 
-                            <button class="btn btn-primary"
-                                    id="edit-{{ $reference }}">
-                                {{ trans('cards.edit') }}
-                            </button>
+                            <div class="hide-on-read-only">
+                                <button class="btn btn-primary ms-2"
+                                        id="edit-{{ $reference }}">
+                                    {{ trans('cards.edit') }}
+                                </button>
+                            </div>
                         @endif
                 </div>
             </div>

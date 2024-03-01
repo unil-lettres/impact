@@ -270,7 +270,7 @@ class Card extends Model
         }
 
         // If the option hidden is set on a box, don't show it to anyone but managers and holders.
-        if (!(Auth::user()->isManager($this->course) || Auth::user()->isHolder($this)) && ($this->options[$box]['hidden'] ?? false)) {
+        if (! (Auth::user()->isManager($this->course) || Auth::user()->isHolder($this)) && ($this->options[$box]['hidden'] ?? false)) {
             return false;
         }
 

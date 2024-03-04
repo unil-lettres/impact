@@ -57,8 +57,9 @@ class UserController extends Controller
     {
         $this->authorize('manage', User::class);
 
-        if ($request->get('filter')) {
-            $users = $this->filter($request->get('filter'));
+        $filter = $request->get('filter');
+        if ($filter) {
+            $users = $this->filter($filter);
         } else {
             $users = User::withoutGlobalScope(ValidityScope::class)
                 ->select('users.*');
@@ -67,6 +68,7 @@ class UserController extends Controller
         return view('users.manage', [
             'users' => $users->orderBy('created_at', 'desc')
                 ->paginate(config('const.pagination.per')),
+            'filter' => $filter,
         ]);
     }
 

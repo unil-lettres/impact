@@ -11,6 +11,7 @@ use App\Enums\UserType;
 use App\Http\Requests\DestroyCourse;
 use App\Http\Requests\DisableCourse;
 use App\Http\Requests\EnableCourse;
+use App\Http\Requests\IndexCourses;
 use App\Http\Requests\ManageCourses;
 use App\Http\Requests\SendCourseDeleteConfirmMail;
 use App\Http\Requests\StoreCourse;
@@ -24,6 +25,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 
 class CourseController extends Controller
@@ -35,15 +37,28 @@ class CourseController extends Controller
      *
      * @throws AuthorizationException
      */
-    public function index()
+    public function index(IndexCourses $request)
     {
         $this->authorize('viewAny', Course::class);
 
-        $courses = Course::orderBy('created_at', 'desc')
+        $filter = $request->get('filter');
+        $courses = Course::query()
+            ->when(Auth::user()->admin, function ($query) use ($filter) {
+                // When the user is admin, get all courses (even soft deleted ones)
+                // filter them if the parameter is set.
+                return $filter ? $this->filter($filter) : $query->withTrashed();
+            }, function ($query) {
+                // Get all available courses where the user is enrolled
+                return $query->whereHas('enrollments', function ($query) {
+                    $query->where('user_id', Auth::id());
+                });
+            })
+            ->orderBy('created_at', 'desc')
             ->get();
 
         return view('courses.index', [
             'courses' => $courses,
+            'filter' => $filter ?? null,
         ]);
     }
 
@@ -58,8 +73,9 @@ class CourseController extends Controller
     {
         $this->authorize('manage', Course::class);
 
-        if ($request->get('filter')) {
-            $courses = $this->filter($request->get('filter'));
+        $filter = $request->get('filter');
+        if ($filter) {
+            $courses = $this->filter($filter);
         } else {
             $courses = Course::withTrashed();
         }
@@ -68,6 +84,7 @@ class CourseController extends Controller
             'courses' => $courses
                 ->orderBy('created_at', 'desc')
                 ->paginate(config('const.pagination.per')),
+            'filter' => $filter ?? null,
         ]);
     }
 
@@ -380,6 +397,10 @@ class CourseController extends Controller
                 ->where('type', CourseType::External),
             CoursesFilter::Local => $filters->withTrashed()
                 ->where('type', CourseType::Local),
+            CoursesFilter::Own => $filters
+                ->whereHas('enrollments', function ($query) {
+                    $query->where('user_id', Auth::id());
+                }),
             default => $filters->withTrashed(),
         };
     }

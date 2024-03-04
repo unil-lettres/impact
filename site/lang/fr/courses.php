@@ -3,8 +3,11 @@
 return [
 
     'course' => 'Espace',
+    'own' => 'Mes espaces',
     'manage' => 'Gestion des espaces',
     'name' => 'Nom',
+    'creation_date' => 'Date de création',
+    'managers' => 'Responsable(s)',
     'description' => 'Description',
     'details' => 'Détails',
     'create' => 'Créer un espace',

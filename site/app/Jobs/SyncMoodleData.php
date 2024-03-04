@@ -102,7 +102,8 @@ class SyncMoodleData implements ShouldQueue
                 // Get the Impact user ids belonging to orphan enrollments
                 $orphanImpactUserIds = User::whereIn(
                     'email',
-                    $impactCourse->enrollments->pluck('user.email')
+                    $impactCourse->enrollments
+                        ->pluck('user.email')
                         ->diff(
                             $moodleUsers->pluck('email')
                         )

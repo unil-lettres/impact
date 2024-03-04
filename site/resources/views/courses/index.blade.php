@@ -4,24 +4,79 @@
     {{ trans('courses.list') }}
 @endsection
 
-@section('content')
-    <div id="courses">
-        <div>
-            @unless ($courses->isEmpty())
-                <ul>
-                    @foreach ($courses as $course)
-                        @can('view', $course)
-                            <li>
-                                <a href="{{ route('courses.show', $course->id) }}">{{ $course->name }}</a>
-                            </li>
-                        @endcan
-                    @endforeach
-                </ul>
-            @else
-                <p class="text-secondary">
-                    {{ trans('courses.not_found') }}
-                </p>
-            @endunless
+@section('actions')
+    @if(Auth::user()->admin)
+        <div class="dropdown show float-end me-1">
+            <a class="btn dropdown-toggle{{ $filter ? ' btn-primary' : ' btn-secondary'  }}"
+               href="#"
+               role="button"
+               id="dropdownCoursesFiltersLink"
+               data-bs-toggle="dropdown"
+               aria-haspopup="true"
+               aria-expanded="false">
+                {{ trans('admin.filters') }}
+                <i class="fa-solid{{ $filter ? ' fa-check' : '' }}"></i>
+            </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownCoursesFiltersLink">
+                <a class="dropdown-item" href="{{ route('home') }}">
+                    -
+                </a>
+                <a class="dropdown-item"
+                   href="{{ route('home', ['filter' => \App\Enums\CoursesFilter::Own]) }}">
+                    {!! Helpers::filterSelectedMark($filter, \App\Enums\CoursesFilter::Own) !!}
+                    {{ trans('courses.own') }}
+                </a>
+            </div>
         </div>
+    @endif
+@endsection
+
+@section('content')
+    <div id="index-courses">
+        @unless ($courses->isEmpty())
+            <div class="flex-table">
+                <div class="flex-row header">
+                    <div class="flex-cell name">{{ trans('courses.name') }}</div>
+                    <div class="flex-cell managers">{{ trans('courses.managers') }}</div>
+                    <div class="flex-cell date">{{ trans('courses.creation_date') }}</div>
+                    <div class="flex-cell description">{{ trans('courses.description') }}</div>
+                </div>
+
+                @foreach ($courses as $course)
+                    @can('view', $course)
+                        <div class="flex-row{{ $course->deleted_at ? ' deleted' : '' }}">
+                            <div class="flex-cell name">
+                                @if($course->deleted_at)
+                                    <a href="{{ route('admin.courses.manage', ['filter' => App\Enums\CoursesFilter::Disabled]) }}">
+                                        {{ $course->name }}
+                                    </a>
+                                @else
+                                    <a href="{{ route('courses.show', $course->id) }}">
+                                        {{ $course->name }}
+                                    </a>
+                                @endif
+                            </div>
+                            <div class="flex-cell managers">
+                                {{ $course->managers(true)->implode('name', ', ') }}
+                            </div>
+                            <div class="flex-cell date">
+                                {{ $course->created_at ? $course->created_at->format('d/m/Y') : '-' }}
+                            </div>
+                            <div class="flex-cell description">
+                                @if($course->description)
+                                    {{ $course->description }}
+                                @else
+                                    -
+                                @endif
+                            </div>
+                        </div>
+                    @endcan
+                @endforeach
+            </div>
+        @else
+            <p class="text-secondary">
+                {{ trans('courses.not_found') }}
+            </p>
+        @endunless
     </div>
 @endsection

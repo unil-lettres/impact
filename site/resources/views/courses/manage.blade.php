@@ -10,7 +10,7 @@
                     {{ trans('courses.create') }}
                 </a>
                 <div class="dropdown show float-end me-1">
-                    <a class="btn btn-primary dropdown-toggle"
+                    <a class="btn dropdown-toggle{{ $filter ? ' btn-primary' : ' btn-secondary'  }}"
                        href="#"
                        role="button"
                        id="dropdownCoursesFiltersLink"
@@ -18,6 +18,7 @@
                        aria-haspopup="true"
                        aria-expanded="false">
                         {{ trans('admin.filters') }}
+                        <i class="fa-solid{{ $filter ? ' fa-check' : '' }}"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdownCoursesFiltersLink">
                         <a class="dropdown-item" href="{{ route('admin.courses.manage') }}">
@@ -25,14 +26,17 @@
                         </a>
                         <a class="dropdown-item"
                            href="{{ route('admin.courses.manage', ['filter' => \App\Enums\CoursesFilter::Disabled]) }}">
+                            {!! Helpers::filterSelectedMark($filter, \App\Enums\CoursesFilter::Disabled) !!}
                             {{ trans('courses.disabled') }}
                         </a>
                         <a class="dropdown-item"
                            href="{{ route('admin.courses.manage', ['filter' => \App\Enums\CoursesFilter::External]) }}">
+                            {!! Helpers::filterSelectedMark($filter, \App\Enums\CoursesFilter::External) !!}
                             {{ trans('courses.external') }}
                         </a>
                         <a class="dropdown-item"
                            href="{{ route('admin.courses.manage', ['filter' => \App\Enums\CoursesFilter::Local]) }}">
+                            {!! Helpers::filterSelectedMark($filter, \App\Enums\CoursesFilter::Local) !!}
                             {{ trans('courses.local') }}
                         </a>
                     </div>

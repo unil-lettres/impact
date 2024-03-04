@@ -9,4 +9,6 @@ final class CoursesFilter
     const External = 'external';
 
     const Local = 'local';
+
+    const Own = 'own';
 }

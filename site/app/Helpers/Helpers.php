@@ -468,4 +468,21 @@ class Helpers
             wire:click='sort("$column", "$direction")'
         HTML;
     }
+
+    /**
+     * If a filter is available & corresponds to the type,
+     * generate & return the HTML of the filter's "selected" mark.
+     */
+    public static function filterSelectedMark(?string $filter, string $type): string
+    {
+        if (! $filter) {
+            return '';
+        }
+
+        if ($filter !== $type) {
+            return '';
+        }
+
+        return '<i class="fa-solid fa-check"></i>';
+    }
 }

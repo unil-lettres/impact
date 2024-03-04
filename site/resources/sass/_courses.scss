@@ -1,3 +1,57 @@
+#index-courses {
+    .flex-table {
+        display: flex;
+        flex-direction: column;
+
+        .flex-row {
+            display: flex;
+        }
+
+        .flex-row:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .flex-row.header {
+            font-weight: bold;
+        }
+
+        .flex-cell {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .name {
+            flex: 2;
+
+            a {
+                text-decoration: none;
+                font-weight: bold;
+            }
+        }
+
+        .managers,
+        .date {
+            flex: 1;
+        }
+
+        .description {
+            flex: 3;
+        }
+
+        .deleted {
+            .name a {
+                text-decoration: line-through;
+                color: rgba(#f00, .6);
+                font-weight: normal;
+            }
+
+            .managers, .date, .description {
+                color: rgba(#000, .3);
+            }
+        }
+    }
+}
+
 #edit-course {
     .card-header {
         .title {

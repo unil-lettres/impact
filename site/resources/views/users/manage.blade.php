@@ -10,7 +10,7 @@
                     {{ trans('users.create') }}
                 </a>
                 <div class="dropdown show float-end me-1">
-                    <a class="btn btn-primary dropdown-toggle"
+                    <a class="btn dropdown-toggle{{ $filter ? ' btn-primary' : ' btn-secondary'  }}"
                        href="#"
                        role="button"
                        id="dropdownUsersFiltersLink"
@@ -18,6 +18,7 @@
                        aria-haspopup="true"
                        aria-expanded="false">
                         {{ trans('admin.filters') }}
+                        <i class="fa-solid{{ $filter ? ' fa-check' : '' }}"></i>
                     </a>
                     <div class="dropdown-menu" aria-labelledby="dropdownUsersFiltersLink">
                         <a class="dropdown-item" href="{{ route('admin.users.manage') }}">
@@ -25,14 +26,17 @@
                         </a>
                         <a class="dropdown-item"
                            href="{{ route('admin.users.manage', ['filter' => \App\Enums\UsersFilter::Expired]) }}">
+                            {!! Helpers::filterSelectedMark($filter, \App\Enums\UsersFilter::Expired) !!}
                             {{ trans('users.expired') }}
                         </a>
                         <a class="dropdown-item"
                            href="{{ route('admin.users.manage', ['filter' => \App\Enums\UsersFilter::Aai]) }}">
+                            {!! Helpers::filterSelectedMark($filter, \App\Enums\UsersFilter::Aai) !!}
                             {{ trans('users.aai') }}
                         </a>
                         <a class="dropdown-item"
                            href="{{ route('admin.users.manage', ['filter' => \App\Enums\UsersFilter::Local]) }}">
+                            {!! Helpers::filterSelectedMark($filter, \App\Enums\UsersFilter::Local) !!}
                             {{ trans('users.local') }}
                         </a>
                     </div>

@@ -3,8 +3,11 @@
 return [
 
     'course' => 'Space',
+    'own' => 'My spaces',
     'manage' => 'Spaces management',
     'name' => 'Name',
+    'creation_date' => 'Creation date',
+    'managers' => 'Manager(s)',
     'description' => 'Description',
     'details' => 'Details',
     'create' => 'Create a space',

@@ -110,4 +110,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: logs-failed-tests-${{ matrix.php-versions }}
-          path: site/tests/Browser/console
+          path: site/storage/logs

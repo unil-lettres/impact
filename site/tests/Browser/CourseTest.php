@@ -65,7 +65,20 @@ class CourseTest extends DuskTestCase
 
             $browser->assertSee('First space')
                 ->assertSee('Second space')
-                ->assertDontSee('Deactivated space');
+                ->assertSee('Deactivated space');
+        });
+    }
+
+    public function testLinkDeactivatedCoursesToAdminView(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->assertSee('Deactivated space')
+                ->clickLink('Deactivated space')
+                ->assertSee('Gestion des espaces')
+                ->assertPathIs('/admin/courses');
         });
     }
 

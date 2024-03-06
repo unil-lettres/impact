@@ -12,6 +12,7 @@ return [
     'expired' => 'Expired',
     'aai' => 'Aai',
     'local' => 'Local',
+    'search' => 'Find a user',
     'create' => 'Create a user',
     'edit' => 'Edit the user',
     'validity.extend' => 'Extend validity (:months months)',

@@ -25,6 +25,7 @@ class ManageUsers extends AbstractRequest
     public function rules()
     {
         return [
+            'search' => ['string', 'max:255'],
             'filter' => [
                 'string',
                 Rule::in(

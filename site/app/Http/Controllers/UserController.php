@@ -57,18 +57,23 @@ class UserController extends Controller
     {
         $this->authorize('manage', User::class);
 
+        $users = User::query()
+            ->withoutGlobalScope(ValidityScope::class)
+            ->select('users.*');
+
+        // If the filter parameter is set, filter the users by type
         $filter = $request->get('filter');
-        if ($filter) {
-            $users = $this->filter($filter);
-        } else {
-            $users = User::withoutGlobalScope(ValidityScope::class)
-                ->select('users.*');
-        }
+        $users = $this->filter($users, $filter);
+
+        // If the search parameter is set, filter the users by name and email
+        $search = $request->get('search');
+        $users = $this->search($users, $search);
 
         return view('users.manage', [
             'users' => $users->orderBy('created_at', 'desc')
                 ->paginate(config('const.pagination.per')),
             'filter' => $filter,
+            'search' => $search,
         ]);
     }
 
@@ -302,21 +307,34 @@ class UserController extends Controller
     }
 
     /**
-     * Filter users by parameter
-     *
-     * @return Builder
+     * Filter users by type
      */
-    private function filter(string $filter)
+    private function filter(Builder $users, ?string $filter): Builder
     {
-        $filters = User::query();
-
-        $filters->withoutGlobalScope(ValidityScope::class);
+        if (! $filter) {
+            return $users;
+        }
 
         return match ($filter) {
-            UsersFilter::Expired => $filters->whereDate('validity', '<=', Carbon::now()),
-            UsersFilter::Aai => $filters->where('type', UserType::Aai),
-            UsersFilter::Local => $filters->where('type', UserType::Local),
-            default => $filters->select('users.*'),
+            UsersFilter::Expired => $users->whereDate('validity', '<=', Carbon::now()),
+            UsersFilter::Aai => $users->where('type', UserType::Aai),
+            UsersFilter::Local => $users->where('type', UserType::Local),
+            default => $users->select('users.*'),
         };
+    }
+
+    /**
+     * Filter users by name and email
+     */
+    private function search(Builder $users, ?string $search): Builder
+    {
+        if (! $search) {
+            return $users;
+        }
+
+        return $users->where(function ($query) use ($search) {
+            $query->where('name', 'like', '%'.$search.'%')
+                ->orWhere('email', 'like', '%'.$search.'%');
+        });
     }
 }

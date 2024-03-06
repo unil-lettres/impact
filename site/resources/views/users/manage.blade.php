@@ -3,45 +3,85 @@
 @section('admin.content')
     <div id="users">
         <div class="card">
-            <div class="card-header">
-                <span class="title">{{ trans('users.manage') }} <span class="badge bg-secondary">{{ $users->total() }}</span></span>
-                <a href="{{ route('admin.users.create') }}"
-                   class="btn btn-primary float-end">
-                    {{ trans('users.create') }}
-                </a>
-                <div class="dropdown show float-end me-1">
-                    <a class="btn dropdown-toggle{{ $filter ? ' btn-primary' : ' btn-secondary'  }}"
-                       href="#"
-                       role="button"
-                       id="dropdownUsersFiltersLink"
-                       data-bs-toggle="dropdown"
-                       aria-haspopup="true"
-                       aria-expanded="false">
-                        {{ trans('admin.filters') }}
-                        <i class="fa-solid{{ $filter ? ' fa-check' : '' }}"></i>
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownUsersFiltersLink">
-                        <a class="dropdown-item" href="{{ route('admin.users.manage') }}">
-                            -
+            <div class="card-header d-flex justify-content-between">
+                <div class="title">{{ trans('users.manage') }} <span class="badge bg-secondary">{{ $users->total() }}</span></div>
+
+                <div class="header-actions d-flex justify-content-end">
+                    <div class="search-users">
+                        <form method="get" action="{{ route('admin.users.manage') }}">
+                            <div class="input-group">
+                                <input type="text"
+                                       name="search"
+                                       class="form-control"
+                                       placeholder="{{ trans('users.search') }}"
+                                       aria-label="{{ trans('users.search') }}"
+                                       aria-describedby="button-search-user"
+                                       value="{{ $search }}">
+
+                                @if($filter)
+                                    <input type="hidden" name="filter" value="{{ $filter }}">
+                                @endif
+
+                                @if($search)
+                                    <a class="btn bg-white border-top border-bottom"
+                                       type="button"
+                                       id="button-clear-user"
+                                       href="{{ route('admin.users.manage', ['filter' => $filter]) }}">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </a>
+                                @endif
+
+                                <button class="btn{{ $search ? ' btn-primary' : ' btn-secondary'  }}"
+                                        type="submit"
+                                        id="button-search-user">
+                                    {{ trans('general.search') }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="filter-users dropdown show ms-1">
+                        <a class="btn dropdown-toggle{{ $filter ? ' btn-primary' : ' btn-secondary'  }}"
+                           href="#"
+                           role="button"
+                           id="dropdownUsersFiltersLink"
+                           data-bs-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+                            {{ trans('admin.filters') }}
+                            <i class="fa-solid{{ $filter ? ' fa-check' : '' }}"></i>
                         </a>
-                        <a class="dropdown-item"
-                           href="{{ route('admin.users.manage', ['filter' => \App\Enums\UsersFilter::Expired]) }}">
-                            {!! Helpers::filterSelectedMark($filter, \App\Enums\UsersFilter::Expired) !!}
-                            {{ trans('users.expired') }}
-                        </a>
-                        <a class="dropdown-item"
-                           href="{{ route('admin.users.manage', ['filter' => \App\Enums\UsersFilter::Aai]) }}">
-                            {!! Helpers::filterSelectedMark($filter, \App\Enums\UsersFilter::Aai) !!}
-                            {{ trans('users.aai') }}
-                        </a>
-                        <a class="dropdown-item"
-                           href="{{ route('admin.users.manage', ['filter' => \App\Enums\UsersFilter::Local]) }}">
-                            {!! Helpers::filterSelectedMark($filter, \App\Enums\UsersFilter::Local) !!}
-                            {{ trans('users.local') }}
+                        <div class="dropdown-menu" aria-labelledby="dropdownUsersFiltersLink">
+                            <a class="dropdown-item" href="{{ route('admin.users.manage', ['search' => $search]) }}">
+                                -
+                            </a>
+                            <a class="dropdown-item"
+                               href="{{ route('admin.users.manage', ['filter' => \App\Enums\UsersFilter::Expired, 'search' => $search]) }}">
+                                {!! Helpers::filterSelectedMark($filter, \App\Enums\UsersFilter::Expired) !!}
+                                {{ trans('users.expired') }}
+                            </a>
+                            <a class="dropdown-item"
+                               href="{{ route('admin.users.manage', ['filter' => \App\Enums\UsersFilter::Aai, 'search' => $search]) }}">
+                                {!! Helpers::filterSelectedMark($filter, \App\Enums\UsersFilter::Aai) !!}
+                                {{ trans('users.aai') }}
+                            </a>
+                            <a class="dropdown-item"
+                               href="{{ route('admin.users.manage', ['filter' => \App\Enums\UsersFilter::Local, 'search' => $search]) }}">
+                                {!! Helpers::filterSelectedMark($filter, \App\Enums\UsersFilter::Local) !!}
+                                {{ trans('users.local') }}
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="create-users ms-3">
+                        <a href="{{ route('admin.users.create') }}"
+                           class="btn btn-primary">
+                            {{ trans('users.create') }}
                         </a>
                     </div>
                 </div>
             </div>
+
             <div class="card-body">
                 @if ($users->items())
                     <table class="table">

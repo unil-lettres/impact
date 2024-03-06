@@ -1,15 +1,51 @@
 <div id="invitations">
     <div class="card">
-        <div class="card-header">
-            <span class="title">{{ trans('invitations.pending') }} <span class="badge bg-secondary">{{ $invitations->total() }}</span></span>
+        <div class="card-header d-flex justify-content-between">
+            <div class="title">{{ trans('invitations.pending') }} <span class="badge bg-secondary">{{ $invitations->total() }}</span></div>
 
-            @can('create', [\App\Invitation::class, null])
-                <a href="{{ Route::is('admin.invitations.manage') ? route('admin.invitations.create') : route('invitations.create') }}"
-                   class="btn btn-primary float-end">
-                    {{ trans('invitations.create') }}
-                </a>
-            @endcan
+            <div class="header-actions d-flex justify-content-end">
+                @if(Route::is('admin.invitations.manage'))
+                    <div class="search-invitations">
+                        <form method="get" action="{{ route('admin.invitations.manage') }}">
+                            <div class="input-group">
+                                <input type="text"
+                                       name="search"
+                                       class="form-control"
+                                       placeholder="{{ trans('invitations.search') }}"
+                                       aria-label="{{ trans('invitations.search') }}"
+                                       aria-describedby="button-search-invitation"
+                                       value="{{ $search }}">
+
+                                @if($search)
+                                    <a class="btn bg-white border-top border-bottom"
+                                       type="button"
+                                       id="button-clear-invitation"
+                                       href="{{ route('admin.invitations.manage') }}">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </a>
+                                @endif
+
+                                <button class="btn{{ $search ? ' btn-primary' : ' btn-secondary'  }}"
+                                        type="submit"
+                                        id="button-search-invitation">
+                                    {{ trans('general.search') }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                @endif
+
+                @can('create', [\App\Invitation::class, null])
+                    <div class="create-invitations ms-3">
+                        <a href="{{ Route::is('admin.invitations.manage') ? route('admin.invitations.create') : route('invitations.create') }}"
+                           class="btn btn-primary">
+                            {{ trans('invitations.create') }}
+                        </a>
+                    </div>
+                @endcan
+            </div>
         </div>
+
         <div class="card-body">
             @if ($invitations->items())
                 <table class="table">

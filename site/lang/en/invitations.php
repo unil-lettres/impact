@@ -8,6 +8,7 @@ return [
     'link' => 'Invitation link (click to keep the link visible)',
     'pending' => 'Pending invitations',
     'create' => 'Create an invitation',
+    'search' => 'Find an invitation',
     'select_space' => 'Select the space',
     'not_found' => 'No pending invitations',
     'send' => 'Send the invitation email',

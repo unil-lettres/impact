@@ -7,6 +7,7 @@ use App\Enrollment;
 use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
 use App\Http\Requests\CreateInvitationUser;
+use App\Http\Requests\ManageInvitations;
 use App\Http\Requests\SendInvitationMail;
 use App\Http\Requests\StoreInvitation;
 use App\Invitation;
@@ -14,6 +15,7 @@ use App\Mail\InvitationCreated;
 use App\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -51,16 +53,22 @@ class InvitationController extends Controller
      *
      * @throws AuthorizationException
      */
-    public function manage()
+    public function manage(ManageInvitations $request)
     {
         $this->authorize('manage', Invitation::class);
 
-        $invitations = Invitation::where('registered_at', null)
-            ->orderBy('created_at', 'desc')
-            ->paginate(config('const.pagination.per'));
+        $invitations = Invitation::query()
+            ->where('registered_at', null);
+
+        // If the search parameter is set, filter the invitations by email
+        $search = $request->get('search');
+        $invitations = $this->search($invitations, $search);
 
         return view('invitations.manage', [
-            'invitations' => $invitations,
+            'invitations' => $invitations
+                ->orderBy('created_at', 'desc')
+                ->paginate(config('const.pagination.per')),
+            'search' => $search,
         ]);
     }
 
@@ -271,5 +279,19 @@ class InvitationController extends Controller
 
         return redirect()->back()
             ->with('success', trans('messages.invitation.sent', ['mail' => $invitation->email]));
+    }
+
+    /**
+     * Filter invitations by email
+     */
+    private function search(Builder $invitations, ?string $search): Builder
+    {
+        if (! $search) {
+            return $invitations;
+        }
+
+        return $invitations->where(function ($query) use ($search) {
+            $query->where('email', 'like', '%'.$search.'%');
+        });
     }
 }

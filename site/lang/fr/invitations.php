@@ -8,6 +8,7 @@ return [
     'link' => 'Lien de l\'invitation (cliquer pour garder le lien visible)',
     'pending' => 'Invitations en attente',
     'create' => 'Créer une invitation',
+    'search' => 'Rechercher une invitation',
     'select_space' => 'Sélectionner un espace',
     'not_found' => 'Pas d\'invitations en attente',
     'send' => 'Envoyer le mail d\'invitation',

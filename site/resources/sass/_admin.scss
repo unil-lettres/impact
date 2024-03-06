@@ -1,38 +1,39 @@
-.admin-content {
-    #users,
-    #invitations,
-    #courses,
-    #files {
-        .card-header {
-            .title {
-                font-size: 1.5em;
-            }
+#users,
+#invitations,
+#courses,
+#files {
+    .card-header {
+        .title {
+            font-size: 1.5em;
         }
+    }
 
-        table {
-            tbody {
-                .badge {
-                    font-size: 1em;
-                }
+    table {
+        tbody {
+            .badge {
+                font-size: 1em;
+            }
 
-                .invalid {
-                    color: $invalid !important;
-                }
+            .invalid {
+                color: $invalid !important;
+            }
 
-                .actions {
-                    width: 10%;
+            .actions {
+                width: 10%;
 
-                    span {
-                        display: inherit;
-                        padding: 2px;
-                    }
+                span {
+                    display: inherit;
+                    padding: 2px;
                 }
             }
         }
     }
+}
 
+.admin-content {
     @media (max-width: 1000px) {
         #users,
+        #invitations,
         #courses {
             .card-header.d-flex {
                 flex-direction: column;

@@ -32,8 +32,11 @@
     }
 
     @media (max-width: 1000px) {
-        #users .card-header.d-flex {
-            flex-direction: column;
+        #users,
+        #courses {
+            .card-header.d-flex {
+                flex-direction: column;
+            }
         }
     }
 }

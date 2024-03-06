@@ -3,41 +3,80 @@
 @section('admin.content')
     <div id="courses">
         <div class="card">
-            <div class="card-header">
-                <span class="title">{{ trans('courses.manage') }} <span class="badge bg-secondary">{{ $courses->total() }}</span></span>
-                <a href="{{ route('admin.courses.create') }}"
-                   class="btn btn-primary float-end">
-                    {{ trans('courses.create') }}
-                </a>
-                <div class="dropdown show float-end me-1">
-                    <a class="btn dropdown-toggle{{ $filter ? ' btn-primary' : ' btn-secondary'  }}"
-                       href="#"
-                       role="button"
-                       id="dropdownCoursesFiltersLink"
-                       data-bs-toggle="dropdown"
-                       aria-haspopup="true"
-                       aria-expanded="false">
-                        {{ trans('admin.filters') }}
-                        <i class="fa-solid{{ $filter ? ' fa-check' : '' }}"></i>
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="dropdownCoursesFiltersLink">
-                        <a class="dropdown-item" href="{{ route('admin.courses.manage') }}">
-                            -
+            <div class="card-header d-flex justify-content-between">
+                <div class="title">{{ trans('courses.manage') }} <span class="badge bg-secondary">{{ $courses->total() }}</span></div>
+
+                <div class="header-actions d-flex justify-content-end">
+                    <div class="search-courses">
+                        <form method="get" action="{{ route('admin.courses.manage') }}">
+                            <div class="input-group">
+                                <input type="text"
+                                       name="search"
+                                       class="form-control"
+                                       placeholder="{{ trans('courses.search') }}"
+                                       aria-label="{{ trans('courses.search') }}"
+                                       aria-describedby="button-search-course"
+                                       value="{{ $search }}">
+
+                                @if($filter)
+                                    <input type="hidden" name="filter" value="{{ $filter }}">
+                                @endif
+
+                                @if($search)
+                                    <a class="btn bg-white border-top border-bottom"
+                                       type="button"
+                                       id="button-clear-course"
+                                       href="{{ route('admin.courses.manage', ['filter' => $filter]) }}">
+                                        <i class="fa-solid fa-xmark"></i>
+                                    </a>
+                                @endif
+
+                                <button class="btn{{ $search ? ' btn-primary' : ' btn-secondary'  }}"
+                                        type="submit"
+                                        id="button-search-course">
+                                    {{ trans('general.search') }}
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="filter-courses dropdown show ms-1">
+                        <a class="btn dropdown-toggle{{ $filter ? ' btn-primary' : ' btn-secondary'  }}"
+                           href="#"
+                           role="button"
+                           id="dropdownCoursesFiltersLink"
+                           data-bs-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+                            {{ trans('admin.filters') }}
+                            <i class="fa-solid{{ $filter ? ' fa-check' : '' }}"></i>
                         </a>
-                        <a class="dropdown-item"
-                           href="{{ route('admin.courses.manage', ['filter' => \App\Enums\CoursesFilter::Disabled]) }}">
-                            {!! Helpers::filterSelectedMark($filter, \App\Enums\CoursesFilter::Disabled) !!}
-                            {{ trans('courses.disabled') }}
-                        </a>
-                        <a class="dropdown-item"
-                           href="{{ route('admin.courses.manage', ['filter' => \App\Enums\CoursesFilter::External]) }}">
-                            {!! Helpers::filterSelectedMark($filter, \App\Enums\CoursesFilter::External) !!}
-                            {{ trans('courses.external') }}
-                        </a>
-                        <a class="dropdown-item"
-                           href="{{ route('admin.courses.manage', ['filter' => \App\Enums\CoursesFilter::Local]) }}">
-                            {!! Helpers::filterSelectedMark($filter, \App\Enums\CoursesFilter::Local) !!}
-                            {{ trans('courses.local') }}
+                        <div class="dropdown-menu" aria-labelledby="dropdownCoursesFiltersLink">
+                            <a class="dropdown-item" href="{{ route('admin.courses.manage', ['search' => $search]) }}">
+                                -
+                            </a>
+                            <a class="dropdown-item"
+                               href="{{ route('admin.courses.manage', ['filter' => \App\Enums\CoursesFilter::Disabled, 'search' => $search]) }}">
+                                {!! Helpers::filterSelectedMark($filter, \App\Enums\CoursesFilter::Disabled) !!}
+                                {{ trans('courses.disabled') }}
+                            </a>
+                            <a class="dropdown-item"
+                               href="{{ route('admin.courses.manage', ['filter' => \App\Enums\CoursesFilter::External, 'search' => $search]) }}">
+                                {!! Helpers::filterSelectedMark($filter, \App\Enums\CoursesFilter::External) !!}
+                                {{ trans('courses.external') }}
+                            </a>
+                            <a class="dropdown-item"
+                               href="{{ route('admin.courses.manage', ['filter' => \App\Enums\CoursesFilter::Local, 'search' => $search]) }}">
+                                {!! Helpers::filterSelectedMark($filter, \App\Enums\CoursesFilter::Local) !!}
+                                {{ trans('courses.local') }}
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="create-courses ms-3">
+                        <a href="{{ route('admin.courses.create') }}"
+                           class="btn btn-primary">
+                            {{ trans('courses.create') }}
                         </a>
                     </div>
                 </div>

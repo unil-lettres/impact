@@ -44,21 +44,22 @@ class CourseController extends Controller
         $filter = $request->get('filter');
         $courses = Course::query()
             ->when(Auth::user()->admin, function ($query) use ($filter) {
-                // When the user is admin, get all courses (even soft deleted ones)
-                // filter them if the parameter is set.
-                return $filter ? $this->filter($filter) : $query->withTrashed();
+                // When the user is admin, get all courses (even soft deleted ones),
+                // then filter them if filter parameter is set.
+                return $this->filter($query, $filter);
             }, function ($query) {
-                // Get all available courses where the user is enrolled
+                // If the user is not an admin, get all available courses
+                // where the user is enrolled.
                 return $query->whereHas('enrollments', function ($query) {
                     $query->where('user_id', Auth::id());
                 });
-            })
-            ->orderBy('created_at', 'desc')
-            ->get();
+            });
 
         return view('courses.index', [
-            'courses' => $courses,
-            'filter' => $filter ?? null,
+            'courses' => $courses
+                ->orderBy('created_at', 'desc')
+                ->get(),
+            'filter' => $filter,
         ]);
     }
 
@@ -73,18 +74,23 @@ class CourseController extends Controller
     {
         $this->authorize('manage', Course::class);
 
+        $courses = Course::query()
+            ->select('courses.*');
+
+        // If the filter parameter is set, filter the users by type
         $filter = $request->get('filter');
-        if ($filter) {
-            $courses = $this->filter($filter);
-        } else {
-            $courses = Course::withTrashed();
-        }
+        $courses = $this->filter($courses, $filter);
+
+        // If the search parameter is set, filter the courses by name and description
+        $search = $request->get('search');
+        $courses = $this->search($courses, $search);
 
         return view('courses.manage', [
             'courses' => $courses
                 ->orderBy('created_at', 'desc')
                 ->paginate(config('const.pagination.per')),
-            'filter' => $filter ?? null,
+            'filter' => $filter,
+            'search' => $search,
         ]);
     }
 
@@ -383,25 +389,40 @@ class CourseController extends Controller
     }
 
     /**
-     * Filter courses by parameter
-     *
-     * @return Builder
+     * Filter courses by type
      */
-    private function filter(string $filter)
+    private function filter(Builder $courses, ?string $filter): Builder
     {
-        $filters = Course::query();
+        if (! $filter) {
+            return $courses->withTrashed();
+        }
 
         return match ($filter) {
-            CoursesFilter::Disabled => $filters->onlyTrashed(),
-            CoursesFilter::External => $filters->withTrashed()
+            CoursesFilter::Disabled => $courses->onlyTrashed(),
+            CoursesFilter::External => $courses->withTrashed()
                 ->where('type', CourseType::External),
-            CoursesFilter::Local => $filters->withTrashed()
+            CoursesFilter::Local => $courses->withTrashed()
                 ->where('type', CourseType::Local),
-            CoursesFilter::Own => $filters
+            CoursesFilter::Own => $courses
                 ->whereHas('enrollments', function ($query) {
                     $query->where('user_id', Auth::id());
                 }),
-            default => $filters->withTrashed(),
+            default => $courses->withTrashed(),
         };
+    }
+
+    /**
+     * Filter courses by name and description
+     */
+    private function search(Builder $courses, ?string $search): Builder
+    {
+        if (! $search) {
+            return $courses;
+        }
+
+        return $courses->where(function ($query) use ($search) {
+            $query->where('name', 'like', '%'.$search.'%')
+                ->orWhere('description', 'like', '%'.$search.'%');
+        });
     }
 }

@@ -81,7 +81,7 @@ class CourseController extends Controller
         $filter = $request->get('filter');
         $courses = $this->filter($courses, $filter);
 
-        // If the search parameter is set, filter the courses by name and description
+        // If the search parameter is set, filter the courses by name, description and external_id
         $search = $request->get('search');
         $courses = $this->search($courses, $search);
 
@@ -412,7 +412,7 @@ class CourseController extends Controller
     }
 
     /**
-     * Filter courses by name and description
+     * Filter courses by name, description and external_id
      */
     private function search(Builder $courses, ?string $search): Builder
     {
@@ -422,7 +422,8 @@ class CourseController extends Controller
 
         return $courses->where(function ($query) use ($search) {
             $query->where('name', 'like', '%'.$search.'%')
-                ->orWhere('description', 'like', '%'.$search.'%');
+                ->orWhere('description', 'like', '%'.$search.'%')
+                ->orWhere('external_id', 'like', '%'.$search.'%');
         });
     }
 }

@@ -17,6 +17,7 @@ class InvitationUniqueness implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        // Invitation has been sent, but not yet registered
         $isAlreadyInvited = Invitation::where('email', $value)
             ->whereNull('registered_at')
             ->exists();
@@ -24,10 +25,19 @@ class InvitationUniqueness implements ValidationRule
             $fail(trans('invitations.already.pending'));
         }
 
+        // User account already exists
         $isAlreadyUser = User::where('email', $value)
             ->exists();
         if ($isAlreadyUser) {
             $fail(trans('invitations.user.exists'));
+        }
+
+        // Invitation is marked as registered, but no related user account exists
+        $isAlreadyRegistered = Invitation::where('email', $value)
+            ->whereNotNull('registered_at')
+            ->exists();
+        if ($isAlreadyRegistered) {
+            $fail(trans('invitations.already.registered'));
         }
     }
 }

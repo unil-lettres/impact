@@ -19,5 +19,6 @@ return [
     'mail.create.link' => 'Veuillez utiliser le lien ci-dessous afin de finaliser votre inscription.',
     'already.pending' => 'Une invitation pour cette adresse e-mail est en attente, veuillez attendre que l\'utilisateur s\'inscrive.',
     'user.exists' => 'Un utilisateur avec cette adresse e-mail existe déjà, veuillez l\'ajouter manuellement au cours.',
+    'already.registered' => 'Une invitation pour cette adresse e-mail est marquée comme enregistrée, mais il n\'existe pas de compte utilisateur corespondant. Veuillez contacter un administrateur.',
 
 ];

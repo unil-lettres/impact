@@ -19,5 +19,6 @@ return [
     'mail.create.link' => 'Please use the link below to complete your registration.',
     'already.pending' => 'An invitation for this email address is pending, please wait until the user registers.',
     'user.exists' => 'A user with this email address already exists, please add him manually to the course.',
+    'already.registered' => 'An invitation for this e-mail address is marked as registered, but there is no matching user account. Please contact an administrator.',
 
 ];

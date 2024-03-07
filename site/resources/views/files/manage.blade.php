@@ -4,16 +4,89 @@
     @can('manage', \App\File::class)
         <div id="files">
             <div class="card">
-                <div class="card-header">
-                    <span class="title">{{ trans('files.files') }} <span class="badge bg-secondary">{{ $files->total() }}</span></span>
+                <div class="card-header d-flex justify-content-between">
+                    <div class="title">{{ trans('files.files') }} <span class="badge bg-secondary">{{ $files->total() }}</span></div>
 
-                    @can('upload', [\App\File::class, null, null])
-                        <div class="float-end">
-                            <div id="rct-files" class="float-end"
-                                 data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.create'), 'maxNumberOfFiles' => 10, 'reloadOnModalClose' => true, 'note' => trans('messages.file.reload')]) }}'
-                            ></div>
+                    <div class="header-actions d-flex justify-content-end">
+                        <div class="search-files">
+                            <form method="get" action="{{ route('admin.files.manage') }}">
+                                <div class="input-group">
+                                    <input type="text"
+                                           name="search"
+                                           class="form-control"
+                                           placeholder="{{ trans('files.search') }}"
+                                           aria-label="{{ trans('files.search') }}"
+                                           aria-describedby="button-search-file"
+                                           value="{{ $search }}">
+
+                                    @if($filter)
+                                        <input type="hidden" name="filter" value="{{ $filter }}">
+                                    @endif
+
+                                    @if($search)
+                                        <a class="btn bg-white border-top border-bottom"
+                                           type="button"
+                                           id="button-clear-file"
+                                           href="{{ route('admin.files.manage', ['filter' => $filter]) }}">
+                                            <i class="fa-solid fa-xmark"></i>
+                                        </a>
+                                    @endif
+
+                                    <button class="btn{{ $search ? ' btn-primary' : ' btn-secondary'  }}"
+                                            type="submit"
+                                            id="button-search-file">
+                                        {{ trans('general.search') }}
+                                    </button>
+                                </div>
+                            </form>
                         </div>
-                    @endcan
+
+                        <div class="filter-files dropdown show ms-1">
+                            <a class="btn dropdown-toggle{{ $filter ? ' btn-primary' : ' btn-secondary'  }}"
+                               href="#"
+                               role="button"
+                               id="dropdownFilesFiltersLink"
+                               data-bs-toggle="dropdown"
+                               aria-haspopup="true"
+                               aria-expanded="false">
+                                {{ trans('admin.filters') }}
+                                <i class="fa-solid{{ $filter ? ' fa-check' : '' }}"></i>
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="dropdownFilesFiltersLink">
+                                <a class="dropdown-item" href="{{ route('admin.files.manage', ['search' => $search]) }}">
+                                    -
+                                </a>
+                                <a class="dropdown-item"
+                                   href="{{ route('admin.files.manage', ['filter' => \App\Enums\FileStatus::Ready, 'search' => $search]) }}">
+                                    {!! Helpers::filterSelectedMark($filter, \App\Enums\FileStatus::Ready) !!}
+                                    {{ trans('files.ready') }}
+                                </a>
+                                <a class="dropdown-item"
+                                   href="{{ route('admin.files.manage', ['filter' => \App\Enums\FileStatus::Processing, 'search' => $search]) }}">
+                                    {!! Helpers::filterSelectedMark($filter, \App\Enums\FileStatus::Processing) !!}
+                                    {{ trans('files.processing') }}
+                                </a>
+                                <a class="dropdown-item"
+                                   href="{{ route('admin.files.manage', ['filter' => \App\Enums\FileStatus::Transcoding, 'search' => $search]) }}">
+                                    {!! Helpers::filterSelectedMark($filter, \App\Enums\FileStatus::Transcoding) !!}
+                                    {{ trans('files.transcoding') }}
+                                </a>
+                                <a class="dropdown-item"
+                                   href="{{ route('admin.files.manage', ['filter' => \App\Enums\FileStatus::Failed, 'search' => $search]) }}">
+                                    {!! Helpers::filterSelectedMark($filter, \App\Enums\FileStatus::Failed) !!}
+                                    {{ trans('files.failed') }}
+                                </a>
+                            </div>
+                        </div>
+
+                        @can('upload', [\App\File::class, null, null])
+                            <div class="upload-files ms-3">
+                                <div id="rct-files"
+                                     data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.create'), 'maxNumberOfFiles' => 10, 'reloadOnModalClose' => true, 'note' => trans('messages.file.reload')]) }}'
+                                ></div>
+                            </div>
+                        @endcan
+                    </div>
                 </div>
                 <div class="card-body">
                     @if ($files->items())

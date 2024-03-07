@@ -33,5 +33,6 @@ return [
     'used' => 'Utilisé par',
     'upload' => 'Déposer',
     'add' => 'Ajouter',
+    'search' => 'Rechercher un fichier',
 
 ];

@@ -3,12 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Course;
+use App\Enums\FileStatus;
 use App\File;
 use App\Http\Requests\DestroyFile;
 use App\Http\Requests\EditFile;
+use App\Http\Requests\ManageFiles;
 use App\Http\Requests\UpdateFile;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
 
 class FileController extends Controller
@@ -43,15 +46,26 @@ class FileController extends Controller
      *
      * @throws AuthorizationException
      */
-    public function manage()
+    public function manage(ManageFiles $request)
     {
         $this->authorize('manage', File::class);
 
-        $files = File::orderBy('created_at', 'desc')
-            ->paginate(config('const.pagination.per'));
+        $files = File::query();
+
+        // If the filter parameter is set, filter the files by status
+        $filter = $request->get('filter');
+        $files = $this->filter($files, $filter);
+
+        // If the search parameter is set, filter the files by name
+        $search = $request->get('search');
+        $files = $this->search($files, $search);
 
         return view('files.manage', [
-            'files' => $files,
+            'files' => $files
+                ->orderBy('created_at', 'desc')
+                ->paginate(config('const.pagination.per')),
+            'filter' => $filter,
+            'search' => $search,
         ]);
     }
 
@@ -159,5 +173,37 @@ class FileController extends Controller
         return redirect()
             ->back()
             ->with('success', trans('messages.file.deleted'));
+    }
+
+    /**
+     * Filter files by status
+     */
+    private function filter(Builder $files, ?string $filter): Builder
+    {
+        if (! $filter) {
+            return $files;
+        }
+
+        return match ($filter) {
+            FileStatus::Ready => $files->where('status', FileStatus::Ready),
+            FileStatus::Processing => $files->where('status', FileStatus::Processing),
+            FileStatus::Transcoding => $files->where('status', FileStatus::Transcoding),
+            FileStatus::Failed => $files->where('status', FileStatus::Failed),
+            default => $files->select('files.*'),
+        };
+    }
+
+    /**
+     * Filter files by name
+     */
+    private function search(Builder $files, ?string $search): Builder
+    {
+        if (! $search) {
+            return $files;
+        }
+
+        return $files->where(function ($query) use ($search) {
+            $query->where('name', 'like', '%'.$search.'%');
+        });
     }
 }

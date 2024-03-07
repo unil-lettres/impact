@@ -33,5 +33,6 @@ return [
     'used' => 'Used by',
     'upload' => 'Upload',
     'add' => 'Add',
+    'search' => 'Find a file',
 
 ];

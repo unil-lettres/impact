@@ -34,7 +34,8 @@
     @media (max-width: 1000px) {
         #users,
         #invitations,
-        #courses {
+        #courses,
+        #files {
             .card-header.d-flex {
                 flex-direction: column;
             }

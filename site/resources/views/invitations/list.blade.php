@@ -54,6 +54,7 @@
                         <th>{{ trans('invitations.email') }}</th>
                         <th>{{ trans('invitations.created_at') }}</th>
                         <th>{{ trans('courses.course') }}</th>
+                        <th>{{ trans('invitations.type') }}</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -66,19 +67,22 @@
                                 <td title="{{ $invitation->course->name }}">
                                     {{ Helpers::truncate($invitation->course->name, 25) }}
                                 </td>
+                                <td>{{ $invitation->type }}</td>
                                 <td class="actions">
                                     @can('view', $invitation)
-                                        <span>
-                                            <button type="button"
-                                                    class="btn btn-primary base-popover"
-                                                    title="{{ trans('invitations.link') }}"
-                                                    data-bs-html="true"
-                                                    data-bs-toggle="popover"
-                                                    data-bs-trigger="hover click"
-                                                    data-bs-content="<em>{{ $invitation->getLink() }}</em>">
-                                                <i class="far fa-share-square"></i>
-                                            </button>
-                                        </span>
+                                        @if($invitation->getLink())
+                                            <span>
+                                                <button type="button"
+                                                        class="btn btn-primary base-popover"
+                                                        title="{{ trans('invitations.link') }}"
+                                                        data-bs-html="true"
+                                                        data-bs-toggle="popover"
+                                                        data-bs-trigger="hover click"
+                                                        data-bs-content="<em>{{ $invitation->getLink() }}</em>">
+                                                    <i class="far fa-share-square"></i>
+                                                </button>
+                                            </span>
+                                        @endif
                                     @endcan
                                     @can('mail', $invitation)
                                         <span>

@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Enums\InvitationType;
 use App\Invitation;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -12,12 +13,7 @@ class InvitationCreated extends Mailable
 {
     use Queueable, SerializesModels;
 
-    /**
-     * The request instance.
-     *
-     * @var Invitation
-     */
-    public $invitation;
+    public Invitation $invitation;
 
     /**
      * Create a new message instance.
@@ -48,7 +44,12 @@ class InvitationCreated extends Mailable
      */
     public function build()
     {
-        return $this->subject(trans('invitations.mail.create.subject'))
-            ->view('mails.invitations.created');
+        $this->subject(trans('invitations.mail.subject'));
+
+        return match ($this->invitation->type) {
+            InvitationType::Local => $this->view('mails.invitations.local'),
+            // InvitationType::Aai
+            default => $this->view('mails.invitations.aai'),
+        };
     }
 }

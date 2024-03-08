@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Enums\InvitationType;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,12 +15,28 @@ class Invitation extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'email', 'invitation_token', 'registered_at',
+        'email', 'invitation_token', 'registered_at', 'type', 'course_id', 'creator_id',
     ];
 
     protected $casts = [
         'deleted_at' => 'datetime',
     ];
+
+    /**
+     * Scope a query to only active (not registered) invitations.
+     */
+    public function scopeActive(Builder $query): Builder
+    {
+        return $query->whereNull('registered_at');
+    }
+
+    /**
+     * Scope a query to only registered invitations.
+     */
+    public function scopeRegistered(Builder $query): Builder
+    {
+        return $query->whereNotNull('registered_at');
+    }
 
     /**
      * Get the user who created the invitation.
@@ -45,10 +63,18 @@ class Invitation extends Model
     }
 
     /**
-     * Get invitation link.
+     * Get invitation link if available.
      */
-    public function getLink(): string
+    public function getLink(): ?string
     {
+        if ($this->type === InvitationType::Aai) {
+            return null;
+        }
+
+        if (! $this->invitation_token) {
+            return null;
+        }
+
         return urldecode(url('invitations/register').'?token='.$this->invitation_token);
     }
 }

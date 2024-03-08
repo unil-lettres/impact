@@ -66,5 +66,6 @@ return [
     'update.no_effect' => 'Data have not been changed.',
     'moodle.error' => 'Error while fetching data (Moodle ID: :moodleId).',
     'moodle.course.exists' => 'This space already exists in the database.',
+    'switch.api.error' => 'Cannot validate email, the Switch API is not available.',
 
 ];

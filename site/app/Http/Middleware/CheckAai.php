@@ -2,9 +2,14 @@
 
 namespace App\Http\Middleware;
 
+use App\Enrollment;
+use App\Enums\EnrollmentRole;
+use App\Enums\InvitationType;
 use App\Enums\UserType;
+use App\Invitation;
 use App\User;
 use Closure;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request;
 
@@ -12,11 +17,8 @@ class CheckAai
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  Request  $request
-     * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): mixed
     {
         // Check if user is authenticated
         if (Auth::user()) {
@@ -26,7 +28,10 @@ class CheckAai
         // Check if the user is authenticated by SwitchAAI
         if ($this->getServerVariable('Shib-Identity-Provider')) {
             // Check if the user can be found in the database
-            $user = User::where('email', $this->getServerVariable('mail'))->first();
+            $user = User::where(
+                'email',
+                $this->getServerVariable('mail')
+            )->first();
 
             if (! $user) {
                 // If the user cannot be found, create it
@@ -46,34 +51,50 @@ class CheckAai
 
     /**
      * Create a new aai user.
-     *
-     * @return User $user
      */
     private function createAaiUser(): User
     {
-        return User::create([
+        $user = User::create([
             'name' => $this->getServerVariable('givenName').' '.
                 $this->getServerVariable('surname'),
             'email' => $this->getServerVariable('mail'),
             'type' => UserType::Aai,
         ]);
+
+        $this->checkAndProcessInvitation($user);
+
+        return $user;
+    }
+
+    /**
+     * Check if an active invitation exists for the user account. If so,
+     * enroll it to the course and mark the invitation as registered.
+     */
+    private function checkAndProcessInvitation(User $user): void
+    {
+        $invitation = Invitation::active()->where(
+            ['email' => $user->email, 'type' => InvitationType::Aai]
+        )->first();
+
+        if ($invitation) {
+            Enrollment::firstOrCreate([
+                'course_id' => $invitation->course_id,
+                'user_id' => $user->id,
+            ], [
+                'role' => EnrollmentRole::Member,
+            ]);
+
+            $invitation->update([
+                'registered_at' => Carbon::now(),
+            ]);
+        }
     }
 
     /**
      * Wrapper function to be able to retrieve server variables.
-     *
-     * @return string|null
      */
-    private function getServerVariable(string $variableName)
+    private function getServerVariable(string $variableName): ?string
     {
-        $variable = null;
-
-        if (Request::server($variableName)) {
-            $variable = Request::server($variableName);
-        } elseif (Request::server('REDIRECT_'.$variableName)) {
-            $variable = Request::server('REDIRECT_'.$variableName);
-        }
-
-        return $variable;
+        return Request::server($variableName) ?? Request::server('REDIRECT_'.$variableName);
     }
 }

@@ -2,7 +2,7 @@ FROM php:8.2-fpm-bullseye
 
 ENV DOCKER_RUNNING=true
 
-ENV NODE_VERSION=18
+ENV NODE_VERSION=20
 ENV COMPOSER_VERSION=2.6
 
 # Update repositories

@@ -24,6 +24,5 @@ return [
     'mail.aai.link' => 'Veuillez vous rendre sur la <a href=":root" target="_blank">page principale</a> de l\'application et choisissez de vous connecter avec SWITCHaai pour terminer le processus d\'enregistrement. Si vos informations de connection sont valides, vous serez redirigé vers l\'application et votre compte Impact sera créé automatiquement.',
     'already.pending' => 'Une invitation pour cette adresse e-mail est en attente, veuillez attendre que l\'utilisateur s\'inscrive.',
     'user.exists' => 'Un utilisateur avec cette adresse e-mail existe déjà, veuillez l\'ajouter manuellement au cours.',
-    'already.registered' => 'Une invitation pour cette adresse e-mail est marquée comme enregistrée, mais il n\'existe pas de compte utilisateur corespondant. Veuillez contacter un administrateur.',
 
 ];

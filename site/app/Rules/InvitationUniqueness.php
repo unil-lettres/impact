@@ -31,13 +31,5 @@ class InvitationUniqueness implements ValidationRule
         if ($isAlreadyUser) {
             $fail(trans('invitations.user.exists'));
         }
-
-        // Invitation is marked as registered, but no related user account exists
-        $isAlreadyRegistered = Invitation::where('email', $value)
-            ->registered()
-            ->exists();
-        if ($isAlreadyRegistered) {
-            $fail(trans('invitations.already.registered'));
-        }
     }
 }

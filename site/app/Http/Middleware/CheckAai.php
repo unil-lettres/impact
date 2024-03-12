@@ -12,6 +12,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Request as RequestFacade;
 
 class CheckAai
 {
@@ -95,6 +96,6 @@ class CheckAai
      */
     private function getServerVariable(string $variableName): ?string
     {
-        return Request::server($variableName) ?? Request::server('REDIRECT_'.$variableName);
+        return RequestFacade::server($variableName) ?? RequestFacade::server('REDIRECT_'.$variableName);
     }
 }

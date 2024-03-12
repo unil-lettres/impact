@@ -16,11 +16,15 @@
                                        aria-describedby="button-search-invitation"
                                        value="{{ $search }}">
 
+                                @if($filter)
+                                    <input type="hidden" name="filter" value="{{ $filter }}">
+                                @endif
+
                                 @if($search)
                                     <a class="btn bg-white border-top border-bottom"
                                        type="button"
                                        id="button-clear-invitation"
-                                       href="{{ route('admin.invitations.manage') }}">
+                                       href="{{ route('admin.invitations.manage', ['filter' => $filter]) }}">
                                         <i class="fa-solid fa-xmark"></i>
                                     </a>
                                 @endif
@@ -32,6 +36,34 @@
                                 </button>
                             </div>
                         </form>
+                    </div>
+
+                    <div class="filter-invitations dropdown show ms-1">
+                        <a class="btn dropdown-toggle{{ $filter ? ' btn-primary' : ' btn-secondary'  }}"
+                           href="#"
+                           role="button"
+                           id="dropdownInvitationsFiltersLink"
+                           data-bs-toggle="dropdown"
+                           aria-haspopup="true"
+                           aria-expanded="false">
+                            {{ trans('admin.filters') }}
+                            <i class="fa-solid{{ $filter ? ' fa-check' : '' }}"></i>
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="dropdownInvitationsFiltersLink">
+                            <a class="dropdown-item" href="{{ route('admin.invitations.manage', ['search' => $search]) }}">
+                                -
+                            </a>
+                            <a class="dropdown-item"
+                               href="{{ route('admin.invitations.manage', ['filter' => \App\Enums\InvitationType::Local, 'search' => $search]) }}">
+                                {!! Helpers::filterSelectedMark($filter, \App\Enums\InvitationType::Local) !!}
+                                {{ trans('invitations.local') }}
+                            </a>
+                            <a class="dropdown-item"
+                               href="{{ route('admin.invitations.manage', ['filter' => \App\Enums\InvitationType::Aai, 'search' => $search]) }}">
+                                {!! Helpers::filterSelectedMark($filter, \App\Enums\InvitationType::Aai) !!}
+                                {{ trans('invitations.aai') }}
+                            </a>
+                        </div>
                     </div>
                 @endif
 

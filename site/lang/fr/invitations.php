@@ -6,6 +6,8 @@ return [
     'email' => 'Email',
     'created_at' => 'Date de création',
     'type' => 'Type',
+    'aai' => 'Aai',
+    'local' => 'Local',
     'link' => 'Lien de l\'invitation (cliquer pour garder le lien visible)',
     'pending' => 'Invitations en attente',
     'create' => 'Créer une invitation',

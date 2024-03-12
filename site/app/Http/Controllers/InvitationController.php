@@ -63,6 +63,10 @@ class InvitationController extends Controller
 
         $invitations = Invitation::active();
 
+        // If the filter parameter is set, filter the invitations by type
+        $filter = $request->get('filter');
+        $invitations = $this->filter($invitations, $filter);
+
         // If the search parameter is set, filter the invitations by email
         $search = $request->get('search');
         $invitations = $this->search($invitations, $search);
@@ -71,6 +75,7 @@ class InvitationController extends Controller
             'invitations' => $invitations
                 ->orderBy('created_at', 'desc')
                 ->paginate(config('const.pagination.per')),
+            'filter' => $filter,
             'search' => $search,
         ]);
     }
@@ -270,6 +275,22 @@ class InvitationController extends Controller
 
         return redirect()->back()
             ->with('success', trans('messages.invitation.sent', ['mail' => $invitation->email]));
+    }
+
+    /**
+     * Filter invitations by type
+     */
+    private function filter(Builder $invitations, ?string $filter): Builder
+    {
+        if (! $filter) {
+            return $invitations;
+        }
+
+        return match ($filter) {
+            InvitationType::Aai => $invitations->where('type', InvitationType::Aai),
+            InvitationType::Local => $invitations->where('type', InvitationType::Local),
+            default => $invitations->select('invitations.*'),
+        };
     }
 
     /**

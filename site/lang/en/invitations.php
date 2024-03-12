@@ -6,6 +6,8 @@ return [
     'email' => 'Email',
     'created_at' => 'Creation date',
     'type' => 'Type',
+    'aai' => 'Aai',
+    'local' => 'Local',
     'link' => 'Invitation link (click to keep the link visible)',
     'pending' => 'Pending invitations',
     'create' => 'Create an invitation',

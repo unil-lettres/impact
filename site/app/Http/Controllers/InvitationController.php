@@ -6,13 +6,16 @@ use App\Course;
 use App\Enrollment;
 use App\Enums\CourseType;
 use App\Enums\EnrollmentRole;
+use App\Enums\InvitationType;
 use App\Http\Requests\CreateInvitationUser;
 use App\Http\Requests\ManageInvitations;
 use App\Http\Requests\SendInvitationMail;
 use App\Http\Requests\StoreInvitation;
 use App\Invitation;
 use App\Mail\InvitationCreated;
+use App\Services\SwitchService;
 use App\User;
+use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Builder;
@@ -37,7 +40,8 @@ class InvitationController extends Controller
     {
         $this->authorize('viewAny', Invitation::class);
 
-        $invitations = Invitation::where(['registered_at' => null, 'creator_id' => Auth::user()->id])
+        $invitations = Invitation::active()
+            ->where('creator_id', Auth::user()->id)
             ->orderBy('created_at', 'desc')
             ->paginate(config('const.pagination.per'));
 
@@ -57,8 +61,11 @@ class InvitationController extends Controller
     {
         $this->authorize('manage', Invitation::class);
 
-        $invitations = Invitation::query()
-            ->where('registered_at', null);
+        $invitations = Invitation::active();
+
+        // If the filter parameter is set, filter the invitations by type
+        $filter = $request->get('filter');
+        $invitations = $this->filter($invitations, $filter);
 
         // If the search parameter is set, filter the invitations by email
         $search = $request->get('search');
@@ -68,6 +75,7 @@ class InvitationController extends Controller
             'invitations' => $invitations
                 ->orderBy('created_at', 'desc')
                 ->paginate(config('const.pagination.per')),
+            'filter' => $filter,
             'search' => $search,
         ]);
     }
@@ -109,7 +117,7 @@ class InvitationController extends Controller
      *
      * @return RedirectResponse
      *
-     * @throws AuthorizationException
+     * @throws AuthorizationException|Exception
      */
     public function store(StoreInvitation $request)
     {
@@ -120,61 +128,42 @@ class InvitationController extends Controller
             $course,
         ]);
 
+        $type = InvitationType::Local;
+        $email = $request->get('email');
+
+        // If the Switch service is configured, check if the email is
+        // registered as a SWITCHaai user through the Switch API.
+        if (SwitchService::isConfigured()) {
+            try {
+                $type = (new SwitchService())
+                    ->isEmailRegistered($email) ? InvitationType::Aai : InvitationType::Local;
+            } catch (Exception $exception) {
+                return redirect()->back()
+                    ->with('error', $exception->getMessage());
+            }
+        }
+
         // Create new invitation
-        $invitation = new Invitation();
-        $invitation->email = $request->get('email');
-        $invitation->invitation_token = $invitation->generateInvitationToken();
-        $invitation->creator_id = Auth::user()->id;
-        $invitation->course_id = $course->id;
-        $invitation->save();
+        $invitation = Invitation::create([
+            'email' => $email,
+            'creator_id' => Auth::user()->id,
+            'course_id' => $course->id,
+            'type' => $type,
+        ]);
+
+        if ($type === InvitationType::Local) {
+            $invitation->update([
+                'invitation_token' => $invitation->generateInvitationToken(),
+            ]);
+        }
 
         // Send invitation mail to the recipient
-        Mail::to($invitation->email)->send(new InvitationCreated($invitation));
+        Mail::to($invitation->email)->send(
+            new InvitationCreated($invitation)
+        );
 
         return redirect()->back()
             ->with('success', trans('messages.invitation.created'));
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @return RedirectResponse
-     *
-     * @throws AuthorizationException
-     */
-    public function show(Invitation $invitation)
-    {
-        $this->authorize('view', $invitation);
-
-        return redirect()->back();
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @return RedirectResponse
-     *
-     * @throws AuthorizationException
-     */
-    public function edit(Invitation $invitation)
-    {
-        $this->authorize('update', $invitation);
-
-        return redirect()->back();
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @return RedirectResponse
-     *
-     * @throws AuthorizationException
-     */
-    public function update(Request $request, Invitation $invitation)
-    {
-        $this->authorize('update', $invitation);
-
-        return redirect()->back();
     }
 
     /**
@@ -207,7 +196,8 @@ class InvitationController extends Controller
         $this->authorize('register', Invitation::class);
 
         $invitation_token = $request->get('token');
-        $invitation = Invitation::where('invitation_token', $invitation_token)->firstOrFail();
+        $invitation = Invitation::where('invitation_token', $invitation_token)
+            ->firstOrFail();
 
         return view('invitations.register', [
             'invitation' => $invitation,
@@ -215,7 +205,7 @@ class InvitationController extends Controller
     }
 
     /**
-     * Create a new user instance after a valid invitation registration.
+     * Create a new local user instance after a valid invitation registration.
      *
      * @return RedirectResponse
      *
@@ -227,7 +217,9 @@ class InvitationController extends Controller
 
         try {
             // Try to find an invitation for this email address
-            $invitation = Invitation::where('email', $request->input('email'))->firstOrFail();
+            $invitation = Invitation::where(
+                ['email' => $request->input('email'), 'type' => InvitationType::Local]
+            )->firstOrFail();
         } catch (ModelNotFoundException $e) {
             return redirect()->back()
                 ->with('error', trans('messages.invitation.user.no.match'));
@@ -244,15 +236,17 @@ class InvitationController extends Controller
         $user->extendValidity();
 
         // Create a member enrollment for the new user
-        Enrollment::create([
-            'role' => EnrollmentRole::Member,
+        Enrollment::firstOrCreate([
             'course_id' => $invitation->course_id,
             'user_id' => $user->id,
+        ], [
+            'role' => EnrollmentRole::Member,
         ]);
 
         // Update the invitation registered_at property
-        $invitation->registered_at = Carbon::now();
-        $invitation->save();
+        $invitation->update([
+            'registered_at' => Carbon::now(),
+        ]);
 
         // Login with created user
         Auth::login($user);
@@ -275,10 +269,28 @@ class InvitationController extends Controller
         $this->authorize('mail', $invitation);
 
         // Send invitation mail to the recipient
-        Mail::to($invitation->email)->send(new InvitationCreated($invitation));
+        Mail::to($invitation->email)->send(
+            new InvitationCreated($invitation)
+        );
 
         return redirect()->back()
             ->with('success', trans('messages.invitation.sent', ['mail' => $invitation->email]));
+    }
+
+    /**
+     * Filter invitations by type
+     */
+    private function filter(Builder $invitations, ?string $filter): Builder
+    {
+        if (! $filter) {
+            return $invitations;
+        }
+
+        return match ($filter) {
+            InvitationType::Aai => $invitations->where('type', InvitationType::Aai),
+            InvitationType::Local => $invitations->where('type', InvitationType::Local),
+            default => $invitations->select('invitations.*'),
+        };
     }
 
     /**

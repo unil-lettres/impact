@@ -44,4 +44,11 @@ return [
         ],
     ],
 
+    'switch' => [
+        'user' => env('SWITCH_USER', null),
+        'password' => env('SWITCH_PASSWORD', null),
+        'endpoint' => env('SWITCH_ENDPOINT', 'https://eduid.ch/api'),
+        'api_version' => env('SWITCH_API_VERSION', 'v1'),
+    ],
+
 ];

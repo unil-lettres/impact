@@ -67,5 +67,6 @@ return [
     'update.no_effect' => 'Les données n\'ont pas été modifiées.',
     'moodle.error' => 'Erreur lors de la récupération des données (Moodle ID: :moodleId).',
     'moodle.course.exists' => 'Cet espace existe déjà dans la base de données.',
+    'switch.api.error' => 'Impossible de valider l\'email, l\'API Switch n\'est pas disponible.',
 
 ];

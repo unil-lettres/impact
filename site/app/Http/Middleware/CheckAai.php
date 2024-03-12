@@ -9,9 +9,9 @@ use App\Enums\UserType;
 use App\Invitation;
 use App\User;
 use Closure;
+use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Request;
 
 class CheckAai
 {

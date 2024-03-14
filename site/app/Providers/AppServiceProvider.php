@@ -6,12 +6,14 @@ use App\Card;
 use App\Course;
 use App\File;
 use App\Folder;
+use App\Http\Middleware\TrimStrings;
 use App\Observers\CardObserver;
 use App\Observers\CourseObserver;
 use App\Observers\FileObserver;
 use App\Observers\FolderObserver;
 use App\Observers\UserObserver;
 use App\User;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -37,12 +39,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        // Register the observers
         File::observe(FileObserver::class);
         Course::observe(CourseObserver::class);
         Card::observe(CardObserver::class);
         Folder::observe(FolderObserver::class);
         User::observe(UserObserver::class);
 
+        // Use Bootstrap pagination
         Paginator::useBootstrap();
 
         // Define default password validation rules
@@ -54,6 +58,11 @@ class AppServiceProvider extends ServiceProvider
                     ->numbers()
                     ->uncompromised()
                 : $rule;
+        });
+
+        // Skip trimming strings when we update a card transcription
+        TrimStrings::skipWhen(function (Request $request) {
+            return $request->is('cards/*/transcription');
         });
     }
 }

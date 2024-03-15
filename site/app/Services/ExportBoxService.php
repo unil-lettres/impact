@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Storage;
 use PhpOffice\PhpWord\Exception\Exception;
 use PhpOffice\PhpWord\IOFactory;
 use PhpOffice\PhpWord\PhpWord;
-use PhpOffice\PhpWord\SimpleType\JcTable;
+use PhpOffice\PhpWord\Settings;
 use PhpOffice\PhpWord\Style\Language;
-use PhpOffice\PhpWord\Style\Table;
+use PhpOffice\PhpWord\Style\Tab;
 
 class ExportBoxService
 {
@@ -84,43 +84,45 @@ class ExportBoxService
     {
         $phpWord = $this->initPhpWord();
 
-        $fontStyleName = 'transcription';
+        $fontStyleName = 'impactFontStyle';
         $phpWord->addFontStyle(
             $fontStyleName,
             [
-                'name' => 'Courier',
+                'name' => 'Courier New',
                 'size' => 10,
                 'color' => '000000',
                 'bold' => false,
             ]
         );
 
+        $paragraphStyleName = 'impactParagraphStyle';
+        $phpWord->addParagraphStyle(
+            $paragraphStyleName,
+            [
+                'spaceAfter' => 0,
+                'spaceBefore' => 0,
+                // Set a negative withdrawal, needed to align the speaker
+                // https://phpoffice.github.io/PHPWord/usage/styles/paragraph.html
+                'indentation' => [
+                    'left' => 1426,
+                    'hanging' => 1426,
+                ],
+                // Set a custom tab stop, needed to align the speaker
+                // https://phpoffice.github.io/PHPWord/usage/styles/paragraph.html
+                'tabs' => [
+                    new Tab('left', 713),
+                ],
+            ]
+        );
+
         $section = $phpWord->addSection();
 
-        $tableStyle = [
-            'borderSize' => 0,
-            'borderColor' => 'ffffff',
-            'valign' => 'top',
-            'alignment' => JcTable::START,
-            'layout' => Table::LAYOUT_FIXED,
-        ];
-
-        $table = $section->addTable($tableStyle);
         foreach ($data['icor'] as $row) {
-            $table->addRow();
-
             $number = $row['number'] ? strval($row['number']) : '';
-            $table->addCell(400)->addText($number, $fontStyleName);
-
             $speaker = $row['speaker'] ?: '';
-            $table->addCell(500)->addText($speaker, $fontStyleName);
-
             $speech = $row['speech'] ?: '';
-            $cell = $table->addCell(8000);
-            $lines = explode('<br />', $speech);
-            foreach ($lines as $line) {
-                $cell->addText($line, $fontStyleName);
-            }
+
+            $section->addText($number."\t".$speaker."\t".$speech, $fontStyleName, $paragraphStyleName);
         }
 
         $objWriter = IOFactory::createWriter($phpWord, 'Word2007');
@@ -149,6 +151,9 @@ class ExportBoxService
         $phpWord->getDocInfo()->setCreator('Impact');
         $phpWord->getDocInfo()->setTitle($this->card->title);
         $phpWord->getDocInfo()->setDescription(trans('general.created_with_impact'));
+
+        // Escape special characters to avoid XML parsing errors
+        Settings::setOutputEscapingEnabled(true);
 
         return $phpWord;
     }

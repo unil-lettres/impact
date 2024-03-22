@@ -115,7 +115,11 @@ class ExportBoxService
             ]
         );
 
-        $section = $phpWord->addSection();
+        $section = $phpWord->addSection([
+            // Set a custom left margin (approximately 1.18cm) to
+            // allow a maximum of 65 characters for the speech.
+            'marginLeft' => 1236,
+        ]);
 
         foreach ($data['icor'] as $row) {
             $number = $row['number'] ? strval($row['number']) : '';

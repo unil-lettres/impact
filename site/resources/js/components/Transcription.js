@@ -340,8 +340,27 @@ export default class Transcription extends Component {
 
     import(event) {
         if(this.importContent.value !== "") {
-            console.log(this.importContent.value);
-            // TODO: import & save the transcription
+            let textareaValue = this.importContent.value;
+
+            // Split the textarea value by newline to get an array of lines
+            let lines = textareaValue.split('\n');
+
+            // Initialize an empty array to hold the parsed text
+            let parsedText = [];
+
+            // Iterate over each line
+            for (let line of lines) {
+                // Split the line by tab to get an array of tab-separated values
+                let tabSeparatedValues = line.split('\t');
+
+                // Add the array of tab-separated values to the main array
+                parsedText.push(tabSeparatedValues);
+            }
+
+            // Now, parsedText is an array where each line is an element and each tab-separated value is a sub-array
+            console.log(parsedText);
+
+            // TODO: transform array (line, speaker, speech) & save the transcription
         }
 
         // Close the modal

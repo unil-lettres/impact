@@ -41,6 +41,8 @@ return [
     'clear_transcription' => 'Clear text',
     'delete_line_action' => 'Delete the line',
     'toggle_number_action' => 'Visibility of the numbering',
+    'import' => 'Import a transcription',
+    'import.help' => 'Paste a transcription into the text box below. Please respect the ICOR transcription conventions to preserve your layout.',
     'export' => 'Export transcription',
     'sync_with_source' => 'Synchronize with source',
     'global_settings' => 'Global settings',

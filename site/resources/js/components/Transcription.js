@@ -383,8 +383,10 @@ export default class Transcription extends Component {
                 ]
             });
 
-            // Fix the number of each row
-            this.fixNumbers();
+            // Set the state with the imported lines
+            this.setState({
+                lines: this.state.lines
+            });
         }
 
         // Close the modal

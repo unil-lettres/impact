@@ -340,6 +340,13 @@ export default class Transcription extends Component {
 
     import(event) {
         if(this.importContent.value !== "") {
+            // Toggle the edition mode
+            this.edit();
+
+            // Reset the lines to avoid a first empty line
+            this.state.lines = [];
+
+            // Get the textarea value
             let textareaValue = this.importContent.value;
 
             // Split the textarea value by newline to get an array of lines
@@ -357,10 +364,27 @@ export default class Transcription extends Component {
                 parsedText.push(tabSeparatedValues);
             }
 
-            // Now, parsedText is an array where each line is an element and each tab-separated value is a sub-array
-            console.log(parsedText);
+            // Now, parsedText is an array where each line is an element
+            // and each tab-separated value is a sub-array. We can now
+            // iterate over it and create a new Line object for each line.
+            parsedText.forEach((line, index) => {
+                // If the line has more than one element, then the first
+                // element is the speaker and the second is the speech. Otherwise,
+                // the speaker is empty and the only element is the speech.
+                let [speaker, speech] = line.length > 1 ? line : ["", line[0]];
 
-            // TODO: transform array (line, speaker, speech) & save the transcription
+                this.state.lines = [
+                    ...this.state.lines,
+                    new Line(
+                        index + 1,
+                        speaker,
+                        speech
+                    ).toJSON()
+                ]
+            });
+
+            // Fix the number of each row
+            this.fixNumbers();
         }
 
         // Close the modal

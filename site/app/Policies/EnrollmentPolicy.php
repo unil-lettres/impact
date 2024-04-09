@@ -58,8 +58,6 @@ class EnrollmentPolicy
      */
     public function create(User $user, Course $enrolledCourse, User $enrolledUser)
     {
-        // TODO: update for invitations & mass enrollments
-
         // Enrolled course should be active
         if (! $enrolledCourse->isActive()) {
             return false;
@@ -104,8 +102,6 @@ class EnrollmentPolicy
      */
     public function cards(User $user, Enrollment $enrollment)
     {
-        // TODO: update for invitations & mass enrollment
-
         if ($user->admin) {
             return true;
         }

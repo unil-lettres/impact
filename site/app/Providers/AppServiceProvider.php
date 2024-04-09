@@ -72,7 +72,7 @@ class AppServiceProvider extends ServiceProvider
             return $request->is('cards/*/transcription');
         });
 
-        // Map the AttachmentPolicy to itself since there is no Attachment model.
+        // Map the AttachmentPolicy to itself since there is no Attachment model
         Gate::policy(AttachmentPolicy::class, AttachmentPolicy::class);
     }
 }

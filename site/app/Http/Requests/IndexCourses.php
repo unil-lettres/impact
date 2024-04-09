@@ -12,7 +12,7 @@ class IndexCourses extends AbstractRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -22,7 +22,7 @@ class IndexCourses extends AbstractRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'filter' => [

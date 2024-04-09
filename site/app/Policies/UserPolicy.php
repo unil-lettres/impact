@@ -17,7 +17,7 @@ class UserPolicy
      *
      * @return mixed
      */
-    public function viewAny(User $user, Course $course)
+    public function viewAny(User $user, Course $course): bool
     {
         if ($user->admin) {
             return true;
@@ -62,7 +62,7 @@ class UserPolicy
      *
      * @return mixed
      */
-    public function view(User $user, User $model)
+    public function view(User $user, User $model): bool
     {
         if ($user->admin) {
             return true;
@@ -76,7 +76,7 @@ class UserPolicy
      *
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         if ($user->admin) {
             return true;
@@ -90,7 +90,7 @@ class UserPolicy
      *
      * @return mixed
      */
-    public function update(User $user, User $model)
+    public function update(User $user, User $model): bool
     {
         if ($user->admin) {
             return true;
@@ -116,7 +116,7 @@ class UserPolicy
      *
      * @return mixed
      */
-    public function delete(User $user, User $model)
+    public function delete(User $user, User $model): bool
     {
         if ($user->id === $model->id) {
             return false;

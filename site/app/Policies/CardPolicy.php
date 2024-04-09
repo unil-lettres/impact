@@ -17,7 +17,7 @@ class CardPolicy
      *
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         if ($user->admin) {
             return true;
@@ -31,7 +31,7 @@ class CardPolicy
      *
      * @return mixed
      */
-    public function view(User $user, Card $card)
+    public function view(User $user, Card $card): bool
     {
         if ($user->admin) {
             return true;
@@ -84,7 +84,7 @@ class CardPolicy
      *
      * @return mixed
      */
-    public function create(User $user, Course $course)
+    public function create(User $user, Course $course): bool
     {
         if ($user->admin) {
             return true;
@@ -103,7 +103,7 @@ class CardPolicy
      *
      * @return mixed
      */
-    public function update(User $user, Card $card)
+    public function update(User $user, Card $card): bool
     {
         if ($user->admin) {
             return true;
@@ -151,7 +151,7 @@ class CardPolicy
      *
      * @return mixed
      */
-    public function forceDelete(User $user, Card $card)
+    public function forceDelete(User $user, Card $card): bool
     {
         if ($user->admin) {
             return true;

@@ -30,7 +30,7 @@ class InvitationPolicy
      *
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         // Only managers of a course can view invitations
         if ($user->enrollmentsAsManager()->isNotEmpty()) {
@@ -55,7 +55,7 @@ class InvitationPolicy
      *
      * @return mixed
      */
-    public function view(User $user, Invitation $invitation)
+    public function view(User $user, Invitation $invitation): bool
     {
         if ($invitation->registered_at) {
             return false;
@@ -69,7 +69,7 @@ class InvitationPolicy
      *
      * @return mixed
      */
-    public function create(User $user, ?Course $course)
+    public function create(User $user, ?Course $course): bool
     {
         // Only managers of a course can view the invitation creation form
         if (! $course && $user->enrollmentsAsManager()->isNotEmpty()) {
@@ -89,7 +89,7 @@ class InvitationPolicy
      *
      * @return mixed
      */
-    public function update(User $user, Invitation $invitation)
+    public function update(User $user, Invitation $invitation): bool
     {
         if ($invitation->registered_at) {
             return false;
@@ -103,7 +103,7 @@ class InvitationPolicy
      *
      * @return mixed
      */
-    public function forceDelete(User $user, Invitation $invitation)
+    public function forceDelete(User $user, Invitation $invitation): bool
     {
         if ($invitation->registered_at) {
             return false;

@@ -16,7 +16,7 @@ class CoursePolicy
      *
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return true;
     }
@@ -41,7 +41,7 @@ class CoursePolicy
      *
      * @return mixed
      */
-    public function view(User $user, Course $course)
+    public function view(User $user, Course $course): bool
     {
         // Return true if user is enrolled in the specific course. The role is not relevant.
         if ($user->admin || $user->isManager($course) || $user->isMember($course)) {
@@ -56,7 +56,7 @@ class CoursePolicy
      *
      * @return mixed
      */
-    public function create(User $user)
+    public function create(User $user): bool
     {
         // Only admins can create courses
         if ($user->admin) {
@@ -71,7 +71,7 @@ class CoursePolicy
      *
      * @return mixed
      */
-    public function update(User $user, Course $course)
+    public function update(User $user, Course $course): bool
     {
         // Only local courses can be updated
         if (Helpers::isCourseExternal($course)) {
@@ -166,7 +166,7 @@ class CoursePolicy
      *
      * @return mixed
      */
-    public function restore(User $user, Course $course)
+    public function restore(User $user, Course $course): bool
     {
         // Only admins can restore courses
         if ($user->admin) {
@@ -181,7 +181,7 @@ class CoursePolicy
      *
      * @return mixed
      */
-    public function forceDelete(User $user)
+    public function forceDelete(User $user): bool
     {
         // Only admins can delete permanently courses
         if ($user->admin) {

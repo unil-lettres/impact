@@ -16,7 +16,7 @@ class FolderPolicy
      *
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         if ($user->admin) {
             return true;
@@ -30,7 +30,7 @@ class FolderPolicy
      *
      * @return mixed
      */
-    public function view(User $user, Folder $folder)
+    public function view(User $user, Folder $folder): bool
     {
         if ($user->admin) {
             return true;
@@ -49,7 +49,7 @@ class FolderPolicy
      *
      * @return mixed
      */
-    public function create(User $user, Course $course)
+    public function create(User $user, Course $course): bool
     {
         if ($user->admin) {
             return true;
@@ -68,7 +68,7 @@ class FolderPolicy
      *
      * @return mixed
      */
-    public function update(User $user, Folder $folder)
+    public function update(User $user, Folder $folder): bool
     {
         if ($user->admin) {
             return true;
@@ -106,7 +106,7 @@ class FolderPolicy
      *
      * @return mixed
      */
-    public function forceDelete(User $user, Folder $folder)
+    public function forceDelete(User $user, Folder $folder): bool
     {
         if ($user->admin) {
             return true;

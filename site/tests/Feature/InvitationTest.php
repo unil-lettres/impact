@@ -32,7 +32,7 @@ class InvitationTest extends TestCase
     /**
      * Test the local invitation link should not be null.
      */
-    public function testLocalInvitationLinkIsNotNull()
+    public function testLocalInvitationLinkIsNotNull(): void
     {
         $invitation = Invitation::factory()
             ->local()
@@ -60,7 +60,7 @@ class InvitationTest extends TestCase
     /**
      * Test the aai invitation link should be null.
      */
-    public function testAaiInvitationLinkIsNull()
+    public function testAaiInvitationLinkIsNull(): void
     {
         $invitation = Invitation::factory()
             ->aai()

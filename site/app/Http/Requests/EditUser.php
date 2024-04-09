@@ -9,7 +9,7 @@ class EditUser extends AbstractRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -19,7 +19,7 @@ class EditUser extends AbstractRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'user' => 'required|integer|exists:users,id',

@@ -17,7 +17,7 @@ class StatePolicy
      *
      * @return mixed
      */
-    public function viewAny(User $user, Course $course)
+    public function viewAny(User $user, Course $course): bool
     {
         // The listing of the states cannot be viewed if not within a course
         if (! $course) {
@@ -37,7 +37,7 @@ class StatePolicy
      *
      * @return mixed
      */
-    public function view(User $user, State $state)
+    public function view(User $user, State $state): bool
     {
         // A state cannot be viewed if not within a course
         if (! $state->course) {
@@ -62,7 +62,7 @@ class StatePolicy
      *
      * @return mixed
      */
-    public function create(User $user, Course $course)
+    public function create(User $user, Course $course): bool
     {
         // A state cannot be created if not within a course
         if (! $course) {
@@ -82,7 +82,7 @@ class StatePolicy
      *
      * @return mixed
      */
-    public function update(User $user, State $state)
+    public function update(User $user, State $state): bool
     {
         // A state cannot be updated if not within a course
         if (! $state->course) {
@@ -107,7 +107,7 @@ class StatePolicy
      *
      * @return mixed
      */
-    public function forceDelete(User $user, State $state)
+    public function forceDelete(User $user, State $state): bool
     {
         // A state cannot be deleted if not within a course
         if (! $state->course) {

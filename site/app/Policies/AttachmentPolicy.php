@@ -20,7 +20,7 @@ class AttachmentPolicy
      *
      * @return mixed
      */
-    public function viewAny(User $user, Course $course)
+    public function viewAny(User $user, Course $course): bool
     {
         if ($user->admin) {
             return true;
@@ -39,7 +39,7 @@ class AttachmentPolicy
      *
      * @return mixed
      */
-    public function view(User $user, File $attachment)
+    public function view(User $user, File $attachment): bool
     {
         if ($user->admin) {
             return true;
@@ -58,7 +58,7 @@ class AttachmentPolicy
      *
      * @return mixed
      */
-    public function forceDelete(User $user, File $attachment)
+    public function forceDelete(User $user, File $attachment): bool
     {
         // The attachment cannot be deleted if status is "processing" or "transcoding"
         if (Str::contains($attachment->status, [FileStatus::Processing, FileStatus::Transcoding])) {

@@ -17,7 +17,7 @@ class EnrollmentPolicy
      *
      * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         return true;
     }
@@ -27,7 +27,7 @@ class EnrollmentPolicy
      *
      * @return mixed
      */
-    public function view(User $user, Enrollment $enrollment)
+    public function view(User $user, Enrollment $enrollment): bool
     {
         return false;
     }
@@ -56,7 +56,7 @@ class EnrollmentPolicy
      *
      * @return mixed
      */
-    public function create(User $user, Course $enrolledCourse, User $enrolledUser)
+    public function create(User $user, Course $enrolledCourse, User $enrolledUser): bool
     {
         // Enrolled course should be active
         if (! $enrolledCourse->isActive()) {
@@ -90,7 +90,7 @@ class EnrollmentPolicy
      *
      * @return mixed
      */
-    public function update(User $user, Enrollment $enrollment)
+    public function update(User $user, Enrollment $enrollment): bool
     {
         return false;
     }
@@ -119,7 +119,7 @@ class EnrollmentPolicy
      *
      * @return mixed
      */
-    public function forceDelete(User $user, Enrollment $enrollment)
+    public function forceDelete(User $user, Enrollment $enrollment): bool
     {
         // Enrolled course type should be local
         if ($enrollment->course->type !== CourseType::Local) {

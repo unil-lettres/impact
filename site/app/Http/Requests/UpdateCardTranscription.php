@@ -13,7 +13,7 @@ class UpdateCardTranscription extends AbstractRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -23,7 +23,7 @@ class UpdateCardTranscription extends AbstractRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'card' => 'required|integer|exists:cards,id',

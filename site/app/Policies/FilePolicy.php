@@ -19,7 +19,7 @@ class FilePolicy
      *
      * @return mixed
      */
-    public function viewAny(User $user, Course $course)
+    public function viewAny(User $user, Course $course): bool
     {
         if ($user->admin) {
             return true;
@@ -57,7 +57,7 @@ class FilePolicy
      *
      * @return mixed
      */
-    public function view(User $user, File $file)
+    public function view(User $user, File $file): bool
     {
         if ($user->admin) {
             return true;
@@ -81,7 +81,7 @@ class FilePolicy
      *
      * @return mixed
      */
-    public function update(User $user, File $file)
+    public function update(User $user, File $file): bool
     {
         if ($user->admin) {
             return true;
@@ -95,7 +95,7 @@ class FilePolicy
      *
      * @return mixed
      */
-    public function forceDelete(User $user, File $file)
+    public function forceDelete(User $user, File $file): bool
     {
         // The file cannot be deleted if linked to a card
         if ($file->cards->isNotEmpty()) {

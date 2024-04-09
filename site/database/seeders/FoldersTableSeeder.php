@@ -14,7 +14,7 @@ class FoldersTableSeeder extends Seeder
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $now = Carbon::now();
 

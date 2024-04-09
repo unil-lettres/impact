@@ -21,7 +21,7 @@ class UpdateState extends AbstractRequest
      *
      * @return bool
      */
-    public function authorize()
+    public function authorize(): bool
     {
         return true;
     }
@@ -31,7 +31,7 @@ class UpdateState extends AbstractRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(): array
     {
         return [
             'course' => 'required|integer|exists:courses,id',

@@ -13,7 +13,7 @@ class FinderTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function testInvalidQueryParams()
+    public function testInvalidQueryParams(): void
     {
         $admin = User::factory()->admin()->create();
         $course = Course::factory()->create();
@@ -34,7 +34,7 @@ class FinderTest extends TestCase
             ->assertSet('arrayFilters', $emptyFilters);
     }
 
-    public function testValidQueryParams()
+    public function testValidQueryParams(): void
     {
         $admin = User::factory()->admin()->create();
         $course = Course::factory()->create();
@@ -53,7 +53,7 @@ class FinderTest extends TestCase
             ->assertSet('arrayFilters', $filters);
     }
 
-    public function testAddInvalidFilter()
+    public function testAddInvalidFilter(): void
     {
         $admin = User::factory()->admin()->create();
         $course = Course::factory()->create();
@@ -71,7 +71,7 @@ class FinderTest extends TestCase
             ->assertSet('arrayFilters', $emptyFilters);
     }
 
-    public function testAddValidFilter()
+    public function testAddValidFilter(): void
     {
         $admin = User::factory()->admin()->create();
         $course = Course::factory()->create();

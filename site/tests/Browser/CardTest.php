@@ -228,6 +228,42 @@ class CardTest extends DuskTestCase
     }
 
     /**
+     * Test import ICOR text in transcription editor.
+     *
+     * @throws Throwable
+     */
+    public function testImportTextInTranscriptionEditor(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $browser->visit(new Card('Test card features'));
+
+            $browser->click('#import-box2')
+                ->pause(1000) // Avoid "element not interactable" issue with modal
+                ->assertSee(trans('cards.import'))
+                ->assertSee(trans('cards.cancel'))
+                ->assertSee(trans('cards.save'));
+
+            $browser->keys(
+                '#import-transcription-content',
+                'AAA', '{tab}', 'The first speech', '{enter}', 'BBB', '{tab}', 'The second speech'
+            );
+
+            $browser->click('#import-transcription')
+                ->assertSee(trans('cards.save'))
+                ->click('#edit-box2')
+                ->assertSee('AAA')
+                ->assertSee('The first speech')
+                ->assertSee('BBB')
+                ->assertSee('The second speech')
+                ->assertDontSee('{tab}')
+                ->assertDontSee('{enter}');
+        });
+    }
+
+    /**
      * Test saving some text in text editor.
      *
      * @throws Throwable
@@ -257,7 +293,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCancelTextInTextHolder(): void
+    public function testCancelTextInTextEditor(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login())

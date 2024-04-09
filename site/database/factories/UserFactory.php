@@ -58,7 +58,7 @@ class UserFactory extends Factory
     }
 
     /**
-     * Indicate that the user account if expiring in a specified number of days.
+     * Indicate that the user account is expiring in a specified number of days.
      */
     public function expireIn(?int $days): Factory
     {

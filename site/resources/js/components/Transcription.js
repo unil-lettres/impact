@@ -46,6 +46,7 @@ export default class Transcription extends Component {
         this.deleteLine = this.deleteLine.bind(this);
         this.toggleNumber = this.toggleNumber.bind(this);
         this.deleteTranscription = this.deleteTranscription.bind(this);
+        this.import = this.import.bind(this);
         this.export = this.export.bind(this);
         this.handleKeyDown = this.handleKeyDown.bind(this);
 
@@ -56,6 +57,7 @@ export default class Transcription extends Component {
     initVariables(data) {
         this.editButton = document.getElementById('edit-' + this.props.reference);
         this.cancelButton = document.getElementById('cancel-' + this.props.reference);
+        this.importOpenModalButton = document.getElementById('import-' + this.props.reference);
         this.exportButton = document.getElementById('export-' + this.props.reference);
         this.deleteButton = document.getElementById('clear-' + this.props.reference);
         this.syncButton = document.getElementById('sync-' + this.props.reference);
@@ -67,8 +69,11 @@ export default class Transcription extends Component {
         this.editorEmptyTranscriptionMsgId = 'empty-' + this.props.reference;
         this.editLabel = data.editLabel ?? 'Edit';
         this.saveLabel = data.saveLabel ?? 'Save';
+        this.cancelLabel = data.cancelLabel ?? 'Cancel';
         this.deleteLineActionLabel = data.deleteLineActionLabel ?? 'Delete the line';
         this.toggleNumberActionLabel = data.toggleNumberActionLabel ?? 'Visibility of the numbering';
+        this.importModalTitleLabel = data.importModalTitleLabel ?? 'Import a transcription';
+        this.importModalHelpLabel = data.importModalHelpLabel ?? 'Paste a transcription into the text box below. Please respect the ICOR transcription conventions to preserve your layout.';
     }
 
     componentDidMount() {
@@ -78,6 +83,34 @@ export default class Transcription extends Component {
 
         if(this.cancelButton) {
             this.cancelButton.addEventListener('click', this.cancel, false);
+        }
+
+        if(this.importOpenModalButton) {
+            this.importButton = document.getElementById('import-transcription');
+            this.importContent = document.getElementById('import-transcription-content');
+            this.importModal = document.getElementById('importModal');
+
+            this.importButton.addEventListener('click', this.import, false);
+            this.importContent.onkeydown = function(e) {
+                if (e.key === 'Tab') { // Block to catch when tab key is pressed
+                    e.preventDefault(); // Prevent default action
+
+                    // Get textarea
+                    let textarea = e.target;
+
+                    // Get cursor position
+                    let start = textarea.selectionStart;
+                    let end = textarea.selectionEnd;
+
+                    // Set textarea value to: text before cursor + tab + text after cursor
+                    textarea.value = textarea.value.substring(0, start)
+                        + "\t"
+                        + textarea.value.substring(end);
+
+                    // Put cursor to right of inserted tab
+                    textarea.selectionStart = textarea.selectionEnd = start + 1;
+                }
+            };
         }
 
         if(this.exportButton) {
@@ -105,6 +138,7 @@ export default class Transcription extends Component {
                     this.editButton.innerText = this.saveLabel;
                     this.cancelButton.classList.remove("d-none");
                     this.deleteButton.classList.remove("d-none");
+                    this.importOpenModalButton.classList.add("d-none");
                     this.exportButton.classList.add("d-none");
                     this.syncButton?.classList.add("d-none");
                     this.hideButton?.classList.add("d-none");
@@ -122,6 +156,7 @@ export default class Transcription extends Component {
                     this.editButton.textContent = this.editLabel;
                     this.cancelButton.classList.add("d-none");
                     this.deleteButton.classList.add("d-none");
+                    this.importOpenModalButton.classList.remove("d-none");
                     this.exportButton.classList.remove("d-none");
                     this.syncButton?.classList.remove("d-none");
                     this.hideButton?.classList.remove("d-none");
@@ -303,6 +338,62 @@ export default class Transcription extends Component {
         }
     }
 
+    import(event) {
+        if(this.importContent.value !== "") {
+            // Toggle the edition mode
+            this.edit();
+
+            // Reset the lines to avoid a first empty line
+            this.state.lines = [];
+
+            // Get the textarea value
+            let textareaValue = this.importContent.value;
+
+            // Split the textarea value by newline to get an array of lines
+            let lines = textareaValue.split('\n');
+
+            // Initialize an empty array to hold the parsed text
+            let parsedText = [];
+
+            // Iterate over each line
+            for (let line of lines) {
+                // Split the line by tab to get an array of tab-separated values
+                let tabSeparatedValues = line.split('\t');
+
+                // Add the array of tab-separated values to the main array
+                parsedText.push(tabSeparatedValues);
+            }
+
+            // Now, parsedText is an array where each line is an element
+            // and each tab-separated value is a sub-array. We can now
+            // iterate over it and create a new Line object for each line.
+            parsedText.forEach((line, index) => {
+                // If the line has more than one element, then the first
+                // element is the speaker and the second is the speech. Otherwise,
+                // the speaker is empty and the only element is the speech.
+                let [speaker, speech] = line.length > 1 ? line : ["", line[0]];
+
+                this.state.lines = [
+                    ...this.state.lines,
+                    new Line(
+                        index + 1,
+                        speaker,
+                        speech
+                    ).toJSON()
+                ]
+            });
+
+            // Set the state with the imported lines
+            this.setState({
+                lines: this.state.lines
+            });
+        }
+
+        // Close the modal
+        let bootstrapModal = bootstrap.Modal.getInstance(this.importModal);
+        bootstrapModal.hide();
+    }
+
     export(event) {
         // Get the export format from the button attribute
         const format = event.currentTarget
@@ -354,51 +445,78 @@ export default class Transcription extends Component {
 
     render () {
         return (
-            <div id="transcription-content">
-                <table>
-                    <tbody ref={ this.contentRef }>
-                        {
-                            this.state.lines.map((line, index) => (
-                                <tr key={ index }
-                                    onMouseEnter={ this.showActions(index) }
-                                    onMouseLeave={ this.hideActions(index) } >
-                                    <td id={'line-'+index} className="line pe-2 align-top">
-                                        { line.number }
-                                    </td>
-                                    <ContentEditable
-                                        id={'speaker-'+index}
-                                        className="speaker pe-2 align-top"
-                                        html={ line.speaker ?? "" }
-                                        tagName="td"
-                                        disabled={ !this.state.editable }
-                                        onChange={ this.handleChange({"index": index, "column": "speaker"}) }
-                                    />
-                                    <ContentEditable
-                                        id={'speech-'+index}
-                                        className="speech align-top"
-                                        html={ line.speech ?? "" }
-                                        tagName="td"
-                                        disabled={ !this.state.editable }
-                                        onChange={ this.handleChange({"index": index, "column": "speech"}) }
-                                        onKeyDown={ this.handleKeyDown(index) }
-                                    />
-                                    <td id={'actions-'+index} className="actions">
-                                        <span className="action delete-line me-1 d-none"
-                                              onClick={ this.deleteLine(index) }
-                                              title={ this.deleteLineActionLabel }>
-                                            <i className="far fa-times-circle"/>
-                                        </span>
-                                        <span className="action delete-number d-none"
-                                              onClick={ this.toggleNumber(index) }
-                                              title={ this.toggleNumberActionLabel }>
-                                            <i className={`far ${line.number ? "fa-minus-square" : "fa-plus-square"}`}/>
-                                        </span>
-                                    </td>
-                                </tr>
-                            ))
-                        }
-                    </tbody>
-                </table>
+            <div>
+                <div id="transcription-content">
+                    <table>
+                        <tbody ref={ this.contentRef }>
+                            {
+                                this.state.lines.map((line, index) => (
+                                    <tr key={ index }
+                                        onMouseEnter={ this.showActions(index) }
+                                        onMouseLeave={ this.hideActions(index) } >
+                                        <td id={'line-'+index} className="line pe-2 align-top">
+                                            { line.number }
+                                        </td>
+                                        <ContentEditable
+                                            id={'speaker-'+index}
+                                            className="speaker pe-2 align-top"
+                                            html={ line.speaker ?? "" }
+                                            tagName="td"
+                                            disabled={ !this.state.editable }
+                                            onChange={ this.handleChange({"index": index, "column": "speaker"}) }
+                                        />
+                                        <ContentEditable
+                                            id={'speech-'+index}
+                                            className="speech align-top"
+                                            html={ line.speech ?? "" }
+                                            tagName="td"
+                                            disabled={ !this.state.editable }
+                                            onChange={ this.handleChange({"index": index, "column": "speech"}) }
+                                            onKeyDown={ this.handleKeyDown(index) }
+                                        />
+                                        <td id={'actions-'+index} className="actions">
+                                            <span className="action delete-line me-1 d-none"
+                                                  onClick={ this.deleteLine(index) }
+                                                  title={ this.deleteLineActionLabel }>
+                                                <i className="far fa-times-circle"/>
+                                            </span>
+                                            <span className="action delete-number d-none"
+                                                  onClick={ this.toggleNumber(index) }
+                                                  title={ this.toggleNumberActionLabel }>
+                                                <i className={`far ${line.number ? "fa-minus-square" : "fa-plus-square"}`}/>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* Import transcription modal */}
+                <div className="modal fade" id="importModal" tabIndex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+                    <div className="modal-dialog modal-lg">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="importModalLabel">{ this.importModalTitleLabel }</h5>
+                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div className="modal-body">
+                                <div className="mb-2">
+                                    { this.importModalHelpLabel }
+                                </div>
+                                <textarea className="form-control col-md-12"
+                                          name="import-transcription-content"
+                                          id="import-transcription-content"
+                                          rows="20"></textarea>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">{ this.cancelLabel }</button>
+                                <button type="button" className="btn btn-primary" id="import-transcription">{ this.saveLabel }</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

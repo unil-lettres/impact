@@ -72,7 +72,7 @@ class Course extends Model
      */
     public function folders(): HasMany
     {
-        return $this->hasMany('App\Folder', 'course_id')
+        return $this->hasMany(\App\Folder::class, 'course_id')
             ->orderBy('created_at', 'desc');
     }
 

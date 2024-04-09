@@ -243,8 +243,8 @@ class CardTest extends DuskTestCase
             $browser->click('#import-box2')
                 ->pause(1000) // Avoid "element not interactable" issue with modal
                 ->assertSee(trans('cards.import'))
-                ->assertSee('Annuler')
-                ->assertSee('Sauver');
+                ->assertSee(trans('cards.cancel'))
+                ->assertSee(trans('cards.save'));
 
             $browser->keys(
                 '#import-transcription-content',
@@ -252,7 +252,7 @@ class CardTest extends DuskTestCase
             );
 
             $browser->click('#import-transcription')
-                ->assertSee('Sauver')
+                ->assertSee(trans('cards.save'))
                 ->click('#edit-box2')
                 ->assertSee('AAA')
                 ->assertSee('The first speech')

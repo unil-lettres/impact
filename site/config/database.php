@@ -44,7 +44,7 @@ return [
         ],
 
         'mysql' => [
-            'driver' => 'mysql',
+            'driver' => 'mariadb',
             'url' => env('DATABASE_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '3306'),
@@ -92,7 +92,7 @@ return [
         ],
 
         'testing' => [
-            'driver' => 'mysql',
+            'driver' => 'mariadb',
             'host' => 'impact-mysql-testing',
             'port' => '3307',
             'database' => 'impact',

@@ -6,7 +6,7 @@ use App\Card;
 use App\Course;
 use App\File;
 use App\Folder;
-use App\Http\Middleware\TrimStrings;
+use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use App\Observers\CardObserver;
 use App\Observers\CourseObserver;
 use App\Observers\FileObserver;

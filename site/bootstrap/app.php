@@ -14,7 +14,37 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        //
+        $middleware->redirectGuestsTo(fn () => route('login'));
+        $middleware->redirectUsersTo(RouteServiceProvider::HOME);
+
+        $middleware->append(\App\Http\Middleware\CheckForMaintenanceMode::class);
+
+        $middleware->web(\App\Http\Middleware\Localization::class);
+
+        $middleware->throttleApi('60,1');
+
+        $middleware->group('app', [
+            \is_valid' => \App\Http\Middleware\IsValid::class::class,
+        ]);
+
+        $middleware->replaceInGroup('web', \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class, \App\Http\Middleware\VerifyCsrfToken::class);
+
+        $middleware->alias([
+            'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            'check_aai' => \App\Http\Middleware\CheckAai::class,
+            'has_invitation' => \App\Http\Middleware\HasInvitation::class,
+            'is_admin' => \App\Http\Middleware\IsAdmin::class,
+        ]);
+
+        $middleware->priority([
+            \Illuminate\Session\Middleware\StartSession::class,
+            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+            \App\Http\Middleware\Authenticate::class,
+            \Illuminate\Routing\Middleware\ThrottleRequests::class,
+            \Illuminate\Session\Middleware\AuthenticateSession::class,
+            \Illuminate\Routing\Middleware\SubstituteBindings::class,
+            \Illuminate\Auth\Middleware\Authorize::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

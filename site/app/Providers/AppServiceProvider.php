@@ -6,13 +6,13 @@ use App\Card;
 use App\Course;
 use App\File;
 use App\Folder;
-use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use App\Observers\CardObserver;
 use App\Observers\CourseObserver;
 use App\Observers\FileObserver;
 use App\Observers\FolderObserver;
 use App\Observers\UserObserver;
 use App\User;
+use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\ServiceProvider;
@@ -20,6 +20,15 @@ use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
 {
+    /**
+     * The path to your application's "home" route.
+     *
+     * Typically, users are redirected here after authentication.
+     *
+     * @var string
+     */
+    public const HOME = '/home';
+
     /**
      * Register any application services.
      *

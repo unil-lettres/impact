@@ -11,13 +11,6 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 
 class InvitationFactory extends Factory
 {
-    /**
-     * The name of the factory's corresponding model.
-     *
-     * @var string
-     */
-    protected $model = Invitation::class;
-
     private string $email;
 
     /**

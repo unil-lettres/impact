@@ -11,10 +11,12 @@ use App\Observers\CourseObserver;
 use App\Observers\FileObserver;
 use App\Observers\FolderObserver;
 use App\Observers\UserObserver;
+use App\Policies\AttachmentPolicy;
 use App\User;
 use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -69,5 +71,8 @@ class AppServiceProvider extends ServiceProvider
         TrimStrings::skipWhen(function (Request $request) {
             return $request->is('cards/*/transcription');
         });
+
+        // Map the AttachmentPolicy to itself since there is no Attachment model.
+        Gate::policy(AttachmentPolicy::class, AttachmentPolicy::class);
     }
 }

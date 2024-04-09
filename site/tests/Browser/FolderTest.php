@@ -16,13 +16,13 @@ class FolderTest extends DuskTestCase
 {
     use ProvidesBrowser;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         Artisan::call('migrate:fresh --seed');
     }
 
-    public function tearDown(): void
+    protected function tearDown(): void
     {
         parent::tearDown();
         static::closeAll();

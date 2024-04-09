@@ -8,7 +8,6 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
 
-
 if ($this->app->isLocal()) {
     Schedule::command('telescope:prune --hours=48')
         ->daily();

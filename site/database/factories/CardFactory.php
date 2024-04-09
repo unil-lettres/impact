@@ -2,7 +2,6 @@
 
 namespace Database\Factories;
 
-use App\Card;
 use App\Course;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

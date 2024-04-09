@@ -3,7 +3,6 @@
 namespace Database\Factories;
 
 use App\Course;
-use App\Folder;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class FolderFactory extends Factory

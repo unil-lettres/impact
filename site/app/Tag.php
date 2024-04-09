@@ -15,7 +15,12 @@ class Tag extends Model
 
     protected $fillable = ['name', 'course_id'];
 
-    protected $casts = ['deleted_at' => 'datetime'];
+    protected function casts(): array
+    {
+        return [
+            'deleted_at' => 'datetime'
+        ];
+    }
 
     /**
      * The cards that belong to the tag.

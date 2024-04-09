@@ -18,9 +18,12 @@ class Invitation extends Model
         'email', 'invitation_token', 'registered_at', 'type', 'course_id', 'creator_id',
     ];
 
-    protected $casts = [
-        'deleted_at' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'deleted_at' => 'datetime',
+        ];
+    }
 
     /**
      * Scope a query to only active (not registered) invitations.

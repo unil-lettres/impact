@@ -15,10 +15,13 @@ class Enrollment extends Model
         'role', 'course_id', 'user_id', 'cards',
     ];
 
-    protected $casts = [
-        'cards' => 'array',
-        'deleted_at' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'cards' => 'array',
+            'deleted_at' => 'datetime',
+        ];
+    }
 
     /**
      * The "booted" method of the model.

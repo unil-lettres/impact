@@ -20,9 +20,12 @@ class Course extends Model
         'name', 'description', 'type', 'external_id', 'transcription',
     ];
 
-    protected $casts = [
-        'deleted_at' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'deleted_at' => 'datetime',
+        ];
+    }
 
     /**
      * Get method override for the name attribute.

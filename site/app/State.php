@@ -38,16 +38,19 @@ class State extends Model implements Sortable
         'name', 'description', 'position', 'permissions', 'course_id', 'type', 'managers_only', 'actions',
     ];
 
-    protected $casts = [
-        'permissions' => 'array',
-        'actions' => 'array',
-        'deleted_at' => 'datetime',
-    ];
-
     protected $attributes = [
         'permissions' => self::PERMISSIONS,
         'actions' => self::ACTIONS,
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'permissions' => 'array',
+            'actions' => 'array',
+            'deleted_at' => 'datetime',
+        ];
+    }
 
     /**
      * Scope a query to remove the states that are only available for managers.

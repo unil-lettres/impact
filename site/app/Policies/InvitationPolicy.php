@@ -12,11 +12,9 @@ class InvitationPolicy
     use HandlesAuthorization;
 
     /**
-     * Authorize all actions for admins
-     *
-     * @return bool
+     * Authorize all actions for admins.
      */
-    public function before($user, $ability)
+    public function before($user, $ability): ?bool
     {
         if ($user->admin) {
             return true;
@@ -27,8 +25,6 @@ class InvitationPolicy
 
     /**
      * Determine whether the user can view any invitations.
-     *
-     * @return mixed
      */
     public function viewAny(User $user): bool
     {
@@ -42,18 +38,14 @@ class InvitationPolicy
 
     /**
      * Determine whether the user can view any invitations in the admin panel.
-     *
-     * @return mixed
      */
-    public function manage(User $user)
+    public function manage(User $user): bool
     {
         return false;
     }
 
     /**
      * Determine whether the user can view the invitation.
-     *
-     * @return mixed
      */
     public function view(User $user, Invitation $invitation): bool
     {
@@ -66,8 +58,6 @@ class InvitationPolicy
 
     /**
      * Determine whether the user can create invitations.
-     *
-     * @return mixed
      */
     public function create(User $user, ?Course $course): bool
     {
@@ -86,8 +76,6 @@ class InvitationPolicy
 
     /**
      * Determine whether the user can update the invitation.
-     *
-     * @return mixed
      */
     public function update(User $user, Invitation $invitation): bool
     {
@@ -100,8 +88,6 @@ class InvitationPolicy
 
     /**
      * Determine whether the user can permanently delete the invitation.
-     *
-     * @return mixed
      */
     public function forceDelete(User $user, Invitation $invitation): bool
     {
@@ -114,30 +100,24 @@ class InvitationPolicy
 
     /**
      * Determine whether the user can view the register form.
-     *
-     * @return mixed
      */
-    public function register(?User $user)
+    public function register(?User $user): bool
     {
         return true;
     }
 
     /**
      * Determine whether the user can register a new account.
-     *
-     * @return mixed
      */
-    public function createInvitationUser(?User $user)
+    public function createInvitationUser(?User $user): bool
     {
         return true;
     }
 
     /**
      * Determine whether the user can send the invitation mail.
-     *
-     * @return mixed
      */
-    public function mail(User $user, Invitation $invitation)
+    public function mail(User $user, Invitation $invitation): bool
     {
         if ($invitation->registered_at) {
             return false;

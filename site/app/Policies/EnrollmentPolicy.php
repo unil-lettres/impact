@@ -14,8 +14,6 @@ class EnrollmentPolicy
 
     /**
      * Determine whether the user can view any enrollments.
-     *
-     * @return mixed
      */
     public function viewAny(User $user): bool
     {
@@ -24,8 +22,6 @@ class EnrollmentPolicy
 
     /**
      * Determine whether the user can view the enrollment.
-     *
-     * @return mixed
      */
     public function view(User $user, Enrollment $enrollment): bool
     {
@@ -34,10 +30,8 @@ class EnrollmentPolicy
 
     /**
      * Determine whether the user can find an enrollment.
-     *
-     * @return mixed
      */
-    public function find(User $user, Enrollment $enrollment)
+    public function find(User $user, Enrollment $enrollment): bool
     {
         if ($user->admin) {
             return true;
@@ -53,8 +47,6 @@ class EnrollmentPolicy
 
     /**
      * Determine whether the user can create enrollments.
-     *
-     * @return mixed
      */
     public function create(User $user, Course $enrolledCourse, User $enrolledUser): bool
     {
@@ -87,8 +79,6 @@ class EnrollmentPolicy
 
     /**
      * Determine whether the user can update the enrollment.
-     *
-     * @return mixed
      */
     public function update(User $user, Enrollment $enrollment): bool
     {
@@ -97,10 +87,8 @@ class EnrollmentPolicy
 
     /**
      * Determine whether the user can update the cards of the enrollment.
-     *
-     * @return mixed
      */
-    public function cards(User $user, Enrollment $enrollment)
+    public function cards(User $user, Enrollment $enrollment): bool
     {
         if ($user->admin) {
             return true;
@@ -116,8 +104,6 @@ class EnrollmentPolicy
 
     /**
      * Determine whether the user can forceDelete the enrollment.
-     *
-     * @return mixed
      */
     public function forceDelete(User $user, Enrollment $enrollment): bool
     {

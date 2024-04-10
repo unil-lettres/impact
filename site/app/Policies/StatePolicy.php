@@ -14,8 +14,6 @@ class StatePolicy
 
     /**
      * Determine whether the user can view any models.
-     *
-     * @return mixed
      */
     public function viewAny(User $user, Course $course): bool
     {
@@ -34,8 +32,6 @@ class StatePolicy
 
     /**
      * Determine whether the user can view the model.
-     *
-     * @return mixed
      */
     public function view(User $user, State $state): bool
     {
@@ -59,8 +55,6 @@ class StatePolicy
 
     /**
      * Determine whether the user can create models.
-     *
-     * @return mixed
      */
     public function create(User $user, Course $course): bool
     {
@@ -79,8 +73,6 @@ class StatePolicy
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @return mixed
      */
     public function update(User $user, State $state): bool
     {
@@ -104,8 +96,6 @@ class StatePolicy
 
     /**
      * Determine whether the user can permanently delete the model.
-     *
-     * @return mixed
      */
     public function forceDelete(User $user, State $state): bool
     {
@@ -129,10 +119,8 @@ class StatePolicy
 
     /**
      * Determine whether the user can permanently change the model position.
-     *
-     * @return mixed
      */
-    public function position(User $user, State $state)
+    public function position(User $user, State $state): bool
     {
         // A state position cannot be updated if not within a course
         if (! $state->course) {

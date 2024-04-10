@@ -16,8 +16,6 @@ class FilePolicy
 
     /**
      * Determine whether the user can view any models.
-     *
-     * @return mixed
      */
     public function viewAny(User $user, Course $course): bool
     {
@@ -40,10 +38,8 @@ class FilePolicy
 
     /**
      * Determine whether the user can view any files in the admin panel.
-     *
-     * @return mixed
      */
-    public function manage(User $user)
+    public function manage(User $user): bool
     {
         if ($user->admin) {
             return true;
@@ -54,8 +50,6 @@ class FilePolicy
 
     /**
      * Determine whether the user can view the model.
-     *
-     * @return mixed
      */
     public function view(User $user, File $file): bool
     {
@@ -78,8 +72,6 @@ class FilePolicy
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @return mixed
      */
     public function update(User $user, File $file): bool
     {
@@ -92,8 +84,6 @@ class FilePolicy
 
     /**
      * Determine whether the user can forceDelete the model.
-     *
-     * @return mixed
      */
     public function forceDelete(User $user, File $file): bool
     {
@@ -126,10 +116,8 @@ class FilePolicy
 
     /**
      * Determine whether the user can upload a file.
-     *
-     * @return mixed
      */
-    public function upload(User $user, ?Course $course, ?Card $card)
+    public function upload(User $user, ?Course $course, ?Card $card): bool
     {
         if ($user->admin) {
             return true;
@@ -150,10 +138,8 @@ class FilePolicy
 
     /**
      * Determine whether the user can move the model to a specific course.
-     *
-     * @return mixed
      */
-    public function move(User $user, File $file, Course $course)
+    public function move(User $user, File $file, Course $course): bool
     {
         // The file cannot be moved if linked to a card
         if ($file->cards->isNotEmpty()) {

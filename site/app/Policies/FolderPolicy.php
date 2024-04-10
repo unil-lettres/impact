@@ -13,8 +13,6 @@ class FolderPolicy
 
     /**
      * Determine whether the user can view any folders.
-     *
-     * @return mixed
      */
     public function viewAny(User $user): bool
     {
@@ -27,8 +25,6 @@ class FolderPolicy
 
     /**
      * Determine whether the user can view the folder.
-     *
-     * @return mixed
      */
     public function view(User $user, Folder $folder): bool
     {
@@ -46,8 +42,6 @@ class FolderPolicy
 
     /**
      * Determine whether the user can create folders.
-     *
-     * @return mixed
      */
     public function create(User $user, Course $course): bool
     {
@@ -65,8 +59,6 @@ class FolderPolicy
 
     /**
      * Determine whether the user can update the folder.
-     *
-     * @return mixed
      */
     public function update(User $user, Folder $folder): bool
     {
@@ -84,10 +76,8 @@ class FolderPolicy
 
     /**
      * Determine whether the user can manage (clone, move, etc.) the folder.
-     *
-     * @return mixed
      */
-    public function manage(User $user, Folder $folder)
+    public function manage(User $user, Folder $folder): bool
     {
         if ($user->admin) {
             return true;
@@ -103,8 +93,6 @@ class FolderPolicy
 
     /**
      * Determine whether the user can forceDelete the folder.
-     *
-     * @return mixed
      */
     public function forceDelete(User $user, Folder $folder): bool
     {

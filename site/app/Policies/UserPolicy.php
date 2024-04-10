@@ -14,8 +14,6 @@ class UserPolicy
 
     /**
      * Determine whether the user can view any models.
-     *
-     * @return mixed
      */
     public function viewAny(User $user, Course $course): bool
     {
@@ -45,10 +43,8 @@ class UserPolicy
 
     /**
      * Determine whether the user can view any invitations in the admin panel.
-     *
-     * @return mixed
      */
-    public function manage(User $user)
+    public function manage(User $user): bool
     {
         if ($user->admin) {
             return true;
@@ -59,8 +55,6 @@ class UserPolicy
 
     /**
      * Determine whether the user can view the model.
-     *
-     * @return mixed
      */
     public function view(User $user, User $model): bool
     {
@@ -73,8 +67,6 @@ class UserPolicy
 
     /**
      * Determine whether the user can create models.
-     *
-     * @return mixed
      */
     public function create(User $user): bool
     {
@@ -87,8 +79,6 @@ class UserPolicy
 
     /**
      * Determine whether the user can update the model.
-     *
-     * @return mixed
      */
     public function update(User $user, User $model): bool
     {
@@ -101,10 +91,8 @@ class UserPolicy
 
     /**
      * Determine whether the user can extend the validity of the model.
-     *
-     * @return mixed
      */
-    public function extend(User $user, User $model)
+    public function extend(User $user, User $model): bool
     {
         return $user->admin &&
             ! $model->admin &&
@@ -113,8 +101,6 @@ class UserPolicy
 
     /**
      * Determine whether the user can delete the model.
-     *
-     * @return mixed
      */
     public function delete(User $user, User $model): bool
     {

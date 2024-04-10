@@ -13,13 +13,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Request as RequestFacade;
+use Symfony\Component\HttpFoundation\Response;
 
 class CheckAai
 {
     /**
      * Handle an incoming request.
      */
-    public function handle(Request $request, Closure $next): mixed
+    public function handle(Request $request, Closure $next): Response
     {
         // Check if user is authenticated
         if (Auth::user()) {

@@ -13,8 +13,6 @@ class CoursePolicy
 
     /**
      * Determine whether the user can view any courses.
-     *
-     * @return mixed
      */
     public function viewAny(User $user): bool
     {
@@ -23,10 +21,8 @@ class CoursePolicy
 
     /**
      * Determine whether the user can view any courses in the admin panel.
-     *
-     * @return mixed
      */
-    public function manage(User $user)
+    public function manage(User $user): bool
     {
         // Only admins can manage courses
         if ($user->admin) {
@@ -38,8 +34,6 @@ class CoursePolicy
 
     /**
      * Determine whether the user can view the course.
-     *
-     * @return mixed
      */
     public function view(User $user, Course $course): bool
     {
@@ -53,8 +47,6 @@ class CoursePolicy
 
     /**
      * Determine whether the user can create courses.
-     *
-     * @return mixed
      */
     public function create(User $user): bool
     {
@@ -68,8 +60,6 @@ class CoursePolicy
 
     /**
      * Determine whether the user can update the course.
-     *
-     * @return mixed
      */
     public function update(User $user, Course $course): bool
     {
@@ -88,10 +78,8 @@ class CoursePolicy
 
     /**
      * Determine whether the user can edit the configuration of the course.
-     *
-     * @return mixed
      */
-    public function editConfiguration(User $user, Course $course)
+    public function editConfiguration(User $user, Course $course): bool
     {
         // Only admins & managers can configure courses
         if ($user->admin || $user->isManager($course)) {
@@ -103,10 +91,8 @@ class CoursePolicy
 
     /**
      * Determine whether the user can update the configuration of the course.
-     *
-     * @return mixed
      */
-    public function updateConfiguration(User $user, Course $course)
+    public function updateConfiguration(User $user, Course $course): bool
     {
         // Only admins & managers can update the configuration of the course
         if ($user->admin || $user->isManager($course)) {
@@ -118,10 +104,8 @@ class CoursePolicy
 
     /**
      * Determine whether the user can enable the course.
-     *
-     * @return mixed
      */
-    public function enable(User $user)
+    public function enable(User $user): bool
     {
         // Only admins can enable courses
         if ($user->admin) {
@@ -133,10 +117,8 @@ class CoursePolicy
 
     /**
      * Determine whether the user can archive the course.
-     *
-     * @return mixed
      */
-    public function archive(User $user, Course $course)
+    public function archive(User $user, Course $course): bool
     {
         // Only admins & managers can archive courses
         if ($user->admin || $user->isManager($course)) {
@@ -148,10 +130,8 @@ class CoursePolicy
 
     /**
      * Determine whether the user can disable the course (soft delete).
-     *
-     * @return mixed
      */
-    public function disable(User $user, Course $course)
+    public function disable(User $user, Course $course): bool
     {
         // Only admins & managers can disable courses
         if ($user->admin || $user->isManager($course)) {
@@ -163,8 +143,6 @@ class CoursePolicy
 
     /**
      * Determine whether the user can restore the course.
-     *
-     * @return mixed
      */
     public function restore(User $user, Course $course): bool
     {
@@ -178,8 +156,6 @@ class CoursePolicy
 
     /**
      * Determine whether the user can permanently delete the course.
-     *
-     * @return mixed
      */
     public function forceDelete(User $user): bool
     {
@@ -198,7 +174,7 @@ class CoursePolicy
      * This policy is in Course and not Card or Folder because the user
      * can move a set of cards / folders from the course UI.
      */
-    public function massActionsForCardAndFolder(User $user, Course $course)
+    public function massActionsForCardAndFolder(User $user, Course $course): bool
     {
         // Only managers and admin of the course can delete cards or folders.
         if ($user->admin || $user->isManager($course)) {
@@ -210,10 +186,8 @@ class CoursePolicy
 
     /**
      * Determine whether the user can send the mail to confirm the deletion of the course.
-     *
-     * @return mixed
      */
-    public function mailConfirmDelete(User $user, Course $course)
+    public function mailConfirmDelete(User $user, Course $course): bool
     {
         // Only admins can send the mail to confirm the deletion of the course
         if ($user->admin) {

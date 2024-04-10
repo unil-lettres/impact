@@ -20,9 +20,12 @@ class Course extends Model
         'name', 'description', 'type', 'external_id', 'transcription',
     ];
 
-    protected $casts = [
-        'deleted_at' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'deleted_at' => 'datetime',
+        ];
+    }
 
     /**
      * Get method override for the name attribute.
@@ -72,7 +75,7 @@ class Course extends Model
      */
     public function folders(): HasMany
     {
-        return $this->hasMany('App\Folder', 'course_id')
+        return $this->hasMany(\App\Folder::class, 'course_id')
             ->orderBy('created_at', 'desc');
     }
 

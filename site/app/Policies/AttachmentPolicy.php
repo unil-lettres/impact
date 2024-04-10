@@ -17,10 +17,8 @@ class AttachmentPolicy
 
     /**
      * Determine whether the user can view any models.
-     *
-     * @return mixed
      */
-    public function viewAny(User $user, Course $course)
+    public function viewAny(User $user, Course $course): bool
     {
         if ($user->admin) {
             return true;
@@ -36,10 +34,8 @@ class AttachmentPolicy
 
     /**
      * Determine whether the user can view the model.
-     *
-     * @return mixed
      */
-    public function view(User $user, File $attachment)
+    public function view(User $user, File $attachment): bool
     {
         if ($user->admin) {
             return true;
@@ -55,10 +51,8 @@ class AttachmentPolicy
 
     /**
      * Determine whether the user can forceDelete the model.
-     *
-     * @return mixed
      */
-    public function forceDelete(User $user, File $attachment)
+    public function forceDelete(User $user, File $attachment): bool
     {
         // The attachment cannot be deleted if status is "processing" or "transcoding"
         if (Str::contains($attachment->status, [FileStatus::Processing, FileStatus::Transcoding])) {
@@ -83,10 +77,8 @@ class AttachmentPolicy
 
     /**
      * Determine whether the user can upload an attachment.
-     *
-     * @return mixed
      */
-    public function upload(User $user, Course $course, Card $card)
+    public function upload(User $user, Course $course, Card $card): bool
     {
         if ($user->admin) {
             return true;

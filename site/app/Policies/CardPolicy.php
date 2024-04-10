@@ -14,10 +14,8 @@ class CardPolicy
 
     /**
      * Determine whether the user can view any cards.
-     *
-     * @return mixed
      */
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
         if ($user->admin) {
             return true;
@@ -28,10 +26,8 @@ class CardPolicy
 
     /**
      * Determine whether the user can view the card.
-     *
-     * @return mixed
      */
-    public function view(User $user, Card $card)
+    public function view(User $user, Card $card): bool
     {
         if ($user->admin) {
             return true;
@@ -81,10 +77,8 @@ class CardPolicy
 
     /**
      * Determine whether the user can create cards.
-     *
-     * @return mixed
      */
-    public function create(User $user, Course $course)
+    public function create(User $user, Course $course): bool
     {
         if ($user->admin) {
             return true;
@@ -100,10 +94,8 @@ class CardPolicy
 
     /**
      * Determine whether the user can update the card.
-     *
-     * @return mixed
      */
-    public function update(User $user, Card $card)
+    public function update(User $user, Card $card): bool
     {
         if ($user->admin) {
             return true;
@@ -129,10 +121,8 @@ class CardPolicy
 
     /**
      * Determine whether the user can manage the card (move, clone, etc.).
-     *
-     * @return mixed
      */
-    public function manage(User $user, Card $card)
+    public function manage(User $user, Card $card): bool
     {
         if ($user->admin) {
             return true;
@@ -148,10 +138,8 @@ class CardPolicy
 
     /**
      * Determine whether the user can forceDelete the card.
-     *
-     * @return mixed
      */
-    public function forceDelete(User $user, Card $card)
+    public function forceDelete(User $user, Card $card): bool
     {
         if ($user->admin) {
             return true;
@@ -166,11 +154,9 @@ class CardPolicy
     }
 
     /**
-     * Determine whether the user can unlink a file from the card
-     *
-     * @return mixed
+     * Determine whether the user can unlink a file from the card.
      */
-    public function unlinkFile(User $user, Card $card)
+    public function unlinkFile(User $user, Card $card): bool
     {
         if ($user->admin) {
             return true;
@@ -185,11 +171,9 @@ class CardPolicy
     }
 
     /**
-     * Determine whether the user can update a specific box of the card
-     *
-     * @return mixed
+     * Determine whether the user can update a specific box of the card.
      */
-    public function box(User $user, Card $card, string $box)
+    public function box(User $user, Card $card, string $box): bool
     {
         if ($user->admin) {
             return true;
@@ -203,11 +187,9 @@ class CardPolicy
     }
 
     /**
-     * Determine whether the user can hide parts of the card
-     *
-     * @return mixed
+     * Determine whether the user can hide parts of the card.
      */
-    public function hide(User $user, Card $card)
+    public function hide(User $user, Card $card): bool
     {
         if ($user->admin) {
             return true;
@@ -222,11 +204,9 @@ class CardPolicy
     }
 
     /**
-     * Determine whether the user can set the parameters of the card
-     *
-     * @return mixed
+     * Determine whether the user can set the parameters of the card.
      */
-    public function parameters(User $user, Card $card)
+    public function parameters(User $user, Card $card): bool
     {
         if ($user->admin) {
             return true;

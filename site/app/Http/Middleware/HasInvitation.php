@@ -6,16 +6,14 @@ use App\Invitation;
 use Closure;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class HasInvitation
 {
     /**
      * Handle an incoming request.
-     *
-     * @param  Request  $request
-     * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next): Response
     {
         // Check for a token parameter
         if (! $request->input('token')) {

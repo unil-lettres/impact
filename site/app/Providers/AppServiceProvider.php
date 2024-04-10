@@ -6,26 +6,35 @@ use App\Card;
 use App\Course;
 use App\File;
 use App\Folder;
-use App\Http\Middleware\TrimStrings;
 use App\Observers\CardObserver;
 use App\Observers\CourseObserver;
 use App\Observers\FileObserver;
 use App\Observers\FolderObserver;
 use App\Observers\UserObserver;
+use App\Policies\AttachmentPolicy;
 use App\User;
+use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
 class AppServiceProvider extends ServiceProvider
 {
     /**
-     * Register any application services.
+     * The path to your application's "home" route.
      *
-     * @return void
+     * Typically, users are redirected here after authentication.
+     *
+     * @var string
      */
-    public function register()
+    public const HOME = '/home';
+
+    /**
+     * Register any application services.
+     */
+    public function register(): void
     {
         if ($this->app->isLocal()) {
             $this->app->register(TelescopeServiceProvider::class);
@@ -34,10 +43,8 @@ class AppServiceProvider extends ServiceProvider
 
     /**
      * Bootstrap any application services.
-     *
-     * @return void
      */
-    public function boot()
+    public function boot(): void
     {
         // Register the observers
         File::observe(FileObserver::class);
@@ -64,5 +71,8 @@ class AppServiceProvider extends ServiceProvider
         TrimStrings::skipWhen(function (Request $request) {
             return $request->is('cards/*/transcription');
         });
+
+        // Map the AttachmentPolicy to itself since there is no Attachment model
+        Gate::policy(AttachmentPolicy::class, AttachmentPolicy::class);
     }
 }

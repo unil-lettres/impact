@@ -77,16 +77,19 @@ class Card extends Model
         'options->box5->hidden',
     ];
 
-    protected $casts = [
-        'box2' => 'array',
-        'options' => 'array',
-        'deleted_at' => 'datetime',
-    ];
-
     protected $attributes = [
         'box2' => self::TRANSCRIPTION,
         'options' => self::OPTIONS,
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'box2' => 'array',
+            'options' => 'array',
+            'deleted_at' => 'datetime',
+        ];
+    }
 
     /**
      * Get the course of this card.

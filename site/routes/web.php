@@ -142,7 +142,7 @@ Route::middleware(['auth', 'app'])->group(function () {
 });
 
 // Administration routes
-Route::group(['prefix' => 'admin',  'as' => 'admin.', 'middleware' => ['auth', 'app', 'is_admin']], function () {
+Route::prefix('admin')->name('admin.')->middleware('auth', 'app', 'is_admin')->group(function () {
     // Admin homepage
     Route::get('/', [AdminController::class, 'index'])
         ->name('index');

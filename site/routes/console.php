@@ -1,18 +1,21 @@
 <?php
 
 use Illuminate\Foundation\Inspiring;
+use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Schedule;
 
-/*
-|--------------------------------------------------------------------------
-| Console Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of your Closure based console
-| commands. Each Closure is bound to a command instance allowing a
-| simple approach to interacting with each command's IO methods.
-|
-*/
+Schedule::command('email:account:validity')
+    ->dailyAt('01:00');
+
+Schedule::command('moodle:sync')
+    ->everyThirtyMinutes();
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
-})->describe('Display an inspiring quote');
+})->purpose('Display an inspiring quote')
+    ->hourly();
+
+if ($this->app->isLocal()) {
+    Schedule::command('telescope:prune --hours=48')
+        ->daily();
+}

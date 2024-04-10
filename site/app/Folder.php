@@ -19,9 +19,12 @@ class Folder extends Model
         'title', 'position', 'course_id', 'parent_id',
     ];
 
-    protected $casts = [
-        'deleted_at' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'deleted_at' => 'datetime',
+        ];
+    }
 
     /**
      * Get the course of this folder.

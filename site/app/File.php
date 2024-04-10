@@ -31,9 +31,12 @@ class File extends Model
         'card_id',
     ];
 
-    protected $casts = [
-        'deleted_at' => 'datetime',
-    ];
+    protected function casts(): array
+    {
+        return [
+            'deleted_at' => 'datetime',
+        ];
+    }
 
     /**
      * The "booted" method of the model.

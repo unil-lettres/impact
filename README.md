@@ -84,7 +84,7 @@ Or to get the messages in JSON format.
 
 In this project the assets are pre-compiled before deployment. 
 
-During development ``docker exec impact-app npm run dev`` or ``docker exec impact-app npm run watch`` should be used. When everything is ready to be pushed to the repository ``docker exec impact-app npm run prod`` should be used to compile assets for production.
+During development ``docker exec impact-app npm run dev`` should be used. When everything is ready to be pushed to the repository ``docker exec impact-app npm run build`` should be used to compile assets for production.
 
 ## PHP code style
 

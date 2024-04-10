@@ -8,12 +8,13 @@ Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote')->hourly();
 
+Schedule::command('email:account:validity')
+    ->dailyAt('01:00');
+
+Schedule::command('moodle:sync')
+    ->everyThirtyMinutes();
+
 if ($this->app->isLocal()) {
     Schedule::command('telescope:prune --hours=48')
         ->daily();
 }
-
-Schedule::command('email:account:validity')
-    ->dailyAt('01:00');
-Schedule::command('moodle:sync')
-    ->everyThirtyMinutes();

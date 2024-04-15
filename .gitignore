@@ -1,5 +1,6 @@
 .idea
 .DS_Store
+/.devcontainer/
 dev/.env
 site/supervisord*
 /site/.env.backup

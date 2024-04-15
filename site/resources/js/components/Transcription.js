@@ -438,7 +438,9 @@ export default class Transcription extends Component {
     };
 
     handleKeyDown = index => (event) => {
-        if(event.key === 'Tab' && this.isLastRow(index) ) {
+        // Check shift key to avoid creating a new line if the tab
+        // traversal is backwards.
+        if(event.key === 'Tab' && !event.shiftKey && this.isLastRow(index) ) {
             this.addRow();
         }
     }

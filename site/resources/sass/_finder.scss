@@ -1,5 +1,10 @@
 .finder {
     &:not(.hide-select) {
+
+        .background-hover:hover {
+            background-color: var(--bs-gray-200);
+        }
+
         .selected {
             background-color: $gray-200!important;
         }
@@ -7,6 +12,12 @@
         .selected .background-hover:hover,
         .selected.background-hover:hover {
             background-color: $gray-400!important;
+        }
+    }
+
+    &.hide-select {
+        [type="checkbox"] {
+            opacity: 0 !important;
         }
     }
 
@@ -100,10 +111,6 @@
 
     .icons {
         width: 40px;
-    }
-
-    .background-hover:hover {
-        background-color: var(--bs-gray-200);
     }
 
     .modal-backdrop {

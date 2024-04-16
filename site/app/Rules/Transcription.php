@@ -23,6 +23,10 @@ class Transcription implements ValidationRule
                 ->keyExists('number')
                 ->keyExists('speaker')
                 ->keyExists('speech');
+
+            Assert::thatAll(array_map(fn ($row) => $row['speaker'] ?? '', $value))
+                ->maxLength(3);
+
         } catch (InvalidArgumentException $e) {
             $fail('The transcription is not valid.');
         }

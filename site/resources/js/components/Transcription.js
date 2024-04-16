@@ -432,12 +432,16 @@ export default class Transcription extends Component {
 
     handleChange = params => (event) => {
         if(this.state.lines[params.index]) {
+            const sanitizedValue = this.sanitize(event.target.value);
+
             switch (params.column) {
                 case "speaker":
-                    this.state.lines[params.index].speaker = this.sanitize(event.target.value);
+                    if (sanitizedValue.length <= 3) {
+                        this.state.lines[params.index].speaker = sanitizedValue;
+                    }
                     break;
                 case "speech":
-                    this.state.lines[params.index].speech = this.sanitize(event.target.value);
+                    this.state.lines[params.index].speech = sanitizedValue;
                     break;
             }
 

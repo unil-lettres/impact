@@ -48,7 +48,8 @@ export default class Transcription extends Component {
         this.deleteTranscription = this.deleteTranscription.bind(this);
         this.import = this.import.bind(this);
         this.export = this.export.bind(this);
-        this.handleKeyDown = this.handleKeyDown.bind(this);
+        this.handleSpeakerKeyDown = this.handleSpeakerKeyDown.bind(this);
+        this.handleSpeechKeyDown = this.handleSpeechKeyDown.bind(this);
 
         this.initVariables(data);
         this.updateUi();
@@ -74,6 +75,7 @@ export default class Transcription extends Component {
         this.toggleNumberActionLabel = data.toggleNumberActionLabel ?? 'Visibility of the numbering';
         this.importModalTitleLabel = data.importModalTitleLabel ?? 'Import a transcription';
         this.importModalHelpLabel = data.importModalHelpLabel ?? 'Paste a transcription into the text box below. Please respect the ICOR transcription conventions to preserve your layout.';
+        this.componentFocusOnUpdate = null;
     }
 
     componentDidMount() {
@@ -119,6 +121,13 @@ export default class Transcription extends Component {
 
         if(this.deleteButton) {
             this.deleteButton.addEventListener('click', this.deleteTranscription, false);
+        }
+    }
+
+    componentDidUpdate() {
+        if(this.componentFocusOnUpdate) {
+            document.getElementById(this.componentFocusOnUpdate).focus();
+            this.componentFocusOnUpdate = null;
         }
     }
 
@@ -264,15 +273,16 @@ export default class Transcription extends Component {
         });
     }
 
-    addRow() {
-        this.state.lines = [
-            ...this.state.lines,
-            new Line(
-                "",
-                "",
-                ""
-            ).toJSON()
-        ]
+    addRow(index = null, speaker = "", speech = "") {
+        if (index === null) {
+            index = this.state.lines.length;
+        }
+
+        this.state.lines.splice(
+            index,
+            0,
+            new Line("", speaker, speech).toJSON()
+        );
 
         // Fix the number of each row
         this.fixNumbers();
@@ -437,11 +447,62 @@ export default class Transcription extends Component {
         }
     };
 
-    handleKeyDown = index => (event) => {
-        // Check shift key to avoid creating a new line if the tab
-        // traversal is backwards.
-        if(event.key === 'Tab' && !event.shiftKey && this.isLastRow(index) ) {
-            this.addRow();
+    handleSpeechKeyDown = index => (event) => {
+        switch (event.key) {
+            case 'Enter':
+                event.preventDefault();
+
+                const lines = [...this.state.lines];
+                const caretPosition = window.getSelection().anchorOffset;
+                const textBeforeCaret = lines[index].speech.substring(0, caretPosition);
+                const textAfterCaret = lines[index].speech.substring(caretPosition);
+                const columnToFocus = textAfterCaret === "" ? "speaker" : "speech";
+
+                // Remove the text after the caret from current line (it will
+                // be moved to the new line).
+                lines[index].speech = textBeforeCaret;
+                this.setState({ lines: lines });
+
+                // Add a new line with the text after the caret and with no speaker.
+                this.addRow(index + 1, "", textAfterCaret);
+                this.componentFocusOnUpdate = `${columnToFocus}-${index + 1}`;
+
+                break;
+            case 'Tab':
+                // Check shift key to avoid creating a new line if the tab
+                // traversal is backwards.
+                if (!event.shiftKey && this.isLastRow(index)) {
+                    this.addRow();
+                }
+                break;
+        }
+    }
+
+    handleSpeakerKeyDown = index => (event) => {
+        switch (event.key) {
+
+            case 'Enter':
+                event.preventDefault();
+
+                const lines = [...this.state.lines];
+                const caretPosition = window.getSelection().anchorOffset;
+                const textBeforeCaret = lines[index].speaker.substring(0, caretPosition);
+                const textAfterCaret = lines[index].speaker.substring(caretPosition);
+                const speechOnNewLine = lines[index].speech;
+
+                // Remove the text after the caret from current line and the
+                // speech (they will be moved to the new line).
+                lines[index].speaker = textBeforeCaret;
+                lines[index].speech = "";
+
+                this.setState({ lines: lines });
+
+                // Create a new line with the text after the caret and with the
+                // speech from the previous line.
+                this.addRow(index + 1, textAfterCaret, speechOnNewLine);
+                this.componentFocusOnUpdate = `speaker-${index + 1}`;
+
+                break;
         }
     }
 
@@ -466,6 +527,7 @@ export default class Transcription extends Component {
                                             tagName="td"
                                             disabled={ !this.state.editable }
                                             onChange={ this.handleChange({"index": index, "column": "speaker"}) }
+                                            onKeyDown={ this.handleSpeakerKeyDown(index) }
                                         />
                                         <ContentEditable
                                             id={'speech-'+index}
@@ -474,7 +536,7 @@ export default class Transcription extends Component {
                                             tagName="td"
                                             disabled={ !this.state.editable }
                                             onChange={ this.handleChange({"index": index, "column": "speech"}) }
-                                            onKeyDown={ this.handleKeyDown(index) }
+                                            onKeyDown={ this.handleSpeechKeyDown(index) }
                                         />
                                         <td id={'actions-'+index} className="actions">
                                             <span className="action delete-line me-1 d-none"

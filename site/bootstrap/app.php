@@ -9,6 +9,9 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withProviders([
         \Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
     ])
+    ->withCommands([
+        \Bugsnag\BugsnagLaravel\Commands\DeployCommand::class,
+    ])
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',

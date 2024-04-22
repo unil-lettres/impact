@@ -174,10 +174,15 @@ class FileStorageService
         $ffprobe = FFProbe::create();
 
         // Get number of video track(s)
-        $videoTracks = $ffprobe
-            ->streams($fileFullTempPath)
-            ->videos()
-            ->count();
+        $videoTracks = array_filter(
+            $ffprobe
+                ->streams($fileFullTempPath)
+                ->videos()
+                ->all(),
+
+            // Filter covers tracks.
+            fn($stream) => $stream->get('disposition')['attached_pic'] !== 1
+        );
 
         // Get number of audio track(s)
         $audioTracks = $ffprobe
@@ -185,7 +190,7 @@ class FileStorageService
             ->audios()
             ->count();
 
-        if ($videoTracks > 0) {
+        if (count($videoTracks) > 0) {
             return FileType::Video;
         }
 

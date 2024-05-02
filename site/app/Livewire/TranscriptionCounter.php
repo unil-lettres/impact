@@ -41,7 +41,7 @@ class TranscriptionCounter extends Component
          * already set by another user, the current user knows that another
          * user is editing the card.
          *
-         * An benefit of this approach is that the user don't have to
+         * A benefit of this approach is that the user don't have to
          * unsubscribe to anything when he leaves the page as other users will
          * overwrite his presence in the cache.
          *

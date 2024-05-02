@@ -129,6 +129,10 @@ export default class Transcription extends Component {
             document.getElementById(this.componentFocusOnUpdate).focus();
             this.componentFocusOnUpdate = null;
         }
+
+        window.transcription = {
+            isEditing: this.state.editable
+        };
     }
 
     updateUi() {

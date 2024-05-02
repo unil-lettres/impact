@@ -36,6 +36,7 @@ return [
     'card.unlinked' => 'Card dissociated.',
     'card.configuration.updated' => 'Card configuration updated',
     'card.editor.failed' => 'Error - update failure',
+    'card.editor.concurrent_edition' => 'Other users are editing this card.',
     'card.media.failed' => 'The processing of the file failed, please try to send it again, or contact an administrator.',
     'card.media.ready' => 'The file is ready, please reload the page.',
     'card.media.processing' => 'The file is processing, please wait.',

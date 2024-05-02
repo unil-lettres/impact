@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Card;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 
 class TranscriptionCounter extends Component
@@ -53,7 +52,7 @@ class TranscriptionCounter extends Component
          * will happen.
          */
         if ($isEditing) {
-            $cachKey = 'transcription_editing_' . $this->card->id;
+            $cachKey = 'transcription_editing_'.$this->card->id;
 
             // The following two instructions should be atomic. It can cause some
             // false negatives in some cases that we accept has it is a very low

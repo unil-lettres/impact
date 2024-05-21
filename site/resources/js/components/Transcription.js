@@ -29,6 +29,7 @@ export default class Transcription extends Component {
     static MAX_CARACTERS_LEGACY_SPEECH = 65;
     static KEY_ENTER = 13;
     static KEY_BACKSPACE = 8;
+    static KEY_TAB = 9;
 
     constructor (props) {
         super(props)
@@ -208,7 +209,7 @@ export default class Transcription extends Component {
     }
 
     isLastRow(index) {
-        return this.state.lines.length === index + 1
+        return this.state.lines.length === this._getNextSectionIndex(index);
     }
 
     _fixNumbers() {
@@ -310,7 +311,7 @@ export default class Transcription extends Component {
      */
     addSectionAfter(number, speaker = "", speech = "") {
         const index = this._getLineIndexByNumber(number);
-        const newSectionIndex = this._getNextSection(index);
+        const newSectionIndex = this._getNextSectionIndex(index);
 
         this.addRow(newSectionIndex, speaker, speech, false);
 
@@ -322,7 +323,7 @@ export default class Transcription extends Component {
         return newSectionNumber;
     }
 
-    _getNextSection(index) {
+    _getNextSectionIndex(index) {
         while (this.state.lines[index + 1]?.linkedToPrevious ?? false) {
             index++;
         }
@@ -565,8 +566,8 @@ export default class Transcription extends Component {
     handleSpeechKeyDown = number => (event) => {
         const index = this._getLineIndexByNumber(number);
 
-        switch (event.key) {
-            case 'Enter':
+        switch (event.keyCode) {
+            case Transcription.KEY_ENTER:
                 event.preventDefault();
 
                 // const lines = [...this.state.lines];
@@ -583,7 +584,8 @@ export default class Transcription extends Component {
 
                 this.caretPositionOnUpdate = 0;
                 break;
-            case 'Tab':
+
+            case Transcription.KEY_TAB:
                 // Check shift key to avoid creating a new line if the tab
                 // traversal is backwards.
                 if (!event.shiftKey && this.isLastRow(index)) {
@@ -626,8 +628,8 @@ export default class Transcription extends Component {
             case Transcription.KEY_BACKSPACE:
                 // If we hit backspace at the beginning of the speaker column.
                 if (event.target.selectionStart === 0 && event.target.selectionEnd === 0) {
-                    let index = this._getLineIndexByNumber(number);
-                    let previousIndex = this._getPreviousSection(index);
+                    const index = this._getLineIndexByNumber(number);
+                    const previousIndex = this._getPreviousSection(index);
                     const previousLine = this.state.lines[previousIndex];
                     const section = this.findSectionAtNumber(number);
                     const previousSection = this.findSectionAtNumber(previousLine.number);
@@ -644,7 +646,7 @@ export default class Transcription extends Component {
                     // the precedent call (thus moving the index).
                     index = this._getLineIndexByNumber(previousSection.number);
 
-                    this.state.lines[index].speaker = previousSection.speaker || previousSection.speaker || "";
+                    this.state.lines[index].speaker = previousSection.speaker || section.speaker || "";
                     this.setState({ lines: this.state.lines });
                 }
                 break;
@@ -656,7 +658,7 @@ export default class Transcription extends Component {
             throw new Error("Unable to remove linked lines. The specified line must be the first of a group.");
         }
 
-        const range = this._getNextSection(index) - index;
+        const range = this._getNextSectionIndex(index) - index;
         this.state.lines.splice(index, range);
 
         this._fixNumbers();

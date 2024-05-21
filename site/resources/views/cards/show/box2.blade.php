@@ -79,7 +79,7 @@
             </p>
             @if($card->course->transcription === \App\Enums\TranscriptionType::Icor)
                 <div id="rct-transcription"
-                     data='{{ json_encode(['card' => $card, 'editLabel' => trans('cards.edit'), 'saveLabel' => trans('cards.save'), 'cancelLabel' => trans('cards.cancel'), 'deleteLineActionLabel' => trans('cards.delete_line_action'), 'toggleNumberActionLabel' => trans('cards.toggle_number_action'), 'importModalTitleLabel' => trans('cards.import'), 'importModalHelpLabel' => trans('cards.import.help')]) }}'
+                     data='{{ json_encode(['card' => $card, 'editLabel' => trans('cards.edit'), 'saveLabel' => trans('cards.save'), 'cancelLabel' => trans('cards.cancel'), 'deleteLineActionLabel' => trans('cards.delete_line_action'), 'toggleNumberActionLabel' => trans('cards.toggle_number_action'), 'importModalTitleLabel' => trans('cards.import'), 'importModalHelpLabel' => trans('cards.import.help'), 'noTranscriptionLabel' => trans('cards.no_transcription')]) }}'
                      reference='{{ $reference }}'
                 ></div>
             @elseif($card->course->transcription === \App\Enums\TranscriptionType::Text)

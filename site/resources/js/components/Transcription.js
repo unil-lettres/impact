@@ -56,18 +56,6 @@ export default class Transcription extends Component {
             editable: !disabled
         };
 
-        this.edit = this.edit.bind(this);
-        this.cancel = this.cancel.bind(this);
-        this.hideActions = this.hideActions.bind(this);
-        this.showActions = this.showActions.bind(this);
-        this.deleteLine = this.deleteLine.bind(this);
-        this.toggleNumber = this.toggleNumber.bind(this);
-        this.deleteTranscription = this.deleteTranscription.bind(this);
-        this.import = this.import.bind(this);
-        this.export = this.export.bind(this);
-        this.handleSpeakerKeyDown = this.handleSpeakerKeyDown.bind(this);
-        this.handleSpeechKeyDown = this.handleSpeechKeyDown.bind(this);
-
         this.initVariables(data);
         this.updateUi();
     }
@@ -98,11 +86,11 @@ export default class Transcription extends Component {
 
     componentDidMount() {
         if(this.editButton) {
-            this.editButton.addEventListener('click', this.edit, false);
+            this.editButton.addEventListener('click', () => this.edit(), false);
         }
 
         if(this.cancelButton) {
-            this.cancelButton.addEventListener('click', this.cancel, false);
+            this.cancelButton.addEventListener('click', () => this.cancel(), false);
         }
 
         if(this.importOpenModalButton) {
@@ -111,7 +99,7 @@ export default class Transcription extends Component {
             this.importModal = document.getElementById('importModal');
 
             if (this.importButton && this.importContent && this.importModal) {
-                this.importButton.addEventListener('click', this.import, false);
+                this.importButton.addEventListener('click', () => this.import(), false);
                 this.importContent.onkeydown = function(e) {
                     if (e.key === 'Tab') { // Block to catch when tab key is pressed
                         e.preventDefault(); // Prevent default action
@@ -136,11 +124,19 @@ export default class Transcription extends Component {
         }
 
         if(this.exportButton) {
-            this.exportButton.addEventListener('click', this.export, false);
+            this.exportButton.addEventListener(
+                'click',
+                () => this.export(),
+                false,
+            );
         }
 
         if(this.deleteButton) {
-            this.deleteButton.addEventListener('click', this.deleteTranscription, false);
+            this.deleteButton.addEventListener(
+                'click',
+                () => this.deleteTranscription(),
+                false,
+            );
         }
     }
 
@@ -311,25 +307,23 @@ export default class Transcription extends Component {
     }
 
     /**
-     * Add a section after the specified line number with the given content.
+     * Add a section after the section specified by the given line index.
      *
-     * @param {int} number the line number to add a section after
+     * @param {int} index the line index to add a section after
      * @param {string} speaker the speaker column
      * @param {string} speech the speech column
      * @returns The index of the first line of the new section.
      */
-    addSectionAfter(number, speaker = "", speech = "") {
-        const index = this._getLineIndexByNumber(number);
+    addSectionAfter(index, speaker = "", speech = "") {
         const newSectionIndex = this._getNextSectionIndex(index);
 
         this.addRow(newSectionIndex, speaker, speech, false);
 
-        const newSectionNumber = this.state.lines[newSectionIndex].number;
         if (speech.length > 0) {
-            this.setSectionSpeech(newSectionNumber, speech);
+            this.setSectionSpeech(newSectionIndex, speech);
         }
 
-        return newSectionNumber;
+        return newSectionIndex;
     }
 
     _getNextSectionIndex(index) {
@@ -360,44 +354,7 @@ export default class Transcription extends Component {
         this.lineToFocusOnUpdate = 'speaker-1';
     }
 
-    showActions = index => (event) => {
-        // if(this.state.editable) {
-        //     const actions = document.getElementById('actions-'+index);
-
-        //     if (actions.hasChildNodes()) {
-        //         let children = actions.childNodes;
-
-        //         for (let i = 0; i < children.length; i++) {
-        //             children[i].classList.remove("d-none");
-        //         }
-        //     }
-        // }
-    }
-
-    hideActions = index => (event) => {
-        // if(this.state.editable) {
-        //     const actions = document.getElementById('actions-'+index);
-
-        //     if (actions.hasChildNodes()) {
-        //         let children = actions.childNodes;
-
-        //         for (let i = 0; i < children.length; i++) {
-        //             children[i].classList.add("d-none");
-        //         }
-        //     }
-        // }
-    }
-
-    deleteLine = index => (event) => {
-        if(this.state.lines[index]) {
-            // Remove line at specific index
-            this.state.lines.splice(index, 1)
-
-            this._fixNumbers();
-        }
-    }
-
-    toggleNumber = index => (event) => {
+    toggleNumber = index => {
         if(this.state.lines[index]) {
             // Remove or add a number to the row
             this.state.lines[index].number = this.state.lines[index].number ? null : "";
@@ -489,21 +446,20 @@ export default class Transcription extends Component {
         });
     }
 
-    handleSpeakerChange = number => (event) => {
+    handleSpeakerChange(index, event) {
         const speaker = event.target.value.substring(0, 3);
-        const index = this._getLineIndexByNumber(number);
 
         this.state.lines[index].speaker = speaker;
         this.setState({ lines: this.state.lines });
     }
 
-    setSectionSpeech(number, value) {
+    setSectionSpeech(index, value) {
         // Some browser add a newline in specific situations (like when the user
         // press space after a line break). We remove all newline characters to
         // homogenize the behavior accross browsers.
         let remainingLine = value.replace(/\n/g, ' ');
 
-        let first = this._getLineIndexByNumber(number), current = first;
+        let first = index, current = first;
         const speaker = this.state.lines[first].speaker;
 
         // We remove the involved lines in the state to recreate them.
@@ -569,11 +525,11 @@ export default class Transcription extends Component {
         this._fixNumbers();
     }
 
-    handleSpeechChange = number => (event) => {
-        this.setSectionSpeech(number, event.target.value);
+    handleSpeechChange(index, event) {
+        this.setSectionSpeech(index, event.target.value);
     }
 
-    handleSpeechKeyDown = number => (event) => {
+    handleSpeechKeyDown(index, event) {
 
         switch (event.keyCode) {
             case Transcription.KEY_ENTER:
@@ -585,10 +541,10 @@ export default class Transcription extends Component {
                 const textAfterCaret = speech.substring(caretPosition);
                 const columnToFocus = textAfterCaret === "" ? "speaker" : "speech";
 
-                this.setSectionSpeech(number, textBeforeCaret);
+                this.setSectionSpeech(index, textBeforeCaret);
 
-                const newSectionNumber = this.addSectionAfter(number, "", textAfterCaret);
-                this.lineToFocusOnUpdate = `${columnToFocus}-${newSectionNumber}`;
+                const newSectionIndex = this.addSectionAfter(index, "", textAfterCaret);
+                this.lineToFocusOnUpdate = `${columnToFocus}-${newSectionIndex}`;
                 this.caretPositionOnUpdate = 0;
 
                 break;
@@ -596,26 +552,22 @@ export default class Transcription extends Component {
             case Transcription.KEY_TAB:
                 // Check shift key to avoid creating a new line if the tab
                 // traversal is backwards.
-                const index = this._getLineIndexByNumber(number);
                 if (!event.shiftKey && this.isLastRow(index)) {
                     this.addRow(null, "", "");
                 }
                 break;
 
             case Transcription.KEY_BACKSPACE:
-                this._processBackSpace(number, event);
+                this._processBackSpace(index, event);
                 break;
 
             case Transcription.KEY_DEL:
 
-                if (this._shouldMergeWithNext(number, event)) {
+                if (this._shouldMergeWithNext(index, event)) {
                     event.preventDefault();
 
-                    const index = this._getLineIndexByNumber(number);
                     const nextIndex = this._getNextSectionIndex(index);
-                    const nextLine = this.state.lines[nextIndex];
-
-                    this._processMerge(number, nextLine.number);
+                    this._processMerge(index, nextIndex);
                 }
                 break;
         }
@@ -623,41 +575,33 @@ export default class Transcription extends Component {
 
     /**
      * Merge the second section with the first one. The second section will be deleted.
-     * @param {int} firstNumber The first section number to append the second one.
-     * @param {int} secondNumber The second section number.
+     * @param {int} firstIndex The first section index to append the second one.
+     * @param {int} secondIndex The second section index.
      */
-    _processMerge(firstNumber, secondNumber) {
+    _processMerge(firstIndex, secondIndex) {
 
-        let firstIndex = this._getLineIndexByNumber(firstNumber);
-        const firstSection = this.findSectionAtNumber(firstNumber);
-        const secondSection = this.findSectionAtNumber(secondNumber);
-
+        const firstSection = this.findSectionByIndex(firstIndex);
+        const secondSection = this.findSectionByIndex(secondIndex);
         this._removeLinkedLines(firstIndex);
 
         this.setSectionSpeech(
-            firstSection.number,
+            firstSection.index,
             `${firstSection.speech ?? ""}${secondSection.speech ?? ""}`,
         );
 
-        this.lineToFocusOnUpdate = `speech-${firstSection.number}`;
+        this.lineToFocusOnUpdate = `speech-${firstSection.index}`;
         this.caretPositionOnUpdate = (firstSection.speech ?? "").length;
-
-        // Variables must be updated in case we added new lines in
-        // the precedent call (thus moving the index).
-        firstIndex = this._getLineIndexByNumber(firstSection.number);
 
         this.state.lines[firstIndex].speaker = firstSection.speaker || secondSection.speaker || "";
         this.setState({ lines: this.state.lines });
     }
 
-
-    handleSpeakerKeyDown = number => (event) => {
+    handleSpeakerKeyDown(index, event) {
 
         switch (event.keyCode) {
             case Transcription.KEY_ENTER:
                 event.preventDefault();
 
-                const index = this._getLineIndexByNumber(number);
                 const lines = [...this.state.lines];
                 const caretPosition = event.target.selectionStart;
                 const textBeforeCaret = (lines[index].speaker ?? "").substring(0, caretPosition);
@@ -678,13 +622,17 @@ export default class Transcription extends Component {
                     textAfterCaret,
                     speechOnNewLine,
                 );
-                this.lineToFocusOnUpdate = `speaker-${this.state.lines[index + 1].number}`;
+                this.lineToFocusOnUpdate = `speaker-${index + 1}`;
                 break;
 
             case Transcription.KEY_BACKSPACE:
-                this._processBackSpace(number, event);
+                this._processBackSpace(index, event);
                 break;
         }
+    }
+
+    findSectionByIndex(index) {
+        return this.getAggregatedLines().find((line) => line.index === index);
     }
 
     _removeLinkedLines(index) {
@@ -698,21 +646,11 @@ export default class Transcription extends Component {
         this._fixNumbers();
     }
 
-    /**
-     * Return the index of the given line number.
-     *
-     * @param {int} number
-     * @returns {int}
-     */
-    _getLineIndexByNumber(number) {
-        return this.state.lines.findIndex(line => line.number === number);
-    }
-
-    _shouldMergeWithPrevious(number, event) {
+    _shouldMergeWithPrevious(index, event) {
         let should = true;
 
         // Must not be on the first line.
-        should &= number > 1;
+        should &= index > 0;
 
         // Must have pressed backspace when the carret is at position 0.
         should &= event.target.selectionStart === 0 && event.target.selectionEnd === 0;
@@ -720,11 +658,11 @@ export default class Transcription extends Component {
         return should;
     }
 
-    _shouldMergeWithNext(number, event) {
+    _shouldMergeWithNext(index, event) {
         let should = true;
 
         // Must not be on the last line.
-        should &= !this.isLastRow(this._getLineIndexByNumber(number));
+        should &= !this.isLastRow(index);
 
         // Must have pressed delete when the carret is at the last position.
         const length = event.target.value.length;
@@ -733,16 +671,13 @@ export default class Transcription extends Component {
         return should;
     }
 
-    _processBackSpace(number, event) {
+    _processBackSpace(index, event) {
 
-        if (this._shouldMergeWithPrevious(number, event)) {
+        if (this._shouldMergeWithPrevious(index, event)) {
             event.preventDefault();
 
-            const index = this._getLineIndexByNumber(number);
             const previousIndex = this._getPreviousSection(index);
-            const previousLine = this.state.lines[previousIndex];
-
-            this._processMerge(previousLine.number, number);
+            this._processMerge(previousIndex, index);
         }
     }
 
@@ -754,13 +689,14 @@ export default class Transcription extends Component {
     getAggregatedLines() {
         const aggregatedLines = [];
 
-        this.state.lines.forEach((line) => {
+        this.state.lines.forEach((line, index) => {
             if (line.linkedToPrevious) {
                 const lastLine = aggregatedLines.at(-1);
                 lastLine.speech += line.speech;
                 lastLine.linesNumber++;
             } else {
                 aggregatedLines.push({
+                    index: index,
                     number: line.number,
                     speaker: line.speaker,
                     speech: line.speech,
@@ -768,7 +704,6 @@ export default class Transcription extends Component {
                 });
             }
         });
-
         return aggregatedLines;
     }
 
@@ -794,26 +729,17 @@ export default class Transcription extends Component {
      *  <div>32</div>
      *  <div>33</div>
      *  <div>34</div>
-     * @param {object} line
+     * @param {object} section
      * @returns the html representation for lines number.
      */
-    _getHtmlLinesNumber(line) {
+    _getHtmlLinesNumber(section) {
         return Array
-            .from({length: line.linesNumber})
-            .map((_, i) => ( <div key={i}>{parseInt(line.number, 10) + i}</div> ));
+            .from({length: section.linesNumber})
+            .map((_, i) => ( <div key={i}>{parseInt(section.number, 10) + i}</div> ));
     }
 
     _noTranscritption() {
         return !this.state.editable && this.state.lines.length <= 1 && !this.state.lines[0].speech && !this.state.lines[0].speaker;
-    }
-
-    /**
-     * @param {int} number The line number to get the section.
-     * @returns The section at the given line number. If the line number is not
-     * the first of a section, null will be returned.
-     */
-    findSectionAtNumber(number) {
-        return this.getAggregatedLines().find((line) => line.number === number);
     }
 
     render () {
@@ -826,47 +752,49 @@ export default class Transcription extends Component {
             <div>
                 <div id="transcription-content" ref={ this.contentRef }>
                     {
-                        this.getAggregatedLines().map((line) => (
-                            <div key={ line.number }
+                        this.getAggregatedLines().map((section) => (
+                            <div
+                                key={ section.index }
                                 className="transcription-row d-flex align-items-stretch"
-                                onMouseEnter={ this.showActions(line.number) }
-                                onMouseLeave={ this.hideActions(line.number) }
                             >
-                                <div id={`line-${line.number}`} className="line-number">
-                                    { this._getHtmlLinesNumber(line) }
+                                <div className="line-number">
+                                    { this._getHtmlLinesNumber(section) }
                                 </div>
                                 <SpeakerInput
                                     type="text"
-                                    id={`speaker-${line.number}`}
-                                    value={ line.speaker ?? "" }
+                                    id={`speaker-${section.index}`}
+                                    value={ section.speaker ?? "" }
                                     rows="1"
                                     disabled={ !this.state.editable }
-                                    onChange={ this.handleSpeakerChange(line.number) }
-                                    onKeyDown={ this.handleSpeakerKeyDown(line.number) }
+                                    onChange={ event => this.handleSpeakerChange(section.index, event) }
+                                    onKeyDown={ event => this.handleSpeakerKeyDown(section.index, event) }
                                 />
                                 <textarea
                                     className="speech"
-                                    id={`speech-${line.number}`}
+                                    id={`speech-${section.index}`}
                                     disabled={ !this.state.editable }
                                     cols={Transcription.MAX_CARACTERS_SPEECH}
-                                    rows={line.linesNumber}
-                                    onChange={ this.handleSpeechChange(line.number) }
-                                    onKeyDown={ this.handleSpeechKeyDown(line.number) }
-                                    value={ line.speech ?? "" }
+                                    rows={section.linesNumber}
+                                    onChange={ event => this.handleSpeechChange(section.index, event) }
+                                    onKeyDown={ event => this.handleSpeechKeyDown(section.index, event) }
+                                    value={ section.speech ?? "" }
                                 ></textarea>
-                                {//<div id={'actions-'+line.number} className="actions">
-                                //     <span className="action delete-line me-1 d-none"
-                                //             onClick={ this.deleteLine(line.number) }
-                                //             title={ this.deleteLineActionLabel }>
-                                //         <i className="far fa-times-circle"/>
-                                //     </span>
-                                //     <span className="action delete-number d-none"
-                                //             onClick={ this.toggleNumber(line.number) }
-                                //             title={ this.toggleNumberActionLabel }>
-                                //         <i className={`far ${line.number ? "fa-minus-square" : "fa-plus-square"}`}/>
-                                //     </span>
-                                // </div>
-                                    }
+                                <div className="transcription-actions">
+                                     <span
+                                        className="me-1 d-none"
+                                        onClick={ () => this._removeLinkedLines(section.index) }
+                                        title={ this.deleteLineActionLabel }
+                                    >
+                                         <i className="far fa-times-circle"/>
+                                    </span>
+                                    <span
+                                        className="d-none"
+                                        onClick={ () => this.toggleNumber(section.index) }
+                                        title={ this.toggleNumberActionLabel }
+                                    >
+                                         <i className={`far ${section.number ? "fa-minus-square" : "fa-plus-square"}`}/>
+                                     </span>
+                                 </div>
                             </div>
                         ))
                     }
@@ -874,6 +802,7 @@ export default class Transcription extends Component {
                     {
                         this.state.lines.map((line, index) => (
                             <div key={ index } className='d-flex gap-1'>
+                                <div style={{width: '20px', textAlign: 'left'}}>{ index }</div>
                                 <div style={{width: '20px', textAlign: 'left'}}>{ line.number }</div>
                                 <div style={{width: '30px', textAlign: 'left'}}>{ line.speaker }</div>
                                 <div style={{width: '20px', textAlign: 'left'}}>{ line.speech?.length }</div>

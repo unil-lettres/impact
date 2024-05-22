@@ -1,9 +1,19 @@
-import React, { Component } from 'react';
+import React, { Component, useRef } from 'react';
 import { createRoot } from "react-dom/client";
 import { flushSync } from "react-dom";
 
 import axios from "axios";
 import _ from "lodash";
+
+function SpeakerInput(props) {
+    const inputRef = useRef(null);
+
+    return (
+        <div className="speaker" onClick={ () => inputRef.current.focus()}>
+            <input {...props} ref={inputRef} />
+        </div>
+    );
+}
 
 class Line {
 
@@ -825,17 +835,15 @@ export default class Transcription extends Component {
                                 <div id={`line-${line.number}`} className="line-number">
                                     { this._getHtmlLinesNumber(line) }
                                 </div>
-                                <div className="speaker" onClick={ () => document.getElementById(`speaker-${line.number}`).focus()}>
-                                    <input
-                                        type="text"
-                                        id={`speaker-${line.number}`}
-                                        value={ line.speaker ?? "" }
-                                        rows="1"
-                                        disabled={ !this.state.editable }
-                                        onChange={ this.handleSpeakerChange(line.number) }
-                                        onKeyDown={ this.handleSpeakerKeyDown(line.number) }
-                                    />
-                                </div>
+                                <SpeakerInput
+                                    type="text"
+                                    id={`speaker-${line.number}`}
+                                    value={ line.speaker ?? "" }
+                                    rows="1"
+                                    disabled={ !this.state.editable }
+                                    onChange={ this.handleSpeakerChange(line.number) }
+                                    onKeyDown={ this.handleSpeakerKeyDown(line.number) }
+                                />
                                 <textarea
                                     className="speech"
                                     id={`speech-${line.number}`}

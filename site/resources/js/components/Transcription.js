@@ -142,11 +142,9 @@ export default class Transcription extends Component {
             } else {
                 line = this.lineToFocusOnUpdate;
             }
-            line.setSelectionRange(
-                this.caretPositionOnUpdate ?? 0,
-                this.caretPositionOnUpdate ?? 0,
-            );
             line.focus();
+            line.selectionStart = this.caretPositionOnUpdate ?? 0;
+            line.selectionEnd = this.caretPositionOnUpdate ?? 0;
             this.lineToFocusOnUpdate = this.caretPositionOnUpdate = null;
         }
     }
@@ -564,13 +562,11 @@ export default class Transcription extends Component {
     }
 
     handleSpeechKeyDown = number => (event) => {
-        const index = this._getLineIndexByNumber(number);
 
         switch (event.keyCode) {
             case Transcription.KEY_ENTER:
                 event.preventDefault();
 
-                // const lines = [...this.state.lines];
                 const speech = event.target.value ?? "";
                 const caretPosition = event.target.selectionStart;
                 const textBeforeCaret = speech.substring(0, caretPosition);
@@ -581,16 +577,21 @@ export default class Transcription extends Component {
 
                 const newSectionNumber = this.addSectionAfter(number, "", textAfterCaret);
                 this.lineToFocusOnUpdate = `${columnToFocus}-${newSectionNumber}`;
-
                 this.caretPositionOnUpdate = 0;
+
                 break;
 
             case Transcription.KEY_TAB:
                 // Check shift key to avoid creating a new line if the tab
                 // traversal is backwards.
+                const index = this._getLineIndexByNumber(number);
                 if (!event.shiftKey && this.isLastRow(index)) {
                     this.addRow(null, "", "");
                 }
+                break;
+
+            case Transcription.KEY_BACKSPACE:
+                this._processBackSpace(number, event);
                 break;
         }
     }
@@ -626,29 +627,7 @@ export default class Transcription extends Component {
                 break;
 
             case Transcription.KEY_BACKSPACE:
-                // If we hit backspace at the beginning of the speaker column.
-                if (event.target.selectionStart === 0 && event.target.selectionEnd === 0) {
-                    const index = this._getLineIndexByNumber(number);
-                    const previousIndex = this._getPreviousSection(index);
-                    const previousLine = this.state.lines[previousIndex];
-                    const section = this.findSectionAtNumber(number);
-                    const previousSection = this.findSectionAtNumber(previousLine.number);
-
-                    this._removeLinkedLines(previousIndex);
-                    this.lineToFocusOnUpdate = `speaker-${previousSection.number}`;
-
-                    this.setSectionSpeech(
-                        previousSection.number,
-                        `${previousSection.speech ?? ""}${section.speech ?? ""}`,
-                    );
-
-                    // Variables must be updated in case we added new lines in
-                    // the precedent call (thus moving the index).
-                    index = this._getLineIndexByNumber(previousSection.number);
-
-                    this.state.lines[index].speaker = previousSection.speaker || section.speaker || "";
-                    this.setState({ lines: this.state.lines });
-                }
+                this._processBackSpace(number, event);
                 break;
         }
     }
@@ -672,6 +651,48 @@ export default class Transcription extends Component {
      */
     _getLineIndexByNumber(number) {
         return this.state.lines.findIndex(line => line.number === number);
+    }
+
+    _shouldMergeWithPrevious(number, event) {
+        let should = true;
+
+        // Must not be on the first line.
+        should &= number > 1;
+
+        // Must have pressed backspace when the carret is at position 0.
+        should &= event.target.selectionStart === 0 && event.target.selectionEnd === 0;
+
+        return should;
+    }
+
+    _processBackSpace(number, event) {
+
+        if (this._shouldMergeWithPrevious(number, event)) {
+            event.preventDefault();
+
+            let index = this._getLineIndexByNumber(number);
+            const previousIndex = this._getPreviousSection(index);
+            const previousLine = this.state.lines[previousIndex];
+            const section = this.findSectionAtNumber(number);
+            const previousSection = this.findSectionAtNumber(previousLine.number);
+
+            this._removeLinkedLines(previousIndex);
+
+            this.setSectionSpeech(
+                previousSection.number,
+                `${previousSection.speech ?? ""}${section.speech ?? ""}`,
+            );
+
+            this.lineToFocusOnUpdate = `speech-${previousSection.number}`;
+            this.caretPositionOnUpdate = (previousSection.speech ?? "").length;
+
+            // Variables must be updated in case we added new lines in
+            // the precedent call (thus moving the index).
+            index = this._getLineIndexByNumber(previousSection.number);
+
+            this.state.lines[index].speaker = previousSection.speaker || section.speaker || "";
+            this.setState({ lines: this.state.lines });
+        }
     }
 
     /**

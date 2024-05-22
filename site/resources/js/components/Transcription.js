@@ -30,6 +30,7 @@ export default class Transcription extends Component {
     static KEY_ENTER = 13;
     static KEY_BACKSPACE = 8;
     static KEY_TAB = 9;
+    static KEY_DEL = 46;
 
     constructor (props) {
         super(props)
@@ -593,8 +594,51 @@ export default class Transcription extends Component {
             case Transcription.KEY_BACKSPACE:
                 this._processBackSpace(number, event);
                 break;
+
+            case Transcription.KEY_DEL:
+
+                if (this._shouldMergeWithNext(number, event)) {
+                    event.preventDefault();
+
+                    const index = this._getLineIndexByNumber(number);
+                    const nextIndex = this._getNextSectionIndex(index);
+                    const nextLine = this.state.lines[nextIndex];
+
+                    this._processMerge(number, nextLine.number);
+                }
+                break;
         }
     }
+
+    /**
+     * Merge the second section with the first one. The second section will be deleted.
+     * @param {int} firstNumber The first section number to append the second one.
+     * @param {int} secondNumber The second section number.
+     */
+    _processMerge(firstNumber, secondNumber) {
+
+        let firstIndex = this._getLineIndexByNumber(firstNumber);
+        const firstSection = this.findSectionAtNumber(firstNumber);
+        const secondSection = this.findSectionAtNumber(secondNumber);
+
+        this._removeLinkedLines(firstIndex);
+
+        this.setSectionSpeech(
+            firstSection.number,
+            `${firstSection.speech ?? ""}${secondSection.speech ?? ""}`,
+        );
+
+        this.lineToFocusOnUpdate = `speech-${firstSection.number}`;
+        this.caretPositionOnUpdate = (firstSection.speech ?? "").length;
+
+        // Variables must be updated in case we added new lines in
+        // the precedent call (thus moving the index).
+        firstIndex = this._getLineIndexByNumber(firstSection.number);
+
+        this.state.lines[firstIndex].speaker = firstSection.speaker || secondSection.speaker || "";
+        this.setState({ lines: this.state.lines });
+    }
+
 
     handleSpeakerKeyDown = number => (event) => {
 
@@ -665,33 +709,29 @@ export default class Transcription extends Component {
         return should;
     }
 
+    _shouldMergeWithNext(number, event) {
+        let should = true;
+
+        // Must not be on the last line.
+        should &= !this.isLastRow(this._getLineIndexByNumber(number));
+
+        // Must have pressed delete when the carret is at the last position.
+        const length = event.target.value.length;
+        should &= event.target.selectionStart === length && event.target.selectionEnd === length;
+
+        return should;
+    }
+
     _processBackSpace(number, event) {
 
         if (this._shouldMergeWithPrevious(number, event)) {
             event.preventDefault();
 
-            let index = this._getLineIndexByNumber(number);
+            const index = this._getLineIndexByNumber(number);
             const previousIndex = this._getPreviousSection(index);
             const previousLine = this.state.lines[previousIndex];
-            const section = this.findSectionAtNumber(number);
-            const previousSection = this.findSectionAtNumber(previousLine.number);
 
-            this._removeLinkedLines(previousIndex);
-
-            this.setSectionSpeech(
-                previousSection.number,
-                `${previousSection.speech ?? ""}${section.speech ?? ""}`,
-            );
-
-            this.lineToFocusOnUpdate = `speech-${previousSection.number}`;
-            this.caretPositionOnUpdate = (previousSection.speech ?? "").length;
-
-            // Variables must be updated in case we added new lines in
-            // the precedent call (thus moving the index).
-            index = this._getLineIndexByNumber(previousSection.number);
-
-            this.state.lines[index].speaker = previousSection.speaker || section.speaker || "";
-            this.setState({ lines: this.state.lines });
+            this._processMerge(previousLine.number, number);
         }
     }
 

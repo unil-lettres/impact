@@ -781,13 +781,13 @@ export default class Transcription extends Component {
                                 onMouseEnter={ this.showActions(line.number) }
                                 onMouseLeave={ this.hideActions(line.number) }
                             >
-                                <div id={'line-'+line.number} className="line-number">
+                                <div id={`line-${line.number}`} className="line-number">
                                     { this._getHtmlLinesNumber(line) }
                                 </div>
-                                <div className="speaker">
+                                <div className="speaker" onClick={ () => document.getElementById(`speaker-${line.number}`).focus()}>
                                     <input
                                         type="text"
-                                        id={'speaker-'+line.number}
+                                        id={`speaker-${line.number}`}
                                         value={ line.speaker ?? "" }
                                         rows="1"
                                         disabled={ !this.state.editable }
@@ -797,7 +797,7 @@ export default class Transcription extends Component {
                                 </div>
                                 <textarea
                                     className="speech"
-                                    id={'speech-'+line.number}
+                                    id={`speech-${line.number}`}
                                     disabled={ !this.state.editable }
                                     cols={Transcription.MAX_CARACTERS_SPEECH}
                                     rows={line.linesNumber}

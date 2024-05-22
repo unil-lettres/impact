@@ -347,6 +347,7 @@ export default class Transcription extends Component {
                 ).toJSON()
             ]
         });
+        this.lineToFocusOnUpdate = 'speaker-1';
     }
 
     showActions = index => (event) => {

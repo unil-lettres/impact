@@ -84,26 +84,6 @@ export default class Transcription extends Component {
         this.lineToFocusOnUpdate = null;
     }
 
-    handleImportContentKeyDown(event) {
-        if (event.keyCode === Transcription.KEY_TAB) {
-            event.preventDefault();
-
-            let textarea = event.target;
-
-            // Get cursor position.
-            let start = textarea.selectionStart;
-            let end = textarea.selectionEnd;
-
-            // Set textarea value to: text before cursor + tab + text after cursor.
-            textarea.value = textarea.value.substring(0, start)
-                + "\t"
-                + textarea.value.substring(end);
-
-            // Put cursor to right of inserted tab.
-            textarea.selectionStart = textarea.selectionEnd = start + 1;
-        }
-    }
-
     componentDidMount() {
         if(this.editButton) {
             this.editButton.addEventListener('click', () => this.edit(), false);
@@ -116,7 +96,7 @@ export default class Transcription extends Component {
         if(this.exportButton) {
             this.exportButton.addEventListener(
                 'click',
-                () => this.export(),
+                () => this.handleExportClick(),
                 false,
             );
         }
@@ -169,7 +149,9 @@ export default class Transcription extends Component {
 
                     // If transcription is empty, then add the first line
                     if(!this.validate(this.state.lines)) {
-                        this.addRow()
+                        this.setState({
+                            lines: this.addRow(this.state.lines),
+                        });
                     }
                     break;
                 case false:
@@ -191,34 +173,6 @@ export default class Transcription extends Component {
                     }
             }
         }
-    }
-
-    validate(lines) {
-        // Not valid if transcription is not an array or is empty
-        if (!Array.isArray(lines) || !lines.length) {
-            return false;
-        }
-
-        // Valid otherwise
-        return true;
-    }
-
-    isLastRow(index) {
-        return this.state.lines.length === this._getNextSectionIndex(index);
-    }
-
-    _fixNumbers() {
-        let i = 1;
-        this.state.lines.forEach(function (row) {
-            // Fix the row number if is present or is an empty string
-            if(row.number || row.number === "") {
-                row.number = i++;
-            }
-        });
-
-        this.setState({
-            lines: this.state.lines
-        });
     }
 
     edit() {
@@ -282,129 +236,39 @@ export default class Transcription extends Component {
         });
     }
 
-    addRow(index = null, speaker = "", speech = "", linkedToPrevious = false) {
-        if (index === null) {
-            index = this.state.lines.length;
-        }
-
-        this.state.lines.splice(
-            index,
-            0,
-            new Line("", speaker, speech, linkedToPrevious).toJSON()
-        );
-
-        this._fixNumbers();
-    }
-
-    /**
-     * Add a section after the section specified by the given line index.
-     *
-     * @param {int} index the line index to add a section after
-     * @param {string} speaker the speaker column
-     * @param {string} speech the speech column
-     * @returns The index of the first line of the new section.
-     */
-    addSectionAfter(index, speaker = "", speech = "") {
-        const newSectionIndex = this._getNextSectionIndex(index);
-
-        this.addRow(newSectionIndex, speaker, speech, false);
-
-        if (speech.length > 0) {
-            this.setSectionSpeech(newSectionIndex, speech);
-        }
-
-        return newSectionIndex;
-    }
-
-    _getNextSectionIndex(index) {
-        while (this.state.lines[index + 1]?.linkedToPrevious ?? false) {
-            index++;
-        }
-        return index + 1;
-    }
-
-    _getPreviousSection(index) {
-        while (this.state.lines[index - 1]?.linkedToPrevious ?? false) {
-            index--;
-        }
-        return index - 1;
-    }
-
-    deleteTranscription() {
-        this.setState({
-            lines: [
-                new Line(
-                    "1",
-                    "",
-                    "",
-                    0
-                ).toJSON()
-            ]
+    handleToggleNumberClick = index => {
+        // TODO make working for section
+        // Remove or add a number to the row
+        const newLines = this.state.lines.map((row, i) => {
+            if (i === index) {
+                return { ...row, number: row.number ? null : i + 1 };
+            } else {
+                return row;
+            }
         });
-        this.lineToFocusOnUpdate = 'speaker-1';
+
+        this.setState({ lines: this.fixNumbers(newLines) });
     }
 
-    toggleNumber = index => {
-        if(this.state.lines[index]) {
-            // Remove or add a number to the row
-            this.state.lines[index].number = this.state.lines[index].number ? null : "";
-
-            this._fixNumbers();
-        }
-    }
-
-    import() {
+    handleImportClick() {
         if(this.state.importContentValue) {
-            // Toggle the edition mode
             this.edit();
 
-            // Reset the lines to avoid a first empty line
-            this.state.lines = [];
+            let lines = this.state.importContentValue.split('\n');
 
-            // Get the textarea value
-            let textareaValue = this.state.importContentValue;
+            const importedLines = lines.map((line, index) => {
+                const tabSeparatedValues = line.split('\t');
+                const [speaker, speech] = tabSeparatedValues.length > 1 ? tabSeparatedValues : ["", tabSeparatedValues[0]];
 
-            // Split the textarea value by newline to get an array of lines
-            let lines = textareaValue.split('\n');
-
-            // Initialize an empty array to hold the parsed text
-            let parsedText = [];
-
-            // Iterate over each line
-            for (let line of lines) {
-                // Split the line by tab to get an array of tab-separated values
-                let tabSeparatedValues = line.split('\t');
-
-                // Add the array of tab-separated values to the main array
-                parsedText.push(tabSeparatedValues);
-            }
-
-            // Now, parsedText is an array where each line is an element
-            // and each tab-separated value is a sub-array. We can now
-            // iterate over it and create a new Line object for each line.
-            parsedText.forEach((line, index) => {
-                // If the line has more than one element, then the first
-                // element is the speaker and the second is the speech. Otherwise,
-                // the speaker is empty and the only element is the speech.
-                let [speaker, speech] = line.length > 1 ? line : ["", line[0]];
-
-                this.state.lines = [
-                    ...this.state.lines,
-                    new Line(index + 1, speaker, speech).toJSON()
-                ]
+                return new Line(index + 1, speaker, speech).toJSON();
             });
 
-            // Set the state with the imported lines
-            this.setState({
-                lines: this.state.lines
-            });
+            this.setState({ lines: importedLines });
         }
     }
 
-    export(event) {
-        // Get the export format from the button attribute
-        const format = event.currentTarget
-            .getAttribute('format');
+    handleExportClick(event) {
+        const format = event.currentTarget.getAttribute('format');
 
         axios({
             method: 'post',
@@ -427,27 +291,310 @@ export default class Transcription extends Component {
         });
     }
 
+    handleImportContentKeyDown(event) {
+        if (event.keyCode === Transcription.KEY_TAB) {
+            event.preventDefault();
+
+            // Override tab behavior to insert a tab character instead of
+            // changing the focus.
+
+            let textarea = event.target;
+
+            let start = textarea.selectionStart;
+            let end = textarea.selectionEnd;
+
+            // Set textarea value to: text before cursor + tab + text after cursor.
+            textarea.value = textarea.value.substring(0, start)
+                + "\t"
+                + textarea.value.substring(end);
+
+            // Put cursor to right of inserted tab.
+            textarea.selectionStart = textarea.selectionEnd = start + 1;
+        }
+    }
+
     handleSpeakerChange(index, event) {
         const speaker = event.target.value.substring(0, 3);
 
-        this.state.lines[index].speaker = speaker;
-        this.setState({ lines: this.state.lines });
+        const newLines = this.state.lines.map((row, i) => {
+            if (i === index) {
+                return { ...row, speaker: speaker };
+            } else {
+                return row;
+            }
+        });
+
+        // This is to avoid the cursor being put at the end of the input.
+        this.lineToFocusOnUpdate = document.activeElement;
+        this.caretPositionOnUpdate = document.activeElement.selectionStart;
+
+        this.setState({ lines: newLines });
     }
 
-    setSectionSpeech(index, value) {
+    handleSpeechChange(index, event) {
+        this.setState({
+            lines: this.updateSectionSpeech(
+                this.state.lines,
+                index,
+                event.target.value,
+            ),
+        });
+    }
+
+    handleSpeechKeyDown(index, event) {
+
+        switch (event.keyCode) {
+            case Transcription.KEY_ENTER:
+                event.preventDefault();
+
+                // Split the current line in two parts: before and after the caret.
+                const speech = event.target.value ?? "";
+                const caretPosition = event.target.selectionStart;
+                const textBeforeCaret = speech.substring(0, caretPosition);
+                const textAfterCaret = speech.substring(caretPosition);
+                const columnToFocus = textAfterCaret === "" ? "speaker" : "speech";
+
+                // Update the current section with the text before the caret.
+                let newLines = this.updateSectionSpeech(
+                    this.state.lines,
+                    index,
+                    textBeforeCaret,
+                );
+
+                // Add a new section with the text after the caret.
+                const newSectionIndex = this.getNextSectionIndex(newLines, index);
+
+                newLines = this.addRow(
+                    newLines,
+                    newSectionIndex,
+                    "",
+                    textAfterCaret,
+                    false,
+                );
+
+                if (textAfterCaret.length > 0) {
+                    newLines = this.updateSectionSpeech(
+                        newLines,
+                        newSectionIndex,
+                        textAfterCaret,
+                    );
+                }
+
+                this.lineToFocusOnUpdate = `${columnToFocus}-${newSectionIndex}`;
+                this.caretPositionOnUpdate = 0;
+
+                this.setState({ lines: newLines });
+
+                break;
+
+            case Transcription.KEY_TAB:
+                // Check shift key to avoid creating a new line if the tab
+                // traversal is backwards.
+                if (!event.shiftKey && this.isLastRow(this.state.lines, index)) {
+                    this.setState({
+                        lines: this.addRow(this.state.lines, null, "", ""),
+                    });
+                }
+                break;
+
+            case Transcription.KEY_BACKSPACE:
+                if (this.shouldMergeWithPrevious(index, event)) {
+                    event.preventDefault();
+
+                    const previousIndex = this.getPreviousSectionIndex(
+                        this.state.lines,
+                        index,
+                    );
+                    this.setState({
+                        lines: this.mergeLines(
+                            this.state.lines,
+                            previousIndex,
+                            index,
+                        ),
+                    });
+                }
+                break;
+
+            case Transcription.KEY_DEL:
+
+                if (this.shouldMergeWithNext(this.state.lines, index, event)) {
+                    event.preventDefault();
+
+                    const nextIndex = this.getNextSectionIndex(
+                        this.state.lines,
+                        index,
+                    );
+                    this.setState({
+                        lines: this.mergeLines(
+                            this.state.lines,
+                            index,
+                            nextIndex,
+                        ),
+                    })
+                }
+                break;
+        }
+    }
+
+    handleSpeakerKeyDown(index, event) {
+
+        switch (event.keyCode) {
+            case Transcription.KEY_ENTER:
+                event.preventDefault();
+
+                const caretPosition = event.target.selectionStart;
+                const speaker = this.state.lines[index].speaker ?? "";
+                const textBeforeCaret = speaker.substring(0, caretPosition);
+                const textAfterCaret = speaker.substring(caretPosition);
+                const speechOnNewLine = this.state.lines[index].speech ?? "";
+
+                // Remove the text after the caret from current line and the
+                // speech (they will be moved to the new line).
+                const newLines = this.state.lines.map((row, i) => {
+                    if (i === index) {
+                        return { ...row, speaker: textBeforeCaret, speech: '' };
+                    } else {
+                        return row;
+                    }
+                });
+
+                // Create a new line with the text after the caret and with the
+                // speech from the previous line.
+                this.lineToFocusOnUpdate = `speaker-${index + 1}`;
+
+                this.setState({
+                    lines: this.addRow(
+                        newLines,
+                        index + 1,
+                        textAfterCaret,
+                        speechOnNewLine,
+                    )
+                });
+                break;
+
+            case Transcription.KEY_BACKSPACE:
+                if (this.shouldMergeWithPrevious(index, event)) {
+                    event.preventDefault();
+
+                    const previousIndex = this.getPreviousSectionIndex(
+                        this.state.lines,
+                        index,
+                    );
+                    this.setState({
+                        lines: this.mergeLines(
+                            this.state.lines,
+                            previousIndex,
+                            index,
+                        ),
+                    });
+                }
+                break;
+        }
+    }
+
+    validate(lines) {
+        // Not valid if transcription is not an array or is empty
+        if (!Array.isArray(lines) || !lines.length) {
+            return false;
+        }
+
+        // Valid otherwise
+        return true;
+    }
+
+    isLastRow(lines, index) {
+        return lines.length === this.getNextSectionIndex(lines, index);
+    }
+
+    /**
+     * @param {Array} lines An array of lines.
+     * @returns an array of the given lines with fixed numbers.
+     */
+    fixNumbers(lines) {
+        let i = 1;
+
+        return lines.map(function (row) {
+            // Fix the row number if is present or is an empty string
+            if(row.number || row.number === "") {
+                return {...row, number: i++};
+            } else {
+                return row;
+            }
+        });
+    }
+
+    /**
+     * Return an array with the given line added.
+     *
+     * @param {Array} lines An array of lines to add a new row to.
+     * @param {int} index The index to add the new row at. If null, the row will be added at the end.
+     * @param {string} speaker The speaker column.
+     * @param {string} speech The speech column.
+     * @param {boolean} linkedToPrevious If the row is linked to the previous row (meanin it's in the same section).
+     */
+    addRow(lines, index = null, speaker = "", speech = "", linkedToPrevious = false) {
+
+        // If index is not specified, add at the end.
+        if (index === null) {
+            index = lines.length;
+        }
+
+        const newLines = [
+            ...lines.slice(0, index),
+            new Line("", speaker, speech, linkedToPrevious).toJSON(),
+            ...lines.slice(index)
+        ];
+
+        return this.fixNumbers(newLines);
+    }
+
+    getNextSectionIndex(lines, index) {
+        while (lines[index + 1]?.linkedToPrevious ?? false) {
+            index++;
+        }
+        return index + 1;
+    }
+
+    getPreviousSectionIndex(lines, index) {
+        while (lines[index - 1]?.linkedToPrevious ?? false) {
+            index--;
+        }
+        return index - 1;
+    }
+
+    deleteTranscription() {
+        this.setState({
+            lines: [
+                new Line(
+                    "1",
+                    "",
+                    "",
+                    0
+                ).toJSON()
+            ]
+        });
+        this.lineToFocusOnUpdate = 'speaker-1';
+    }
+
+    /**
+     * @param {int} index The index to update the section.
+     * @param {string} speech The new speech for this section.
+     * @returns an array with the given section updated.
+     */
+    updateSectionSpeech(lines, index, speech) {
         // Some browser add a newline in specific situations (like when the user
         // press space after a line break). We remove all newline characters to
         // homogenize the behavior accross browsers.
-        let remainingLine = value.replace(/\n/g, ' ');
+        let remainingLine = speech.replace(/\n/g, ' ');
 
         let first = index, current = first;
-        const speaker = this.state.lines[first].speaker;
+        const speaker = lines[first].speaker;
 
         // We remove the involved lines in the state to recreate them.
-        this._removeLinkedLines(current);
+        let newLines = this.removeSection(lines, current);
 
         if (remainingLine.length === 0) {
-            this.addRow(current, speaker);
+            newLines = this.addRow(newLines, current, speaker);
         }
 
         // We split the value into multiple lines of max caracters length.
@@ -478,7 +625,7 @@ export default class Transcription extends Component {
                     // If the last word overflow the max caracters, we cut the
                     // word at the last space or hyphen.
 
-                    const lastSpace = this._lastIndexOfWhiteSpace(line);
+                    const lastSpace = this.lastIndexOfWhiteSpace(line);
                     const lastHyphen = line.lastIndexOf('-');
                     const lastBreak = Math.max(lastSpace, lastHyphen);
 
@@ -495,77 +642,32 @@ export default class Transcription extends Component {
             }
 
             if (current === first) {
-                this.addRow(current, speaker, line, false);
+                newLines = this.addRow(newLines, current, speaker, line, false);
             } else {
-                this.addRow(current, '', line, true);
+                newLines = this.addRow(newLines, current, '', line, true);
             }
 
             current++;
         }
 
-        this._fixNumbers();
-    }
-
-    handleSpeechChange(index, event) {
-        this.setSectionSpeech(index, event.target.value);
-    }
-
-    handleSpeechKeyDown(index, event) {
-
-        switch (event.keyCode) {
-            case Transcription.KEY_ENTER:
-                event.preventDefault();
-
-                const speech = event.target.value ?? "";
-                const caretPosition = event.target.selectionStart;
-                const textBeforeCaret = speech.substring(0, caretPosition);
-                const textAfterCaret = speech.substring(caretPosition);
-                const columnToFocus = textAfterCaret === "" ? "speaker" : "speech";
-
-                this.setSectionSpeech(index, textBeforeCaret);
-
-                const newSectionIndex = this.addSectionAfter(index, "", textAfterCaret);
-                this.lineToFocusOnUpdate = `${columnToFocus}-${newSectionIndex}`;
-                this.caretPositionOnUpdate = 0;
-
-                break;
-
-            case Transcription.KEY_TAB:
-                // Check shift key to avoid creating a new line if the tab
-                // traversal is backwards.
-                if (!event.shiftKey && this.isLastRow(index)) {
-                    this.addRow(null, "", "");
-                }
-                break;
-
-            case Transcription.KEY_BACKSPACE:
-                this._processBackSpace(index, event);
-                break;
-
-            case Transcription.KEY_DEL:
-
-                if (this._shouldMergeWithNext(index, event)) {
-                    event.preventDefault();
-
-                    const nextIndex = this._getNextSectionIndex(index);
-                    this._processMerge(index, nextIndex);
-                }
-                break;
-        }
+        return this.fixNumbers(newLines);
     }
 
     /**
-     * Merge the second section with the first one. The second section will be deleted.
-     * @param {int} firstIndex The first section index to append the second one.
-     * @param {int} secondIndex The second section index.
+     * Return an array with the second section merged with the first one.
+     * The second section will be deleted.
+     *
+     * @param {int} firstSectionIndex The first section index to append the second one.
+     * @param {int} secondSectionIndex The second section index.
      */
-    _processMerge(firstIndex, secondIndex) {
+    mergeLines(lines, firstSectionIndex, secondSectionIndex) {
 
-        const firstSection = this.findSectionByIndex(firstIndex);
-        const secondSection = this.findSectionByIndex(secondIndex);
-        this._removeLinkedLines(firstIndex);
+        const firstSection = this.getSectionAtIndex(lines, firstSectionIndex);
+        const secondSection = this.getSectionAtIndex(lines, secondSectionIndex);
+        let newLines = this.removeSection(lines, firstSectionIndex);
 
-        this.setSectionSpeech(
+        newLines = this.updateSectionSpeech(
+            newLines,
             firstSection.index,
             `${firstSection.speech ?? ""}${secondSection.speech ?? ""}`,
         );
@@ -573,61 +675,50 @@ export default class Transcription extends Component {
         this.lineToFocusOnUpdate = `speech-${firstSection.index}`;
         this.caretPositionOnUpdate = (firstSection.speech ?? "").length;
 
-        this.state.lines[firstIndex].speaker = firstSection.speaker || secondSection.speaker || "";
-        this.setState({ lines: this.state.lines });
+        // Update the speaker of the first section if it is empty.
+        return newLines.map((line, i) => {
+            if (firstSectionIndex === i) {
+                return {
+                    ...line,
+                    speaker: firstSection.speaker || secondSection.speaker || "",
+                };
+            } else {
+                return line;
+            }
+        });
     }
 
-    handleSpeakerKeyDown(index, event) {
-
-        switch (event.keyCode) {
-            case Transcription.KEY_ENTER:
-                event.preventDefault();
-
-                const lines = [...this.state.lines];
-                const caretPosition = event.target.selectionStart;
-                const textBeforeCaret = (lines[index].speaker ?? "").substring(0, caretPosition);
-                const textAfterCaret = (lines[index].speaker ?? "").substring(caretPosition);
-                const speechOnNewLine = lines[index].speech ?? "";
-
-                // Remove the text after the caret from current line and the
-                // speech (they will be moved to the new line).
-                lines[index].speaker = textBeforeCaret;
-                lines[index].speech = "";
-
-                this.setState({ lines: lines });
-
-                // Create a new line with the text after the caret and with the
-                // speech from the previous line.
-                this.addRow(
-                    index + 1,
-                    textAfterCaret,
-                    speechOnNewLine,
-                );
-                this.lineToFocusOnUpdate = `speaker-${index + 1}`;
-                break;
-
-            case Transcription.KEY_BACKSPACE:
-                this._processBackSpace(index, event);
-                break;
-        }
+    /**
+     * @param {Array} lines Array of lines to search in.
+     * @param {int} index The index to search the section.
+     * @returns An object representing the section at the specified index.
+     */
+    getSectionAtIndex(lines, index) {
+        return this.getAggregatedLines(lines).find((line) => line.index === index);
     }
 
-    findSectionByIndex(index) {
-        return this.getAggregatedLines().find((line) => line.index === index);
-    }
-
-    _removeLinkedLines(index) {
-        if (this.state.lines[index].linkedToPrevious) {
+    /**
+     * Remove section at the specified index from the given lines.
+     *
+     * @param {Array} lines An array of lines.
+     * @param {int} index The index of the section to remove.
+     * @returns An array with the section removed.
+     */
+    removeSection(lines, index) {
+        if (lines[index].linkedToPrevious) {
             throw new Error("Unable to remove linked lines. The specified line must be the first of a group.");
         }
 
-        const range = this._getNextSectionIndex(index) - index;
-        this.state.lines.splice(index, range);
+        const end = this.getNextSectionIndex(lines, index);
+        const newLines = [
+            ...lines.slice(0, index),
+            ...lines.slice(end),
+        ];
 
-        this._fixNumbers();
+        return this.fixNumbers(newLines);
     }
 
-    _shouldMergeWithPrevious(index, event) {
+    shouldMergeWithPrevious(index, event) {
         let should = true;
 
         // Must not be on the first line.
@@ -639,11 +730,11 @@ export default class Transcription extends Component {
         return should;
     }
 
-    _shouldMergeWithNext(index, event) {
+    shouldMergeWithNext(lines, index, event) {
         let should = true;
 
         // Must not be on the last line.
-        should &= !this.isLastRow(index);
+        should &= !this.isLastRow(lines, index);
 
         // Must have pressed delete when the carret is at the last position.
         const length = event.target.value.length;
@@ -652,25 +743,17 @@ export default class Transcription extends Component {
         return should;
     }
 
-    _processBackSpace(index, event) {
-
-        if (this._shouldMergeWithPrevious(index, event)) {
-            event.preventDefault();
-
-            const previousIndex = this._getPreviousSection(index);
-            this._processMerge(previousIndex, index);
-        }
-    }
-
     /**
-     * Prepare the lines to be used in content editable div.
+     * Return an array of lines to be used in textarea.
+     * These lines represents sections.
      *
-     * @returns {Array}
+     * @param {Array} lines Array of lines.
+     * @returns {Array} An array of lines representing sections.
      */
-    getAggregatedLines() {
+    getAggregatedLines(lines) {
         const aggregatedLines = [];
 
-        this.state.lines.forEach((line, index) => {
+        lines.forEach((line, index) => {
             if (line.linkedToPrevious) {
                 const lastLine = aggregatedLines.at(-1);
                 lastLine.speech += line.speech;
@@ -692,7 +775,7 @@ export default class Transcription extends Component {
      * @param {object} line
      * @returns the index of the last white space in the given line.
      */
-    _lastIndexOfWhiteSpace(line) {
+    lastIndexOfWhiteSpace(line) {
         let regex = /\s/g;
         let correspondances;
         let dernierePosition = -1;
@@ -713,19 +796,19 @@ export default class Transcription extends Component {
      * @param {object} section
      * @returns the html representation for lines number.
      */
-    _getHtmlLinesNumber(section) {
+    getHtmlLinesNumber(section) {
         return Array
             .from({length: section.linesNumber})
             .map((_, i) => ( <div key={i}>{parseInt(section.number, 10) + i}</div> ));
     }
 
-    _noTranscritption() {
-        return !this.state.editable && this.state.lines.length <= 1 && !this.state.lines[0].speech && !this.state.lines[0].speaker;
+    shouldDisplayNoTranscriptionLabel(editable, lines) {
+        return !editable && lines.length <= 1 && !lines[0].speech && !lines[0].speaker;
     }
 
-    render () {
+    render() {
 
-        if (this._noTranscritption()) {
+        if (this.shouldDisplayNoTranscriptionLabel(this.state.editable, this.state.lines)) {
             return <div className="text-center">{ this.noTranscriptionLabel }</div>;
         }
 
@@ -733,13 +816,13 @@ export default class Transcription extends Component {
             <div>
                 <div id="transcription-content">
                     {
-                        this.getAggregatedLines().map((section) => (
+                        this.getAggregatedLines(this.state.lines).map((section) => (
                             <div
                                 key={ section.index }
                                 className="transcription-row d-flex align-items-stretch"
                             >
                                 <div className="line-number">
-                                    { this._getHtmlLinesNumber(section) }
+                                    { this.getHtmlLinesNumber(section) }
                                 </div>
                                 <SpeakerInput
                                     type="text"
@@ -763,14 +846,16 @@ export default class Transcription extends Component {
                                 <div className="transcription-actions">
                                      <span
                                         className="me-1 d-none"
-                                        onClick={ () => this._removeLinkedLines(section.index) }
+                                        onClick={ () => this.setState({
+                                            lines: this.removeSection(this.state.lines)
+                                        })}
                                         title={ this.deleteLineActionLabel }
                                     >
                                          <i className="far fa-times-circle"/>
                                     </span>
                                     <span
                                         className="d-none"
-                                        onClick={ () => this.toggleNumber(section.index) }
+                                        onClick={ () => this.handleToggleNumberClick(section.index) }
                                         title={ this.toggleNumberActionLabel }
                                     >
                                          <i className={`far ${section.number ? "fa-minus-square" : "fa-plus-square"}`}/>
@@ -825,7 +910,7 @@ export default class Transcription extends Component {
                                 <button
                                     type="button"
                                     className="btn btn-primary"
-                                    onClick={ () => this.import()}
+                                    onClick={ () => this.handleImportClick()}
                                     data-bs-dismiss="modal"
                                     id="import-transcription"
                                 >

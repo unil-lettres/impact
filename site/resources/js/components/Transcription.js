@@ -258,9 +258,13 @@ export default class Transcription extends Component {
 
             const importedLines = lines.map((line, index) => {
                 const tabSeparatedValues = line.split('\t');
-                const [speaker, speech] = tabSeparatedValues.length > 1 ? tabSeparatedValues : ["", tabSeparatedValues[0]];
+                let [speaker, speech] = tabSeparatedValues.length > 1 ? tabSeparatedValues : ["", tabSeparatedValues[0]];
 
-                return new Line(index + 1, speaker, speech).toJSON();
+                return new Line(
+                    index + 1,
+                    speaker.substring(0, 3),
+                    speech,
+                ).toJSON();
             });
 
             this.setState({ lines: importedLines });

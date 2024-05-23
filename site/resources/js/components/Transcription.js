@@ -57,7 +57,6 @@ export default class Transcription extends Component {
         };
 
         this.initVariables(data);
-        this.updateUi();
     }
 
     initVariables(data) {
@@ -68,11 +67,11 @@ export default class Transcription extends Component {
         this.deleteButton = document.getElementById('clear-' + this.props.reference);
         this.syncButton = document.getElementById('sync-' + this.props.reference);
         this.hideButton = document.getElementById('hide-' + this.props.reference);
+        this.editorEmptyTranscriptionMsg = document.getElementById('empty-' + this.props.reference);
+        this.editor = document.getElementById('rct-transcription');
+        this.editorErrorMsg = document.getElementById('edit-failed-' + this.props.reference);
         this.card = data.card;
         this.version = data.card.box2.version;
-        this.editorId = 'rct-transcription';
-        this.editorErrorMsgId = 'edit-failed-' + this.props.reference;
-        this.editorEmptyTranscriptionMsgId = 'empty-' + this.props.reference;
         this.editLabel = data.editLabel ?? 'Edit';
         this.saveLabel = data.saveLabel ?? 'Save';
         this.cancelLabel = data.cancelLabel ?? 'Cancel';
@@ -80,17 +79,22 @@ export default class Transcription extends Component {
         this.toggleNumberActionLabel = data.toggleNumberActionLabel ?? 'Visibility of the numbering';
         this.importModalTitleLabel = data.importModalTitleLabel ?? 'Import a transcription';
         this.importModalHelpLabel = data.importModalHelpLabel ?? 'Paste a transcription into the text box below. Please respect the ICOR transcription conventions to preserve your layout.';
-        this.noTranscriptionLabel = data.noTranscriptionLabel ?? 'No transcription';
         this.lineToFocusOnUpdate = null;
     }
 
     componentDidMount() {
         if(this.editButton) {
-            this.editButton.addEventListener('click', () => this.edit(), false);
+            this.editButton.addEventListener(
+                'click',
+                () => this.handleEditButtonClick(),
+            );
         }
 
         if(this.cancelButton) {
-            this.cancelButton.addEventListener('click', () => this.cancel(), false);
+            this.cancelButton.addEventListener(
+                'click',
+                () => this.handleCancelButtonClick(),
+            );
         }
 
         if(this.exportButton) {
@@ -108,6 +112,8 @@ export default class Transcription extends Component {
                 false,
             );
         }
+
+        this.componentDidMountOrUpdate();
     }
 
     componentDidUpdate() {
@@ -124,113 +130,78 @@ export default class Transcription extends Component {
             line.selectionEnd = this.caretPositionOnUpdate ?? 0;
             this.lineToFocusOnUpdate = this.caretPositionOnUpdate = null;
         }
+
+        this.componentDidMountOrUpdate();
     }
 
-    updateUi() {
-        let editor = document.getElementById(this.editorId);
-        let editorErrorMsg = document.getElementById(this.editorErrorMsgId);
-        let editorEmptyTranscriptionMsg = document.getElementById(this.editorEmptyTranscriptionMsgId);
+    componentDidMountOrUpdate() {
 
-        if(this.editButton) {
-            switch (this.state.editable) {
-                case true:
-                    editorErrorMsg.classList.add('d-none');
-                    editorEmptyTranscriptionMsg.classList.add('d-none');
-                    editor.classList.add('editing');
-                    this.editButton.classList.remove("btn-primary");
-                    this.editButton.classList.add('btn-success');
-                    this.editButton.innerText = this.saveLabel;
-                    this.cancelButton.classList.remove("d-none");
-                    this.deleteButton.classList.remove("d-none");
-                    this.importOpenModalButton.classList.add("d-none");
-                    this.exportButton.classList.add("d-none");
-                    this.syncButton?.classList.add("d-none");
-                    this.hideButton?.classList.add("d-none");
+        // If transcription is empty, then display an empty message.
+        this.editorEmptyTranscriptionMsg.classList.toggle(
+            'd-none',
+            !this.shouldDisplayNoTranscriptionLabel(
+                this.state.editable,
+                this.state.lines,
+            ),
+        );
 
-                    // If transcription is empty, then add the first line
-                    if(!this.validate(this.state.lines)) {
-                        this.setState({
-                            lines: this.addRow(this.state.lines),
-                        });
-                    }
-                    break;
-                case false:
-                default:
-                    editor.classList.remove("editing");
-                    this.editButton.classList.remove("btn-success");
-                    this.editButton.classList.add('btn-primary');
-                    this.editButton.textContent = this.editLabel;
-                    this.cancelButton.classList.add("d-none");
-                    this.deleteButton.classList.add("d-none");
-                    this.importOpenModalButton.classList.remove("d-none");
-                    this.exportButton.classList.remove("d-none");
-                    this.syncButton?.classList.remove("d-none");
-                    this.hideButton?.classList.remove("d-none");
+        this.editor?.classList.toggle('editing', this.state.editable);
+        this.cancelButton?.classList.toggle('d-none', !this.state.editable);
+        this.deleteButton?.classList.toggle('d-none', !this.state.editable);
+        this.importOpenModalButton?.classList.toggle('d-none', this.state.editable);
+        this.exportButton?.classList.toggle('d-none', this.state.editable);
+        this.syncButton?.classList.toggle('d-none', this.state.editable);
+        this.hideButton?.classList.toggle('d-none', this.state.editable);
 
-                    // If transcription is empty, then add the empty message
-                    if(!this.validate(this.state.lines)) {
-                        editorEmptyTranscriptionMsg.classList.remove('d-none');
-                    }
+        if (this.editButton) {
+            this.editButton.classList.toggle('btn-primary', !this.state.editable);
+            this.editButton.classList.toggle('btn-success', this.state.editable);
+            this.editButton.innerText = this.state.editable ? this.saveLabel : this.editLabel;
+        }
+    }
+
+    handleEditButtonClick() {
+
+        // If the user is not in edit mode, we enter it.
+        // Otherwise, we save the transcription.
+        if (this.state.editable) {
+            this.setState({ editable: false });
+            this.save();
+        } else {
+            let newState = { editable: true };
+
+            // Add the first line if the transcription is empty.
+            if(this.state.lines.length === 0) {
+                newState.lines = this.addRow(this.state.lines);
             }
+
+            this.setState({ ...newState });
         }
     }
 
-    edit() {
-        switch (!this.state.editable) {
-            case false:
-                flushSync(() => {
-                    this.setState({
-                        editable: false
-                    });
-                });
+    handleCancelButtonClick() {
+        this.setState({
+            // We restore the transcription initially loaded from the db
+            lines: _.cloneDeep(this.state.original),
 
-                this.save();
-                break;
-            case true:
-            default:
-                flushSync(() => {
-                    this.setState({
-                        editable: true
-                    });
-                });
-        }
-
-        this.updateUi();
-    }
-
-    cancel() {
-        if(this.state.editable) {
-            flushSync(() => {
-                this.setState({
-                        // We restore the transcription initially loaded from the db
-                        // We use cloneDeep to avoid a reference
-                        lines: _.cloneDeep(this.state.original),
-                        // We disable the edition mode
-                        editable: false
-                    },
-                    () => this.updateUi()
-                );
-            });
-        }
+            editable: false
+        });
     }
 
     save() {
-        const lines = this.validate(this.state.lines) ? this.state.lines : null;
-
         axios.put('/cards/' + this.card.id + '/transcription', {
-            transcription: lines,
+            transcription: this.state.lines,
             box: this.props.reference
         }).then(response => {
             console.log(response);
             this.setState({
                 // We copy the saved content to the original state
-                // We use cloneDeep to avoid a reference
                 original: _.cloneDeep(this.state.lines)
             });
         }).catch(error => {
             console.log(error);
             // Display an error message to the user
-            document.getElementById(this.editorErrorMsgId)
+            this.editorErrorMsg
                 .classList
                 .remove("d-none");
         });
@@ -252,13 +223,17 @@ export default class Transcription extends Component {
 
     handleImportClick() {
         if(this.state.importContentValue) {
-            this.edit();
+            this.enterEditMode();
 
             let lines = this.state.importContentValue.split('\n');
 
             const importedLines = lines.map((line, index) => {
                 const tabSeparatedValues = line.split('\t');
-                let [speaker, speech] = tabSeparatedValues.length > 1 ? tabSeparatedValues : ["", tabSeparatedValues[0]];
+                let [speaker, speech] = (
+                    tabSeparatedValues.length > 1
+                    ? tabSeparatedValues
+                    : ["", tabSeparatedValues[0]]
+                );
 
                 return new Line(
                     index + 1,
@@ -496,16 +471,6 @@ export default class Transcription extends Component {
         }
     }
 
-    validate(lines) {
-        // Not valid if transcription is not an array or is empty
-        if (!Array.isArray(lines) || !lines.length) {
-            return false;
-        }
-
-        // Valid otherwise
-        return true;
-    }
-
     isLastRow(lines, index) {
         return lines.length === this.getNextSectionIndex(lines, index);
     }
@@ -577,7 +542,7 @@ export default class Transcription extends Component {
                 ).toJSON()
             ]
         });
-        this.lineToFocusOnUpdate = 'speaker-1';
+        this.lineToFocusOnUpdate = 'speaker-0';
     }
 
     /**
@@ -807,13 +772,16 @@ export default class Transcription extends Component {
     }
 
     shouldDisplayNoTranscriptionLabel(editable, lines) {
-        return !editable && lines.length <= 1 && !lines[0].speech && !lines[0].speaker;
+        return !editable && lines.length <= 1 && !lines[0]?.speech && !lines[0]?.speaker;
     }
 
     render() {
 
-        if (this.shouldDisplayNoTranscriptionLabel(this.state.editable, this.state.lines)) {
-            return <div className="text-center">{ this.noTranscriptionLabel }</div>;
+        if (this.shouldDisplayNoTranscriptionLabel(
+            this.state.editable,
+            this.state.lines,
+        )) {
+            return;
         }
 
         return (

@@ -52,7 +52,8 @@ export default class Transcription extends Component {
         this.state = {
             original: _.cloneDeep(transcription),
             lines: _.cloneDeep(transcription),
-            editable: !disabled
+            editable: !disabled,
+            importContentValue: '',
         };
 
         this.initVariables(data);
@@ -83,6 +84,26 @@ export default class Transcription extends Component {
         this.lineToFocusOnUpdate = null;
     }
 
+    handleImportContentKeyDown(event) {
+        if (event.keyCode === Transcription.KEY_TAB) {
+            event.preventDefault();
+
+            let textarea = event.target;
+
+            // Get cursor position.
+            let start = textarea.selectionStart;
+            let end = textarea.selectionEnd;
+
+            // Set textarea value to: text before cursor + tab + text after cursor.
+            textarea.value = textarea.value.substring(0, start)
+                + "\t"
+                + textarea.value.substring(end);
+
+            // Put cursor to right of inserted tab.
+            textarea.selectionStart = textarea.selectionEnd = start + 1;
+        }
+    }
+
     componentDidMount() {
         if(this.editButton) {
             this.editButton.addEventListener('click', () => this.edit(), false);
@@ -90,34 +111,6 @@ export default class Transcription extends Component {
 
         if(this.cancelButton) {
             this.cancelButton.addEventListener('click', () => this.cancel(), false);
-        }
-
-        if(this.importOpenModalButton) {
-            this.importContent = document.getElementById('import-transcription-content');
-            this.importModal = document.getElementById('importModal');
-
-            if (this.importContent && this.importModal) {
-                this.importContent.onkeydown = function(e) {
-                    if (e.key === 'Tab') { // Block to catch when tab key is pressed
-                        e.preventDefault(); // Prevent default action
-
-                        // Get textarea
-                        let textarea = e.target;
-
-                        // Get cursor position
-                        let start = textarea.selectionStart;
-                        let end = textarea.selectionEnd;
-
-                        // Set textarea value to: text before cursor + tab + text after cursor
-                        textarea.value = textarea.value.substring(0, start)
-                            + "\t"
-                            + textarea.value.substring(end);
-
-                        // Put cursor to right of inserted tab
-                        textarea.selectionStart = textarea.selectionEnd = start + 1;
-                    }
-                };
-            }
         }
 
         if(this.exportButton) {
@@ -361,7 +354,7 @@ export default class Transcription extends Component {
     }
 
     import() {
-        if(this.importContent.value !== "") {
+        if(this.state.importContentValue) {
             // Toggle the edition mode
             this.edit();
 
@@ -369,7 +362,7 @@ export default class Transcription extends Component {
             this.state.lines = [];
 
             // Get the textarea value
-            let textareaValue = this.importContent.value;
+            let textareaValue = this.state.importContentValue;
 
             // Split the textarea value by newline to get an array of lines
             let lines = textareaValue.split('\n');
@@ -406,10 +399,6 @@ export default class Transcription extends Component {
                 lines: this.state.lines
             });
         }
-
-        // Close the modal
-        let bootstrapModal = bootstrap.Modal.getInstance(this.importModal);
-        bootstrapModal.hide();
     }
 
     export(event) {
@@ -820,6 +809,9 @@ export default class Transcription extends Component {
                                 <textarea className="form-control col-md-12"
                                           name="import-transcription-content"
                                           id="import-transcription-content"
+                                          value={ this.state.importContentValue }
+                                          onChange={ (event) => this.setState({ importContentValue: event.target.value }) }
+                                          onKeyDown={ (event) => this.handleImportContentKeyDown(event) }
                                           rows="20"></textarea>
                             </div>
                             <div className="modal-footer">
@@ -834,6 +826,7 @@ export default class Transcription extends Component {
                                     type="button"
                                     className="btn btn-primary"
                                     onClick={ () => this.import()}
+                                    data-bs-dismiss="modal"
                                     id="import-transcription"
                                 >
                                     { this.saveLabel }

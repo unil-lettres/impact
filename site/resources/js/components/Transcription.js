@@ -48,7 +48,6 @@ export default class Transcription extends Component {
         const data = JSON.parse(this.props.data);
         const transcription = data.card.box2.icor ?? [];
         const disabled = data.disabled ?? true;
-        this.contentRef = React.createRef();
 
         this.state = {
             original: _.cloneDeep(transcription),
@@ -94,12 +93,10 @@ export default class Transcription extends Component {
         }
 
         if(this.importOpenModalButton) {
-            this.importButton = document.getElementById('import-transcription');
             this.importContent = document.getElementById('import-transcription-content');
             this.importModal = document.getElementById('importModal');
 
-            if (this.importButton && this.importContent && this.importModal) {
-                this.importButton.addEventListener('click', () => this.import(), false);
+            if (this.importContent && this.importModal) {
                 this.importContent.onkeydown = function(e) {
                     if (e.key === 'Tab') { // Block to catch when tab key is pressed
                         e.preventDefault(); // Prevent default action
@@ -363,7 +360,7 @@ export default class Transcription extends Component {
         }
     }
 
-    import(event) {
+    import() {
         if(this.importContent.value !== "") {
             // Toggle the edition mode
             this.edit();
@@ -400,12 +397,7 @@ export default class Transcription extends Component {
 
                 this.state.lines = [
                     ...this.state.lines,
-                    new Line(
-                        index + 1,
-                        speaker,
-                        speech,
-                        index + 1, // TODO tester
-                    ).toJSON()
+                    new Line(index + 1, speaker, speech).toJSON()
                 ]
             });
 
@@ -750,7 +742,7 @@ export default class Transcription extends Component {
 
         return (
             <div>
-                <div id="transcription-content" ref={ this.contentRef }>
+                <div id="transcription-content">
                     {
                         this.getAggregatedLines().map((section) => (
                             <div
@@ -831,8 +823,21 @@ export default class Transcription extends Component {
                                           rows="20"></textarea>
                             </div>
                             <div className="modal-footer">
-                                <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">{ this.cancelLabel }</button>
-                                <button type="button" className="btn btn-primary" id="import-transcription">{ this.saveLabel }</button>
+                                <button
+                                    type="button"
+                                    className="btn btn-secondary"
+                                    data-bs-dismiss="modal"
+                                >
+                                    { this.cancelLabel }
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn-primary"
+                                    onClick={ () => this.import()}
+                                    id="import-transcription"
+                                >
+                                    { this.saveLabel }
+                                </button>
                             </div>
                         </div>
                     </div>

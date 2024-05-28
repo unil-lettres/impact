@@ -1,6 +1,5 @@
-import React, { Component, useRef } from 'react';
+import React, { Component, useEffect, useRef } from 'react';
 import { createRoot } from "react-dom/client";
-import { flushSync } from "react-dom";
 
 import axios from "axios";
 import _ from "lodash";
@@ -10,9 +9,26 @@ function SpeakerInput(props) {
 
     return (
         <div className="speaker" onClick={ () => inputRef.current.focus()}>
-            <input {...props} ref={inputRef} />
+            <input type="text" ref={inputRef} {...props} />
         </div>
     );
+}
+
+function SpeechInput(props) {
+    const inputRef = useRef(null);
+
+    useEffect(() => {
+        // Adjust the height related to the content.
+        inputRef.current.style.height = 0;
+        inputRef.current.style.height = inputRef.current.scrollHeight + 'px';
+    }, [props.value]);
+
+    return <textarea
+        ref={inputRef}
+        className="speech"
+        style={{width: `${Transcription.MAX_CARACTERS_SPEECH}ch`}}
+        {...props}
+    />;
 }
 
 class Line {
@@ -80,6 +96,7 @@ export default class Transcription extends Component {
         this.importModalTitleLabel = data.importModalTitleLabel ?? 'Import a transcription';
         this.importModalHelpLabel = data.importModalHelpLabel ?? 'Paste a transcription into the text box below. Please respect the ICOR transcription conventions to preserve your layout.';
         this.lineToFocusOnUpdate = null;
+        this.caretPositionOnUpdate = null;
     }
 
     componentDidMount() {
@@ -318,10 +335,13 @@ export default class Transcription extends Component {
                 event.target.value,
             ),
         });
+
+        // This is to avoid the cursor being put at the end of the input.
+        this.lineToFocusOnUpdate = document.activeElement;
+        this.caretPositionOnUpdate = document.activeElement.selectionStart;
     }
 
     handleSpeechKeyDown(index, event) {
-
         switch (event.keyCode) {
             case Transcription.KEY_ENTER:
                 event.preventDefault();
@@ -554,7 +574,7 @@ export default class Transcription extends Component {
         // Some browser add a newline in specific situations (like when the user
         // press space after a line break). We remove all newline characters to
         // homogenize the behavior accross browsers.
-        let remainingLine = speech.replace(/\n/g, ' ');
+        let remainingLine = speech.replace(/\n/g, '');
 
         let first = index, current = first;
         const speaker = lines[first].speaker;
@@ -569,43 +589,38 @@ export default class Transcription extends Component {
         // We split the value into multiple lines of max caracters length.
         while (remainingLine.length > 0) {
 
-            let line = remainingLine.slice(0, Transcription.MAX_CARACTERS_SPEECH);
+            // Whitespaces are allowed to be the "MAX + 1" caracter of a line.
+            // It allow to terminate a word exactly at "MAX" caracters.
+            const endWithWhitespace = remainingLine[
+                Transcription.MAX_CARACTERS_SPEECH
+            ]?.match(/\s/g);
+
+            let line = remainingLine.slice(
+                0,
+                Transcription.MAX_CARACTERS_SPEECH + (endWithWhitespace ? 1 : 0 ),
+            );
 
             if (remainingLine.length > Transcription.MAX_CARACTERS_SPEECH) {
-                const charAtEnd = remainingLine[Transcription.MAX_CARACTERS_SPEECH - 1];
-                const charOnNewLine = remainingLine[Transcription.MAX_CARACTERS_SPEECH];
 
-                if (charOnNewLine.match(/\s/g)) {
-                    // If the first character on the new line is a space, we remove all subsequent white space.
-                    // It is this way because of how textarea works. Multiple white space are not
-                    // displayed in the textarea (if they are on a broke line) but are still present in the "value".
-                    // To keep the data consistent with how the textarea display the text, we remove them.
-                    // Using css properties like white-space or break-word can change this behavior
-                    // but are not consistent across browser regarding the size of the caracters.
-                    line += ' ';
-                    remainingLine = remainingLine.slice(line.length).replace(/^\s+/, '');
+                const lastSpace = this.lastIndexOfWhiteSpace(line);
+                const lastHyphen = line.lastIndexOf('-');
+                const lastBreak = Math.max(lastSpace, lastHyphen);
 
-                    this.lineToFocusOnUpdate = document.activeElement;
-                    this.caretPositionOnUpdate = document.activeElement.selectionStart;
-
-                } else if (charAtEnd.match(/\s/g) || charAtEnd === '-') {
-                    remainingLine = remainingLine.slice(line.length);
+                if (lastBreak > -1) {
+                    line = line.slice(0, lastBreak + 1);
+                    remainingLine = remainingLine.slice(lastBreak + 1);
                 } else {
-                    // If the last word overflow the max caracters, we cut the
-                    // word at the last space or hyphen.
-
-                    const lastSpace = this.lastIndexOfWhiteSpace(line);
-                    const lastHyphen = line.lastIndexOf('-');
-                    const lastBreak = Math.max(lastSpace, lastHyphen);
-
-                    if (lastBreak > -1) {
-                        line = line.slice(0, lastBreak + 1);
-                        remainingLine = remainingLine.slice(lastBreak + 1);
-                    } else {
-                        line = line.slice(0, Transcription.MAX_CARACTERS_SPEECH);
-                        remainingLine = remainingLine.slice(Transcription.MAX_CARACTERS_SPEECH);
-                    }
+                    line = line.slice(0, Transcription.MAX_CARACTERS_SPEECH);
+                    remainingLine = remainingLine.slice(Transcription.MAX_CARACTERS_SPEECH);
                 }
+
+                // If the first character on the new line is a space, we remove
+                // all subsequent whitespaces. Multiple whitespaces are not
+                // displayed in the textarea when they are on a line break, but
+                // are still present in the "value".
+                // To keep the data consistent with how the textarea display the
+                // text, we remove them.
+                remainingLine = remainingLine.replace(/^\s+/, '');
             } else {
                 remainingLine = '';
             }
@@ -713,7 +728,7 @@ export default class Transcription extends Component {
     }
 
     /**
-     * Return an array of lines to be used in textarea.
+     * Return an array of lines to be used in speech.
      * These lines represents sections.
      *
      * @param {Array} lines Array of lines.
@@ -797,24 +812,19 @@ export default class Transcription extends Component {
                                     { this.getHtmlLinesNumber(section) }
                                 </div>
                                 <SpeakerInput
-                                    type="text"
                                     id={`speaker-${section.index}`}
                                     value={ section.speaker ?? "" }
-                                    rows="1"
                                     disabled={ !this.state.editable }
                                     onChange={ event => this.handleSpeakerChange(section.index, event) }
                                     onKeyDown={ event => this.handleSpeakerKeyDown(section.index, event) }
                                 />
-                                <textarea
-                                    className="speech"
+                                <SpeechInput
                                     id={`speech-${section.index}`}
                                     disabled={ !this.state.editable }
-                                    cols={Transcription.MAX_CARACTERS_SPEECH}
-                                    rows={section.linesNumber}
                                     onChange={ event => this.handleSpeechChange(section.index, event) }
                                     onKeyDown={ event => this.handleSpeechKeyDown(section.index, event) }
                                     value={ section.speech ?? "" }
-                                ></textarea>
+                                />
                                 <div className="transcription-actions">
                                      <span
                                         className="me-1 d-none"

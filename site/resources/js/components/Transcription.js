@@ -20,7 +20,7 @@ function SpeechInput(props) {
     useEffect(() => {
         // Adjust the height related to the content.
         inputRef.current.style.height = 0;
-        inputRef.current.style.height = inputRef.current.scrollHeight + 'px';
+        inputRef.current.style.height = (inputRef.current.scrollHeight + 1) + 'px';
     }, [props.value]);
 
     return <textarea
@@ -222,6 +222,16 @@ export default class Transcription extends Component {
                 .classList
                 .remove("d-none");
         });
+    }
+
+    handleDeleteLineClick(index) {
+        const newLines = this.removeSection(this.state.lines, index);
+
+        if (newLines.length === 0) {
+            this.deleteTranscription();
+        } else {
+            this.setState({ lines: newLines });
+        }
     }
 
     handleToggleNumberClick = index => {
@@ -825,24 +835,25 @@ export default class Transcription extends Component {
                                     onKeyDown={ event => this.handleSpeechKeyDown(section.index, event) }
                                     value={ section.speech ?? "" }
                                 />
-                                <div className="transcription-actions">
-                                     <span
-                                        className="me-1 d-none"
-                                        onClick={ () => this.setState({
-                                            lines: this.removeSection(this.state.lines)
-                                        })}
-                                        title={ this.deleteLineActionLabel }
-                                    >
-                                         <i className="far fa-times-circle"/>
-                                    </span>
-                                    <span
-                                        className="d-none"
-                                        onClick={ () => this.handleToggleNumberClick(section.index) }
-                                        title={ this.toggleNumberActionLabel }
-                                    >
-                                         <i className={`far ${section.number ? "fa-minus-square" : "fa-plus-square"}`}/>
-                                     </span>
-                                 </div>
+                                {
+                                    this.state.editable ? (
+                                        <div className="transcription-actions d-none align-self-center ps-1">
+                                            <span
+                                                className="me-1"
+                                                onClick={ () => this.handleDeleteLineClick(section.index) }
+                                                title={ this.deleteLineActionLabel }
+                                            >
+                                                <i className="far fa-times-circle"/>
+                                            </span>
+                                            <span
+                                                onClick={ () => this.handleToggleNumberClick(section.index) }
+                                                title={ this.toggleNumberActionLabel }
+                                            >
+                                                <i className={`far ${section.number ? "fa-minus-square" : "fa-plus-square"}`}/>
+                                            </span>
+                                        </div>
+                                    ) : null
+                                }
                             </div>
                         ))
                     }

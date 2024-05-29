@@ -117,7 +117,7 @@ export default class Transcription extends Component {
         if(this.exportButton) {
             this.exportButton.addEventListener(
                 'click',
-                () => this.handleExportClick(),
+                (event) => this.handleExportClick(event),
                 false,
             );
         }
@@ -185,14 +185,7 @@ export default class Transcription extends Component {
             this.setState({ editable: false });
             this.save();
         } else {
-            let newState = { editable: true };
-
-            // Add the first line if the transcription is empty.
-            if(this.state.lines.length === 0) {
-                newState.lines = this.addRow(this.state.lines);
-            }
-
-            this.setState({ ...newState });
+            this.enterEditMode();
         }
     }
 
@@ -203,6 +196,17 @@ export default class Transcription extends Component {
 
             editable: false
         });
+    }
+
+    enterEditMode() {
+        let newState = { editable: true };
+
+        // Add the first line if the transcription is empty.
+        if(this.state.lines.length === 0) {
+            newState.lines = this.addRow(this.state.lines);
+        }
+
+        this.setState({ ...newState });
     }
 
     save() {
@@ -257,22 +261,27 @@ export default class Transcription extends Component {
 
             let lines = this.state.importContentValue.split('\n');
 
-            const importedLines = lines.map((line, index) => {
-                const tabSeparatedValues = line.split('\t');
-                let [speaker, speech] = (
-                    tabSeparatedValues.length > 1
-                    ? tabSeparatedValues
-                    : ["", tabSeparatedValues[0]]
+            const importedLines = lines.reduce((accumulator, line) => {
+                let [number, speaker, speech] = line.split('\t');
+
+                const newLine = new Line(
+                    parseInt(number, 10) || null,
+                    (speaker ?? '').substring(0, 3),
+                    speech ?? ''
+                ).toJSON();
+
+                // Process the line as if it was typed by the user. This will
+                // split the line in multiple sections if it is too long.
+                const newLines = this.updateSectionSpeech(
+                    [ newLine ],
+                    0,
+                    newLine.speech,
                 );
 
-                return new Line(
-                    index + 1,
-                    speaker.substring(0, 3),
-                    speech,
-                ).toJSON();
-            });
+                return [ ...accumulator, ...newLines];
+            }, []);
 
-            this.setState({ lines: importedLines });
+            this.setState({ lines: this.fixNumbers(importedLines) });
         }
     }
 
@@ -533,8 +542,9 @@ export default class Transcription extends Component {
      * @param {string} speaker The speaker column.
      * @param {string} speech The speech column.
      * @param {boolean} linkedToPrevious If the row is linked to the previous row (meanin it's in the same section).
+     * @param {boolean} hasNumber If the line number should be displayed or not.
      */
-    addRow(lines, index = null, speaker = "", speech = "", linkedToPrevious = false) {
+    addRow(lines, index = null, speaker = "", speech = "", linkedToPrevious = false, hasNumber = true) {
 
         // If index is not specified, add at the end.
         if (index === null) {
@@ -543,7 +553,12 @@ export default class Transcription extends Component {
 
         const newLines = [
             ...lines.slice(0, index),
-            new Line("", speaker, speech, linkedToPrevious).toJSON(),
+            new Line(
+                hasNumber ? "" : null,
+                speaker,
+                speech,
+                linkedToPrevious
+            ).toJSON(),
             ...lines.slice(index)
         ];
 
@@ -591,6 +606,7 @@ export default class Transcription extends Component {
 
         let first = index, current = first;
         const speaker = lines[first].speaker;
+        const hasNumber = lines[first].number !== null;
 
         // We remove the involved lines in the state to recreate them.
         let newLines = this.removeSection(lines, current);
@@ -639,9 +655,23 @@ export default class Transcription extends Component {
             }
 
             if (current === first) {
-                newLines = this.addRow(newLines, current, speaker, line, false);
+                newLines = this.addRow(
+                    newLines,
+                    current,
+                    speaker,
+                    line,
+                    false,
+                    hasNumber,
+                );
             } else {
-                newLines = this.addRow(newLines, current, '', line, true);
+                newLines = this.addRow(
+                    newLines,
+                    current,
+                    '',
+                    line,
+                    true,
+                    hasNumber,
+                );
             }
 
             current++;
@@ -807,11 +837,56 @@ export default class Transcription extends Component {
 
     render() {
 
+        const importModalHtml = (
+            <div className="modal fade" id="importModal" tabIndex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+                <div className="modal-dialog modal-lg">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h5 className="modal-title" id="importModalLabel">{ this.importModalTitleLabel }</h5>
+                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="mb-2">
+                                { this.importModalHelpLabel }
+                            </div>
+                            <textarea
+                                className="font-transcription form-control col-md-12"
+                                name="import-transcription-content"
+                                id="import-transcription-content"
+                                value={ this.state.importContentValue }
+                                onChange={ (event) => this.setState({ importContentValue: event.target.value }) }
+                                onKeyDown={ (event) => this.handleImportContentKeyDown(event) }
+                                rows="20"
+                            ></textarea>
+                        </div>
+                        <div className="modal-footer">
+                            <button
+                                type="button"
+                                className="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                            >
+                                { this.cancelLabel }
+                            </button>
+                            <button
+                                type="button"
+                                className="btn btn-primary"
+                                onClick={ () => this.handleImportClick()}
+                                data-bs-dismiss="modal"
+                                id="import-transcription"
+                            >
+                                { this.saveLabel }
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        );
+
         if (this.shouldDisplayNoTranscriptionLabel(
             this.state.editable,
             this.state.lines,
         )) {
-            return;
+            return importModalHtml;
         }
 
         return (
@@ -877,48 +952,7 @@ export default class Transcription extends Component {
                     }
                     </div>
                 </div>
-
-                {/* Import transcription modal */}
-                <div className="modal fade" id="importModal" tabIndex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
-                    <div className="modal-dialog modal-lg">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h5 className="modal-title" id="importModalLabel">{ this.importModalTitleLabel }</h5>
-                                <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                            </div>
-                            <div className="modal-body">
-                                <div className="mb-2">
-                                    { this.importModalHelpLabel }
-                                </div>
-                                <textarea className="form-control col-md-12"
-                                          name="import-transcription-content"
-                                          id="import-transcription-content"
-                                          value={ this.state.importContentValue }
-                                          onChange={ (event) => this.setState({ importContentValue: event.target.value }) }
-                                          onKeyDown={ (event) => this.handleImportContentKeyDown(event) }
-                                          rows="20"></textarea>
-                            </div>
-                            <div className="modal-footer">
-                                <button
-                                    type="button"
-                                    className="btn btn-secondary"
-                                    data-bs-dismiss="modal"
-                                >
-                                    { this.cancelLabel }
-                                </button>
-                                <button
-                                    type="button"
-                                    className="btn btn-primary"
-                                    onClick={ () => this.handleImportClick()}
-                                    data-bs-dismiss="modal"
-                                    id="import-transcription"
-                                >
-                                    { this.saveLabel }
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                { importModalHtml }
             </div>
         );
     }

@@ -47,7 +47,13 @@
             overflow: auto;
         }
 
+        #transcription-content {
+            display: inline-block;
+        }
+
         .transcription-row {
+            padding: 0 10px;
+
             .speech, .speaker > input {
                 background: transparent;
                 border-width: 0;
@@ -57,11 +63,42 @@
                 overflow: hidden;
                 padding: 0;
                 resize: none;
-                border: 1px solid black;
             }
 
             .speaker > input {
                 width: 100%;
+            }
+
+            &:has(.transcription-actions .action-delete:hover) {
+                .line-number, .speaker, .speech {
+                    background-color: transparent;
+                }
+                background-image: repeating-linear-gradient(45deg, #ff6f6f 0, #ff6f6f 0.5px, transparent 0, transparent 50%);
+                background-color: #ffc8c8;
+                background-size: 10px 10px;
+            }
+
+            &:has(.transcription-actions .action-toggle-number:hover) {
+                .line-number:not(.no-line-number) {
+                    text-decoration: line-through;
+                    color: red;
+                }
+
+                .no-line-number {
+                    opacity: .3;
+                }
+            }
+
+            &:hover .transcription-actions {
+                opacity: 1!important;
+
+                span:hover {
+                    cursor: pointer;
+
+                    i {
+                        @extend .fa-solid;
+                    }
+                }
             }
         }
 
@@ -125,6 +162,10 @@
             .line-number,
             .speaker {
                 width: 35px;
+            }
+
+            .no-line-number {
+                opacity: 0;
             }
         }
     }

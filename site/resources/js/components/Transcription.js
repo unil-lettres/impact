@@ -235,11 +235,14 @@ export default class Transcription extends Component {
     }
 
     handleToggleNumberClick = index => {
-        // TODO make working for section
-        // Remove or add a number to the row
+        const nextSectionIndex = this.getNextSectionIndex(
+            this.state.lines,
+            index,
+        );
+
         const newLines = this.state.lines.map((row, i) => {
-            if (i === index) {
-                return { ...row, number: row.number ? null : i + 1 };
+            if (i >= index && i < nextSectionIndex) {
+                return { ...row, number: row.number !== null ? null : i + 1 };
             } else {
                 return row;
             }
@@ -791,9 +794,11 @@ export default class Transcription extends Component {
      * @returns the html representation for lines number.
      */
     getHtmlLinesNumber(section) {
+        const number = (i) => section.number === null ? '.' : parseInt(section.number, 10) + i;
+
         return Array
             .from({length: section.linesNumber})
-            .map((_, i) => ( <div key={i}>{parseInt(section.number, 10) + i}</div> ));
+            .map((_, i) => ( <div key={i}>{ number(i) }</div> ));
     }
 
     shouldDisplayNoTranscriptionLabel(editable, lines) {
@@ -818,7 +823,7 @@ export default class Transcription extends Component {
                                 key={ section.index }
                                 className="transcription-row d-flex align-items-stretch"
                             >
-                                <div className="line-number">
+                                <div className={`line-number ${section.number === null ? 'no-line-number' : ''}`}>
                                     { this.getHtmlLinesNumber(section) }
                                 </div>
                                 <SpeakerInput
@@ -837,15 +842,16 @@ export default class Transcription extends Component {
                                 />
                                 {
                                     this.state.editable ? (
-                                        <div className="transcription-actions d-none align-self-center ps-1">
+                                        <div className="transcription-actions opacity-0 align-self-center ps-1">
                                             <span
-                                                className="me-1"
+                                                className="action-delete me-1"
                                                 onClick={ () => this.handleDeleteLineClick(section.index) }
                                                 title={ this.deleteLineActionLabel }
                                             >
                                                 <i className="far fa-times-circle"/>
                                             </span>
                                             <span
+                                            className="action-toggle-number"
                                                 onClick={ () => this.handleToggleNumberClick(section.index) }
                                                 title={ this.toggleNumberActionLabel }
                                             >

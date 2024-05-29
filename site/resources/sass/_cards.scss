@@ -151,6 +151,10 @@
     .break-page {
         break-after: page;
     }
+
+    .transcription-row > td {
+        padding: 0;
+    }
 }
 
 #card, #print-card {
@@ -159,9 +163,12 @@
             font-size: 12px;
             line-height: 1.2;
 
-            .line-number,
+            .line-number {
+                width: 5ch;
+            }
+
             .speaker {
-                width: 35px;
+                width: 4ch;
             }
 
             .no-line-number {

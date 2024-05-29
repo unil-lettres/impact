@@ -55,9 +55,9 @@
                         <table class="box2">
                             <tbody>
                                 @foreach($card->box2[TranscriptionType::Icor] as $line)
-                                <tr>
-                                    <td class="line-number pe-2 align-top">{{ $line['number'] }}</td>
-                                    <td class="speaker pe-2 align-top">{{ $line['speaker'] }}</td>
+                                <tr class="transcription-row">
+                                    <td class="line-number align-top">{{ $line['number'] }}</td>
+                                    <td class="speaker align-top">{{ $line['speaker'] }}</td>
                                     <td class="speech align-top">{!! $line['speech'] !!}</td>
                                 </tr>
                                 @endforeach

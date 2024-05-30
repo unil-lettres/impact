@@ -52,6 +52,45 @@
                                     {{ trans('cards.clear_transcription') }}
                                 </button>
                             </div>
+
+                            <div class="modal fade" id="importModal" tabIndex="-1" aria-labelledby="importModalLabel">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="importModalLabel">{{ trans('cards.import') }}</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="mb-2">
+                                                {{ trans('cards.import.help') }}
+                                            </div>
+                                            <textarea
+                                                class="font-transcription form-control col-md-12"
+                                                name="import-transcription-content"
+                                                id="import-transcription-content"
+                                                rows="20"
+                                            ></textarea>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button
+                                                type="button"
+                                                class="btn btn-secondary"
+                                                data-bs-dismiss="modal"
+                                            >
+                                                {{ trans('cards.cancel') }}
+                                            </button>
+                                            <button
+                                                type="button"
+                                                class="btn btn-primary"
+                                                data-bs-dismiss="modal"
+                                                id="import-action-{{ $reference }}"
+                                            >
+                                                {{ trans('cards.import_action') }}
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         @endif
 
                         <div class="hide-on-read-only">
@@ -79,7 +118,7 @@
             </p>
             @if($card->course->transcription === \App\Enums\TranscriptionType::Icor)
                 <div id="rct-transcription"
-                     data='{{ json_encode(['card' => $card, 'editLabel' => trans('cards.edit'), 'saveLabel' => trans('cards.save'), 'cancelLabel' => trans('cards.cancel'), 'deleteLineActionLabel' => trans('cards.delete_line_action'), 'toggleNumberActionLabel' => trans('cards.toggle_number_action'), 'importModalTitleLabel' => trans('cards.import'), 'importModalHelpLabel' => trans('cards.import.help')]) }}'
+                     data='{{ json_encode(['card' => $card, 'editLabel' => trans('cards.edit'), 'saveLabel' => trans('cards.save'), 'deleteLineActionLabel' => trans('cards.delete_line_action'), 'toggleNumberActionLabel' => trans('cards.toggle_number_action') ]) }}'
                      reference='{{ $reference }}'
                 ></div>
             @elseif($card->course->transcription === \App\Enums\TranscriptionType::Text)
@@ -91,3 +130,33 @@
         </div>
     </div>
 @endif
+
+@section('scripts-footer')
+<script>
+    document.getElementById('import-transcription-content').addEventListener(
+        'keydown',
+        function(event) {
+            if (event.key === 'Tab') {
+                event.preventDefault();
+
+                // Override tab behavior to insert a tab character instead of
+                // changing the focus.
+
+                let textarea = event.target;
+
+                let start = textarea.selectionStart;
+                let end = textarea.selectionEnd;
+
+                // Set textarea value to: text before cursor + tab + text after
+                // cursor.
+                textarea.value = textarea.value.substring(0, start)
+                    + "\t"
+                    + textarea.value.substring(end);
+
+                // Put cursor to right of inserted tab.
+                textarea.selectionStart = textarea.selectionEnd = start + 1;
+            }
+        }
+    );
+</script>
+@endsection

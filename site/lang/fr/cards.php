@@ -42,6 +42,7 @@ return [
     'delete_line_action' => 'Supprimer la ligne',
     'toggle_number_action' => 'Visibilité de la numérotation',
     'import' => 'Importer une transcription',
+    'import_action' => 'Importer',
     'import.help' => 'Coller une transcription dans la zone texte ci-dessous. Veuillez respecter les conventions de transcription ICOR afin de préserver votre mise en page.',
     'export' => 'Exporter la transcription',
     'sync_with_source' => 'Synchroniser avec source',

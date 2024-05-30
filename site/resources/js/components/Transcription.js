@@ -69,7 +69,6 @@ export default class Transcription extends Component {
             original: _.cloneDeep(transcription),
             lines: _.cloneDeep(transcription),
             editable: !disabled,
-            importContentValue: '',
         };
 
         this.initVariables(data);
@@ -80,6 +79,8 @@ export default class Transcription extends Component {
         this.cancelButton = document.getElementById('cancel-' + this.props.reference);
         this.importOpenModalButton = document.getElementById('import-' + this.props.reference);
         this.exportButton = document.getElementById('export-' + this.props.reference);
+        this.importActionButton = document.getElementById('import-action-' + this.props.reference);
+        this.importValueComponent = document.getElementById('import-transcription-content');
         this.deleteButton = document.getElementById('clear-' + this.props.reference);
         this.syncButton = document.getElementById('sync-' + this.props.reference);
         this.hideButton = document.getElementById('hide-' + this.props.reference);
@@ -90,11 +91,8 @@ export default class Transcription extends Component {
         this.version = data.card.box2.version;
         this.editLabel = data.editLabel ?? 'Edit';
         this.saveLabel = data.saveLabel ?? 'Save';
-        this.cancelLabel = data.cancelLabel ?? 'Cancel';
         this.deleteLineActionLabel = data.deleteLineActionLabel ?? 'Delete the line';
         this.toggleNumberActionLabel = data.toggleNumberActionLabel ?? 'Visibility of the numbering';
-        this.importModalTitleLabel = data.importModalTitleLabel ?? 'Import a transcription';
-        this.importModalHelpLabel = data.importModalHelpLabel ?? 'Paste a transcription into the text box below. Please respect the ICOR transcription conventions to preserve your layout.';
         this.lineToFocusOnUpdate = null;
         this.caretPositionOnUpdate = null;
     }
@@ -118,7 +116,6 @@ export default class Transcription extends Component {
             this.exportButton.addEventListener(
                 'click',
                 (event) => this.handleExportClick(event),
-                false,
             );
         }
 
@@ -126,7 +123,13 @@ export default class Transcription extends Component {
             this.deleteButton.addEventListener(
                 'click',
                 () => this.deleteTranscription(),
-                false,
+            );
+        }
+
+        if(this.importActionButton) {
+            this.importActionButton.addEventListener(
+                'click',
+                () => this.handleImportClick(),
             );
         }
 
@@ -256,10 +259,12 @@ export default class Transcription extends Component {
     }
 
     handleImportClick() {
-        if(this.state.importContentValue) {
+        const value = this.importValueComponent?.value;
+
+        if(value) {
             this.enterEditMode();
 
-            let lines = this.state.importContentValue.split('\n');
+            let lines = value.split('\n');
 
             const importedLines = lines.reduce((accumulator, line) => {
                 let [number, speaker, speech] = line.split('\t');
@@ -307,28 +312,6 @@ export default class Transcription extends Component {
         }).catch(error => {
             console.log(error);
         });
-    }
-
-    handleImportContentKeyDown(event) {
-        if (event.keyCode === Transcription.KEY_TAB) {
-            event.preventDefault();
-
-            // Override tab behavior to insert a tab character instead of
-            // changing the focus.
-
-            let textarea = event.target;
-
-            let start = textarea.selectionStart;
-            let end = textarea.selectionEnd;
-
-            // Set textarea value to: text before cursor + tab + text after cursor.
-            textarea.value = textarea.value.substring(0, start)
-                + "\t"
-                + textarea.value.substring(end);
-
-            // Put cursor to right of inserted tab.
-            textarea.selectionStart = textarea.selectionEnd = start + 1;
-        }
     }
 
     handleSpeakerChange(index, event) {
@@ -837,56 +820,11 @@ export default class Transcription extends Component {
 
     render() {
 
-        const importModalHtml = (
-            <div className="modal fade" id="importModal" tabIndex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
-                <div className="modal-dialog modal-lg">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h5 className="modal-title" id="importModalLabel">{ this.importModalTitleLabel }</h5>
-                            <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div className="modal-body">
-                            <div className="mb-2">
-                                { this.importModalHelpLabel }
-                            </div>
-                            <textarea
-                                className="font-transcription form-control col-md-12"
-                                name="import-transcription-content"
-                                id="import-transcription-content"
-                                value={ this.state.importContentValue }
-                                onChange={ (event) => this.setState({ importContentValue: event.target.value }) }
-                                onKeyDown={ (event) => this.handleImportContentKeyDown(event) }
-                                rows="20"
-                            ></textarea>
-                        </div>
-                        <div className="modal-footer">
-                            <button
-                                type="button"
-                                className="btn btn-secondary"
-                                data-bs-dismiss="modal"
-                            >
-                                { this.cancelLabel }
-                            </button>
-                            <button
-                                type="button"
-                                className="btn btn-primary"
-                                onClick={ () => this.handleImportClick()}
-                                data-bs-dismiss="modal"
-                                id="import-transcription"
-                            >
-                                { this.saveLabel }
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        );
-
         if (this.shouldDisplayNoTranscriptionLabel(
             this.state.editable,
             this.state.lines,
         )) {
-            return importModalHtml;
+            return null;
         }
 
         return (
@@ -952,7 +890,6 @@ export default class Transcription extends Component {
                     }
                     </div>
                 </div>
-                { importModalHtml }
             </div>
         );
     }

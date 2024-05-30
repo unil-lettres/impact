@@ -57,6 +57,5 @@ return [
     'rename.label' => 'New name',
     'rename.submit' => 'Save',
     'rename.cancel' => 'Cancel',
-    'no_transcription' => 'No transcription',
 
 ];

@@ -3,7 +3,7 @@
         <div class="card-header">
             <div class="d-flex align-items-center">
                 <span class="fw-bolder me-auto">2. {{ trans('cards.transcription') }}</span>
-                <div class="d-flex">
+                <div class="d-flex align-items-center">
                     <span class="d-none" id="edit-failed-{{ $reference }}">[ {{ trans('messages.card.editor.failed') }} ]</span>
 
                     @if($card->boxIsEditable($reference))

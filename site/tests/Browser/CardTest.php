@@ -248,14 +248,26 @@ class CardTest extends DuskTestCase
 
             $browser->keys(
                 '#import-transcription-content',
-                'AAA', '{tab}', 'The first speech', '{enter}', 'BBB', '{tab}', 'The second speech'
+                '5', // Will be fixed as line number 1.
+                '{tab}',
+                'AAA',
+                '{tab}',
+                'The first speech',
+                '{enter}',
+                // Line number 2 is missing.
+                '{tab}',
+                'BBB',
+                '{tab}',
+                'The second speech',
             );
 
-            $browser->click('#import-transcription')
-                ->assertSee(trans('cards.save'))
+            $browser->click('#import-action-box2')
+                ->assertSee(trans('cards.import_action'))
                 ->click('#edit-box2')
+                ->assertSee('1')
                 ->assertSee('AAA')
                 ->assertSee('The first speech')
+                ->assertDontSee('2')
                 ->assertSee('BBB')
                 ->assertSee('The second speech')
                 ->assertDontSee('{tab}')

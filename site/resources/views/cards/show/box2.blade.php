@@ -131,7 +131,7 @@
     </div>
 @endif
 
-@section('scripts-footer')
+@push('scripts-boxes')
 <script>
     document.getElementById('import-transcription-content').addEventListener(
         'keydown',
@@ -159,4 +159,4 @@
         }
     );
 </script>
-@endsection
+@endpush

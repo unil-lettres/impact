@@ -244,7 +244,7 @@ class CardTest extends DuskTestCase
                 ->pause(1000) // Avoid "element not interactable" issue with modal
                 ->assertSee(trans('cards.import'))
                 ->assertSee(trans('cards.cancel'))
-                ->assertSee(trans('cards.save'));
+                ->assertSee(trans('cards.import_action'));
 
             $browser->keys(
                 '#import-transcription-content',

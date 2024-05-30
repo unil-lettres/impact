@@ -79,4 +79,5 @@
             })
         })
     </script>
+    @stack("scripts-boxes")
 @endsection

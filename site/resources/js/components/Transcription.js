@@ -15,6 +15,7 @@ function SpeakerInput(props) {
 }
 
 function SpeechInput(props) {
+    const { maxCharactersSpeech, ...rest } = props;
     const inputRef = useRef(null);
 
     useEffect(() => {
@@ -26,8 +27,8 @@ function SpeechInput(props) {
     return <textarea
         ref={inputRef}
         className="speech"
-        style={{width: `${Transcription.MAX_CARACTERS_SPEECH}ch`}}
-        {...props}
+        style={{width: `${maxCharactersSpeech}ch`}}
+        {...rest}
     />;
 }
 
@@ -51,8 +52,6 @@ class Line {
 }
 
 export default class Transcription extends Component {
-    static MAX_CARACTERS_SPEECH = 55;
-    static MAX_CARACTERS_LEGACY_SPEECH = 65;
     static KEY_ENTER = 13;
     static KEY_BACKSPACE = 8;
     static KEY_TAB = 9;
@@ -93,6 +92,7 @@ export default class Transcription extends Component {
         this.saveLabel = data.saveLabel ?? 'Save';
         this.deleteLineActionLabel = data.deleteLineActionLabel ?? 'Delete the line';
         this.toggleNumberActionLabel = data.toggleNumberActionLabel ?? 'Visibility of the numbering';
+        this.maxCharactersSpeech = data.maxCharactersSpeech ?? 55;
         this.lineToFocusOnUpdate = null;
         this.caretPositionOnUpdate = null;
     }
@@ -540,9 +540,9 @@ export default class Transcription extends Component {
                 hasNumber ? "" : null,
                 speaker,
                 speech,
-                linkedToPrevious
+                linkedToPrevious,
             ).toJSON(),
-            ...lines.slice(index)
+            ...lines.slice(index),
         ];
 
         return this.fixNumbers(newLines);
@@ -570,7 +570,7 @@ export default class Transcription extends Component {
                     "",
                     "",
                     0
-                ).toJSON()
+                ).toJSON(),
             ]
         });
         this.lineToFocusOnUpdate = 'speaker-0';
@@ -598,21 +598,21 @@ export default class Transcription extends Component {
             newLines = this.addRow(newLines, current, speaker);
         }
 
-        // We split the value into multiple lines of max caracters length.
+        // We split the value into multiple lines of max characters length.
         while (remainingLine.length > 0) {
 
-            // Whitespaces are allowed to be the "MAX + 1" caracter of a line.
-            // It allow to terminate a word exactly at "MAX" caracters.
+            // Whitespaces are allowed to be the "MAX + 1" character of a line.
+            // It allow to terminate a word exactly at "MAX" characters.
             const endWithWhitespace = remainingLine[
-                Transcription.MAX_CARACTERS_SPEECH
+                this.maxCharactersSpeech
             ]?.match(/\s/g);
 
             let line = remainingLine.slice(
                 0,
-                Transcription.MAX_CARACTERS_SPEECH + (endWithWhitespace ? 1 : 0 ),
+                this.maxCharactersSpeech + (endWithWhitespace ? 1 : 0 ),
             );
 
-            if (remainingLine.length > Transcription.MAX_CARACTERS_SPEECH) {
+            if (remainingLine.length > this.maxCharactersSpeech) {
 
                 const lastSpace = this.lastIndexOfWhiteSpace(line);
                 const lastHyphen = line.lastIndexOf('-');
@@ -622,8 +622,8 @@ export default class Transcription extends Component {
                     line = line.slice(0, lastBreak + 1);
                     remainingLine = remainingLine.slice(lastBreak + 1);
                 } else {
-                    line = line.slice(0, Transcription.MAX_CARACTERS_SPEECH);
-                    remainingLine = remainingLine.slice(Transcription.MAX_CARACTERS_SPEECH);
+                    line = line.slice(0, this.maxCharactersSpeech);
+                    remainingLine = remainingLine.slice(this.maxCharactersSpeech);
                 }
 
                 // If the first character on the new line is a space, we remove
@@ -852,6 +852,7 @@ export default class Transcription extends Component {
                                     onChange={ event => this.handleSpeechChange(section.index, event) }
                                     onKeyDown={ event => this.handleSpeechKeyDown(section.index, event) }
                                     value={ section.speech ?? "" }
+                                    maxCharactersSpeech={ this.maxCharactersSpeech }
                                 />
                                 {
                                     this.state.editable ? (

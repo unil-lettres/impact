@@ -6,6 +6,7 @@ use App\Enums\CardBox;
 use App\Enums\FinderItemType;
 use App\Enums\StatePermission;
 use App\Enums\StateType;
+use App\Enums\TranscriptionType;
 use App\Scopes\HideAttachmentsScope;
 use App\Scopes\ValidityScope;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -23,8 +24,11 @@ class Card extends Model
     use HasFactory;
     use SoftDeletes;
 
+    const MAX_CHARACTERS_SPEECH = 55;
+    const MAX_CHARACTERS_LEGACY_SPEECH = 65;
+
     const TRANSCRIPTION = '{
-            "version": 1,
+            "version": 2,
             "icor": [],
             "text": null
         }';
@@ -343,5 +347,22 @@ class Card extends Model
         }
 
         return $parents;
+    }
+
+    /**
+     * Return the max number of characters by line for the transcription box.
+     * If the transcription box is not ICOR, return null.
+     */
+    public function getMaxCharactersByLine(): int
+    {
+        if ($this->course->transcription === TranscriptionType::Icor) {
+            return (
+                (int)$this->box2['version'] > 1
+                ? static::MAX_CHARACTERS_SPEECH
+                : static::MAX_CHARACTERS_LEGACY_SPEECH
+            );
+        }
+
+        return null;
     }
 }

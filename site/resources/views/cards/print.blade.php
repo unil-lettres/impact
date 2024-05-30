@@ -58,7 +58,7 @@
                                 <tr class="transcription-row">
                                     <td class="line-number align-top">{{ $line['number'] }}</td>
                                     <td class="speaker align-top">{{ $line['speaker'] }}</td>
-                                    <td class="speech align-top">{!! $line['speech'] !!}</td>
+                                    <td class="speech align-top">{{ $line['speech'] }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

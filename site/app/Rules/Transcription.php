@@ -8,11 +8,9 @@ use Assert\InvalidArgumentException;
 use Closure;
 use Illuminate\Contracts\Validation\DataAwareRule;
 use Illuminate\Contracts\Validation\ValidationRule;
-use Illuminate\Support\Facades\Log;
 
-class Transcription implements ValidationRule, DataAwareRule
+class Transcription implements DataAwareRule, ValidationRule
 {
-
     /**
      * All of the data under validation.
      *
@@ -52,7 +50,6 @@ class Transcription implements ValidationRule, DataAwareRule
                     );
                 }
             }
-
 
         } catch (InvalidArgumentException $e) {
             $fail('The transcription is not valid.');

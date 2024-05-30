@@ -877,19 +877,6 @@ export default class Transcription extends Component {
                             </div>
                         ))
                     }
-                    <div style={{fontFamily: 'courier', position: 'fixed', top: 0, left: 0, background: 'white', border: '1px solid black'}}>
-                    {
-                        this.state.lines.map((line, index) => (
-                            <div key={ index } className='d-flex gap-1'>
-                                <div style={{width: '20px', textAlign: 'left'}}>{ index }</div>
-                                <div style={{width: '20px', textAlign: 'left'}}>{ line.number }</div>
-                                <div style={{width: '30px', textAlign: 'left'}}>{ line.speaker }</div>
-                                <div style={{width: '20px', textAlign: 'left'}}>{ line.speech?.length }</div>
-                                <div>{ line.speech ? line.speech.replace(/\s/g, '\u00A0') : '' }</div>
-                            </div>
-                        ))
-                    }
-                    </div>
                 </div>
             </div>
         );

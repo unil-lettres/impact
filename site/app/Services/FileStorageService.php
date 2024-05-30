@@ -181,7 +181,7 @@ class FileStorageService
                 ->all(),
 
             // Filter covers tracks.
-            fn($stream) => $stream->get('disposition')['attached_pic'] !== 1
+            fn ($stream) => $stream->get('disposition')['attached_pic'] !== 1
         );
 
         // Get number of audio track(s)

@@ -25,6 +25,7 @@ class Card extends Model
     use SoftDeletes;
 
     const MAX_CHARACTERS_SPEECH = 55;
+
     const MAX_CHARACTERS_LEGACY_SPEECH = 65;
 
     const TRANSCRIPTION = '{
@@ -356,11 +357,10 @@ class Card extends Model
     public function getMaxCharactersByLine(): int
     {
         if ($this->course->transcription === TranscriptionType::Icor) {
-            return (
-                (int)$this->box2['version'] > 1
+            return
+                (int) $this->box2['version'] > 1
                 ? static::MAX_CHARACTERS_SPEECH
-                : static::MAX_CHARACTERS_LEGACY_SPEECH
-            );
+                : static::MAX_CHARACTERS_LEGACY_SPEECH;
         }
 
         return null;

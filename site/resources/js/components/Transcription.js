@@ -838,6 +838,7 @@ export default class Transcription extends Component {
                             <div
                                 key={ section.index }
                                 className="transcription-row d-flex align-items-stretch"
+                                id={ `section-${section.index}` }
                             >
                                 <div className={`line-number ${section.number === null ? 'no-line-number' : ''}`}>
                                     { this.getHtmlLinesNumber(section) }

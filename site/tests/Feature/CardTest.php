@@ -79,4 +79,15 @@ class CardTest extends TestCase
         $this->assertEquals($clonedCard->folder_id, $folder->id);
         $this->assertEquals($clonedCard->course_id, $course->id);
     }
+
+    public function testIcorVersionMaxLength(): void
+    {
+        $card = Card::factory()->create();
+
+        $this->assertEquals($card->getMaxCharactersByLine(), Card::MAX_CHARACTERS_SPEECH);
+
+        $card = Card::factory()->transcriptionVersion(1)->create();
+
+        $this->assertEquals($card->getMaxCharactersByLine(), Card::MAX_CHARACTERS_LEGACY_SPEECH);
+    }
 }

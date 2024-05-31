@@ -2,6 +2,8 @@
 
 namespace Tests\Browser;
 
+use App\Card as AppCard;
+use App\Enums\TranscriptionType;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
@@ -228,6 +230,194 @@ class CardTest extends DuskTestCase
     }
 
     /**
+     * Test ICOR parsing in transcription editor.
+     *
+     * @throws Throwable
+     */
+    public function testIcorIsCorrectlyParsed(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(new Login())
+                ->loginAsUser('admin-user@example.com', 'password');
+
+            $testCard = new Card('Test card features');
+            $card = AppCard::find($testCard->id());
+            $browser->visit($testCard);
+
+            // Enter edit mode.
+            $browser->click('#edit-box2');
+
+            $browser->keys(
+                '#speech-0',
+                'The line should be put on two line because it is too long',
+                '{enter}',
+                '{backspace}',
+                '{tab}',
+                'BBB',
+                '{tab}',
+                'The line should be put on two line because it is tooooo long',
+                '{tab}',
+                'CCC',
+                '{tab}',
+                'Small Line'
+            );
+
+            // Save transcription.
+            $browser->click('#edit-box2')->pause(1000);
+            $card->refresh();
+
+            $this->assertEquals(
+                $card->box2[TranscriptionType::Icor],
+                [
+                    [
+                        'number' => 1,
+                        'speaker' => null,
+                        'speech' => 'The line should be put on two line because it is too ',
+                        'linkedToPrevious' => false,
+                    ],
+                    [
+                        'number' => 2,
+                        'speaker' => null,
+                        'speech' => 'long',
+                        'linkedToPrevious' => true,
+                    ],
+                    [
+                        'number' => 3,
+                        'speaker' => 'BBB',
+                        'speech' => 'The line should be put on two line because it is tooooo ',
+                        'linkedToPrevious' => false,
+                    ],
+                    [
+                        'number' => 4,
+                        'speaker' => null,
+                        'speech' => 'long',
+                        'linkedToPrevious' => true,
+                    ],
+                    [
+                        'number' => 5,
+                        'speaker' => 'CCC',
+                        'speech' => 'Small Line',
+                        'linkedToPrevious' => false,
+                    ],
+                ],
+            );
+
+            // Enter edit mode.
+            $browser->click('#edit-box2');
+
+            $browser->keys(
+                '#speaker-4',
+                '{home}',
+                '{backspace}',
+
+                // Remove the character under the caret to check which one will
+                // be deleted and thus knowing that the caret is at the correct
+                // location.
+                '{backspace}',
+            );
+
+            $browser->keys(
+                '#speech-0',
+                '{arrow_down}',
+                '{end}',
+                '{delete}',
+                '{arrow_up}',
+                '{home}',
+                '{arrow_right}',
+                '{arrow_right}',
+                '{arrow_right}',
+                '{arrow_right}',
+                '{arrow_right}',
+                '{arrow_right}',
+                '{enter}',
+            );
+
+            $browser->keys(
+                '#speaker-0',
+                '{home}',
+                '{arrow_right}',
+                '{arrow_right}',
+                '{enter}',
+            );
+
+            $browser
+                ->assertSeeIn('#section-0 > .line-number > div', '1')
+                ->assertSeeIn('#section-2 > .line-number > div:nth-child(3)', '5')
+                ->assertValue('#speaker-0', 'BB')
+                ->assertValue('#speaker-1', 'B')
+                ->assertValue('#speaker-2', '')
+                ->assertValue('#speech-0', '')
+                ->assertValue('#speech-1', 'The li')
+                ->assertValue('#speech-2', 'ne should be put on two line because it is too longThe line should be put on two line because it is tooooo lonSmall Line');
+
+            $browser->click('#section-1 > .transcription-actions > .action-toggle-number');
+
+            $browser
+                ->assertSeeIn('#section-1 > .line-number > div', '.')
+                ->assertSeeIn('#section-2 > .line-number > div:nth-child(3)', '4');
+
+            $browser->click(
+                '#section-0 > .transcription-actions > .action-delete',
+            );
+
+            $browser->assertSeeIn(
+                '#section-1 > .line-number > div:nth-child(3)',
+                '3',
+            );
+
+            // Save transcription.
+            $browser->click('#edit-box2')->pause(1000);
+
+            $card->refresh();
+
+            $this->assertEquals(
+                $card->box2[TranscriptionType::Icor],
+                [
+                    [
+                        'number' => null,
+                        'speaker' => 'B',
+                        'speech' => 'The li',
+                        'linkedToPrevious' => false,
+                    ],
+                    [
+                        'number' => 1,
+                        'speaker' => null,
+                        'speech' => 'ne should be put on two line because it is too longThe ',
+                        'linkedToPrevious' => false,
+                    ],
+                    [
+                        'number' => 2,
+                        'speaker' => null,
+                        'speech' => 'line should be put on two line because it is tooooo ',
+                        'linkedToPrevious' => true,
+                    ], [
+                        'number' => 3,
+                        'speaker' => null,
+                        'speech' => 'lonSmall Line',
+                        'linkedToPrevious' => true,
+                    ],
+                ]
+            );
+
+            // Enter edit mode.
+            $browser->click('#edit-box2');
+
+            $browser->click(
+                '#section-1 > .transcription-actions > .action-toggle-number',
+            );
+
+            $browser
+                ->assertSeeIn('#section-1 > .line-number > div:nth-child(1)', '.')
+                ->assertSeeIn('#section-1 > .line-number > div:nth-child(2)', '.')
+                ->assertSeeIn('#section-1 > .line-number > div:nth-child(3)', '.');
+
+            $browser->click('#section-1 > .transcription-actions > .action-delete');
+
+            $browser->assertDontSee('lonSmall Line');
+        });
+    }
+
+    /**
      * Test import ICOR text in transcription editor.
      *
      * @throws Throwable
@@ -264,12 +454,12 @@ class CardTest extends DuskTestCase
             $browser->click('#import-action-box2')
                 ->assertSee(trans('cards.import_action'))
                 ->click('#edit-box2')
-                ->assertSee('1')
-                ->assertSee('AAA')
-                ->assertSee('The first speech')
-                ->assertDontSee('2')
-                ->assertSee('BBB')
-                ->assertSee('The second speech')
+                ->assertSeeIn('#section-0 > .line-number > div', '1')
+                ->assertValue('#speaker-0', 'AAA')
+                ->assertValue('#speech-0', 'The first speech')
+                ->assertDontSeeIn('#section-1 > .line-number > div', '2')
+                ->assertValue('#speaker-1', 'BBB')
+                ->assertValue('#speech-1', 'The second speech')
                 ->assertDontSee('{tab}')
                 ->assertDontSee('{enter}');
         });

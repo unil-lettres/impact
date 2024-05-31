@@ -138,7 +138,6 @@ export default class Transcription extends Component {
 
     componentDidUpdate() {
         if(this.lineToFocusOnUpdate) {
-
             let line;
             if (typeof this.lineToFocusOnUpdate === 'string') {
                 line = document.getElementById(this.lineToFocusOnUpdate);
@@ -178,6 +177,10 @@ export default class Transcription extends Component {
             this.editButton.classList.toggle('btn-success', this.state.editable);
             this.editButton.innerText = this.state.editable ? this.saveLabel : this.editLabel;
         }
+
+        window.transcription = {
+            isEditing: this.state.editable
+        };
     }
 
     handleEditButtonClick() {

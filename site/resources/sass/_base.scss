@@ -1,3 +1,23 @@
+
+@keyframes pulsate {
+    0% {
+        transform: scale(1);
+        opacity: .4;
+    }
+    50% {
+        transform: scale(1.2);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1);
+        opacity: .4;
+    }
+}
+
+.pulse {
+    animation: pulsate 1s infinite;
+}
+
 .navbar {
     margin-bottom: 20px;
 }

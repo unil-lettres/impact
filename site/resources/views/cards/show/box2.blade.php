@@ -2,7 +2,10 @@
     <div class="card {{ $reference }} {{ Helpers::isHidden($card, $reference) ? 'hide-on-read-only' : '' }}">
         <div class="card-header">
             <div class="d-flex align-items-center">
-                <span class="fw-bolder me-auto">2. {{ trans('cards.transcription') }}</span>
+                <span class="fw-bolder">2. {{ trans('cards.transcription') }}</span>
+                <div class="me-auto mx-2 text-danger">
+                    <livewire:transcription-counter :card="$card" />
+                </div>
                 <div class="d-flex align-items-center">
                     <span class="d-none" id="edit-failed-{{ $reference }}">[ {{ trans('messages.card.editor.failed') }} ]</span>
 

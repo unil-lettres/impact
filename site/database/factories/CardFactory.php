@@ -17,4 +17,14 @@ class CardFactory extends Factory
             'course_id' => Course::factory(),
         ];
     }
+
+    /**
+     * Indicate that the transcription version is the one specified.
+     */
+    public function transcriptionVersion($version): Factory
+    {
+        return $this->state(
+            fn (array $attributes) => ['box2->version' => $version],
+        );
+    }
 }

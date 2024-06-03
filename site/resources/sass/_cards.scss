@@ -47,32 +47,72 @@
             overflow: auto;
         }
 
-        tbody tr {
-            td.actions {
-                max-width: 35px;
-                min-width: 35px;
-                text-align: center;
+        #transcription-content {
+            display: inline-block;
+        }
+
+        .transcription-row {
+            padding: 0 10px;
+
+            .speech, .speaker > input {
+                background: transparent;
+                border-width: 0;
+                box-sizing: content-box;
+                margin: 0;
+                outline: none;
+                overflow: hidden;
+                padding: 0;
+                resize: none;
+            }
+
+            .speaker > input {
+                width: 100%;
+            }
+
+            &:has(.transcription-actions .action-delete:hover) {
+                .line-number, .speaker, .speech {
+                    background-color: transparent;
+                }
+                background-image: repeating-linear-gradient(45deg, #ff6f6f 0, #ff6f6f 0.5px, transparent 0, transparent 50%);
+                background-color: #ffc8c8;
+                background-size: 10px 10px;
+            }
+
+            &:has(.transcription-actions .action-toggle-number:hover) {
+                .line-number:not(.no-line-number) {
+                    text-decoration: line-through;
+                    color: red;
+                }
+
+                .no-line-number {
+                    opacity: .3;
+                }
+            }
+
+            &:hover .transcription-actions {
+                opacity: 1!important;
+
+                span:hover {
+                    cursor: pointer;
+
+                    i {
+                        @extend .fa-solid;
+                    }
+                }
             }
         }
 
         .editing {
-            tbody tr {
-                td.speaker {
-                    background-color: #e3e3e3;
-                }
+            .speaker {
+                background-color: #e3e3e3;
 
-                td.speech {
-                    background-color: #c3c3c3;
-                    width: 100%;
+                > input {
+                    background-color: transparent;
                 }
+            }
 
-                td.actions {
-                    background-color: #c3c3c3;
-
-                    .action {
-                        cursor: pointer;
-                    }
-                }
+            .speech {
+                background-color: #c3c3c3;
             }
         }
     }
@@ -111,24 +151,33 @@
     .break-page {
         break-after: page;
     }
+
+    .transcription-row > td {
+        padding: 0;
+    }
 }
 
 #card, #print-card {
     .box2 {
-        tbody tr {
+        .transcription-row {
             font-size: 12px;
             line-height: 1.2;
-            height: 20px;
 
-            td.line,
-            td.speaker {
-                max-width: 35px;
-                min-width: 35px;
+            .line-number {
+                width: 5ch;
+            }
+
+            .speaker {
+                width: 4ch;
+            }
+
+            .no-line-number {
+                opacity: 0;
             }
         }
     }
 
-    .box2 tbody tr, .font-transcription {
+    .box2 .transcription-row, .font-transcription {
         font-family: courier, serif;
     }
 }

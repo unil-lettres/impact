@@ -55,7 +55,6 @@
         "postcss-loader": "^8.1.0",
         "raw-loader": "^4.0.2",
         "react": "^18.2.0",
-        "react-contenteditable": "^3.3.6",
         "react-datepicker": "^6.0.0",
         "react-dom": "^18.2.0",
         "react-select": "^5.4.0",

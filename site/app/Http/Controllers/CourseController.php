@@ -57,7 +57,7 @@ class CourseController extends Controller
 
         return view('courses.index', [
             'courses' => $courses
-                ->orderBy('created_at', 'desc')
+                ->orderBy('name', 'asc')
                 ->get(),
             'filter' => $filter,
         ]);

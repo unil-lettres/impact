@@ -6,7 +6,7 @@
 
 @section('actions')
     @if(Auth::user()->admin)
-        <div class="dropdown show float-end me-1">
+        <div class="dropdown show">
             <a class="btn dropdown-toggle{{ $filter ? ' btn-primary' : ' btn-secondary'  }}"
                href="#"
                role="button"

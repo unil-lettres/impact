@@ -36,10 +36,18 @@
         @unless ($courses->isEmpty())
             <div class="flex-table">
                 <div class="flex-row header">
-                    <div class="flex-cell name">{{ trans('courses.name') }}</div>
-                    <div class="flex-cell managers">{{ trans('courses.managers') }}</div>
-                    <div class="flex-cell date">{{ trans('courses.creation_date') }}</div>
-                    <div class="flex-cell description">{{ trans('courses.description') }}</div>
+                    <div class="flex-cell name">
+                        {{ trans('courses.name') }}
+                    </div>
+                    <div class="flex-cell managers d-none d-md-block">
+                        {{ trans('courses.managers') }}
+                    </div>
+                    <div class="flex-cell date d-none d-md-block">
+                        {{ trans('courses.creation_date') }}
+                    </div>
+                    <div class="flex-cell description d-none d-md-block">
+                        {{ trans('courses.description') }}
+                    </div>
                 </div>
 
                 @foreach ($courses as $course)
@@ -57,17 +65,17 @@
                                 @endif
                             </div>
                             <div
-                                class="flex-cell managers"
+                                class="flex-cell managers d-none d-md-box"
                                 data-bs-toggle="tooltip"
                                 title="{{ $course->managers(true)->implode('name', ', ') }}"
                             >
                                 {{ $course->managers(true)->implode('name', ', ') }}
                             </div>
-                            <div class="flex-cell date">
+                            <div class="flex-cell date d-none d-md-block">
                                 {{ $course->created_at ? $course->created_at->format('d/m/Y') : '-' }}
                             </div>
                             <div
-                                class="flex-cell description"
+                                class="flex-cell description d-none d-md-box"
                                 data-bs-toggle="tooltip"
                                 data-bs-custom-class="description-tooltip"
                                 title="{{ $course->description }}"

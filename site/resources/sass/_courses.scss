@@ -20,7 +20,6 @@
         }
 
         .flex-cell {
-            display: -webkit-box;
             text-overflow: ellipsis;
             overflow: hidden;
             -webkit-line-clamp: 2;
@@ -76,3 +75,9 @@
 .description-tooltip {
     --bs-tooltip-max-width: 500px;
 }
+
+@include media-breakpoint-up(md) {
+    .d-md-box {
+        display: -webkit-box!important;
+    }
+  }

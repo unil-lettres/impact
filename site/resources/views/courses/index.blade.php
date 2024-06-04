@@ -56,13 +56,22 @@
                                     </a>
                                 @endif
                             </div>
-                            <div class="flex-cell managers">
+                            <div
+                                class="flex-cell managers"
+                                data-bs-toggle="tooltip"
+                                title="{{ $course->managers(true)->implode('name', ', ') }}"
+                            >
                                 {{ $course->managers(true)->implode('name', ', ') }}
                             </div>
                             <div class="flex-cell date">
                                 {{ $course->created_at ? $course->created_at->format('d/m/Y') : '-' }}
                             </div>
-                            <div class="flex-cell description">
+                            <div
+                                class="flex-cell description"
+                                data-bs-toggle="tooltip"
+                                data-bs-custom-class="description-tooltip"
+                                title="{{ $course->description }}"
+                            >
                                 @if($course->description)
                                     {{ $course->description }}
                                 @else

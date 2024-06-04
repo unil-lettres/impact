@@ -1,9 +1,9 @@
 @if($card->boxIsVisible($reference))
     <div class="card {{ $reference }} {{ Helpers::isHidden($card, $reference) ? 'hide-on-read-only' : '' }}">
         <div class="card-header">
-            <div class="d-flex align-items-center">
+            <div class="d-flex flex-wrap gap-2 align-items-center">
                 <span class="fw-bolder">2. {{ trans('cards.transcription') }}</span>
-                <div class="me-auto mx-2 text-danger">
+                <div class="me-auto text-danger">
                     <livewire:transcription-counter :card="$card" />
                 </div>
                 <div class="d-flex align-items-center">

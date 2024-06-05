@@ -18,5 +18,6 @@ return [
     'not_authorized' => 'You are not authorized to access this content.',
     'profile' => 'Manage profile',
     'aai_failed' => 'Le processus d\'authentification a échoué.',
+    'user_is_not_local' => 'AAI account detected. Please log in via the SWITCHaai button.',
 
 ];

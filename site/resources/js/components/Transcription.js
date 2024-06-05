@@ -860,7 +860,7 @@ export default class Transcription extends Component {
                                 />
                                 {
                                     this.state.editable ? (
-                                        <div className="transcription-actions opacity-0 align-self-center ps-1">
+                                        <div className="transcription-actions opacity-0 align-self-center ps-1 text-nowrap">
                                             <span
                                                 className="action-delete me-1"
                                                 onClick={ () => this.handleDeleteLineClick(section.index) }

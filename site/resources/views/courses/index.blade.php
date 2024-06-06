@@ -36,7 +36,7 @@
         @unless ($courses->isEmpty())
             <div class="flex-table">
                 <div class="flex-row header">
-                    <div class="flex-cell name">
+                    <div class="flex-cell name d-none d-md-block">
                         {{ trans('courses.name') }}
                     </div>
                     <div class="flex-cell managers d-none d-md-block">
@@ -52,7 +52,7 @@
 
                 @foreach ($courses as $course)
                     @can('view', $course)
-                        <div class="flex-row{{ $course->deleted_at ? ' deleted' : '' }}">
+                        <div class="flex-row{{ $course->deleted_at ? ' deleted' : '' }} flex-wrap">
                             <div class="flex-cell name">
                                 @if($course->deleted_at)
                                     <a href="{{ route('admin.courses.manage', ['filter' => App\Enums\CoursesFilter::Disabled]) }}">
@@ -65,27 +65,23 @@
                                 @endif
                             </div>
                             <div
-                                class="flex-cell managers d-none d-md-box"
+                                class="flex-cell managers"
                                 data-bs-toggle="tooltip"
                                 title="{{ $course->managers(true)->implode('name', ', ') }}"
                             >
                                 {{ $course->managers(true)->implode('name', ', ') }}
                             </div>
                             <div class="flex-cell date d-none d-md-block">
-                                {{ $course->created_at ? $course->created_at->format('d/m/Y') : '-' }}
+                                {{ $course->created_at ? $course->created_at->format('d/m/Y') : '' }}
                             </div>
-                            <div
-                                class="flex-cell description d-none d-md-box"
-                                data-bs-toggle="tooltip"
-                                data-bs-custom-class="description-tooltip"
-                                title="{{ $course->description }}"
-                            >
-                                @if($course->description)
+                                <div
+                                    class="flex-cell description @unless($course->description) d-none @endif"
+                                    data-bs-toggle="tooltip"
+                                    data-bs-custom-class="description-tooltip"
+                                    title="{{ $course->description }}"
+                                >
                                     {{ $course->description }}
-                                @else
-                                    -
-                                @endif
-                            </div>
+                                </div>
                         </div>
                     @endcan
                 @endforeach

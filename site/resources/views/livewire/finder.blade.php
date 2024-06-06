@@ -29,10 +29,10 @@
     </div>
     <x-finder.modal-clone-in :id="$modalCloneId" :course="$course" />
     <x-finder.modal-move-in :id="$modalMoveId" :course="$course" />
-    <div class="toolsbox mt-3" style="height: 63px;">
+    <div class="toolsbox mt-3" style="min-height: 45px">
         <div
             x-show.important="selectedItems.length === 0"
-            class='d-flex gap-2'
+            class='d-flex gap-2 flex-wrap'
             data-filter-label="{{ trans('courses.finder.filter_label') }}"
         >
             <div class="filter-select">
@@ -83,7 +83,7 @@
                 </button>
             </div>
         </div>
-        <div x-show="selectedItems.length > 0" class="bg-light rounded-pill px-3 py-1 text-nowrap" @click.stop>
+        <div x-show.important="selectedItems.length > 0" class="bg-light rounded-pill px-3 py-1 d-flex align-items-center" @click.stop>
             <a href="#" class="me-2 text-body" @click="selectedItems = []"><i class="fa-solid fa-xmark"></i></a>
             <span>
                 <strong x-text="selectedItems.length"></strong>
@@ -91,7 +91,7 @@
                 <strong x-text="selectedItems.filter(key => key.includes('card')).length"></strong>
                 {{ trans('courses.finder.selected_cards') }}
             </span>
-            <div class="dropdown d-inline-block" @click.stop>
+            <div class="dropdown" @click.stop>
                 <button
                     class="btn border-0"
                     type="button"
@@ -103,7 +103,7 @@
                 </button>
                 <ul class="dropdown-menu dropdown-with-icon">
                     <li
-                        class="dropdown-item d-flex cursor-pointer align-items-center d-flex d-sm-none"
+                        class="dropdown-item d-flex cursor-pointer align-items-center d-md-none"
                         @click="selectAll"
                     >
                         <span class="flex-fill me-5">
@@ -186,7 +186,7 @@
                     </li>
                 </ul>
             </div>
-            <button class="btn d-none d-sm-inline-block" @click="selectAll" x-show.important="!isAllSelected()">
+            <button class="btn d-none d-md-inline-block" @click="selectAll" x-show.important="!isAllSelected()">
                 {{ trans('courses.finder.select_all')}}
             </button>
             <div class="btn d-none d-lg-inline-block text-secondary">

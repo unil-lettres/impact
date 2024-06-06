@@ -40,7 +40,7 @@
     <div class="row">
         <div class="col-md-12 col-lg-{{ $clonableCourses->isEmpty() ? '12' : '8'}}">
             <div class="card">
-                <div class="card-body">
+                <div class="card-body table-responsive">
                     <table class="table">
                         <thead>
                             <tr>

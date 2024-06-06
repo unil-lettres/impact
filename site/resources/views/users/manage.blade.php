@@ -3,10 +3,14 @@
 @section('admin.content')
     <div id="users">
         <div class="card">
-            <div class="card-header d-flex justify-content-between">
-                <div class="title">{{ trans('users.manage') }} <span class="badge bg-secondary">{{ $users->total() }}</span></div>
-
-                <div class="header-actions d-flex justify-content-end">
+            <div class="card-header d-flex justify-content-between gap-2">
+                <div class="title">
+                    {{ trans('users.manage') }}
+                    <span class="badge bg-secondary">
+                        {{ $users->total() }}
+                    </span>
+                </div>
+                <div class="header-actions d-flex gap-2 flex-wrap">
                     <div class="search-users">
                         <form method="get" action="{{ route('admin.users.manage') }}">
                             <div class="input-group">
@@ -40,7 +44,7 @@
                         </form>
                     </div>
 
-                    <div class="filter-users dropdown show ms-1">
+                    <div class="filter-users dropdown show">
                         <a class="btn dropdown-toggle{{ $filter ? ' btn-primary' : ' btn-secondary'  }}"
                            href="#"
                            role="button"
@@ -73,7 +77,7 @@
                         </div>
                     </div>
 
-                    <div class="create-users ms-3">
+                    <div class="create-users">
                         <a href="{{ route('admin.users.create') }}"
                            class="btn btn-primary">
                             {{ trans('users.create') }}
@@ -82,7 +86,7 @@
                 </div>
             </div>
 
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 @if ($users->items())
                     <table class="table">
                         <thead>
@@ -100,14 +104,12 @@
                                     <tr class="{{ $user->type }}{{ $user->isValid() ? '' : ' invalid' }}">
                                         <td>
                                             {{ $user->email }}
-                                            <div>
-                                                @if ($user->admin)
-                                                    <span class="badge bg-primary">{{ trans('users.admin') }}</span>
-                                                @endif
-                                                @unless ($user->isValid())
-                                                    <span class="badge bg-danger">{{ trans('users.expired') }}</span>
-                                                @endunless
-                                            </div>
+                                            @if ($user->admin)
+                                                <span class="badge bg-primary">{{ trans('users.admin') }}</span>
+                                            @endif
+                                            @unless ($user->isValid())
+                                                <span class="badge bg-danger">{{ trans('users.expired') }}</span>
+                                            @endunless
                                         </td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->created_at->format('d/m/Y H:i:s') }}</td>
@@ -159,7 +161,7 @@
                     </table>
                     {{ $users->onEachSide(1)->links() }}
                 @else
-                    <p class="text-secondary">
+                    <p class="text-secondary text-center">
                         {{ trans('users.not_found') }}
                     </p>
                 @endif

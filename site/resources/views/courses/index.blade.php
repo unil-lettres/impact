@@ -91,7 +91,7 @@
                 @endforeach
             </div>
         @else
-            <p class="text-secondary">
+            <p class="text-secondary text-center">
                 {{ trans('courses.not_found') }}
             </p>
         @endunless

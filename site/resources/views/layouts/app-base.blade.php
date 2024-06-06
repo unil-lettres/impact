@@ -20,7 +20,7 @@
                     || View::hasSection('sub-title')
                 )
                     <div class="container">
-                        <div class="d-flex flex-wrap gap-2">
+                        <div class="d-flex flex-wrap gap-2 align-items-center">
                             <div class="flex-fill">
                                 <div class="h2 mb-0">@yield('title')</div>
                                 @hasSection('sub-title')

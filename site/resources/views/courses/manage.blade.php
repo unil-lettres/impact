@@ -3,10 +3,14 @@
 @section('admin.content')
     <div id="courses">
         <div class="card">
-            <div class="card-header d-flex justify-content-between">
-                <div class="title">{{ trans('courses.manage') }} <span class="badge bg-secondary">{{ $courses->total() }}</span></div>
-
-                <div class="header-actions d-flex justify-content-end">
+            <div class="card-header d-flex justify-content-between gap-2">
+                <div class="title">
+                    {{ trans('courses.manage') }}
+                    <span class="badge bg-secondary">
+                        {{ $courses->total() }}
+                    </span>
+                </div>
+                <div class="header-actions d-flex gap-2 flex-wrap">
                     <div class="search-courses">
                         <form method="get" action="{{ route('admin.courses.manage') }}">
                             <div class="input-group">
@@ -40,7 +44,7 @@
                         </form>
                     </div>
 
-                    <div class="filter-courses dropdown show ms-1">
+                    <div class="filter-courses dropdown show">
                         <a class="btn dropdown-toggle{{ $filter ? ' btn-primary' : ' btn-secondary'  }}"
                            href="#"
                            role="button"
@@ -73,7 +77,7 @@
                         </div>
                     </div>
 
-                    <div class="create-courses ms-3">
+                    <div class="create-courses">
                         <a href="{{ route('admin.courses.create') }}"
                            class="btn btn-primary">
                             {{ trans('courses.create') }}
@@ -81,7 +85,7 @@
                     </div>
                 </div>
             </div>
-            <div class="card-body">
+            <div class="card-body table-responsive">
                 @if ($courses->items())
                     <table class="table">
                         <thead>
@@ -194,7 +198,7 @@
                     </table>
                     {{ $courses->onEachSide(1)->links() }}
                 @else
-                    <p class="text-secondary">
+                    <p class="text-secondary text-center">
                         {{ trans('courses.not_found') }}
                     </p>
                 @endif

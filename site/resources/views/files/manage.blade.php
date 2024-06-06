@@ -4,10 +4,14 @@
     @can('manage', \App\File::class)
         <div id="files">
             <div class="card">
-                <div class="card-header d-flex justify-content-between">
-                    <div class="title">{{ trans('files.files') }} <span class="badge bg-secondary">{{ $files->total() }}</span></div>
-
-                    <div class="header-actions d-flex justify-content-end">
+                <div class="card-header d-flex justify-content-between gap-2">
+                    <div class="title">
+                        {{ trans('files.files') }}
+                        <span class="badge bg-secondary">
+                            {{ $files->total() }}
+                        </span>
+                    </div>
+                    <div class="header-actions d-flex gap-2 flex-wrap">
                         <div class="search-files">
                             <form method="get" action="{{ route('admin.files.manage') }}">
                                 <div class="input-group">
@@ -41,7 +45,7 @@
                             </form>
                         </div>
 
-                        <div class="filter-files dropdown show ms-1">
+                        <div class="filter-files dropdown show">
                             <a class="btn dropdown-toggle{{ $filter ? ' btn-primary' : ' btn-secondary'  }}"
                                href="#"
                                role="button"
@@ -80,7 +84,7 @@
                         </div>
 
                         @can('upload', [\App\File::class, null, null])
-                            <div class="upload-files ms-3">
+                            <div class="upload-files">
                                 <div id="rct-files"
                                      data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.create'), 'maxNumberOfFiles' => 10, 'reloadOnModalClose' => true, 'note' => trans('messages.file.reload')]) }}'
                                 ></div>
@@ -88,7 +92,7 @@
                         @endcan
                     </div>
                 </div>
-                <div class="card-body">
+                <div class="card-body table-responsive">
                     @if ($files->items())
                         <table class="table">
                             <thead>
@@ -167,7 +171,7 @@
                         </table>
                         {{ $files->onEachSide(1)->links() }}
                     @else
-                        <p class="text-secondary">
+                        <p class="text-secondary text-center">
                             {{ trans('files.not_found') }}
                         </p>
                     @endif

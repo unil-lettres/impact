@@ -1,9 +1,13 @@
 <div id="invitations">
     <div class="card">
-        <div class="card-header d-flex justify-content-between">
-            <div class="title">{{ trans('invitations.pending') }} <span class="badge bg-secondary">{{ $invitations->total() }}</span></div>
-
-            <div class="header-actions d-flex justify-content-end">
+        <div class="card-header d-flex justify-content-between gap-2">
+            <div class="title">
+                {{ trans('invitations.pending') }}
+                <span class="badge bg-secondary">
+                    {{ $invitations->total() }}
+                </span>
+            </div>
+            <div class="header-actions d-flex gap-2 flex-wrap">
                 @if(Route::is('admin.invitations.manage'))
                     <div class="search-invitations">
                         <form method="get" action="{{ route('admin.invitations.manage') }}">
@@ -38,7 +42,7 @@
                         </form>
                     </div>
 
-                    <div class="filter-invitations dropdown show ms-1">
+                    <div class="filter-invitations dropdown show">
                         <a class="btn dropdown-toggle{{ $filter ? ' btn-primary' : ' btn-secondary'  }}"
                            href="#"
                            role="button"
@@ -68,7 +72,7 @@
                 @endif
 
                 @can('create', [\App\Invitation::class, null])
-                    <div class="create-invitations ms-3">
+                    <div class="create-invitations">
                         <a href="{{ Route::is('admin.invitations.manage') ? route('admin.invitations.create') : route('invitations.create') }}"
                            class="btn btn-primary">
                             {{ trans('invitations.create') }}
@@ -78,7 +82,7 @@
             </div>
         </div>
 
-        <div class="card-body">
+        <div class="card-body table-responsive">
             @if ($invitations->items())
                 <table class="table">
                     <thead>
@@ -151,7 +155,7 @@
                 </table>
                 {{ $invitations->onEachSide(1)->links() }}
             @else
-                <p class="text-secondary">
+                <p class="text-secondary text-center">
                     {{ trans('invitations.not_found') }}
                 </p>
             @endif

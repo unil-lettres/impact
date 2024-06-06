@@ -165,6 +165,9 @@ class ProcessFile implements ShouldQueue
         $format->setAdditionalParameters([
             // Fix for Apple devices (https://trac.ffmpeg.org/wiki/Encode/H.264#Encodingfordumbplayers)
             '-pix_fmt', 'yuv420p',
+
+            // Remove metadata.
+            '-map_metadata', '-1',
         ]);
         $format->on('progress', function ($video, $format, $progress) {
             // Update file progress in database every x percent of transcoding
@@ -241,7 +244,17 @@ class ProcessFile implements ShouldQueue
             $this->fileStorageService->getFileName($this->file->filename).
             '.'.config('const.files.audio.extension');
 
-        $format = new Mp3();
+        // Audio format don't have setAdditionalParameters.
+        // If one day this PR is merged, we can remove this workaround:
+        // https://github.com/PHP-FFMpeg/PHP-FFMpeg/pull/753
+        $format = new class() extends Mp3 {
+            public function getExtraParams()
+            {
+                // Remove metadata.
+                return [...parent::getExtraParams(), '-map_metadata', '-1'];
+            }
+        };
+
         $format->on('progress', function ($audio, $format, $progress) {
             // Update file progress in database every x percent of transcoding
             if ($progress % config('const.files.ffmpeg.progress.update') === 0) {

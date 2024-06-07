@@ -74,14 +74,14 @@
                             <div class="flex-cell date d-none d-md-block">
                                 {{ $course->created_at ? $course->created_at->format('d/m/Y') : '' }}
                             </div>
-                                <div
-                                    class="flex-cell description @unless($course->description) d-none @endif"
-                                    data-bs-toggle="tooltip"
-                                    data-bs-custom-class="description-tooltip"
-                                    title="{{ $course->description }}"
-                                >
-                                    {{ $course->description }}
-                                </div>
+                            <div
+                                class="flex-cell description @unless($course->description) d-none @endif"
+                                data-bs-toggle="tooltip"
+                                data-bs-custom-class="description-tooltip"
+                                title="{{ $course->description }}"
+                            >
+                                {{ $course->description }}
+                            </div>
                         </div>
                     @endcan
                 @endforeach

@@ -284,7 +284,6 @@ class Card extends Model
 
         // Check if user role is allowed to see the box
         return match ($this->state->getPermission($box)) {
-            StatePermission::ManagersCanShowAndEditHoldersCanShow => Auth::user()->isManager($this->course) || Auth::user()->isHolder($this),
             StatePermission::HoldersCanShowAndEdit => Auth::user()->isHolder($this),
             StatePermission::ManagersAndHoldersCanShowAndEdit => Auth::user()->isManager($this->course) || Auth::user()->isHolder($this),
             StatePermission::AllCanShowManagersAndHoldersCanEdit, StatePermission::AllCanShowManagersCanEdit => Auth::user()->isManager($this->course) || Auth::user()->isHolder($this) || Auth::user()->isMember($this->course),
@@ -318,7 +317,6 @@ class Card extends Model
 
         // Check if user role is allowed to edit the box
         return match ($this->state->getPermission($box)) {
-            StatePermission::ManagersCanShowAndEditHoldersCanShow => Auth::user()->isManager($this->course),
             StatePermission::HoldersCanShowAndEdit => Auth::user()->isHolder($this),
             StatePermission::ManagersAndHoldersCanShowAndEdit, StatePermission::AllCanShowManagersAndHoldersCanEdit => Auth::user()->isManager($this->course) || Auth::user()->isHolder($this),
             StatePermission::AllCanShowManagersCanEdit, StatePermission::ManagersCanShowAndEdit => Auth::user()->isManager($this->course),

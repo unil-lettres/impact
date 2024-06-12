@@ -58,5 +58,6 @@ return [
     'rename.label' => 'New name',
     'rename.submit' => 'Save',
     'rename.cancel' => 'Cancel',
+    'invalid_presentation_date' => 'The current value ":presentation_date" is not a valid date format. The date will be reset on saving.',
 
 ];

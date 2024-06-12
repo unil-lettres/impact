@@ -66,6 +66,9 @@ class Card extends Model
     protected $fillable = [
         'title',
         'box2',
+        'box2->version',
+        'box2->icor',
+        'box2->text',
         'box3',
         'box4',
         'course_id',

@@ -252,16 +252,16 @@ class MigrateLegacy extends Command
                     ),
                 };
 
-                // $this->info($cardLegacy['id']);
-                // $this->info($cardLegacy['course_id']);
-
                 $card = Card::create([
                     'title' => $cardLegacy['title'],
 
-                    // TODO
-                    // version 1
-                    // 'box2' => $cardLegacy['name'],
-
+                    'box2->version' => 1,
+                    'box2->text' => $course->transcription === TranscriptionType::Text
+                        ? $cardLegacy['transcript']
+                        : null,
+                    'box2->icor' => $course->transcription === TranscriptionType::Icor
+                        ? $this->parseTranscription($cardLegacy['transcript'] ?? '')
+                        :null,
                     'box3' => $cardLegacy['text_1'],
                     'box4' => $cardLegacy['text_2'],
 
@@ -271,12 +271,12 @@ class MigrateLegacy extends Command
                         ->get('folders')
                         ->get($cardLegacy['folder_id']),
 
-                    // 'file_id' => $cardLegacy['name'],
+                    // TODO
+                    // 'file_id' => $cardLegacy['xxx'],
                     'state_id' => $state->id,
 
                     'options->no_emails' => $cardLegacy['emails_disabled'] === 1,
 
-                    // TODO format eclaté au sol, voir quoi faire
                     'options->presentation_date' => $cardLegacy['presentation_date'],
 
                     'options->box1->end' => $cardLegacy['video_end'],
@@ -429,6 +429,12 @@ class MigrateLegacy extends Command
         );
         $this->newLine();
         $this->info("Courses migrations complete.");
+    }
+
+    protected function parseTranscription(string $transcription): array
+    {
+        // TODO
+        return [];
     }
 
     protected function askNotNull(string $question, $default = null): mixed

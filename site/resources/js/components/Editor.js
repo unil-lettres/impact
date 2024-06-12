@@ -34,6 +34,7 @@ import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperti
 import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
 import HorizontalLinePlugin from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
 import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
+import HeadingPlugin from '@ckeditor/ckeditor5-heading/src/heading';
 
 const editorConfiguration = {
     plugins: [
@@ -41,6 +42,7 @@ const editorConfiguration = {
         BoldPlugin,
         ItalicPlugin,
         UnderlinePlugin,
+        HeadingPlugin,
         StrikethroughPlugin,
         BlockQuotePlugin,
         ListProperties,
@@ -65,6 +67,8 @@ const editorConfiguration = {
         ParagraphPlugin
     ],
     toolbar: [
+        "heading",
+        "|",
         "fontSize",
         "bold",
         "italic",

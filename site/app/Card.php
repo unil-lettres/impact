@@ -364,7 +364,7 @@ class Card extends Model
      * Return the max number of characters by line for the transcription box.
      * If the transcription box is not ICOR, return null.
      */
-    public function getMaxCharactersByLine(): int
+    public function getMaxCharactersByLine(): ?int
     {
         if ($this->course->transcription === TranscriptionType::Icor) {
             return

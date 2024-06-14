@@ -61,7 +61,6 @@
                                         data-bs-custom-class="description-tooltip"
                                         data-bs-delay="300"
                                         title="{{ $course->name }}"
-                                        class="lh-xs"
                                     >
                                         {{ $course->name }}
                                     </a>
@@ -72,7 +71,6 @@
                                         data-bs-custom-class="description-tooltip"
                                         data-bs-delay="300"
                                         title="{{ $course->name }}"
-                                        class="lh-xs"
                                     >
                                         {{ $course->name }}
                                     </a>

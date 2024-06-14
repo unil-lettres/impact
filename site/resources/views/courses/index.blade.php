@@ -55,11 +55,25 @@
                         <div class="flex-row{{ $course->deleted_at ? ' deleted' : '' }} flex-wrap">
                             <div class="flex-cell name">
                                 @if($course->deleted_at)
-                                    <a href="{{ route('admin.courses.manage', ['filter' => App\Enums\CoursesFilter::Disabled]) }}">
+                                    <a
+                                        href="{{ route('admin.courses.manage', ['filter' => App\Enums\CoursesFilter::Disabled]) }}"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-custom-class="description-tooltip"
+                                        data-bs-delay="300"
+                                        title="{{ $course->name }}"
+                                        class="lh-xs"
+                                    >
                                         {{ $course->name }}
                                     </a>
                                 @else
-                                    <a href="{{ route('courses.show', $course->id) }}">
+                                    <a
+                                        href="{{ route('courses.show', $course->id) }}"
+                                        data-bs-toggle="tooltip"
+                                        data-bs-custom-class="description-tooltip"
+                                        data-bs-delay="300"
+                                        title="{{ $course->name }}"
+                                        class="lh-xs"
+                                    >
                                         {{ $course->name }}
                                     </a>
                                 @endif

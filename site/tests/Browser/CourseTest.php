@@ -289,7 +289,7 @@ class CourseTest extends DuskTestCase
                 ->visit($page)
                 ->waitUntilLoaded()
                 ->click('.rct-multi-filter-select[placeholder="Etiquettes"]')
-                ->click('#react-select-2-option-0');
+                ->click('#react-select-4-option-0');
 
             $browser
                 ->waitUntilMissingText('Test card without tag')

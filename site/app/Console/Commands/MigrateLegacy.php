@@ -431,8 +431,107 @@ class MigrateLegacy extends Command
 
     protected function parseTranscription(string $transcription): array
     {
-        // TODO
-        return [];
+        $currentLineNumber = 1;
+        $icor = [];
+
+        foreach (preg_split('/\R/', $transcription) as $line) {
+            $displayLineNo = true;
+            $line = preg_replace_callback(
+                '/^<wono>/',
+                function ($match) use (&$displayLineNo) {
+                    $displayLineNo = false;
+                    return '';
+                },
+                $line,
+            );
+
+            $fields = explode("\t", $line, 2);
+            if (count($fields) === 1) {
+                $fields = ['', $fields[0]];
+            }
+
+            [$speaker, $speech] = $fields;
+
+            foreach ($this->splitSpeech($speech) as $key => $lineSpeech) {
+                $icor[] = [
+                    'number' => $displayLineNo ? $currentLineNumber++ : null,
+                    'speaker' => $key === 0 ? $speaker : '',
+                    'speech' => $lineSpeech,
+                    'linkedToPrevious' => $key !== 0,
+                ];
+            }
+        }
+
+        return $icor;
+    }
+
+    protected function splitSpeech(string $speech): array
+    {
+        // This algorithme is the PHP equivalent of the one in
+        // Transcription.js::updateSectionSpeech().
+
+        if (mb_strlen($speech) === 0) {
+            return [''];
+        }
+
+        $remainingLine = str_replace("\n", '', $speech);
+        $speechLines = [];
+
+        while (mb_strlen($remainingLine) > 0) {
+            $endWithWhitespace = preg_match(
+                "/\s/",
+                mb_substr($remainingLine, Card::MAX_CHARACTERS_LEGACY_SPEECH, 1),
+            ) === 1;
+
+            $line = mb_substr(
+                $remainingLine,
+                0,
+                Card::MAX_CHARACTERS_LEGACY_SPEECH + ($endWithWhitespace ? 1 : 0),
+            );
+
+            if (mb_strlen($remainingLine) > Card::MAX_CHARACTERS_LEGACY_SPEECH) {
+
+                $lastSpace = $this->findLastWhitespacePosition($line);
+                $lastHyphen = mb_strrpos($line, '-');
+                $lastBreak = max($lastSpace, $lastHyphen === false ? -1 : $lastHyphen);
+
+                if ($lastBreak > -1) {
+                    $line = mb_substr($line, 0, $lastBreak + 1);
+                    $remainingLine = mb_substr($remainingLine, $lastBreak + 1);
+                } else {
+                    $line = mb_substr(
+                        $line, 0, Card::MAX_CHARACTERS_LEGACY_SPEECH
+                    );
+
+                    $remainingLine = mb_substr(
+                        $remainingLine, Card::MAX_CHARACTERS_LEGACY_SPEECH
+                    );
+                }
+
+                $remainingLine = preg_replace('/^\s+/', '', $remainingLine);
+            } else {
+                $remainingLine = '';
+            }
+
+            $speechLines[] = $line;
+        }
+
+        return $speechLines;
+    }
+
+    protected function findLastWhitespacePosition(string $line): int
+    {
+        $matches = [];
+        $lastPosition = -1;
+
+        if (preg_match_all('/\s/', $line, $matches, PREG_OFFSET_CAPTURE)) {
+            $lastMatch = end($matches[0]);
+            // Here we must use substr and not mb_substr to cut the string at
+            // the right position. Because preg_match_all is not multi byte.
+            $lastPosition = mb_strlen(substr($line, 0, $lastMatch[1]));
+        }
+
+        return $lastPosition;
     }
 
     protected function askNotNull(string $question, $default = null): mixed

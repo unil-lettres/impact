@@ -4,6 +4,7 @@
     aria-hidden="true"
     id="{{$id}}"
     x-data="modal"
+    data-bs-backdrop="static"
 >
     <div class="modal-dialog">
         <div class="modal-content">

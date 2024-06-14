@@ -4,7 +4,6 @@ namespace App\Console\Commands;
 
 use App\Card;
 use App\Course;
-use App\Enums\CardBox;
 use App\Enums\CourseType;
 use App\Enums\StatePermission;
 use App\Enums\StateType;
@@ -23,6 +22,7 @@ use PDO;
 class MigrateLegacy extends Command
 {
     const LEGACY_PRIVATE_ID = 0;
+
     const LEGACY_ARCHIVED_ID = 1;
 
     /**
@@ -54,7 +54,7 @@ class MigrateLegacy extends Command
      */
     public function handle()
     {
-        ini_set('memory_limit','512M');
+        ini_set('memory_limit', '512M');
 
         // TODO uncomment
         // if ($this->confirm('Please confirm that you have checked that the transcription algorithm is correct (must reflect the one in Transcription.js).', false) === false) {
@@ -100,12 +100,12 @@ class MigrateLegacy extends Command
         // $dbCharset = $this->askNotNull('legacy database charset', 'utf8mb4');
         // $dbUsername = $this->askNotNull('legacy database username');
         // $dbPassword = $this->askNotNull('legacy database password');
-        $dbHost = "impact-mysql";
-        $dbName = "impact_legacy";
-        $dbCharset = "utf8mb4";
+        $dbHost = 'impact-mysql';
+        $dbName = 'impact_legacy';
+        $dbCharset = 'utf8mb4';
         $dbPort = 3306;
-        $dbUsername = "root";
-        $dbPassword = "root";
+        $dbUsername = 'root';
+        $dbPassword = 'root';
 
         try {
             $this->legacyConnection = new PDO(
@@ -135,7 +135,7 @@ class MigrateLegacy extends Command
 
         $this->mapIds->put('users', collect([]));
 
-        $result = $this->legacyConnection->query("SELECT * FROM users");
+        $result = $this->legacyConnection->query('SELECT * FROM users');
 
         $warns = [];
 
@@ -145,17 +145,16 @@ class MigrateLegacy extends Command
 
                 $fullName = [];
 
-                if (!empty($legacyUser['first_name'])) {
+                if (! empty($legacyUser['first_name'])) {
                     $fullName[] = $legacyUser['first_name'];
                 }
-                if (!empty($legacyUser['last_name'])) {
+                if (! empty($legacyUser['last_name'])) {
                     $fullName[] = $legacyUser['last_name'];
                 }
                 if (count($fullName) < 2) {
                     $warns[] = "User legacy id {$legacyUser['id']} miss a lastname, firstname or both.";
                 }
                 $fullName = implode(' ', $fullName);
-
 
                 $user = User::create([
                     'name' => $fullName,
@@ -172,9 +171,11 @@ class MigrateLegacy extends Command
         );
         $this->newLine();
 
-        foreach ($warns as $warn) $this->warn($warn);
+        foreach ($warns as $warn) {
+            $this->warn($warn);
+        }
 
-        $this->info("Users migrations complete.");
+        $this->info('Users migrations complete.');
     }
 
     protected function migrateCourses(): void
@@ -183,7 +184,7 @@ class MigrateLegacy extends Command
 
         $this->mapIds->put('courses', collect([]));
 
-        $result = $this->legacyConnection->query("SELECT * FROM courses");
+        $result = $this->legacyConnection->query('SELECT * FROM courses');
 
         $this->withProgressBar(
             $result->fetchAll(),
@@ -210,7 +211,7 @@ class MigrateLegacy extends Command
             },
         );
         $this->newLine();
-        $this->info("Courses migrations complete.");
+        $this->info('Courses migrations complete.');
     }
 
     protected function migrateCards(): void
@@ -219,13 +220,11 @@ class MigrateLegacy extends Command
 
         $this->mapIds->put('cards', collect([]));
 
-        $result = $this->legacyConnection->query("SELECT * FROM cards");
-
+        $result = $this->legacyConnection->query('SELECT * FROM cards');
 
         $this->withProgressBar(
             $result->fetchAll(),
             function ($cardLegacy) {
-
                 $course_id = $this->mapIds
                     ->get('courses')
                     ->get($cardLegacy['course_id']);
@@ -261,7 +260,7 @@ class MigrateLegacy extends Command
                         : null,
                     'box2->icor' => $course->transcription === TranscriptionType::Icor
                         ? $this->parseTranscription($cardLegacy['transcript'] ?? '')
-                        :null,
+                        : null,
                     'box3' => $cardLegacy['text_1'],
                     'box4' => $cardLegacy['text_2'],
 
@@ -302,7 +301,7 @@ class MigrateLegacy extends Command
             },
         );
         $this->newLine();
-        $this->info("Cards migrations complete.");
+        $this->info('Cards migrations complete.');
     }
 
     protected function migrateFolders(): void
@@ -311,7 +310,7 @@ class MigrateLegacy extends Command
 
         $this->mapIds->put('folders', collect([]));
 
-        $result = $this->legacyConnection->query("SELECT * FROM folders");
+        $result = $this->legacyConnection->query('SELECT * FROM folders');
 
         $folders = $this->withProgressBar(
             $result->fetchAll(),
@@ -338,7 +337,7 @@ class MigrateLegacy extends Command
         );
         $this->newLine();
 
-        $this->info("Folders migrations complete.");
+        $this->info('Folders migrations complete.');
     }
 
     protected function migrateStates(): void
@@ -347,8 +346,7 @@ class MigrateLegacy extends Command
 
         $this->mapIds->put('states', collect([]));
 
-        // TODO valider que le homework action n'existe plus.
-        $result = $this->legacyConnection->query(<<<SQL
+        $result = $this->legacyConnection->query(<<<'SQL'
             SELECT *
             FROM states
             LEFT JOIN actions ON actions.state_id = states.id
@@ -363,7 +361,7 @@ class MigrateLegacy extends Command
             exit(1);
         }
 
-        $result = $this->legacyConnection->query(<<<SQL
+        $result = $this->legacyConnection->query(<<<'SQL'
             SELECT
                 states.*,
                 actions.params
@@ -428,7 +426,7 @@ class MigrateLegacy extends Command
             },
         );
         $this->newLine();
-        $this->info("Courses migrations complete.");
+        $this->info('Courses migrations complete.');
     }
 
     protected function parseTranscription(string $transcription): array
@@ -442,6 +440,7 @@ class MigrateLegacy extends Command
         while (($answer = $this->ask("What is the $question?", $default)) === null) {
             $this->error("Please enter the $question!");
         }
+
         return $answer;
     }
 }

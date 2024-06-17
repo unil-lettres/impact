@@ -9,7 +9,7 @@
             column-gap: 10px;
             row-gap: 2px;
             border-bottom: 1px solid #ddd;
-            align-items: center;
+            align-items: flex-start;
         }
 
         .flex-row:nth-child(even) {
@@ -20,15 +20,8 @@
             font-weight: bold;
         }
 
-        .flex-cell {
-            display: -webkit-box;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            -webkit-box-orient: vertical;
-        }
-
         .name {
-            flex: 2;
+            flex: 2.5;
 
             a {
                 text-decoration: none;
@@ -36,18 +29,64 @@
             }
         }
 
-        .managers,
-        .name {
-            -webkit-line-clamp: 1;
-        }
-
-        .managers,
-        .date {
+        .managers {
             flex: 1;
         }
 
+        .date {
+            flex: 0.6;
+        }
+
         .description {
+            display: -webkit-box;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            -webkit-box-orient: vertical;
             flex: 100%;
+            position: relative;
+
+            &:hover {
+                .reduce-button,
+                .expand-button {
+                    i {
+                        @extend .fa-solid;
+                    }
+                }
+            }
+
+            .reduce-button,
+            .expand-button {
+                display: none;
+                position: absolute;
+                bottom: 0;
+                right: 0;
+            }
+
+            &.expandable {
+                cursor: pointer;
+
+                .expand-button {
+                    display: none;
+                }
+
+                .reduce-button {
+                    display: block;
+                }
+
+                &.line-clamp-2 {
+                    .expand-button {
+                        display: block;
+                    }
+
+                    .reduce-button {
+                        display: none;
+                    }
+                }
+            }
+
+        }
+
+        .line-clamp-2 {
             -webkit-line-clamp: 2;
         }
 
@@ -89,11 +128,6 @@
             .description {
                 flex: 3;
                 display: -webkit-box!important;
-            }
-
-            .managers,
-            .name {
-                -webkit-line-clamp: 2;
             }
         }
     }

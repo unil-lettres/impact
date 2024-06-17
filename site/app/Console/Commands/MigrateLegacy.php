@@ -455,7 +455,7 @@ class MigrateLegacy extends Command
             foreach ($this->splitSpeech($speech) as $key => $lineSpeech) {
                 $icor[] = [
                     'number' => $displayLineNo ? $currentLineNumber++ : null,
-                    'speaker' => $key === 0 ? $speaker : '',
+                    'speaker' => $key === 0 ? mb_substr($speaker, 0, 3) : '',
                     'speech' => $lineSpeech,
                     'linkedToPrevious' => $key !== 0,
                 ];

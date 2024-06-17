@@ -55,44 +55,34 @@
                         <div class="flex-row{{ $course->deleted_at ? ' deleted' : '' }} flex-wrap">
                             <div class="flex-cell name">
                                 @if($course->deleted_at)
-                                    <a
-                                        href="{{ route('admin.courses.manage', ['filter' => App\Enums\CoursesFilter::Disabled]) }}"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-custom-class="description-tooltip"
-                                        data-bs-delay="300"
-                                        title="{{ $course->name }}"
-                                    >
+                                    <a href="{{ route('admin.courses.manage', ['filter' => App\Enums\CoursesFilter::Disabled]) }}">
                                         {{ $course->name }}
                                     </a>
                                 @else
-                                    <a
-                                        href="{{ route('courses.show', $course->id) }}"
-                                        data-bs-toggle="tooltip"
-                                        data-bs-custom-class="description-tooltip"
-                                        data-bs-delay="300"
-                                        title="{{ $course->name }}"
-                                    >
+                                    <a href="{{ route('courses.show', $course->id) }}">
                                         {{ $course->name }}
                                     </a>
                                 @endif
                             </div>
-                            <div
-                                class="flex-cell managers"
-                                data-bs-toggle="tooltip"
-                                title="{{ $course->managers(true)->implode('name', ', ') }}"
-                            >
-                                {{ $course->managers(true)->implode('name', ', ') }}
+                            @php($managers = $course->managers(true)->implode('name', ', '))
+                            <div class="flex-cell managers @if(empty($managers)) d-none d-md-block @endif">
+                                {{ $managers }}
                             </div>
                             <div class="flex-cell date d-none d-md-block">
                                 {{ $course->created_at ? $course->created_at->format('d/m/Y') : '' }}
                             </div>
                             <div
-                                class="flex-cell description @unless($course->description) d-none @endif"
-                                data-bs-toggle="tooltip"
-                                data-bs-custom-class="description-tooltip"
-                                title="{{ $course->description }}"
+                                class="line-clamp-2 flex-cell description @unless($course->description) d-none @endif"
                             >
-                                {{ $course->description }}
+                                <div class="pe-3">
+                                    {{ $course->description }}
+                                </div>
+                                <div class="expand-button">
+                                    <i class="fa-regular fa-square-plus"></i>
+                                </div>
+                                <div class="reduce-button">
+                                    <i class="fa-regular fa-square-minus"></i>
+                                </div>
                             </div>
                         </div>
                     @endcan
@@ -104,4 +94,42 @@
             </p>
         @endunless
     </div>
+@endsection
+
+@section('scripts-footer')
+    <script>
+        // Process expand button on description column.
+        (function() {
+            const isTextOverflowing = (element) => element.scrollHeight > element.clientHeight;
+
+            const processExpandDescription = () => {
+                document.querySelectorAll('.description').forEach((element) => {
+                    element.classList.toggle(
+                        'expandable',
+                        isTextOverflowing(element),
+                    );
+                });
+            };
+            window.addEventListener('resize', () => processExpandDescription());
+            processExpandDescription();
+
+            document.querySelectorAll('.description').forEach(
+                (element) => {
+                    element.addEventListener('click', () => {
+
+                        const isExpanded = element.classList.contains('line-clamp-2');
+
+                        // Reduce all descriptions.
+                        document.querySelectorAll('.description').forEach(
+                            (parent) => parent.classList.add('line-clamp-2'),
+                        );
+
+                        // Expand or reduce the clicked description.
+                        element.classList.toggle('line-clamp-2', !isExpanded);
+                    });
+                }
+            );
+        }());
+    </script>
+    @stack("scripts-boxes")
 @endsection

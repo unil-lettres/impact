@@ -4,7 +4,9 @@ namespace App\Console\Commands;
 
 use App\Card;
 use App\Course;
+use App\Enrollment;
 use App\Enums\CourseType;
+use App\Enums\EnrollmentRole;
 use App\Enums\StatePermission;
 use App\Enums\StateType;
 use App\Enums\TranscriptionType;
@@ -87,6 +89,7 @@ class MigrateLegacy extends Command
         $this->migrateFolders();
         $this->migrateStates();
         $this->migrateCards();
+        $this->migrateEnrollments();
 
         $this->info('Migration complete!');
     }
@@ -427,6 +430,32 @@ class MigrateLegacy extends Command
         );
         $this->newLine();
         $this->info('Courses migrations complete.');
+    }
+
+    protected function migrateEnrollments(): void
+    {
+        $this->info('Migrating enrollments...');
+
+        $result = $this->legacyConnection->query('SELECT * FROM enrollments');
+
+        $this->withProgressBar(
+            $result->fetchAll(),
+            function ($courseLegacy) {
+                Assert::that($courseLegacy['role'])->inArray(['teacher', 'student']);
+
+                Enrollment::create([
+                    'role' => $courseLegacy['role'] === "teacher" ? EnrollmentRole::Manager : EnrollmentRole::Member,
+                    'course_id' => $this->mapIds->get('courses')->get($courseLegacy['course_id']),
+                    'user_id' => $this->mapIds->get('users')->get($courseLegacy['user_id']),
+                    // TODO
+                    // 'cards' => $this->mapIds->get('courses')->get($folderLegacy['course_id']),
+                ]);
+
+            },
+        );
+        $this->newLine();
+
+        $this->info('Enrollments migrations complete.');
     }
 
     protected function parseTranscription(string $transcription): array

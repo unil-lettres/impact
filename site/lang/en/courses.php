@@ -79,7 +79,7 @@ return [
     'finder.dialog.clone_in.prompt' => 'Choose the destination course',
     'finder.dialog.clone_in.cancel' => 'Cancel',
     'finder.dialog.clone_in.accept' => 'Copy',
-    'finder.dialog.clone_in.help' => 'Documents (box 5), source file (box 1) and tags will be cloned. Holders will not be exported and the card(s) will be private.',
+    'finder.dialog.clone_in.help' => 'When duplicated, all content is duplicated, with the exception of holders. In addition, duplicated records are set to "private" status.',
     'finder.dialog.update_state.title' => 'Change state...',
     'finder.dialog.update_state.update' => 'Update',
     'finder.dialog.update_state.cancel' => 'Cancel',

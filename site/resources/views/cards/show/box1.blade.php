@@ -6,6 +6,16 @@
                 <div class="hide-on-read-only">
                     <div class="d-flex gap-2">
                         @if($card->boxIsEditable($reference))
+                            @can('download', [\App\File::class, $card->file])
+                                <span>
+                                    <a href="{{ route('files.download', ['file' => $card->file->id, 'card' => $card->id]) }}"
+                                       class="btn btn-primary"
+                                       title="{{ trans('files.download') }}">
+                                        <i class="fa-solid fa-download"></i>
+                                    </a>
+                                </span>
+                            @endcan
+
                             @can('parameters', $card)
                                 <livewire:toggle-box-visibility :card="$card" box="box1" />
                             @endcan

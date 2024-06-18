@@ -2,17 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Card;
 use App\Course;
 use App\Enums\FileStatus;
 use App\File;
 use App\Http\Requests\DestroyFile;
+use App\Http\Requests\DownloadFile;
 use App\Http\Requests\EditFile;
 use App\Http\Requests\ManageFiles;
 use App\Http\Requests\UpdateFile;
+use App\Services\FileStorageService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\RedirectResponse;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FileController extends Controller
 {
@@ -155,6 +159,35 @@ class FileController extends Controller
         return redirect()
             ->back()
             ->with('success', trans('messages.file.deleted'));
+    }
+
+    /**
+     * Download the specified file.
+     *
+     * @throws AuthorizationException
+     */
+    public function download(DownloadFile $request): BinaryFileResponse
+    {
+        $fileId = $request->get('file');
+
+        $file = File::find($fileId);
+
+        $this->authorize('download', $file);
+
+        $cardId = $request->get('card');
+
+        // If a card id is given in the request, use the card title.
+        // Otherwise, use the file name from the database.
+        $fileName = $cardId ? Card::find($cardId)->title : $file->name;
+
+        $fileStorageService = new FileStorageService();
+
+        return response()
+            ->download(
+                $fileStorageService->fullStandardPath.$file->filename,
+                $fileName.'.'.$fileStorageService->getExtension($file->filename),
+                ['Cache-Control' => 'no-cache, must-revalidate']
+            );
     }
 
     /**

@@ -32,6 +32,7 @@ return [
     'url' => 'Url of the file',
     'used' => 'Used by',
     'upload' => 'Upload',
+    'download' => 'Download the file',
     'add' => 'Add',
     'search' => 'Find a file',
 

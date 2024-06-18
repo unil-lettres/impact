@@ -58,18 +58,30 @@
                                         </td>
                                         <td>{{ $file->created_at->format('d/m/Y H:i:s') }}</td>
                                         <td class="actions">
-                                            @if(Helpers::isFileStatus($file, \App\Enums\FileStatus::Ready))
+                                            @can('download', $file)
+                                                <span>
+                                                    <a href="{{ route('files.download', ['file' => $file->id]) }}"
+                                                       data-bs-toggle="tooltip"
+                                                       data-placement="top"
+                                                       class="btn btn-primary"
+                                                       title="{{ trans('files.download') }}">
+                                                        <i class="fa-solid fa-download"></i>
+                                                    </a>
+                                                </span>
+                                            @endcan
+
+                                            @can('url', $file)
                                                 <span>
                                                     <a href="{{ Helpers::fileUrl($file->filename) }}"
-                                                    target="_blank"
-                                                    data-bs-toggle="tooltip"
-                                                    data-placement="top"
-                                                    class="btn btn-primary"
-                                                    title="{{ trans('files.url') }}">
+                                                       target="_blank"
+                                                       data-bs-toggle="tooltip"
+                                                       data-placement="top"
+                                                       class="btn btn-primary"
+                                                       title="{{ trans('files.url') }}">
                                                         <i class="far fa-share-square"></i>
                                                     </a>
                                                 </span>
-                                            @endif
+                                            @endcan
 
                                             @can('forceDelete', $file)
                                                 <span>

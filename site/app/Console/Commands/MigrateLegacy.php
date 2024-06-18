@@ -438,17 +438,23 @@ class MigrateLegacy extends Command
 
         $result = $this->legacyConnection->query('SELECT * FROM enrollments');
 
+        $mapStudentCourseToCards = $this->mapStudentCourseToCards();
+
         $this->withProgressBar(
             $result->fetchAll(),
-            function ($courseLegacy) {
+            function ($courseLegacy) use ($mapStudentCourseToCards) {
                 Assert::that($courseLegacy['role'])->inArray(['teacher', 'student']);
 
+                $legacyCourseId = $courseLegacy['course_id'];
+                $legacyUserId = $courseLegacy['user_id'];
+
                 Enrollment::create([
-                    'role' => $courseLegacy['role'] === "teacher" ? EnrollmentRole::Manager : EnrollmentRole::Member,
-                    'course_id' => $this->mapIds->get('courses')->get($courseLegacy['course_id']),
-                    'user_id' => $this->mapIds->get('users')->get($courseLegacy['user_id']),
-                    // TODO
-                    // 'cards' => $this->mapIds->get('courses')->get($folderLegacy['course_id']),
+                    'role' => $courseLegacy['role'] === 'teacher'
+                        ? EnrollmentRole::Manager
+                        : EnrollmentRole::Member,
+                    'course_id' => $this->mapIds->get('courses')->get($legacyCourseId),
+                    'user_id' => $this->mapIds->get('users')->get($legacyUserId),
+                    'cards' => $mapStudentCourseToCards[$legacyUserId][$legacyCourseId] ?? null,
                 ]);
 
             },
@@ -456,6 +462,35 @@ class MigrateLegacy extends Command
         $this->newLine();
 
         $this->info('Enrollments migrations complete.');
+    }
+
+    /**
+     * Return array[legacy_student_id][legacy_course_id] => array(not legacy cards_id).
+     */
+    protected function mapStudentCourseToCards(): array
+    {
+        $result = $this->legacyConnection->query(<<<'SQL'
+            SELECT
+                student_id,
+                course_id,
+                GROUP_CONCAT(DISTINCT card_id SEPARATOR ',') as cards
+            FROM
+                students_have_cards
+                INNER JOIN cards ON cards.id = students_have_cards.card_id
+            GROUP BY
+                student_id,
+                course_id
+        SQL);
+
+        $map = [];
+        foreach ($result->fetchAll() as $item) {
+            $map[$item['student_id']][$item['course_id']] = array_map(
+                fn ($cardId) => $this->mapIds->get('cards')->get(intval($cardId)),
+                explode(',', $item['cards']),
+            );
+        }
+
+        return $map;
     }
 
     protected function parseTranscription(string $transcription): array

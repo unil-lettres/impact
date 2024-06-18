@@ -145,7 +145,19 @@ class Card extends Model
      */
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class)->orderBy('name');
+        return $this
+            ->belongsToMany(Tag::class)
+            ->withPivot([
+                'created_at AS pivot_created_at',
+                'id AS pivot_id',
+            ])
+            ->withTimestamps()
+            ->orderBy('pivot_created_at')
+
+            // Can't use fraction (microseconds) for timestamp. If the timestamp
+            // is the same (can happen with migrated data), we rely on the id
+            // instead.
+            ->orderBy('pivot_id');
     }
 
     /**
@@ -238,7 +250,7 @@ class Card extends Model
     protected function tagsList(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->tags()->pluck('name')->join(', '),
+            get: fn () => $this->tags->pluck('name')->join(', '),
         );
     }
 

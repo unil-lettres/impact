@@ -13,6 +13,7 @@ use App\Enums\TranscriptionType;
 use App\Enums\UserType;
 use App\Folder;
 use App\State;
+use App\Tag;
 use App\User;
 use Assert\Assert;
 use Illuminate\Console\Command;
@@ -90,6 +91,7 @@ class MigrateLegacy extends Command
         $this->migrateStates();
         $this->migrateCards();
         $this->migrateEnrollments();
+        $this->migrateTags();
 
         $this->info('Migration complete!');
     }
@@ -464,6 +466,62 @@ class MigrateLegacy extends Command
         $this->info('Enrollments migrations complete.');
     }
 
+    protected function migrateTags(): void
+    {
+        $this->info('Migrating tags...');
+
+        $result = $this->legacyConnection->query(<<<'SQL'
+            SELECT
+                cards.id AS card_id,
+                course_id,
+                cards.tags AS card_tags,
+                courses.tags AS course_tags
+            FROM
+                cards
+                INNER JOIN courses ON courses.id = cards.course_id
+        SQL);
+
+        $map = [];
+        foreach ($result->fetchAll() as $item) {
+            $map[$item['course_id']]['id'] = $item['course_id'];
+            $map[$item['course_id']]['tags'] = explode(',', $item['course_tags']);
+            $map[$item['course_id']]['cards'][$item['card_id']] = explode(',', $item['card_tags']);
+        }
+
+        $this->withProgressBar(
+            $map,
+            function ($course) {
+                $newCourseId = $this->mapIds->get('courses')->get($course['id']);
+
+                foreach ($course['tags'] as $tagCourse) {
+                    if (! empty($tagCourse)) {
+                        Tag::create([
+                            'name' => $tagCourse,
+                            'course_id' => $newCourseId,
+                        ]);
+                    }
+                }
+
+                foreach ($course['cards'] as $cardId => $cardTags) {
+                    $newCardId = $this->mapIds->get('cards')->get($cardId);
+
+                    foreach ($cardTags as $tagCard) {
+                        if (! empty($tagCard)) {
+                            $tag = Tag::firstOrCreate([
+                                'name' => $tagCard,
+                                'course_id' => $newCourseId,
+                            ]);
+                            Card::findOrFail($newCardId)->tags()->attach($tag);
+                        }
+                    }
+                }
+            },
+        );
+        $this->newLine();
+
+        $this->info('Tags migrations complete.');
+    }
+
     /**
      * Return array[legacy_student_id][legacy_course_id] => array(not legacy cards_id).
      */
@@ -504,6 +562,7 @@ class MigrateLegacy extends Command
                 '/^<wono>/',
                 function ($match) use (&$displayLineNo) {
                     $displayLineNo = false;
+
                     return '';
                 },
                 $line,

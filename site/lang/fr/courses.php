@@ -79,7 +79,7 @@ return [
     'finder.dialog.clone_in.prompt' => 'Sélectionnez l\'espace de destination',
     'finder.dialog.clone_in.cancel' => 'Annuler',
     'finder.dialog.clone_in.accept' => 'Dupliquer',
-    'finder.dialog.clone_in.help' => 'Les documents (case 5), le fichier source (case 1) et les étiquettes seront dupliqués. Les titulaires ne seront pas exportés et la/les carte(s) sera/seront privée(s).',
+    'finder.dialog.clone_in.help' => 'Lors d’une duplication, tout le contenu est dupliqué, à l’exception des titulaires. Les fiches dupliquées reçoivent par ailleurs l’état « privé ».',
     'finder.dialog.update_state.title' => 'Modifier l\'état...',
     'finder.dialog.update_state.update' => 'Modifier',
     'finder.dialog.update_state.cancel' => 'Annuler',

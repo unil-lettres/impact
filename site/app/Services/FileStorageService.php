@@ -52,6 +52,14 @@ class FileStorageService
     }
 
     /**
+     * Get extension (ex. mp4) from file path.
+     */
+    public function getExtension($filePath): string
+    {
+        return pathinfo($filePath, PATHINFO_EXTENSION);
+    }
+
+    /**
      * Get basename (ex. my_file.mp4) from file path.
      */
     public function getBaseName($filePath): string

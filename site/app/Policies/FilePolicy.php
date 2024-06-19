@@ -137,6 +137,60 @@ class FilePolicy
     }
 
     /**
+     * Determine whether the user can download a file.
+     */
+    public function download(User $user, ?File $file): bool
+    {
+        // The file cannot be downloaded if not present
+        if (! $file) {
+            return false;
+        }
+
+        // The file cannot be download if status is not "ready"
+        if ($file->status !== FileStatus::Ready) {
+            return false;
+        }
+
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only the managers of the linked course can download the file
+        if ($file->course && $user->isManager($file->course)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can view a file url.
+     */
+    public function url(User $user, ?File $file): bool
+    {
+        // The file url cannot be shown if the file is not present
+        if (! $file) {
+            return false;
+        }
+
+        // The file url cannot be shown if status is not "ready"
+        if ($file->status !== FileStatus::Ready) {
+            return false;
+        }
+
+        if ($user->admin) {
+            return true;
+        }
+
+        // Only the managers of the linked course can view the file url
+        if ($file->course && $user->isManager($file->course)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
      * Determine whether the user can move the model to a specific course.
      */
     public function move(User $user, File $file, Course $course): bool

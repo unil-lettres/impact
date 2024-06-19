@@ -121,7 +121,7 @@
             </p>
             @if($card->course->transcription === \App\Enums\TranscriptionType::Icor)
                 <div id="rct-transcription"
-                     data='{{ json_encode(['card' => $card, 'maxCharactersSpeech' => $card->getMaxCharactersByLine(), 'editLabel' => trans('cards.edit'), 'saveLabel' => trans('cards.save'), 'deleteLineActionLabel' => trans('cards.delete_line_action'), 'toggleNumberActionLabel' => trans('cards.toggle_number_action') ]) }}'
+                     data='{{ json_encode(['card' => $card, 'maxCharactersSpeech' => $card->getMaxCharactersByLine(), 'editLabel' => trans('cards.edit'), 'saveLabel' => trans('cards.save'), 'deleteLineActionLabel' => trans('cards.delete_line_action'), 'deleteNumberActionLabel' => trans('cards.delete_number_action'), 'addNumberActionLabel' => trans('cards.add_number_action') ]) }}'
                      reference='{{ $reference }}'
                 ></div>
             @elseif($card->course->transcription === \App\Enums\TranscriptionType::Text)

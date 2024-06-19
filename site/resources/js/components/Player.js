@@ -83,7 +83,7 @@ export default class Player extends Component {
 
     onVideoPause(duration){
         // On pause, we get back a little bit to facilitate the transcription process
-        const OFFSET = 1.0;
+        const OFFSET = 0.5;
         if ( this.player.currentTime() > OFFSET ) {
             this.player.currentTime(this.player.currentTime() - OFFSET);
         } else {

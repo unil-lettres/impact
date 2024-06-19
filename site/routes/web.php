@@ -86,6 +86,8 @@ Route::middleware(['auth', 'app'])->group(function () {
         'index',
         'destroy',
     ]);
+    Route::get('files/download', [FileController::class, 'download'])
+        ->name('files.download');
     Route::post('files/upload', [FileJsonController::class, 'upload']);
 
     // Enrollments

@@ -93,7 +93,8 @@ export default class Transcription extends Component {
         this.editLabel = data.editLabel ?? 'Edit';
         this.saveLabel = data.saveLabel ?? 'Save';
         this.deleteLineActionLabel = data.deleteLineActionLabel ?? 'Delete the line';
-        this.toggleNumberActionLabel = data.toggleNumberActionLabel ?? 'Visibility of the numbering';
+        this.deleteNumberActionLabel = data.deleteNumberActionLabel ?? 'Delete numbering';
+        this.addNumberActionLabel = data.addNumberActionLabel ?? 'Add numbering';
         this.maxCharactersSpeech = data.maxCharactersSpeech ?? 55;
         this.lineToFocusOnUpdate = null;
         this.caretPositionOnUpdate = null;
@@ -873,7 +874,7 @@ export default class Transcription extends Component {
                                             <span
                                             className="action-toggle-number"
                                                 onClick={ () => this.handleToggleNumberClick(section.index) }
-                                                title={ this.toggleNumberActionLabel }
+                                                title={ section.number ? this.deleteNumberActionLabel : this.addNumberActionLabel }
                                             >
                                                 <i className={`far ${section.number ? "fa-minus-square" : "fa-plus-square"}`}/>
                                             </span>

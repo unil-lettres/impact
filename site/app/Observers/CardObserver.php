@@ -104,11 +104,15 @@ class CardObserver
     private function sendEmailAction(Card $card, array $action): void
     {
         // Send the state changed email to the managers of the course
-        Mail::to(
-            $card->course->managers()->map(function ($manager) {
-                return $manager->email;
-            })
-        )->send(
+        $users = $card->course->managers()->map(function ($manager) {
+            return $manager->email;
+        });
+
+        if ($users->isEmpty()) {
+            return;
+        }
+
+        Mail::to($users)->send(
             new StateSelected(
                 $card,
                 '[Impact] '.$action['subject'],

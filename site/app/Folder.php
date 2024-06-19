@@ -16,7 +16,7 @@ class Folder extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'title', 'position', 'course_id', 'parent_id',
+        'title', 'position', 'course_id', 'parent_id', 'legacy_id'
     ];
 
     protected function casts(): array

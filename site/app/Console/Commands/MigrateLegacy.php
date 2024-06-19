@@ -202,6 +202,7 @@ class MigrateLegacy extends Command
                     'type' => $courseLegacy['moodleid'] === 0 ? CourseType::Local : CourseType::External,
                     'external_id' => $courseLegacy['moodleid'] === 0 ? null : $courseLegacy['moodleid'],
                     'transcription' => $courseLegacy['box2_type'] === 'text' ? TranscriptionType::Text : TranscriptionType::Icor,
+                    'legacy_id' => $courseLegacy['id'],
                 ]);
 
                 // Remove all custom states from the course, they will be
@@ -300,6 +301,7 @@ class MigrateLegacy extends Command
                     // TODO video_upload_state pour la table file
 
                     'position' => $cardLegacy['position'],
+                    'legacy_id' => $cardLegacy['id'],
                 ]);
 
                 $this->mapIds->get('cards')->put($cardLegacy['id'], $card->id);
@@ -323,7 +325,12 @@ class MigrateLegacy extends Command
                 $folder = Folder::create([
                     'title' => $folderLegacy['title'],
                     'position' => $folderLegacy['position'],
-                    'course_id' => $this->mapIds->get('courses')->get($folderLegacy['course_id']),
+
+                    'course_id' => $this->mapIds
+                        ->get('courses')
+                        ->get($folderLegacy['course_id']),
+
+                    'legacy_id' => $folderLegacy['id'],
                 ]);
 
                 $this->mapIds->get('folders')->put($folderLegacy['id'], $folder->id);
@@ -335,8 +342,14 @@ class MigrateLegacy extends Command
         $this->withProgressBar(
             $folders,
             function ($folderLegacy) {
-                $folder = Folder::find($this->mapIds->get('folders')->get($folderLegacy['id']));
-                $folder->parent_id = $this->mapIds->get('folders')->get($folderLegacy['parent_id']);
+                $folder = Folder::find(
+                    $this->mapIds->get('folders')->get($folderLegacy['id']),
+                );
+
+                $folder->parent_id = $this->mapIds
+                    ->get('folders')
+                    ->get($folderLegacy['parent_id']);
+
                 $folder->save();
             },
         );

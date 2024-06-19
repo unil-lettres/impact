@@ -17,7 +17,12 @@ class Course extends Model
     use SoftDeletes;
 
     protected $fillable = [
-        'name', 'description', 'type', 'external_id', 'transcription',
+        'name',
+        'description',
+        'type',
+        'external_id',
+        'transcription',
+        'legacy_id',
     ];
 
     protected function casts(): array

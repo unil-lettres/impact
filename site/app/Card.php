@@ -92,6 +92,7 @@ class Card extends Model
         'options->box4->hidden',
         'options->box4->title',
         'options->box5->hidden',
+        'legacy_id',
     ];
 
     protected $attributes = [

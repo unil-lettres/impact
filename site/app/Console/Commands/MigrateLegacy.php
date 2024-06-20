@@ -71,6 +71,9 @@ class MigrateLegacy extends Command
         //     return 0;
         // }
 
+        // $invalidateMail = $this->confirm('Do you want to invalidate email adress? For testing purpose only.', true);
+        $invalidateMail = true;
+
         $this->mapIds = collect([]);
 
         $this->prepareLegacyConnection();
@@ -85,7 +88,7 @@ class MigrateLegacy extends Command
             'admin' => true,
         ])->id;
 
-        $this->migrateUsers();
+        $this->migrateUsers($invalidateMail);
         $this->migrateCourses();
         $this->migrateFolders();
         $this->migrateStates();
@@ -134,7 +137,7 @@ class MigrateLegacy extends Command
         Artisan::call('migrate:fresh');
     }
 
-    protected function migrateUsers(): void
+    protected function migrateUsers(bool $invalidateMail): void
     {
         $this->info('Migrating users...');
 
@@ -146,7 +149,7 @@ class MigrateLegacy extends Command
 
         $this->withProgressBar(
             $result->fetchAll(),
-            function ($legacyUser) use (&$warns) {
+            function ($legacyUser) use (&$warns, $invalidateMail) {
 
                 $fullName = [];
 
@@ -163,7 +166,11 @@ class MigrateLegacy extends Command
 
                 $user = User::create([
                     'name' => $fullName,
-                    'email' => $legacyUser['email'],
+
+                    'email' => $invalidateMail
+                        ? $legacyUser['email'].'@lettres-tst.ch'
+                        : $legacyUser['email'],
+
                     'password' => $legacyUser['password'],
                     'type' => $legacyUser['password'] ? UserType::Local : UserType::Aai,
                     'admin' => $legacyUser['is_superuser'] === 1,

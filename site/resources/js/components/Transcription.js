@@ -21,6 +21,7 @@ function SpeechInput(props) {
     useEffect(() => {
         // Adjust the height related to the content.
         inputRef.current.style.height = 0;
+        inputRef.current.style.minHeight = '14.4px';
         inputRef.current.style.height = (inputRef.current.scrollHeight + 1) + 'px';
     }, [props.value]);
 

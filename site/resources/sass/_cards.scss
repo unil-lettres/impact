@@ -80,6 +80,7 @@
                 overflow: hidden;
                 padding: 0;
                 resize: none;
+                color: black!important;
             }
 
             .speaker > input {
@@ -185,7 +186,7 @@
             }
 
             .speaker {
-                width: 4ch;
+                width: 6ch;
             }
 
             .no-line-number {

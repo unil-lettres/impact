@@ -27,5 +27,9 @@ return [
     'edit.enrollments_are_auto_save' => 'Enrollments are automatically saved when you add or remove them.',
     'email.account.validity.subject' => '[Impact] User account expiring soon',
     'email.account.validity.content' => 'Dear user,<br><br>Your account will expire in :days days, please <a href=":url" target="_blank">login</a> to automatically extend its validity or retrieve your data as soon as possible.',
+    'email.local.account.created.subject' => '[Impact] An account associated with your email address has been created',
+    'email.local.account.created.content' => 'An account associated with your email address has been manually created in <a href=":url" target="_blank">Impact</a>. You can log in with the email address to which you received this message.',
+    'email.local.account.created.password' => 'The password is: :password',
+    'email.local.account.created.password_change' => 'Please change your password in your <a href=":profile" target="_blank">user profile</a> after you log in for the first time.',
 
 ];

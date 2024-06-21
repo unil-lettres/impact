@@ -52,7 +52,7 @@ class Media extends Component
             '#^https?://(?:\w+\.)?youtu\.be/(\w+)(?:\?.*&?t=(\d+))?#i'
         ] as $pattern) {
             if (preg_match($pattern, $this->card->options['box1']['link'], $matches)) {
-                return ['id' => $matches[1], 'start' => $matches[2]];
+                return ['id' => $matches[1], 'start' => $matches[2] ?? 0];
             }
         }
 

@@ -59,5 +59,6 @@ return [
     'rename.label' => 'Nouveau nom',
     'rename.submit' => 'Modifier',
     'rename.cancel' => 'Annuler',
+    'complete' => 'Terminer',
 
 ];

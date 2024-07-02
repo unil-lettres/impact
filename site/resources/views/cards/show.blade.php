@@ -5,10 +5,10 @@
 @endsection
 
 @section('sub-title')
-    <div>
-        <span class="me-3">{{ trans('cards.state') }}: {{ $card->state?->name }}</span>
-        <span class="me-3">{{ trans('cards.date') }}: {{ $card->options['presentation_date'] ?? '-' }} </span>
-        <span>{{ trans('cards.tags') }}: {{ $card->tags->isEmpty() ? '-' : $card->tags->implode('name', ', ') }}</span>
+    <div class="d-flex gap-3 flex-column flex-md-row">
+        <span>{{ trans('cards.state') }}: {{ $card->state?->name }}</span>
+        <span>{{ trans('cards.date') }}: {{ $card->options['presentation_date'] ?? '-' }} </span>
+        <x-cards.tags :card="$card"/>
     </div>
 @endsection
 

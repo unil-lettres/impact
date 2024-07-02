@@ -77,6 +77,8 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('cards.transcription');
     Route::post('cards/{card}/export', [CardController::class, 'export'])
         ->name('cards.export');
+    Route::get('cards/{card}/tagsInline', [CardJsonController::class, 'tagsInline'])
+        ->name('cards.tagsInline');
 
     // Folders
     Route::resource('folders', FolderController::class)->only(['show']);

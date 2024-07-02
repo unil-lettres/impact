@@ -16,8 +16,17 @@ export default class DayPicker extends Component {
         this.format = data.format || 'dd/MM/yyyy';
         this.inputName = data.name || 'date';
 
+        let parsedDate = this.parseDate(data.default, this.format);
+
+        // Function date-fns.parse() will return an "Invalid Date" object if the
+        // date is not valid.
+        // It is still a Date object, we can detect it with isNaN() function.
+        if (isNaN(parsedDate)) {
+            this.invalidDateMessage = data.invalid_date_msg;
+            parsedDate = new Date();
+        }
         this.state = {
-            value: this.parseDate(data.default, this.format),
+            value: parsedDate,
             locale: this.defineLocale(data.locale || "fr")
         };
     }
@@ -55,15 +64,25 @@ export default class DayPicker extends Component {
     }
 
     render() {
+
+        const invalidMessageComponent = (
+            <div className="form-text text-danger">
+                { this.invalidDateMessage }
+            </div>
+        );
+
         return (
-            <DatePicker
-                locale={this.state.locale}
-                selected={this.state.value}
-                onChange={(date) => this.handleDateChange(date)}
-                dateFormat={this.format}
-                className="form-control"
-                name={this.inputName}
-            />
+            <div>
+                <DatePicker
+                    locale={this.state.locale}
+                    selected={this.state.value}
+                    onChange={(date) => this.handleDateChange(date)}
+                    dateFormat={this.format}
+                    className="form-control"
+                    name={this.inputName}
+                />
+                { this.invalidDateMessage && invalidMessageComponent}
+            </div>
         )
     }
 }

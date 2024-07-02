@@ -8,7 +8,6 @@
     {{ trans('states.states') }}
 @endsection
 
-
 @can('viewAny', [\App\State::class, $course])
     @can('create', [\App\State::class, $course])
         @section('actions')
@@ -49,39 +48,35 @@
                                  class="list-group">
                                 @foreach ($states as $state)
                                     <div state-id="{{ $state->id }}"
-                                         class="list-group-item {{ $state->id == $activeState->id ? 'selected-bg ' : '' }} {{ !Helpers::isStateReadOnly($state) ? 'drag' : '' }}">
-                                        <span class="align-middle">
-                                            @can('view', $state)
-                                                @if (Helpers::isStateReadOnly($state))
-                                                    <i class="fa-solid fa-grip-lines me-1"></i>
-                                                    <span class="text-muted">{{ $state->name }}</span>
-                                                @else
-                                                    <i class="fa-solid fa-bars me-1"></i>
-                                                    <a class="legacy" href="{{ route('courses.configure.states', [$course->id, 'state' => $state->id]) }}">
-                                                        {{ $state->name }}
-                                                    </a>
-                                                @endif
-                                            @endcan
-                                        </span>
-                                        <span class="actions">
-                                            @can('forceDelete', $state)
-                                                <span class="float-end">
-                                                    <form class="with-delete-confirm" method="post"
-                                                          action="{{ route('courses.destroy.state', [$course->id, $state->id]) }}">
-                                                        @method('DELETE')
-                                                        @csrf
-                                                        <button type="submit"
-                                                                class="btn btn-sm btn-danger"
-                                                                data-bs-toggle="tooltip"
-                                                                data-placement="top"
-                                                                {{ Helpers::isStateReferenced($state) ? 'disabled' : '' }}
-                                                                title="{{ trans('states.delete') }}">
-                                                            <i class="far fa-trash-alt"></i>
-                                                        </button>
-                                                    </form>
-                                                </span>
-                                            @endcan
-                                        </span>
+                                         class="d-flex align-items-center list-group-item gap-2 {{ $state->id == $activeState->id ? 'selected-bg ' : '' }} {{ !Helpers::isStateReadOnly($state) ? 'drag' : '' }}">
+                                        @can('view', $state)
+                                            @if (Helpers::isStateReadOnly($state))
+                                                <i class="fa-solid fa-grip-lines"></i>
+                                                <span class="text-muted lh-lg">{{ $state->name }}</span>
+                                            @else
+                                                <i class="fa-solid fa-bars"></i>
+                                                <a class="legacy flex-fill lh-sm" href="{{ route('courses.configure.states', [$course->id, 'state' => $state->id]) }}">
+                                                    {{ $state->name }}
+                                                </a>
+                                            @endif
+                                        @endcan
+                                        @can('forceDelete', $state)
+                                            <span class="actions">
+                                                <form class="with-delete-confirm" method="post"
+                                                        action="{{ route('courses.destroy.state', [$course->id, $state->id]) }}">
+                                                    @method('DELETE')
+                                                    @csrf
+                                                    <button type="submit"
+                                                            class="btn btn-sm btn-danger"
+                                                            data-bs-toggle="tooltip"
+                                                            data-placement="top"
+                                                            {{ Helpers::isStateReferenced($state) ? 'disabled' : '' }}
+                                                            title="{{ trans('states.delete') }}">
+                                                        <i class="far fa-trash-alt"></i>
+                                                    </button>
+                                                </form>
+                                            </span>
+                                        @endcan
                                     </div>
                                 @endforeach
                             </div>

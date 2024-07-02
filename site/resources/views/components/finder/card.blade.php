@@ -152,7 +152,7 @@
                             </li>
                             <li
                                 class="dropdown-item d-flex cursor-pointer align-items-center"
-                                @click="renameCard({{$card->id}}, '{{$card->title}}')"
+                                @click="renameCard({{$card->id}}, '{{addslashes($card->title)}}')"
                             >
                                 <i class="fa-solid fa-i-cursor me-2"></i>
                                 <span class="flex-fill me-5">

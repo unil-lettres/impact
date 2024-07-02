@@ -45,7 +45,7 @@
             <div class="col-md-8">
                 @if(Helpers::areCardSettingsEditable($card))
                     <div id="rct-date-picker"
-                         data='{{ json_encode(['locale' => Helpers::currentLocal(), 'name' => 'presentation_date', 'default' => $card->options['presentation_date'] ?? null]) }}'
+                         data='{{ json_encode(['locale' => Helpers::currentLocal(), 'name' => 'presentation_date', 'default' => $card->options['presentation_date'] ?? null, 'invalid_date_msg' => __('cards.invalid_presentation_date', ['presentation_date' => $card->options['presentation_date'] ?? ''])]) }}'
                     ></div>
                 @else
                     <div>{{ $card->options['presentation_date'] ?? '-' }}</div>

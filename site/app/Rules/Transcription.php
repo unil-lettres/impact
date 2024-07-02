@@ -45,8 +45,8 @@ class Transcription implements DataAwareRule, ValidationRule
                     // When the length of a line is maxCharacters + 1, the last
                     // characters must be a whitespace.
                     assert(false
-                        || strlen($speech) <= $maxCharacters
-                        || preg_match('/\s/', $speech[$maxCharacters])
+                        || mb_strlen($speech) <= $maxCharacters
+                        || preg_match('/\s/', mb_substr($speech, $maxCharacters, 1))
                     );
                 }
             }

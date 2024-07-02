@@ -35,7 +35,20 @@ class State extends Model implements Sortable
         }';
 
     protected $fillable = [
-        'name', 'description', 'position', 'permissions', 'course_id', 'type', 'managers_only', 'actions',
+        'name',
+        'description',
+        'position',
+        'permissions',
+        'permissions->box1',
+        'permissions->box2',
+        'permissions->box3',
+        'permissions->box4',
+        'permissions->box5',
+        'course_id',
+        'type',
+        'managers_only',
+        'actions',
+        'actions->data',
     ];
 
     protected $attributes = [

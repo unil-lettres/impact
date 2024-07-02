@@ -136,7 +136,7 @@
 
 @push('scripts-boxes')
 <script>
-    document.getElementById('import-transcription-content').addEventListener(
+    document.getElementById('import-transcription-content')?.addEventListener(
         'keydown',
         function(event) {
             if (event.key === 'Tab') {

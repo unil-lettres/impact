@@ -201,7 +201,7 @@ class CourseTest extends DuskTestCase
 
             $browser->visit('/admin/courses');
 
-            $browser->click('#courses table tbody tr:first-child .actions form.with-disable-confirm button')
+            $browser->click('#courses table tbody tr:nth-child(3) .actions form.with-disable-confirm button')
                 ->waitForDialog($seconds = null)
                 ->assertDialogOpened('Êtes-vous sûr de vouloir désactiver cet élément ?')
                 ->acceptDialog()

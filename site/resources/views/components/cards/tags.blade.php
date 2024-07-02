@@ -21,13 +21,14 @@
         </div>
         <div
             @click="edition = true"
-            class="show-icon-on-hover cursor-pointer d-flex gap-1 align-items-top"
+            class="d-flex gap-1 align-items-top"
+            :class="canEdit && 'cursor-pointer show-icon-on-hover'"
             x-show.important="!canEdit || !edition"
         >
             <div>{{ trans('cards.tags') }}:</div>
             <span x-text="tagsInline"></span>
             <div x-show="loading" x-cloak class="spinner-border text-primary spinner-border-sm fs-5 align-self-center"></div>
-            <i class="fs-6 fa-solid fa-pen align-self-center"></i>
+            <i x-show="canEdit" x-cloak class="fs-6 fa-solid fa-pen align-self-center"></i>
         </div>
     </div>
 </div>

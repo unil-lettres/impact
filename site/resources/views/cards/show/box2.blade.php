@@ -4,7 +4,7 @@
             <div class="d-flex flex-wrap gap-2 align-items-center">
                 <span class="fw-bolder">2. {{ trans('cards.transcription') }}</span>
                 <div class="me-auto text-danger">
-                    <livewire:transcription-counter :card="$card" />
+                    <livewire:box-edition-counter :card="$card" reference="box2" />
                 </div>
                 <div class="d-flex align-items-center">
                     <span class="d-none" id="edit-failed-{{ $reference }}">[ {{ trans('messages.card.editor.failed') }} ]</span>

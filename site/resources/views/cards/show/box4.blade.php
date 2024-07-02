@@ -2,7 +2,10 @@
     <div class="card {{ $reference }} {{ Helpers::isHidden($card, $reference) ? 'hide-on-read-only' : '' }}">
         <div class="card-header">
             <div class="d-flex gap-2 align-items-center">
-                <span class="fw-bolder me-auto">4. {{ $card->options[$reference]['title'] }}</span>
+                <span class="fw-bolder">4. {{ $card->options[$reference]['title'] }}</span>
+                <div class="me-auto text-danger">
+                    <livewire:box-edition-counter :card="$card" reference="box4" />
+                </div>
                 <div class="hide-on-read-only">
                     <div class="d-flex gap-2">
                         <span class="d-none" id="edit-failed-{{ $reference }}">[ {{ trans('messages.card.editor.failed') }} ]</span>

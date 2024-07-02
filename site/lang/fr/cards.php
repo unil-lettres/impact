@@ -60,4 +60,5 @@ return [
     'rename.submit' => 'Modifier',
     'rename.cancel' => 'Annuler',
     'invalid_presentation_date' => 'La valeur actuelle ":presentation_date" n\'est pas un format de date valide. La date sera réinitialisée lors de l\'enregistrement.',
+    'complete' => 'Terminer',
 ];

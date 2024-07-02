@@ -147,6 +147,13 @@ export default class Editor extends Component {
         }
     }
 
+    componentDidUpdate() {
+        window.editors = {
+            ...(window.editors || []),
+            [this.props.reference]: this.state.editable,
+        };
+    }
+
     updateEditorConfiguration(data) {
         editorConfiguration.language = data.locale ?? 'fr';
         editorConfiguration.placeholder = data.placeholder ?? '';

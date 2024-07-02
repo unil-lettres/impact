@@ -12,6 +12,7 @@ use App\Http\Requests\EditUser;
 use App\Http\Requests\ExtendUser;
 use App\Http\Requests\ManageUsers;
 use App\Http\Requests\UpdateUser;
+use App\Mail\LocalUserCreated;
 use App\Scopes\ValidityScope;
 use App\User;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -21,6 +22,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
@@ -109,6 +111,11 @@ class UserController extends Controller
         ]);
 
         $user->extendValidity();
+
+        // Send local user created mail to the recipient
+        Mail::to($user->email)->send(
+            new LocalUserCreated($user, $request->input('password'))
+        );
 
         return redirect()->route('admin.users.manage')
             ->with('success', trans('messages.user.created', ['email' => $user->email]));

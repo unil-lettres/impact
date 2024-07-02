@@ -6,6 +6,7 @@ use App\Card;
 use App\Enums\FileStatus;
 use App\Helpers\Helpers;
 use Illuminate\Contracts\Support\Renderable;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Validate;
 use Livewire\Component;
@@ -37,6 +38,25 @@ class Media extends Component
         }
 
         return $show || $this->mediaStatusIsActive;
+    }
+
+    /**
+     * Return id and the start time for Youtube external link. Return null if the
+     * link is not a valid Youtube URL.
+     */
+    #[Computed]
+    public function youtubeVideoParams(): ?array
+    {
+        foreach ([
+            '#^https?://(?:\w+\.)?youtube\.com/watch\?v=(\w+)(?:&t=(\d+))?#i',
+            '#^https?://(?:\w+\.)?youtu\.be/(\w+)(?:\?.*&?t=(\d+))?#i',
+        ] as $pattern) {
+            if (preg_match($pattern, $this->card->options['box1']['link'], $matches)) {
+                return ['id' => $matches[1], 'start' => $matches[2] ?? 0];
+            }
+        }
+
+        return null;
     }
 
     /*

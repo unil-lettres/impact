@@ -83,6 +83,22 @@ class CardJsonController extends Controller
     }
 
     /**
+     * Return a list of tags to display for the user.
+     *
+     * @return JsonResponse
+     *
+     * @throws AuthorizationException
+     */
+    public function tagsInline(Card $card)
+    {
+        $this->authorize('view', $card);
+
+        return response()->json([
+            'value' => $card->tags->isEmpty() ? '-' : $card->tags->implode('name', ', '),
+        ], 200);
+    }
+
+    /**
      * Box2 data initialization based on the transcription type.
      *
      * @param  string  $type  (App\Enums\TranscriptionType)

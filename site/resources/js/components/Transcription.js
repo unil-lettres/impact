@@ -21,6 +21,7 @@ function SpeechInput(props) {
     useEffect(() => {
         // Adjust the height related to the content.
         inputRef.current.style.height = 0;
+        inputRef.current.style.minHeight = '14.4px';
         inputRef.current.style.height = (inputRef.current.scrollHeight + 1) + 'px';
     }, [props.value]);
 
@@ -181,8 +182,9 @@ export default class Transcription extends Component {
             this.editButton.innerText = this.state.editable ? this.saveLabel : this.editLabel;
         }
 
-        window.transcription = {
-            isEditing: this.state.editable
+        window.editors = {
+            ...(window.editors || []),
+            [this.props.reference]: this.state.editable,
         };
     }
 

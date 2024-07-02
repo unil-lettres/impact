@@ -1,5 +1,5 @@
 <div
-    wire:poll.keep-alive="checkConcurrentEditing(window.transcription?.isEditing ?? false)"
+    wire:poll.keep-alive="checkConcurrentEditing(window.editors || [])"
     title="{{ trans('messages.card.editor.concurrent_edition') }}"
 >
     @if($concurrentEditing)

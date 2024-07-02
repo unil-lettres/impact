@@ -180,8 +180,9 @@ export default class Transcription extends Component {
             this.editButton.innerText = this.state.editable ? this.saveLabel : this.editLabel;
         }
 
-        window.transcription = {
-            isEditing: this.state.editable
+        window.editors = {
+            ...(window.editors || []),
+            [this.props.reference]: this.state.editable,
         };
     }
 

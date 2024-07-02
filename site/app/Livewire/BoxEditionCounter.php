@@ -7,9 +7,14 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
 use Livewire\Component;
 
-class TranscriptionCounter extends Component
+class BoxEditionCounter extends Component
 {
     public Card $card;
+
+    /**
+     * Used to identify the editor.
+     */
+    public string $reference;
 
     /**
      * Used to show a warning message when another user is editing the same
@@ -25,10 +30,10 @@ class TranscriptionCounter extends Component
 
     public function render()
     {
-        return view('livewire.transcription-counter');
+        return view('livewire.box-edition-counter');
     }
 
-    public function checkConcurrentEditing($isEditing)
+    public function checkConcurrentEditing(array $editors)
     {
         /**
          * A word on how this works.
@@ -51,8 +56,10 @@ class TranscriptionCounter extends Component
          * off the warning. The more users are editing, the less likely this
          * will happen.
          */
+        $isEditing = $editors[$this->reference] ?? false;
+
         if ($isEditing) {
-            $cachKey = 'transcription_editing_'.$this->card->id;
+            $cachKey = "editing_{$this->reference}_{$this->card->id}";
 
             // The following two instructions should be atomic. It can cause some
             // false negatives in some cases that we accept has it is a very low

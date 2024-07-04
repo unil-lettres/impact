@@ -22,6 +22,7 @@ use App\Http\Controllers\Json\EnrollmentJsonController;
 use App\Http\Controllers\Json\FileJsonController;
 use App\Http\Controllers\Json\StateJsonController;
 use App\Http\Controllers\Json\TagJsonController;
+use App\Http\Controllers\LegacyController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\StateController;
 use App\Http\Controllers\TagController;
@@ -143,6 +144,10 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('tags.attach.tag');
     Route::put('tags/{tag}/detach/{card}', [TagJsonController::class, 'detach'])
         ->name('tags.detach.tag');
+
+    // Legacy
+    Route::get('legacy', [LegacyController::class, 'redirect'])
+        ->name('legacy.redirect');
 });
 
 // Administration routes

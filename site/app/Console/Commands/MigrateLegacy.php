@@ -187,7 +187,7 @@ class MigrateLegacy extends Command
                     $fullName[] = $legacyUser['last_name'];
                 }
                 if (count($fullName) < 2) {
-                    $warns[] = "User legacy id {$legacyUser['id']} miss a lastname, firstname or both.";
+                    $warns[] = "User legacy id {$legacyUser['id']} misses a lastname, firstname or both.";
                 }
                 $fullName = implode(' ', $fullName);
 

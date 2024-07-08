@@ -96,13 +96,10 @@ class FileStorageService
      */
     public function moveFileToStandardStorage(string $filename): bool
     {
-        // Clean filename to keep only the name of the file
-        $cleanedFilename = $this->getBaseName($filename);
-
         return Storage::disk('public')
             ->move(
-                StoragePath::UploadTemp.'/'.$cleanedFilename,
-                StoragePath::UploadStandard.'/'.$cleanedFilename
+                StoragePath::UploadTemp.'/'.$filename,
+                StoragePath::UploadStandard.'/'.$filename
             );
     }
 
@@ -111,15 +108,9 @@ class FileStorageService
      */
     public function getFileSize(string $filename, bool $isTemp = false): int
     {
-        // Clean filename to keep only the name of the file
-        $cleanedFilename = $this->getBaseName($filename);
-
         $path = $isTemp ? StoragePath::UploadTemp : StoragePath::UploadStandard;
 
-        return Storage::disk('public')
-            ->size(
-                $path.'/'.$cleanedFilename
-            );
+        return Storage::disk('public')->size($path.'/'.$filename);
     }
 
     /**
@@ -127,13 +118,8 @@ class FileStorageService
      */
     public function removeFileFromTempStorage(string $filename): bool
     {
-        // Clean filename to keep only the name of the file
-        $cleanedFilename = $this->getBaseName($filename);
-
         return Storage::disk('public')
-            ->delete(
-                StoragePath::UploadTemp.'/'.$cleanedFilename
-            );
+            ->delete(StoragePath::UploadTemp.'/'.$filename);
     }
 
     /**
@@ -141,34 +127,30 @@ class FileStorageService
      */
     public function removeFileFromStandardStorage(string $filename): bool
     {
-        // Clean filename to keep only the name of the file
-        $cleanedFilename = $this->getBaseName($filename);
-
         return Storage::disk('public')
             ->delete(
-                StoragePath::UploadStandard.'/'.$cleanedFilename
+                StoragePath::UploadStandard.'/'.$filename
             );
     }
 
     /**
      * Clone a file and return it.
      */
-    public function clone(File $file, string $prefix = ''): ?File
+    public function clone(File $file): ?File
     {
-        // Clean filename to keep only the name of the file
-        $cleanedFilename = $this->getBaseName($file->filename);
-        $copiedFilename = substr($prefix.$cleanedFilename, 0, 99);
+        $extension = $this->getExtension($file->filename);
+        $newFileHashName = Str::random(40).".$extension";
 
         $success = Storage::disk('public')->copy(
-            StoragePath::UploadStandard.'/'.$cleanedFilename,
-            StoragePath::UploadStandard.'/'.$copiedFilename,
+            StoragePath::UploadStandard.'/'.$file->filename,
+            StoragePath::UploadStandard.'/'.$newFileHashName,
         );
 
         if (! $success) {
             return null;
         }
 
-        $file = $file->replicate()->fill(['filename' => $copiedFilename]);
+        $file = $file->replicate()->fill(['filename' => $newFileHashName]);
         $file->save();
 
         return $file;

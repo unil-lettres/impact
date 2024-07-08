@@ -154,7 +154,6 @@ class CloneCardService
                 } else {
                     $copiedSourceFile = $fileStorageService->clone(
                         $this->card->file,
-                        $copiedCard->id,
                     );
 
                     if ($copiedSourceFile) {
@@ -199,10 +198,7 @@ class CloneCardService
                     return;
                 }
 
-                $copiedFile = $fileStorageService->clone(
-                    $attachment,
-                    $copiedCard->id,
-                );
+                $copiedFile = $fileStorageService->clone($attachment);
 
                 if ($copiedFile) {
                     $files->push($copiedFile);

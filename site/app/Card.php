@@ -9,6 +9,7 @@ use App\Enums\StateType;
 use App\Enums\TranscriptionType;
 use App\Scopes\HideAttachmentsScope;
 use App\Scopes\ValidityScope;
+use App\Traits\IsLegacy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\Auth;
 class Card extends Model
 {
     use HasFactory;
+    use IsLegacy;
     use SoftDeletes;
 
     const MAX_CHARACTERS_SPEECH = 55;

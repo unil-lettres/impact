@@ -86,9 +86,9 @@ const editorConfiguration = {
         "horizontalLine",
         "insertTable",
         "|",
+        "insertImage",
         "link",
         "mediaEmbed",
-        "uploadImage"
     ],
     image: {
         upload: {

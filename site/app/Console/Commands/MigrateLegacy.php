@@ -24,7 +24,6 @@ use FFMpeg\FFProbe;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use PDO;
@@ -70,43 +69,33 @@ class MigrateLegacy extends Command
 
         $this->fileStorageService = new FileStorageService();
 
-        // TODO uncomment
-        // if ($this->confirm('Please confirm that you have checked that the transcription algorithm is correct (must reflect the one in Transcription.js).', false) === false) {
-        //     $this->info('Aborting...');
-        //     return 0;
-        // }
+        if ($this->confirm('Please confirm that you have checked that the transcription algorithm is correct (must reflect the one in Transcription.js).', false) === false) {
+            $this->info('Aborting...');
+            return 0;
+        }
 
-        // $this->warn('Continue will ERASE the current database and all uploaded files. Make sure you have a backup of the current database and files before continuing.');
-        // if ($this->confirm('Do you want to continue?', false) === false) {
-        //     $this->info('Aborting...');
-        //     return 0;
-        // }
+        $this->warn('Continue will ERASE the current database and all uploaded files. Make sure you have a backup of the current database and files before continuing.');
+        if ($this->confirm('Do you want to continue?', false) === false) {
+            $this->info('Aborting...');
+            return 0;
+        }
 
-        // $invalidateMail = $this->confirm('Do you want to invalidate email adress? For testing purpose only.', true);
-        $invalidateMail = true;
+        $invalidateMail = $this->confirm('Do you want to invalidate email address? For testing purpose only.', true);
 
         $this->mapIds = collect([]);
 
         $this->prepareLegacyConnection();
 
-        // $this->wipeDatabase();
+        $this->wipeDatabase();
 
-        // TODO REMOVE
-        // User::create([
-        //     'name' => 'Admin user',
-        //     'email' => 'admin-user@example.com',
-        //     'password' => Hash::make('password'),
-        //     'admin' => true,
-        // ])->id;
-
-        // $this->migrateUsers($invalidateMail);
-        // $this->migrateCourses();
-        // $this->migrateFolders();
-        // $this->migrateStates();
-        // $this->migrateCards();
-        // $this->migrateEnrollments();
-        // $this->migrateTags();
-        // $this->migrateFiles();
+        $this->migrateUsers($invalidateMail);
+        $this->migrateCourses();
+        $this->migrateFolders();
+        $this->migrateStates();
+        $this->migrateCards();
+        $this->migrateEnrollments();
+        $this->migrateTags();
+        $this->migrateFiles();
         $this->migrateAttachments();
 
         $this->info('Migration complete');
@@ -114,19 +103,12 @@ class MigrateLegacy extends Command
 
     protected function prepareLegacyConnection(): void
     {
-        // TODO uncomment
-        // $dbHost = $this->askNotNull('legacy database host');
-        // $dbName = $this->askNotNull('legacy database name');
-        // $dbPort = $this->askNotNull('legacy database port', 3306);
-        // $dbCharset = $this->askNotNull('legacy database charset', 'utf8mb4');
-        // $dbUsername = $this->askNotNull('legacy database username');
-        // $dbPassword = $this->askNotNull('legacy database password');
-        $dbHost = 'impact-mysql';
-        $dbName = 'impact_tmp';
-        $dbCharset = 'utf8mb4';
-        $dbPort = 3306;
-        $dbUsername = 'root';
-        $dbPassword = 'root';
+        $dbHost = $this->askNotNull('legacy database host');
+        $dbName = $this->askNotNull('legacy database name');
+        $dbPort = $this->askNotNull('legacy database port', 3306);
+        $dbCharset = $this->askNotNull('legacy database charset', 'utf8mb4');
+        $dbUsername = $this->askNotNull('legacy database username');
+        $dbPassword = $this->askNotNull('legacy database password');
 
         try {
             $this->legacyConnection = new PDO(
@@ -741,10 +723,6 @@ class MigrateLegacy extends Command
 
                 $mimeType = Storage::disk('public')->mimeType($serverPath);
 
-                $cccard = Card::where(
-                    'legacy_id', $legacyCard['id']
-                )->firstOrFail();
-
                 try {
                     $type = $this->fileStorageService->fileType(
                         $mimeType,
@@ -770,19 +748,13 @@ class MigrateLegacy extends Command
                     'type' => $type,
                     'size' => Storage::disk('public')->size($serverPath),
 
-                    // 'card_id' => $this->mapIds
-                    //     ->get('cards')
-                    //     ->get($legacyCard['id']),
+                    'card_id' => $this->mapIds
+                        ->get('cards')
+                        ->get($legacyCard['id']),
 
-                    // 'course_id' => $this->mapIds
-                    //     ->get('courses')
-                    //     ->get($legacyCard['course_id']),
-
-                    // TODO REMOVE
-                    'card_id' => $cccard->id,
-
-                    'course_id' => $cccard->course->id,
-                    // --------------------------------
+                    'course_id' => $this->mapIds
+                        ->get('courses')
+                        ->get($legacyCard['course_id']),
 
                     'status' => FileStatus::Ready,
                     'progress' => null,
@@ -805,13 +777,6 @@ class MigrateLegacy extends Command
             '/storage/uploads/files/legacy/impact-attachments/$1',
             $html,
         );
-    }
-
-    protected function generateNewFileName($extension): string
-    {
-        $random = Str::random(40);
-
-        return "legacy-$random.$extension";
     }
 
     protected function parseFileUrl($videoUrl): ?array

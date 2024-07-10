@@ -140,9 +140,8 @@ class FileStorageService
     {
         $extension = $this->getExtension($file->filename);
         $newFileHashName = Str::random(40).".$extension";
-
         $success = Storage::disk('public')->copy(
-            StoragePath::UploadStandard.'/'.$file->filename,
+            StoragePath::UploadStandard.'/'.rawurldecode($file->filename),
             StoragePath::UploadStandard.'/'.$newFileHashName,
         );
 

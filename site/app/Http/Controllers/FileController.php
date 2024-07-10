@@ -184,7 +184,7 @@ class FileController extends Controller
 
         return response()
             ->download(
-                $fileStorageService->fullStandardPath.urldecode($file->filename),
+                $fileStorageService->fullStandardPath.rawurldecode($file->filename),
                 $fileName.'.'.$fileStorageService->getExtension($file->filename),
                 ['Cache-Control' => 'no-cache, must-revalidate']
             );

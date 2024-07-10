@@ -22,7 +22,6 @@ use App\User;
 use Assert\Assert;
 use FFMpeg\FFProbe;
 use Illuminate\Console\Command;
-use Illuminate\Contracts\Filesystem\Filesystem;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Hash;
@@ -62,8 +61,6 @@ class MigrateLegacy extends Command
 
     protected FileStorageService $fileStorageService;
 
-    protected Filesystem $legacyDisk;
-
     /**
      * Execute the console command.
      */
@@ -92,35 +89,24 @@ class MigrateLegacy extends Command
 
         $this->prepareLegacyConnection();
 
-        // TODO uncomment
-        // $legacyStoragePath = $this->askNotNull('storage folder absolute path');
-
-        // TODO bind dans le docker pour test
-        $legacyStoragePath = '/Users/dmiserez/Downloads/impact_migration/legacy-data';
-
-        $this->legacyDisk = Storage::build([
-            'driver' => 'local',
-            'root' => $legacyStoragePath,
-        ]);
-
-        $this->wipeDatabase();
+        // $this->wipeDatabase();
 
         // TODO REMOVE
-        User::create([
-            'name' => 'Admin user',
-            'email' => 'admin-user@example.com',
-            'password' => Hash::make('password'),
-            'admin' => true,
-        ])->id;
+        // User::create([
+        //     'name' => 'Admin user',
+        //     'email' => 'admin-user@example.com',
+        //     'password' => Hash::make('password'),
+        //     'admin' => true,
+        // ])->id;
 
-        $this->migrateUsers($invalidateMail);
-        $this->migrateCourses();
-        $this->migrateFolders();
-        $this->migrateStates();
-        $this->migrateCards();
-        $this->migrateEnrollments();
-        $this->migrateTags();
-        $this->migrateFiles();
+        // $this->migrateUsers($invalidateMail);
+        // $this->migrateCourses();
+        // $this->migrateFolders();
+        // $this->migrateStates();
+        // $this->migrateCards();
+        // $this->migrateEnrollments();
+        // $this->migrateTags();
+        // $this->migrateFiles();
         $this->migrateAttachments();
 
         $this->info('Migration complete');
@@ -303,8 +289,8 @@ class MigrateLegacy extends Command
                         ? $this->parseTranscription($cardLegacy['transcript'] ?? '')
                         : null,
 
-                    'box3' => $cardLegacy['text_1'],
-                    'box4' => $cardLegacy['text_2'],
+                    'box3' => $this->replaceOldAttachmentsUrl($cardLegacy['text_1']),
+                    'box4' => $this->replaceOldAttachmentsUrl($cardLegacy['text_2']),
                     'course_id' => $course_id,
 
                     'folder_id' => $this->mapIds
@@ -591,7 +577,7 @@ class MigrateLegacy extends Command
 
     protected function migrateFiles(): void
     {
-        $this->info('Migrating files...');
+        $this->info('Migrating medias...');
 
         $result = $this->legacyConnection->query(<<<'SQL'
             SELECT
@@ -599,7 +585,6 @@ class MigrateLegacy extends Command
                 cards.course_id,
                 video_url,
 
-                -- TODO valider avec des données de prod que cette statement est correcte.
                 -- Not null or empty means that transcoding is in error or pending.
                 video_upload_state
             FROM
@@ -610,8 +595,12 @@ class MigrateLegacy extends Command
             $result->fetchAll(),
             function ($legacyCard) {
                 if (! empty($legacyCard['video_upload_state'])) {
-                    $this->warn("Skipping media for card legacy id {$legacyCard['id']}.");
-                    $this->warn("Transcoded state is '{$legacyCard['video_upload_state']}'");
+                    $this->newLine();
+                    $this->warn(''
+                        .'Skipping media for card legacy id '
+                        ."{$legacyCard['id']}. Transcoded state is "
+                        ."'{$legacyCard['video_upload_state']}'"
+                    );
 
                     return;
                 }
@@ -633,56 +622,56 @@ class MigrateLegacy extends Command
                     // If file_name could not be parsed but exists, it means
                     // its an external link.
                     if (! empty($videoUrl)) {
-                        $card->options->box1->link = $videoUrl;
-                        $card->save();
+                        $card->update([
+                            'options->box1->link' => $videoUrl,
+                        ]);
                         $card->refresh();
                     }
 
                     return;
                 }
-                [$legacyCourseId, $filename] = $parsedVideoUrl;
-                Assert::that($legacyCourseId)->eq($legacyCard['course_id']);
+                [$legacyCourseId, $fileName] = $parsedVideoUrl;
 
-                $fileName = $this->fileStorageService->getFileName($filename);
+                if ($legacyCard['course_id'] !== intval($legacyCourseId)) {
+                    $this->warn(''
+                        ."Card legacy id {$legacyCard['id']} is in course id "
+                        ."legacy {$legacyCard['course_id']} but the media is "
+                        ."in folder id $legacyCourseId. Using $legacyCourseId"
+                        .' for file url.'
+                    );
+                }
 
-                // TODO vérifier si certain fichier sont nommés "xxx.mp4.mp4",
-                // dans ce cas, il faut tj appondre .mp4 meme si getExtension retourne une extension.
-                // donc remplacer la ligne ci-dessous par: $extension = ".mp4".
-                $extension = $this->fileStorageService->getExtension($filename) ?: 'mp4';
+                $fileName = $this->fileStorageService->getFileName($fileName);
 
-                // TODO most url in the db don't have extension. see if they
-                // have an extension on the server filename.
-                $legacyPath = "media/$legacyCourseId/$filename.$extension";
+                // Files name in database don't have any extension and should be
+                // mp4.
+                $extension = 'mp4';
 
-                if ($this->legacyDisk->missing($legacyPath)) {
-                    $this->warn("Skipping file for card legacy id {$legacyCard['id']}.");
-                    $this->warn("File '$legacyPath' does not exist.");
+                $legacyPath = "legacy/impact-media/$legacyCourseId/$fileName.$extension";
+                $serverPath = StoragePath::UploadStandard.'/'.rawurldecode($legacyPath);
+
+                if (Storage::disk('public')->missing($serverPath)) {
+                    $this->newLine();
+                    $this->warn(''
+                        ."File '$serverPath' does not exist. Skipping media "
+                        ."for course legacy id {$legacyCard['course_id']}."
+                    );
 
                     return;
                 }
 
-                $newFileName = $this->generateNewFileName($extension);
-                $newPath = StoragePath::UploadStandard."/$newFileName";
-
-                $success = Storage::disk('public')->put(
-                    $newPath,
-                    $this->legacyDisk->get($legacyPath)
-                );
-
-                Assert::that($success)->true();
-
-                $newAbsolutePath = Storage::disk('public')->path($newPath);
-                $mimeType = Storage::disk('public')->mimeType($newPath);
-                $mediaProperties = $this->getMediaProperties($newAbsolutePath);
+                $absolutePath = Storage::disk('public')->path($serverPath);
+                $mimeType = Storage::disk('public')->mimeType($serverPath);
+                $mediaProperties = $this->getMediaProperties($absolutePath);
 
                 $file = File::create([
-                    'name' => $fileName,
-                    'filename' => $newFileName,
+                    'name' => rawurldecode($fileName),
+                    'filename' => $legacyPath,
                     'type' => $this->fileStorageService->fileType(
                         $mimeType,
-                        $newAbsolutePath,
+                        $absolutePath,
                     ),
-                    'size' => Storage::disk('public')->size($newPath),
+                    'size' => Storage::disk('public')->size($serverPath),
 
                     'course_id' => $this->mapIds
                         ->get('courses')
@@ -713,7 +702,7 @@ class MigrateLegacy extends Command
             SELECT
                 cards.id,
                 cards.course_id,
-                path,
+                path
             FROM
                 card_attachments
                 INNER JOIN cards ON cards.id = card_attachments.card_id
@@ -723,49 +712,77 @@ class MigrateLegacy extends Command
             $result->fetchAll(),
             function ($legacyCard) {
 
-                $legacyPath = "attachments/{$legacyCard['id']}/{$legacyCard['path']}";
+                $urlencodedPath = rawurlencode($legacyCard['path']);
+                $legacyPath = "legacy/impact-attachments/{$legacyCard['id']}/$urlencodedPath";
+                $serverPath = StoragePath::UploadStandard.'/'.rawurldecode($legacyPath);
 
-                if ($this->legacyDisk->missing($legacyPath)) {
-                    $this->warn("Skipping attachments for card legacy id {$legacyCard['id']}.");
-                    $this->warn("File '$legacyPath' does not exist.");
+                if (Storage::disk('public')->missing($serverPath)) {
+                    $this->newLine();
+                    $this->warn(''
+                        .'Skipping attachments for card legacy id '
+                        ."{$legacyCard['id']}. File '$serverPath' does not "
+                        .'exist.'
+                    );
 
                     return;
                 }
-                $extension = $this->fileStorageService->getExtension($legacyPath);
+                $extension = $this->fileStorageService->getExtension($serverPath);
 
-                Assert::that($extension)->notEmpty();
+                if (empty($extension)) {
+                    $this->newLine();
+                    $this->warn(''
+                        .'Skipping attachments for card legacy id '
+                        ."{$legacyCard['id']}. File '$serverPath' has no "
+                        .'extension.'
+                    );
 
-                $newFileName = $this->generateNewFileName($extension);
-                $newPath = StoragePath::UploadStandard."/$newFileName";
+                    return;
+                }
 
-                $success = Storage::disk('public')->put(
-                    $newPath,
-                    $this->legacyDisk->get($legacyPath),
-                );
+                $mimeType = Storage::disk('public')->mimeType($serverPath);
 
-                Assert::that($success)->true();
+                $cccard = Card::where(
+                    'legacy_id', $legacyCard['id']
+                )->firstOrFail();
 
-                $mimeType = Storage::disk('public')->mimeType($newPath);
+                try {
+                    $type = $this->fileStorageService->fileType(
+                        $mimeType,
+                        Storage::disk('public')->path($serverPath),
+                    );
+                } catch (\FFMpeg\Exception\RuntimeException $e) {
+                    $this->newLine();
+                    $this->warn(''
+                        .'Skipping attachments for card legacy id '
+                        ."{$legacyCard['id']}. ".$e->getMessage()
+                    );
+
+                    return;
+                }
 
                 File::create([
 
-                    'name' => $this->fileStorageService
-                        ->getFileName($legacyPath),
-
-                    'filename' => $newFileName,
-                    'type' => $this->fileStorageService->fileType(
-                        $mimeType,
-                        Storage::disk('public')->path($newPath),
+                    'name' => rawurldecode(
+                        $this->fileStorageService->getFileName($serverPath),
                     ),
-                    'size' => Storage::disk('public')->size($newPath),
 
-                    'card_id' => $this->mapIds
-                        ->get('cards')
-                        ->get($legacyCard['id']),
+                    'filename' => $legacyPath,
+                    'type' => $type,
+                    'size' => Storage::disk('public')->size($serverPath),
 
-                    'course_id' => $this->mapIds
-                        ->get('courses')
-                        ->get($legacyCard['course_id']),
+                    // 'card_id' => $this->mapIds
+                    //     ->get('cards')
+                    //     ->get($legacyCard['id']),
+
+                    // 'course_id' => $this->mapIds
+                    //     ->get('courses')
+                    //     ->get($legacyCard['course_id']),
+
+                    // TODO REMOVE
+                    'card_id' => $cccard->id,
+
+                    'course_id' => $cccard->course->id,
+                    // --------------------------------
 
                     'status' => FileStatus::Ready,
                     'progress' => null,
@@ -777,6 +794,19 @@ class MigrateLegacy extends Command
         $this->info('Files migrations complete.');
     }
 
+    protected function replaceOldAttachmentsUrl(?string $html): ?string
+    {
+        if (empty($html)) {
+            return null;
+        }
+
+        return preg_replace(
+            '#https?://sepia2?\.unil\.ch/impact/attachments/([^"]+)#',
+            '/storage/uploads/files/legacy/impact-attachments/$1',
+            $html,
+        );
+    }
+
     protected function generateNewFileName($extension): string
     {
         $random = Str::random(40);
@@ -784,9 +814,9 @@ class MigrateLegacy extends Command
         return "legacy-$random.$extension";
     }
 
-    protected function parseFileUrl($videoUrl): array
+    protected function parseFileUrl($videoUrl): ?array
     {
-        $pattern = "#^https://sepia\.unil\.ch/impact/media/([^/]+)/([^/]+)#";
+        $pattern = '#^https://sepia2?\.unil\.ch/impact/media/([^/]+)/([^/]+)#';
 
         if (preg_match($pattern, $videoUrl, $matches)) {
             $id = $matches[1];

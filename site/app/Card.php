@@ -9,6 +9,7 @@ use App\Enums\StateType;
 use App\Enums\TranscriptionType;
 use App\Scopes\HideAttachmentsScope;
 use App\Scopes\ValidityScope;
+use App\Traits\IsLegacy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,6 +23,7 @@ use Illuminate\Support\Facades\Auth;
 class Card extends Model
 {
     use HasFactory;
+    use IsLegacy;
     use SoftDeletes;
 
     const MAX_CHARACTERS_SPEECH = 55;
@@ -66,6 +68,9 @@ class Card extends Model
     protected $fillable = [
         'title',
         'box2',
+        'box2->version',
+        'box2->icor',
+        'box2->text',
         'box3',
         'box4',
         'course_id',
@@ -74,12 +79,22 @@ class Card extends Model
         'file_id',
         'options',
         'position',
-        'options->box2->sync',
+        'options->no_emails',
+        'options->presentation_date',
+        'options->box1->end',
         'options->box1->hidden',
+        'options->box1->link',
+        'options->box1->start',
         'options->box2->hidden',
+        'options->box2->sync',
+        'options->box3->fixed',
         'options->box3->hidden',
+        'options->box3->title',
+        'options->box4->fixed',
         'options->box4->hidden',
+        'options->box4->title',
         'options->box5->hidden',
+        'legacy_id',
     ];
 
     protected $attributes = [
@@ -133,7 +148,19 @@ class Card extends Model
      */
     public function tags(): BelongsToMany
     {
-        return $this->belongsToMany(Tag::class)->orderBy('name');
+        return $this
+            ->belongsToMany(Tag::class)
+            ->withPivot([
+                'created_at AS pivot_created_at',
+                'id AS pivot_id',
+            ])
+            ->withTimestamps()
+            ->orderBy('pivot_created_at')
+
+            // Can't use fraction (microseconds) for timestamp. If the timestamp
+            // is the same (can happen with migrated data), we rely on the id
+            // instead.
+            ->orderBy('pivot_id');
     }
 
     /**
@@ -226,7 +253,7 @@ class Card extends Model
     protected function tagsList(): Attribute
     {
         return Attribute::make(
-            get: fn () => $this->tags()->pluck('name')->join(', '),
+            get: fn () => $this->tags->pluck('name')->join(', '),
         );
     }
 
@@ -284,7 +311,6 @@ class Card extends Model
 
         // Check if user role is allowed to see the box
         return match ($this->state->getPermission($box)) {
-            StatePermission::ManagersCanShowAndEditHoldersCanShow => Auth::user()->isManager($this->course) || Auth::user()->isHolder($this),
             StatePermission::HoldersCanShowAndEdit => Auth::user()->isHolder($this),
             StatePermission::ManagersAndHoldersCanShowAndEdit => Auth::user()->isManager($this->course) || Auth::user()->isHolder($this),
             StatePermission::AllCanShowManagersAndHoldersCanEdit, StatePermission::AllCanShowManagersCanEdit => Auth::user()->isManager($this->course) || Auth::user()->isHolder($this) || Auth::user()->isMember($this->course),
@@ -318,7 +344,6 @@ class Card extends Model
 
         // Check if user role is allowed to edit the box
         return match ($this->state->getPermission($box)) {
-            StatePermission::ManagersCanShowAndEditHoldersCanShow => Auth::user()->isManager($this->course),
             StatePermission::HoldersCanShowAndEdit => Auth::user()->isHolder($this),
             StatePermission::ManagersAndHoldersCanShowAndEdit, StatePermission::AllCanShowManagersAndHoldersCanEdit => Auth::user()->isManager($this->course) || Auth::user()->isHolder($this),
             StatePermission::AllCanShowManagersCanEdit, StatePermission::ManagersCanShowAndEdit => Auth::user()->isManager($this->course),

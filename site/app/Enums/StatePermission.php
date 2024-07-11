@@ -6,15 +6,13 @@ final class StatePermission
 {
     const None = 0;
 
-    const ManagersCanShowAndEditHoldersCanShow = 1;
+    const HoldersCanShowAndEdit = 1; // "Private" State & default state
 
-    const HoldersCanShowAndEdit = 2; // "Private" State & default state
+    const ManagersAndHoldersCanShowAndEdit = 2; // "Open" state
 
-    const ManagersAndHoldersCanShowAndEdit = 3; // "Open" state
+    const AllCanShowManagersAndHoldersCanEdit = 3; // "Public" state
 
-    const AllCanShowManagersAndHoldersCanEdit = 4; // "Public" state
+    const AllCanShowManagersCanEdit = 4; // "Archived" state
 
-    const AllCanShowManagersCanEdit = 5; // "Archived" state
-
-    const ManagersCanShowAndEdit = 6;
+    const ManagersCanShowAndEdit = 5;
 }

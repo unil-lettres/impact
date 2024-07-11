@@ -26,6 +26,7 @@ import ImageToolbarPlugin from '@ckeditor/ckeditor5-image/src/imagetoolbar';
 import ImageInsertPlugin from '@ckeditor/ckeditor5-image/src/imageInsert';
 import ImageResizePlugin from '@ckeditor/ckeditor5-image/src/imageresize';
 import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
+import FontBackgroundColor from '@ckeditor/ckeditor5-font/src/fontbackgroundcolor';
 import FontColorPlugin from '@ckeditor/ckeditor5-font/src/fontcolor';
 import FontSizePlugin from '@ckeditor/ckeditor5-font/src/fontsize';
 import TablePlugin from '@ckeditor/ckeditor5-table/src/table';
@@ -34,6 +35,7 @@ import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperti
 import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
 import HorizontalLinePlugin from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
 import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
+import HeadingPlugin from '@ckeditor/ckeditor5-heading/src/heading';
 
 const editorConfiguration = {
     plugins: [
@@ -41,6 +43,7 @@ const editorConfiguration = {
         BoldPlugin,
         ItalicPlugin,
         UnderlinePlugin,
+        HeadingPlugin,
         StrikethroughPlugin,
         BlockQuotePlugin,
         ListProperties,
@@ -55,6 +58,7 @@ const editorConfiguration = {
         ImageResizePlugin,
         Base64UploadAdapter,
         FontColorPlugin,
+        FontBackgroundColor,
         FontSizePlugin,
         TablePlugin,
         TableToolbarPlugin,
@@ -65,6 +69,8 @@ const editorConfiguration = {
         ParagraphPlugin
     ],
     toolbar: [
+        "heading",
+        "|",
         "fontSize",
         "bold",
         "italic",
@@ -80,9 +86,9 @@ const editorConfiguration = {
         "horizontalLine",
         "insertTable",
         "|",
+        "insertImage",
         "link",
         "mediaEmbed",
-        "uploadImage"
     ],
     image: {
         upload: {

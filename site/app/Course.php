@@ -4,6 +4,7 @@ namespace App;
 
 use App\Enums\EnrollmentRole;
 use App\Enums\StateType;
+use App\Traits\IsLegacy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -14,10 +15,16 @@ use Illuminate\Support\Collection;
 class Course extends Model
 {
     use HasFactory;
+    use IsLegacy;
     use SoftDeletes;
 
     protected $fillable = [
-        'name', 'description', 'type', 'external_id', 'transcription',
+        'name',
+        'description',
+        'type',
+        'external_id',
+        'transcription',
+        'legacy_id',
     ];
 
     protected function casts(): array

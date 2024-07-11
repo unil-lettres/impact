@@ -70,7 +70,7 @@
                                             <input id="filename"
                                                    type="text"
                                                    name="filename"
-                                                   value="{{ old('filename', $file->filename) }}"
+                                                   value="{{ old('filename', rawurldecode($file->filename)) }}"
                                                    class="form-control"
                                                    disabled
                                             >

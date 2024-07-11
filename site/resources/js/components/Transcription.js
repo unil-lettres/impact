@@ -28,7 +28,9 @@ function SpeechInput(props) {
     return <textarea
         ref={inputRef}
         className="speech"
-        style={{width: `${maxCharactersSpeech}ch`}}
+        // We put ".2" because otherwise some unexpected behaviour occurs
+        // and the line is split in two lines before the max char is reach.
+        style={{width: `${maxCharactersSpeech}.2ch`}}
         {...rest}
     />;
 }

@@ -198,8 +198,11 @@ class ProcessFile implements ShouldQueue
             );
 
         // Remove uploaded file from temp storage
+        $baseName = $this->fileStorageService
+            ->getBaseName($video->getPathfile());
+
         $this->fileStorageService
-            ->removeFileFromTempStorage($video->getPathfile());
+            ->removeFileFromTempStorage($baseName);
 
         // Update file properties in database
         $videoStream = $ffprobe
@@ -207,11 +210,11 @@ class ProcessFile implements ShouldQueue
             ->videos()
             ->first();
         if ($videoStream) {
+            $baseName = $this->fileStorageService->getBaseName($saveToPathname);
+
             $this->file->update([
-                'filename' => $this->fileStorageService
-                    ->getBaseName($saveToPathname),
-                'size' => $this->fileStorageService
-                    ->getFileSize($saveToPathname),
+                'filename' => $baseName,
+                'size' => $this->fileStorageService->getFileSize($baseName),
                 'length' => (int) $videoStream
                     ->get('duration'),
                 'width' => $videoStream
@@ -275,8 +278,11 @@ class ProcessFile implements ShouldQueue
             );
 
         // Remove uploaded file from temp storage
+        $baseName = $this->fileStorageService
+            ->getBaseName($audio->getPathfile());
+
         $this->fileStorageService
-            ->removeFileFromTempStorage($audio->getPathfile());
+            ->removeFileFromTempStorage($baseName);
 
         // Update file properties in database
         $audioStream = $ffprobe
@@ -284,11 +290,11 @@ class ProcessFile implements ShouldQueue
             ->audios()
             ->first();
         if ($audioStream) {
+            $baseName = $this->fileStorageService->getBaseName($saveToPathname);
+
             $this->file->update([
-                'filename' => $this->fileStorageService
-                    ->getBaseName($saveToPathname),
-                'size' => $this->fileStorageService
-                    ->getFileSize($saveToPathname),
+                'filename' => $baseName,
+                'size' => $this->fileStorageService->getFileSize($baseName),
                 'length' => (int) $audioStream
                     ->get('duration'),
             ]);

@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Enums\FinderItemType;
+use App\Traits\IsLegacy;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,10 +14,11 @@ use Illuminate\Support\Collection;
 class Folder extends Model
 {
     use HasFactory;
+    use IsLegacy;
     use SoftDeletes;
 
     protected $fillable = [
-        'title', 'position', 'course_id', 'parent_id',
+        'title', 'position', 'course_id', 'parent_id', 'legacy_id',
     ];
 
     protected function casts(): array

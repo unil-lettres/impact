@@ -87,7 +87,7 @@ class CourseController extends Controller
 
         return view('courses.manage', [
             'courses' => $courses
-                ->orderBy('created_at', 'desc')
+                ->orderBy('name', 'asc')
                 ->paginate(config('const.pagination.per')),
             'filter' => $filter,
             'search' => $search,

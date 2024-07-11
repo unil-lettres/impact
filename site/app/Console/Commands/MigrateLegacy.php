@@ -139,10 +139,10 @@ class MigrateLegacy extends Command
     protected function wipeDatabase(): void
     {
         $this->info('Wipe current database...');
-        Artisan::call('db:wipe');
+        Artisan::call('db:wipe', ['--force' => true]);
 
         $this->info('Running migrations...');
-        Artisan::call('migrate:fresh');
+        Artisan::call('migrate:fresh', ['--force' => true]);
     }
 
     protected function migrateUsers(bool $invalidateMail): void

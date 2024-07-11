@@ -213,7 +213,7 @@ class MigrateLegacy extends Command
 
                 // Column deleted_at is not fillable.
                 $course->deleted_at = $courseLegacy['to_delete_time'];
-                $course->save();
+                $course->saveQuietly();
 
                 $this->mapIds->get('courses')->put($courseLegacy['id'], $course->id);
             },
@@ -344,7 +344,9 @@ class MigrateLegacy extends Command
                     ->get('folders')
                     ->get($folderLegacy['parent_id']);
 
-                $folder->save();
+                // We saveQuietly because we don't want to trigger the updated
+                // event to avoid recalculation of the position.
+                $folder->saveQuietly();
             },
         );
         $this->newLine();
@@ -604,7 +606,7 @@ class MigrateLegacy extends Command
                     // If file_name could not be parsed but exists, it means
                     // its an external link.
                     if (! empty($videoUrl)) {
-                        $card->update([
+                        $card->updateQuietly([
                             'options->box1->link' => $videoUrl,
                         ]);
                         $card->refresh();
@@ -667,7 +669,7 @@ class MigrateLegacy extends Command
                 ]);
 
                 $card->file_id = $file->id;
-                $card->save();
+                $card->saveQuietly();
                 $card->refresh();
             },
         );

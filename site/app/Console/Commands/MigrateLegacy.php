@@ -121,7 +121,7 @@ class MigrateLegacy extends Command
         $dbPort = $this->askNotNull('legacy database port', 3306);
         $dbCharset = $this->askNotNull('legacy database charset', 'utf8mb4');
         $dbUsername = $this->askNotNull('legacy database username');
-        $dbPassword = $this->askNotNull('legacy database password');
+        $dbPassword = $this->secret('Enter the legacy database password');
 
         try {
             $this->legacyConnection = new PDO(

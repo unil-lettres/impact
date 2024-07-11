@@ -635,8 +635,6 @@ class MigrateLegacy extends Command
                     );
                 }
 
-                $fileName = $this->fileStorageService->getFileName($fileName);
-
                 // Files name in database don't have any extension and should be
                 // mp4.
                 $extension = 'mp4';

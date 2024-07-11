@@ -24,9 +24,10 @@ use FFMpeg\FFProbe;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 use PDO;
+use Psr\Log\LoggerInterface;
 
 class MigrateLegacy extends Command
 {
@@ -60,6 +61,8 @@ class MigrateLegacy extends Command
 
     protected FileStorageService $fileStorageService;
 
+    protected LoggerInterface $log;
+
     /**
      * Execute the console command.
      */
@@ -67,16 +70,26 @@ class MigrateLegacy extends Command
     {
         ini_set('memory_limit', '1024M');
 
+        $logfile = storage_path('logs/migrate-legacy-'.date('YmdHis').'.log');
+
+        $this->log = Log::build(['driver' => 'single', 'path' => $logfile]);
+
         $this->fileStorageService = new FileStorageService();
 
-        if ($this->confirm('Please confirm that you have checked that the transcription algorithm is correct (must reflect the one in Transcription.js).', false) === false) {
-            $this->info('Aborting...');
-            return 0;
-        }
+        $warningMessage = <<<TEXT
+        Please read the following before continuing:
+            - This script will WIPE the current database. Make sure you have backup the current database before continuing.
+            - If you have made changes to the transcription algorithm in Transcription.js, make sure to update the algorithm in this migration script.
+            - Make sure you have mounted the storage containing legacy files.
+                - Remove all files in the storage in uploads/files except the legacy folder.
+            - Logs will be put in $logfile
+        TEXT;
 
-        $this->warn('Continue will ERASE the current database and all uploaded files. Make sure you have a backup of the current database and files before continuing.');
+        $this->info($warningMessage);
+
         if ($this->confirm('Do you want to continue?', false) === false) {
             $this->info('Aborting...');
+
             return 0;
         }
 
@@ -140,8 +153,6 @@ class MigrateLegacy extends Command
 
         $result = $this->legacyConnection->query('SELECT * FROM users');
 
-        $warns = [];
-
         $this->withProgressBar(
             $result->fetchAll(),
             function ($legacyUser) use (&$warns, $invalidateMail) {
@@ -154,13 +165,17 @@ class MigrateLegacy extends Command
                 if (! empty($legacyUser['last_name'])) {
                     $fullName[] = $legacyUser['last_name'];
                 }
+                $newName = implode(' ', $fullName);
+
                 if (count($fullName) < 2) {
-                    $warns[] = "User legacy id {$legacyUser['id']} misses a lastname, firstname or both.";
+                    $this->log->warning(''
+                        ."User legacy id {$legacyUser['id']} misses a lastname,"
+                        ." firstname or both. His new name will be '$newName'."
+                    );
                 }
-                $fullName = implode(' ', $fullName);
 
                 $user = User::create([
-                    'name' => $fullName,
+                    'name' => $newName,
 
                     'email' => $invalidateMail
                         ? $legacyUser['email'].'@lettres-tst.ch'
@@ -177,11 +192,6 @@ class MigrateLegacy extends Command
             },
         );
         $this->newLine();
-
-        foreach ($warns as $warn) {
-            $this->warn($warn);
-        }
-
         $this->info('Users migrations complete.');
     }
 
@@ -350,7 +360,6 @@ class MigrateLegacy extends Command
             },
         );
         $this->newLine();
-
         $this->info('Folders migrations complete.');
     }
 
@@ -491,7 +500,6 @@ class MigrateLegacy extends Command
             },
         );
         $this->newLine();
-
         $this->info('Enrollments migrations complete.');
     }
 
@@ -555,7 +563,6 @@ class MigrateLegacy extends Command
             },
         );
         $this->newLine();
-
         $this->info('Tags migrations complete.');
     }
 
@@ -578,11 +585,14 @@ class MigrateLegacy extends Command
         $this->withProgressBar(
             $result->fetchAll(),
             function ($legacyCard) {
+
+                // Basic keep alive mechanism for the connection.
+                $this->legacyConnection->query('SELECT 1');
+
                 if (! empty($legacyCard['video_upload_state'])) {
-                    $this->newLine();
-                    $this->warn(''
-                        .'Skipping media for card legacy id '
-                        ."{$legacyCard['id']}. Transcoded state is "
+                    $this->log->warning(''
+                        ."Skipping media for card legacy id {$legacyCard['id']}"
+                        .'. Transcoded state is '
                         ."'{$legacyCard['video_upload_state']}'"
                     );
 
@@ -617,7 +627,7 @@ class MigrateLegacy extends Command
                 [$legacyCourseId, $fileName] = $parsedVideoUrl;
 
                 if ($legacyCard['course_id'] !== intval($legacyCourseId)) {
-                    $this->warn(''
+                    $this->log->warning(''
                         ."Card legacy id {$legacyCard['id']} is in course id "
                         ."legacy {$legacyCard['course_id']} but the media is "
                         ."in folder id $legacyCourseId. Using $legacyCourseId"
@@ -635,10 +645,9 @@ class MigrateLegacy extends Command
                 $serverPath = StoragePath::UploadStandard.'/'.rawurldecode($legacyPath);
 
                 if (Storage::disk('public')->missing($serverPath)) {
-                    $this->newLine();
-                    $this->warn(''
-                        ."File '$serverPath' does not exist. Skipping media "
-                        ."for course legacy id {$legacyCard['course_id']}."
+                    $this->log->warning(''
+                        ."File '$serverPath' does not exist. Skipping this "
+                        ."media for course legacy id {$legacyCard['course_id']}."
                     );
 
                     return;
@@ -674,7 +683,6 @@ class MigrateLegacy extends Command
             },
         );
         $this->newLine();
-
         $this->info('Files migrations complete.');
     }
 
@@ -696,16 +704,17 @@ class MigrateLegacy extends Command
             $result->fetchAll(),
             function ($legacyCard) {
 
+                // Basic keep alive mechanism for the connection.
+                $this->legacyConnection->query('SELECT 1');
+
                 $urlencodedPath = rawurlencode($legacyCard['path']);
                 $legacyPath = "legacy/impact-attachments/{$legacyCard['id']}/$urlencodedPath";
                 $serverPath = StoragePath::UploadStandard.'/'.rawurldecode($legacyPath);
 
                 if (Storage::disk('public')->missing($serverPath)) {
-                    $this->newLine();
-                    $this->warn(''
-                        .'Skipping attachments for card legacy id '
-                        ."{$legacyCard['id']}. File '$serverPath' does not "
-                        .'exist.'
+                    $this->log->warning(''
+                        ."File '$serverPath' does not exist. Skipping this "
+                        ."attachment for card legacy id {$legacyCard['id']}."
                     );
 
                     return;
@@ -713,11 +722,9 @@ class MigrateLegacy extends Command
                 $extension = $this->fileStorageService->getExtension($serverPath);
 
                 if (empty($extension)) {
-                    $this->newLine();
-                    $this->warn(''
-                        .'Skipping attachments for card legacy id '
-                        ."{$legacyCard['id']}. File '$serverPath' has no "
-                        .'extension.'
+                    $this->log->warning(''
+                        ."File '$serverPath' has no extension. Skipping this "
+                        ."attachment for card legacy id {$legacyCard['id']}."
                     );
 
                     return;
@@ -731,10 +738,10 @@ class MigrateLegacy extends Command
                         Storage::disk('public')->path($serverPath),
                     );
                 } catch (\FFMpeg\Exception\RuntimeException $e) {
-                    $this->newLine();
-                    $this->warn(''
-                        .'Skipping attachments for card legacy id '
-                        ."{$legacyCard['id']}. ".$e->getMessage()
+                    $this->log->warning(''
+                        ."Unable to identify file type for '$serverPath'. "
+                        .'Skipping this attachments for card legacy id '
+                        ."{$legacyCard['id']}. Error: ".$e->getMessage()
                     );
 
                     return;
@@ -764,7 +771,6 @@ class MigrateLegacy extends Command
             },
         );
         $this->newLine();
-
         $this->info('Files migrations complete.');
     }
 

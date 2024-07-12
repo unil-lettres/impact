@@ -26,6 +26,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
+use Normalizer;
 use PDO;
 use Psr\Log\LoggerInterface;
 
@@ -605,7 +606,7 @@ class MigrateLegacy extends Command
 
                     return;
                 }
-                [$legacyCourseId, $fileName] = $parsedVideoUrl;
+                [$legacyCourseId, $urlFileName] = $parsedVideoUrl;
 
                 if ($legacyCard['course_id'] !== intval($legacyCourseId)) {
                     $this->log->warning(''
@@ -616,34 +617,31 @@ class MigrateLegacy extends Command
                     );
                 }
 
-                // Files name in database don't have any extension and should be
-                // mp4.
-                $extension = 'mp4';
 
-                $legacyPath = "legacy/impact-media/$legacyCourseId/$fileName.$extension";
-                $serverPath = StoragePath::UploadStandard.'/'.rawurldecode($legacyPath);
+                $fileInfos = $this->fileInfos(
+                    // Filenames in database don't have any extension and
+                    // should be mp4.
+                    "$urlFileName.mp4",
 
-                if (Storage::disk('public')->missing($serverPath)) {
-                    $this->log->warning(''
-                        ."File '$serverPath' does not exist. Skipping this "
-                        ."media for course legacy id {$legacyCard['course_id']}."
-                    );
+                    "legacy/impact-media/$legacyCourseId",
+                );
 
+                if (is_null($fileInfos)) {
                     return;
                 }
 
-                $absolutePath = Storage::disk('public')->path($serverPath);
-                $mimeType = Storage::disk('public')->mimeType($serverPath);
+                $absolutePath = Storage::disk('public')->path($fileInfos['serverPath']);
+                $mimeType = Storage::disk('public')->mimeType($fileInfos['serverPath']);
                 $mediaProperties = $this->getMediaProperties($absolutePath);
 
                 $file = File::create([
-                    'name' => rawurldecode($fileName),
-                    'filename' => $legacyPath,
+                    'name' => $fileInfos['filename'],
+                    'filename' => $fileInfos['dbFilename'],
                     'type' => $this->fileStorageService->fileType(
                         $mimeType,
                         $absolutePath,
                     ),
-                    'size' => Storage::disk('public')->size($serverPath),
+                    'size' => Storage::disk('public')->size($fileInfos['serverPath']),
 
                     'course_id' => $this->mapIds
                         ->get('courses')
@@ -686,18 +684,17 @@ class MigrateLegacy extends Command
                 // Basic keep alive mechanism for the connection.
                 $this->legacyConnection->query('SELECT 1');
 
-                $urlencodedPath = rawurlencode($legacyCard['path']);
-                $legacyPath = "legacy/impact-attachments/{$legacyCard['id']}/$urlencodedPath";
-                $serverPath = StoragePath::UploadStandard.'/'.rawurldecode($legacyPath);
 
-                if (Storage::disk('public')->missing($serverPath)) {
-                    $this->log->warning(''
-                        ."File '$serverPath' does not exist. Skipping this "
-                        ."attachment for card legacy id {$legacyCard['id']}."
-                    );
+                $fileInfos = $this->fileInfos(
+                    rawurlencode($legacyCard['path']),
+                    "legacy/impact-attachments/{$legacyCard['id']}",
+                );
 
+                if (is_null($fileInfos)) {
                     return;
                 }
+
+                $serverPath = $fileInfos['serverPath'];
                 $extension = $this->fileStorageService->getExtension($serverPath);
 
                 if (empty($extension)) {
@@ -727,12 +724,8 @@ class MigrateLegacy extends Command
                 }
 
                 File::create([
-
-                    'name' => rawurldecode(
-                        $this->fileStorageService->getFileName($serverPath),
-                    ),
-
-                    'filename' => $legacyPath,
+                    'name' => $fileInfos['filename'],
+                    'filename' => $fileInfos['dbFilename'],
                     'type' => $type,
                     'size' => Storage::disk('public')->size($serverPath),
 
@@ -768,7 +761,7 @@ class MigrateLegacy extends Command
 
     protected function parseFileUrl($videoUrl): ?array
     {
-        $pattern = '#^https://sepia2?\.unil\.ch/impact/media/([^/]+)/([^/]+)#';
+        $pattern = '#^https?://sepia2?\.unil\.ch/impact/media/([^/]+)/([^/]+)#';
 
         if (preg_match($pattern, $videoUrl, $matches)) {
             $id = $matches[1];
@@ -910,6 +903,43 @@ class MigrateLegacy extends Command
         }
 
         return $icor;
+    }
+
+    /**
+     * Return informations about a file and check if this file exists.
+     */
+    protected function fileInfos($urlFilename, $path): ?array
+    {
+        $serverPath = StoragePath::UploadStandard."/$path";
+        $filename = rawurldecode($urlFilename);
+
+        if (Storage::disk('public')->missing("$serverPath/$filename")) {
+
+            // It seems that some legacy production filenames are stored in NFD
+            // normalization form but the name is not normalized in database.
+            // So we check if we found the file with the normalized form. If so
+            // we renamed it in the database with the correct normalized name.
+            $filenameNfd = normalizer_normalize(
+                $filename,
+                Normalizer::FORM_D,
+            );
+
+            if (Storage::disk('public')->missing("$serverPath/$filenameNfd")) {
+                $this->log->warning(
+                    "File '$serverPath/$filename' does not exist. Skipping this file."
+                );
+                return null;
+            }
+            $filename = $filenameNfd;
+        }
+
+        $urlFilename = rawurlencode($filename);
+
+        return [
+            'filename' => $filename,
+            'dbFilename' => "$path/$urlFilename",
+            'serverPath' => "$serverPath/$filename",
+        ];
     }
 
     protected function splitSpeech(string $speech): array

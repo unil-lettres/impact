@@ -574,12 +574,12 @@ class MigrateLegacy extends Command
             SELECT
                 cards.id,
                 cards.course_id,
-                video_url,
-
-                -- Not null or empty means that transcoding is in error or pending.
-                video_upload_state
+                video_url
             FROM
                 cards
+            WHERE TRUE
+                AND video_url IS NOT NULL
+                AND video_url <> ''
         SQL);
 
         $this->withProgressBar(
@@ -589,38 +589,19 @@ class MigrateLegacy extends Command
                 // Basic keep alive mechanism for the connection.
                 $this->legacyConnection->query('SELECT 1');
 
-                if (! empty($legacyCard['video_upload_state'])) {
-                    $this->log->warning(''
-                        ."Skipping media for card legacy id {$legacyCard['id']}"
-                        .'. Transcoded state is '
-                        ."'{$legacyCard['video_upload_state']}'"
-                    );
-
-                    return;
-                }
-
                 $card = Card::findOrFail(
                     $this->mapIds->get('cards')->get($legacyCard['id']),
                 );
 
                 $videoUrl = $legacyCard['video_url'];
-
-                if (empty($videoUrl)) {
-                    return;
-                }
-
                 $parsedVideoUrl = $this->parseFileUrl($videoUrl);
 
                 if (is_null($parsedVideoUrl)) {
 
-                    // If file_name could not be parsed but exists, it means
-                    // its an external link.
-                    if (! empty($videoUrl)) {
-                        $card->updateQuietly([
-                            'options->box1->link' => $videoUrl,
-                        ]);
-                        $card->refresh();
-                    }
+                    // If file_name could not be parsed, it means its an
+                    // external link.
+                    $card->updateQuietly(['options->box1->link' => $videoUrl]);
+                    $card->refresh();
 
                     return;
                 }

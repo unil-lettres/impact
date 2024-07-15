@@ -2,21 +2,23 @@
     <div class="flex-fill">
         <div x-show.important="canEdit && edition" class="d-flex gap-1" x-cloak>
             <div>{{ trans('cards.tags') }}:</div>
-            <div class="d-flex gap-1 flex-column">
+            <div class="d-flex gap-1 align-items-center">
                 <div
                     id="rct-multi-tag-select"
                     createLabel="{{ trans('general.create_select_option_label') }}"
                     data='{{ json_encode(['record' => $card, 'options' => $card->course->tags, 'defaults' => $card->tags ]) }}'
                 ></div>
-                <div class="d-flex align-items-center gap-2">
-                    <button
-                        @click="edition = false; loading = true; axios.get(`/cards/{{$card->id}}/tagsInline`).then(response => {tagsInline = response.data.value; loading = false;})"
-                        class="btn btn-primary float-right"
-                    >
-                        {{ trans('cards.complete') }}
-                    </button>
-                    <div class="form-text" style="margin-top: 0;">{{ trans('cards.edit.tags_are_auto_save') }}</div>
-                </div>
+                <button
+                    @click="edition = false; loading = true; axios.get(`/cards/{{$card->id}}/tagsInline`).then(response => {tagsInline = response.data.value; loading = false;})"
+                    class="btn btn-primary float-right"
+                >
+                    {{ trans('cards.complete') }}
+                </button>
+                <i class="far fa-question-circle"
+                    data-bs-toggle="tooltip"
+                    data-placement="top"
+                    title="{{ trans('cards.edit.tags_are_auto_save') }}">
+                </i>
             </div>
         </div>
         <div

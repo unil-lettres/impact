@@ -635,7 +635,9 @@ class MigrateLegacy extends Command
                 $mediaProperties = $this->getMediaProperties($absolutePath);
 
                 $file = File::create([
-                    'name' => $fileInfos['filename'],
+                    'name' => $this->fileStorageService->getFileName(
+                        $fileInfos['filename'],
+                    ),
                     'filename' => $fileInfos['dbFilename'],
                     'type' => $this->fileStorageService->fileType(
                         $mimeType,

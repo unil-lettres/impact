@@ -24,6 +24,7 @@ use FFMpeg\FFProbe;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Normalizer;
@@ -921,18 +922,45 @@ class MigrateLegacy extends Command
             // normalization form but the name is not normalized in database.
             // So we check if we found the file with the normalized form. If so
             // we renamed it in the database with the correct normalized name.
-            $filenameNfd = normalizer_normalize(
-                $filename,
-                Normalizer::FORM_D,
-            );
 
-            if (Storage::disk('public')->missing("$serverPath/$filenameNfd")) {
+            $found = false;
+            foreach ([Normalizer::FORM_C, Normalizer::FORM_D] as $form) {
+                $filenameNormalized = normalizer_normalize($filename, $form);
+
+                if (Storage::disk('public')->exists("$serverPath/$filenameNormalized")) {
+                    $this->log->warning(
+                        "File '$serverPath/$filename' had to be renamed in db with normalization '$form'."
+                    );
+
+                    $count = DB::update(
+                        <<<SQL
+                        UPDATE cards
+                        SET box3 = REPLACE(box3, ?, ?),
+                            box4 = REPLACE(box4, ?, ?)
+                        SQL,
+                        [
+                            $urlFilename,
+                            rawurlencode($filenameNormalized),
+                            $urlFilename,
+                            rawurlencode($filenameNormalized),
+                        ],
+                    );
+                    $this->log->warning(
+                        "$count box3 or box4 have been modified to use the normalized filename."
+                    );
+
+                    $filename = $filenameNormalized;
+                    $found = true;
+                    break;
+                }
+            }
+
+            if (!$found) {
                 $this->log->warning(
                     "File '$serverPath/$filename' does not exist. Skipping this file."
                 );
                 return null;
             }
-            $filename = $filenameNfd;
         }
 
         $urlFilename = rawurlencode($filename);

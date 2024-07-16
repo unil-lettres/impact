@@ -20,6 +20,21 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-12 mb-3 row">
+                    <label for="box4-fixed" class="col-md-4 form-label">
+                        {{ trans('cards.fixed_height') }}
+                    </label>
+                    <div class="col-md-8">
+                        <div class="form-check">
+                            <input id="box4-fixed"
+                                   type="checkbox"
+                                   name="box4-fixed"
+                                   {{ old('box4-fixed', $card->options['box4']['fixed']) ? 'checked' : '' }}
+                                   class="form-check-input"
+                            >
+                        </div>
+                    </div>
+                </div>
             @endcan
 
             <div class="col-12 mb-3 row">

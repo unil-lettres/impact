@@ -30,7 +30,7 @@
                 </div>
             </div>
         </div>
-        <div class="card-body">
+        <div class="card-body @if ($card->options[$reference]['fixed']) fixed-height @endif">
             <p id="empty-{{ $reference }}"
                class="text-secondary text-center d-none p-3">
                 {{ trans('messages.card.empty') }}

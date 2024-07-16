@@ -16,12 +16,16 @@
         }
 
         .card-body:has([id^="rct-editor"]) {
-            margin-top: 0.2rem;
-            margin-bottom: 0.2rem;
+            padding: calc(var(--bs-card-spacer-y) + 0.2rem) var(--bs-card-spacer-x);
         }
 
         [id^="rct-editor"].editing {
             border: 1px solid rgba(215, 215, 215, 0.35);
+        }
+
+        .fixed-height {
+            max-height: 442px;
+            overflow-y: scroll;
         }
     }
 

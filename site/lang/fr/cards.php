@@ -29,6 +29,7 @@ return [
     'hide_boxes' => 'Masquer / afficher les cases indiquées comme cachées',
     'hide_boxe.tooltip' => 'Masquer / afficher cette case',
     'hide' => 'Cacher',
+    'fixed_height' => 'Hauteur de la case fixe',
     'select_source' => 'Sélection de la source',
     'external_link' => 'Lien externe',
     'extract' => 'Extrait',

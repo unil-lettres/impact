@@ -113,8 +113,10 @@ class CardController extends Controller
         $options['box2']['sync'] = (bool) $request->get('box2-sync');
         $options['box3']['hidden'] = (bool) $request->get('box3-hidden');
         $options['box3']['title'] = $request->get('box3-title');
+        $options['box3']['fixed'] = $request->get('box3-fixed');
         $options['box4']['hidden'] = (bool) $request->get('box4-hidden');
         $options['box4']['title'] = $request->get('box4-title');
+        $options['box4']['fixed'] = $request->get('box4-fixed');
         $options['box5']['hidden'] = (bool) $request->get('box5-hidden');
         $options['no_emails'] = (bool) $request->get('no_emails');
         $options['presentation_date'] = $request->get('presentation_date');

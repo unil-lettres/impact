@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Card;
 use App\Enrollment;
 use App\Rules\Holders;
+use App\User;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
@@ -71,9 +72,11 @@ class ModalCreateCard extends ModalCreate
     public function enrolledUsers(): Collection
     {
         // Return the list of users enrolled in the course.
-        return $this->course->enrollments->map(
-            fn (Enrollment $enrollment) => $enrollment->user,
-        )->flatten(1)->unique('id');
+        return Enrollment::with('user')
+            ->where('course_id', $this->course->id)
+            ->get()
+            ->map(fn (Enrollment $enrollment) => $enrollment->user)
+            ->unique('id');
     }
 
     public function resetHolders(bool $skipRender = false): void

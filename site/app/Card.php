@@ -102,6 +102,12 @@ class Card extends Model
         'options' => self::OPTIONS,
     ];
 
+    /**
+     * Used for caching hodlers of the card.
+     * Holders retrieving is a heavy operation and should be cached.
+     */
+    protected ?Collection $cachedHolders = null;
+
     protected function casts(): array
     {
         return [
@@ -176,14 +182,19 @@ class Card extends Model
     /**
      * Return a collection of enrollments containing this card.
      * If withInvalidUsers is true, also return the enrollments that have invalid users.
+     * If withUsers is true, eager load the user relation.
      */
-    public function enrollments(bool $withInvalidUsers = false): Collection
+    public function enrollments(bool $withInvalidUsers = false, bool $withUsers = false): Collection
     {
         $enrollments = match ($withInvalidUsers) {
             true => $this->course->enrollments()
                 ->withoutGlobalScope(ValidityScope::class),
             default => $this->course->enrollments(),
         };
+
+        if ($withUsers) {
+            $enrollments->with('user');
+        }
 
         return $enrollments->get()
             ->filter(function ($enrollment) {
@@ -196,9 +207,14 @@ class Card extends Model
      */
     public function holders(): Collection
     {
-        return $this->enrollments()->map(function ($enrollment) {
-            return $enrollment->user;
-        })->sortBy('name');
+        if (is_null($this->cachedHolders)) {
+            $this->cachedHolders = $this->enrollments(withUsers: true)
+                ->map(function ($enrollment) {
+                    return $enrollment->user;
+                })
+                ->sortBy('name');
+        }
+        return $this->cachedHolders;
     }
 
     /**

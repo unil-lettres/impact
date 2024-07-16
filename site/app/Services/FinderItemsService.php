@@ -52,7 +52,7 @@ class FinderItemsService
         string $sortDirection = 'asc',
     ): Collection {
 
-        $cards = Card::with('tags')->with('state')->with('folder')
+        $cards = Card::with('tags')->with('state')->with('folder')->with('course')
             ->where('course_id', $course->id)
             ->where('folder_id', $folder?->id)
             ->where(function ($query) use ($filters) {
@@ -136,7 +136,8 @@ class FinderItemsService
         $results = $cards
             ->concat(
                 // Get all folders, folders are not affected by filters.
-                Folder::where('course_id', $course->id)
+                Folder::with('course')
+                    ->where('course_id', $course->id)
                     ->where('parent_id', $folder?->id)
                     ->get()
             )

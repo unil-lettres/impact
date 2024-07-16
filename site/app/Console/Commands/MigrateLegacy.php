@@ -618,7 +618,6 @@ class MigrateLegacy extends Command
                     );
                 }
 
-
                 $fileInfos = $this->fileInfos(
                     // Filenames in database don't have any extension and
                     // should be mp4.
@@ -686,7 +685,6 @@ class MigrateLegacy extends Command
 
                 // Basic keep alive mechanism for the connection.
                 $this->legacyConnection->query('SELECT 1');
-
 
                 $fileInfos = $this->fileInfos(
                     rawurlencode($legacyCard['path']),
@@ -933,7 +931,7 @@ class MigrateLegacy extends Command
                     );
 
                     $count = DB::update(
-                        <<<SQL
+                        <<<'SQL'
                         UPDATE cards
                         SET box3 = REPLACE(box3, ?, ?),
                             box4 = REPLACE(box4, ?, ?)
@@ -955,10 +953,11 @@ class MigrateLegacy extends Command
                 }
             }
 
-            if (!$found) {
+            if (! $found) {
                 $this->log->warning(
                     "File '$serverPath/$filename' does not exist. Skipping this file."
                 );
+
                 return null;
             }
         }

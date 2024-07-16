@@ -171,9 +171,16 @@ class Finder extends Component
     public function holders(): Collection
     {
         // Return the list of holders for all cards of the course.
-        return $this->course->cards->map(
-            fn (Card $card) => $card->holders(),
-        )->flatten(1)->unique('id');
+        return $this->course
+            ->enrollments()
+            ->get()
+            ->filter(function ($enrollment) {
+                return !empty($enrollment->cards);
+            })
+            ->map(function ($enrollment) {
+                return $enrollment->user;
+            })
+            ->unique('id');
     }
 
     #[On('sort-updated')]

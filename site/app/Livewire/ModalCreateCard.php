@@ -5,7 +5,6 @@ namespace App\Livewire;
 use App\Card;
 use App\Enrollment;
 use App\Rules\Holders;
-use App\User;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;

@@ -171,11 +171,9 @@ class Finder extends Component
     public function holders(): Collection
     {
         // Return the list of holders for all cards of the course.
-        return $this->course
-            ->enrollments()
-            ->get()
+        return $this->course->enrollments
             ->filter(function ($enrollment) {
-                return !empty($enrollment->cards);
+                return ! empty($enrollment->cards);
             })
             ->map(function ($enrollment) {
                 return $enrollment->user;

@@ -196,12 +196,7 @@ class CourseController extends Controller
 
         return view('courses.show', [
             'course' => $course,
-            'breadcrumbs' => $course
-                ->breadcrumbs(),
-            'cards' => $course
-                ->rootCards(),
-            'folders' => $course
-                ->rootFolders(),
+            'breadcrumbs' => $course->breadcrumbs(),
         ]);
     }
 

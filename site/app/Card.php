@@ -102,12 +102,6 @@ class Card extends Model
         'options' => self::OPTIONS,
     ];
 
-    /**
-     * Used for caching hodlers of the card.
-     * Holders retrieving is a heavy operation and should be cached.
-     */
-    protected ?Collection $cachedHolders = null;
-
     protected function casts(): array
     {
         return [
@@ -186,20 +180,27 @@ class Card extends Model
      */
     public function enrollments(bool $withInvalidUsers = false, bool $withUsers = false): Collection
     {
-        $enrollments = match ($withInvalidUsers) {
-            true => $this->course->enrollments()
-                ->withoutGlobalScope(ValidityScope::class),
-            default => $this->course->enrollments(),
-        };
+        static $cachedEnrollments = [];
 
-        if ($withUsers) {
-            $enrollments->with('user');
+        $key = md5(serialize([$this->course->id, $withInvalidUsers, $withUsers]));
+        if (! isset($cachedEnrollments[$key])) {
+
+            $enrollments = match ($withInvalidUsers) {
+                true => $this->course->enrollments()
+                    ->withoutGlobalScope(ValidityScope::class),
+                default => $this->course->enrollments(),
+            };
+
+            if ($withUsers) {
+                $enrollments->with('user');
+            }
+
+            $cachedEnrollments[$key] = $enrollments->get();
         }
 
-        return $enrollments->get()
-            ->filter(function ($enrollment) {
-                return $enrollment->hasCard($this);
-            });
+        return $cachedEnrollments[$key]->filter(function ($enrollment) {
+            return $enrollment->hasCard($this);
+        });
     }
 
     /**
@@ -207,14 +208,11 @@ class Card extends Model
      */
     public function holders(): Collection
     {
-        if (is_null($this->cachedHolders)) {
-            $this->cachedHolders = $this->enrollments(withUsers: true)
-                ->map(function ($enrollment) {
-                    return $enrollment->user;
-                })
-                ->sortBy('name');
-        }
-        return $this->cachedHolders;
+        return $this->enrollments(withUsers: true)
+            ->map(function ($enrollment) {
+                return $enrollment->user;
+            })
+            ->sortBy('name');
     }
 
     /**

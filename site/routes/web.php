@@ -175,6 +175,8 @@ Route::prefix('admin')->name('admin.')->middleware('auth', 'app', 'is_admin')->g
         ->name('courses.manage');
     Route::get('/courses/{course}/enable', [CourseController::class, 'enable'])
         ->name('courses.enable');
+    Route::put('/courses/{course}/unsync', [CourseController::class, 'unsync'])
+        ->name('courses.unsync');
     Route::get('/courses/{course}/mailConfirmDelete', [CourseController::class, 'mailConfirmDelete'])
         ->name('courses.send.confirm.delete');
 

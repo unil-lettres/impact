@@ -70,6 +70,11 @@
                                 {{ trans('courses.external') }}
                             </a>
                             <a class="dropdown-item"
+                               href="{{ route('admin.courses.manage', ['filter' => \App\Enums\CoursesFilter::Orphan, 'search' => $search]) }}">
+                                {!! Helpers::filterSelectedMark($filter, \App\Enums\CoursesFilter::Orphan) !!}
+                                {{ trans('courses.orphan') }}
+                            </a>
+                            <a class="dropdown-item"
                                href="{{ route('admin.courses.manage', ['filter' => \App\Enums\CoursesFilter::Local, 'search' => $search]) }}">
                                 {!! Helpers::filterSelectedMark($filter, \App\Enums\CoursesFilter::Local) !!}
                                 {{ trans('courses.local') }}
@@ -106,7 +111,15 @@
                                                 <span class="badge bg-danger">{{ trans('courses.disabled') }}</span>
                                             @endunless
                                             @if (Helpers::isCourseExternal($course))
-                                                <div class="text-secondary">{{ trans('courses.moodle_id', ['id' => $course->external_id]) }}</div>
+                                                @if($course->orphan)
+                                                    <div class="text-decoration-line-through text-secondary" title="{{ trans('courses.moodle_not_found', ['id' => $course->external_id]) }}">
+                                                        {{ trans('courses.moodle_id', ['id' => $course->external_id]) }}
+                                                    </div>
+                                                @else
+                                                    <div class="text-secondary">
+                                                        {{ trans('courses.moodle_id', ['id' => $course->external_id]) }}
+                                                    </div>
+                                                @endif
                                             @endif
                                         </td>
                                         <td>
@@ -155,6 +168,23 @@
                                                     </span>
                                                 @endcan
                                             @else
+                                                @can('unsync', $course)
+                                                    <span>
+                                                        <form class="with-unlink-confirm" method="post"
+                                                              action="{{ route('admin.courses.unsync', $course->id) }}">
+                                                            @method('PUT')
+                                                            @csrf
+                                                            <button type="submit"
+                                                                    class="btn btn-warning"
+                                                                    data-bs-toggle="tooltip"
+                                                                    data-placement="top"
+                                                                    title="{{ trans('courses.unsync') }}">
+                                                                <i class="fa-solid fa-link-slash"></i>
+                                                            </button>
+                                                        </form>
+                                                    </span>
+                                                @endcan
+
                                                 @can('disable', $course)
                                                     <span>
                                                         <form class="with-disable-confirm" method="post"

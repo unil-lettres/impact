@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Course;
+use App\Enums\CourseType;
 use App\Helpers\Helpers;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -148,6 +149,19 @@ class CoursePolicy
     {
         // Only admins can restore courses
         if ($user->admin) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine whether the user can unsync the external course.
+     */
+    public function unsync(User $user, Course $course): bool
+    {
+        // Only admins can unsync permanently external courses
+        if ($user->admin && $course->type === CourseType::External) {
             return true;
         }
 

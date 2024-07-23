@@ -23,6 +23,7 @@ class Course extends Model
         'description',
         'type',
         'external_id',
+        'orphan',
         'transcription',
         'legacy_id',
     ];

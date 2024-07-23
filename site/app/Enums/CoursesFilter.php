@@ -10,5 +10,7 @@ final class CoursesFilter
 
     const Local = 'local';
 
+    const Orphan = 'orphan';
+
     const Own = 'own';
 }

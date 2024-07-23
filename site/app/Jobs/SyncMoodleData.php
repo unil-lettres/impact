@@ -58,10 +58,18 @@ class SyncMoodleData implements ShouldQueue
                 $availableCourses->pluck('id')->filter()
             );
 
-            // If any, log the orphan courses
+            // If any, log and update the orphan courses
             if ($orphans->isNotEmpty()) {
                 Log::warning('Cannot sync the courses with the following external ids : '.$orphans->implode(', '));
+
+                Course::whereIn('external_id', $orphans)
+                    ->update(['orphan' => true]);
             }
+
+            // Update non-orphan courses
+            $nonOrphans = $availableCourses->pluck('id')->filter()->all();
+            Course::whereIn('external_id', $nonOrphans)
+                ->update(['orphan' => false]);
 
             $this->sync($availableCourses);
         }

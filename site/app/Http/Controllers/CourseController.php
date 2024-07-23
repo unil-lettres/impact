@@ -15,6 +15,7 @@ use App\Http\Requests\IndexCourses;
 use App\Http\Requests\ManageCourses;
 use App\Http\Requests\SendCourseDeleteConfirmMail;
 use App\Http\Requests\StoreCourse;
+use App\Http\Requests\UnsyncCourse;
 use App\Http\Requests\UpdateConfiguration;
 use App\Http\Requests\UpdateCourse;
 use App\Mail\CourseConfirmDelete;
@@ -339,6 +340,30 @@ class CourseController extends Controller
     }
 
     /**
+     * Unsync the specified resource from Moodle.
+     *
+     * @return RedirectResponse
+     *
+     * @throws Exception
+     */
+    public function unsync(UnsyncCourse $request, int $id)
+    {
+        $course = Course::withTrashed()->find($id);
+
+        $this->authorize('unsync', $course);
+
+        $course->update([
+            'type' => CourseType::Local,
+            'external_id' => null,
+            'orphan' => false,
+        ]);
+
+        return redirect()
+            ->back()
+            ->with('success', trans('messages.course.unsynced'));
+    }
+
+    /**
      * Remove the specified resource from storage.
      *
      * @return RedirectResponse
@@ -398,6 +423,8 @@ class CourseController extends Controller
                 ->where('type', CourseType::External),
             CoursesFilter::Local => $courses->withTrashed()
                 ->where('type', CourseType::Local),
+            CoursesFilter::Orphan => $courses->withTrashed()
+                ->where('orphan', true),
             CoursesFilter::Own => $courses
                 ->whereHas('enrollments', function ($query) {
                     $query->where('user_id', Auth::id());

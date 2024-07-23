@@ -32,6 +32,7 @@ return [
     'course.delete.info' => 'L\'espace ne sera plus accessible mais peut être restauré sur demande. Une confirmation de suppression définitive du contenu vous sera demandée par un administrateur dans un second temps.',
     'course.archive.info' => 'Les utilisateurs ne pourront plus modifier leur fiche après cette opération.',
     'course.delete_confirm.sent' => 'Mail de demande de confirmation envoyé aux responsables.',
+    'course.unsynced' => 'Espace retiré de la synchronization Moodle.',
     'card.created' => 'Fiche créée: :title',
     'card.deleted' => 'Fiche supprimée.',
     'card.unlinked' => 'Card dissociée.',

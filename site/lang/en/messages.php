@@ -31,6 +31,7 @@ return [
     'course.delete.info' => 'The space will no longer be accessible but can be restored on request. An administrator will ask you to confirm the definitive deletion of the content in a second step.',
     'course.archive.info' => 'Users will not be able to modify their card after this operation.',
     'course.delete_confirm.sent' => 'Confirmation request mail sent to the managers.',
+    'course.unsynced' => 'Space removed from Moodle synchronization.',
     'card.created' => 'Card created: :title',
     'card.deleted' => 'Card deleted.',
     'card.unlinked' => 'Card dissociated.',

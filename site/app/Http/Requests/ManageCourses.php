@@ -25,7 +25,7 @@ class ManageCourses extends AbstractRequest
             'filter' => [
                 'string',
                 Rule::in(
-                    [CoursesFilter::Disabled, CoursesFilter::External, CoursesFilter::Local]
+                    [CoursesFilter::Disabled, CoursesFilter::Orphan, CoursesFilter::External, CoursesFilter::Local]
                 ),
             ],
         ];

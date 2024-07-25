@@ -131,7 +131,7 @@ class CourseController extends Controller
             }
 
             // Get course data from Moodle
-            $moodleCourse = (new MoodleService())
+            $moodleCourse = (new MoodleService)
                 ->getCourse($externalId);
 
             // If request fails or no data is found, return with error

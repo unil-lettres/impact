@@ -37,7 +37,7 @@ class CourseTest extends DuskTestCase
     public function testListCoursesAsUser(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('member-user@example.com', 'password');
 
             $browser->assertSee('Liste des espaces')
@@ -57,7 +57,7 @@ class CourseTest extends DuskTestCase
     public function testListCoursesAsAdmin(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->assertSee('Liste des espaces')
@@ -72,7 +72,7 @@ class CourseTest extends DuskTestCase
     public function testLinkDeactivatedCoursesToAdminView(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->assertSee('Deactivated space')
@@ -90,7 +90,7 @@ class CourseTest extends DuskTestCase
     public function testViewCourseAsManager(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('manager-user@example.com', 'password');
 
             $browser->assertSee('First space')
@@ -109,7 +109,7 @@ class CourseTest extends DuskTestCase
     public function testViewCourseAsMember(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('member-user@example.com', 'password');
 
             $browser->assertSee('Second space')
@@ -128,7 +128,7 @@ class CourseTest extends DuskTestCase
     public function testCreateCourse(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/courses');
@@ -152,7 +152,7 @@ class CourseTest extends DuskTestCase
     public function testEditLocalCourse(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/courses');
@@ -178,7 +178,7 @@ class CourseTest extends DuskTestCase
     public function testCannotEditExternalCourse(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/courses');
@@ -196,7 +196,7 @@ class CourseTest extends DuskTestCase
     public function testDisableCourse(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/courses');
@@ -220,7 +220,7 @@ class CourseTest extends DuskTestCase
     public function testDeleteCourse(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/courses');
@@ -243,7 +243,7 @@ class CourseTest extends DuskTestCase
     public function testChangeTranscriptionType(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit(new PagesCard('Test card features'));
@@ -279,7 +279,7 @@ class CourseTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
 
             $browser
-                ->visit(new Login())
+                ->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $page = new PagesCourse('First space');
@@ -304,7 +304,7 @@ class CourseTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
 
             $browser
-                ->visit(new Login())
+                ->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser
@@ -322,7 +322,7 @@ class CourseTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
 
             $browser
-                ->visit(new Login())
+                ->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser
@@ -343,7 +343,7 @@ class CourseTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
 
             $browser
-                ->visit(new Login())
+                ->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser
@@ -365,7 +365,7 @@ class CourseTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
 
             $browser
-                ->visit(new Login())
+                ->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $pageCourse = new PagesCourse('Second space');
@@ -398,7 +398,7 @@ class CourseTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
 
             $browser
-                ->visit(new Login())
+                ->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $pageCourse = new PagesCourse('Second space');
@@ -431,7 +431,7 @@ class CourseTest extends DuskTestCase
         $this->browse(function (Browser $browser) {
 
             $browser
-                ->visit(new Login())
+                ->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $pageCourse = new PagesCourse('Second space');

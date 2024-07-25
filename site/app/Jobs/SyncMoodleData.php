@@ -48,7 +48,7 @@ class SyncMoodleData implements ShouldQueue
         $externalIds = $this->courses->pluck('external_id')->toArray();
 
         // Get available Moodle courses
-        $availableCourses = (new MoodleService())
+        $availableCourses = (new MoodleService)
             ->getCourses($externalIds);
 
         if ($availableCourses) {

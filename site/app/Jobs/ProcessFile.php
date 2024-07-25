@@ -39,7 +39,7 @@ class ProcessFile implements ShouldQueue
     public function __construct(File $file)
     {
         $this->file = $file;
-        $this->fileStorageService = new FileStorageService();
+        $this->fileStorageService = new FileStorageService;
         $this->timeout = config('const.files.ffmpeg.timeout');
     }
 
@@ -250,7 +250,7 @@ class ProcessFile implements ShouldQueue
         // Audio format don't have setAdditionalParameters.
         // If one day this PR is merged, we can remove this workaround:
         // https://github.com/PHP-FFMpeg/PHP-FFMpeg/pull/753
-        $format = new class() extends Mp3
+        $format = new class extends Mp3
         {
             public function getExtraParams()
             {

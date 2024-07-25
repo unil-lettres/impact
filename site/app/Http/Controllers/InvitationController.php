@@ -135,7 +135,7 @@ class InvitationController extends Controller
         // registered as a SWITCHaai user through the Switch API.
         if (SwitchService::isConfigured()) {
             try {
-                $type = (new SwitchService())
+                $type = (new SwitchService)
                     ->isEmailRegistered($email) ? InvitationType::Aai : InvitationType::Local;
             } catch (Exception $exception) {
                 return redirect()->back()

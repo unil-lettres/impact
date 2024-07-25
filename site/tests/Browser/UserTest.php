@@ -34,7 +34,7 @@ class UserTest extends DuskTestCase
     public function testListUsers(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/users');
@@ -53,7 +53,7 @@ class UserTest extends DuskTestCase
     public function testCreateUser(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/users');
@@ -81,7 +81,7 @@ class UserTest extends DuskTestCase
     public function testCreateUserWithError(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/users/create');
@@ -105,7 +105,7 @@ class UserTest extends DuskTestCase
     public function testEditUser(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/users');
@@ -133,7 +133,7 @@ class UserTest extends DuskTestCase
     public function testEditUserWithErrors(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/users');
@@ -167,7 +167,7 @@ class UserTest extends DuskTestCase
     public function testExpiredUser(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/users');
@@ -193,7 +193,7 @@ class UserTest extends DuskTestCase
     public function testAaiUser(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/users');
@@ -219,7 +219,7 @@ class UserTest extends DuskTestCase
     public function testLocalUser(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/users');
@@ -242,7 +242,7 @@ class UserTest extends DuskTestCase
     public function testDeleteUser(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/users');
@@ -265,10 +265,10 @@ class UserTest extends DuskTestCase
     public function testLocalUserProfile(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('first-user@example.com', 'password');
 
-            $browser->visit(new Profile())
+            $browser->visit(new Profile)
                 ->profile();
 
             $browser->assertDisabled('name')
@@ -293,10 +293,10 @@ class UserTest extends DuskTestCase
     public function testEditLocalUserProfile(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('first-user@example.com', 'password');
 
-            $browser->visit(new Profile())
+            $browser->visit(new Profile)
                 ->profile();
 
             $browser->type('old_password', 'password')

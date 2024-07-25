@@ -32,7 +32,7 @@ class TagTest extends DuskTestCase
     public function testCrudTagFromCourse(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->on(new Course('First space'))
@@ -74,7 +74,7 @@ class TagTest extends DuskTestCase
     public function testCloneTag(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->on(new Course('First space'))
@@ -101,7 +101,7 @@ class TagTest extends DuskTestCase
     public function testTagFromCard(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->on(new Card('Test card first space'))

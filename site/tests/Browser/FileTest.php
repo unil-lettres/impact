@@ -34,7 +34,7 @@ class FileTest extends DuskTestCase
     public function testListFilesAsAdmin(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/files');
@@ -55,7 +55,7 @@ class FileTest extends DuskTestCase
     public function testListFilesAsManager(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('manager-user@example.com', 'password');
 
             $browser->on(new Course('Second space'))
@@ -77,7 +77,7 @@ class FileTest extends DuskTestCase
     public function testShowLinkedCardAsManager(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('manager-user@example.com', 'password');
 
             $browser->on(new Course('Second space'))
@@ -101,7 +101,7 @@ class FileTest extends DuskTestCase
     public function testEditFile(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/files');
@@ -127,7 +127,7 @@ class FileTest extends DuskTestCase
     public function testCanPlayReadyFile(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/files');
@@ -146,7 +146,7 @@ class FileTest extends DuskTestCase
     public function testCannotPlayFailedFile(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/files');
@@ -165,7 +165,7 @@ class FileTest extends DuskTestCase
     public function testCannotPlayTranscodingFile(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/files');
@@ -184,7 +184,7 @@ class FileTest extends DuskTestCase
     public function testCannotEditCourseOfUsedFile(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/files');
@@ -204,7 +204,7 @@ class FileTest extends DuskTestCase
     public function testCanEditCourseOfUnusedFile(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/files');
@@ -225,7 +225,7 @@ class FileTest extends DuskTestCase
     public function testCanDeleteUnusedFile(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/files');

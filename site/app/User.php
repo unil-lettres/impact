@@ -57,7 +57,7 @@ class User extends Authenticatable
      */
     protected static function booted(): void
     {
-        static::addGlobalScope(new ValidityScope());
+        static::addGlobalScope(new ValidityScope);
     }
 
     /**

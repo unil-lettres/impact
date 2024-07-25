@@ -180,7 +180,7 @@ class FileController extends Controller
         // Otherwise, use the file name from the database.
         $fileName = $cardId ? Card::find($cardId)->title : $file->name;
 
-        $fileStorageService = new FileStorageService();
+        $fileStorageService = new FileStorageService;
 
         return response()
             ->download(

@@ -16,7 +16,7 @@ return [
     'invitation.user.no.match' => 'Aucune invitation ne correspond à cette inscription.',
     'user.created' => 'Compte utilisateur créé: :email',
     'user.edit.wrong.password' => 'Vous avez entré le mauvais mot de passe.',
-    'user.edit.cannot.validate' => 'Impossible de valider les données de l\'utilisateur.',
+    'user.edit.cannot.vali+date' => 'Impossible de valider les données de l\'utilisateur.',
     'user.edit.cannot.reset' => 'Les utilisateurs AAI ne peuvent pas réinitialiser leur mot de passe.',
     'user.updated' => 'Compte utilisateur mis à jour.',
     'user.deleted' => 'Compte utilisateur supprimé: :email',

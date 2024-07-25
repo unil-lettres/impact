@@ -67,7 +67,7 @@ class CloneCardService
         ?Folder $destFolder = null,
         ?Course $destCourse = null,
     ): ?Card {
-        $fileStorageService = new FileStorageService();
+        $fileStorageService = new FileStorageService;
 
         $this->checkClone($destFolder, $destCourse);
 

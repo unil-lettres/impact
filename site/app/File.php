@@ -43,7 +43,7 @@ class File extends Model
      */
     protected static function booted(): void
     {
-        static::addGlobalScope(new HideAttachmentsScope());
+        static::addGlobalScope(new HideAttachmentsScope);
     }
 
     /**

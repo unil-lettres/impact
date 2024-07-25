@@ -16,7 +16,7 @@ class ToggleBoxVisibility extends Component
     public function mount(string $box)
     {
         if (! CardBox::getAllBoxes()->contains($box)) {
-            throw new InvalidArgumentException();
+            throw new InvalidArgumentException;
         }
         $this->box = $box;
     }

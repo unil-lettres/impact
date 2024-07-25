@@ -33,7 +33,7 @@ class LoginTest extends DuskTestCase
     public function testBasicLogin(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('first-user@example.com', 'password');
 
             $browser->assertSee('Liste des espaces')
@@ -49,7 +49,7 @@ class LoginTest extends DuskTestCase
     public function testBasicAdminLogin(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->assertSee('Admin');
@@ -68,7 +68,7 @@ class LoginTest extends DuskTestCase
     public function testInvalidUser(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('invalid-user@example.com', 'password');
 
             $browser->assertSee('Ces identifiants ne correspondent pas à nos enregistrements')

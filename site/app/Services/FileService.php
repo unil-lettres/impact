@@ -23,7 +23,7 @@ class FileService
         $this->course = $course;
         $this->card = $card;
         $this->attachment = $attachment;
-        $this->fileStorageService = new FileStorageService();
+        $this->fileStorageService = new FileStorageService;
     }
 
     /**

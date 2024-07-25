@@ -34,7 +34,7 @@ class InvitationTest extends DuskTestCase
     public function testAdminListInvitations(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->clickLink('Admin');
@@ -54,7 +54,7 @@ class InvitationTest extends DuskTestCase
     public function testAdminCannotListRegisteredInvitations(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/invitations');
@@ -70,7 +70,7 @@ class InvitationTest extends DuskTestCase
     public function testAdminViewAllInvitations(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/invitations');
@@ -87,10 +87,10 @@ class InvitationTest extends DuskTestCase
     public function testManagerViewOwnInvitations(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('invitation-user-manager@example.com', 'password');
 
-            $browser->visit(new Invitations())
+            $browser->visit(new Invitations)
                 ->invitations();
 
             $browser->assertSee('Invitations en attente');
@@ -107,7 +107,7 @@ class InvitationTest extends DuskTestCase
     public function testMemberCannotListInvitations(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('invitation-user-member@example.com', 'password');
 
             $browser->click('.navbar ul li.auth')
@@ -126,10 +126,10 @@ class InvitationTest extends DuskTestCase
     public function testCreateInvitation(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('invitation-user-manager@example.com', 'password');
 
-            $browser->visit(new Invitations())
+            $browser->visit(new Invitations)
                 ->invitations();
 
             $browser->clickLink('Créer une invitation');
@@ -142,7 +142,7 @@ class InvitationTest extends DuskTestCase
                 ->waitForText('Invitation créée. Un email à été envoyé au destinataire.')
                 ->assertSee('Invitation créée. Un email à été envoyé au destinataire.');
 
-            $browser->visit(new Invitations())
+            $browser->visit(new Invitations)
                 ->invitations();
             $browser->assertSee('test-new-invitation@example.com');
         });
@@ -156,10 +156,10 @@ class InvitationTest extends DuskTestCase
     public function testShowInvitationLink(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('invitation-user-manager@example.com', 'password');
 
-            $browser->visit(new Invitations())
+            $browser->visit(new Invitations)
                 ->invitations();
 
             $browser->click('#invitations table tbody tr:first-child .actions span:nth-child(1) button')
@@ -176,10 +176,10 @@ class InvitationTest extends DuskTestCase
     public function testSendInvitationMail(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('invitation-user-manager@example.com', 'password');
 
-            $browser->visit(new Invitations())
+            $browser->visit(new Invitations)
                 ->invitations();
 
             $browser->waitForText(trans('invitations.pending'))
@@ -198,10 +198,10 @@ class InvitationTest extends DuskTestCase
     public function testDeleteInvitation(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('invitation-user-manager@example.com', 'password');
 
-            $browser->visit(new Invitations())
+            $browser->visit(new Invitations)
                 ->invitations();
 
             $browser->click('#invitations form.with-delete-confirm button')

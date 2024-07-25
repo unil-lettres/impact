@@ -28,7 +28,7 @@ class Enrollment extends Model
      */
     protected static function booted(): void
     {
-        static::addGlobalScope(new ValidityScope());
+        static::addGlobalScope(new ValidityScope);
     }
 
     /**

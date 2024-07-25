@@ -14,7 +14,7 @@ class FileObserver
     {
         if ($file->isForceDeleting()) {
             // Remove the binary associated with the file record
-            $fileStorageService = new FileStorageService();
+            $fileStorageService = new FileStorageService;
             $fileStorageService->removeFileFromStandardStorage(
                 rawurldecode($file->filename),
             );

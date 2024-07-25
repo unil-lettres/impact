@@ -33,7 +33,7 @@ class NavigationTest extends DuskTestCase
     public function testResponsiveNavbar(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->with('.navbar', function (Browser $browser) {

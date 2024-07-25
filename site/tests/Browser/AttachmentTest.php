@@ -34,7 +34,7 @@ class AttachmentTest extends DuskTestCase
     public function testOpenUploadAttachmentsInterface(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit(new PagesCard('Test card with file'));
@@ -53,7 +53,7 @@ class AttachmentTest extends DuskTestCase
     public function testListAttachments(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit(new PagesCard('Test card with file'));
@@ -73,7 +73,7 @@ class AttachmentTest extends DuskTestCase
     public function testCanDeleteAttachment(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit(new PagesCard('Test card with file'));

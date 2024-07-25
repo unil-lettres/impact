@@ -34,7 +34,7 @@ class StateTest extends DuskTestCase
     public function testManagersCanViewStatesManagement(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('states-manager-user@example.com', 'password');
 
             $browser->visit(new Course('Test states'));
@@ -60,7 +60,7 @@ class StateTest extends DuskTestCase
     public function testMembersCannotViewStatesManagement(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('states-member-user@example.com', 'password');
 
             $browser->visit(new Course('Test states'));
@@ -77,7 +77,7 @@ class StateTest extends DuskTestCase
     public function testCreateNewState(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('states-manager-user@example.com', 'password');
 
             $browser->on(new Course('Test states'))
@@ -98,7 +98,7 @@ class StateTest extends DuskTestCase
     public function testUpdateState(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('states-manager-user@example.com', 'password');
 
             $browser->on(new Course('Test states'))
@@ -123,7 +123,7 @@ class StateTest extends DuskTestCase
     public function testDeleteState(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('states-manager-user@example.com', 'password');
 
             $browser->on(new Course('Test states'))
@@ -153,7 +153,7 @@ class StateTest extends DuskTestCase
     public function testOpenStateHasEmailAction(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('states-manager-user@example.com', 'password');
 
             $browser->on(new Course('Test states'))
@@ -175,7 +175,7 @@ class StateTest extends DuskTestCase
     public function testPublicStateHasEmailAction(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('states-manager-user@example.com', 'password');
 
             $browser->on(new Course('Test states'))

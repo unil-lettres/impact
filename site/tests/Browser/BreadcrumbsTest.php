@@ -34,7 +34,7 @@ class BreadcrumbsTest extends DuskTestCase
     public function testViewBreadcrumbs(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser

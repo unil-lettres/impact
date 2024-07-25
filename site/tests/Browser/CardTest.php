@@ -38,7 +38,7 @@ class CardTest extends DuskTestCase
     public function testListUserCards(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('member-user@example.com', 'password');
 
             $browser->visit(new Course('Second space'));
@@ -56,7 +56,7 @@ class CardTest extends DuskTestCase
     public function testViewCardAsHolder(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('member-user@example.com', 'password');
 
             $browser->visit(new Course('Second space'));
@@ -78,7 +78,7 @@ class CardTest extends DuskTestCase
     public function testViewCardAsManager(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('manager-user@example.com', 'password');
 
             $browser->visit(new Course('First space'));
@@ -101,7 +101,7 @@ class CardTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser
-                ->visit(new Login())
+                ->visit(new Login)
                 ->loginAsUser('manager-user@example.com', 'password');
 
             $browser
@@ -137,7 +137,7 @@ class CardTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser
-                ->visit(new Login())
+                ->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser
@@ -178,7 +178,7 @@ class CardTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser
-                ->visit(new Login())
+                ->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser
@@ -208,7 +208,7 @@ class CardTest extends DuskTestCase
     public function testHideCardBoxes(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit(new Card('Test card hidden boxes'));
@@ -237,7 +237,7 @@ class CardTest extends DuskTestCase
     public function testIcorIsCorrectlyParsed(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $testCard = new Card('Test card features');
@@ -425,7 +425,7 @@ class CardTest extends DuskTestCase
     public function testImportTextInTranscriptionEditor(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit(new Card('Test card features'));
@@ -473,7 +473,7 @@ class CardTest extends DuskTestCase
     public function testSaveTextInTextEditor(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit(new Card('Test card features'));
@@ -498,7 +498,7 @@ class CardTest extends DuskTestCase
     public function testCancelTextInTextEditor(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit(new Card('Test card features'));
@@ -524,7 +524,7 @@ class CardTest extends DuskTestCase
     public function testShowProcessingStatusInSourceViewer(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit(new Card('Test card with processing file'));
@@ -544,7 +544,7 @@ class CardTest extends DuskTestCase
     public function testShowFailedStatusInSourceViewer(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit(new Card('Test card with failed file'));
@@ -564,7 +564,7 @@ class CardTest extends DuskTestCase
     public function testShowPlayerInSourceViewer(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login())
+            $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit(new Card('Test card with file'));

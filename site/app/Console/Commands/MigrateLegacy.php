@@ -76,7 +76,7 @@ class MigrateLegacy extends Command
 
         $this->log = Log::build(['driver' => 'single', 'path' => $logfile]);
 
-        $this->fileStorageService = new FileStorageService();
+        $this->fileStorageService = new FileStorageService;
 
         $warningMessage = <<<TEXT
         Please read the following before continuing:

@@ -140,7 +140,7 @@ class ExportBoxService
      */
     private function initPhpWord(): PhpWord
     {
-        $phpWord = new PhpWord();
+        $phpWord = new PhpWord;
 
         $locale = match (Helpers::currentLocal()) {
             'fr' => Language::FR_FR,

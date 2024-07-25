@@ -6,67 +6,70 @@ import axios from "axios";
 import _ from "lodash";
 
 import { CKEditor } from '@ckeditor/ckeditor5-react';
-import InlineEditor from '@ckeditor/ckeditor5-editor-inline/src/inlineeditor';
+import { InlineEditor,
+    Essentials,
+    Bold,
+    Italic,
+    Underline,
+    Strikethrough,
+    Highlight,
+    BlockQuote,
+    ListProperties,
+    Link,
+    Alignment,
+    MediaEmbed,
+    Image,
+    ImageCaption,
+    ImageStyle,
+    ImageToolbar,
+    ImageInsert,
+    ImageResize,
+    Base64UploadAdapter,
+    FontBackgroundColor,
+    FontColor,
+    FontSize,
+    Table,
+    TableToolbar,
+    TableCellProperties,
+    TableProperties,
+    HorizontalLine,
+    Paragraph,
+    Heading } from 'ckeditor5';
+import coreTranslationsFr from 'ckeditor5/translations/fr.js';
+import coreTranslationsEn from 'ckeditor5/translations/en.js';
 
-import EssentialsPlugin from '@ckeditor/ckeditor5-essentials/src/essentials';
-import BoldPlugin from '@ckeditor/ckeditor5-basic-styles/src/bold';
-import ItalicPlugin from '@ckeditor/ckeditor5-basic-styles/src/italic';
-import UnderlinePlugin from '@ckeditor/ckeditor5-basic-styles/src/underline';
-import StrikethroughPlugin from '@ckeditor/ckeditor5-basic-styles/src/strikethrough';
-import HighlightPlugin from '@ckeditor/ckeditor5-highlight/src/highlight';
-import BlockQuotePlugin from '@ckeditor/ckeditor5-block-quote/src/blockquote';
-import ListProperties from '@ckeditor/ckeditor5-list/src/listproperties';
-import LinkPlugin from '@ckeditor/ckeditor5-link/src/link';
-import AlignmentPlugin from '@ckeditor/ckeditor5-alignment/src/alignment';
-import MediaEmbedPlugin from '@ckeditor/ckeditor5-media-embed/src/mediaembed';
-import ImagePlugin from '@ckeditor/ckeditor5-image/src/image';
-import ImageCaptionPlugin from '@ckeditor/ckeditor5-image/src/imagecaption';
-import ImageStylePlugin from '@ckeditor/ckeditor5-image/src/imagestyle';
-import ImageToolbarPlugin from '@ckeditor/ckeditor5-image/src/imagetoolbar';
-import ImageInsertPlugin from '@ckeditor/ckeditor5-image/src/imageInsert';
-import ImageResizePlugin from '@ckeditor/ckeditor5-image/src/imageresize';
-import Base64UploadAdapter from '@ckeditor/ckeditor5-upload/src/adapters/base64uploadadapter';
-import FontBackgroundColor from '@ckeditor/ckeditor5-font/src/fontbackgroundcolor';
-import FontColorPlugin from '@ckeditor/ckeditor5-font/src/fontcolor';
-import FontSizePlugin from '@ckeditor/ckeditor5-font/src/fontsize';
-import TablePlugin from '@ckeditor/ckeditor5-table/src/table';
-import TableToolbarPlugin from '@ckeditor/ckeditor5-table/src/tabletoolbar';
-import TableCellProperties from '@ckeditor/ckeditor5-table/src/tablecellproperties';
-import TableProperties from '@ckeditor/ckeditor5-table/src/tableproperties';
-import HorizontalLinePlugin from '@ckeditor/ckeditor5-horizontal-line/src/horizontalline';
-import ParagraphPlugin from '@ckeditor/ckeditor5-paragraph/src/paragraph';
-import HeadingPlugin from '@ckeditor/ckeditor5-heading/src/heading';
+import 'ckeditor5/ckeditor5.css';
 
 const editorConfiguration = {
     plugins: [
-        EssentialsPlugin,
-        BoldPlugin,
-        ItalicPlugin,
-        UnderlinePlugin,
-        HeadingPlugin,
-        StrikethroughPlugin,
-        BlockQuotePlugin,
+        Essentials,
+        Bold,
+        Italic,
+        Underline,
+        Heading,
+        Strikethrough,
+        BlockQuote,
         ListProperties,
-        LinkPlugin,
-        AlignmentPlugin,
-        MediaEmbedPlugin,
-        ImagePlugin,
-        ImageCaptionPlugin,
-        ImageStylePlugin,
-        ImageToolbarPlugin,
-        ImageInsertPlugin,
-        ImageResizePlugin,
+        Link,
+        Alignment,
+        MediaEmbed,
+        Image,
+        ImageCaption,
+        ImageStyle,
+        ImageToolbar,
+        ImageInsert,
+        ImageResize,
         Base64UploadAdapter,
-        FontColorPlugin,
+        FontColor,
         FontBackgroundColor,
-        FontSizePlugin,
-        TablePlugin,
-        TableToolbarPlugin,
+        FontSize,
+        Table,
+        TableToolbar,
         TableCellProperties,
         TableProperties,
-        HighlightPlugin,
-        HorizontalLinePlugin,
-        ParagraphPlugin
+        Highlight,
+        HorizontalLine,
+        Paragraph
     ],
     toolbar: [
         "heading",
@@ -111,7 +114,7 @@ const editorConfiguration = {
             'tableColumn', 'tableRow', 'mergeTableCells',
             'tableProperties', 'tableCellProperties'
         ]
-    },
+    }
 };
 
 export default class Editor extends Component {
@@ -155,7 +158,7 @@ export default class Editor extends Component {
     }
 
     updateEditorConfiguration(data) {
-        editorConfiguration.language = data.locale ?? 'fr';
+        editorConfiguration.translations = data.locale === 'fr' ? coreTranslationsFr : coreTranslationsEn;
         editorConfiguration.placeholder = data.placeholder ?? '';
     }
 

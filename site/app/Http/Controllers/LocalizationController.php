@@ -9,11 +9,8 @@ class LocalizationController extends Controller
 {
     /**
      * Set the specified locale for current session.
-     *
-     * @param  string  $locale
-     * @return RedirectResponse
      */
-    public function index($locale)
+    public function index(string $locale): RedirectResponse
     {
         App::setLocale($locale);
 

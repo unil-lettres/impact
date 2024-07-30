@@ -12,6 +12,24 @@
     </div>
 @endsection
 
+@section('navigation')
+    <a
+        class="icon-link icon-link-hover text-light text-decoration-none @if (!$previousCard) disabled @endif"
+        href="{{ $previousCard ? route('cards.show', $previousCard->id) : '#' }}"
+    >
+        <i class="fa-solid fa-arrow-left icon-link-hover-left"></i>
+        {{ trans('cards.navigation.previous') }}
+    </a>
+    <span class="text-light">|</span>
+    <a
+        class="icon-link icon-link-hover text-light text-decoration-none @if (!$nextCard) disabled @endif"
+        href="{{ $nextCard ? route('cards.show', $nextCard->id) : '#' }}"
+    >
+        {{ trans('cards.navigation.next') }}
+        <i class="fa-solid fa-arrow-right"></i>
+    </a>
+@endsection
+
 @can('view', $card)
     @canany(['hide', 'update'], $card)
         @section('actions')

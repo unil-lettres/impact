@@ -46,11 +46,27 @@ class CardController extends Controller
     {
         $this->authorize('view', $card);
 
+        $previousCards = Card::where('folder_id', $card->folder_id)
+            ->where('position', '<', $card->position)
+            ->where('course_id', $card->course_id)
+            ->orderBy('position', 'desc')
+            ->get();
+
+        $nextCards = Card::where('folder_id', $card->folder_id)
+            ->where('course_id', $card->course_id)
+            ->where('position', '>', $card->position)
+            ->orderBy('position', 'asc')
+            ->get();
+
         return view('cards.show', [
             'card' => $card,
             'breadcrumbs' => $card
                 ->breadcrumbs(),
             'course' => $card->course,
+            'previousCard' => $previousCards
+                ->first(fn(Card $_card) => Auth::user()->can('view', $_card)),
+            'nextCard' => $nextCards
+                ->first(fn(Card $_card) => Auth::user()->can('view', $_card)),
         ]);
     }
 

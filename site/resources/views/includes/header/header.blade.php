@@ -7,16 +7,23 @@
 
         <div class="collapse navbar-collapse" id="navbar-coll">
             @auth
-                <!-- Navbar left side -->
-                <ul class="navbar-nav me-auto">
-                    <li class="nav-item">
-                        <span class="breadcrumbs">
-                            @isset($breadcrumbs)
-                                {!! \App\Helpers\Helpers::breadcrumbsHtml($breadcrumbs) !!}
-                            @endisset
-                        </span>
-                    </li>
-                </ul>
+                <div class="me-auto">
+                    <!-- Navbar left side -->
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <span class="breadcrumbs">
+                                @isset($breadcrumbs)
+                                    {!! \App\Helpers\Helpers::breadcrumbsHtml($breadcrumbs) !!}
+                                @endisset
+                            </span>
+                        </li>
+                    </ul>
+                    @hasSection('navigation')
+                        <div>
+                            @yield('navigation')
+                        </div>
+                    @endif
+                </div>
             @endauth
 
             <!-- Navbar right side -->

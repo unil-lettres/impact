@@ -16,6 +16,7 @@
     <a
         class="icon-link icon-link-hover text-light text-decoration-none @if (!$previousCard) disabled @endif"
         href="{{ $previousCard ? route('cards.show', $previousCard->id) : '#' }}"
+        dusk="navigation-previous-card"
     >
         <i class="fa-solid fa-arrow-left icon-link-hover-left"></i>
         {{ trans('cards.navigation.previous') }}
@@ -24,6 +25,7 @@
     <a
         class="icon-link icon-link-hover text-light text-decoration-none @if (!$nextCard) disabled @endif"
         href="{{ $nextCard ? route('cards.show', $nextCard->id) : '#' }}"
+        dusk="navigation-next-card"
     >
         {{ trans('cards.navigation.next') }}
         <i class="fa-solid fa-arrow-right"></i>

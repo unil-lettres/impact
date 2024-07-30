@@ -128,6 +128,24 @@ class CardTest extends DuskTestCase
         });
     }
 
+    public function testCardNavigation(): void
+    {
+        $this->browse(function (Browser $browser) {
+            $browser
+                ->visit(new Login)
+                ->loginAsUser('manager-user@example.com', 'password');
+
+            $browser
+                ->visit(new Card('Test card with processing file'))
+                ->assertAttributeContains('@navigation-previous-card', 'class', 'disabled')
+                ->click('@navigation-next-card')
+                ->assertSee('Test card with failed file')
+                ->click('@navigation-next-card')
+                ->assertSee('Test card with file')
+                ->assertAttributeContains('@navigation-next-card', 'class', 'disabled');
+        });
+    }
+
     /**
      * Test create card into a specific folder.
      *

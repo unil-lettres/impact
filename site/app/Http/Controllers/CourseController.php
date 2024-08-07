@@ -89,7 +89,8 @@ class CourseController extends Controller
         return view('courses.manage', [
             'courses' => $courses
                 ->orderBy('name', 'asc')
-                ->paginate(config('const.pagination.per')),
+                ->paginate(config('const.pagination.per'))
+                ->appends($request->query()),
             'filter' => $filter,
             'search' => $search,
         ]);

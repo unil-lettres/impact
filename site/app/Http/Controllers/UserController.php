@@ -73,7 +73,8 @@ class UserController extends Controller
 
         return view('users.manage', [
             'users' => $users->orderBy('created_at', 'desc')
-                ->paginate(config('const.pagination.per')),
+                ->paginate(config('const.pagination.per'))
+                ->appends($request->query()),
             'filter' => $filter,
             'search' => $search,
         ]);

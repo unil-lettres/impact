@@ -74,7 +74,8 @@ class InvitationController extends Controller
         return view('invitations.manage', [
             'invitations' => $invitations
                 ->orderBy('created_at', 'desc')
-                ->paginate(config('const.pagination.per')),
+                ->paginate(config('const.pagination.per'))
+                ->appends($request->query()),
             'filter' => $filter,
             'search' => $search,
         ]);

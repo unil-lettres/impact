@@ -67,7 +67,8 @@ class FileController extends Controller
         return view('files.manage', [
             'files' => $files
                 ->orderBy('created_at', 'desc')
-                ->paginate(config('const.pagination.per')),
+                ->paginate(config('const.pagination.per'))
+                ->appends($request->query()),
             'filter' => $filter,
             'search' => $search,
         ]);

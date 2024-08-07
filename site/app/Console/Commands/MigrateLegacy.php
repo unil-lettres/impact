@@ -176,6 +176,8 @@ class MigrateLegacy extends Command
                     );
                 }
 
+                $accountType = $legacyUser['password'] ? UserType::Local : UserType::Aai;
+
                 $user = User::create([
                     'name' => $newName,
 
@@ -184,10 +186,10 @@ class MigrateLegacy extends Command
                         : $legacyUser['email'],
 
                     'password' => $legacyUser['password'],
-                    'type' => $legacyUser['password'] ? UserType::Local : UserType::Aai,
+                    'type' => $accountType,
                     'admin' => $legacyUser['is_superuser'] === 1,
                     'creator_id' => null,
-                    'validity' => now()->addYears(1),
+                    'validity' => $accountType === UserType::Local ? now()->addYears(1) : null,
                 ]);
 
                 $this->mapIds->get('users')->put($legacyUser['id'], $user->id);

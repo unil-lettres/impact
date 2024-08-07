@@ -6,7 +6,6 @@ use App\Enums\FileStatus;
 use App\Enums\FileType;
 use App\File;
 use App\Services\FileStorageService;
-use Exception;
 use FFMpeg\Coordinate\Dimension;
 use FFMpeg\FFMpeg;
 use FFMpeg\FFProbe;
@@ -19,6 +18,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class ProcessFile implements ShouldQueue
 {
@@ -67,7 +67,7 @@ class ProcessFile implements ShouldQueue
     /**
      * The job failed to process.
      */
-    public function failed(Exception $exception): void
+    public function failed(Throwable $exception): void
     {
         Log::error($exception->getMessage());
 

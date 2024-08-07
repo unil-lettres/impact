@@ -6,7 +6,6 @@ use App\Course;
 use App\Enums\UserType;
 use App\Services\MoodleService;
 use App\User;
-use Exception;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Database\Eloquent\Collection;
@@ -14,6 +13,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class SyncMoodleData implements ShouldQueue
 {
@@ -135,7 +135,7 @@ class SyncMoodleData implements ShouldQueue
     /**
      * The job failed to process.
      */
-    public function failed(Exception $exception): void
+    public function failed(Throwable $exception): void
     {
         Log::error($exception->getMessage());
     }

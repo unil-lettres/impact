@@ -64,9 +64,9 @@ class CardController extends Controller
                 ->breadcrumbs(),
             'course' => $card->course,
             'previousCard' => $previousCards
-                ->first(fn(Card $_card) => Auth::user()->can('view', $_card)),
+                ->first(fn (Card $_card) => Auth::user()->can('view', $_card)),
             'nextCard' => $nextCards
-                ->first(fn(Card $_card) => Auth::user()->can('view', $_card)),
+                ->first(fn (Card $_card) => Auth::user()->can('view', $_card)),
         ]);
     }
 

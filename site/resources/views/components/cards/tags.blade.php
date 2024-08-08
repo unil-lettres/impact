@@ -2,9 +2,10 @@
     <div class="flex-fill">
         <div x-show.important="canEdit && edition" class="d-flex gap-1" x-cloak>
             <div>{{ trans('cards.tags') }}:</div>
-            <div class="d-flex gap-1 align-items-center">
+            <div class="d-flex flex-wrap gap-1 align-items-center">
                 <div
                     id="rct-multi-tag-select"
+                    style="min-width: 250px"
                     createLabel="{{ trans('general.create_select_option_label') }}"
                     data='{{ json_encode(['record' => $card, 'options' => $card->course->tags, 'defaults' => $card->tags ]) }}'
                 ></div>

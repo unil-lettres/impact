@@ -22,7 +22,7 @@
 
                             @can('upload', [\App\File::class, $course, $card])
                                 <div id="rct-files"
-                                    data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.upload'), 'course_id' => $course->id, 'card_id' => $card->id]) }}'
+                                    data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.upload'), 'filenameLabel' => trans('files.filename.label'), 'course_id' => $course->id, 'card_id' => $card->id]) }}'
                                 ></div>
                             @endcan
                         @endif

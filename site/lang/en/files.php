@@ -35,5 +35,6 @@ return [
     'download' => 'Download the file',
     'add' => 'Add',
     'search' => 'Find a file',
+    'filename.label' => 'Filename',
 
 ];

@@ -13,7 +13,7 @@
         @section('actions')
             @can('upload', [\App\File::class, $course, null])
                 <div id="rct-files"
-                     data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxNumberOfFiles' => 5, 'label' => trans('files.create'), 'course_id' => $course->id, 'reloadOnModalClose' => true, 'note' => trans('messages.file.reload')]) }}'
+                     data='{{ json_encode(['locale' => Helpers::currentLocal(), 'maxNumberOfFiles' => 5, 'label' => trans('files.create'), 'filenameLabel' => trans('files.filename.label'), 'course_id' => $course->id, 'reloadOnModalClose' => true, 'note' => trans('messages.file.reload')]) }}'
                 ></div>
             @endcan
         @endsection

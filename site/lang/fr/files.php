@@ -35,5 +35,6 @@ return [
     'download' => 'Télécharger le fichier',
     'add' => 'Ajouter',
     'search' => 'Rechercher un fichier',
+    'filename.label' => 'Nom du fichier',
 
 ];

@@ -28,6 +28,7 @@ export default class Uploader extends Component {
     initVariables(data) {
         this.locale = data.locale ?? 'fr';
         this.label = data.label ?? 'Send file(s)';
+        this.filenameLabel = data.filenameLabel ?? 'Filename';
         this.maxFileSize = data.maxFileSize ?? 500000000;
         this.maxNumberOfFiles = data.maxNumberOfFiles ?? 1;
         this.modal = data.modal ?? true;
@@ -132,6 +133,9 @@ export default class Uploader extends Component {
                         onRequestClose={this.handleClose}
                         note={this.note}
                         proudlyDisplayPoweredByUppy={false}
+                        metaFields={[
+                            { id: 'name', name: this.filenameLabel }
+                        ]}
                     />
                 </div>
             );
@@ -142,6 +146,9 @@ export default class Uploader extends Component {
                         uppy={this.uppy}
                         proudlyDisplayPoweredByUppy={false}
                         height={360}
+                        metaFields={[
+                            { id: 'name', name: this.filenameLabel }
+                        ]}
                     />
                 </div>
             );

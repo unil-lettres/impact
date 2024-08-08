@@ -586,9 +586,19 @@ class MigrateLegacy extends Command
                 AND video_url <> ''
         SQL);
 
+        $coursesFiles = collect(
+            Storage::disk('public')
+                ->allFiles(StoragePath::UploadStandard.'/legacy/impact-media'),
+        )->filter(
+            // Display only mp4 files in Impact because it was this way in legacy.
+            fn (string $file, int $key) => $this->fileStorageService->getExtension(
+                $file,
+            ) === 'mp4',
+        );
+
         $this->withProgressBar(
             $result->fetchAll(),
-            function ($legacyCard) {
+            function ($legacyCard) use (&$coursesFiles) {
 
                 // Basic keep alive mechanism for the connection.
                 $this->legacyConnection->query('SELECT 1');
@@ -636,6 +646,12 @@ class MigrateLegacy extends Command
                 $mimeType = Storage::disk('public')->mimeType($fileInfos['serverPath']);
                 $mediaProperties = $this->getMediaProperties($absolutePath);
 
+                // Remove file already migrated to keep only the one that don't
+                // have any card linked to.
+                $coursesFiles = $coursesFiles->reject(
+                    fn (string $value, int $key) => $value === $fileInfos['serverPath'],
+                );
+
                 $file = File::create([
                     'name' => $this->fileStorageService->getFileName(
                         $fileInfos['filename'],
@@ -661,6 +677,63 @@ class MigrateLegacy extends Command
                 $card->file_id = $file->id;
                 $card->saveQuietly();
                 $card->refresh();
+            },
+        );
+
+        $this->withProgressBar(
+            $coursesFiles,
+            function ($file) {
+
+                $fileName = $this->fileStorageService->getFileName($file);
+                $urlFileName = rawurlencode($fileName).'.mp4';
+                $legacyCourseId = $this->extractCourseIdFromUrl($file);
+
+                if (is_null($legacyCourseId)) {
+                    $this->log->warning(''
+                        ."File '$file' has no course id in its path. Skipping this file."
+                    );
+                    return;
+                }
+
+                $courseId = $this->mapIds->get('courses')->get($legacyCourseId);
+
+                if (is_null($courseId)) {
+                    $this->log->warning(''
+                        ."File '$file' has a course id $legacyCourseId that does not exist. Skipping this file."
+                    );
+                    return;
+                }
+
+                $absolutePath = Storage::disk('public')->path($file);
+                $mimeType = Storage::disk('public')->mimeType($file);
+
+                try {
+                    $mediaProperties = $this->getMediaProperties($absolutePath);
+                } catch (\FFMpeg\Exception\RuntimeException $e) {
+                    $this->log->warning(''
+                        ."Unable to prob file type for '$absolutePath'. "
+                        .'Skipping this media for course legacy id '
+                        ."$legacyCourseId. Error: ".$e->getMessage()
+                    );
+
+                    return;
+                }
+
+                $file = File::create([
+                    'name' => $fileName,
+                    'filename' => "legacy/impact-media/$legacyCourseId/$urlFileName",
+                    'type' => $this->fileStorageService->fileType(
+                        $mimeType,
+                        $absolutePath,
+                    ),
+                    'size' => Storage::disk('public')->size($file),
+                    'course_id' => $courseId,
+                    'status' => FileStatus::Ready,
+                    'progress' => 100,
+
+                    // width, height, length
+                    ...$mediaProperties,
+                ]);
             },
         );
         $this->newLine();
@@ -771,6 +844,17 @@ class MigrateLegacy extends Command
             $filename = $matches[2];
 
             return [$id, $filename];
+        }
+
+        return null;
+    }
+
+    protected function extractCourseIdFromUrl($url): ?int
+    {
+        $pattern = '#impact-media/([^/]+)/[^/]+#';
+
+        if (preg_match($pattern, $url, $matches)) {
+            return intval($matches[1]);
         }
 
         return null;

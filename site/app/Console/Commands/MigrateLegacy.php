@@ -692,6 +692,7 @@ class MigrateLegacy extends Command
                     $this->log->warning(''
                         ."File '$file' has no course id in its path. Skipping this file."
                     );
+
                     return;
                 }
 
@@ -701,6 +702,7 @@ class MigrateLegacy extends Command
                     $this->log->warning(''
                         ."File '$file' has a course id $legacyCourseId that does not exist. Skipping this file."
                     );
+
                     return;
                 }
 

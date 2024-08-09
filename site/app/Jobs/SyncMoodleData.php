@@ -60,7 +60,7 @@ class SyncMoodleData implements ShouldQueue
 
             // If any, log and update the orphan courses
             if ($orphans->isNotEmpty()) {
-                Log::warning('Cannot sync the courses with the following external ids : '.$orphans->implode(', '));
+                Log::notice('Cannot sync the courses with the following external ids : '.$orphans->implode(', '));
 
                 Course::whereIn('external_id', $orphans)
                     ->update(['orphan' => true]);
@@ -119,7 +119,7 @@ class SyncMoodleData implements ShouldQueue
 
                 if ($orphanImpactUserIds->isNotEmpty()) {
                     // If any, log the orphan Impact enrollments
-                    Log::warning('Cannot sync the enrollments for course '.$impactCourse->id.
+                    Log::notice('Cannot sync the enrollments for course '.$impactCourse->id.
                         ' with the following user ids : '.$orphanImpactUserIds->implode(', '));
 
                     // Delete the orphan Impact enrollments

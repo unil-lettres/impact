@@ -22,7 +22,7 @@
         "@uppy/progress-bar": "^3.0.1",
         "@uppy/react": "^3.0.2",
         "@uppy/xhr-upload": "^3.0.2",
-        "axios": "^1.6.0",
+        "axios": "^1.7.4",
         "bootstrap": "^5.2.3",
         "ckeditor5": "^42.0.1",
         "cross-env": "^7.0.3",

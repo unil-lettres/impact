@@ -82,7 +82,7 @@ jobs:
 
       - name: Start Chrome driver
         working-directory: ./site
-        run: ./vendor/laravel/dusk/bin/chromedriver-linux &
+        run: ./vendor/laravel/dusk/bin/chromedriver-linux --port=9515 &
 
       - name: Run Laravel server
         working-directory: ./site

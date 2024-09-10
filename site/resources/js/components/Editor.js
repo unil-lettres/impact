@@ -34,7 +34,8 @@ import { InlineEditor,
     TableProperties,
     HorizontalLine,
     Paragraph,
-    Heading } from 'ckeditor5';
+    Heading,
+    FontFamily } from 'ckeditor5';
 import coreTranslationsFr from 'ckeditor5/translations/fr.js';
 import coreTranslationsEn from 'ckeditor5/translations/en.js';
 
@@ -69,11 +70,13 @@ const editorConfiguration = {
         TableProperties,
         Highlight,
         HorizontalLine,
-        Paragraph
+        Paragraph,
+        FontFamily
     ],
     toolbar: [
         "heading",
         "|",
+        "fontFamily",
         "fontSize",
         "bold",
         "italic",

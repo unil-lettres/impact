@@ -100,7 +100,7 @@ class FinderItemsService
                     // checked boxes (name: title, box2: ICOR or text, etc.).
                     $contents = collect([
                         'name' => $card->title,
-                        CardBox::Box2 => match ($course->transcrition) {
+                        CardBox::Box2 => match ($course->transcription) {
                             // Transform ICOR transcription into plain text.
                             TranscriptionType::Icor => collect([])
                                 ->concat(collect($card->box2[TranscriptionType::Icor])->pluck('speaker'))

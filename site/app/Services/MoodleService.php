@@ -6,6 +6,7 @@ use Illuminate\Http\Client\Response;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class MoodleService
 {
@@ -85,6 +86,15 @@ class MoodleService
     private function isResponseValid(Response $response): bool
     {
         if ($response->failed() || $response->collect()->isEmpty()) {
+            return false;
+        }
+
+        // Check if the 'errorcode' exists in the response body
+        $responseData = $response->json();
+        if (isset($responseData['errorcode'])) {
+            // If 'errorcode' is present, consider the response invalid
+            Log::warning('Moodle API returned an error : '.$responseData['errorcode']);
+
             return false;
         }
 

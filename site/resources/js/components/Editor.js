@@ -97,11 +97,8 @@ const editorConfiguration = {
         "mediaEmbed",
     ],
     image: {
-        upload: {
-            types: [ 'png', 'jpeg' ],
-            panel: {
-                items: [ 'insertImageViaUrl' ]
-            }
+        insert: {
+            integrations: [ 'url' ]
         },
         toolbar: [
             'imageStyle:inline',

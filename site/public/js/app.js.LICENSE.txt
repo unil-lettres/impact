@@ -66,7 +66,7 @@
 
 /*! @name @videojs/http-streaming @version 2.16.3 @license Apache-2.0 */
 
-/*! @name @videojs/http-streaming @version 3.13.3 @license Apache-2.0 */
+/*! @name @videojs/http-streaming @version 3.13.1 @license Apache-2.0 */
 
 /*! @name aes-decrypter @version 3.1.3 @license Apache-2.0 */
 
@@ -74,7 +74,7 @@
 
 /*! @name m3u8-parser @version 4.8.0 @license Apache-2.0 */
 
-/*! @name m3u8-parser @version 7.2.0 @license Apache-2.0 */
+/*! @name m3u8-parser @version 7.1.0 @license Apache-2.0 */
 
 /*! @name pkcs7 @version 1.0.4 @license Apache-2.0 */
 
@@ -116,11 +116,6 @@
 /**
  * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
  * For licensing, see LICENSE.md or https://ckeditor.com/legal/ckeditor-oss-license
- */
-
-/**
- * @license Copyright (c) 2003-2024, CKSource Holding sp. z o.o. All rights reserved.
- * For licensing, see LICENSE.md.
  */
 
 /**
@@ -209,7 +204,7 @@
  */
 
 /**!
- * Sortable 1.15.3
+ * Sortable 1.15.2
  * @author	RubaXa   <trash@rubaxa.org>
  * @author	owenm    <owen23355@gmail.com>
  * @license MIT

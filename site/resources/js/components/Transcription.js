@@ -333,25 +333,36 @@ export default class Transcription extends Component {
             }
         });
 
-        // This is to avoid the cursor being put at the end of the input.
+        // See handleSpeechChange() for more details about this hack.
         this.lineToFocusOnUpdate = document.activeElement;
-        this.caretPositionOnUpdate = document.activeElement.selectionStart;
+        this.caretPositionOnUpdate = document.activeElement.selectionEnd;
 
         this.setState({ lines: newLines });
     }
 
     handleSpeechChange(index, event) {
-        this.setState({
-            lines: this.updateSectionSpeech(
-                this.state.lines,
-                index,
-                event.target.value,
-            ),
-        });
+        const lines = this.updateSectionSpeech(
+            this.state.lines,
+            index,
+            event.target.value,
+        );
+        this.setState({ lines });
 
-        // This is to avoid the cursor being put at the end of the input.
-        this.lineToFocusOnUpdate = document.activeElement;
-        this.caretPositionOnUpdate = document.activeElement.selectionStart;
+        // React put the cursor at the end of the textarea when its value is
+        // changed programmatically (from state.lines).
+        // This small hack will save the current cursor position and replace it
+        // at the correct position after the component is rerendered.
+        //
+        // On Safari, when pressing a dead key and repositionning the cursor, it
+        // will 'deactivate' the dead key and the next key will be typed as if
+        // the dead key was not pressed. To avoid this, we only reposition the
+        // cursor when needed (when the value is changed). The bug will still
+        // occurs when the component need to be rerendered while we pressed on a
+        // dead key. It should rarely happen in normal usage.
+        if (event.target.value !== this.getSectionAtIndex(lines, index).speech) {
+            this.lineToFocusOnUpdate = document.activeElement;
+            this.caretPositionOnUpdate = document.activeElement.selectionEnd;
+        }
     }
 
     handleSpeechKeyDown(index, event) {

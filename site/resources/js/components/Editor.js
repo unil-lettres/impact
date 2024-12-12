@@ -114,7 +114,8 @@ const editorConfiguration = {
             'tableColumn', 'tableRow', 'mergeTableCells',
             'tableProperties', 'tableCellProperties'
         ]
-    }
+    },
+    licenseKey: 'GPL'
 };
 
 export default class Editor extends Component {
@@ -280,21 +281,31 @@ export default class Editor extends Component {
         return (
             <div>
                 <CKEditor
-                    editor={ this.editor }
+                    id={ 'ckeditor-' + this.props.reference }
+                    editor={ InlineEditor }
                     data={ this.state.html }
                     config={ editorConfiguration }
+                    watchdogConfig={{
+                        minimumNonErrorTimePeriod: 5000,
+                        crashNumberLimit: 3,
+                        saveInterval: 5000
+                    }}
+                    disableWatchdog={ !this.state.editable }
                     onReady={ editor => {
                         this.editor = editor
                         //console.log(Array.from( editor.ui.componentFactory.names() ));
-                    } }
+                    }}
                     disabled={ !this.state.editable }
                     onChange={ this.onEditorChange }
                     onBlur={ ( event, editor ) => {
                         //console.log( 'Blur.', editor );
-                    } }
+                    }}
                     onFocus={ ( event, editor ) => {
                         //console.log( 'Focus.', editor );
-                    } }
+                    }}
+                    onError={ ( event, editor ) => {
+                        //console.log( 'Error.', editor );
+                    }}
                 />
             </div>
         )

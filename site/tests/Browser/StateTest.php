@@ -31,7 +31,7 @@ class StateTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testManagersCanViewStatesManagement(): void
+    public function test_managers_can_view_states_management(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -57,7 +57,7 @@ class StateTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testMembersCannotViewStatesManagement(): void
+    public function test_members_cannot_view_states_management(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -74,7 +74,7 @@ class StateTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCreateNewState(): void
+    public function test_create_new_state(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -95,7 +95,7 @@ class StateTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testUpdateState(): void
+    public function test_update_state(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -120,7 +120,7 @@ class StateTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testDeleteState(): void
+    public function test_delete_state(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -150,7 +150,7 @@ class StateTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testOpenStateHasEmailAction(): void
+    public function test_open_state_has_email_action(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -172,7 +172,7 @@ class StateTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testPublicStateHasEmailAction(): void
+    public function test_public_state_has_email_action(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)

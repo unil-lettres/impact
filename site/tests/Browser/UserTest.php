@@ -31,7 +31,7 @@ class UserTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testListUsers(): void
+    public function test_list_users(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -50,7 +50,7 @@ class UserTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCreateUser(): void
+    public function test_create_user(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -78,7 +78,7 @@ class UserTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCreateUserWithError(): void
+    public function test_create_user_with_error(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -102,7 +102,7 @@ class UserTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testEditUser(): void
+    public function test_edit_user(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -130,7 +130,7 @@ class UserTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testEditUserWithErrors(): void
+    public function test_edit_user_with_errors(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -164,7 +164,7 @@ class UserTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testExpiredUser(): void
+    public function test_expired_user(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -190,7 +190,7 @@ class UserTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testAaiUser(): void
+    public function test_aai_user(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -216,7 +216,7 @@ class UserTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testLocalUser(): void
+    public function test_local_user(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -239,7 +239,7 @@ class UserTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testDeleteUser(): void
+    public function test_delete_user(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -262,7 +262,7 @@ class UserTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testLocalUserProfile(): void
+    public function test_local_user_profile(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -290,7 +290,7 @@ class UserTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testEditLocalUserProfile(): void
+    public function test_edit_local_user_profile(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)

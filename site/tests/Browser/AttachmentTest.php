@@ -31,7 +31,7 @@ class AttachmentTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testOpenUploadAttachmentsInterface(): void
+    public function test_open_upload_attachments_interface(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -50,7 +50,7 @@ class AttachmentTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testListAttachments(): void
+    public function test_list_attachments(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -70,7 +70,7 @@ class AttachmentTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCanDeleteAttachment(): void
+    public function test_can_delete_attachment(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)

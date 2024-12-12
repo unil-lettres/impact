@@ -34,7 +34,7 @@ class CourseTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testListCoursesAsUser(): void
+    public function test_list_courses_as_user(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -54,7 +54,7 @@ class CourseTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testListCoursesAsAdmin(): void
+    public function test_list_courses_as_admin(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -69,7 +69,7 @@ class CourseTest extends DuskTestCase
         });
     }
 
-    public function testLinkDeactivatedCoursesToAdminView(): void
+    public function test_link_deactivated_courses_to_admin_view(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -87,7 +87,7 @@ class CourseTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testViewCourseAsManager(): void
+    public function test_view_course_as_manager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -106,7 +106,7 @@ class CourseTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testViewCourseAsMember(): void
+    public function test_view_course_as_member(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -125,7 +125,7 @@ class CourseTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCreateCourse(): void
+    public function test_create_course(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -149,7 +149,7 @@ class CourseTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testEditLocalCourse(): void
+    public function test_edit_local_course(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -175,7 +175,7 @@ class CourseTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCannotEditExternalCourse(): void
+    public function test_cannot_edit_external_course(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -193,7 +193,7 @@ class CourseTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testDisableCourse(): void
+    public function test_disable_course(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -217,7 +217,7 @@ class CourseTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testDeleteCourse(): void
+    public function test_delete_course(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -240,7 +240,7 @@ class CourseTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testChangeTranscriptionType(): void
+    public function test_change_transcription_type(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -274,7 +274,7 @@ class CourseTest extends DuskTestCase
         });
     }
 
-    public function testFilters(): void
+    public function test_filters(): void
     {
         $this->browse(function (Browser $browser) {
 
@@ -299,7 +299,7 @@ class CourseTest extends DuskTestCase
         });
     }
 
-    public function testMultiSelect(): void
+    public function test_multi_select(): void
     {
         $this->browse(function (Browser $browser) {
 
@@ -317,7 +317,7 @@ class CourseTest extends DuskTestCase
         });
     }
 
-    public function testClone(): void
+    public function test_clone(): void
     {
         $this->browse(function (Browser $browser) {
 
@@ -338,7 +338,7 @@ class CourseTest extends DuskTestCase
         });
     }
 
-    public function testDelete(): void
+    public function test_delete(): void
     {
         $this->browse(function (Browser $browser) {
 
@@ -360,7 +360,7 @@ class CourseTest extends DuskTestCase
         });
     }
 
-    public function testMoveIn(): void
+    public function test_move_in(): void
     {
         $this->browse(function (Browser $browser) {
 
@@ -393,7 +393,7 @@ class CourseTest extends DuskTestCase
         });
     }
 
-    public function testCloneIn(): void
+    public function test_clone_in(): void
     {
         $this->browse(function (Browser $browser) {
 
@@ -426,7 +426,7 @@ class CourseTest extends DuskTestCase
         });
     }
 
-    public function testEditState(): void
+    public function test_edit_state(): void
     {
         $this->browse(function (Browser $browser) {
 

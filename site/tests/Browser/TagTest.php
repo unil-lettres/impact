@@ -29,7 +29,7 @@ class TagTest extends DuskTestCase
     /**
      * Test the creation of a tag from course.
      */
-    public function testCrudTagFromCourse(): void
+    public function test_crud_tag_from_course(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -71,7 +71,7 @@ class TagTest extends DuskTestCase
         });
     }
 
-    public function testCloneTag(): void
+    public function test_clone_tag(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -98,7 +98,7 @@ class TagTest extends DuskTestCase
         });
     }
 
-    public function testTagFromCard(): void
+    public function test_tag_from_card(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)

@@ -13,7 +13,7 @@ class CourseTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    public function testCourseCanBeCreated(): void
+    public function test_course_can_be_created(): void
     {
         $courseData = [
             'name' => fake()->sentence(),
@@ -26,7 +26,7 @@ class CourseTest extends TestCase
         $this->assertDatabaseHas('courses', $courseData);
     }
 
-    public function testCourseCanBeUpdated(): void
+    public function test_course_can_be_updated(): void
     {
         $course = Course::factory()->create();
 
@@ -40,7 +40,7 @@ class CourseTest extends TestCase
         $this->assertDatabaseHas('courses', $courseDataUpdated);
     }
 
-    public function testCourseCanBeDeleted(): void
+    public function test_course_can_be_deleted(): void
     {
         $course = Course::factory()->create();
 
@@ -52,7 +52,7 @@ class CourseTest extends TestCase
     /**
      * Test the course confirm delete email content.
      */
-    public function testCourseConfirmDeleteEmailContent(): void
+    public function test_course_confirm_delete_email_content(): void
     {
         $course = Course::factory()
             ->disabled()

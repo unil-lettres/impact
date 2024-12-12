@@ -33,7 +33,7 @@ class FolderTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testViewFoldersAsUser(): void
+    public function test_view_folders_as_user(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -57,7 +57,7 @@ class FolderTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testViewFoldersAsManager(): void
+    public function test_view_folders_as_manager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -77,7 +77,7 @@ class FolderTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCreateFoldersAsManager(): void
+    public function test_create_folders_as_manager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)

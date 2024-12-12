@@ -16,7 +16,7 @@ class InvitationTest extends TestCase
     /**
      * Test the local invitation created email content.
      */
-    public function testLocalInvitationEmailContent(): void
+    public function test_local_invitation_email_content(): void
     {
         $invitation = Invitation::factory()
             ->local()
@@ -32,7 +32,7 @@ class InvitationTest extends TestCase
     /**
      * Test the local invitation link should not be null.
      */
-    public function testLocalInvitationLinkIsNotNull(): void
+    public function test_local_invitation_link_is_not_null(): void
     {
         $invitation = Invitation::factory()
             ->local()
@@ -44,7 +44,7 @@ class InvitationTest extends TestCase
     /**
      * Test the aai invitation created email content.
      */
-    public function testAaiInvitationEmailContent(): void
+    public function test_aai_invitation_email_content(): void
     {
         $invitation = Invitation::factory()
             ->aai()
@@ -60,7 +60,7 @@ class InvitationTest extends TestCase
     /**
      * Test the aai invitation link should be null.
      */
-    public function testAaiInvitationLinkIsNull(): void
+    public function test_aai_invitation_link_is_null(): void
     {
         $invitation = Invitation::factory()
             ->aai()

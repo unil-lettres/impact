@@ -30,7 +30,7 @@ class LocalizationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testBasicLocalization(): void
+    public function test_basic_localization(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/');

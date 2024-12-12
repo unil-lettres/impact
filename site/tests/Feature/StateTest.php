@@ -16,7 +16,7 @@ class StateTest extends TestCase
     use RefreshDatabase;
     use WithFaker;
 
-    public function testStateCanBeCreated(): void
+    public function test_state_can_be_created(): void
     {
         $stateData = [
             'name' => fake()->word(),
@@ -28,7 +28,7 @@ class StateTest extends TestCase
         $this->assertDatabaseHas('states', $stateData);
     }
 
-    public function testCourseDefaultStatesShouldBeAutomaticallyCreated(): void
+    public function test_course_default_states_should_be_automatically_created(): void
     {
         $course = Course::factory()->create();
 
@@ -37,7 +37,7 @@ class StateTest extends TestCase
         $this->assertEquals(4, $course->states->count());
     }
 
-    public function testCardStateShouldBeAutomaticallySettedToPrivate(): void
+    public function test_card_state_should_be_automatically_setted_to_private(): void
     {
         $card = Card::factory()->create();
 
@@ -52,7 +52,7 @@ class StateTest extends TestCase
         $this->assertEquals($default_state->id, $card->state_id);
     }
 
-    public function testStateCanBeUpdated(): void
+    public function test_state_can_be_updated(): void
     {
         $state = State::factory()->create();
 
@@ -65,7 +65,7 @@ class StateTest extends TestCase
         $this->assertDatabaseHas('states', $stateDataUpdated);
     }
 
-    public function testStateCanBeDeleted(): void
+    public function test_state_can_be_deleted(): void
     {
         $state = State::factory()->create();
 
@@ -77,7 +77,7 @@ class StateTest extends TestCase
     /**
      * Test the state selected email content.
      */
-    public function testStateSelectedEmailContent(): void
+    public function test_state_selected_email_content(): void
     {
         $card = Card::factory()
             ->create();

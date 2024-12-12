@@ -13,7 +13,7 @@ class AuthTest extends TestCase
     /**
      * Test basic auth.
      */
-    public function testBasicAuth(): void
+    public function test_basic_auth(): void
     {
         $user = User::factory()
             ->create();
@@ -26,7 +26,7 @@ class AuthTest extends TestCase
     /**
      * Test admin not authorized.
      */
-    public function testAdminNotAuthorized(): void
+    public function test_admin_not_authorized(): void
     {
         $user = User::factory()
             ->create();
@@ -39,7 +39,7 @@ class AuthTest extends TestCase
     /**
      * Test admin authorized.
      */
-    public function testAdminAuthorized(): void
+    public function test_admin_authorized(): void
     {
         $user = User::factory()
             ->admin()

@@ -31,7 +31,7 @@ class FileTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testListFilesAsAdmin(): void
+    public function test_list_files_as_admin(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -52,7 +52,7 @@ class FileTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testListFilesAsManager(): void
+    public function test_list_files_as_manager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -74,7 +74,7 @@ class FileTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testShowLinkedCardAsManager(): void
+    public function test_show_linked_card_as_manager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -98,7 +98,7 @@ class FileTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testEditFile(): void
+    public function test_edit_file(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -124,7 +124,7 @@ class FileTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCanPlayReadyFile(): void
+    public function test_can_play_ready_file(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -143,7 +143,7 @@ class FileTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCannotPlayFailedFile(): void
+    public function test_cannot_play_failed_file(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -162,7 +162,7 @@ class FileTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCannotPlayTranscodingFile(): void
+    public function test_cannot_play_transcoding_file(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -181,7 +181,7 @@ class FileTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCannotEditCourseOfUsedFile(): void
+    public function test_cannot_edit_course_of_used_file(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -201,7 +201,7 @@ class FileTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCanEditCourseOfUnusedFile(): void
+    public function test_can_edit_course_of_unused_file(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -222,7 +222,7 @@ class FileTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCanDeleteUnusedFile(): void
+    public function test_can_delete_unused_file(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)

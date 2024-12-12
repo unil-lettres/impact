@@ -35,7 +35,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testListUserCards(): void
+    public function test_list_user_cards(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -53,7 +53,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testViewCardAsHolder(): void
+    public function test_view_card_as_holder(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -75,7 +75,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testViewCardAsManager(): void
+    public function test_view_card_as_manager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -97,7 +97,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCreateCardAsManager(): void
+    public function test_create_card_as_manager(): void
     {
         $this->browse(function (Browser $browser) {
             $browser
@@ -128,7 +128,7 @@ class CardTest extends DuskTestCase
         });
     }
 
-    public function testCardNavigation(): void
+    public function test_card_navigation(): void
     {
         $this->browse(function (Browser $browser) {
             $browser
@@ -151,7 +151,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCreateCardIntoFolder(): void
+    public function test_create_card_into_folder(): void
     {
         $this->browse(function (Browser $browser) {
             $browser
@@ -192,7 +192,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCannotCreateCardWithoutHolders(): void
+    public function test_cannot_create_card_without_holders(): void
     {
         $this->browse(function (Browser $browser) {
             $browser
@@ -223,7 +223,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testHideCardBoxes(): void
+    public function test_hide_card_boxes(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -252,7 +252,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testIcorIsCorrectlyParsed(): void
+    public function test_icor_is_correctly_parsed(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -440,7 +440,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testImportTextInTranscriptionEditor(): void
+    public function test_import_text_in_transcription_editor(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -488,7 +488,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testSaveTextInTextEditor(): void
+    public function test_save_text_in_text_editor(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -513,7 +513,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCancelTextInTextEditor(): void
+    public function test_cancel_text_in_text_editor(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -539,7 +539,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testShowProcessingStatusInSourceViewer(): void
+    public function test_show_processing_status_in_source_viewer(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -559,7 +559,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testShowFailedStatusInSourceViewer(): void
+    public function test_show_failed_status_in_source_viewer(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -579,7 +579,7 @@ class CardTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testShowPlayerInSourceViewer(): void
+    public function test_show_player_in_source_viewer(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)

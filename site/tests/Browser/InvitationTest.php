@@ -31,7 +31,7 @@ class InvitationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testAdminListInvitations(): void
+    public function test_admin_list_invitations(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -51,7 +51,7 @@ class InvitationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testAdminCannotListRegisteredInvitations(): void
+    public function test_admin_cannot_list_registered_invitations(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -67,7 +67,7 @@ class InvitationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testAdminViewAllInvitations(): void
+    public function test_admin_view_all_invitations(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -84,7 +84,7 @@ class InvitationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testManagerViewOwnInvitations(): void
+    public function test_manager_view_own_invitations(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -104,7 +104,7 @@ class InvitationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testMemberCannotListInvitations(): void
+    public function test_member_cannot_list_invitations(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -123,7 +123,7 @@ class InvitationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testCreateInvitation(): void
+    public function test_create_invitation(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -153,7 +153,7 @@ class InvitationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testShowInvitationLink(): void
+    public function test_show_invitation_link(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -173,7 +173,7 @@ class InvitationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testSendInvitationMail(): void
+    public function test_send_invitation_mail(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -195,7 +195,7 @@ class InvitationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testDeleteInvitation(): void
+    public function test_delete_invitation(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)
@@ -218,7 +218,7 @@ class InvitationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testInvitationLinkUserAlreadyRegistered(): void
+    public function test_invitation_link_user_already_registered(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(
@@ -235,7 +235,7 @@ class InvitationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testInvitationLinkInvalidToken(): void
+    public function test_invitation_link_invalid_token(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(
@@ -252,7 +252,7 @@ class InvitationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testInvitationLink(): void
+    public function test_invitation_link(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(

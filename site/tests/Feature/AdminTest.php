@@ -17,7 +17,7 @@ class AdminTest extends TestCase
     /**
      * Test the managers mailing email content.
      */
-    public function testManagersMailingEmailContent(): void
+    public function test_managers_mailing_email_content(): void
     {
         $user = User::factory()->create();
         $courses = collect([

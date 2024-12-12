@@ -30,7 +30,7 @@ class NavigationTest extends DuskTestCase
      *
      * @throws Throwable
      */
-    public function testResponsiveNavbar(): void
+    public function test_responsive_navbar(): void
     {
         $this->browse(function (Browser $browser) {
             $browser->visit(new Login)

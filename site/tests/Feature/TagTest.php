@@ -17,7 +17,7 @@ class TagTest extends TestCase
     /**
      * A basic feature test example.
      */
-    public function testCrudTag(): void
+    public function test_crud_tag(): void
     {
         $admin = User::factory()->admin()->create();
 
@@ -43,7 +43,7 @@ class TagTest extends TestCase
         $this->assertDatabaseMissing('tags', ['id' => $tagId]);
     }
 
-    public function testCloneTag(): void
+    public function test_clone_tag(): void
     {
         $admin = User::factory()->admin()->create();
 
@@ -65,7 +65,7 @@ class TagTest extends TestCase
         );
     }
 
-    public function testJsonCrudTag(): void
+    public function test_json_crud_tag(): void
     {
         $admin = User::factory()->admin()->create();
 
@@ -106,7 +106,7 @@ class TagTest extends TestCase
         );
     }
 
-    public function testOrderTags(): void
+    public function test_order_tags(): void
     {
         $admin = User::factory()->admin()->create();
 

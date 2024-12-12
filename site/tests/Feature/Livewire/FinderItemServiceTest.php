@@ -49,7 +49,7 @@ class FinderItemServiceTest extends TestCase
         );
     }
 
-    public function testSearch(): void
+    public function test_search(): void
     {
         Card::factory()->create([
             'course_id' => $this->course->id,

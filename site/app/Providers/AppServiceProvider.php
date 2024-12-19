@@ -17,6 +17,7 @@ use Illuminate\Foundation\Http\Middleware\TrimStrings;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -74,5 +75,15 @@ class AppServiceProvider extends ServiceProvider
 
         // Map the AttachmentPolicy to itself since there is no Attachment model
         Gate::policy(AttachmentPolicy::class, AttachmentPolicy::class);
+
+        /**
+         * This is a workaround for proxies/reverse proxies that don't always pass the proper headers.
+         *
+         * Here, we check if the APP_URL starts with https://, which we should always honor,
+         * regardless of how well the proxy or network is configured.
+         */
+        if ((str_starts_with(config('const.app_url'), 'https://'))) {
+            URL::forceScheme('https');
+        }
     }
 }

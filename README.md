@@ -1,9 +1,9 @@
 Master:
-![ci](https://github.com/unil-lettres/impact/workflows/ci/badge.svg?branch=master)
+[![ci](https://github.com/unil-lettres/impact/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/unil-lettres/impact/actions/workflows/ci.yml)
 [![CodeFactor](https://www.codefactor.io/repository/github/unil-lettres/impact/badge/master)](https://www.codefactor.io/repository/github/unil-lettres/impact/overview/master)
 
 Development:
-![ci](https://github.com/unil-lettres/impact/workflows/ci/badge.svg?branch=development)
+[![ci](https://github.com/unil-lettres/impact/actions/workflows/ci.yml/badge.svg?branch=development)](https://github.com/unil-lettres/impact/actions/workflows/ci.yml)
 [![CodeFactor](https://www.codefactor.io/repository/github/unil-lettres/impact/badge/development)](https://www.codefactor.io/repository/github/unil-lettres/impact/overview/development)
 
 # Introduction

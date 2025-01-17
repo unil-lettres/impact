@@ -259,7 +259,6 @@ class User extends Authenticatable
 
         $validity = Carbon::instance($this->validity);
 
-        return (int) Carbon::now()
-            ->diffInDays($validity) === $days;
+        return intval(ceil(Carbon::now()->diffInDays($validity))) === $days;
     }
 }

@@ -85,4 +85,24 @@ class ValidityTest extends TestCase
         $mailable->assertSeeInHtml(route('home'));
         $mailable->assertSeeInHtml($days);
     }
+
+    /**
+     * Test the user account is expiring in the number of days defined in the configuration.
+     */
+    public function test_account_expiring_check(): void
+    {
+        $days = config('const.users.account.expiring');
+        $user = User::factory()
+            ->expireIn($days)
+            ->create();
+        // Account is expiring in the number of days defined in the configuration
+        $this->assertTrue($user->isAccountExpiringIn($days));
+
+        $days = config('const.users.account.expiring');
+        $user = User::factory()
+            ->expireIn($days + 1)
+            ->create();
+        // Account is not expiring in the number of days defined in the configuration
+        $this->assertFalse($user->isAccountExpiringIn($days));
+    }
 }

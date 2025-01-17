@@ -95,7 +95,6 @@ class ValidityTest extends TestCase
         $user = User::factory()
             ->expireIn($days)
             ->create();
-
         // Account is expiring in the number of days defined in the configuration
         $this->assertTrue($user->isAccountExpiringIn($days));
 

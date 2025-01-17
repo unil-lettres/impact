@@ -31,7 +31,7 @@ jobs:
         id: get_tags
         uses: JinoArch/get-latest-tag@latest
 
-      - name: Build and push tagged version
+      - name: Build and push app tagged version
         uses: docker/build-push-action@v6
         with:
           context: ./
@@ -41,6 +41,18 @@ jobs:
           push: true
           tags: ${{ env.DOCKERHUB_REPOSITORY }}:${{ steps.get_tags.outputs.latestTag }}
           cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:${{ steps.get_tags.outputs.previousTag }}
+          cache-to: type=inline
+
+      - name: Build and push worker tagged version
+        uses: docker/build-push-action@v6
+        with:
+          context: ./
+          file: ./docker/worker.dockerfile
+          target: prod
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ env.DOCKERHUB_REPOSITORY }}:worker-${{ steps.get_tags.outputs.latestTag }}
+          cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:worker-${{ steps.get_tags.outputs.previousTag }}
           cache-to: type=inline
 
   description:

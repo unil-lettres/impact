@@ -8,6 +8,8 @@ return [
     |--------------------------------------------------------------------------
     */
 
+    'app_url' => env('APP_URL', 'http://impact.lan:8025'),
+
     'pagination' => [
         'per' => env('PAGINATION_PER', 25),
     ],

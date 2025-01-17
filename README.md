@@ -90,11 +90,11 @@ To access the database please use the following link.
 
 To access mails please use the following link.
 
-[http://impact.lan:8026](http://impact.lan:8026)
+[http://impact.lan:8025](http://impact.lan:8025)
 
 Or to get the messages in JSON format.
 
-[http://impact.lan:8026/api/v2/messages](http://impact.lan:8026/api/v2/messages)
+[http://impact.lan:8025/api/v2/messages](http://impact.lan:8025/api/v2/messages)
 
 ## PHP code style
 

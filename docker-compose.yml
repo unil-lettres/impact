@@ -11,9 +11,24 @@ services:
     depends_on:
       impact-mysql:
         condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:80 || exit 1" ]
+      interval: 10s
+      timeout: 2s
+      retries: 5
+      start_period: 5m
     networks:
       - impact-net
     container_name: impact-app
+  impact-worker:
+    depends_on:
+      impact-mysql:
+        condition: service_healthy
+      impact-app:
+        condition: service_healthy
+    networks:
+      - impact-net
+    container_name: impact-worker
   impact-mysql:
     image: mariadb:10.6
     env_file:
@@ -27,7 +42,9 @@ services:
       # The container is not considered healthy until the MYSQL_DATABASE database is available
       test: [ "CMD-SHELL", "mysql $${MYSQL_DATABASE} -u$${MYSQL_USER} -p$${MYSQL_PASSWORD} -e 'SELECT 1;'  || exit 1" ]
       interval: 2s
+      timeout: 2s
       retries: 5
+      start_period: 1m
     networks:
       - impact-net
     container_name: impact-mysql

@@ -4,10 +4,18 @@
 
 services:
   impact-app:
-    image: unillett/impact:latest-dev
+    image: unillett/impact:app-latest-dev
     build:
       context: ./
       dockerfile: ./docker/app.dockerfile
+      target: dev
+    volumes:
+      - ./site:/var/www/impact
+  impact-worker:
+    image: unillett/impact:worker-latest-dev
+    build:
+      context: ./
+      dockerfile: ./docker/worker.dockerfile
       target: dev
     volumes:
       - ./site:/var/www/impact
@@ -17,7 +25,7 @@ services:
       - ./docker/.env
     volumes:
       - dusk-data:/var/lib/mysql
-      - ./dev/config/my-testing.cnf:/etc/mysql/my.cnf
+      - ./docker/config/my-testing.cnf:/etc/mysql/my.cnf
     expose:
       - "3307"
     networks:

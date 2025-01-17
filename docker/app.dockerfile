@@ -53,9 +53,6 @@ RUN a2enmod rewrite remoteip; \
     } > /etc/apache2/conf-available/remoteip.conf; \
     a2enconf remoteip
 
-# Replace default crontab
-ADD docker/config/crontab /etc/crontab
-
 # Copy PHP configuration file
 COPY docker/config/php.ini /usr/local/etc/php/php.ini
 

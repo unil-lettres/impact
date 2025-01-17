@@ -4,7 +4,7 @@
 
 services:
   impact-app:
-    image: unillett/impact:latest
+    image: unillett/impact:app-latest
     build:
       context: ./
       dockerfile: ./docker/app.dockerfile
@@ -22,6 +22,24 @@ services:
       resources:
         limits:
           memory: 1000M
+  impact-worker:
+    image: unillett/impact:worker-latest
+    build:
+      context: ./
+      dockerfile: ./docker/worker.dockerfile
+      target: prod
+    env_file:
+      - ./site/.env
+    volumes:
+      - uploads-data:/var/www/impact/storage/app/public/uploads
+      - exports-data:/var/www/impact/storage/app/public/exports
+      - logs-data:/var/www/impact/storage/logs
+    restart: unless-stopped
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 1500M
   impact-mysql:
     restart: unless-stopped
     deploy:

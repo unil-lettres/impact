@@ -1,33 +1,29 @@
-FROM php:8.3-cli-bookworm AS base
+FROM php:8.3-cli-alpine AS base
 
 ENV DOCKER_RUNNING=true
 
 ENV COMPOSER_VERSION=2.6
 
-# Update repositories
-RUN apt-get update
-
 # Install additional packages
-RUN apt-get install -y \
+RUN apk update && apk add --no-cache \
     git \
     curl \
     nano \
     zip \
     unzip \
     openssl \
-    cron \
     ffmpeg \
     mediainfo \
     supervisor \
-    zlib1g-dev \
+    zlib-dev \
     libpng-dev \
     libzip-dev \
-    libicu-dev \
+    icu-dev \
     ca-certificates \
     gnupg
 
 # Install needed php extensions
-RUN apt-get clean; docker-php-ext-install pdo_mysql zip gd bcmath pcntl intl
+RUN docker-php-ext-install pdo_mysql zip gd bcmath pcntl intl
 
 # Install specific version of Composer
 RUN curl --silent --show-error https://getcomposer.org/installer | php -- \

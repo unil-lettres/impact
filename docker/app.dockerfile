@@ -5,11 +5,8 @@ ENV DOCKER_RUNNING=true
 ENV NODE_VERSION=20
 ENV COMPOSER_VERSION=2.6
 
-# Update repositories
-RUN apt-get update
-
 # Install additional packages
-RUN apt-get install -y \
+RUN apt-get update && apt-get install -y \
     git \
     curl \
     nano \
@@ -127,14 +124,14 @@ RUN cd /var/www/impact && \
 # Install js dependencies & compile
 RUN cd /var/www/impact && \
     npm install && \
-    npm run prod
+    npm run prod && \
+    npm cache clean --force && \
+    rm -rf /root/.npm && \
+    rm -rf /var/www/impact/node_modules
 
 # Copy Kubernetes poststart script
 COPY docker/config/k8s-poststart.sh /var/www/impact/k8s-poststart.sh
 RUN chmod +x /var/www/impact/k8s-poststart.sh
-
-# Remove node_modules folder since it's not needed anymore
-RUN rm -rf /var/www/impact/node_modules
 
 # Change ownership of the application to www-data
 RUN chown -R www-data:www-data /var/www/impact

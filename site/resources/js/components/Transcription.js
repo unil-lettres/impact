@@ -837,6 +837,13 @@ export default class Transcription extends Component {
         return !editable && lines.length <= 1 && !lines[0]?.speech && !lines[0]?.speaker;
     }
 
+    handleTranscriptionKeyDown = (event) => {
+        const customEvent = new CustomEvent('transcriptionKeyDown', {
+            detail: { event },
+        });
+        document.dispatchEvent(customEvent);
+    }
+
     render() {
 
         if (this.shouldDisplayNoTranscriptionLabel(
@@ -847,7 +854,7 @@ export default class Transcription extends Component {
         }
 
         return (
-            <div>
+            <div onKeyDown={ this.handleTranscriptionKeyDown }>
                 <div id="transcription-content">
                     {
                         this.getAggregatedLines(this.state.lines).map((section) => (

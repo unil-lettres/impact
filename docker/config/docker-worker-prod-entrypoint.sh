@@ -24,10 +24,6 @@ check_vars_exist \
   DB_PORT \
   DB_USERNAME
 
-echo "Ensure mounted volumes have correct permissions"
-chown -R www-data:www-data /var/www/impact/storage/app/public
-chown -R www-data:www-data /var/www/impact/storage/app/logs
-
 echo "Optimize view, routes, events, configs..."
 php artisan optimize
 

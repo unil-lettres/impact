@@ -1,7 +1,6 @@
 FROM php:8.3-apache-bookworm AS base
 
 ENV DOCKER_RUNNING=true
-
 ENV NODE_VERSION=20
 ENV COMPOSER_VERSION=2.6
 

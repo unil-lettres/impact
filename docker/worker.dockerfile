@@ -20,7 +20,9 @@ RUN apk update && apk add --no-cache \
     libzip-dev \
     icu-dev \
     ca-certificates \
-    gnupg
+    gnupg \
+    bash \
+    dcron
 
 # Install needed php extensions
 RUN docker-php-ext-install pdo_mysql zip gd bcmath pcntl intl

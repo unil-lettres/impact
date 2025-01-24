@@ -39,7 +39,7 @@ services:
       mode: global
       resources:
         limits:
-          memory: 1500M
+          memory: 1000M
   impact-mysql:
     restart: unless-stopped
     deploy:

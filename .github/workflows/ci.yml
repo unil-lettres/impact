@@ -68,7 +68,7 @@ jobs:
       - name: Build app
         id: app-build
         working-directory: ./site
-        run: ./setup.sh
+        run: ./ci-setup.sh
 
       - name: Check PHP code style
         id: app-php-style

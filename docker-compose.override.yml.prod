@@ -1,0 +1,55 @@
+# The following configuration is used for production in conjunction with the
+# main docker-compose.yml. Please follow the instructions in the README.md
+# file to deploy the application.
+
+services:
+  impact-app:
+    image: unillett/impact:latest
+    build:
+      context: ./
+      dockerfile: ./docker/app.dockerfile
+      target: prod
+    env_file:
+      - ./site/.env
+    volumes:
+      - uploads-data:/var/www/impact/storage/app/public/uploads
+      - exports-data:/var/www/impact/storage/app/public/exports
+      - logs-data:/var/www/impact/storage/logs
+      - shibboleth-data:/etc/shibboleth
+    restart: unless-stopped
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 1000M
+  impact-worker:
+    image: unillett/impact:worker-latest
+    build:
+      context: ./
+      dockerfile: ./docker/worker.dockerfile
+      target: prod
+    env_file:
+      - ./site/.env
+    volumes:
+      - uploads-data:/var/www/impact/storage/app/public/uploads
+      - exports-data:/var/www/impact/storage/app/public/exports
+      - logs-data:/var/www/impact/storage/logs
+    restart: unless-stopped
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 1000M
+  impact-mysql:
+    restart: unless-stopped
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 500M
+
+volumes:
+  uploads-data:
+  exports-data:
+  logs-data:
+  shibboleth-data:

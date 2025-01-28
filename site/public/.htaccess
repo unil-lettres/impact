@@ -5,6 +5,10 @@
 
     RewriteEngine On
 
+    # Exclude Shibboleth URLs from being handled by Laravel
+    RewriteCond %{REQUEST_URI} ^/Shibboleth.sso [NC]
+    RewriteRule ^ - [L]
+
     # Handle Authorization Header
     RewriteCond %{HTTP:Authorization} .
     RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]

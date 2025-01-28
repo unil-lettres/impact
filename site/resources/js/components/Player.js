@@ -12,6 +12,7 @@ export default class Player extends Component {
         let data = JSON.parse(this.props.data);
 
         this.initVariables(data, this.props.initCard);
+        this.handleTranscriptionKeyDown = ({detail: {event}}) => this.userActions(event);
     }
 
     initVariables(data, initCard) {
@@ -117,6 +118,8 @@ export default class Player extends Component {
             // Shift + Right arrow (play/pause)
             if (event.which === 39) {
                 this.player.paused() ? this.player.play() : this.player.pause();
+
+                event.preventDefault();
             }
 
             // Shift + Left arrow (seek back 2s)
@@ -127,16 +130,31 @@ export default class Player extends Component {
                 } else {
                     this.player.currentTime(0);
                 }
+
+                event.preventDefault();
             }
 
             // Shift + Down arrow (speed slow/default speed)
             if (event.which === 40) {
                 this.player.playbackRate(this.player.playbackRate() === 1 ? 0.5 : 1);
+
+                event.preventDefault();
             }
         }
+    }
 
-        // Stop propagation of the event
-        event.preventDefault();
+    componentDidMount() {
+        document.addEventListener(
+            'transcriptionKeyDown',
+            this.handleTranscriptionKeyDown,
+        );
+    };
+
+    componentWillUnmount() {
+        document.removeEventListener(
+            'transcriptionKeyDown',
+            this.handleTranscriptionKeyDown,
+        );
     }
 
     render() {

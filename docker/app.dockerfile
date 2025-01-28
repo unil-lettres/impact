@@ -4,7 +4,7 @@ ENV DOCKER_RUNNING=true
 ENV NODE_VERSION=20
 ENV COMPOSER_VERSION=2.6
 
-# Install additional packages
+# Update repositories & install additional packages
 RUN apt-get update && apt-get install -y \
     git \
     curl \

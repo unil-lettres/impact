@@ -27,16 +27,16 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push app latest stage version
+      - name: Build and push worker latest stage version
         uses: docker/build-push-action@v6
         with:
           context: ./
-          file: ./docker/app.dockerfile
+          file: ./docker/worker.dockerfile
           target: prod
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ env.DOCKERHUB_REPOSITORY }}:latest-stage
-          cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:latest-stage
+          tags: ${{ env.DOCKERHUB_REPOSITORY }}:worker-latest-stage
+          cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:worker-latest-stage
           cache-to: type=inline
 
   description:

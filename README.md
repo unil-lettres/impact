@@ -164,3 +164,7 @@ Changes in the `development` branch will create new images tagged `(worker-)late
 # Error tracker
 
 [https://www.bugsnag.com](https://www.bugsnag.com)
+
+# Helm
+
+The Helm charts for this project are available at [https://github.com/unil-lettres/k8s](https://github.com/unil-lettres/k8s), in the ``impact`` directory.

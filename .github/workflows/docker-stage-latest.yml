@@ -5,12 +5,11 @@ on:
       - "development"
 env:
   DOCKERHUB_REPOSITORY: unillett/impact
-  RUNNER_OS: ubuntu-22.04
 
 jobs:
   build-and-push-app:
     name: Build & Push App
-    runs-on: ${{ env.RUNNER_OS }}
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout
@@ -42,7 +41,7 @@ jobs:
 
   build-and-push-worker:
     name: Build & Push Worker
-    runs-on: ${{ env.RUNNER_OS }}
+    runs-on: ubuntu-22.04
 
     steps:
       - name: Checkout

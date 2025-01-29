@@ -5,11 +5,12 @@ on:
       - "development"
 env:
   DOCKERHUB_REPOSITORY: unillett/impact
+  RUNNER_OS: ubuntu-22.04
 
 jobs:
-  docker:
-    name: Build & Push
-    runs-on: ubuntu-22.04
+  build-and-push-app:
+    name: Build & Push App
+    runs-on: ${{ env.RUNNER_OS }}
 
     steps:
       - name: Checkout
@@ -39,10 +40,42 @@ jobs:
           cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:latest-dev
           cache-to: type=inline
 
-  description:
-    name: Update description
+  build-and-push-worker:
+    name: Build & Push Worker
+    runs-on: ${{ env.RUNNER_OS }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push worker latest dev version
+        uses: docker/build-push-action@v6
+        with:
+          context: ./
+          file: ./docker/worker.dockerfile
+          target: dev
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: ${{ env.DOCKERHUB_REPOSITORY }}:worker-latest-dev
+          cache-from: type=registry,ref=${{ env.DOCKERHUB_REPOSITORY }}:worker-latest-dev
+          cache-to: type=inline
+
+  update-description:
+    name: Update Description
     runs-on: ubuntu-latest
-    needs: docker
+    needs: [build-and-push-app, build-and-push-worker]
     if: success()
     continue-on-error: false
 

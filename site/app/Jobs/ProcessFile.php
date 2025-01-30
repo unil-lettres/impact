@@ -13,6 +13,7 @@ use FFMpeg\Filters\Video\ResizeFilter;
 use FFMpeg\Format\Audio\Mp3;
 use FFMpeg\Format\Video\X264;
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -20,7 +21,7 @@ use Illuminate\Queue\SerializesModels;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class ProcessFile implements ShouldQueue
+class ProcessFile implements ShouldQueue, ShouldBeUnique
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
@@ -34,6 +35,11 @@ class ProcessFile implements ShouldQueue
     public int $timeout;
 
     /**
+     * The number of seconds after which the job's unique lock will be released.
+     */
+    public int $uniqueFor;
+
+    /**
      * Create a new job instance.
      */
     public function __construct(File $file)
@@ -41,6 +47,15 @@ class ProcessFile implements ShouldQueue
         $this->file = $file;
         $this->fileStorageService = new FileStorageService;
         $this->timeout = config('const.files.ffmpeg.timeout');
+        $this->uniqueFor = config('const.files.ffmpeg.timeout');
+    }
+
+    /**
+     * Get the unique ID for the job.
+     */
+    public function uniqueId(): string
+    {
+        return $this->file->id;
     }
 
     /**

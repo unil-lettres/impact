@@ -28,7 +28,7 @@ jobs:
       - name: Login to Artifactory
         uses: docker/login-action@v3
         with:
-          registry: ${{ secrets.ARTIFACTORY_REPOSITORY }}
+          registry: ${{ secrets.ARTIFACTORY_TRAIN_REPOSITORY }}
           username: ${{ secrets.ARTIFACTORY_TRAIN_USERNAME }}
           password: ${{ secrets.ARTIFACTORY_TRAIN_PASSWORD }}
 
@@ -42,7 +42,7 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_NAMESPACE }}:latest-stage
-            ${{ secrets.ARTIFACTORY_REPOSITORY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:latest-stage
+            ${{ secrets.ARTIFACTORY_TRAIN_REPOSITORY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:latest-stage
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_NAMESPACE }}:latest-stage
           cache-to: type=inline
 
@@ -69,7 +69,7 @@ jobs:
       - name: Login to Artifactory
         uses: docker/login-action@v3
         with:
-          registry: ${{ secrets.ARTIFACTORY_REPOSITORY }}
+          registry: ${{ secrets.ARTIFACTORY_TRAIN_REPOSITORY }}
           username: ${{ secrets.ARTIFACTORY_TRAIN_USERNAME }}
           password: ${{ secrets.ARTIFACTORY_TRAIN_PASSWORD }}
 
@@ -83,7 +83,7 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_NAMESPACE }}:worker-latest-stage
-            ${{ secrets.ARTIFACTORY_REPOSITORY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:worker-latest-stage
+            ${{ secrets.ARTIFACTORY_TRAIN_REPOSITORY }}/${{ secrets.DOCKERHUB_NAMESPACE }}:worker-latest-stage
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_NAMESPACE }}:worker-latest-stage
           cache-to: type=inline
 

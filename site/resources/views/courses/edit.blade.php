@@ -15,8 +15,23 @@
                         </div><br />
                     @endif
                     <div class="card">
-                        <div class="card-header">
+                        <div class="card-header d-flex justify-content-between align-items-center">
                             <span class="title">{{ $course->name }}</span>
+
+                            @can('unsync', $course)
+                                <form class="with-unlink-confirm" method="post"
+                                      action="{{ route('admin.courses.unsync', $course->id) }}">
+                                    @method('PUT')
+                                    @csrf
+                                    <button type="submit"
+                                            class="btn btn-warning"
+                                            data-bs-toggle="tooltip"
+                                            data-placement="top"
+                                            title="{{ trans('courses.unsync') }}">
+                                        <i class="fa-solid fa-link-slash"></i>
+                                    </button>
+                                </form>
+                            @endcan
                         </div>
                         <div class="card-body">
                             @unless (Helpers::isCourseLocal($course))
@@ -32,7 +47,6 @@
                                         <input type="text"
                                                id="name"
                                                name="name"
-                                               @if(Helpers::isCourseExternal($course)) disabled @endif
                                                value="{{ old('name', $course->name) }}"
                                                class="form-control"
                                                autofocus
@@ -45,16 +59,13 @@
                                     <textarea class="form-control"
                                               name="description"
                                               id="description"
-                                              @if(Helpers::isCourseExternal($course)) disabled @endif
                                               rows="3">{{ old('description', $course->description) }}</textarea>
                                 </div>
 
-                                @if(Helpers::isCourseLocal($course))
-                                    <button type="submit"
-                                            class="btn btn-primary">
-                                        {{ trans('courses.update') }}
-                                    </button>
-                                @endif
+                                <button type="submit"
+                                        class="btn btn-primary">
+                                    {{ trans('courses.update') }}
+                                </button>
                             </form>
                         </div>
                     </div>

@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Course;
 use App\Enums\CourseType;
-use App\Helpers\Helpers;
 use App\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -64,11 +63,6 @@ class CoursePolicy
      */
     public function update(User $user, Course $course): bool
     {
-        // Only local courses can be updated
-        if (Helpers::isCourseExternal($course)) {
-            return false;
-        }
-
         // Only admins can update courses
         if ($user->admin) {
             return true;

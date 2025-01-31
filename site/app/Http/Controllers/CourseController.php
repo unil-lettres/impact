@@ -144,8 +144,8 @@ class CourseController extends Controller
 
             // Create new external course
             $course = Course::create([
-                'name' => $moodleCourse['shortname'] ?: 'No name',
-                'description' => $moodleCourse['fullname'] ?: null,
+                'name' => $moodleCourse['fullname'] ?: 'No name',
+                'description' => strip_tags($moodleCourse['summary']) ?: null,
                 'type' => CourseType::External,
                 'external_id' => $externalId,
             ]);

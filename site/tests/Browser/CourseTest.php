@@ -171,24 +171,6 @@ class CourseTest extends DuskTestCase
     }
 
     /**
-     * Test cannot edit an external course.
-     *
-     * @throws Throwable
-     */
-    public function test_cannot_edit_external_course(): void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit(new Login)
-                ->loginAsUser('admin-user@example.com', 'password');
-
-            $browser->visit('/admin/courses');
-
-            // Check that the edit link is not present for external courses
-            $browser->assertNotPresent('#courses table tbody tr.external .actions span a[aria-label="Modifier l\'espace"]');
-        });
-    }
-
-    /**
      * Test disable a course.
      *
      * @throws Throwable

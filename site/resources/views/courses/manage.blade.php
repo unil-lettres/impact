@@ -130,21 +130,7 @@
                                             <div>{{ trans('enrollments.enrollments') }}: {{ $course->enrollments()->withTrashed()->count() }}</div>
                                         </td>
                                         <td class="actions">
-                                            @can('update', $course)
-                                                @if ($course->isActive())
-                                                    <span>
-                                                        <a href="{{ route('admin.courses.edit', $course->id) }}"
-                                                           data-bs-toggle="tooltip"
-                                                           data-placement="top"
-                                                           class="btn btn-primary"
-                                                           title="{{ trans('courses.edit') }}">
-                                                            <i class="far fa-edit"></i>
-                                                        </a>
-                                                    </span>
-                                                @endif
-                                            @endcan
-
-                                            @unless ($course->isActive())
+                                            @unless($course->isActive())
                                                 @can('mailConfirmDelete', $course)
                                                     <span>
                                                         <a href="{{ route('admin.courses.send.confirm.delete', $course->id) }}"
@@ -168,23 +154,17 @@
                                                     </span>
                                                 @endcan
                                             @else
-                                                @can('unsync', $course)
+                                                @can('update', $course)
                                                     <span>
-                                                        <form class="with-unlink-confirm" method="post"
-                                                              action="{{ route('admin.courses.unsync', $course->id) }}">
-                                                            @method('PUT')
-                                                            @csrf
-                                                            <button type="submit"
-                                                                    class="btn btn-warning"
-                                                                    data-bs-toggle="tooltip"
-                                                                    data-placement="top"
-                                                                    title="{{ trans('courses.unsync') }}">
-                                                                <i class="fa-solid fa-link-slash"></i>
-                                                            </button>
-                                                        </form>
+                                                        <a href="{{ route('admin.courses.edit', $course->id) }}"
+                                                           data-bs-toggle="tooltip"
+                                                           data-placement="top"
+                                                           class="btn btn-primary"
+                                                           title="{{ trans('courses.edit') }}">
+                                                            <i class="far fa-edit"></i>
+                                                        </a>
                                                     </span>
                                                 @endcan
-
                                                 @can('disable', $course)
                                                     <span>
                                                         <form class="with-disable-confirm" method="post"

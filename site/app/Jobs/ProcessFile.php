@@ -53,6 +53,7 @@ class ProcessFile implements ShouldQueue, ShouldBeUnique
 
     /**
      * Get the unique ID for the job.
+     * This is needed to avoid overlapping jobs with multiple workers.
      */
     public function uniqueId(): string
     {

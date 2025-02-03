@@ -61,6 +61,7 @@ class ProcessFile implements ShouldQueue, ShouldBeUnique
 
     /**
      * Get the middleware the job should pass through.
+     * This is needed to avoid overlapping jobs with multiple workers.
      *
      * @return array<int, object>
      */
@@ -68,7 +69,7 @@ class ProcessFile implements ShouldQueue, ShouldBeUnique
     {
         return [
             (new WithoutOverlapping($this->file->id))
-                ->expireAfter(180)
+                ->expireAfter($this->timeout + 60)
         ];
     }
 

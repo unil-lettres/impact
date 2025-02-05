@@ -36,7 +36,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ secrets.DOCKERHUB_REPOSITORY }}:latest-stage
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_REPOSITORY }}:latest-stage
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_REPOSITORY }}:latest-stage9
           cache-to: type=inline
 
   build-and-push-worker:
@@ -70,7 +70,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: ${{ secrets.DOCKERHUB_REPOSITORY }}:worker-latest-stage
-          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_REPOSITORY }}:worker-latest-stage
+          cache-from: type=registry,ref=${{ secrets.DOCKERHUB_REPOSITORY }}:worker-latest-stage9
           cache-to: type=inline
 
   update-description:

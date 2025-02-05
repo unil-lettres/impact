@@ -45,7 +45,9 @@ class SyncMoodleData implements ShouldQueue
     public function handle(): void
     {
         // Get all the external ids of the Impact courses
-        $externalIds = $this->courses->pluck('external_id')->toArray();
+        $externalIds = $this->courses
+            ->pluck('external_id')
+            ->toArray();
 
         // Get available Moodle courses
         $availableCourses = (new MoodleService)
@@ -53,9 +55,11 @@ class SyncMoodleData implements ShouldQueue
 
         if ($availableCourses) {
             // List the Impact external courses that are
-            // not in the Moodle database anymore.
+            // not in the Moodle database anymore
             $orphans = collect($externalIds)->diff(
-                $availableCourses->pluck('id')->filter()
+                $availableCourses
+                    ->pluck('id')
+                    ->filter()
             );
 
             // If any, log and update the orphan courses
@@ -67,7 +71,10 @@ class SyncMoodleData implements ShouldQueue
             }
 
             // Update non-orphan courses
-            $nonOrphans = $availableCourses->pluck('id')->filter()->all();
+            $nonOrphans = $availableCourses
+                ->pluck('id')
+                ->filter()
+                ->all();
             Course::whereIn('external_id', $nonOrphans)
                 ->update(['orphan' => false]);
 
@@ -83,7 +90,9 @@ class SyncMoodleData implements ShouldQueue
         $availableCourses->each(function ($course) {
             if ($course['id']) {
                 $moodleUsers = collect($course['users']) ?? collect();
-                $impactCourse = $this->courses->where('external_id', $course['id'])->first();
+                $impactCourse = $this->courses
+                    ->where('external_id', $course['id'])
+                    ->first();
 
                 // Sync the Impact enrollments with the Moodle users
                 foreach ($moodleUsers as $moodleUser) {

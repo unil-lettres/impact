@@ -26,7 +26,7 @@ RUN apt-get update && apt-get install -y \
 RUN apt-get clean; docker-php-ext-install pdo_mysql zip gd bcmath pcntl intl
 
 # Install specific version of Composer
-RUN curl --silent --show-error https://getcomposer.org/installer | php -- \
+RUN curl -sS https://getcomposer.org/installer | php -- \
     --$COMPOSER_VERSION \
     --install-dir=/usr/local/bin --filename=composer
 

@@ -17,7 +17,6 @@ import { InlineEditor,
     ListProperties,
     Link,
     Alignment,
-    MediaEmbed,
     Image,
     ImageCaption,
     ImageStyle,
@@ -35,7 +34,8 @@ import { InlineEditor,
     HorizontalLine,
     Paragraph,
     Heading,
-    FontFamily } from 'ckeditor5';
+    FontFamily,
+    Bookmark } from 'ckeditor5';
 import coreTranslationsFr from 'ckeditor5/translations/fr.js';
 import coreTranslationsEn from 'ckeditor5/translations/en.js';
 
@@ -53,7 +53,6 @@ const editorConfiguration = {
         ListProperties,
         Link,
         Alignment,
-        MediaEmbed,
         Image,
         ImageCaption,
         ImageStyle,
@@ -71,7 +70,8 @@ const editorConfiguration = {
         Highlight,
         HorizontalLine,
         Paragraph,
-        FontFamily
+        FontFamily,
+        Bookmark
     ],
     toolbar: [
         "heading",
@@ -94,7 +94,7 @@ const editorConfiguration = {
         "|",
         "insertImage",
         "link",
-        "mediaEmbed",
+        "bookmark",
     ],
     image: {
         insert: {
@@ -278,6 +278,12 @@ export default class Editor extends Component {
     }
 
     render() {
+        if (!this.state.editable) {
+            return <div
+                class="ck-content"
+                dangerouslySetInnerHTML={{__html: this.state.html}}
+            ></div>;
+        }
         return (
             <div>
                 <CKEditor
@@ -293,19 +299,9 @@ export default class Editor extends Component {
                     disableWatchdog={ !this.state.editable }
                     onReady={ editor => {
                         this.editor = editor
-                        //console.log(Array.from( editor.ui.componentFactory.names() ));
                     }}
                     disabled={ !this.state.editable }
                     onChange={ this.onEditorChange }
-                    onBlur={ ( event, editor ) => {
-                        //console.log( 'Blur.', editor );
-                    }}
-                    onFocus={ ( event, editor ) => {
-                        //console.log( 'Focus.', editor );
-                    }}
-                    onError={ ( event, editor ) => {
-                        //console.log( 'Error.', editor );
-                    }}
                 />
             </div>
         )

@@ -223,4 +223,4 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-          repository: ${{ secrets.DOCKERHUB_REPOSITORY }}
+          repository: ${{ vars.DOCKERHUB_REPOSITORY }}

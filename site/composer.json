@@ -26,7 +26,7 @@
         "beberlei/assert": "^3.3",
         "bugsnag/bugsnag-laravel": "^2.27",
         "guzzlehttp/guzzle": "^7.5",
-        "laravel/framework": "^11.2",
+        "laravel/framework": "^12.0",
         "laravel/tinker": "^2.9",
         "laravel/ui": "^4.4",
         "livewire/livewire": "^3.3",

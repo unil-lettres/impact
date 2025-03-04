@@ -20,7 +20,7 @@ services:
     volumes:
       - ./site:/var/www/impact
   impact-mysql-testing:
-    image: mariadb:10.6
+    image: mariadb:11.4
     env_file:
       - ./docker/.env
     volumes:

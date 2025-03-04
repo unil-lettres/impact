@@ -9,13 +9,13 @@ env:
 jobs:
   test:
     name: PHP${{ matrix.php-versions }}
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     strategy:
       matrix:
-        php-versions: [ '8.3' ]
-        composer-version: [ '2.6' ]
-        mariadb-version: [ '10.6' ]
-        node-version: [ '20' ]
+        php-versions: [ '8.4' ]
+        composer-version: [ '2.8' ]
+        mariadb-version: [ '11.4' ]
+        node-version: [ '22' ]
 
     services:
       mariadb:
@@ -27,7 +27,7 @@ jobs:
           MYSQL_USER: user
           MYSQL_PASSWORD: password
           MYSQL_ALLOW_EMPTY_PASSWORD: yes
-        options: --health-cmd="mysqladmin ping" --health-interval=5s --health-timeout=2s --health-retries=5
+        options: --health-cmd="healthcheck.sh --connect --innodb_initialized" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
       - name: Checkout

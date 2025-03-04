@@ -30,7 +30,7 @@ services:
       - impact-net
     container_name: impact-worker
   impact-mysql:
-    image: mariadb:10.6
+    image: mariadb:11.4
     env_file:
       - ./docker/.env
     volumes:
@@ -39,12 +39,11 @@ services:
     ports:
       - "127.0.0.1:3303:3306"
     healthcheck:
-      # The container is not considered healthy until the MYSQL_DATABASE database is available
-      test: [ "CMD-SHELL", "mysql $${MYSQL_DATABASE} -u$${MYSQL_USER} -p$${MYSQL_PASSWORD} -e 'SELECT 1;'  || exit 1" ]
-      interval: 2s
-      timeout: 2s
-      retries: 5
-      start_period: 1m
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 30s
     networks:
       - impact-net
     container_name: impact-mysql

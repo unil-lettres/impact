@@ -1,7 +1,7 @@
-FROM php:8.3-cli-bookworm AS base
+FROM php:8.4-cli-bookworm AS base
 
 ENV DOCKER_RUNNING=true
-ENV COMPOSER_VERSION=2.6
+ENV COMPOSER_VERSION=2.8
 
 # Update repositories & install additional packages
 RUN apt-get update && apt-get install -y \

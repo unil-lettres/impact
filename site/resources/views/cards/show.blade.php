@@ -102,10 +102,6 @@
     @endsection
 @endcan
 
-@section('scripts-head')
-    <script type="text/javascript" src="{{ asset('js/vendor/@ckeditor/translations/en.js') }}"></script>
-@endsection
-
 @section('scripts-footer')
     <script type="text/javascript">
         // Hide or show boxes on button click

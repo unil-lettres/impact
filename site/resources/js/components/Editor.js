@@ -280,7 +280,7 @@ export default class Editor extends Component {
     render() {
         if (!this.state.editable) {
             return <div
-                class="ck-content"
+                className="ck-content"
                 dangerouslySetInnerHTML={{__html: this.state.html}}
             ></div>;
         }

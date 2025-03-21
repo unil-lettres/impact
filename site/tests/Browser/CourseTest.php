@@ -248,6 +248,7 @@ class CourseTest extends DuskTestCase
 
             $browser->select('type', 'text')
                 ->press('Mettre à jour la configuration')
+                ->waitForText('Configuration de l\'espace mise à jour.')
                 ->assertSee('Configuration de l\'espace mise à jour.');
 
             $browser->visit(new PagesCard('Test card features'));

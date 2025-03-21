@@ -37,7 +37,8 @@ class NavigationTest extends DuskTestCase
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->with('.navbar', function (Browser $browser) {
-                $browser->assertSee('Admin')
+                $browser->waitForText('Admin')
+                    ->assertSee('Admin')
                     ->assertSee('Français')
                     ->assertMissing('button.navbar-toggler');
             });

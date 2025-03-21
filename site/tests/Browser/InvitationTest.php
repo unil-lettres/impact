@@ -37,9 +37,11 @@ class InvitationTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->clickLink('Admin');
+            $browser->waitForText('Admin')
+                ->clickLink('Admin');
 
-            $browser->clickLink('Invitations');
+            $browser->waitForText('Invitations')
+                ->clickLink('Invitations');
 
             $browser->assertSee('Invitations en attente');
             $browser->assertSee('test-invitation@example.com');
@@ -110,7 +112,9 @@ class InvitationTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('invitation-user-member@example.com', 'password');
 
-            $browser->click('.navbar ul li.auth')
+            $browser->visit('/invitations')
+                ->waitForText('Non autorisé')
+                ->assertSee('Non autorisé')
                 ->assertDontSee('Gérer les invitations');
 
             $browser->visit('/invitations')

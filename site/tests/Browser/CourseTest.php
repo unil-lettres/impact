@@ -77,7 +77,8 @@ class CourseTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->assertSee('Deactivated space')
+            $browser->waitForText('Deactivated space')
+                ->assertSee('Deactivated space')
                 ->clickLink('Deactivated space')
                 ->assertSee('Gestion des espaces')
                 ->assertPathIs('/admin/courses');
@@ -95,7 +96,8 @@ class CourseTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('manager-user@example.com', 'password');
 
-            $browser->assertSee('First space')
+            $browser->waitForText('First space')
+                ->assertSee('First space')
                 ->visit(new PagesCourse('First space'));
 
             $browser->assertSee('Configuration de l\'espace')

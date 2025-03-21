@@ -52,7 +52,8 @@ class LoginTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->assertSee('Admin');
+            $browser->waitForText('Admin')
+                ->assertSee('Admin');
 
             $browser->clickLink('Admin')
                 ->assertSee('Gestion des utilisateurs')

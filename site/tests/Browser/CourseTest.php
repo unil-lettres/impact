@@ -40,7 +40,8 @@ class CourseTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('member-user@example.com', 'password');
 
-            $browser->assertSee('Liste des espaces')
+            $browser->waitForText('Liste des espaces')
+                ->assertSee('Liste des espaces')
                 ->assertPathIs('/');
 
             $browser->assertSee('Second space')
@@ -60,7 +61,8 @@ class CourseTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->assertSee('Liste des espaces')
+            $browser->waitForText('Liste des espaces')
+                ->assertSee('Liste des espaces')
                 ->assertPathIs('/');
 
             $browser->assertSee('First space')
@@ -112,7 +114,8 @@ class CourseTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('member-user@example.com', 'password');
 
-            $browser->assertSee('Second space')
+            $browser->waitForText('Second space')
+                ->assertSee('Second space')
                 ->visit(new PagesCourse('Second space'));
 
             $browser->assertDontSee('Configuration de l\'espace')

@@ -71,7 +71,8 @@ class LoginTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('invalid-user@example.com', 'password');
 
-            $browser->assertSee('Ces identifiants ne correspondent pas à nos enregistrements')
+            $browser->waitForText('Ces identifiants ne correspondent pas à nos enregistrements')
+                ->assertSee('Ces identifiants ne correspondent pas à nos enregistrements')
                 ->assertPathIs('/login');
         });
     }

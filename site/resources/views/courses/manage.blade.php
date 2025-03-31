@@ -106,10 +106,14 @@
                                 @can('view', $course)
                                     <tr class="{{ $course->type }}{{ !$course->isActive() ? ' invalid' : '' }}">
                                         <td title="{{ $course->name }}">
-                                            {{ Helpers::truncate($course->name, 60) }}
-                                            @unless ($course->isActive())
+                                            @if(($course->isActive()))
+                                                <a href="{{ route('courses.show', $course->id) }}">
+                                                    {{ Helpers::truncate($course->name, 80) }}
+                                                </a>
+                                            @else
+                                                {{ Helpers::truncate($course->name, 80) }}
                                                 <span class="badge bg-danger">{{ trans('courses.disabled') }}</span>
-                                            @endunless
+                                            @endif
                                             @if (Helpers::isCourseExternal($course))
                                                 @if($course->orphan)
                                                     <div class="text-decoration-line-through text-secondary" title="{{ trans('courses.moodle_not_found', ['id' => $course->external_id]) }}">

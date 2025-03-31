@@ -118,6 +118,12 @@
                                                 @else
                                                     <div class="text-secondary">
                                                         {{ trans('courses.moodle_id', ['id' => $course->external_id]) }}
+
+                                                        @if($moodleUrl = Helpers::getMoodleUrl($course->external_id))
+                                                            <a href="{{ $moodleUrl }}" target="_blank">
+                                                                <i class="fa fa-link"></i>
+                                                            </a>
+                                                        @endif
                                                     </div>
                                                 @endif
                                             @endif

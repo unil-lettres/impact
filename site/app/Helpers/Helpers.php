@@ -12,6 +12,7 @@ use App\Enums\UserType;
 use App\File;
 use App\Folder;
 use App\Services\FinderItemsService;
+use App\Services\MoodleService;
 use App\State;
 use App\User;
 use Illuminate\Support\Collection;
@@ -313,6 +314,15 @@ class Helpers
         }
 
         return true;
+    }
+
+    /**
+     * Return the Moodle URL for a given Moodle ID
+     */
+    public static function getMoodleUrl(int $moodleId): ?string
+    {
+        return (new MoodleService)
+            ->getMoodleUrl($moodleId);
     }
 
     /**

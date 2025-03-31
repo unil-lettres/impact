@@ -10,15 +10,24 @@ use Illuminate\Support\Facades\Log;
 
 class MoodleService
 {
-    public string $url;
+    public ?string $apiUrl = null;
 
-    public string $token;
+    public ?string $moodleUrl = null;
+
+    public ?string $token = null;
 
     private string $format = 'json';
 
     public function __construct()
     {
-        $this->url = config('const.moodle.url');
+        if (config('const.moodle.base') && config('const.moodle.api')) {
+            $this->apiUrl = config('const.moodle.base').config('const.moodle.api');
+        }
+
+        if (config('const.moodle.base') && config('const.moodle.course')) {
+            $this->moodleUrl = config('const.moodle.base').config('const.moodle.course');
+        }
+
         $this->token = config('const.moodle.token');
     }
 
@@ -31,7 +40,7 @@ class MoodleService
             return null;
         }
 
-        $response = Http::get($this->url, [
+        $response = Http::get($this->apiUrl, [
             'wstoken' => $this->token,
             'wsfunction' => 'local_impactsync_get_courses',
             'courseids' => $courseId,
@@ -48,6 +57,18 @@ class MoodleService
     }
 
     /**
+     * Return the Moodle URL for a given Moodle ID.
+     */
+    public function getMoodleUrl(int $moodleID): ?string
+    {
+        if (! $this->isConfigured()) {
+            return null;
+        }
+
+        return $this->moodleUrl.(string) $moodleID;
+    }
+
+    /**
      * Retrieve the data of multiple Moodle courses by id.
      */
     public function getCourses(array $courseIds, bool $withUsers = true): ?Collection
@@ -56,7 +77,7 @@ class MoodleService
             return null;
         }
 
-        $response = Http::get($this->url, [
+        $response = Http::get($this->apiUrl, [
             'wstoken' => $this->token,
             'wsfunction' => 'local_impactsync_get_courses',
             'courseids' => Arr::join($courseIds, ','),
@@ -77,7 +98,7 @@ class MoodleService
      */
     public static function isConfigured(): bool
     {
-        return config('const.moodle.url') && config('const.moodle.token');
+        return config('const.moodle.base') && config('const.moodle.api') && config('const.moodle.token');
     }
 
     /**

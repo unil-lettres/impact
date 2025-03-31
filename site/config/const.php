@@ -39,7 +39,9 @@ return [
     ],
 
     'moodle' => [
-        'url' => env('MOODLE_URL', null),
+        'base' => env('MOODLE_BASE', null),
+        'course' => env('MOODLE_COURSE', null),
+        'api' => env('MOODLE_API', null),
         'token' => env('MOODLE_TOKEN', null),
         'sync' => [
             'timeout' => env('MOODLE_SYNC_TIMEOUT', 600),

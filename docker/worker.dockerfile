@@ -1,6 +1,10 @@
 FROM php:8.4-cli-bookworm AS base
 
 ENV DOCKER_RUNNING=true
+ENV LANG=en_US.UTF-8
+ENV LANGUAGE=en_US:en
+ENV LC_ALL=en_US.UTF-8
+
 ENV COMPOSER_VERSION=2.8
 
 # Update repositories & install additional packages
@@ -20,7 +24,13 @@ RUN apt-get update && apt-get install -y \
     libzip-dev \
     libicu-dev \
     ca-certificates \
-    gnupg
+    gnupg \
+    locales
+
+# Generate and set locale
+RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
+    locale-gen en_US.UTF-8 && \
+    update-locale LANG=en_US.UTF-8
 
 # Install needed php extensions
 RUN apt-get clean; docker-php-ext-install pdo_mysql zip gd bcmath pcntl intl

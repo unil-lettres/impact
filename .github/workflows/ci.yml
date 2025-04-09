@@ -62,8 +62,8 @@ jobs:
       - name: Setup problem matchers for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
-      - name: Mysql configuration
-        run: mysql --protocol=tcp --user=root --execute='SET GLOBAL sql_mode = "";'
+      - name: Mariadb configuration
+        run: mariadb --protocol=tcp --user=root --execute='SET GLOBAL sql_mode = "";'
 
       - name: Build app
         id: app-build

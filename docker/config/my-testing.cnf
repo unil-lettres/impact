@@ -23,11 +23,11 @@ socket          = /var/run/mysqld/mysqld.sock
 # The following values assume you have at least 32M ram
 
 # This was formally known as [safe_mysqld]. Both versions are currently parsed.
-[mysqld_safe]
+[mariadbd-safe]
 socket          = /var/run/mysqld/mysqld.sock
 nice            = 0
 
-[mysqld]
+[mariadbd]
 #
 # * Basic Settings
 #
@@ -171,12 +171,12 @@ innodb_flush_method     = O_DIRECT
 #wsrep_slave_threads=1
 #innodb_flush_log_at_trx_commit=0
 
-[mysqldump]
+[mariadb-dump]
 quick
 quote-names
 max_allowed_packet      = 16M
 
-[mysql]
+[mariadb]
 #no-auto-rehash # faster start of mysql but no tab completion
 
 [isamchk]

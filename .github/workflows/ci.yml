@@ -62,6 +62,9 @@ jobs:
       - name: Setup problem matchers for PHPUnit
         run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
 
+      - name: Install MariaDB client
+        run: sudo apt-get update && sudo apt-get install -y mariadb-client
+
       - name: Mariadb configuration
         run: mariadb --protocol=tcp --user=root --execute='SET GLOBAL sql_mode = "";'
 

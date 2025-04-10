@@ -116,6 +116,10 @@ To run the full suite:
 
 ### Browser tests
 
+You need to install Chrom Driver first:
+
+`docker exec -it impact-app php artisan dusk:chrome-driver`
+
 To run the full suite:
 
 `docker exec -it impact-app php artisan dusk --env=testing`

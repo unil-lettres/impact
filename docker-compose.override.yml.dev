@@ -25,7 +25,7 @@ services:
       - ./docker/.env
     volumes:
       - dusk-data:/var/lib/mysql
-      - ./docker/config/my-testing.cnf:/etc/mysql/my.cnf
+      - ./docker/config/my-testing.cnf:/etc/mysql/conf.d/99-my-testing.cnf
     expose:
       - "3307"
     networks:

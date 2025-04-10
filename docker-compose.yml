@@ -35,7 +35,6 @@ services:
       - ./docker/.env
     volumes:
       - mysql-data:/var/lib/mysql
-      - ./docker/config/my.cnf:/etc/mysql/my.cnf
     ports:
       - "127.0.0.1:3303:3306"
     healthcheck:

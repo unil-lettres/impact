@@ -37,7 +37,6 @@
     // "shutdownAction": "none",
     // Uncomment the next line to run commands after the container is created.
     "initializeCommand": "cp docker/example.env docker/.env",
-	"postCreateCommand": "chown -R 1000:1000 /var/www/html",
     // "onCreateCommand": "apt update && apt install -y --no-install-recommends tig && git config --global --add safe.directory /var/www && php artisan db:seed",
     // Configure tool-specific properties.
     "customizations": {

@@ -20,7 +20,13 @@
         },
         "ghcr.io/guiyomh/features/vim": {}
     },
-
+    "portsAttributes" : {
+        "8787": {
+            "label": "Impact Application",
+            "onAutoForward": "openPreview",
+            "visibility": "org"
+        }
+    },
     // Features to add to the dev container. More info: https://containers.dev/features.
     // "features": {},
     // Use 'forwardPorts' to make a list of ports inside the container available locally.
@@ -32,7 +38,8 @@
     // Uncomment the next line to run commands after the container is created.
     "initializeCommand": "cp docker/example.env docker/.env",
     "onCreateCommand": [
-        "apt update && apt install -y --no-install-recommends tig",
+        "apt update",
+        "apt install -y --no-install-recommends tig",
         "git config --global --add safe.directory /var/www",
         "php artisan db:seed"
     ],

@@ -32,7 +32,7 @@ RUN apt-get update && apt-get install -y \
 # Generate and set locale
 RUN echo "en_US.UTF-8 UTF-8" > /etc/locale.gen && \
     locale-gen en_US.UTF-8 && \
-    update-locale LANG=en_US.UTF-8 \
+    update-locale LANG=en_US.UTF-8
 
 # Set timezone
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone

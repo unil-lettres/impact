@@ -1,0 +1,64 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-docker-compose
+{
+    "name": "Impact Docker Dev Container",
+    // Update the 'dockerComposeFile' list if you have more compose files or use different names.
+    // The .devcontainer/docker-compose.yml file contains any overrides you need/want to make.
+    "dockerComposeFile": [
+        "../docker-compose.yml",
+        "../docker-compose.override.yml.dev"
+    ],
+    // The 'service' property is the name of the service for the container that VS Code should
+    // use. Update this value and .devcontainer/docker-compose.yml to the real service name.
+    "service": "impact-app",
+    // The optional 'workspaceFolder' property is the path VS Code should open by default when
+    // connected. This is typically a file mount in .devcontainer/docker-compose.yml
+    "workspaceFolder": "/var/www",
+    "features": {
+        "ghcr.io/devcontainers/features/git:1": {
+            "version": "2.39.2"
+        },
+        "ghcr.io/guiyomh/features/vim": {}
+    },
+
+    // Features to add to the dev container. More info: https://containers.dev/features.
+    // "features": {},
+    // Use 'forwardPorts' to make a list of ports inside the container available locally.
+    // "forwardPorts": [],
+    // Uncomment the next line if you want start specific services in your Docker Compose config.
+    // "runServices": [],
+    // Uncomment the next line if you want to keep your containers running after VS Code shuts down.
+    // "shutdownAction": "none",
+    // Uncomment the next line to run commands after the container is created.
+    "initializeCommand": "cp docker/example.env docker/.env",
+    "onCreateCommand": [
+        "apt update && apt install -y --no-install-recommends tig",
+        "git config --global --add safe.directory /var/www",
+        "php artisan db:seed"
+    ],
+    // Configure tool-specific properties.
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "dbaeumer.vscode-eslint",
+                "eamodio.gitlens",
+                "EditorConfig.EditorConfig",
+                "MehediDracula.php-namespace-resolver",
+                "mikestead.dotenv",
+                "MS-CEINTL.vscode-language-pack-fr",
+                "PKief.material-icon-theme",
+                "redhat.vscode-yaml",
+                "ryu1kn.partial-diff",
+                "zobo.php-intellisense",
+                "GitHub.copilot",
+                "wangxinhai-ref-chunsen.flutter-code-select",
+                "GitHub.copilot-chat",
+                "laravel.vscode-laravel",
+                "ryannaddy.laravel-artisan"
+            ]
+        }
+    }
+    // Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+    // "remoteUser": "devcontainer"
+}

@@ -1,5 +1,6 @@
 name: ci
 on: [push, pull_request]
+permissions: read-all
 env:
   MAIL_HOST: ${{ secrets.MAIL_HOST }}
   MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}

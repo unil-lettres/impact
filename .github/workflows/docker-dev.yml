@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - "development"
-
+permissions: read-all
 jobs:
   build-app:
     name: Build App

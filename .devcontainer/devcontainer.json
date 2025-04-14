@@ -18,19 +18,19 @@
     "portsAttributes" : {
         "8787": {
             "label": "Impact Application",
-            "visibility": "org"
+            "visibility": "public"
         },
         "9898": {
             "label": "Impact PHPMyAdmin",
-            "visibility": "org"
+            "visibility": "private"
         },
         "8025": {
             "label": "Impact Mailhog",
-            "visibility": "org"
+            "visibility": "private"
         }
     },
     "initializeCommand": "cp docker/example.env docker/.env",
-    "postCreateCommand": "if [ -n \"$CODESPACE_NAME\" ]; then APP_URL=\"https://$CODESPACE_NAME-8787.app.github.dev\"; if grep -q '^APP_URL=' .env; then sed -i \"s|^APP_URL=.*|APP_URL=$APP_URL|\" .env; else echo \"APP_URL=$APP_URL\" >> .env; fi; fi",
+    "postCreateCommand": "if [ -n \"$CODESPACE_NAME\" ]; then APP_URL=\"https://$CODESPACE_NAME-8787.app.github.dev\"; if grep -q '^APP_URL=' ./site/.env; then sed -i \"s|^APP_URL=.*|APP_URL=$APP_URL|\" ./site/.env; else echo \"APP_URL=$APP_URL\" >> ./site/.env; fi; fi",
     "customizations": {
         "vscode": {
             "extensions": [

@@ -1,0 +1,15 @@
+#!/bin/bash
+
+if [ -n "$CODESPACE_NAME" ]; then
+  # Set the APP_URL envar to the codespace URL
+  APP_URL="https://$CODESPACE_NAME-8787.app.github.dev"
+  if grep -q '^APP_URL=' ./site/.env; then
+    sed -i "s|^APP_URL=.*|APP_URL=$APP_URL|" ./site/.env
+  else
+    echo "APP_URL=$APP_URL" >> ./site/.env
+  fi
+fi
+
+# Populate the databse with dummy data
+cd ./site
+php artisan db:seed

@@ -53,6 +53,7 @@ class AppServiceProvider extends ServiceProvider
         Card::observe(CardObserver::class);
         Folder::observe(FolderObserver::class);
         User::observe(UserObserver::class);
+        URL::forceRootUrl(config('app.url'));
 
         // Use Bootstrap pagination
         Paginator::useBootstrap();

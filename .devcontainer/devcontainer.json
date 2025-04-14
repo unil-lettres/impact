@@ -20,11 +20,12 @@
         },
         "ghcr.io/guiyomh/features/vim": {}
     },
+    "forwardPorts": [80],
     "portsAttributes" : {
-        "8787": {
+        "80": {
             "label": "Impact Application",
             "onAutoForward": "openPreview",
-            "visibility": "org"
+            "visibility": "private"
         }
     },
     // Features to add to the dev container. More info: https://containers.dev/features.

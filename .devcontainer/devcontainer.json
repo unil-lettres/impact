@@ -7,7 +7,7 @@
         "../docker-compose.override.yml.dev"
     ],
     "service": "impact-app",
-    "workspaceFolder": "/var/www/impact",
+    "workspaceFolder": "/workspaces/impact",
     "features": {
         "ghcr.io/devcontainers/features/git:1": {
             "version": "2.39.2"
@@ -18,15 +18,15 @@
     "portsAttributes" : {
         "8787": {
             "label": "Impact Application",
-            "visibility": "private"
+            "visibility": "org"
         },
         "9898": {
             "label": "Impact PHPMyAdmin",
-            "visibility": "private"
+            "visibility": "org"
         },
         "8025": {
             "label": "Impact Mailhog",
-            "visibility": "private"
+            "visibility": "org"
         }
     },
     "initializeCommand": "cp docker/example.env docker/.env",

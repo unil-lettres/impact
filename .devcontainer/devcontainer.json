@@ -20,11 +20,10 @@
         },
         "ghcr.io/guiyomh/features/vim": {}
     },
-    "forwardPorts": [80],
+    "forwardPorts": [8787],
     "portsAttributes" : {
-        "80": {
+        "8787": {
             "label": "Impact Application",
-            "onAutoForward": "openPreview",
             "visibility": "private"
         }
     },
@@ -38,6 +37,7 @@
     // "shutdownAction": "none",
     // Uncomment the next line to run commands after the container is created.
     "initializeCommand": "cp docker/example.env docker/.env",
+    "postCreateCommand": "if [ -n \"$CODESPACE_NAME\" ]; then echo \"APP_URL=https://$CODESPACE_NAME-8787.app.github.dev\" >> .env; fi",
     // "onCreateCommand": "apt update && apt install -y --no-install-recommends tig && git config --global --add safe.directory /var/www && php artisan db:seed",
     // Configure tool-specific properties.
     "customizations": {

@@ -33,7 +33,7 @@
                 "zobo.php-intellisense",
                 "GitHub.copilot",
                 "GitHub.copilot-chat",
-                "laravel.vscode-laravel",
+                "laravel.vscode-laravel"
             ]
         }
     }

@@ -12,6 +12,8 @@ multIMedia interface: Presentation – Analysis – CommenT
 
 A Laravel 12 app with react components.
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/unil-lettres/impact)
+
 # Development with Docker
 
 ## Docker installation

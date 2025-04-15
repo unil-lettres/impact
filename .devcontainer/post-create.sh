@@ -10,6 +10,6 @@ if [ -n "$CODESPACE_NAME" ]; then
   fi
 fi
 
-# Populate the databse with dummy data
+# Populate the database with dummy data
 cd ./site
 php artisan db:seed

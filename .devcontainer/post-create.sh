@@ -8,6 +8,9 @@ if [ -n "$CODESPACE_NAME" ]; then
   else
     echo "APP_URL=$APP_URL" >> ./site/.env
   fi
+
+  # Ensure the CODESPACE_NAME is available in Laravel
+  echo "CODESPACE_NAME=$APP_URL" >> ./site/.env
 fi
 
 # Populate the database with dummy data

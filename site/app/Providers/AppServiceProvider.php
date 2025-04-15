@@ -53,7 +53,6 @@ class AppServiceProvider extends ServiceProvider
         Card::observe(CardObserver::class);
         Folder::observe(FolderObserver::class);
         User::observe(UserObserver::class);
-        URL::forceRootUrl(config('app.url'));
 
         // Use Bootstrap pagination
         Paginator::useBootstrap();
@@ -85,6 +84,16 @@ class AppServiceProvider extends ServiceProvider
          */
         if ((str_starts_with(config('const.app_url'), 'https://'))) {
             URL::forceScheme('https');
+        }
+
+        /**
+         * This is a workaround for GitHub Codespaces, which doesn't always pass the proper headers.
+         *
+         * Here, we check if the CODESPACE_NAME environment variable is set, which indicates that
+         * we're running in a Codespace. If it is, we force the root URL to be the app URL.
+         */
+        if (env('CODESPACE_NAME')) {
+            URL::forceRootUrl(config('const.app_url'));
         }
     }
 }

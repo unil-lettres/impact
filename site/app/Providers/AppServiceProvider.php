@@ -85,5 +85,17 @@ class AppServiceProvider extends ServiceProvider
         if ((str_starts_with(config('const.app_url'), 'https://'))) {
             URL::forceScheme('https');
         }
+
+        /**
+         * This is a workaround for GitHub Codespaces. This is needed because Codespaces uses a
+         * reverse proxy with a dynamic public URL, and Laravel would otherwise generate incorrect
+         * URLs (like http://localhost), causing issues with routing, redirects, and asset loading.
+         *
+         * Here, we check if the CODESPACE_NAME environment variable is set, which indicates that
+         * we're running in a Codespace.
+         */
+        if (env('CODESPACE_NAME')) {
+            URL::forceRootUrl(config('const.app_url'));
+        }
     }
 }

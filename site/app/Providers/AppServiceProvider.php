@@ -95,7 +95,7 @@ class AppServiceProvider extends ServiceProvider
          * we're running in a Codespace.
          */
         if (env('CODESPACE_NAME')) {
-            URL::forceRootUrl(config('const.app_url'));
+            URL::forceRootUrl(config('app.url'));
         }
     }
 }

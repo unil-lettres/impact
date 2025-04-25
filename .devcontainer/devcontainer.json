@@ -10,7 +10,7 @@
     "workspaceFolder": "/workspaces/impact",
     "features": {
         "ghcr.io/devcontainers/features/git:1": {
-            "version": "2.39.2"
+            "version": "2.43.0"
         },
         "ghcr.io/guiyomh/features/vim": {}
     },
@@ -33,7 +33,8 @@
                 "zobo.php-intellisense",
                 "GitHub.copilot",
                 "GitHub.copilot-chat",
-                "laravel.vscode-laravel"
+                "laravel.vscode-laravel",
+                "ms-azuretools.vscode-docker"
             ]
         }
     }

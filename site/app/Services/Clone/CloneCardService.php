@@ -191,6 +191,20 @@ class CloneCardService
             );
         }
 
+        // Remove base64 images from the card box3 & box4 content.
+        $copiedCard->getBoxes(["box3", "box4"])->each(
+            function ($box) use ($copiedCard) {
+                $box['content'] = preg_replace(
+                    '/src="data:image\/[^;]+;base64,[^"]+"/',
+                    'src="" alt="'. trans('messages.card.no.b64') .'"',
+                    $box['content'],
+                );
+                $copiedCard->{$box['name']} = $box['content'];
+
+                $copiedCard->save();
+            }
+        );
+
         // Clone attachments.
         $this->card->attachments()->each(
             function ($attachment) use ($fileStorageService, $copiedCard, $files, $failed) {

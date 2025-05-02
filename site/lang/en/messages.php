@@ -45,6 +45,7 @@ return [
     'card.no.transcription' => 'No transcription',
     'card.no.attachments' => 'No attachments',
     'card.empty' => 'Empty',
+    'card.no.b64' => 'Incompatible image',
     'folder.deleted' => 'Folder deleted.',
     'file.deleted' => 'File deleted.',
     'file.updated' => 'File updated.',

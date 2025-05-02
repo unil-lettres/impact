@@ -5,6 +5,7 @@ namespace App\Services\Clone;
 use App\Card;
 use App\Course;
 use App\Enrollment;
+use App\Enums\CardBox;
 use App\Enums\EnrollmentRole;
 use App\Enums\FileStatus;
 use App\Enums\StateType;
@@ -192,11 +193,11 @@ class CloneCardService
         }
 
         // Remove base64 images from the card box3 & box4 content.
-        $copiedCard->getBoxes(["box3", "box4"])->each(
+        $copiedCard->getBoxes([CardBox::Box3, CardBox::Box4])->each(
             function ($box) use ($copiedCard) {
                 $box['content'] = preg_replace(
                     '/src="data:image\/[^;]+;base64,[^"]+"/',
-                    'src="" alt="'. trans('messages.card.no.b64') .'"',
+                    'src="" alt="'.trans('messages.card.no.b64').'"',
                     $box['content'],
                 );
                 $copiedCard->{$box['name']} = $box['content'];

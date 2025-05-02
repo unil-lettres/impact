@@ -346,7 +346,7 @@ class Card extends Model
      * Return a collection of boxes for this card.
      * Can be limited to a specific set of boxes.
      */
-    public function getBoxes(array $boxes=null): Collection
+    public function getBoxes(?array $boxes = null): Collection
     {
         $boxes = $boxes ? collect($boxes) : CardBox::getAllBoxes();
 

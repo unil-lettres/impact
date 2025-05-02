@@ -46,6 +46,7 @@ return [
     'card.no.transcription' => 'Pas de transcription',
     'card.no.attachments' => 'Pas d\'annexes',
     'card.empty' => 'Vide',
+    'card.no.b64' => 'Image incompatible',
     'folder.deleted' => 'Dossier supprimé.',
     'file.deleted' => 'Fichier supprimé.',
     'file.updated' => 'Fichier mis à jour.',

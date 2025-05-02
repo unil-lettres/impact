@@ -343,6 +343,28 @@ class Card extends Model
     }
 
     /**
+     * Return a collection of boxes for this card.
+     * Can be limited to a specific set of boxes.
+     */
+    public function getBoxesContent(?array $boxes = null): Collection
+    {
+        $boxes = $boxes ? collect($boxes) : CardBox::getAllBoxes();
+
+        return collect($boxes)
+            ->map(function ($box) use ($boxes) {
+                if ($boxes && ! $boxes->contains($box)) {
+                    return null;
+                }
+
+                return [
+                    'name' => $box,
+                    'content' => $this->{$box},
+                ];
+            })
+            ->filter();
+    }
+
+    /**
      * Return whether a box can be edited by the current user.
      * The current state of the card is used to determine the editability.
      */

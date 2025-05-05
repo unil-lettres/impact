@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Schema;
 
 class Card extends Model
 {
@@ -340,6 +341,30 @@ class Card extends Model
     {
         return CardBox::getAllBoxes()
             ->every(fn ($box) => ! $this->boxIsVisible($box));
+    }
+
+    /**
+     * Return a collection of boxes for this card.
+     * Can be limited to a specific set of boxes.
+     */
+    public function getBoxesContent(?array $boxes = null): Collection
+    {
+        $boxes = $boxes ? collect($boxes) : CardBox::getAllBoxes();
+
+        return collect($boxes)
+            ->map(function ($box) {
+                // Check if the database column for this box exists
+                if (! Schema::hasColumn($this->getTable(), $box)) {
+                    return null;
+                }
+
+                return [
+                    'name' => $box,
+                    'content' => $this->{$box},
+                ];
+            })
+            // Remove null values
+            ->filter();
     }
 
     /**

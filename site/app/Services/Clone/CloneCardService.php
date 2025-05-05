@@ -5,6 +5,7 @@ namespace App\Services\Clone;
 use App\Card;
 use App\Course;
 use App\Enrollment;
+use App\Enums\CardBox;
 use App\Enums\EnrollmentRole;
 use App\Enums\FileStatus;
 use App\Enums\StateType;
@@ -190,6 +191,25 @@ class CloneCardService
                 fn ($enrollment) => $enrollment->addCard($copiedCard),
             );
         }
+
+        // Remove base64 images from the card box3 & box4 content.
+        $copiedCard->getBoxesContent([CardBox::Box3, CardBox::Box4])->each(
+            function ($box) use ($copiedCard) {
+                // Skip if the box content is not a string
+                if (! is_string($box['content'])) {
+                    return;
+                }
+
+                $box['content'] = preg_replace(
+                    '/src="data:image\/[^;]+;base64,[^"]+"/',
+                    'src="" alt="'.trans('messages.card.no.b64').'"',
+                    $box['content'],
+                );
+                $copiedCard->{$box['name']} = $box['content'];
+
+                $copiedCard->save();
+            }
+        );
 
         // Clone attachments.
         $this->card->attachments()->each(

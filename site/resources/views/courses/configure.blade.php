@@ -6,6 +6,9 @@
 
 @section('title')
     {{ trans('courses.configure') }}
+    @unless (Helpers::isCourseLocal($course))
+        <span class="secondary-title">({{ trans('courses.moodle_id', ['id' => $course->external_id]) }})</span>
+    @endunless
 @endsection
 
 @canany(['archive', 'disable'], $course)

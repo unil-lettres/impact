@@ -209,7 +209,7 @@ jobs:
             ${{ vars.DOCKERHUB_REPOSITORY }}
           tags: |
             type=raw,value=worker-latest,enable=${{ github.ref == 'refs/heads/master' }}
-            type=raw,value=worker-${{ steps.get_tags.outputs.previousTag }},enable=${{ github.ref_type == 'tag' }}
+            type=raw,value=worker-${{ steps.get_tags.outputs.latestTag }},enable=${{ github.ref_type == 'tag' }}
 
       - name: Create manifest list and push
         working-directory: ${{ runner.temp }}/digests

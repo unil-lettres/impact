@@ -299,7 +299,7 @@ class CourseTest extends DuskTestCase
                 ->visit(new PagesCourse('Second space'))
                 ->waitUntilLoaded()
                 ->click('.finder-folder')
-                ->press('Tout séléctionner');
+                ->press('Tout sélectionner');
 
             $browser->assertSee('11 élément(s) sélectionné(s) dont 8 fiche(s)');
         });

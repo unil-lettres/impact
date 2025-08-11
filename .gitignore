@@ -14,4 +14,4 @@ docker-compose.override.yml
 !/site/public/css/.keep
 /site/public/js/*
 !/site/public/js/.keep
-/site/public/mix-manifest.json
+/site/public/build

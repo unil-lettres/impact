@@ -260,7 +260,7 @@
     @endsection
 
     @section('scripts-footer')
-        <script type="text/javascript">
+        <script type="module">
             function displayActionForm(selectObject) {
                 if (selectObject.value === "{{ \App\Enums\ActionType::None }}") {
                     $(".action-email:first").addClass('d-none');

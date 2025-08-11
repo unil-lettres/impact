@@ -6,4 +6,6 @@
 <title>@yield('title-head', 'Impact')</title>
 
 <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-<link href="{{ asset('css/app.css') }}" rel="stylesheet" type="text/css"/>
+
+<!-- Add scripts & styles -->
+@vite(['resources/sass/app.scss', 'resources/js/app.js'])

@@ -4,9 +4,9 @@
  * building robust, powerful web applications using React + Laravel.
  */
 
-require('./bootstrap');
-require('./sortable');
-require('./printable');
+import './bootstrap';
+import './sortable';
+import './printable';
 
 /**
  * Next, we will create a fresh React component instance and attach it to
@@ -14,18 +14,18 @@ require('./printable');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-require('./components/MultiHolderSelect');
-require('./components/MultiEnrollmentSelect');
-require('./components/MultiTagSelect');
-require('./components/MultiFilterSelect');
-require('./components/MultiHolderModalSelect');
-require('./components/SingleCourseSelect');
-require('./components/SingleFolderSelect');
-require('./components/SingleFileSelect');
-require('./components/SingleStateSelect');
-require('./components/Files');
-require('./components/Attachments');
-require('./components/Editor');
-require('./components/Player');
-require('./components/Transcription');
-require('./components/DayPicker');
+import './components/MultiHolderSelect';
+import './components/MultiEnrollmentSelect';
+import './components/MultiTagSelect';
+import './components/MultiFilterSelect';
+import './components/MultiHolderModalSelect';
+import './components/SingleCourseSelect';
+import './components/SingleFolderSelect';
+import './components/SingleFileSelect';
+import './components/SingleStateSelect';
+import './components/Files';
+import './components/Attachments';
+import './components/Editor';
+import './components/Player';
+import './components/Transcription';
+import './components/DayPicker';

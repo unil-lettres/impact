@@ -103,7 +103,7 @@
 @endcan
 
 @section('scripts-footer')
-    <script type="text/javascript">
+    <script type="module">
         // Hide or show boxes on button click
         $('#btn-hide-boxes').on('click', function() {
             $(this).toggleClass(['btn-primary', 'btn-secondary']);

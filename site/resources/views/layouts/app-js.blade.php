@@ -1,4 +1,4 @@
-<script type="text/javascript">
+<script type="module">
     $(".with-delete-confirm").on("submit", function(){
         return confirm('{{ trans('messages.confirm.delete') }}');
     });
@@ -15,16 +15,13 @@
         return confirm('{{ trans('messages.confirm.archive') }}');
     });
 
-    // Javascript for tooltips
-    $(function () {
-        $('[data-bs-toggle="tooltip"]').tooltip()
+    // Bootstrap 5 tooltips
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach((el) => {
+        new bootstrap.Tooltip(el);
     });
 
-    // Javascript for popovers
-    $(function () {
-        let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
-        popoverTriggerList.map(function (popoverTriggerEl) {
-            return new bootstrap.Popover(popoverTriggerEl)
-        })
+    // Bootstrap 5 popovers
+    document.querySelectorAll('[data-bs-toggle="popover"]').forEach((el) => {
+        new bootstrap.Popover(el);
     });
 </script>

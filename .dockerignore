@@ -23,6 +23,6 @@
 /site/public/storage/*
 /site/public/css/*
 /site/public/js/*
-/site/public/mix-manifest.json
+/site/public/build/*
 
 /site/bootstrap/cache/*

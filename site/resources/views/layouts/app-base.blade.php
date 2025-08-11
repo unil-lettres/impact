@@ -53,8 +53,6 @@
             </div>
         </div>
 
-        <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
-
         <!-- Adding manually Livewire's js assets -->
         @livewireScripts
 

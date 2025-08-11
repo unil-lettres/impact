@@ -46,7 +46,7 @@
 @endsection
 
 @section('scripts-footer')
-    <script type="text/javascript">
+    <script type="module">
         const externalLinkField = $('#box1-link');
         const externalLinkFieldValue = externalLinkField.val();
 

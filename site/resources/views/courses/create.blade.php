@@ -67,7 +67,7 @@
 @endsection
 
 @section('scripts-footer')
-    <script type="text/javascript">
+    <script type="module">
         $('#external_id').on('input', function() {
             $('#description').prop('disabled', this.value.length);
             $('#name').prop('disabled', this.value.length);

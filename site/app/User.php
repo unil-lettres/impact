@@ -225,7 +225,7 @@ class User extends Authenticatable
             return null;
         }
 
-        $months = $months ?? config('const.users.validity');
+        $months = $months ?? intval(config('const.users.validity'));
 
         $this->update([
             'validity' => Carbon::now()

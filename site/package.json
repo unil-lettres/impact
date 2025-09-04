@@ -21,7 +21,7 @@
         "@vitejs/plugin-react": "^5.0.0",
         "axios": "^1.11.0",
         "bootstrap": "^5.2.3",
-        "ckeditor5": "^46.0.1",
+        "ckeditor5": "^46.0.3",
         "cross-env": "^10.0.0",
         "date-fns": "^4.1.0",
         "jquery": "^3.6.0",

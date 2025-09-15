@@ -4,6 +4,7 @@ on:
     branches:
       - "development"
 permissions: read-all
+
 jobs:
   build-app:
     name: Build App
@@ -18,7 +19,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Build image
         uses: ./.github/actions/docker-build
@@ -37,7 +38,7 @@ jobs:
     needs: [build-app]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Download digests
         uses: actions/download-artifact@v4
@@ -66,7 +67,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Build image
         uses: ./.github/actions/docker-build
@@ -85,7 +86,7 @@ jobs:
     needs: [build-worker]
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Download digests
         uses: actions/download-artifact@v4
@@ -110,7 +111,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Update description
         uses: peter-evans/dockerhub-description@v4

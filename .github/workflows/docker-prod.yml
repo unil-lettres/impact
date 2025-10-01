@@ -27,7 +27,7 @@ jobs:
           ref: master
 
       - name: Build image
-        uses: unil-lettres/actions/docker-build@v2.2.0
+        uses: unil-lettres/actions/docker-build@main
         with:
           dockerfile: ./docker/${{ matrix.service }}.dockerfile
           target: prod
@@ -51,7 +51,7 @@ jobs:
 
       - name: Merge service
         id: merge
-        uses: unil-lettres/actions/docker-merge-prod@v2.2.0
+        uses: unil-lettres/actions/docker-merge-prod@main
         with:
           service: app
           image_repository: ${{ vars.DOCKERHUB_REPOSITORY }}
@@ -72,7 +72,7 @@ jobs:
 
       - name: Merge service
         id: merge
-        uses: unil-lettres/actions/docker-merge-prod@v2.2.0
+        uses: unil-lettres/actions/docker-merge-prod@main
         with:
           service: worker
           image_repository: ${{ vars.DOCKERHUB_REPOSITORY }}
@@ -91,7 +91,7 @@ jobs:
           ref: master
 
       - name: Update image
-        uses: unil-lettres/actions/commit-version@v2.2.0
+        uses: unil-lettres/actions/commit-version@main
         with:
           file_path: impact/values-prod.yaml
           versions: "${{ needs.merge-app.outputs.tag }}, ${{ needs.merge-worker.outputs.tag }}"

@@ -93,7 +93,7 @@ jobs:
       - name: Update image
         uses: unil-lettres/actions/commit-version@v2.2.0
         with:
-          file_path: training/values-prod.yaml
+          file_path: impact/values-prod.yaml
           versions: "${{ needs.merge-app.outputs.tag }}, ${{ needs.merge-worker.outputs.tag }}"
           version_keys: "app_image_tag, worker_image_tag"
           token: ${{ secrets.PAT_TOKEN }}

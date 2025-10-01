@@ -1,5 +1,7 @@
 name: docker-prod
 on:
+  schedule:
+    - cron: '0 1 * * 1'  # Every Monday at 1am
   push:
     branches:
       - "master"
@@ -8,113 +10,107 @@ on:
 permissions: read-all
 
 jobs:
-  build-app:
-    name: Build App
+  build:
+    name: Build ${{ matrix.service }} (${{ matrix.arch }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
         include:
-          - os: ubuntu-latest
-            arch: linux/amd64
-          - os: ubuntu-24.04-arm
-            arch: linux/arm64
+          - { service: app, arch: linux/amd64, os: ubuntu-latest }
+          - { service: app, arch: linux/arm64, os: ubuntu-24.04-arm }
+          - { service: worker, arch: linux/amd64, os: ubuntu-latest }
+          - { service: worker, arch: linux/arm64, os: ubuntu-24.04-arm }
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+      - uses: actions/checkout@v5
+        with:
+          ref: master
 
       - name: Build image
-        uses: ./.github/actions/docker-build
+        uses: unil-lettres/actions/docker-build@v2.2.0
         with:
-          dockerfile: ./docker/app.dockerfile
+          dockerfile: ./docker/${{ matrix.service }}.dockerfile
           target: prod
           platform: ${{ matrix.arch }}
           image_repository: ${{ vars.DOCKERHUB_REPOSITORY }}
-          name_prefix: app
+          name_prefix: ${{ matrix.service }}
           dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
 
   merge-app:
-    name: Merge App
+    name: Merge app
     runs-on: ubuntu-latest
-    needs: [build-app]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Download digests
-        uses: actions/download-artifact@v4
-        with:
-          path: ${{ runner.temp }}/digests
-          pattern: digests-app-*
-          merge-multiple: true
-      - name: Merge digests into manifest
-        uses: ./.github/actions/docker-merge-with-latest-tag
-        with:
-          image_repository: ${{ vars.DOCKERHUB_REPOSITORY }}
-          tag_latest: latest
-          dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
-          dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
-
-  build-worker:
-    name: Build Worker
-    runs-on: ${{ matrix.os }}
-    strategy:
-      matrix:
-        include:
-          - os: ubuntu-latest
-            arch: linux/amd64
-          - os: ubuntu-24.04-arm
-            arch: linux/arm64
+    needs: [build]
+    outputs:
+      tag: ${{ steps.merge.outputs.tag }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-
-      - name: Build image
-        uses: ./.github/actions/docker-build
+      - uses: actions/checkout@v5
         with:
-          dockerfile: ./docker/worker.dockerfile
-          target: prod
-          platform: ${{ matrix.arch }}
+          ref: master
+
+      - name: Merge service
+        id: merge
+        uses: unil-lettres/actions/docker-merge-prod@v2.2.0
+        with:
+          service: app
           image_repository: ${{ vars.DOCKERHUB_REPOSITORY }}
-          name_prefix: worker
           dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
 
   merge-worker:
-    name: Merge Worker
+    name: Merge worker
     runs-on: ubuntu-latest
-    needs: [build-worker]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
+    needs: [build]
+    outputs:
+      tag: ${{ steps.merge.outputs.tag }}
 
-      - name: Download digests
-        uses: actions/download-artifact@v4
+    steps:
+      - uses: actions/checkout@v5
         with:
-          path: ${{ runner.temp }}/digests
-          pattern: digests-worker-*
-          merge-multiple: true
-      - name: Merge digests into manifest
-        uses: ./.github/actions/docker-merge-with-latest-tag
+          ref: master
+
+      - name: Merge service
+        id: merge
+        uses: unil-lettres/actions/docker-merge-prod@v2.2.0
         with:
+          service: worker
           image_repository: ${{ vars.DOCKERHUB_REPOSITORY }}
-          tag_latest: worker-latest
-          tag_from_git: worker-
           dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
           dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
+
+  commit:
+    name: Commit Image Tags
+    if: github.event_name == 'schedule' || github.ref_type == 'tag'
+    runs-on: ubuntu-latest
+    needs: [merge-app, merge-worker]
+
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+
+      - name: Update image
+        uses: unil-lettres/actions/commit-version@v2.2.0
+        with:
+          file_path: training/values-prod.yaml
+          versions: "${{ needs.merge-app.outputs.tag }}, ${{ needs.merge-worker.outputs.tag }}"
+          version_keys: "app_image_tag, worker_image_tag"
+          token: ${{ secrets.PAT_TOKEN }}
+          repository: unil-lettres/k8s
+          branch: main
 
   update-description:
     name: Update Description
     runs-on: ubuntu-latest
     needs: [merge-app, merge-worker]
     if: success()
-    continue-on-error: false
 
     steps:
       - name: Checkout
         uses: actions/checkout@v5
+        with:
+          ref: master
 
       - name: Update description
         uses: peter-evans/dockerhub-description@v4

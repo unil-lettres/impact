@@ -4,7 +4,7 @@
 
 services:
   impact-app:
-    image: unillett/impact:latest
+    image: unillett/impact:app-latest
     build:
       context: ./
       dockerfile: ./docker/app.dockerfile

@@ -4,7 +4,7 @@
 
 services:
   impact-app:
-    image: unillett/impact:latest-dev
+    image: unillett/impact:app-dev-latest
     build:
       context: ./
       dockerfile: ./docker/app.dockerfile
@@ -12,7 +12,7 @@ services:
     volumes:
       - ./site:/var/www/impact
   impact-worker:
-    image: unillett/impact:worker-latest-dev
+    image: unillett/impact:worker-dev-latest
     build:
       context: ./
       dockerfile: ./docker/worker.dockerfile

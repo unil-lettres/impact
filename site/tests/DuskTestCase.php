@@ -49,7 +49,8 @@ abstract class DuskTestCase extends BaseTestCase
             '--disable-search-engine-choice-screen',
             '--disable-features=ImprovedKeyboardShortcuts',
             '--disable-blink-features=AutomationControlled',
-            '--user-data-dir='.sys_get_temp_dir().'/chrome-profile-'.uniqid(),
+            '--user-data-dir='.sys_get_temp_dir().'/chrome-profile',
+            '--profile-directory=Profile-'.uniqid(),
         ]);
 
         return RemoteWebDriver::create(

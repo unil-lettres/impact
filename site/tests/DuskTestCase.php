@@ -41,9 +41,7 @@ abstract class DuskTestCase extends BaseTestCase
 
         $options = (new ChromeOptions)->addArguments([
             '--disable-gpu',
-            '--no-sandbox',
-            '--disable-smooth-scrolling',
-            '--headless=new',
+            '--headless=old',
             '--window-size=1920,1080',
             '--disable-dev-shm-usage',
             '--disable-software-rasterizer',
@@ -51,6 +49,7 @@ abstract class DuskTestCase extends BaseTestCase
             '--disable-search-engine-choice-screen',
             '--disable-features=ImprovedKeyboardShortcuts',
             '--disable-blink-features=AutomationControlled',
+            '--user-data-dir='.sys_get_temp_dir().'/chrome-profile-'.uniqid(),
         ]);
 
         return RemoteWebDriver::create(

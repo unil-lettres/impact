@@ -41,7 +41,9 @@ abstract class DuskTestCase extends BaseTestCase
 
         $options = (new ChromeOptions)->addArguments([
             '--disable-gpu',
-            '--headless=old',
+            '--no-sandbox',
+            '--disable-smooth-scrolling',
+            '--headless=new',
             '--window-size=1920,1080',
             '--disable-dev-shm-usage',
             '--disable-software-rasterizer',

@@ -12,11 +12,9 @@ ENV COMPOSER_VERSION=2.8
 RUN apt-get update && apt-get install -y \
     git \
     curl \
-    nano \
     zip \
     unzip \
     openssl \
-    cron \
     ffmpeg \
     mediainfo \
     supervisor \
@@ -44,9 +42,6 @@ RUN apt-get clean; docker-php-ext-install pdo_mysql zip gd bcmath pcntl intl
 RUN curl -sS https://getcomposer.org/installer | php -- \
     --$COMPOSER_VERSION \
     --install-dir=/usr/local/bin --filename=composer
-
-# Replace default crontab
-ADD docker/config/crontab /etc/crontab
 
 # Copy PHP configuration file
 COPY docker/config/php.ini /usr/local/etc/php/php.ini

@@ -13,7 +13,6 @@ ENV COMPOSER_VERSION=2.8
 RUN apt-get update && apt-get install -y \
     git \
     curl \
-    nano \
     zip \
     unzip \
     openssl \
@@ -63,6 +62,9 @@ RUN a2enmod rewrite remoteip; \
     echo RemoteIPTrustedProxy 192.168.0.0/16 ; \
     } > /etc/apache2/conf-available/remoteip.conf; \
     a2enconf remoteip
+
+# Replace default crontab
+ADD docker/config/crontab /etc/crontab
 
 # Copy PHP configuration file
 COPY docker/config/php.ini /usr/local/etc/php/php.ini

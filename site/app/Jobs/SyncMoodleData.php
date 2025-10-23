@@ -117,14 +117,19 @@ class SyncMoodleData implements ShouldQueue
                 }
 
                 // Get the Impact user ids belonging to orphan enrollments
-                $orphanImpactUserIds = User::whereIn(
-                    'email',
-                    $impactCourse->enrollments
-                        ->pluck('user.email')
-                        ->diff(
-                            $moodleUsers->pluck('email')
-                        )
-                )->get()->pluck('id');
+                // Reload enrollments fresh from database (including newly created ones above)
+                // and bypass global scopes to see all enrollments
+                $allEnrollments = $impactCourse->enrollments()->withoutGlobalScopes()->with('user')->get();
+
+                // Get emails from Moodle users
+                $moodleEmails = $moodleUsers->pluck('email')->filter();
+
+                // Find enrollments where the user's email is not in Moodle
+                $orphanEnrollments = $allEnrollments->filter(function ($enrollment) use ($moodleEmails) {
+                    return $enrollment->user && ! $moodleEmails->contains($enrollment->user->email);
+                });
+
+                $orphanImpactUserIds = $orphanEnrollments->pluck('user_id')->unique();
 
                 if ($orphanImpactUserIds->isNotEmpty()) {
                     // If any, log the orphan Impact enrollments
@@ -132,10 +137,9 @@ class SyncMoodleData implements ShouldQueue
                         ' with the following user ids : '.$orphanImpactUserIds->implode(', '));
 
                     // Delete the orphan Impact enrollments
-                    $impactCourse->enrollments->whereIn('user_id', $orphanImpactUserIds)
-                        ->each(function ($enrollment) {
-                            $enrollment->forceDelete();
-                        });
+                    $orphanEnrollments->each(function ($enrollment) {
+                        $enrollment->forceDelete();
+                    });
                 }
             }
         });

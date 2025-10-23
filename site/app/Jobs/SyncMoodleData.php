@@ -119,15 +119,35 @@ class SyncMoodleData implements ShouldQueue
                 // Get the Impact user ids belonging to orphan enrollments
                 // Reload enrollments fresh from database (including newly created ones above)
                 // and bypass global scopes to see all enrollments
-                $allEnrollments = $impactCourse->enrollments()->withoutGlobalScopes()->with('user')->get();
+                $allEnrollments = $impactCourse
+                    ->enrollments()
+                    ->withoutGlobalScopes()
+                    ->with('user')
+                    ->get();
+
+                // DEBUG: Log what we're working with
+                Log::debug("Course {$impactCourse->id}: Found {$allEnrollments->count()} enrollments in database");
+                Log::debug("Course {$impactCourse->id}: Moodle has {$moodleUsers->count()} users");
 
                 // Get emails from Moodle users
-                $moodleEmails = $moodleUsers->pluck('email')->filter();
+                $moodleEmails = $moodleUsers
+                    ->pluck('email')
+                    ->filter();
+
+                Log::debug("Course {$impactCourse->id}: Moodle emails: ".$moodleEmails->implode(', '));
 
                 // Find enrollments where the user's email is not in Moodle
                 $orphanEnrollments = $allEnrollments->filter(function ($enrollment) use ($moodleEmails) {
                     return $enrollment->user && ! $moodleEmails->contains($enrollment->user->email);
                 });
+
+                // DEBUG: Log details about orphans found
+                if ($orphanEnrollments->isNotEmpty()) {
+                    $orphanEnrollments->each(function ($enrollment) use ($impactCourse) {
+                        $userEmail = $enrollment->user ? $enrollment->user->email : 'NULL';
+                        Log::debug("Course {$impactCourse->id}: Orphan enrollment ID {$enrollment->id}, User ID {$enrollment->user_id}, Email: {$userEmail}");
+                    });
+                }
 
                 $orphanImpactUserIds = $orphanEnrollments->pluck('user_id')->unique();
 

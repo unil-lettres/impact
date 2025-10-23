@@ -124,16 +124,22 @@ class SyncMoodleData implements ShouldQueue
                     ->get();
 
                 // Get emails from Moodle users
-                $moodleEmails = $moodleUsers->pluck('email')->filter()->map(function ($email) {
-                    return strtolower($email);
-                });
+                $moodleEmails = $moodleUsers
+                    ->pluck('email')
+                    ->filter()
+                    ->map(function ($email) {
+                        return strtolower($email);
+                    });
 
                 // Find enrollments where the user's email is not in Moodle
-                $orphanEnrollments = $allEnrollments->filter(function ($enrollment) use ($moodleEmails) {
-                    return $enrollment->user && ! $moodleEmails->contains(strtolower($enrollment->user->email));
-                });
+                $orphanEnrollments = $allEnrollments
+                    ->filter(function ($enrollment) use ($moodleEmails) {
+                        return $enrollment->user && ! $moodleEmails->contains(strtolower($enrollment->user->email));
+                    });
 
-                $orphanImpactUserIds = $orphanEnrollments->pluck('user_id')->unique();
+                $orphanImpactUserIds = $orphanEnrollments
+                    ->pluck('user_id')
+                    ->unique();
 
                 if ($orphanImpactUserIds->isNotEmpty()) {
                     // If any, log the orphan Impact enrollments

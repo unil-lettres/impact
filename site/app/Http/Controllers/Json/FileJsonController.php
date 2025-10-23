@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Json;
 
 use App\Card;
 use App\Course;
+use App\Enums\FileStatus;
 use App\File;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpload;
@@ -52,17 +53,14 @@ class FileJsonController extends Controller
 
         if ($file->isAttachment()) {
             // For attachments, we process the file immediately
-            $fileStorageService = new FileStorageService;
-
-            $fileStorageService->fileStorageService
+            (new FileStorageService)
                 ->moveFileToStandardStorage($file->filename);
 
-            $fileStorageService->file->update([
+            $file->update([
                 'status' => FileStatus::Ready,
             ]);
         } else {
-            // For everything else we dispatch the file for async
-            // file processing
+            // For everything else we dispatch the file for async processing
             ProcessFile::dispatch($file);
         }
 

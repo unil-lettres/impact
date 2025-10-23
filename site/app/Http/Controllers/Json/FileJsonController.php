@@ -10,6 +10,7 @@ use App\Http\Requests\StoreUpload;
 use App\Jobs\ProcessFile;
 use App\Policies\AttachmentPolicy;
 use App\Services\FileService;
+use App\Services\FileStorageService;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 
@@ -49,8 +50,21 @@ class FileJsonController extends Controller
             $file
         );
 
-        // Dispatch record for async file processing
-        ProcessFile::dispatch($file);
+        if ($file->isAttachment()) {
+            // For attachments, we process the file immediately
+            $fileStorageService = new FileStorageService;
+
+            $fileStorageService->fileStorageService
+                ->moveFileToStandardStorage($file->filename);
+
+            $fileStorageService->file->update([
+                'status' => FileStatus::Ready,
+            ]);
+        } else {
+            // For everything else we dispatch the file for async
+            // file processing
+            ProcessFile::dispatch($file);
+        }
 
         return response()->json([
             'success' => $file->id,

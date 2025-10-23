@@ -116,7 +116,8 @@ class SyncMoodleData implements ShouldQueue
                     }
                 }
 
-                // Get the Impact user ids belonging to orphan enrollments
+                // Get all enrollments for this course from the database
+                // (bypassing ValidityScope)
                 $allEnrollments = $impactCourse
                     ->enrollments()
                     ->withoutGlobalScopes()
@@ -131,7 +132,8 @@ class SyncMoodleData implements ShouldQueue
                         return strtolower($email);
                     });
 
-                // Find enrollments where the user's email is not in Moodle
+                // Find orphan enrollments
+                // (user's email is not found in the Moodle course)
                 $orphanEnrollments = $allEnrollments
                     ->filter(function ($enrollment) use ($moodleEmails) {
                         return $enrollment->user && ! $moodleEmails->contains(strtolower($enrollment->user->email));

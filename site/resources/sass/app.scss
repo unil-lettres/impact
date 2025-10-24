@@ -12,9 +12,6 @@
 @import 'bootstrap/scss/bootstrap';
 
 // Font Awesome
-
-// Configure Font Awesome to load fonts from the Vite public directory
-$fa-font-path: "@fortawesome/fontawesome-free/webfonts/";
 @import '@fortawesome/fontawesome-free/scss/fontawesome';
 @import '@fortawesome/fontawesome-free/scss/regular';
 @import '@fortawesome/fontawesome-free/scss/solid';

@@ -9,7 +9,7 @@
         "@babel/plugin-proposal-class-properties": "^7.18.6",
         "@babel/preset-react": "^7.18.6",
         "@ckeditor/ckeditor5-react": "^11.0.0",
-        "@fortawesome/fontawesome-free": "^6.1.2",
+        "@fortawesome/fontawesome-free": "^7.1.0",
         "@uppy/core": "^5.1.1",
         "@uppy/dashboard": "^5.0.3",
         "@uppy/locales": "^5.0.1",

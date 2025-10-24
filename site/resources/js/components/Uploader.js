@@ -4,7 +4,8 @@ import Uppy from '@uppy/core'
 import French from '@uppy/locales/lib/fr_FR'
 import English from '@uppy/locales/lib/en_US'
 import XHRUpload from '@uppy/xhr-upload';
-import { DashboardModal, Dashboard } from '@uppy/react'
+import DashboardModal from '@uppy/react/dashboard-modal';
+import Dashboard from '@uppy/react/dashboard';
 
 export default class Uploader extends Component {
     constructor (props) {

@@ -100,7 +100,7 @@ COPY docker/config/vhost-prod.conf /etc/apache2/sites-available/000-default.conf
 
 # Install additional packages needed for production
 RUN apt-get install -y \
-    ntp \
+    ntpsec \
     libapache2-mod-shib \
     shibboleth-sp-common \
     shibboleth-sp-utils

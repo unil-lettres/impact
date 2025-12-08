@@ -42,7 +42,7 @@ Edit hosts file to point **impact.lan** to your docker host.
 
 Build & run all the containers for this project.
 
-``docker-compose up`` (add -d if you want to run in the background and silence the logs)
+``docker compose up`` (add -d if you want to run in the background and silence the logs)
 
 ## Populate the database
 

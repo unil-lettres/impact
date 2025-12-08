@@ -6,7 +6,7 @@ ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 ENV TZ=Europe/Zurich
 
-ENV COMPOSER_VERSION=2.8
+ENV COMPOSER_VERSION=2.8.12
 
 # Update repositories & install additional packages
 RUN apt-get update && apt-get install -y \
@@ -40,7 +40,7 @@ RUN apt-get clean; docker-php-ext-install pdo_mysql zip gd bcmath pcntl intl
 
 # Install specific version of Composer
 RUN curl -sS https://getcomposer.org/installer | php -- \
-    --$COMPOSER_VERSION \
+    --version=$COMPOSER_VERSION \
     --install-dir=/usr/local/bin --filename=composer
 
 # Copy PHP configuration file

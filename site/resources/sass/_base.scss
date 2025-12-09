@@ -51,6 +51,12 @@
     margin-bottom: 20px;
 }
 
+.expired {
+    text-decoration: line-through;
+    color: rgba(#f00, .6);
+    font-weight: normal;
+}
+
 .admin-menu,
 .course-configuration-menu {
     .nav {

@@ -13,7 +13,6 @@ use App\Http\Requests\ExtendUser;
 use App\Http\Requests\ManageUsers;
 use App\Http\Requests\UpdateUser;
 use App\Mail\LocalUserCreated;
-use App\Scopes\ValidityScope;
 use App\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Contracts\Support\Renderable;
@@ -60,7 +59,6 @@ class UserController extends Controller
         $this->authorize('manage', User::class);
 
         $users = User::query()
-            ->withoutGlobalScope(ValidityScope::class)
             ->select('users.*');
 
         // If the filter parameter is set, filter the users by type
@@ -145,8 +143,7 @@ class UserController extends Controller
      */
     public function edit(EditUser $user, int $id)
     {
-        $user = User::withoutGlobalScope(ValidityScope::class)
-            ->find($id);
+        $user = User::find($id);
 
         $this->authorize('update', $user);
 
@@ -198,8 +195,7 @@ class UserController extends Controller
      */
     public function update(UpdateUser $request, int $id)
     {
-        $user = User::withoutGlobalScope(ValidityScope::class)
-            ->find($id);
+        $user = User::find($id);
 
         $this->authorize('update', $user);
 
@@ -279,8 +275,7 @@ class UserController extends Controller
      */
     public function destroy(DestroyUser $request, int $id)
     {
-        $user = User::withoutGlobalScope(ValidityScope::class)
-            ->find($id);
+        $user = User::find($id);
 
         $this->authorize('delete', $user);
 
@@ -303,8 +298,7 @@ class UserController extends Controller
      */
     public function extend(ExtendUser $request, int $id)
     {
-        $user = User::withoutGlobalScope(ValidityScope::class)
-            ->find($id);
+        $user = User::find($id);
 
         $this->authorize('extend', $user);
 

@@ -71,7 +71,9 @@
         class='column-medium text-truncate px-1 d-none d-lg-block fw-light'
         title="{{ $card->holders_list }}"
     >
-        {{ $card->holders_list }}
+        @foreach ($card->holders() as $holder)
+            <span class="{{ $holder->isValid() ? '' : 'expired' }}">{{ $holder->name }}</span>{{ !$loop->last ? ', ' : '' }}
+        @endforeach
     </div>
     <div
         class='column-medium text-truncate px-1 d-none d-lg-block fw-light'

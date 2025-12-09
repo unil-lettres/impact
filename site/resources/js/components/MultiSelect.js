@@ -186,15 +186,31 @@ export default class MultiSelect extends Component {
             isDisabled: this.state.isDisabled,
             styles: {
                 multiValue: (base, state) => {
-                    return state.data.isFixed ? { ...base, backgroundColor: 'gray' } : base;
+                    if (state.data.isFixed) {
+                        return { ...base, backgroundColor: 'gray' };
+                    }
+                    if (state.data.isExpired) {
+                        return { ...base, backgroundColor: '#f8d7da', borderColor: '#f5c6cb' };
+                    }
+                    return base;
                 },
                 multiValueLabel: (base, state) => {
-                    return state.data.isFixed
-                        ? { ...base, fontWeight: 'bold', color: 'white', paddingRight: 6 }
-                        : base;
+                    if (state.data.isFixed) {
+                        return { ...base, fontWeight: 'bold', color: 'white', paddingRight: 6 };
+                    }
+                    if (state.data.isExpired) {
+                        return { ...base, color: '#721c24' };
+                    }
+                    return base;
                 },
                 multiValueRemove: (base, state) => {
-                    return state.data.isFixed ? { ...base, display: 'none' } : base;
+                    if (state.data.isFixed) {
+                        return { ...base, display: 'none' };
+                    }
+                    if (state.data.isExpired) {
+                        return { ...base, color: '#721c24', ':hover': { backgroundColor: '#f5c6cb', color: '#491217' } };
+                    }
+                    return base;
                 },
             },
             ...(this.props.reactAttributes || []),

@@ -74,6 +74,11 @@
                                 {!! Helpers::filterSelectedMark($filter, \App\Enums\UsersFilter::Local) !!}
                                 {{ trans('users.local') }}
                             </a>
+                            <a class="dropdown-item"
+                               href="{{ route('admin.users.manage', ['filter' => \App\Enums\UsersFilter::Contact, 'search' => $search]) }}">
+                                {!! Helpers::filterSelectedMark($filter, \App\Enums\UsersFilter::Contact) !!}
+                                {{ trans('users.contact') }}
+                            </a>
                         </div>
                     </div>
 

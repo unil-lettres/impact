@@ -37,6 +37,18 @@ class UserFactory extends Factory
     }
 
     /**
+     * Indicate that the user is a contact.
+     */
+    public function contact(): Factory
+    {
+        return $this->state(function (array $attributes) {
+            return [
+                'contact' => true,
+            ];
+        });
+    }
+
+    /**
      * Indicate that the user has an invalid account.
      */
     public function invalid(): Factory

@@ -495,4 +495,23 @@ class Helpers
 
         return '<i class="fa-solid fa-check"></i>';
     }
+
+    /**
+     * Get the formatted list of contact users.
+     *
+     * Returns a string containing HTML markup in the format:
+     * "Name1 (<a href='mailto:email1@example.com'>email1@example.com</a>), Name2 (<a href='mailto:email2@example.com'>email2@example.com</a>), ..."
+     *
+     * @param  string  $separator  The separator between contacts (default: ", ")
+     */
+    public static function getContactList(string $separator = ', '): string
+    {
+        $contacts = User::where('contact', true)->get();
+
+        return $contacts->map(function (User $user) {
+            $name = $user->name ?: $user->email;
+
+            return e($name) . " (<a href='mailto:" . e($user->email) . "'>" . e($user->email) . "</a>)";
+        })->implode($separator);
+    }
 }

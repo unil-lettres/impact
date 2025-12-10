@@ -154,6 +154,28 @@
                                 </div>
                             </div>
 
+                            <div class="col-12 mb-3 row">
+                                <label for="contact" class="col-md-4 form-label">
+                                    {{ trans('users.contact') }}
+
+                                    <i class="far fa-question-circle"
+                                       data-bs-toggle="tooltip"
+                                       data-placement="top"
+                                       title="{{ trans('users.contact.help') }}">
+                                    </i>
+                                </label>
+                                <div class="col-md-8">
+                                    <div class="form-check">
+                                        <input id="contact"
+                                               type="checkbox"
+                                               name="contact"
+                                               {{ old('contact', $user->contact) ? 'checked' : '' }}
+                                               class="form-check-input"
+                                        >
+                                    </div>
+                                </div>
+                            </div>
+
                             <hr>
                             <button type="submit"
                                     class="btn btn-primary"

@@ -243,10 +243,11 @@ class UserController extends Controller
             $user->name = $validated['name'];
             $user->email = $validated['email'];
 
-            // Allow change of the admin parameter only if the current
+            // Allow change of the admin & contact parameters only if the current
             // user is already an admin
             if (auth()->user()->admin) {
                 $user->admin = (bool) $request->input('admin');
+                $user->contact = (bool) $request->input('contact');
 
                 // If the user becomes an admin, ensure the validity is null
                 // (admin users have no validity)
@@ -321,6 +322,7 @@ class UserController extends Controller
             UsersFilter::Expired => $users->whereDate('validity', '<=', Carbon::now()),
             UsersFilter::Aai => $users->where('type', UserType::Aai),
             UsersFilter::Local => $users->where('type', UserType::Local),
+            UsersFilter::Contact => $users->where('contact', true),
             default => $users->select('users.*'),
         };
     }

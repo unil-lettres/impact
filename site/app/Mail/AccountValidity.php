@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use App\Helpers\Helpers;
 use App\User;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
@@ -19,6 +20,8 @@ class AccountValidity extends Mailable
 
     public int $days;
 
+    public string $contactList;
+
     /**
      * Create a new message instance.
      */
@@ -26,6 +29,7 @@ class AccountValidity extends Mailable
     {
         $this->user = $user;
         $this->days = $days;
+        $this->contactList = Helpers::getContactList();
     }
 
     /**

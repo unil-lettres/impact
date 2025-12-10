@@ -80,10 +80,17 @@ class ValidityTest extends TestCase
             ->expireIn($days)
             ->create();
 
+        $contact1 = User::factory()->contact()->create();
+        $contact2 = User::factory()->contact()->create();
+        $nonContact = User::factory()->create();
+
         $mailable = new AccountValidity($user, $days);
 
         $mailable->assertSeeInHtml(route('home'));
         $mailable->assertSeeInHtml($days);
+        $mailable->assertSeeInHtml($contact1->email);
+        $mailable->assertSeeInHtml($contact2->email);
+        $mailable->assertDontSeeInHtml($nonContact->email);
     }
 
     /**

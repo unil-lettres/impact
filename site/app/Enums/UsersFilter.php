@@ -9,4 +9,6 @@ final class UsersFilter
     const Aai = 'aai';
 
     const Local = 'local';
+
+    const Contact = 'contact';
 }

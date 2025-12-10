@@ -25,7 +25,7 @@ class ManageUsers extends AbstractRequest
             'filter' => [
                 'string',
                 Rule::in(
-                    [UsersFilter::Expired, UsersFilter::Aai, UsersFilter::Local]
+                    [UsersFilter::Expired, UsersFilter::Aai, UsersFilter::Local, UsersFilter::Contact],
                 ),
             ],
         ];

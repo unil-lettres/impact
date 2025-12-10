@@ -92,8 +92,7 @@
 
         .deleted {
             .name a {
-                text-decoration: line-through;
-                color: rgba(#f00, .6);
+                color: red;
                 font-weight: normal;
             }
 

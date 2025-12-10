@@ -185,6 +185,12 @@ export default class MultiSelect extends Component {
             options: this.state.options,
             isDisabled: this.state.isDisabled,
             styles: {
+                option: (base, state) => {
+                    if (state.data.isExpired) {
+                        return { ...base, color: '#dc3545' };
+                    }
+                    return base;
+                },
                 multiValue: (base, state) => {
                     if (state.data.isFixed) {
                         return { ...base, backgroundColor: 'gray' };

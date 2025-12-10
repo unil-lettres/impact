@@ -60,13 +60,13 @@ class EnrollmentPolicy
             return false;
         }
 
+        if ($user->admin) {
+            return true;
+        }
+
         // Enrolled user should be valid
         if (! $enrolledUser->isValid()) {
             return false;
-        }
-
-        if ($user->admin) {
-            return true;
         }
 
         // Only managers can create enrollments

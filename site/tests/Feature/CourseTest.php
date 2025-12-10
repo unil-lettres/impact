@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Course;
 use App\Mail\CourseConfirmDelete;
+use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
@@ -58,8 +59,15 @@ class CourseTest extends TestCase
             ->disabled()
             ->create();
 
+        $contact1 = User::factory()->contact()->create();
+        $contact2 = User::factory()->contact()->create();
+        $nonContact = User::factory()->create();
+
         $mailable = new CourseConfirmDelete($course);
 
         $mailable->assertSeeInHtml($course->name);
+        $mailable->assertSeeInHtml($contact1->email);
+        $mailable->assertSeeInHtml($contact2->email);
+        $mailable->assertDontSeeInHtml($nonContact->email);
     }
 }

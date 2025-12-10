@@ -3,6 +3,7 @@
 namespace App\Mail;
 
 use App\Course;
+use App\Helpers\Helpers;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Headers;
@@ -17,14 +18,16 @@ class CourseConfirmDelete extends Mailable
 
     public string $fromEmail;
 
+    public string $contactList;
+
     /**
      * Create a new message instance.
      */
     public function __construct(Course $course)
     {
         $this->course = $course;
-
         $this->fromEmail = Auth::user()?->email ?: config('mail.from.address');
+        $this->contactList = Helpers::getContactList();
     }
 
     /**

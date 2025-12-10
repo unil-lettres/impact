@@ -510,7 +510,7 @@ class Helpers
         return $contacts->map(function (User $user) {
             $name = $user->name ?: $user->email;
 
-            return "{$name} ({$user->email})";
+            return "{$name} (<a href='mailto:{$user->email}'>{$user->email}</a>)";
         })->implode($separator);
     }
 }

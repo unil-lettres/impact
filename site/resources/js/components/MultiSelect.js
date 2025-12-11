@@ -187,7 +187,7 @@ export default class MultiSelect extends Component {
             styles: {
                 option: (base, state) => {
                     if (state.data.isExpired) {
-                        return { ...base, color: '#dc3545' };
+                        return { ...base, color: '#6c757d', fontStyle: 'italic' };
                     }
                     return base;
                 },
@@ -196,7 +196,7 @@ export default class MultiSelect extends Component {
                         return { ...base, backgroundColor: 'gray' };
                     }
                     if (state.data.isExpired) {
-                        return { ...base, backgroundColor: '#f8d7da', borderColor: '#f5c6cb' };
+                        return { ...base, backgroundColor: '#e9ecef', borderColor: '#dee2e6' };
                     }
                     return base;
                 },
@@ -205,7 +205,7 @@ export default class MultiSelect extends Component {
                         return { ...base, fontWeight: 'bold', color: 'white', paddingRight: 6 };
                     }
                     if (state.data.isExpired) {
-                        return { ...base, color: '#721c24' };
+                        return { ...base, color: '#6c757d', fontStyle: 'italic' };
                     }
                     return base;
                 },
@@ -214,7 +214,7 @@ export default class MultiSelect extends Component {
                         return { ...base, display: 'none' };
                     }
                     if (state.data.isExpired) {
-                        return { ...base, color: '#721c24', ':hover': { backgroundColor: '#f5c6cb', color: '#491217' } };
+                        return { ...base, color: '#6c757d', ':hover': { backgroundColor: '#dee2e6', color: '#495057' } };
                     }
                     return base;
                 },

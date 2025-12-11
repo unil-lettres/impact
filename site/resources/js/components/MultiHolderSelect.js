@@ -12,7 +12,7 @@ class MultiHolderSelect extends MultiSelect {
         const data = JSON.parse(this.props.data);
 
         // Override options & values state properties to
-        // add an "isFixed" or "isExpired" property when needed.
+        // add an "isExpired" property when needed.
         const isValidityExpired = (validity) => validity && new Date(validity) < new Date();
 
         this.state = {

@@ -13,7 +13,7 @@ class RefuteAdmins implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $user = User::find($value);
+        $user = User::withoutGlobalScopes()->find($value);
 
         if (! $user) {
             $fail('Operation not permitted for this admin user.');

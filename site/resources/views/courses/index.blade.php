@@ -64,9 +64,9 @@
                                     </a>
                                 @endif
                             </div>
-                            <div class="flex-cell managers @if(empty($managers)) d-none d-md-block @endif">
+                            <div class="flex-cell managers @if($course->managers(true)->isEmpty()) d-none d-md-block @endif">
                                 @foreach ($course->managers(true) as $manager)
-                                    <span class="{{ $manager->isValid() ? '' : 'expired' }}">{{ $manager->name }}</span>{{ !$loop->last ? ',' : '' }}
+                                    <span class="{{ $manager->isValid() ? '' : 'expired' }}">{{ $manager->name }}</span>{{ !$loop->last ? ', ' : '' }}
                                 @endforeach
                             </div>
                             <div class="flex-cell date d-none d-md-block">

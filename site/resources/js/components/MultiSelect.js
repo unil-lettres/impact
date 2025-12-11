@@ -185,16 +185,38 @@ export default class MultiSelect extends Component {
             options: this.state.options,
             isDisabled: this.state.isDisabled,
             styles: {
+                option: (base, state) => {
+                    if (state.data.isExpired) {
+                        return { ...base, color: '#6c757d', fontStyle: 'italic' };
+                    }
+                    return base;
+                },
                 multiValue: (base, state) => {
-                    return state.data.isFixed ? { ...base, backgroundColor: 'gray' } : base;
+                    if (state.data.isFixed) {
+                        return { ...base, backgroundColor: 'gray' };
+                    }
+                    if (state.data.isExpired) {
+                        return { ...base, backgroundColor: '#e9ecef', borderColor: '#dee2e6' };
+                    }
+                    return base;
                 },
                 multiValueLabel: (base, state) => {
-                    return state.data.isFixed
-                        ? { ...base, fontWeight: 'bold', color: 'white', paddingRight: 6 }
-                        : base;
+                    if (state.data.isFixed) {
+                        return { ...base, fontWeight: 'bold', color: 'white', paddingRight: 6 };
+                    }
+                    if (state.data.isExpired) {
+                        return { ...base, color: '#6c757d', fontStyle: 'italic' };
+                    }
+                    return base;
                 },
                 multiValueRemove: (base, state) => {
-                    return state.data.isFixed ? { ...base, display: 'none' } : base;
+                    if (state.data.isFixed) {
+                        return { ...base, display: 'none' };
+                    }
+                    if (state.data.isExpired) {
+                        return { ...base, color: '#6c757d', ':hover': { backgroundColor: '#dee2e6', color: '#495057' } };
+                    }
+                    return base;
                 },
             },
             ...(this.props.reactAttributes || []),

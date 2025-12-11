@@ -11,6 +11,7 @@ use App\Enums\StateType;
 use App\Enums\UserType;
 use App\File;
 use App\Folder;
+use App\Scopes\ValidityScope;
 use App\Services\FinderItemsService;
 use App\Services\MoodleService;
 use App\State;
@@ -506,12 +507,20 @@ class Helpers
      */
     public static function getContactList(string $separator = ', '): string
     {
-        $contacts = User::where('contact', true)->get();
+        // Bypass the global ValidityScope and apply the validity filter
+        // to ensure expired users are always excluded even for admins.
+        $contacts = User::withoutGlobalScope(ValidityScope::class)
+            ->where('contact', true)
+            ->where(function ($query) {
+                $query->where('validity', '>=', now())
+                    ->orWhereNull('validity');
+            })
+            ->get();
 
         return $contacts->map(function (User $user) {
             $name = $user->name ?: $user->email;
 
-            return e($name) . " (<a href='mailto:" . e($user->email) . "'>" . e($user->email) . "</a>)";
+            return e($name)." (<a href='mailto:".e($user->email)."'>".e($user->email).'</a>)';
         })->implode($separator);
     }
 }

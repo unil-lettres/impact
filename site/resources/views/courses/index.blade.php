@@ -64,9 +64,10 @@
                                     </a>
                                 @endif
                             </div>
-                            @php($managers = $course->managers(true)->implode('name', ', '))
-                            <div class="flex-cell managers @if(empty($managers)) d-none d-md-block @endif">
-                                {{ $managers }}
+                            <div class="flex-cell managers">
+                                @foreach ($course->managers(true) as $manager)
+                                    <span class="{{ $manager->isValid() ? '' : 'expired' }}">{{ $manager->name }}</span>{{ !$loop->last ? ', ' : '' }}
+                                @endforeach
                             </div>
                             <div class="flex-cell date d-none d-md-block">
                                 {{ $course->created_at ? $course->created_at->format('d/m/Y') : '' }}

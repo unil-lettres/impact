@@ -3,8 +3,28 @@ import { createRoot } from "react-dom/client";
 
 import axios from "axios";
 import MultiSelect from "./MultiSelect";
+import _ from "lodash";
 
-export default class MultiHolderSelect extends MultiSelect {
+class MultiHolderSelect extends MultiSelect {
+    constructor(props) {
+        super(props);
+
+        const data = JSON.parse(this.props.data);
+
+        // Override options & values state properties to
+        // add an "isExpired" property when needed.
+        const mapOption = (opt) => ({
+            value: opt.id,
+            label: opt.name,
+            isExpired: opt.validity && new Date(opt.validity) < new Date(),
+        });
+
+        this.state = {
+            ...this.state,
+            options: _.map(data.options, mapOption),
+            values: _.map(data.defaults, mapOption),
+        };
+    }
 
     select = (record, option) => {
         return axios.put(

@@ -13,25 +13,18 @@ class MultiEnrollmentSelect extends MultiSelect {
         this.role = data.role;
 
         // Override options & values state properties to
-        // add an "isFixed" property when needed.
+        // add an "isFixed" or "isExpired" property when needed.
+        const mapOption = (opt) => ({
+            value: opt.id,
+            label: opt.name,
+            isExpired: opt.validity && new Date(opt.validity) < new Date(),
+            isFixed: this.props.context === 'course' && opt.type === 'external',
+        });
+
         this.state = {
             ...this.state,
-            options: _.map(
-                data.options,
-                option => ({
-                    value: option.id,
-                    label: option.name,
-                    ...(this.props.context === 'course' ? { isFixed: option.type === 'external' } : {}),
-                })
-            ),
-            values: _.map(
-                data.defaults,
-                option => ({
-                    value: option.id,
-                    label: option.name,
-                    ...(this.props.context === 'course' ? { isFixed: option.type === 'external' } : {}),
-                })
-            ),
+            options: _.map(data.options, mapOption),
+            values: _.map(data.defaults, mapOption),
         };
     }
 

@@ -13,26 +13,16 @@ class MultiHolderSelect extends MultiSelect {
 
         // Override options & values state properties to
         // add an "isExpired" property when needed.
-        const isValidityExpired = (validity) => validity && new Date(validity) < new Date();
+        const mapOption = (opt) => ({
+            value: opt.id,
+            label: opt.name,
+            isExpired: opt.validity && new Date(opt.validity) < new Date(),
+        });
 
         this.state = {
             ...this.state,
-            options: _.map(
-                data.options,
-                option => ({
-                    value: option.id,
-                    label: option.name,
-                    ...(isValidityExpired(option.validity) ? { isExpired: true } : {}),
-                })
-            ),
-            values: _.map(
-                data.defaults,
-                option => ({
-                    value: option.id,
-                    label: option.name,
-                    ...(isValidityExpired(option.validity) ? { isExpired: true } : {}),
-                })
-            ),
+            options: _.map(data.options, mapOption),
+            values: _.map(data.defaults, mapOption),
         };
     }
 

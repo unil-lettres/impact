@@ -2,6 +2,7 @@
 
 namespace App\Rules;
 
+use App\Scopes\ValidityScope;
 use App\User;
 use Closure;
 use Illuminate\Contracts\Validation\ValidationRule;
@@ -13,7 +14,8 @@ class RefuteAdmins implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $user = User::withoutGlobalScopes()->find($value);
+        $user = User::withoutGlobalScope(ValidityScope::class)
+            ->find($value);
 
         if (! $user) {
             $fail('Operation not permitted for this admin user.');

@@ -73,7 +73,7 @@
                                 {{ $course->created_at ? $course->created_at->format('d/m/Y') : '' }}
                             </div>
                             <div
-                                class="line-clamp-2 flex-cell description @unless($course->description) d-none @endif"
+                                class="line-clamp-2 flex-cell description d-none d-md-block"
                             >
                                 <div class="pe-3">
                                     {{ $course->description }}

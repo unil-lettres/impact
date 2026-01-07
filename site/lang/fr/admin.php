@@ -14,5 +14,6 @@ return [
     'mailing.content' => 'Contenu',
     'send' => 'Envoyer',
     'filters' => 'Filtres',
+    'sort' => 'Trier',
 
 ];

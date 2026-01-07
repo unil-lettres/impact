@@ -43,6 +43,9 @@ class CourseController extends Controller
         $this->authorize('viewAny', Course::class);
 
         $filter = $request->get('filter');
+        $sort = $request->get('sort');
+        $direction = $request->get('direction');
+
         $courses = Course::query()
             ->when(Auth::user()->admin, function ($query) use ($filter) {
                 // When the user is admin, get all courses (even soft deleted ones),
@@ -58,9 +61,14 @@ class CourseController extends Controller
 
         return view('courses.index', [
             'courses' => $courses
+                ->orderBy($sort ?: 'created_at', $direction ?: 'asc')
                 ->orderBy('name', 'asc')
                 ->get(),
-            'filter' => $filter,
+            'params' => [
+                'filter' => $filter,
+                'sort' => $sort,
+                'direction' => $direction,
+            ],
         ]);
     }
 

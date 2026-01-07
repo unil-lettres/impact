@@ -7,7 +7,7 @@
 @section('actions')
     @if(Auth::user()->admin)
         <div class="dropdown show">
-            <a class="btn dropdown-toggle{{ $filter ? ' btn-primary' : ' btn-secondary'  }}"
+            <a class="btn dropdown-toggle{{ $params['filter'] ? ' btn-primary' : ' btn-secondary'  }}"
                href="#"
                role="button"
                id="dropdownCoursesFiltersLink"
@@ -15,20 +15,46 @@
                aria-haspopup="true"
                aria-expanded="false">
                 {{ trans('admin.filters') }}
-                <i class="fa-solid{{ $filter ? ' fa-check' : '' }}"></i>
+                <i class="fa-solid{{ $params['filter'] ? ' fa-check' : '' }}"></i>
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownCoursesFiltersLink">
-                <a class="dropdown-item" href="{{ route('home') }}">
+                <a class="dropdown-item" href="{{ route('home', array_filter(array_merge($params, ['filter' => null]))) }}">
                     -
                 </a>
                 <a class="dropdown-item"
-                   href="{{ route('home', ['filter' => \App\Enums\CoursesFilter::Own]) }}">
-                    {!! Helpers::filterSelectedMark($filter, \App\Enums\CoursesFilter::Own) !!}
+                   href="{{ route('home', array_merge($params, ['filter' => \App\Enums\CoursesFilter::Own])) }}">
+                    {!! Helpers::filterSelectedMark($params['filter'], \App\Enums\CoursesFilter::Own) !!}
                     {{ trans('courses.own') }}
                 </a>
             </div>
         </div>
     @endif
+    <div class="dropdown show">
+        <a class="btn dropdown-toggle{{ Helpers::getCurrentCoursesSortOption($params['sort'], $params['direction']) ? ' btn-primary' : ' btn-secondary'  }}"
+            href="#"
+            role="button"
+            id="dropdownCoursesSortLink"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false">
+            @if($currentSort = Helpers::getCurrentCoursesSortOption($params['sort'], $params['direction']))
+                {{ $currentSort['label'] }} <i class="fa-solid {{ $currentSort['icon'] }}"></i>
+            @else
+                {{ trans('admin.sort') }}
+            @endif
+        </a>
+        <div class="dropdown-menu" aria-labelledby="dropdownCoursesSortLink">
+            <a class="dropdown-item" href="{{ route('home', array_filter(array_merge($params, ['sort' => null, 'direction' => null]))) }}">
+                -
+            </a>
+            @foreach(Helpers::getCoursesSortOptions() as $option)
+                <a class="dropdown-item"
+                    href="{{ route('home', array_merge($params, ['sort' => $option['sort'], 'direction' => $option['direction']])) }}">
+                    {{ $option['label'] }} <i class="fa-solid {{ $option['icon'] }}"></i>
+                </a>
+            @endforeach
+        </div>
+    </div>
 @endsection
 
 @section('content')

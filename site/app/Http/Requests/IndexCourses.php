@@ -27,6 +27,14 @@ class IndexCourses extends AbstractRequest
                     [CoursesFilter::Own]
                 ),
             ],
+            'sort' => [
+                'string',
+                Rule::in(['created_at', 'name']),
+            ],
+            'direction' => [
+                'string',
+                Rule::in(['asc', 'desc']),
+            ],
         ];
     }
 }

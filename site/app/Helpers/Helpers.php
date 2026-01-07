@@ -498,6 +498,29 @@ class Helpers
     }
 
     /**
+     * Get all available sort options for courses with their labels and icons.
+     */
+    public static function getCoursesSortOptions(): array
+    {
+        return [
+            ['sort' => 'name', 'direction' => 'asc', 'label' => trans('courses.sort.name'), 'icon' => 'fa-arrow-up-a-z'],
+            ['sort' => 'name', 'direction' => 'desc', 'label' => trans('courses.sort.name'), 'icon' => 'fa-arrow-down-z-a'],
+            ['sort' => 'created_at', 'direction' => 'asc', 'label' => trans('courses.sort.creation'), 'icon' => 'fa-arrow-up-1-9'],
+            ['sort' => 'created_at', 'direction' => 'desc', 'label' => trans('courses.sort.creation'), 'icon' => 'fa-arrow-down-9-1'],
+        ];
+    }
+
+    /**
+     * Get the current active sort option for courses based on sort and direction values.
+     */
+    public static function getCurrentCoursesSortOption(?string $sort, ?string $direction): ?array
+    {
+        return collect(self::getCoursesSortOptions())->first(
+            fn($opt) => $opt['sort'] === $sort && $opt['direction'] === $direction
+        );
+    }
+
+    /**
      * Get the formatted list of contact users.
      *
      * Returns a string containing HTML markup in the format:

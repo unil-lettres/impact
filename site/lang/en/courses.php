@@ -104,4 +104,6 @@ return [
     'finder.dialog.create.cancel' => 'Cancel',
     'finder.menu.rename' => 'Rename...',
     'finder.menu.rename_prompt' => 'Please type the new name',
+    'sort.name' => 'Name',
+    'sort.creation' => 'Date of creation',
 ];

@@ -503,10 +503,10 @@ class Helpers
     public static function getCoursesSortOptions(): array
     {
         return [
-            ['sort' => 'name', 'direction' => 'asc', 'label' => trans('courses.sort.name'), 'icon' => 'fa-arrow-up-a-z'],
-            ['sort' => 'name', 'direction' => 'desc', 'label' => trans('courses.sort.name'), 'icon' => 'fa-arrow-down-z-a'],
-            ['sort' => 'created_at', 'direction' => 'asc', 'label' => trans('courses.sort.creation'), 'icon' => 'fa-arrow-up-1-9'],
-            ['sort' => 'created_at', 'direction' => 'desc', 'label' => trans('courses.sort.creation'), 'icon' => 'fa-arrow-down-9-1'],
+            ['sort' => 'name', 'direction' => 'asc', 'label' => trans('courses.sort.name'), 'icon' => 'fa-arrow-down-a-z'],
+            ['sort' => 'name', 'direction' => 'desc', 'label' => trans('courses.sort.name'), 'icon' => 'fa-arrow-up-z-a'],
+            ['sort' => 'created_at', 'direction' => 'asc', 'label' => trans('courses.sort.creation'), 'icon' => 'fa-arrow-down-1-9'],
+            ['sort' => 'created_at', 'direction' => 'desc', 'label' => trans('courses.sort.creation'), 'icon' => 'fa-arrow-up-9-1'],
         ];
     }
 

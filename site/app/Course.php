@@ -70,6 +70,14 @@ class Course extends Model
     }
 
     /**
+     * Get the manager enrollments of this course.
+     */
+    public function managersEnrollments(): HasMany
+    {
+        return $this->buildEnrollmentsQuery(EnrollmentRole::Manager, true);
+    }
+
+    /**
      * Get the invitations of this course.
      */
     public function invitations(): HasMany
@@ -138,7 +146,9 @@ class Course extends Model
      */
     public function managers(bool $withTrashed = false): Collection
     {
-        return $this->enrollmentsForRole(EnrollmentRole::Manager, $withTrashed)
+        return $this->buildEnrollmentsQuery(EnrollmentRole::Manager, $withTrashed)
+            ->get()
+            ->filter(fn($enrollment) => $enrollment->user !== null)
             ->map(function ($enrollment) {
                 return $enrollment->user;
             });
@@ -149,7 +159,9 @@ class Course extends Model
      */
     public function members(bool $withTrashed = false): Collection
     {
-        return $this->enrollmentsForRole(EnrollmentRole::Member, $withTrashed)
+        return $this->buildEnrollmentsQuery(EnrollmentRole::Member, $withTrashed)
+            ->get()
+            ->filter(fn($enrollment) => $enrollment->user !== null)
             ->map(function ($enrollment) {
                 return $enrollment->user;
             });
@@ -238,23 +250,18 @@ class Course extends Model
     }
 
     /**
-     * Get all the enrollments for a specific role (EnrollmentRole) of this course.
-     * If withTrashed is true, also return the enrollments that have been soft deleted.
+     * Build a query for enrollments filtered by role.
      *
      * @param  string  $role  App\Enums\EnrollmentRole
      */
-    private function enrollmentsForRole(string $role, bool $withTrashed = false): Collection
+    private function buildEnrollmentsQuery(string $role, bool $withTrashed = false): HasMany
     {
-        $enrollments = match ($withTrashed) {
-            true => $this->enrollments()
-                ->withTrashed()
-                ->withoutGlobalScopes(),
-            default => $this->enrollments(),
-        };
+        $query = $this->enrollments()->where('role', $role);
 
-        return $enrollments->get()
-            ->filter(function ($enrollment) use ($role) {
-                return $enrollment->user && $enrollment->role === $role;
-            });
+        if ($withTrashed) {
+            $query->withTrashed()->withoutGlobalScopes();
+        }
+
+        return $query->with('user');
     }
 }

@@ -91,8 +91,10 @@
                                 @endif
                             </div>
                             <div class="flex-cell managers">
-                                @foreach ($course->managers(true) as $manager)
-                                    <span class="{{ $manager->isValid() ? '' : 'expired' }}">{{ $manager->name }}</span>{{ !$loop->last ? ', ' : '' }}
+                                @foreach ($course->managersEnrollments as $enrollment)
+                                    @if($enrollment->user)
+                                        <span class="{{ $enrollment->user->isValid() ? '' : 'expired' }}">{{ $enrollment->user->name }}</span>{{ !$loop->last ? ', ' : '' }}
+                                    @endif
                                 @endforeach
                             </div>
                             <div class="flex-cell date d-none d-md-block">

@@ -47,6 +47,7 @@ class CourseController extends Controller
         $direction = $request->get('direction');
 
         $courses = Course::query()
+            ->with('managersEnrollments.user')
             ->when(Auth::user()->admin, function ($query) use ($filter) {
                 // When the user is admin, get all courses (even soft deleted ones),
                 // then filter them if filter parameter is set.

@@ -148,7 +148,7 @@ class Course extends Model
     {
         return $this->buildEnrollmentsQuery(EnrollmentRole::Manager, $withTrashed)
             ->get()
-            ->filter(fn($enrollment) => $enrollment->user !== null)
+            ->filter(fn ($enrollment) => $enrollment->user !== null)
             ->map(function ($enrollment) {
                 return $enrollment->user;
             });
@@ -161,7 +161,7 @@ class Course extends Model
     {
         return $this->buildEnrollmentsQuery(EnrollmentRole::Member, $withTrashed)
             ->get()
-            ->filter(fn($enrollment) => $enrollment->user !== null)
+            ->filter(fn ($enrollment) => $enrollment->user !== null)
             ->map(function ($enrollment) {
                 return $enrollment->user;
             });

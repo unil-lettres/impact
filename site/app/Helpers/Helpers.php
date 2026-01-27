@@ -516,7 +516,7 @@ class Helpers
     public static function getCurrentCoursesSortOption(?string $sort, ?string $direction): ?array
     {
         return collect(self::getCoursesSortOptions())->first(
-            fn($opt) => $opt['sort'] === $sort && $opt['direction'] === $direction
+            fn ($opt) => $opt['sort'] === $sort && $opt['direction'] === $direction
         );
     }
 

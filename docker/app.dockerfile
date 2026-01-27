@@ -1,4 +1,4 @@
-FROM php:8.4-apache-trixie AS base
+FROM php:8.5-apache-trixie AS base
 
 ENV DOCKER_RUNNING=true
 ENV LANG=en_US.UTF-8

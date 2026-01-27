@@ -31,15 +31,6 @@ services:
     networks:
       - impact-net
     container_name: impact-mysql-testing
-  impact-myadmin:
-    image: phpmyadmin/phpmyadmin:latest
-    environment:
-      PMA_ARBITRARY: 1
-    ports:
-      - "127.0.0.1:9898:80"
-    networks:
-      - impact-net
-    container_name: impact-myadmin
   impact-mailhog:
     image: mailhog/mailhog:latest
     ports:

@@ -78,16 +78,6 @@ To access the debug tool please use the following link.
 
 [http://impact.lan:8787/telescope](http://impact.lan:8787/telescope)
 
-### phpMyAdmin
-
-To access the database please use the following link.
-
-[http://impact.lan:9898](http://impact.lan:9898)
-
-+ Server: impact-mysql
-+ Username: user
-+ Password: password
-
 ### MailHog
 
 To access mails please use the following link.
@@ -97,6 +87,14 @@ To access mails please use the following link.
 Or to get the messages in JSON format.
 
 [http://impact.lan:8025/api/v2/messages](http://impact.lan:8025/api/v2/messages)
+
+### Database
+
+To access the database please use the following credentials.
+
++ Host: 127.0.0.1:3303
++ Username: user
++ Password: password
 
 ## PHP code style
 

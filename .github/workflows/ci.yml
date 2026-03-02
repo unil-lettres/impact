@@ -6,6 +6,7 @@ env:
   MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
   MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
   CI: gha
+  CHROME_MAJOR_VERSION: '133'
 
 jobs:
   test:
@@ -76,9 +77,27 @@ jobs:
 
       # Lock Chrome version to fix the issue where chrome returns immediately after a page visit.
       # TODO: remove as soon as this is fixed by a new version of chrome.
+      - name: Install Chrome
+        run: |
+          # Fetch the latest available build
+          CHROME_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json" \
+            | python3 -c "
+          import json, sys
+          data = json.load(sys.stdin)
+          versions = [v for v in data['versions'] if v['version'].startswith('${{ env.CHROME_MAJOR_VERSION }}.')]
+          print(versions[-1]['version'])
+          ")
+          echo "Installing Chrome version: $CHROME_VERSION"
+          # Download and install Chrome
+          wget -q "https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chrome-linux64.zip"
+          unzip -q chrome-linux64.zip -d /opt/chrome-${{ env.CHROME_MAJOR_VERSION }}
+          sudo ln -sf /opt/chrome-${{ env.CHROME_MAJOR_VERSION }}/chrome-linux64/chrome /usr/local/bin/google-chrome
+          # Verify the installed version
+          google-chrome --version
+
       - name: Install Chrome driver
         working-directory: ./site
-        run: php artisan dusk:chrome-driver 133
+        run: php artisan dusk:chrome-driver ${{ env.CHROME_MAJOR_VERSION }}
 
       - name: Start Chrome driver
         working-directory: ./site

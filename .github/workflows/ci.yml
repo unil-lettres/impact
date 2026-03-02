@@ -75,11 +75,12 @@ jobs:
         run: ./vendor/bin/pint --test -v
         continue-on-error: true
 
-      # Lock Chrome version to fix the issue where chrome returns immediately after a page visit.
-      # TODO: remove as soon as this is fixed by a new version of chrome.
       - name: Install Chrome
         run: |
-          # Fetch the latest available build
+          # Remove pre-installed Chrome to avoid version conflicts with ChromeDriver
+          sudo apt-get remove -y google-chrome-stable || true
+          sudo rm -f /usr/bin/google-chrome /usr/bin/chromium-browser
+          # Fetch the latest available build for the specified major version
           CHROME_VERSION=$(curl -s "https://googlechromelabs.github.io/chrome-for-testing/known-good-versions-with-downloads.json" \
             | python3 -c "
           import json, sys

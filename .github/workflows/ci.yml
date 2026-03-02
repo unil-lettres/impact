@@ -100,7 +100,7 @@ jobs:
 
       - name: Install Chrome driver
         working-directory: ./site
-        run: php artisan dusk:chrome-driver --detect
+        run: php artisan dusk:chrome-driver 133
 
       - name: Start Chrome driver
         working-directory: ./site

@@ -110,6 +110,9 @@ jobs:
         id: app-test-browser
         working-directory: ./site
         run: php artisan dusk
+        env:
+          DUSK_DRIVER_PATH: /usr/local/bin/chromedriver
+          DUSK_CHROME_BINARY: /usr/local/bin/google-chrome
 
       - name: Execute unit/feature tests
         id: app-test-unit

@@ -108,9 +108,11 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitForText('Gestion des utilisateurs');
 
             $browser->click('#users table tbody tr:first-child .actions span:nth-child(1) a')
+                ->waitForText('Mettre à jour le compte')
                 ->type('name', 'Test update user')
                 ->type('email', 'test-update-user@example.com')
                 ->type('old_password', 'password')
@@ -136,9 +138,11 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitForText('Gestion des utilisateurs');
 
             $browser->click('#users table tbody tr:first-child .actions span:nth-child(1) a')
+                ->waitForText('Mettre à jour le compte')
                 ->type('name', '')
                 ->type('email', '')
                 ->type('old_password', 'password')
@@ -170,11 +174,13 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitForText('Gestion des utilisateurs');
 
             $browser->assertSee('Expiré');
 
             $browser->click('#users table tbody tr.invalid .actions span:nth-child(1) a')
+                ->waitForText('Mettre à jour le compte')
                 ->waitForText('Expiré')
                 ->assertSee('Expiré')
                 ->click('#edit-user .card .card-header a.extend-validity')

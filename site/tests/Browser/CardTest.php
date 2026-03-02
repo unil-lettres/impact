@@ -158,8 +158,10 @@ class CardTest extends DuskTestCase
                 ->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
+            $coursePage = new Course('Second space');
             $browser
-                ->visit(new Course('Second space'))
+                ->visit($coursePage)
+                ->waitUntilLoaded()
                 ->press('Créer une fiche')
                 ->waitForText('Créer une fiche');
 
@@ -199,8 +201,10 @@ class CardTest extends DuskTestCase
                 ->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
+            $coursePage = new Course('Second space');
             $browser
-                ->visit(new Course('Second space'))
+                ->visit($coursePage)
+                ->waitUntilLoaded()
                 ->press('Créer une fiche')
                 ->waitForText('Créer une fiche');
 
@@ -229,7 +233,9 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit(new Card('Test card hidden boxes'));
+            $cardPage = new Card('Test card hidden boxes');
+            $browser->visit($cardPage)
+                ->waitUntilLoaded();
 
             $browser->click('#btn-hide-boxes')
                 ->assertDontSee('Source')
@@ -260,7 +266,8 @@ class CardTest extends DuskTestCase
 
             $testCard = new Card('Test card features');
             $card = AppCard::find($testCard->id());
-            $browser->visit($testCard);
+            $browser->visit($testCard)
+                ->waitUntilLoaded();
 
             // Enter edit mode.
             $browser->click('#edit-box2');
@@ -446,7 +453,9 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit(new Card('Test card features'));
+            $cardPage = new Card('Test card features');
+            $browser->visit($cardPage)
+                ->waitUntilLoaded();
 
             $browser->click('#import-box2')
                 ->pause(1000) // Avoid "element not interactable" issue with modal
@@ -494,7 +503,9 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit(new Card('Test card features'));
+            $cardPage = new Card('Test card features');
+            $browser->visit($cardPage)
+                ->waitUntilLoaded();
 
             $browser->click('#edit-box3')
                 ->assertSee('Annuler')
@@ -519,7 +530,9 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit(new Card('Test card features'));
+            $cardPage = new Card('Test card features');
+            $browser->visit($cardPage)
+                ->waitUntilLoaded();
 
             $browser->click('#edit-box4')
                 ->assertSee('Annuler')

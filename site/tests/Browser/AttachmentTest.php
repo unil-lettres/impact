@@ -37,7 +37,9 @@ class AttachmentTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit(new PagesCard('Test card with file'));
+            $cardPage = new PagesCard('Test card with file');
+            $browser->visit($cardPage)
+                ->waitUntilLoaded();
 
             $browser->click('#rct-attachments .btn-primary')
                 ->waitForText('Déposer les fichiers ici')
@@ -76,7 +78,9 @@ class AttachmentTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit(new PagesCard('Test card with file'));
+            $cardPage = new PagesCard('Test card with file');
+            $browser->visit($cardPage)
+                ->waitUntilLoaded();
 
             $browser->waitForText('My attachment')
                 ->assertSee('My attachment');

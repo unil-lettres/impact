@@ -43,6 +43,14 @@ class Course extends Page
     }
 
     /**
+     * Assert that the browser is on the page.
+     */
+    public function assert(Browser $browser): void
+    {
+        $this->waitUntilLoaded($browser);
+    }
+
+    /**
      * Wait for the finder to be fully loaded.
      */
     public function waitUntilLoaded(Browser $browser): void

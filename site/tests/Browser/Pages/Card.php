@@ -23,6 +23,14 @@ class Card extends Page
     }
 
     /**
+     * Assert that the browser is on the page.
+     */
+    public function assert(Browser $browser): void
+    {
+        $this->waitUntilLoaded($browser);
+    }
+
+    /**
      * Wait to the finder to be fully loaded.
      */
     public function waitUntilLoaded(Browser $browser): void

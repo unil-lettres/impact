@@ -101,6 +101,10 @@ jobs:
           google-chrome --version
           chromedriver --version
 
+      - name: Install Chrome driver for Dusk
+        working-directory: ./site
+        run: php artisan dusk:chrome-driver --detect
+
       - name: Start Chrome driver
         run: chromedriver --port=9515 &
 

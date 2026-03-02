@@ -45,6 +45,7 @@ abstract class DuskTestCase extends BaseTestCase
             '--window-size=1920,1080',
             '--no-sandbox',
             '--disable-dev-shm-usage',
+            '--user-data-dir='.sys_get_temp_dir().'/dusk_'.uniqid(),
         ]);
 
         return RemoteWebDriver::create(

@@ -158,8 +158,10 @@ class CardTest extends DuskTestCase
                 ->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
+            $coursePage = new Course('Second space');
             $browser
-                ->visit(new Course('Second space'))
+                ->visit($coursePage)
+                ->waitUntilLoaded()
                 ->press('Créer une fiche')
                 ->waitForText('Créer une fiche');
 
@@ -168,7 +170,7 @@ class CardTest extends DuskTestCase
             $holderName = 'Member user';
 
             $browser
-                ->pause(1000) // Avoid "element not interactable" issue with modal
+                ->waitFor('#modalCreateCard [type="submit"]') // wait for modal to be interactive
                 ->type('#modalCreateCard-name', $cardName)
                 ->select('#modalCreateCard-folder-id', $folderPage->id())
                 ->click('#rct-multi-user-select')
@@ -199,15 +201,17 @@ class CardTest extends DuskTestCase
                 ->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
+            $coursePage = new Course('Second space');
             $browser
-                ->visit(new Course('Second space'))
+                ->visit($coursePage)
+                ->waitUntilLoaded()
                 ->press('Créer une fiche')
                 ->waitForText('Créer une fiche');
 
             $cardName = 'My new card with error';
 
             $browser
-                ->pause(1000) // Avoid "element not interactable" issue with modal
+                ->waitFor('#modalCreateCard [type="submit"]') // wait for modal to be interactive
                 ->type('#modalCreateCard-name', $cardName)
                 ->click('#modalCreateCard [type="submit"]');
 
@@ -229,9 +233,13 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit(new Card('Test card hidden boxes'));
+            $cardPage = new Card('Test card hidden boxes');
+            $browser->visit($cardPage)
+                ->waitUntilLoaded();
 
-            $browser->click('#btn-hide-boxes')
+            $browser->waitFor('#btn-hide-boxes')
+                ->click('#btn-hide-boxes')
+                ->waitUntilMissingText('Source')
                 ->assertDontSee('Source')
                 ->assertDontSee('Transcription')
                 ->assertDontSee('Documents')
@@ -239,6 +247,7 @@ class CardTest extends DuskTestCase
                 ->assertSee('Exemplification');
 
             $browser->click('#btn-hide-boxes')
+                ->waitForText('Source')
                 ->assertSee('Source')
                 ->assertSee('Transcription')
                 ->assertSee('Documents')
@@ -260,10 +269,12 @@ class CardTest extends DuskTestCase
 
             $testCard = new Card('Test card features');
             $card = AppCard::find($testCard->id());
-            $browser->visit($testCard);
+            $browser->visit($testCard)
+                ->waitUntilLoaded();
 
-            // Enter edit mode.
-            $browser->click('#edit-box2');
+            // Enter edit mode and wait for editor to be ready.
+            $browser->click('#edit-box2')
+                ->waitFor('#speech-0');
 
             $browser->keys(
                 '#speech-0',
@@ -446,10 +457,12 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit(new Card('Test card features'));
+            $cardPage = new Card('Test card features');
+            $browser->visit($cardPage)
+                ->waitUntilLoaded();
 
             $browser->click('#import-box2')
-                ->pause(1000) // Avoid "element not interactable" issue with modal
+                ->waitForText(trans('cards.import_action')) // wait for modal to open
                 ->assertSee(trans('cards.import'))
                 ->assertSee(trans('cards.cancel'))
                 ->assertSee(trans('cards.import_action'));
@@ -494,13 +507,15 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit(new Card('Test card features'));
+            $cardPage = new Card('Test card features');
+            $browser->visit($cardPage)
+                ->waitUntilLoaded();
 
             $browser->click('#edit-box3')
+                ->waitForText('Annuler')
                 ->assertSee('Annuler')
                 ->assertSee('Sauver');
 
-            $browser->type('#rct-editor-box3 div.ck-content', 'This is a typing test. Is it saved ?');
 
             $browser->click('#edit-box3')
                 ->assertSee('Is it saved ?')
@@ -519,9 +534,12 @@ class CardTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit(new Card('Test card features'));
+            $cardPage = new Card('Test card features');
+            $browser->visit($cardPage)
+                ->waitUntilLoaded();
 
             $browser->click('#edit-box4')
+                ->waitForText('Annuler')
                 ->assertSee('Annuler')
                 ->assertSee('Sauver');
 

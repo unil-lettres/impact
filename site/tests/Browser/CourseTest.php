@@ -136,9 +136,12 @@ class CourseTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/courses');
+            $browser->visit('/admin/courses')
+                ->waitForText('Gestion des espaces');
 
-            $browser->clickLink('Créer un espace');
+            $browser->clickLink('Créer un espace')
+                ->waitForText('Créer un espace')
+                ->waitFor('input[name="name"]');
 
             $browser->type('name', 'My new space')
                 ->type('description', 'My new space description')
@@ -160,9 +163,11 @@ class CourseTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/courses');
+            $browser->visit('/admin/courses')
+                ->waitForText('Gestion des espaces');
 
             $browser->click('#courses table tbody tr.local .actions span:nth-child(1) a')
+                ->waitForText('Mettre à jour l\'espace')
                 ->assertDontSee('Identifiant Moodle')
                 ->type('name', 'My new space updated')
                 ->type('description', 'My new space description updated')
@@ -186,7 +191,8 @@ class CourseTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/courses');
+            $browser->visit('/admin/courses')
+                ->waitForText('Gestion des espaces');
 
             $browser->click('#courses table tbody tr:nth-child(3) .actions form.with-disable-confirm button')
                 ->waitForDialog($seconds = null)
@@ -210,7 +216,8 @@ class CourseTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/courses');
+            $browser->visit('/admin/courses')
+                ->waitForText('Gestion des espaces');
 
             $browser->click('#courses table tbody tr:first-child .actions form.with-delete-confirm button')
                 ->waitForDialog($seconds = null)
@@ -233,17 +240,23 @@ class CourseTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit(new PagesCard('Test card features'));
+            $cardPage = new PagesCard('Test card features');
+            $browser->visit($cardPage)
+                ->waitUntilLoaded();
 
             $browser->click('#edit-box2')
+                ->waitForText('Annuler')
                 ->assertSee('Annuler')
                 ->assertSee('Sauver')
                 ->assertSee('Effacer texte')
                 ->assertPresent('#rct-transcription')
                 ->assertNotPresent('#rct-editor-box2');
 
-            $browser->visit(new PagesCourse('Second space'))
+            $coursePage = new PagesCourse('Second space');
+            $browser->visit($coursePage)
+                ->waitUntilLoaded()
                 ->clickLink('Configuration de l\'espace')
+                ->waitForText('Type de transcription')
                 ->assertSee('Type de transcription');
 
             $browser->select('type', 'text')
@@ -251,9 +264,12 @@ class CourseTest extends DuskTestCase
                 ->waitForText('Configuration de l\'espace mise à jour.')
                 ->assertSee('Configuration de l\'espace mise à jour.');
 
-            $browser->visit(new PagesCard('Test card features'));
+            $cardPage2 = new PagesCard('Test card features');
+            $browser->visit($cardPage2)
+                ->waitUntilLoaded();
 
             $browser->click('#edit-box2')
+                ->waitForText('Annuler')
                 ->assertSee('Annuler')
                 ->assertSee('Sauver')
                 ->assertDontSee('Effacer texte')
@@ -276,7 +292,9 @@ class CourseTest extends DuskTestCase
             $browser
                 ->visit($page)
                 ->waitUntilLoaded()
+                ->waitFor('.rct-multi-filter-select[placeholder="Etiquettes"]')
                 ->click('.rct-multi-filter-select[placeholder="Etiquettes"]')
+                ->waitFor('#react-select-4-option-0')
                 ->click('#react-select-4-option-0');
 
             $browser
@@ -298,7 +316,9 @@ class CourseTest extends DuskTestCase
             $browser
                 ->visit(new PagesCourse('Second space'))
                 ->waitUntilLoaded()
+                ->waitFor('.finder-folder')
                 ->click('.finder-folder')
+                ->waitForText('Tout sélectionner')
                 ->press('Tout sélectionner');
 
             $browser->assertSee('11 élément(s) sélectionné(s) dont 8 fiche(s)');
@@ -316,8 +336,11 @@ class CourseTest extends DuskTestCase
             $browser
                 ->visit(new PagesCourse('Second space'))
                 ->waitUntilLoaded()
+                ->waitFor('.finder-folder')
                 ->click('.finder-folder')
+                ->waitFor('@multi-menu')
                 ->click('@multi-menu')
+                ->waitFor('@multi-copy-option')
                 ->click('@multi-copy-option');
 
             $browser
@@ -337,8 +360,11 @@ class CourseTest extends DuskTestCase
             $browser
                 ->visit(new PagesCourse('Second space'))
                 ->waitUntilLoaded()
+                ->waitFor('.finder-folder')
                 ->click('.finder-folder')
+                ->waitFor('@multi-menu')
                 ->click('@multi-menu')
+                ->waitFor('@multi-delete-option')
                 ->click('@multi-delete-option')
                 ->acceptDialog();
 
@@ -363,8 +389,11 @@ class CourseTest extends DuskTestCase
             $browser
                 ->visit($pageCourse)
                 ->waitUntilLoaded()
+                ->waitFor("@finder-card-{$pageCard->id()}")
                 ->click("@finder-card-{$pageCard->id()}")
+                ->waitFor('@multi-menu')
                 ->click('@multi-menu')
+                ->waitFor('@multi-movein-option')
                 ->click('@multi-movein-option');
 
             $browser
@@ -376,6 +405,7 @@ class CourseTest extends DuskTestCase
 
             $browser
                 ->visit($pageFolder)
+                ->waitUntilLoaded()
                 ->waitForText('Test card second space not assigned')
                 ->assertSee('Test card second space not assigned');
         });
@@ -396,8 +426,11 @@ class CourseTest extends DuskTestCase
             $browser
                 ->visit($pageCourse)
                 ->waitUntilLoaded()
+                ->waitFor("@finder-card-{$pageCard->id()}")
                 ->click("@finder-card-{$pageCard->id()}")
+                ->waitFor('@multi-menu')
                 ->click('@multi-menu')
+                ->waitFor('@multi-clonein-option')
                 ->click('@multi-clonein-option');
 
             $browser
@@ -409,6 +442,7 @@ class CourseTest extends DuskTestCase
 
             $browser
                 ->visit($pageCourseDest)
+                ->waitUntilLoaded()
                 ->waitForText('Test card second space not assigned')
                 ->assertSee('Test card second space not assigned');
         });
@@ -428,10 +462,13 @@ class CourseTest extends DuskTestCase
 
             $browser
                 ->visit($pageCourse)
-                ->assertDontSee('archivé') // To be sure our futur assertion is correct (should not have any archived card).
                 ->waitUntilLoaded()
+                ->assertDontSee('archivé')
+                ->waitFor("@finder-card-{$pageCard->id()}")
                 ->click("@finder-card-{$pageCard->id()}")
+                ->waitFor('@multi-menu')
                 ->click('@multi-menu')
+                ->waitFor('@multi-updatestate-option')
                 ->click('@multi-updatestate-option');
 
             $browser

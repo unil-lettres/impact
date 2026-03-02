@@ -80,16 +80,20 @@ jobs:
       - name: Remove image-bundled Chrome
         run: sudo apt-get purge -y google-chrome-stable
       - name: Install stable Chrome and matching Chromedriver
-        run: |
+        run: | 
           CHROME_VERSION=133.0.6943.141
-          DRIVER_URL="https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip"
-          wget -O chromedriver.zip "$DRIVER_URL"
-          unzip -q chromedriver.zip
-          sudo mv chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
+          echo "Installing Chrome ${CHROME_VERSION}..."
+          wget -q https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}-1_amd64.deb
+          sudo apt-get update
+          sudo apt-get install -y ./google-chrome-stable_${CHROME_VERSION}-1_amd64.deb
+          rm google-chrome-stable_${CHROME_VERSION}-1_amd64.deb
+          echo "Installing matching ChromeDriver ${CHROME_VERSION}..."
+          wget -q https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip
+          unzip -q chromedriver-linux64.zip
+          sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
-          rm -rf chromedriver-linux64 chromedriver.zip
-      - name: Check Google Chrome & Driver Versions
-        run: |
+          rm -rf chromedriver-linux64 chromedriver-linux64.zip
+          echo "Installed versions:"
           google-chrome --version
           chromedriver --version
 

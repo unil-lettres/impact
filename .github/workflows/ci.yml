@@ -80,12 +80,12 @@ jobs:
       - name: Remove image-bundled Chrome
         run: sudo apt-get purge -y google-chrome-stable
       - name: Install stable Chrome and matching Chromedriver
-        run: | 
+        run: |
           CHROME_VERSION=133.0.6943.141
           echo "Installing Chrome ${CHROME_VERSION}..."
           wget -q https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}-1_amd64.deb
           sudo apt-get update
-          sudo apt-get install -y ./google-chrome-stable_${CHROME_VERSION}-1_amd64.deb
+          sudo apt-get install -y ./google-chrome-stable_${CHROME_VERSION}-1_amd64.deb || sudo apt-get install -f -y
           rm google-chrome-stable_${CHROME_VERSION}-1_amd64.deb
           echo "Installing matching ChromeDriver ${CHROME_VERSION}..."
           wget -q https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip

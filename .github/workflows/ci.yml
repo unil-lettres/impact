@@ -82,13 +82,17 @@ jobs:
       - name: Install stable Chrome and matching Chromedriver
         run: |
           CHROME_VERSION=133.0.6943.141
-          echo "Installing Chrome ${CHROME_VERSION}..."
-          wget -q https://dl.google.com/linux/chrome/deb/pool/main/g/google-chrome-stable/google-chrome-stable_${CHROME_VERSION}-1_amd64.deb
+          echo "Adding Google Chrome repository..."
           sudo apt-get update
-          sudo apt-get install -y ./google-chrome-stable_${CHROME_VERSION}-1_amd64.deb || sudo apt-get install -f -y
-          rm google-chrome-stable_${CHROME_VERSION}-1_amd64.deb
-          echo "Installing matching ChromeDriver ${CHROME_VERSION}..."
-          wget -q https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip
+          sudo apt-get install -y wget gnupg unzip
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo gpg --dearmor -o /usr/share/keyrings/google-linux.gpg
+          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-linux.gpg] http://dl.google.com/linux/chrome/deb/ stable main" \
+            | sudo tee /etc/apt/sources.list.d/google-chrome.list > /dev/null
+          sudo apt-get update
+          echo "Installing Chrome ${CHROME_VERSION}..."
+          sudo apt-get install -y google-chrome-stable=${CHROME_VERSION}
+          echo "Installing ChromeDriver ${DRIVER_VERSION}..."
+          wget -q https://storage.googleapis.com/chrome-for-testing-public/${DRIVER_VERSION}/linux64/chromedriver-linux64.zip
           unzip -q chromedriver-linux64.zip
           sudo mv chromedriver-linux64/chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver

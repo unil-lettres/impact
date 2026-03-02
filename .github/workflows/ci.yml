@@ -105,7 +105,8 @@ jobs:
           # Download and install Chrome from chrome-for-testing
           wget -q "https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chrome-linux64.zip"
           unzip -q chrome-linux64.zip
-          sudo mv chrome-linux64 /opt/google/chrome
+          sudo mkdir -p /opt/google/chrome
+          sudo mv chrome-linux64/* /opt/google/chrome/
           sudo ln -sf /opt/google/chrome/chrome /usr/local/bin/google-chrome
           rm chrome-linux64.zip
 

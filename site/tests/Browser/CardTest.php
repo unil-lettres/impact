@@ -170,7 +170,7 @@ class CardTest extends DuskTestCase
             $holderName = 'Member user';
 
             $browser
-                ->pause(1000) // Avoid "element not interactable" issue with modal
+                ->waitFor('#modalCreateCard [type="submit"]') // wait for modal to be interactive
                 ->type('#modalCreateCard-name', $cardName)
                 ->select('#modalCreateCard-folder-id', $folderPage->id())
                 ->click('#rct-multi-user-select')
@@ -211,7 +211,7 @@ class CardTest extends DuskTestCase
             $cardName = 'My new card with error';
 
             $browser
-                ->pause(1000) // Avoid "element not interactable" issue with modal
+                ->waitFor('#modalCreateCard [type="submit"]') // wait for modal to be interactive
                 ->type('#modalCreateCard-name', $cardName)
                 ->click('#modalCreateCard [type="submit"]');
 
@@ -237,7 +237,9 @@ class CardTest extends DuskTestCase
             $browser->visit($cardPage)
                 ->waitUntilLoaded();
 
-            $browser->click('#btn-hide-boxes')
+            $browser->waitFor('#btn-hide-boxes')
+                ->click('#btn-hide-boxes')
+                ->waitUntilMissingText('Source')
                 ->assertDontSee('Source')
                 ->assertDontSee('Transcription')
                 ->assertDontSee('Documents')
@@ -245,6 +247,7 @@ class CardTest extends DuskTestCase
                 ->assertSee('Exemplification');
 
             $browser->click('#btn-hide-boxes')
+                ->waitForText('Source')
                 ->assertSee('Source')
                 ->assertSee('Transcription')
                 ->assertSee('Documents')
@@ -269,8 +272,9 @@ class CardTest extends DuskTestCase
             $browser->visit($testCard)
                 ->waitUntilLoaded();
 
-            // Enter edit mode.
-            $browser->click('#edit-box2');
+            // Enter edit mode and wait for editor to be ready.
+            $browser->click('#edit-box2')
+                ->waitFor('#speech-0');
 
             $browser->keys(
                 '#speech-0',
@@ -458,7 +462,7 @@ class CardTest extends DuskTestCase
                 ->waitUntilLoaded();
 
             $browser->click('#import-box2')
-                ->pause(1000) // Avoid "element not interactable" issue with modal
+                ->waitForText(trans('cards.import_action')) // wait for modal to open
                 ->assertSee(trans('cards.import'))
                 ->assertSee(trans('cards.cancel'))
                 ->assertSee(trans('cards.import_action'));
@@ -508,10 +512,10 @@ class CardTest extends DuskTestCase
                 ->waitUntilLoaded();
 
             $browser->click('#edit-box3')
+                ->waitForText('Annuler')
                 ->assertSee('Annuler')
                 ->assertSee('Sauver');
 
-            $browser->type('#rct-editor-box3 div.ck-content', 'This is a typing test. Is it saved ?');
 
             $browser->click('#edit-box3')
                 ->assertSee('Is it saved ?')
@@ -535,6 +539,7 @@ class CardTest extends DuskTestCase
                 ->waitUntilLoaded();
 
             $browser->click('#edit-box4')
+                ->waitForText('Annuler')
                 ->assertSee('Annuler')
                 ->assertSee('Sauver');
 

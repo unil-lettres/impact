@@ -139,7 +139,9 @@ class CourseTest extends DuskTestCase
             $browser->visit('/admin/courses')
                 ->waitForText('Gestion des espaces');
 
-            $browser->clickLink('Créer un espace');
+            $browser->clickLink('Créer un espace')
+                ->waitForText('Créer un espace')
+                ->waitFor('input[name="name"]');
 
             $browser->type('name', 'My new space')
                 ->type('description', 'My new space description')
@@ -243,6 +245,7 @@ class CourseTest extends DuskTestCase
                 ->waitUntilLoaded();
 
             $browser->click('#edit-box2')
+                ->waitForText('Annuler')
                 ->assertSee('Annuler')
                 ->assertSee('Sauver')
                 ->assertSee('Effacer texte')
@@ -253,6 +256,7 @@ class CourseTest extends DuskTestCase
             $browser->visit($coursePage)
                 ->waitUntilLoaded()
                 ->clickLink('Configuration de l\'espace')
+                ->waitForText('Type de transcription')
                 ->assertSee('Type de transcription');
 
             $browser->select('type', 'text')
@@ -265,6 +269,7 @@ class CourseTest extends DuskTestCase
                 ->waitUntilLoaded();
 
             $browser->click('#edit-box2')
+                ->waitForText('Annuler')
                 ->assertSee('Annuler')
                 ->assertSee('Sauver')
                 ->assertDontSee('Effacer texte')
@@ -287,7 +292,9 @@ class CourseTest extends DuskTestCase
             $browser
                 ->visit($page)
                 ->waitUntilLoaded()
+                ->waitFor('.rct-multi-filter-select[placeholder="Etiquettes"]')
                 ->click('.rct-multi-filter-select[placeholder="Etiquettes"]')
+                ->waitFor('#react-select-4-option-0')
                 ->click('#react-select-4-option-0');
 
             $browser
@@ -309,7 +316,9 @@ class CourseTest extends DuskTestCase
             $browser
                 ->visit(new PagesCourse('Second space'))
                 ->waitUntilLoaded()
+                ->waitFor('.finder-folder')
                 ->click('.finder-folder')
+                ->waitForText('Tout sélectionner')
                 ->press('Tout sélectionner');
 
             $browser->assertSee('11 élément(s) sélectionné(s) dont 8 fiche(s)');
@@ -327,8 +336,11 @@ class CourseTest extends DuskTestCase
             $browser
                 ->visit(new PagesCourse('Second space'))
                 ->waitUntilLoaded()
+                ->waitFor('.finder-folder')
                 ->click('.finder-folder')
+                ->waitFor('@multi-menu')
                 ->click('@multi-menu')
+                ->waitFor('@multi-copy-option')
                 ->click('@multi-copy-option');
 
             $browser
@@ -348,8 +360,11 @@ class CourseTest extends DuskTestCase
             $browser
                 ->visit(new PagesCourse('Second space'))
                 ->waitUntilLoaded()
+                ->waitFor('.finder-folder')
                 ->click('.finder-folder')
+                ->waitFor('@multi-menu')
                 ->click('@multi-menu')
+                ->waitFor('@multi-delete-option')
                 ->click('@multi-delete-option')
                 ->acceptDialog();
 
@@ -374,8 +389,11 @@ class CourseTest extends DuskTestCase
             $browser
                 ->visit($pageCourse)
                 ->waitUntilLoaded()
+                ->waitFor("@finder-card-{$pageCard->id()}")
                 ->click("@finder-card-{$pageCard->id()}")
+                ->waitFor('@multi-menu')
                 ->click('@multi-menu')
+                ->waitFor('@multi-movein-option')
                 ->click('@multi-movein-option');
 
             $browser
@@ -387,6 +405,7 @@ class CourseTest extends DuskTestCase
 
             $browser
                 ->visit($pageFolder)
+                ->waitUntilLoaded()
                 ->waitForText('Test card second space not assigned')
                 ->assertSee('Test card second space not assigned');
         });
@@ -407,8 +426,11 @@ class CourseTest extends DuskTestCase
             $browser
                 ->visit($pageCourse)
                 ->waitUntilLoaded()
+                ->waitFor("@finder-card-{$pageCard->id()}")
                 ->click("@finder-card-{$pageCard->id()}")
+                ->waitFor('@multi-menu')
                 ->click('@multi-menu')
+                ->waitFor('@multi-clonein-option')
                 ->click('@multi-clonein-option');
 
             $browser
@@ -420,6 +442,7 @@ class CourseTest extends DuskTestCase
 
             $browser
                 ->visit($pageCourseDest)
+                ->waitUntilLoaded()
                 ->waitForText('Test card second space not assigned')
                 ->assertSee('Test card second space not assigned');
         });
@@ -439,10 +462,13 @@ class CourseTest extends DuskTestCase
 
             $browser
                 ->visit($pageCourse)
-                ->assertDontSee('archivé') // To be sure our futur assertion is correct (should not have any archived card).
                 ->waitUntilLoaded()
+                ->assertDontSee('archivé')
+                ->waitFor("@finder-card-{$pageCard->id()}")
                 ->click("@finder-card-{$pageCard->id()}")
+                ->waitFor('@multi-menu')
                 ->click('@multi-menu')
+                ->waitFor('@multi-updatestate-option')
                 ->click('@multi-updatestate-option');
 
             $browser

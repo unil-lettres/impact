@@ -41,7 +41,8 @@ class AttachmentTest extends DuskTestCase
             $browser->visit($cardPage)
                 ->waitUntilLoaded();
 
-            $browser->click('#rct-attachments .btn-primary')
+            $browser->waitFor('#rct-attachments .btn-primary')
+                ->click('#rct-attachments .btn-primary')
                 ->waitForText('Déposer les fichiers ici')
                 ->assertSee('Déposer les fichiers ici');
         });
@@ -86,7 +87,8 @@ class AttachmentTest extends DuskTestCase
                 ->assertSee('My attachment');
 
             $browser->with('.box5 .attachments-list div:first-child', function ($attachment) {
-                $attachment->click('button.btn-danger')
+                $attachment->waitFor('button.btn-danger')
+                    ->click('button.btn-danger')
                     ->waitForDialog($seconds = null)
                     ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
                     ->acceptDialog();

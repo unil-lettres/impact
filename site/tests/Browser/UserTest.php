@@ -37,9 +37,9 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitForText('Gestion des utilisateurs');
 
-            $browser->assertSee('Gestion des utilisateurs');
             $browser->assertSee('first-user@example.com');
             $browser->assertSee('admin-user@example.com');
         });
@@ -56,10 +56,13 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitForText('Gestion des utilisateurs');
 
             $browser->assertSee('Créer un utilisateur')
-                ->clickLink('Créer un utilisateur');
+                ->clickLink('Créer un utilisateur')
+                ->waitForText('Créer un nouvel utilisateur')
+                ->waitFor('input[name="name"]');
 
             $browser->type('name', 'Test create user')
                 ->type('email', 'test-create-user@example.com')
@@ -84,7 +87,8 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users/create');
+            $browser->visit('/admin/users/create')
+                ->waitForText('Créer un nouvel utilisateur');
 
             $browser->type('name', 'Test create user with error')
                 ->type('email', 'test-create-user-with-error@example.com')
@@ -156,7 +160,7 @@ class UserTest extends DuskTestCase
                 ->type('email', 'test-update-user-with-errors@example.com')
                 ->type('old_password', 'password-with-errors');
 
-            $browser->scrollTo('@user-update-button') // Scroll to avoid "Element is not clickable at point" error
+            $browser->scrollTo('@user-update-button')
                 ->press('Mettre à jour le compte')
                 ->waitForText('Vous avez entré le mauvais mot de passe')
                 ->assertSee('Vous avez entré le mauvais mot de passe');
@@ -181,7 +185,6 @@ class UserTest extends DuskTestCase
 
             $browser->click('#users table tbody tr.invalid .actions span:nth-child(1) a')
                 ->waitForText('Mettre à jour le compte')
-                ->waitForText('Expiré')
                 ->assertSee('Expiré')
                 ->click('#edit-user .card .card-header a.extend-validity')
                 ->waitForText('Prolongation de la validité du compte de l\'utilisateur')
@@ -202,7 +205,8 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitForText('Gestion des utilisateurs');
 
             $browser->click('#users table tbody tr.aai .actions span:nth-child(1) a')
                 ->waitForText('Nom')
@@ -228,7 +232,8 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitForText('Gestion des utilisateurs');
 
             $browser->click('#users table tbody tr.local .actions span:nth-child(1) a')
                 ->waitForText('Type')
@@ -251,7 +256,8 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitForText('Gestion des utilisateurs');
 
             $browser->click('#users table tbody tr:nth-last-child(2) .actions form.with-delete-confirm button')
                 ->waitForDialog($seconds = null)

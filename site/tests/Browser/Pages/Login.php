@@ -46,7 +46,6 @@ class Login extends Page
     {
         $browser->type('email', $login)
             ->type('password', $password)
-            ->press('Se connecter')
-            ->waitUntilMissing('input[name="email"]');
+            ->press('Se connecter');
     }
 }

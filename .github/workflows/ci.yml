@@ -98,6 +98,10 @@ jobs:
           google-chrome --version
           chromedriver --version
 
+      - name: Install Chrome driver
+        working-directory: ./site
+        run: php artisan dusk:chrome-driver 133
+
       - name: Start Chrome driver
         working-directory: ./site
         run: ./vendor/laravel/dusk/bin/chromedriver-linux --port=9515 &
@@ -110,9 +114,6 @@ jobs:
         id: app-test-browser
         working-directory: ./site
         run: php artisan dusk
-        env:
-          DUSK_DRIVER_PATH: /usr/local/bin/chromedriver
-          DUSK_CHROME_BINARY: /usr/local/bin/google-chrome
 
       - name: Execute unit/feature tests
         id: app-test-unit

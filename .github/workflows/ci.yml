@@ -93,12 +93,17 @@ jobs:
           wget -q "https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chrome-linux64.zip"
           unzip -q chrome-linux64.zip -d /opt/chrome-${{ env.CHROME_MAJOR_VERSION }}
           sudo ln -sf /opt/chrome-${{ env.CHROME_MAJOR_VERSION }}/chrome-linux64/chrome /usr/local/bin/google-chrome
-          # Verify the installed version
+          # Download and install ChromeDriver
+          wget -q "https://storage.googleapis.com/chrome-for-testing-public/${CHROME_VERSION}/linux64/chromedriver-linux64.zip"
+          unzip -q chromedriver-linux64.zip -d /opt/chrome-${{ env.CHROME_MAJOR_VERSION }}
+          sudo ln -sf /opt/chrome-${{ env.CHROME_MAJOR_VERSION }}/chromedriver-linux64/chromedriver /usr/local/bin/chromedriver
+          # Verify the installed versions
           google-chrome --version
+          chromedriver --version
 
       - name: Install Chrome driver
         working-directory: ./site
-        run: php artisan dusk:chrome-driver ${{ env.CHROME_MAJOR_VERSION }}
+        run: php artisan dusk:chrome-driver --detect
 
       - name: Start Chrome driver
         working-directory: ./site

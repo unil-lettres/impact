@@ -98,10 +98,6 @@ jobs:
           google-chrome --version
           chromedriver --version
 
-      - name: Install Chrome driver
-        working-directory: ./site
-        run: php artisan dusk:chrome-driver 133
-
       - name: Start Chrome driver
         working-directory: ./site
         run: ./vendor/laravel/dusk/bin/chromedriver-linux --port=9515 &

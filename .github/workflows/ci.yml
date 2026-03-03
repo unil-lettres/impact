@@ -84,10 +84,7 @@ jobs:
 
       - name: Run Laravel server
         working-directory: ./site
-        run: PHP_CLI_SERVER_WORKERS=4 php artisan serve --no-reload &
-
-      - name: Wait for Laravel server
-        run: php -r "for(\$i=0;\$i<30;\$i++){if(@fsockopen('127.0.0.1',8000)){exit(0);}sleep(1);}exit(1);"
+        run: php artisan serve --no-reload &
 
       - name: Execute browser tests
         id: app-test-browser

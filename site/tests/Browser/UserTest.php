@@ -2,14 +2,14 @@
 
 namespace Tests\Browser;
 
+use App\Scopes\ValidityScope;
+use App\User;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
 use Tests\Browser\Pages\Login;
 use Tests\Browser\Pages\Profile;
 use Tests\DuskTestCase;
-use App\User;
-use App\Scopes\ValidityScope;
 use Throwable;
 
 class UserTest extends DuskTestCase

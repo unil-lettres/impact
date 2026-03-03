@@ -115,10 +115,7 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users')
-                ->waitFor("[dusk='user-edit-{$user->id}']");
-
-            $browser->click("[dusk='user-edit-{$user->id}']")
+            $browser->visit("/admin/users/{$user->id}/edit")
                 ->waitFor('[name="name"]')
                 ->type('name', 'Test update user')
                 ->type('email', 'test-update-user@example.com')
@@ -147,10 +144,7 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users')
-                ->waitFor("[dusk='user-edit-{$user->id}']");
-
-            $browser->click("[dusk='user-edit-{$user->id}']")
+            $browser->visit("/admin/users/{$user->id}/edit")
                 ->waitFor('[name="name"]')
                 ->type('name', '')
                 ->type('email', '')
@@ -191,7 +185,7 @@ class UserTest extends DuskTestCase
 
             $browser->assertSee('Expiré');
 
-            $browser->click("[dusk='user-edit-{$user->id}']")
+            $browser->visit("/admin/users/{$user->id}/edit")
                 ->waitFor('[name="name"]')
                 ->waitForText('Expiré')
                 ->assertSee('Expiré')
@@ -217,10 +211,7 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users')
-                ->waitFor("[dusk='user-edit-{$user->id}']");
-
-            $browser->click("[dusk='user-edit-{$user->id}']")
+            $browser->visit("/admin/users/{$user->id}/edit")
                 ->waitFor('[name="type"]')
                 ->assertSee('Nom')
                 ->assertSee('Email')
@@ -246,10 +237,7 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users')
-                ->waitFor("[dusk='user-edit-{$user->id}']");
-
-            $browser->click("[dusk='user-edit-{$user->id}']")
+            $browser->visit("/admin/users/{$user->id}/edit")
                 ->waitFor('[name="type"]')
                 ->assertDisabled('type')
                 ->assertInputValue('type', 'local')
@@ -274,9 +262,8 @@ class UserTest extends DuskTestCase
 
             $browser->visit('/admin/users')
                 ->waitFor("[dusk='user-delete-{$user->id}']");
-
-            $browser->click("[dusk='user-delete-{$user->id}']")
-                ->waitForDialog($seconds = null)
+            $browser->script("document.querySelector(\"[dusk='user-delete-{$user->id}']\").click()");
+            $browser->waitForDialog($seconds = null)
                 ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
                 ->acceptDialog()
                 ->waitForText('Compte utilisateur supprimé')

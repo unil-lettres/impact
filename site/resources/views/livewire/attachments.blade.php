@@ -2,7 +2,8 @@
     @if ($card->attachments->isNotEmpty())
         @foreach ($card->attachments as $attachment)
             @can('view', [\App\Policies\AttachmentPolicy::class, $attachment])
-                <div class="attachment">
+                <div class="attachment"
+                     dusk="attachment-row-{{ $attachment->id }}">
                     <span class="align-middle">
                         @if(Helpers::isFileStatus($attachment, \App\Enums\FileStatus::Ready))
                             <a href="{{ Helpers::fileUrl($attachment->filename) }}"
@@ -24,6 +25,7 @@
                                 <button type="submit"
                                         class="btn btn-sm btn-danger hide-on-read-only"
                                         title="{{ trans('files.delete') }}"
+                                        dusk="attachment-delete-{{ $attachment->id }}"
                                         wire:confirm="{{ trans('messages.confirm.delete') }}"
                                         wire:click="delete({{ $attachment->id }})">
                                     <i class="far fa-trash-alt"></i>

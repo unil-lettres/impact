@@ -84,7 +84,8 @@
 
                     <div class="create-courses">
                         <a href="{{ route('admin.courses.create') }}"
-                           class="btn btn-primary">
+                           class="btn btn-primary"
+                           dusk="course-create-link">
                             {{ trans('courses.create') }}
                         </a>
                     </div>
@@ -104,10 +105,12 @@
                         <tbody>
                             @foreach ($courses->items() as $course)
                                 @can('view', $course)
-                                    <tr class="{{ $course->type }}{{ !$course->isActive() ? ' invalid' : '' }}">
+                                    <tr class="{{ $course->type }}{{ !$course->isActive() ? ' invalid' : '' }}"
+                                        dusk="course-row-{{ $course->id }}">
                                         <td title="{{ $course->name }}">
                                             @if(($course->isActive()))
-                                                <a href="{{ route('courses.show', $course->id) }}">
+                                                <a href="{{ route('courses.show', $course->id) }}"
+                                                   dusk="course-show-{{ $course->id }}">
                                                     {{ Helpers::truncate($course->name, 80) }}
                                                 </a>
                                             @else
@@ -170,6 +173,7 @@
                                                            data-bs-toggle="tooltip"
                                                            data-placement="top"
                                                            class="btn btn-primary"
+                                                           dusk="course-edit-{{ $course->id }}"
                                                            title="{{ trans('courses.edit') }}">
                                                             <i class="far fa-edit"></i>
                                                         </a>
@@ -186,6 +190,7 @@
                                                                     class="btn btn-danger"
                                                                     data-bs-toggle="tooltip"
                                                                     data-placement="top"
+                                                                    dusk="course-disable-{{ $course->id }}"
                                                                     title="{{ trans('courses.disable') }}">
                                                                 <i class="far fa-eye-slash"></i>
                                                             </button>
@@ -204,6 +209,7 @@
                                                                 class="btn btn-danger"
                                                                 data-bs-toggle="tooltip"
                                                                 data-placement="top"
+                                                                dusk="course-delete-{{ $course->id }}"
                                                                 title="{{ trans('courses.delete') }}">
                                                             <i class="far fa-trash-alt"></i>
                                                         </button>

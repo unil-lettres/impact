@@ -63,7 +63,8 @@
                                 </div>
 
                                 <button type="submit"
-                                        class="btn btn-primary">
+                                        class="btn btn-primary"
+                                        dusk="course-update-submit">
                                     {{ trans('courses.update') }}
                                 </button>
                             </form>

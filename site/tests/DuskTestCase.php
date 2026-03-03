@@ -6,6 +6,7 @@ use Facebook\WebDriver\Chrome\ChromeOptions;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Illuminate\Support\Facades\Artisan;
+use Laravel\Dusk\Browser;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use PHPUnit\Framework\Attributes\BeforeClass;
 
@@ -39,12 +40,15 @@ abstract class DuskTestCase extends BaseTestCase
             Artisan::call('dusk:chrome-driver --detect');
         }
 
+        // Increase the default wait timeout for slow CI environments (default is 5s)
+        Browser::$waitSeconds = 20;
+
         $options = (new ChromeOptions)->addArguments([
             '--disable-gpu',
-            '--headless',
+            '--headless=new',
             '--no-sandbox',
             '--window-size=1920,1080',
-            '--disable-smooth-scrolling',
+            '--disable-dev-shm-usage',
         ]);
 
         return RemoteWebDriver::create(

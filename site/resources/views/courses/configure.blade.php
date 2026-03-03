@@ -95,7 +95,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" class="btn btn-primary" dusk="course-config-update-submit">
                 {{ trans('courses.configuration.update') }}
             </button>
         </form>

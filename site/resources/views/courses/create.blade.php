@@ -59,7 +59,8 @@
             @endif
 
             <button type="submit"
-                    class="btn btn-primary">
+                    class="btn btn-primary"
+                    dusk="course-create-submit">
                 {{ trans('courses.create') }}
             </button>
         </form>

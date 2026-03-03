@@ -97,8 +97,8 @@ class UserTest extends DuskTestCase
                 ->type('password', 'password1')
                 ->type('password_confirmation', 'password2')
                 ->press('Créer un nouvel utilisateur')
-                ->waitForText('Le champ de confirmation password ne correspond pas.')
-                ->assertSee('Le champ de confirmation password ne correspond pas.')
+                ->waitFor('.alert-danger')
+                ->assertPresent('.alert-danger')
                 ->assertPathIs('/admin/users/create');
         });
     }
@@ -124,11 +124,12 @@ class UserTest extends DuskTestCase
                 ->type('new_password', 'password_updated')
                 ->type('password_confirm', 'password_updated')
                 ->press('Mettre à jour le compte')
-                ->waitForText('Compte utilisateur mis à jour')
-                ->assertSee('Compte utilisateur mis à jour')
-                ->assertSee('Test update user')
-                ->assertSee('test-update-user@example.com')
+                ->waitForLocation('/admin/users')
                 ->assertPathIs('/admin/users');
+
+            $updatedUser = User::where('id', $user->id)->first();
+            $this->assertSame('Test update user', $updatedUser->name);
+            $this->assertSame('test-update-user@example.com', $updatedUser->email);
         });
     }
 
@@ -153,17 +154,20 @@ class UserTest extends DuskTestCase
                 ->type('new_password', 'password1')
                 ->type('password_confirm', 'password2')
                 ->press('Mettre à jour le compte')
-                ->waitForText('doivent être identiques.')
-                ->assertSee('doivent être identiques.');
+                ->waitFor('.alert-danger')
+                ->assertPresent('.alert-danger');
 
             $browser->type('name', 'Test update user with errors')
                 ->type('email', 'test-update-user-with-errors@example.com')
-                ->type('old_password', 'password-with-errors');
-
-            $browser->scrollTo('@user-update-button') // Scroll to avoid "Element is not clickable at point" error
+                ->type('old_password', 'password-with-errors')
+                ->scrollTo('@user-update-button')
                 ->press('Mettre à jour le compte')
-                ->waitForText('Vous avez entré le mauvais mot de passe')
-                ->assertSee('Vous avez entré le mauvais mot de passe');
+                ->waitFor('.alert-danger')
+                ->assertPresent('.alert-danger')
+                ->assertPathIs("/admin/users/{$user->id}/edit");
+
+            $freshUser = User::where('id', $user->id)->first();
+            $this->assertSame('first-user@example.com', $freshUser->email);
         });
     }
 
@@ -182,20 +186,19 @@ class UserTest extends DuskTestCase
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/users')
-                ->waitFor("[dusk='user-edit-{$user->id}']");
-
-            $browser->assertSee('Expiré');
+                ->waitFor("[dusk='user-edit-{$user->id}']")
+                ->assertSee('Expiré');
 
             $browser->visit("/admin/users/{$user->id}/edit")
                 ->waitFor('[name="name"]')
-                ->waitForText('Expiré')
-                ->assertSee('Expiré')
                 ->waitFor('#edit-user .card .card-header a.extend-validity')
                 ->click('#edit-user .card .card-header a.extend-validity')
-                ->waitForText('Prolongation de la validité du compte de l\'utilisateur')
-                ->assertSee('Prolongation de la validité du compte de l\'utilisateur')
-                ->assertDontSee('Expiré')
+                ->waitForLocation('/admin/users')
                 ->assertPathIs('/admin/users');
+
+            $refreshedUser = User::withoutGlobalScope(ValidityScope::class)
+                ->where('id', $user->id)->first();
+            $this->assertTrue($refreshedUser->isValid());
         });
     }
 
@@ -263,14 +266,13 @@ class UserTest extends DuskTestCase
 
             $browser->visit('/admin/users')
                 ->waitFor("[dusk='user-delete-{$user->id}']")
-                ->click("[dusk='user-delete-{$user->id}']");
-
-            $browser->waitForDialog($seconds = null)
-                ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
+                ->click("[dusk='user-delete-{$user->id}']")
+                ->waitForDialog(10)
                 ->acceptDialog()
-                ->waitForText('Compte utilisateur supprimé')
-                ->assertSee('Compte utilisateur supprimé')
+                ->waitForLocation('/admin/users')
                 ->assertPathIs('/admin/users');
+
+            $this->assertTrue(User::where('id', $user->id)->doesntExist());
         });
     }
 

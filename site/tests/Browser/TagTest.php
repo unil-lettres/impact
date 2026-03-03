@@ -40,7 +40,8 @@ class TagTest extends DuskTestCase
 
             // Create
             $tagName = 'a_new_tag';
-            $browser->press('Ajouter une étiquette')
+            $browser->waitFor('button[data-bs-target="#createTagModal"]')
+                ->press('Ajouter une étiquette')
                 ->waitForText('Annuler')
                 ->type('#createTagModal [name="name"]', $tagName)
                 ->press('#createTagModal [type="submit"]')
@@ -109,7 +110,8 @@ class TagTest extends DuskTestCase
 
             $newTag = 'a_new_tag';
 
-            $browser->type('#rct-multi-tag-select input', $newTag)
+            $browser->waitFor('#rct-multi-tag-select input')
+                ->type('#rct-multi-tag-select input', $newTag)
                 ->waitForText("Créer \"$newTag\"")
                 // Select the "create" option of react select tags.
                 ->click('#rct-multi-tag-select div[role="listbox"] > div:last-child')

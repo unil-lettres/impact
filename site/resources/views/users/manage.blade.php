@@ -106,7 +106,8 @@
                         <tbody>
                             @foreach ($users->items() as $user)
                                 @can('view', $user)
-                                    <tr class="{{ $user->type }}{{ $user->isValid() ? '' : ' invalid' }}">
+                                    <tr class="{{ $user->type }}{{ $user->isValid() ? '' : ' invalid' }}"
+                                        dusk="user-row-{{ $user->id }}">
                                         <td>
                                             {{ $user->email }}
                                             @if ($user->admin)
@@ -126,6 +127,7 @@
                                                        data-bs-toggle="tooltip"
                                                        data-placement="top"
                                                        class="btn btn-primary"
+                                                       dusk="user-edit-{{ $user->id }}"
                                                        title="{{ trans('users.edit') }}">
                                                         <i class="far fa-edit"></i>
                                                     </a>
@@ -137,6 +139,7 @@
                                                        data-bs-toggle="tooltip"
                                                        data-placement="top"
                                                        class="btn btn-primary"
+                                                       dusk="user-extend-{{ $user->id }}"
                                                        title="{{ trans('users.validity.extend', ['months' => config('const.users.validity')]) }}">
                                                         <i class="far fa-clock"></i>
                                                     </a>
@@ -152,6 +155,7 @@
                                                                 class="btn btn-danger"
                                                                 data-bs-toggle="tooltip"
                                                                 data-placement="top"
+                                                                dusk="user-delete-{{ $user->id }}"
                                                                 title="{{ trans('users.delete') }}">
                                                             <i class="far fa-trash-alt"></i>
                                                         </button>

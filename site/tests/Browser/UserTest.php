@@ -8,6 +8,8 @@ use Laravel\Dusk\Concerns\ProvidesBrowser;
 use Tests\Browser\Pages\Login;
 use Tests\Browser\Pages\Profile;
 use Tests\DuskTestCase;
+use App\User;
+use App\Scopes\ValidityScope;
 use Throwable;
 
 class UserTest extends DuskTestCase
@@ -37,7 +39,8 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitForText('Gestion des utilisateurs');
 
             $browser->assertSee('Gestion des utilisateurs');
             $browser->assertSee('first-user@example.com');
@@ -56,7 +59,8 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitForText('Créer un utilisateur');
 
             $browser->assertSee('Créer un utilisateur')
                 ->clickLink('Créer un utilisateur');
@@ -84,7 +88,8 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users/create');
+            $browser->visit('/admin/users/create')
+                ->waitFor('[name="name"]');
 
             $browser->type('name', 'Test create user with error')
                 ->type('email', 'test-create-user-with-error@example.com')
@@ -105,12 +110,15 @@ class UserTest extends DuskTestCase
     public function test_edit_user(): void
     {
         $this->browse(function (Browser $browser) {
+            $user = User::where('email', 'first-user@example.com')->first();
+
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitFor("[dusk='user-edit-{$user->id}']");
 
-            $browser->click('#users table tbody tr:first-child .actions span:nth-child(1) a')
+            $browser->click("[dusk='user-edit-{$user->id}']")
                 ->type('name', 'Test update user')
                 ->type('email', 'test-update-user@example.com')
                 ->type('old_password', 'password')
@@ -133,12 +141,15 @@ class UserTest extends DuskTestCase
     public function test_edit_user_with_errors(): void
     {
         $this->browse(function (Browser $browser) {
+            $user = User::where('email', 'first-user@example.com')->first();
+
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitFor("[dusk='user-edit-{$user->id}']");
 
-            $browser->click('#users table tbody tr:first-child .actions span:nth-child(1) a')
+            $browser->click("[dusk='user-edit-{$user->id}']")
                 ->type('name', '')
                 ->type('email', '')
                 ->type('old_password', 'password')
@@ -167,14 +178,18 @@ class UserTest extends DuskTestCase
     public function test_expired_user(): void
     {
         $this->browse(function (Browser $browser) {
+            $user = User::withoutGlobalScope(ValidityScope::class)
+                ->where('email', 'invalid-user@example.com')->first();
+
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitFor("[dusk='user-edit-{$user->id}']");
 
             $browser->assertSee('Expiré');
 
-            $browser->click('#users table tbody tr.invalid .actions span:nth-child(1) a')
+            $browser->click("[dusk='user-edit-{$user->id}']")
                 ->waitForText('Expiré')
                 ->assertSee('Expiré')
                 ->click('#edit-user .card .card-header a.extend-validity')
@@ -193,12 +208,15 @@ class UserTest extends DuskTestCase
     public function test_aai_user(): void
     {
         $this->browse(function (Browser $browser) {
+            $user = User::where('email', 'aai-user@example.com')->first();
+
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitFor("[dusk='user-edit-{$user->id}']");
 
-            $browser->click('#users table tbody tr.aai .actions span:nth-child(1) a')
+            $browser->click("[dusk='user-edit-{$user->id}']")
                 ->waitForText('Nom')
                 ->assertSee('Nom')
                 ->assertSee('Email')
@@ -219,12 +237,15 @@ class UserTest extends DuskTestCase
     public function test_local_user(): void
     {
         $this->browse(function (Browser $browser) {
+            $user = User::where('email', 'first-user@example.com')->first();
+
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitFor("[dusk='user-edit-{$user->id}']");
 
-            $browser->click('#users table tbody tr.local .actions span:nth-child(1) a')
+            $browser->click("[dusk='user-edit-{$user->id}']")
                 ->waitForText('Type')
                 ->assertDisabled('type')
                 ->assertInputValue('type', 'local')
@@ -242,12 +263,15 @@ class UserTest extends DuskTestCase
     public function test_delete_user(): void
     {
         $this->browse(function (Browser $browser) {
+            $user = User::where('email', 'first-user@example.com')->first();
+
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
+            $browser->visit('/admin/users')
+                ->waitFor("[dusk='user-delete-{$user->id}']");
 
-            $browser->click('#users table tbody tr:nth-last-child(2) .actions form.with-delete-confirm button')
+            $browser->click("[dusk='user-delete-{$user->id}']")
                 ->waitForDialog($seconds = null)
                 ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
                 ->acceptDialog()

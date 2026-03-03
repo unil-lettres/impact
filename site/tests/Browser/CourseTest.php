@@ -292,6 +292,7 @@ class CourseTest extends DuskTestCase
                 ->visit($pageCourse)
                 ->waitUntilLoaded()
                 ->click("@finder-folder-{$pageFolder->id()}")
+                ->pause(500)
                 ->click('@multi-menu')
                 ->assertPresent('@multi-copy-option')
                 ->assertPresent('@multi-delete-option');
@@ -312,6 +313,7 @@ class CourseTest extends DuskTestCase
                 ->visit($pageCourse)
                 ->waitUntilLoaded()
                 ->click("@finder-folder-{$pageFolder->id()}")
+                ->pause(500)
                 ->click('@multi-menu')
                 ->click('@multi-copy-option')
                 ->waitForText('Test folder (copie)')
@@ -333,6 +335,7 @@ class CourseTest extends DuskTestCase
                 ->visit($pageCourse)
                 ->waitUntilLoaded()
                 ->click("@finder-folder-{$pageFolder->id()}")
+                ->pause(500)
                 ->click('@multi-menu')
                 ->click('@multi-delete-option')
                 ->waitForDialog(10)
@@ -358,6 +361,7 @@ class CourseTest extends DuskTestCase
                 ->visit($pageCourse)
                 ->waitUntilLoaded()
                 ->click("@finder-card-{$pageCard->id()}")
+                ->pause(500)
                 ->click('@multi-menu')
                 ->click('@multi-movein-option');
 
@@ -391,6 +395,7 @@ class CourseTest extends DuskTestCase
                 ->visit($pageCourse)
                 ->waitUntilLoaded()
                 ->click("@finder-card-{$pageCard->id()}")
+                ->pause(500)
                 ->click('@multi-menu')
                 ->click('@multi-clonein-option');
 
@@ -425,6 +430,7 @@ class CourseTest extends DuskTestCase
                 ->assertDontSee('archivé') // To be sure our futur assertion is correct (should not have any archived card).
                 ->waitUntilLoaded()
                 ->click("@finder-card-{$pageCard->id()}")
+                ->pause(500)
                 ->click('@multi-menu')
                 ->click('@multi-updatestate-option');
 

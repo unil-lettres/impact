@@ -87,6 +87,7 @@ class AttachmentTest extends DuskTestCase
             $browser->visit(new PagesCard('Test card with file'));
 
             $browser->waitFor("@attachment-row-{$attachment->id}")
+                ->scrollTo("[dusk='attachment-delete-{$attachment->id}']")
                 ->click("@attachment-delete-{$attachment->id}")
                 ->waitForDialog(10)
                 ->acceptDialog()

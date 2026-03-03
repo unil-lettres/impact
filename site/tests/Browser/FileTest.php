@@ -107,6 +107,7 @@ class FileTest extends DuskTestCase
             $browser->visit('/admin/files');
 
             $browser->click('#files table tbody tr.ready .actions span:nth-child(1) a')
+                ->waitFor('[name="name"]')
                 ->type('name', 'Test file updated')
                 ->click('#rct-single-course-select')
                 ->waitForText('First space')
@@ -133,6 +134,7 @@ class FileTest extends DuskTestCase
             $browser->visit('/admin/files');
 
             $browser->click('#files table tbody tr.ready .actions span:nth-child(1) a')
+                ->waitFor('[name="status"]')
                 ->assertInputValue('status', 'ready')
                 ->assertSourceHas('Url du fichier');
         });
@@ -152,6 +154,7 @@ class FileTest extends DuskTestCase
             $browser->visit('/admin/files');
 
             $browser->click('#files table tbody tr.failed .actions span:nth-child(1) a')
+                ->waitFor('[name="status"]')
                 ->assertInputValue('status', 'failed')
                 ->assertSourceMissing('Url du fichier');
         });
@@ -171,6 +174,7 @@ class FileTest extends DuskTestCase
             $browser->visit('/admin/files');
 
             $browser->click('#files table tbody tr.transcoding .actions span:nth-child(1) a')
+                ->waitFor('[name="status"]')
                 ->assertInputValue('status', 'transcoding')
                 ->assertSourceMissing('Url du fichier');
         });
@@ -190,6 +194,7 @@ class FileTest extends DuskTestCase
             $browser->visit('/admin/files');
 
             $browser->click('#files table tbody tr.ready.used .actions span:nth-child(1) a')
+                ->waitForText('Test card with file')
                 ->assertSee('Test card with file')
                 ->click('#rct-single-course-select')
                 ->assertDontSee('First space');
@@ -210,6 +215,7 @@ class FileTest extends DuskTestCase
             $browser->visit('/admin/files');
 
             $browser->click('#files table tbody tr.unused .actions span:nth-child(1) a')
+                ->waitForText('Aucune fiche trouvée')
                 ->assertSee('Aucune fiche trouvée')
                 ->click('#rct-single-course-select')
                 ->waitForText('First space')
@@ -232,7 +238,7 @@ class FileTest extends DuskTestCase
 
             $browser->with('#files table tbody tr.unused', function ($unused) {
                 $unused->click('form.with-delete-confirm button')
-                    ->waitForDialog($seconds = null)
+                    ->waitForDialog(10)
                     ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
                     ->acceptDialog();
             });

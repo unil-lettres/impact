@@ -108,7 +108,8 @@ class StateTest extends DuskTestCase
             $browser->type('name', 'Updated state')
                 ->type('description', 'Updated public description state');
 
-            $browser->press('Mettre à jour l\'état')
+            $browser->scrollTo('button[type="submit"]')
+                ->press('Mettre à jour l\'état')
                 ->waitForText('État mis à jour')
                 ->assertSee('Updated state')
                 ->assertSee('Updated public description state');
@@ -137,7 +138,7 @@ class StateTest extends DuskTestCase
 
             // Delete the new state
             $browser->click('#states-list div:nth-last-child(2) .actions form.with-delete-confirm button')
-                ->waitForDialog($seconds = null)
+                ->waitForDialog(10)
                 ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
                 ->acceptDialog()
                 ->waitForText('État supprimé.')

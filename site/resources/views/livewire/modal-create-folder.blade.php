@@ -28,4 +28,12 @@
     modal.addEventListener('shown.bs.modal', event => {
         inputName.focus();
     });
+
+    Livewire.on('close-modal', ({ id }) => {
+        const modalEl = document.getElementById(id);
+        const bsModal = bootstrap.Modal.getInstance(modalEl);
+        if (bsModal) {
+            bsModal.hide();
+        }
+    });
 </script>

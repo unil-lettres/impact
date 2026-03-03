@@ -7,7 +7,6 @@
     {{ trans('courses.finder.dialog.create.cancel') }}
 </button>
 <button
-    data-bs-dismiss="modal"
     type="submit"
     class="btn btn-primary"
     dusk="modal-create-submit"

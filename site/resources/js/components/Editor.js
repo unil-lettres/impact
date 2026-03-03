@@ -298,7 +298,11 @@ export default class Editor extends Component {
                     }}
                     disableWatchdog={ !this.state.editable }
                     onReady={ editor => {
-                        this.editor = editor
+                        this.editor = editor;
+                        window.editorInstances = {
+                            ...(window.editorInstances || {}),
+                            [this.props.reference]: editor,
+                        };
                     }}
                     disabled={ !this.state.editable }
                     onChange={ this.onEditorChange }

@@ -167,12 +167,13 @@ class CardTest extends DuskTestCase
             $cardName = 'My new card in folder';
 
             $browser
+                ->pause(1000) // Avoid "element not interactable" issue with modal animation
                 ->type('#modalCreateCard-name', $cardName)
                 ->select('#modalCreateCard-folder-id', $folderPage->id())
                 ->click('#rct-multi-user-select input')
                 ->waitFor('#rct-multi-user-select div[role="listbox"] > div')
                 ->click('#rct-multi-user-select div[role="listbox"] > div:first-child')
-                ->click('@modal-create-submit')
+                ->click('#modalCreateCard [type="submit"]')
                 ->waitUntilMissing('#modalCreateCard.show');
 
             $browser
@@ -204,10 +205,11 @@ class CardTest extends DuskTestCase
             $cardName = 'My new card with error';
 
             $browser
+                ->pause(1000) // Avoid "element not interactable" issue with modal animation
                 ->type('#modalCreateCard-name', $cardName)
-                ->click('@modal-create-submit')
+                ->click('#modalCreateCard [type="submit"]')
                 ->waitFor('#modalCreateCard.show')
-                ->assertPresent('#modalCreateCard.show');
+                ->assertVisible('#modalCreateCard');
 
             $this->assertTrue(AppCard::where('title', $cardName)->doesntExist());
         });
@@ -284,9 +286,16 @@ class CardTest extends DuskTestCase
             $browser->visit(new Card('Test card features'))
                 ->waitFor('#import-box2')
                 ->click('#import-box2')
+                ->waitFor('#importModal.show')
                 ->waitFor('#import-transcription-content')
                 ->type('#import-transcription-content', "1\tAAA\tThe first speech")
                 ->click('#import-action-box2')
+                ->pause(500);
+
+            // Ensure the modal is fully closed
+            $browser->script("bootstrap.Modal.getInstance(document.getElementById('importModal'))?.hide()");
+            $browser
+                ->waitUntilMissing('#importModal.show')
                 ->waitFor('#edit-box2')
                 ->click('#edit-box2')
                 ->waitFor('#speech-0')
@@ -309,11 +318,12 @@ class CardTest extends DuskTestCase
             $browser->visit(new Card('Test card features'))
                 ->waitFor('#edit-box3')
                 ->click('#edit-box3')
-                ->waitFor('#rct-editor-box3 div.ck-content');
-
-            $browser->script("const editor = document.querySelector('#rct-editor-box3 div.ck-content'); editor.innerHTML = '<p>This is a typing test. Is it saved ?</p>'; editor.dispatchEvent(new Event('input', { bubbles: true }));");
-
-            $browser->click('#edit-box3')
+                ->waitFor('#rct-editor-box3 .ck-editor__editable[contenteditable="true"]')
+                ->pause(500)
+                ->click('#rct-editor-box3 .ck-editor__editable')
+                ->keys('#rct-editor-box3 .ck-editor__editable', 'This is a typing test. Is it saved ?')
+                ->pause(500)
+                ->click('#edit-box3')
                 ->waitForText('Is it saved ?')
                 ->assertSee('Is it saved ?');
         });

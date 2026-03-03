@@ -56,5 +56,8 @@ class ModalCreateFolder extends ModalCreate
         $this
             ->dispatch('update-folders')
             ->to(ModalCreateCard::class);
+
+        // Close the modal after successful creation.
+        $this->dispatch('close-modal', id: $this->id);
     }
 }

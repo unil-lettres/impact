@@ -251,7 +251,7 @@ class CourseController extends Controller
         ]);
 
         return redirect()
-            ->back()
+            ->route('admin.courses.manage')
             ->with('success', trans('messages.course.updated'));
     }
 

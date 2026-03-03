@@ -123,5 +123,8 @@ class ModalCreateCard extends ModalCreate
         $this
             ->dispatch('items-updated')
             ->to(Finder::class); // Already triggered by validate(), but we keep it for clarity.
+
+        // Close the modal after successful creation.
+        $this->dispatch('close-modal', id: $this->id);
     }
 }

@@ -39,7 +39,10 @@
 <script>
     const modal = document.getElementById('{{$id}}');
     const inputName = document.getElementById('{{$id}}-name');
+    let modalIsOpen = false;
+
     modal.addEventListener('show.bs.modal', event => {
+        modalIsOpen = true;
         // Reinitialize the holders react-select component every time
         // we open the modal, to prevent persisting old component
         // (with old values).
@@ -51,6 +54,27 @@
     });
     modal.addEventListener('shown.bs.modal', event => {
         inputName.focus();
+    });
+    modal.addEventListener('hidden.bs.modal', () => {
+        modalIsOpen = false;
+    });
+
+    $wire.on('close-modal', ({ id }) => {
+        const modalEl = document.getElementById(id);
+        const bsModal = bootstrap.Modal.getInstance(modalEl);
+        if (bsModal) {
+            bsModal.hide();
+        }
+    });
+
+    // After Livewire re-renders (e.g. on validation failure), the DOM morph
+    // strips Bootstrap's runtime .show class. Re-show the modal if it was open.
+    Livewire.hook('morph.updated', ({ component }) => {
+        if (component.id === $wire.__instance.id && modalIsOpen) {
+            const modalEl = document.getElementById('{{$id}}');
+            modalEl.classList.add('show');
+            modalEl.style.display = 'block';
+        }
     });
 </script>
 @endscript

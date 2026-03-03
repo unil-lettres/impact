@@ -118,8 +118,8 @@ class UserTest extends DuskTestCase
 
             $browser->visit("/admin/users/{$user->id}/edit")
                 ->waitFor('[name="name"]')
-                ->value('[name="name"]', 'Test update user')
-                ->value('[name="email"]', 'test-update-user@example.com')
+                ->type('name', 'Test update user')
+                ->type('email', 'test-update-user@example.com')
                 ->type('old_password', 'password')
                 ->type('new_password', 'password_updated')
                 ->type('password_confirm', 'password_updated')
@@ -147,8 +147,8 @@ class UserTest extends DuskTestCase
 
             $browser->visit("/admin/users/{$user->id}/edit")
                 ->waitFor('[name="name"]')
-                ->value('[name="name"]', '')
-                ->value('[name="email"]', '')
+                ->type('name', '')
+                ->type('email', '')
                 ->type('old_password', 'password')
                 ->type('new_password', 'password1')
                 ->type('password_confirm', 'password2')
@@ -156,8 +156,8 @@ class UserTest extends DuskTestCase
                 ->waitForText('doivent être identiques.')
                 ->assertSee('doivent être identiques.');
 
-            $browser->value('[name="name"]', 'Test update user with errors')
-                ->value('[name="email"]', 'test-update-user-with-errors@example.com')
+            $browser->type('name', 'Test update user with errors')
+                ->type('email', 'test-update-user-with-errors@example.com')
                 ->type('old_password', 'password-with-errors');
 
             $browser->scrollTo('@user-update-button') // Scroll to avoid "Element is not clickable at point" error
@@ -262,8 +262,9 @@ class UserTest extends DuskTestCase
                 ->loginAsUser('admin-user@example.com', 'password');
 
             $browser->visit('/admin/users')
-                ->waitFor("[dusk='user-delete-{$user->id}']");
-            $browser->script("document.querySelector(\"[dusk='user-delete-{$user->id}']\").click()");
+                ->waitFor("[dusk='user-delete-{$user->id}']")
+                ->click("[dusk='user-delete-{$user->id}']");
+
             $browser->waitForDialog($seconds = null)
                 ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
                 ->acceptDialog()

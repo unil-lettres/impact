@@ -40,8 +40,8 @@ class TagTest extends DuskTestCase
 
             // Create
             $tagName = 'a_new_tag';
-            $browser->script("document.querySelector('button[data-bs-target=\"#createTagModal\"]').click()");
-            $browser->waitFor('#createTagModal.show')
+            $browser->press('Ajouter une étiquette')
+                ->waitFor('#createTagModal.show')
                 ->type('#createTagModal [name="name"]', $tagName)
                 ->press('#createTagModal [type="submit"]')
                 ->waitForText('Étiquette créée.')
@@ -51,9 +51,8 @@ class TagTest extends DuskTestCase
 
             // Update
             $newTagName = 'aaa_updated_tag_name';
-            $browser->waitFor("[data-bs-name='$tagName']");
-            $browser->script("document.querySelector('[data-bs-name=\"$tagName\"]').click()");
-            $browser->waitFor('#editTagModal.show')
+            $browser->press("[data-bs-name='$tagName']")
+                ->waitFor('#editTagModal.show')
                 ->type('#editTagModal [name="name"]', $newTagName)
                 ->press('Modifier')
                 ->waitForText('Étiquette renommée.')

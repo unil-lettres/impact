@@ -82,6 +82,7 @@ class Course extends Page
      */
     public function tagsIndex(Browser $browser): void
     {
-        $browser->visit("{$this->url()}/configure/tags");
+        $browser->visit("{$this->url()}/configure/tags")
+            ->waitFor('button[data-bs-target="#createTagModal"]');
     }
 }

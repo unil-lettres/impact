@@ -65,7 +65,8 @@ class UserTest extends DuskTestCase
             $browser->assertSee('Créer un utilisateur')
                 ->clickLink('Créer un utilisateur');
 
-            $browser->type('name', 'Test create user')
+            $browser->waitFor('[name="name"]')
+                ->type('name', 'Test create user')
                 ->type('email', 'test-create-user@example.com')
                 ->type('password', 'password')
                 ->type('password_confirmation', 'password')
@@ -117,8 +118,8 @@ class UserTest extends DuskTestCase
 
             $browser->visit("/admin/users/{$user->id}/edit")
                 ->waitFor('[name="name"]')
-                ->type('name', 'Test update user')
-                ->type('email', 'test-update-user@example.com')
+                ->value('[name="name"]', 'Test update user')
+                ->value('[name="email"]', 'test-update-user@example.com')
                 ->type('old_password', 'password')
                 ->type('new_password', 'password_updated')
                 ->type('password_confirm', 'password_updated')
@@ -146,8 +147,8 @@ class UserTest extends DuskTestCase
 
             $browser->visit("/admin/users/{$user->id}/edit")
                 ->waitFor('[name="name"]')
-                ->type('name', '')
-                ->type('email', '')
+                ->value('[name="name"]', '')
+                ->value('[name="email"]', '')
                 ->type('old_password', 'password')
                 ->type('new_password', 'password1')
                 ->type('password_confirm', 'password2')
@@ -155,8 +156,8 @@ class UserTest extends DuskTestCase
                 ->waitForText('doivent être identiques.')
                 ->assertSee('doivent être identiques.');
 
-            $browser->type('name', 'Test update user with errors')
-                ->type('email', 'test-update-user-with-errors@example.com')
+            $browser->value('[name="name"]', 'Test update user with errors')
+                ->value('[name="email"]', 'test-update-user-with-errors@example.com')
                 ->type('old_password', 'password-with-errors');
 
             $browser->scrollTo('@user-update-button') // Scroll to avoid "Element is not clickable at point" error

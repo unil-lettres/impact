@@ -53,6 +53,7 @@ class Card extends Page
      */
     public function edit(Browser $browser): void
     {
-        $browser->visit("{$this->url()}/edit");
+        $browser->visit("{$this->url()}/edit")
+            ->waitFor('#rct-multi-tag-select input');
     }
 }

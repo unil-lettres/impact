@@ -40,7 +40,6 @@ class TagTest extends DuskTestCase
 
             // Create
             $tagName = 'a_new_tag';
-            $browser->waitFor('button[data-bs-target="#createTagModal"]');
             $browser->script("document.querySelector('button[data-bs-target=\"#createTagModal\"]').click()");
             $browser->waitFor('#createTagModal.show')
                 ->type('#createTagModal [name="name"]', $tagName)
@@ -82,8 +81,8 @@ class TagTest extends DuskTestCase
             $browser->on(new Course('First space'))
                 ->tagsIndex();
 
-            $browser->waitFor('#rct-single-course-select')
-                ->click('#rct-single-course-select')
+            $browser->waitFor('#rct-single-course-select input')
+                ->click('#rct-single-course-select input')
                 ->waitFor('#rct-single-course-select div[role="listbox"]')
                 // Select the "Second space" option of react select tags.
                 ->click('#rct-single-course-select div[role="listbox"] > div:first-child')
@@ -92,7 +91,7 @@ class TagTest extends DuskTestCase
                 ->assertPathIs('/courses/1/configure/tags')
                 ->waitForText('Test_tag_second_course')
                 ->assertSee('Test_tag_second_course')
-                ->click('#rct-single-course-select')
+                ->click('#rct-single-course-select input')
                 ->waitFor('#rct-single-course-select div[role="listbox"]')
                 // Select the "Second space" option of react select tags.
                 ->click('#rct-single-course-select div[role="listbox"] > div:first-child')
@@ -112,8 +111,7 @@ class TagTest extends DuskTestCase
 
             $newTag = 'a_new_tag';
 
-            $browser->waitFor('#rct-multi-tag-select input')
-                ->type('#rct-multi-tag-select input', $newTag)
+            $browser->type('#rct-multi-tag-select input', $newTag)
                 ->waitFor('#rct-multi-tag-select div[role="listbox"]')
                 ->waitForText("Créer \"$newTag\"")
                 // Select the "create" option of react select tags.

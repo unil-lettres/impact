@@ -42,7 +42,7 @@ class TagTest extends DuskTestCase
             $tagName = 'a_new_tag';
             $browser->waitFor('button[data-bs-target="#createTagModal"]')
                 ->press('Ajouter une étiquette')
-                ->waitForText('Annuler')
+                ->waitFor('#createTagModal.show')
                 ->type('#createTagModal [name="name"]', $tagName)
                 ->press('#createTagModal [type="submit"]')
                 ->waitForText('Étiquette créée.')
@@ -81,8 +81,9 @@ class TagTest extends DuskTestCase
             $browser->on(new Course('First space'))
                 ->tagsIndex();
 
-            $browser->click('#rct-single-course-select')
-                ->waitForText('Second space')
+            $browser->waitFor('#rct-single-course-select')
+                ->click('#rct-single-course-select')
+                ->waitFor('#rct-single-course-select div[role="listbox"]')
                 // Select the "Second space" option of react select tags.
                 ->click('#rct-single-course-select div[role="listbox"] > div:first-child')
                 ->press('Reprendre')
@@ -91,7 +92,7 @@ class TagTest extends DuskTestCase
                 ->waitForText('Test_tag_second_course')
                 ->assertSee('Test_tag_second_course')
                 ->click('#rct-single-course-select')
-                ->waitForText('Second space')
+                ->waitFor('#rct-single-course-select div[role="listbox"]')
                 // Select the "Second space" option of react select tags.
                 ->click('#rct-single-course-select div[role="listbox"] > div:first-child')
                 ->press('Reprendre')
@@ -112,6 +113,7 @@ class TagTest extends DuskTestCase
 
             $browser->waitFor('#rct-multi-tag-select input')
                 ->type('#rct-multi-tag-select input', $newTag)
+                ->waitFor('#rct-multi-tag-select div[role="listbox"]')
                 ->waitForText("Créer \"$newTag\"")
                 // Select the "create" option of react select tags.
                 ->click('#rct-multi-tag-select div[role="listbox"] > div:last-child')

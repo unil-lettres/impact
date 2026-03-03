@@ -119,6 +119,7 @@ class UserTest extends DuskTestCase
                 ->waitFor("[dusk='user-edit-{$user->id}']");
 
             $browser->click("[dusk='user-edit-{$user->id}']")
+                ->waitFor('[name="name"]')
                 ->type('name', 'Test update user')
                 ->type('email', 'test-update-user@example.com')
                 ->type('old_password', 'password')
@@ -150,6 +151,7 @@ class UserTest extends DuskTestCase
                 ->waitFor("[dusk='user-edit-{$user->id}']");
 
             $browser->click("[dusk='user-edit-{$user->id}']")
+                ->waitFor('[name="name"]')
                 ->type('name', '')
                 ->type('email', '')
                 ->type('old_password', 'password')
@@ -190,8 +192,10 @@ class UserTest extends DuskTestCase
             $browser->assertSee('Expiré');
 
             $browser->click("[dusk='user-edit-{$user->id}']")
+                ->waitFor('[name="name"]')
                 ->waitForText('Expiré')
                 ->assertSee('Expiré')
+                ->waitFor('#edit-user .card .card-header a.extend-validity')
                 ->click('#edit-user .card .card-header a.extend-validity')
                 ->waitForText('Prolongation de la validité du compte de l\'utilisateur')
                 ->assertSee('Prolongation de la validité du compte de l\'utilisateur')
@@ -217,7 +221,7 @@ class UserTest extends DuskTestCase
                 ->waitFor("[dusk='user-edit-{$user->id}']");
 
             $browser->click("[dusk='user-edit-{$user->id}']")
-                ->waitForText('Nom')
+                ->waitFor('[name="type"]')
                 ->assertSee('Nom')
                 ->assertSee('Email')
                 ->assertSee('Type')
@@ -246,7 +250,7 @@ class UserTest extends DuskTestCase
                 ->waitFor("[dusk='user-edit-{$user->id}']");
 
             $browser->click("[dusk='user-edit-{$user->id}']")
-                ->waitForText('Type')
+                ->waitFor('[name="type"]')
                 ->assertDisabled('type')
                 ->assertInputValue('type', 'local')
                 ->assertSee('Mot de passe actuel')

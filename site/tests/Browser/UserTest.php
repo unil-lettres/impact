@@ -70,6 +70,7 @@ class UserTest extends DuskTestCase
                 ->type('email', 'test-create-user@example.com')
                 ->type('password', 'password')
                 ->type('password_confirmation', 'password')
+                ->scrollTo('button[type="submit"]')
                 ->press('Créer un nouvel utilisateur')
                 ->waitForText('Compte utilisateur créé: test-create-user@example.com')
                 ->assertSee('Compte utilisateur créé: test-create-user@example.com')
@@ -96,6 +97,7 @@ class UserTest extends DuskTestCase
                 ->type('email', 'test-create-user-with-error@example.com')
                 ->type('password', 'password1')
                 ->type('password_confirmation', 'password2')
+                ->scrollTo('button[type="submit"]')
                 ->press('Créer un nouvel utilisateur')
                 ->waitFor('.alert-danger')
                 ->assertPresent('.alert-danger')
@@ -123,6 +125,7 @@ class UserTest extends DuskTestCase
                 ->type('old_password', 'password')
                 ->type('new_password', 'password_updated')
                 ->type('password_confirm', 'password_updated')
+                ->scrollTo('@user-update-button')
                 ->press('Mettre à jour le compte')
                 ->waitForLocation('/admin/users')
                 ->assertPathIs('/admin/users');
@@ -267,8 +270,6 @@ class UserTest extends DuskTestCase
             $browser->visit('/admin/users')
                 ->waitFor("[dusk='user-delete-{$user->id}']")
                 ->click("[dusk='user-delete-{$user->id}']")
-                ->waitForDialog(10)
-                ->acceptDialog()
                 ->waitForLocation('/admin/users')
                 ->assertPathIs('/admin/users');
 

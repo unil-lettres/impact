@@ -46,17 +46,27 @@ abstract class DuskTestCase extends BaseTestCase
 
         $options = (new ChromeOptions)->addArguments([
             '--disable-gpu',
-            '--headless=chrome',
-            '--window-size=1920,1080',
+            '--headless=new',
             '--no-sandbox',
+            '--window-size=1920,1080',
             '--disable-dev-shm-usage',
-            '--disable-search-engine-choice-screen',
         ]);
 
-        return RemoteWebDriver::create(
+        $driver = RemoteWebDriver::create(
             $server, DesiredCapabilities::chrome()->setCapability(
                 ChromeOptions::CAPABILITY, $options
             )
         );
+
+        // Chrome v132+ in --headless=new mode silently dismisses native browser dialogs
+        // (confirm, alert, prompt) before WebDriver can intercept them. We override
+        // window.confirm to always return true so form submissions that rely on confirm()
+        // proceed without a native dialog, making waitForDialog() unnecessary.
+        $devTools = new ChromeDevToolsDriver($driver);
+        $devTools->execute('Page.addScriptToEvaluateOnNewDocument', [
+            'source' => 'window.confirm = () => true; window.alert = () => {}; window.prompt = (msg, def) => def ?? "";',
+        ]);
+
+        return $driver;
     }
 }

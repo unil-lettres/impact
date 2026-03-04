@@ -89,8 +89,6 @@ class AttachmentTest extends DuskTestCase
             $browser->waitFor("@attachment-row-{$attachment->id}")
                 ->scrollTo("[dusk='attachment-delete-{$attachment->id}']")
                 ->click("@attachment-delete-{$attachment->id}")
-                ->waitForDialog(10)
-                ->acceptDialog()
                 ->waitUntilMissing("[dusk='attachment-row-{$attachment->id}']")
                 ->assertDontSee('My attachment');
 

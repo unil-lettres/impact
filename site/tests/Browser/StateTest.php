@@ -138,9 +138,6 @@ class StateTest extends DuskTestCase
 
             // Delete the new state
             $browser->click('#states-list div:nth-last-child(2) .actions form.with-delete-confirm button')
-                ->waitForDialog(10)
-                ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
-                ->acceptDialog()
                 ->waitForText('État supprimé.')
                 ->assertSee('État supprimé.');
         });

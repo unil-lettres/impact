@@ -167,9 +167,10 @@ class CardTest extends DuskTestCase
             $cardName = 'My new card in folder';
 
             $browser
-                ->pause(1000) // Avoid "element not interactable" issue with modal animation
+                ->waitFor('#modalCreateCard.show')
                 ->type('#modalCreateCard-name', $cardName)
                 ->select('#modalCreateCard-folder-id', $folderPage->id())
+                ->waitFor('#rct-multi-user-select input')
                 ->click('#rct-multi-user-select input')
                 ->waitFor('#rct-multi-user-select div[role="listbox"] > div')
                 ->click('#rct-multi-user-select div[role="listbox"] > div:first-child')
@@ -205,7 +206,7 @@ class CardTest extends DuskTestCase
             $cardName = 'My new card with error';
 
             $browser
-                ->pause(1000) // Avoid "element not interactable" issue with modal animation
+                ->waitFor('#modalCreateCard.show')
                 ->type('#modalCreateCard-name', $cardName)
                 ->click('#modalCreateCard [type="submit"]')
                 ->waitFor('#modalCreateCard.show')
@@ -230,13 +231,16 @@ class CardTest extends DuskTestCase
 
             $initialHidden = $browser->script("return Array.from(document.querySelectorAll('.hide-on-read-only')).filter((el) => getComputedStyle(el).display === 'none').length;")[0];
 
-            $browser->click('#btn-hide-boxes')
+            $browser->waitFor('#btn-hide-boxes')
+                ->click('#btn-hide-boxes')
+                ->waitFor('#btn-hide-boxes.enabled')
                 ->assertPresent('#btn-hide-boxes.enabled');
 
             $hiddenAfterClick = $browser->script("return Array.from(document.querySelectorAll('.hide-on-read-only')).filter((el) => getComputedStyle(el).display === 'none').length;")[0];
             $this->assertTrue($hiddenAfterClick > $initialHidden);
 
             $browser->click('#btn-hide-boxes')
+                ->waitUntilMissing('#btn-hide-boxes.enabled')
                 ->assertMissing('#btn-hide-boxes.enabled');
         });
     }
@@ -262,7 +266,7 @@ class CardTest extends DuskTestCase
                 ->clear('#speech-0')
                 ->type('#speech-0', 'Simple ICOR line')
                 ->click('#edit-box2')
-                ->pause(500);
+                ->pause(2000); // Wait for Livewire to save (async)
 
             $card->refresh();
             $parsed = $card->box2[TranscriptionType::Icor] ?? [];
@@ -290,7 +294,7 @@ class CardTest extends DuskTestCase
                 ->waitFor('#import-transcription-content')
                 ->type('#import-transcription-content', "1\tAAA\tThe first speech")
                 ->click('#import-action-box2')
-                ->pause(500);
+                ->pause(2000); // Wait for Livewire to process the import
 
             // Ensure the modal is fully closed
             $browser->script("bootstrap.Modal.getInstance(document.getElementById('importModal'))?.hide()");

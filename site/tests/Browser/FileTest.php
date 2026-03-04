@@ -237,10 +237,7 @@ class FileTest extends DuskTestCase
             $browser->visit('/admin/files');
 
             $browser->with('#files table tbody tr.unused', function ($unused) {
-                $unused->click('form.with-delete-confirm button')
-                    ->waitForDialog(10)
-                    ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
-                    ->acceptDialog();
+                $unused->click('form.with-delete-confirm button');
             });
             $browser->waitForText('Fichier supprimé.')
                 ->assertSee('Fichier supprimé.');

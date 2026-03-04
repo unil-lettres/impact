@@ -209,9 +209,6 @@ class InvitationTest extends DuskTestCase
                 ->invitations();
 
             $browser->click('#invitations form.with-delete-confirm button')
-                ->waitForDialog($seconds = null)
-                ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
-                ->acceptDialog()
                 ->waitForText('Invitation supprimée.')
                 ->assertSee('Invitation supprimée.');
         });

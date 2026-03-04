@@ -62,9 +62,6 @@ class TagTest extends DuskTestCase
 
             // Delete
             $browser->press('[data-bs-original-title="Supprimer l\'étiquette"]')
-                ->waitForDialog()
-                ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
-                ->acceptDialog()
                 ->waitForText('Étiquette supprimée.')
                 ->assertPathIs('/courses/1/configure/tags')
                 ->assertDontSee($newTagName);

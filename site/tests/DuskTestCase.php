@@ -47,7 +47,7 @@ abstract class DuskTestCase extends BaseTestCase
             '--disable-gpu',
             '--headless=new',
             '--no-sandbox',
-            '--window-size=1920,1080',
+            '--window-size=1920,1200',
             '--disable-smooth-scrolling',
             '--disable-popup-blocking',
             '--no-first-run',

@@ -2,6 +2,7 @@
 
 namespace Tests\Browser\Pages;
 
+use Facebook\WebDriver\Exception\TimeoutException;
 use Laravel\Dusk\Browser;
 
 class Login extends Page
@@ -38,9 +39,10 @@ class Login extends Page
     /**
      * Login as a specific user.
      *
-     * @param  string  $login
-     * @param  string  $password
+     * @param string $login
+     * @param string $password
      * @return void
+     * @throws TimeoutException
      */
     public function loginAsUser(Browser $browser, $login, $password)
     {

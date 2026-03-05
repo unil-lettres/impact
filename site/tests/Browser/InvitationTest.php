@@ -43,8 +43,9 @@ class InvitationTest extends DuskTestCase
             $browser->waitForText('Invitations')
                 ->clickLink('Invitations');
 
-            $browser->assertSee('Invitations en attente');
-            $browser->assertSee('test-invitation@example.com');
+            $browser->waitFor('#invitations')
+                ->assertSee('Invitations en attente')
+                ->assertSee('test-invitation@example.com');
         });
     }
 
@@ -172,8 +173,9 @@ class InvitationTest extends DuskTestCase
             $browser->visit(new Invitations)
                 ->invitations();
 
-            $browser->waitFor('#invitations table tbody tr:first-child .actions span:nth-child(1) button')
-                ->click('#invitations table tbody tr:first-child .actions span:nth-child(1) button')
+            $invitationId = \App\Invitation::where('email', 'test-invitation-user@example.com')->value('id');
+            $browser->waitFor("@show-link-invitation-{$invitationId}")
+                ->click("@show-link-invitation-{$invitationId}")
                 ->waitForText('Lien de l\'invitation')
                 ->assertSee('Lien de l\'invitation');
         });
@@ -195,8 +197,9 @@ class InvitationTest extends DuskTestCase
 
             $browser->waitForText(trans('invitations.pending'))
                 ->assertSee(trans('invitations.pending'));
-            $browser->waitFor('#invitations table tbody tr:first-child .actions span:nth-child(2) a')
-                ->click('#invitations table tbody tr:first-child .actions span:nth-child(2) a')
+            $invitationId = \App\Invitation::where('email', 'test-invitation-user@example.com')->value('id');
+            $browser->waitFor("@send-mail-invitation-{$invitationId}")
+                ->click("@send-mail-invitation-{$invitationId}")
                 ->waitForText('Mail d\'invitation envoyé')
                 ->assertSee('Mail d\'invitation envoyé');
         });
@@ -238,7 +241,8 @@ class InvitationTest extends DuskTestCase
                 '/invitations/register?token=544da5bd0f5fd72b880146fed9545cbe'
             );
 
-            $browser->assertSee('Le lien d\'invitation a déjà été utilisé.')
+            $browser->waitForText('Le lien d\'invitation a déjà été utilisé.')
+                ->assertSee('Le lien d\'invitation a déjà été utilisé.')
                 ->assertPathIs('/login');
         });
     }
@@ -255,7 +259,8 @@ class InvitationTest extends DuskTestCase
                 '/invitations/register?token=5c10872ae15b1f30d7db409bbf6983f4xxx'
             );
 
-            $browser->assertSee('Mauvais jeton d\'invitation.')
+            $browser->waitForText('Mauvais jeton d\'invitation.')
+                ->assertSee('Mauvais jeton d\'invitation.')
                 ->assertPathIs('/login');
         });
     }
@@ -272,7 +277,8 @@ class InvitationTest extends DuskTestCase
                 '/invitations/register?token=5c10872ae15b1f30d7db409bbf6983f4'
             );
 
-            $browser->assertSee('Créer un nouvel utilisateur');
+            $browser->waitForText('Créer un nouvel utilisateur')
+                ->assertSee('Créer un nouvel utilisateur');
 
             $browser->type('name', 'Test invitation link')
                 ->type('password', 'password')

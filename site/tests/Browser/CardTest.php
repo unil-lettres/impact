@@ -116,11 +116,12 @@ class CardTest extends DuskTestCase
             $holderName = 'Manager user';
 
             $browser
-                ->pause(1000) // Avoid "element not interactable" issue with modal
+                ->waitFor('#modalCreateCard-name') // Wait for modal input to be ready/interactable
                 ->type('#modalCreateCard-name', $cardName)
                 ->click('#rct-multi-user-select')
                 ->waitForText($holderName)
                 ->click('#rct-multi-user-select div[role="listbox"] > div:first-child') // Click on the first and only option ($holderName)
+                ->waitForText(trans('messages.no.option'))
                 ->assertSee(trans('messages.no.option')) // No more options available
                 ->click('#modalCreateCard [type="submit"]');
 

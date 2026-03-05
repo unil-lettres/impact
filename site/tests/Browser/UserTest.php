@@ -59,8 +59,9 @@ class UserTest extends DuskTestCase
 
             $browser->visit('/admin/users');
 
-            $browser->waitFor('#users table tbody tr.aai .actions span:nth-child(1) a')
-                ->click('#users table tbody tr.aai .actions span:nth-child(1) a')
+            $userId = \App\User::where('email', 'aai-user@example.com')->value('id');
+            $browser->waitFor("@edit-user-{$userId}")
+                ->click("@edit-user-{$userId}")
                 ->waitForText('Nom')
                 ->assertSee('Nom')
                 ->assertSee('Email')
@@ -86,10 +87,11 @@ class UserTest extends DuskTestCase
 
             $browser->visit('/admin/users');
 
-            $browser->waitFor('#users table tbody tr:nth-last-child(2) .actions form.with-delete-confirm button');
+            $userId = \App\User::where('email', 'first-user@example.com')->value('id');
+            $browser->waitFor("#users table tbody");
             $this->stubConfirmAndClick(
                 $browser,
-                '#users table tbody tr:nth-last-child(2) .actions form.with-delete-confirm button'
+                "form[action$='/admin/users/{$userId}'].with-delete-confirm button"
             );
             $browser->waitForText('Compte utilisateur supprimé')
                 ->assertSee('Compte utilisateur supprimé')

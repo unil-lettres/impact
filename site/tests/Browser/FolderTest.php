@@ -89,7 +89,7 @@ class FolderTest extends DuskTestCase
             $browser
                 ->press('Créer un dossier')
                 ->waitForText('Créer un dossier')
-                ->pause(1000) // Avoid "element not interactable" issue with modal
+                ->waitFor('#modalCreateFolder-name') // Wait for modal input to be ready/interactable
                 ->type('#modalCreateFolder-name', 'My new folder')
                 ->click('#modalCreateFolder [type="submit"]')
                 ->waitForText('My new folder');
@@ -106,7 +106,7 @@ class FolderTest extends DuskTestCase
             $folderId = Folder::where('title', 'My new folder')->first()->id;
 
             $browser
-                ->pause(1000) // Avoid "element not interactable" issue with modal
+                ->waitFor('#modalCreateFolder-name') // Wait for modal input to be ready/interactable
                 ->type('#modalCreateFolder-name', 'My new child folder')
                 ->select('#modalCreateFolder-folder-id', $folderId)
                 ->click('#modalCreateFolder [type="submit"]');

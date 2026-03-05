@@ -109,8 +109,9 @@ class FileTest extends DuskTestCase
 
             $browser->visit('/admin/files');
 
-            $browser->waitFor('#files table tbody tr.ready .actions span:nth-child(1) a')
-                ->click('#files table tbody tr.ready .actions span:nth-child(1) a')
+            $fileId = \App\File::where('name', 'Test video file')->value('id');
+            $browser->waitFor("@edit-file-{$fileId}")
+                ->click("@edit-file-{$fileId}")
                 ->waitForText('Test video file')
                 ->assertInputValue('status', 'ready')
                 ->assertSourceHas('Url du fichier');
@@ -130,8 +131,9 @@ class FileTest extends DuskTestCase
 
             $browser->visit('/admin/files');
 
-            $browser->waitFor('#files table tbody tr.failed .actions span:nth-child(1) a')
-                ->click('#files table tbody tr.failed .actions span:nth-child(1) a')
+            $fileId = \App\File::where('name', 'Failed file')->value('id');
+            $browser->waitFor("@edit-file-{$fileId}")
+                ->click("@edit-file-{$fileId}")
                 ->waitForText('Failed file')
                 ->assertInputValue('status', 'failed')
                 ->assertSourceMissing('Url du fichier');
@@ -151,8 +153,9 @@ class FileTest extends DuskTestCase
 
             $browser->visit('/admin/files');
 
-            $browser->waitFor('#files table tbody tr.transcoding .actions span:nth-child(1) a')
-                ->click('#files table tbody tr.transcoding .actions span:nth-child(1) a')
+            $fileId = \App\File::where('name', 'Test audio file')->value('id');
+            $browser->waitFor("@edit-file-{$fileId}")
+                ->click("@edit-file-{$fileId}")
                 ->waitForText('Test audio file')
                 ->assertInputValue('status', 'transcoding')
                 ->assertSourceMissing('Url du fichier');
@@ -172,8 +175,9 @@ class FileTest extends DuskTestCase
 
             $browser->visit('/admin/files');
 
-            $browser->waitFor('#files table tbody tr.ready.used .actions span:nth-child(1) a')
-                ->click('#files table tbody tr.ready.used .actions span:nth-child(1) a')
+            $fileId = \App\File::where('name', 'Used file')->value('id');
+            $browser->waitFor("@edit-file-{$fileId}")
+                ->click("@edit-file-{$fileId}")
                 ->waitForText('Test card with file')
                 ->assertSee('Test card with file')
                 ->click('#rct-single-course-select')

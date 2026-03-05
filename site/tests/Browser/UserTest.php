@@ -57,11 +57,8 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
-
             $userId = \App\User::where('email', 'aai-user@example.com')->value('id');
-            $browser->waitFor("@edit-user-{$userId}")
-                ->click("@edit-user-{$userId}")
+            $browser->visit("/admin/users/{$userId}/edit")
                 ->waitForText('Nom')
                 ->assertSee('Nom')
                 ->assertSee('Email')

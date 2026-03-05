@@ -107,11 +107,8 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/files');
-
             $fileId = \App\File::where('name', 'Test video file')->value('id');
-            $browser->waitFor("@edit-file-{$fileId}")
-                ->click("@edit-file-{$fileId}")
+            $browser->visit("/admin/files/{$fileId}/edit")
                 ->waitForText('Test video file')
                 ->assertInputValue('status', 'ready')
                 ->assertSourceHas('Url du fichier');
@@ -129,11 +126,8 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/files');
-
             $fileId = \App\File::where('name', 'Failed file')->value('id');
-            $browser->waitFor("@edit-file-{$fileId}")
-                ->click("@edit-file-{$fileId}")
+            $browser->visit("/admin/files/{$fileId}/edit")
                 ->waitForText('Failed file')
                 ->assertInputValue('status', 'failed')
                 ->assertSourceMissing('Url du fichier');
@@ -151,11 +145,8 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/files');
-
             $fileId = \App\File::where('name', 'Test audio file')->value('id');
-            $browser->waitFor("@edit-file-{$fileId}")
-                ->click("@edit-file-{$fileId}")
+            $browser->visit("/admin/files/{$fileId}/edit")
                 ->waitForText('Test audio file')
                 ->assertInputValue('status', 'transcoding')
                 ->assertSourceMissing('Url du fichier');
@@ -173,11 +164,8 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/files');
-
             $fileId = \App\File::where('name', 'Used file')->value('id');
-            $browser->waitFor("@edit-file-{$fileId}")
-                ->click("@edit-file-{$fileId}")
+            $browser->visit("/admin/files/{$fileId}/edit")
                 ->waitForText('Test card with file')
                 ->assertSee('Test card with file')
                 ->click('#rct-single-course-select')

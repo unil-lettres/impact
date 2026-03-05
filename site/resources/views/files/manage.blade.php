@@ -127,7 +127,6 @@
                                             @can('update', $file)
                                                 <span>
                                                     <a href="{{ route('admin.files.edit', $file->id) }}"
-                                                       dusk="edit-file-{{ $file->id }}"
                                                        data-bs-toggle="tooltip"
                                                        data-placement="top"
                                                        class="btn btn-primary"

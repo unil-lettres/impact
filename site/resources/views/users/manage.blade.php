@@ -123,7 +123,6 @@
                                             @can('update', $user)
                                                 <span>
                                                     <a href="{{ route('admin.users.edit', $user->id) }}"
-                                                       dusk="edit-user-{{ $user->id }}"
                                                        data-bs-toggle="tooltip"
                                                        data-placement="top"
                                                        class="btn btn-primary"

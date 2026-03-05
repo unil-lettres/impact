@@ -45,6 +45,9 @@ abstract class DuskTestCase extends BaseTestCase
             '--no-sandbox',
             '--window-size=1920,1080',
             '--disable-smooth-scrolling',
+            '--auto-accept-this-tab-modal-dialogs',
+            '--disable-popup-blocking',
+            '--no-first-run',
         ]);
 
         return RemoteWebDriver::create(

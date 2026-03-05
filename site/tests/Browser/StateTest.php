@@ -39,13 +39,16 @@ class StateTest extends DuskTestCase
 
             $browser->visit(new Course('Test states'));
 
-            $browser->assertSee('Configuration de l\'espace')
+            $browser->waitForText('Configuration de l\'espace')
+                ->assertSee('Configuration de l\'espace')
                 ->clickLink('Configuration de l\'espace');
 
-            $browser->assertSee('États')
+            $browser->waitForText('États')
+                ->assertSee('États')
                 ->clickLink('États');
 
-            $browser->assertSee('privé')
+            $browser->waitFor('#states-list')
+                ->assertSee('privé')
                 ->assertSee('public')
                 ->assertSee('privé')
                 ->assertSee('archivé');
@@ -65,7 +68,8 @@ class StateTest extends DuskTestCase
 
             $browser->visit(new Course('Test states'));
 
-            $browser->assertDontSee('Configuration de l\'espace');
+            $browser->waitForText('Tout ouvrir')
+                ->assertDontSee('Configuration de l\'espace');
         });
     }
 
@@ -83,7 +87,8 @@ class StateTest extends DuskTestCase
             $browser->on(new Course('Test states'))
                 ->statesIndex();
 
-            $browser->assertSee('Ajouter un état')
+            $browser->waitFor('#states-list')
+                ->assertSee('Ajouter un état')
                 ->press('Ajouter un état')
                 ->waitForText('Nouvel état créé.')
                 ->assertSee('nouvel état');
@@ -104,8 +109,8 @@ class StateTest extends DuskTestCase
             $browser->on(new Course('Test states'))
                 ->statesIndex();
 
-            // Update the current state
-            $browser->type('name', 'Updated state')
+            $browser->waitFor('#states-list')
+                ->type('name', 'Updated state')
                 ->type('description', 'Updated public description state');
 
             $browser->press('Mettre à jour l\'état')
@@ -130,17 +135,19 @@ class StateTest extends DuskTestCase
                 ->statesIndex();
 
             // Create a new state
-            $browser->assertSee('Ajouter un état')
+            $browser->waitFor('#states-list')
+                ->assertSee('Ajouter un état')
                 ->press('Ajouter un état')
                 ->waitForText('Nouvel état créé.')
                 ->assertSee('nouvel état');
 
             // Delete the new state
-            $browser->click('#states-list div:nth-last-child(2) .actions form.with-delete-confirm button')
-                ->waitForDialog($seconds = null)
-                ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
-                ->acceptDialog()
-                ->waitForText('État supprimé.')
+            $browser->waitFor('#states-list div:nth-last-child(2) .actions form.with-delete-confirm button');
+            $this->stubConfirmAndClick(
+                $browser,
+                '#states-list div:nth-last-child(2) .actions form.with-delete-confirm button'
+            );
+            $browser->waitForText('État supprimé.')
                 ->assertSee('État supprimé.');
         });
     }
@@ -159,8 +166,11 @@ class StateTest extends DuskTestCase
             $browser->on(new Course('Test states'))
                 ->statesIndex();
 
-            $browser->assertSee('ouvert')
-                ->clickLink('ouvert')
+            $browser->waitFor('#states-list')
+                ->assertSee('ouvert')
+                ->clickLink('ouvert');
+
+            $browser->waitFor('#action-email-subject')
                 ->assertSee(trans('states.action_email'))
                 ->assertValue('#action-email-subject', trans('states.email_subject_open'))
                 ->assertValue('#action-email-message', trans('states.email_message_open'));
@@ -181,8 +191,11 @@ class StateTest extends DuskTestCase
             $browser->on(new Course('Test states'))
                 ->statesIndex();
 
-            $browser->assertSee('public')
-                ->clickLink('public')
+            $browser->waitFor('#states-list')
+                ->assertSee('public')
+                ->clickLink('public');
+
+            $browser->waitFor('#action-email-subject')
                 ->assertSee(trans('states.action_email'))
                 ->assertValue('#action-email-subject', trans('states.email_subject_public'))
                 ->assertValue('#action-email-message', trans('states.email_message_public'));

@@ -49,7 +49,6 @@ abstract class DuskTestCase extends BaseTestCase
             '--no-sandbox',
             '--window-size=1920,1080',
             '--disable-smooth-scrolling',
-            '--auto-accept-this-tab-modal-dialogs',
             '--disable-popup-blocking',
             '--no-first-run',
         ]);
@@ -59,5 +58,20 @@ abstract class DuskTestCase extends BaseTestCase
                 ChromeOptions::CAPABILITY, $options
             )
         );
+    }
+
+    /**
+     * Stub window.confirm to return true and click the given selector.
+     *
+     * Chrome 134+ headless does not support waitForDialog/assertDialogOpened/acceptDialog
+     * reliably. This helper pre-stubs window.confirm so the form submits immediately
+     * without a native dialog, avoiding race conditions with the WebDriver dialog API.
+     */
+    protected function stubConfirmAndClick(Browser $browser, string $selector): Browser
+    {
+        $browser->script('window.confirm = function() { return true; }');
+        $browser->click($selector);
+
+        return $browser;
     }
 }

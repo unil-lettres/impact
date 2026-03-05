@@ -97,7 +97,8 @@ class CourseTest extends DuskTestCase
                 ->assertSee('First space')
                 ->visit(new PagesCourse('First space'));
 
-            $browser->assertSee('Configuration de l\'espace')
+            $browser->waitForText('Créer une fiche')
+                ->assertSee('Configuration de l\'espace')
                 ->assertSee('Créer une fiche');
         });
     }
@@ -117,7 +118,8 @@ class CourseTest extends DuskTestCase
                 ->assertSee('Second space')
                 ->visit(new PagesCourse('Second space'));
 
-            $browser->assertDontSee('Configuration de l\'espace')
+            $browser->waitForText('Tout ouvrir')
+                ->assertDontSee('Configuration de l\'espace')
                 ->assertDontSee('Créer une fiche');
         });
     }

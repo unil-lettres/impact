@@ -40,7 +40,8 @@ class CardTest extends DuskTestCase
 
             $browser->visit(new Course('Second space'));
 
-            $browser->assertSee('Test card second space')
+            $browser->waitForText('Test card second space')
+                ->assertSee('Test card second space')
                 ->assertDontSee('Test card second space not assigned');
         });
     }
@@ -58,11 +59,13 @@ class CardTest extends DuskTestCase
 
             $browser->visit(new Course('Second space'));
 
-            $browser->assertSee('Test card second space')
+            $browser->waitForText('Test card second space')
+                ->assertSee('Test card second space')
                 ->assertDontSee('Test card second space not assigned')
                 ->clickLink('Test card second space');
 
-            $browser->assertSee('Test card second space')
+            $browser->waitForText('Configuration de la fiche')
+                ->assertSee('Test card second space')
                 ->assertSee('Configuration de la fiche');
         });
     }
@@ -80,11 +83,13 @@ class CardTest extends DuskTestCase
 
             $browser->visit(new Course('First space'));
 
-            $browser->assertSee('Test card first space')
+            $browser->waitForText('Test card first space')
+                ->assertSee('Test card first space')
                 ->assertDontSee('Test card second space')
                 ->clickLink('Test card first space');
 
-            $browser->assertSee('Test card first space')
+            $browser->waitForText('Configuration de la fiche')
+                ->assertSee('Test card first space')
                 ->assertSee('Configuration de la fiche');
         });
     }
@@ -103,6 +108,7 @@ class CardTest extends DuskTestCase
 
             $browser
                 ->visit(new Course('First space'))
+                ->waitForText('Créer une fiche')
                 ->press('Créer une fiche')
                 ->waitForText('Créer une fiche');
 
@@ -134,10 +140,13 @@ class CardTest extends DuskTestCase
 
             $browser
                 ->visit(new Card('Test card with processing file'))
+                ->waitFor('@navigation-next-card')
                 ->assertAttributeContains('@navigation-previous-card', 'class', 'disabled')
                 ->click('@navigation-next-card')
+                ->waitForText('Test card with failed file')
                 ->assertSee('Test card with failed file')
                 ->click('@navigation-next-card')
+                ->waitForText('Test card with file')
                 ->assertSee('Test card with file')
                 ->assertAttributeContains('@navigation-next-card', 'class', 'disabled');
         });
@@ -157,6 +166,7 @@ class CardTest extends DuskTestCase
 
             $browser->visit(new Card('Test card with processing file'));
 
+            $browser->waitFor('.box1');
             $browser->with('.box1', function (Browser $browser) {
                 $browser->assertSee('Le fichier est en cours de traitement');
             });
@@ -177,6 +187,7 @@ class CardTest extends DuskTestCase
 
             $browser->visit(new Card('Test card with failed file'));
 
+            $browser->waitFor('.box1');
             $browser->with('.box1', function (Browser $browser) {
                 $browser->assertSee('Le traitement du fichier a échoué');
             });
@@ -197,6 +208,7 @@ class CardTest extends DuskTestCase
 
             $browser->visit(new Card('Test card with file'));
 
+            $browser->waitFor('.box1');
             $browser->with('.box1', function (Browser $browser) {
                 $browser->assertPresent('#rct-player');
             });

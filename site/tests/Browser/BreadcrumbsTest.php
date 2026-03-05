@@ -39,6 +39,7 @@ class BreadcrumbsTest extends DuskTestCase
 
             $browser
                 ->visit(new Folder('Test grand child folder'))
+                ->waitForText('Liste des espaces')
                 ->assertSee('Liste des espaces / Second space / Test folder / Test child folder');
         });
     }

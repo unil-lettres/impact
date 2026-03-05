@@ -39,6 +39,7 @@ class AttachmentTest extends DuskTestCase
 
             $browser->visit(new PagesCard('Test card with file'));
 
+            $browser->waitFor('.box5');
             $browser->with('.box5', function (Browser $browser) {
                 $browser->assertSee('My attachment')
                     ->assertDontSee('Pas d\'annexes');

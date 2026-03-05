@@ -39,7 +39,8 @@ class UserTest extends DuskTestCase
 
             $browser->visit('/admin/users');
 
-            $browser->assertSee('Gestion des utilisateurs');
+            $browser->waitFor('#users table tbody')
+                ->assertSee('Gestion des utilisateurs');
             $browser->assertSee('first-user@example.com');
             $browser->assertSee('admin-user@example.com');
         });
@@ -58,7 +59,8 @@ class UserTest extends DuskTestCase
 
             $browser->visit('/admin/users');
 
-            $browser->click('#users table tbody tr.aai .actions span:nth-child(1) a')
+            $browser->waitFor('#users table tbody tr.aai .actions span:nth-child(1) a')
+                ->click('#users table tbody tr.aai .actions span:nth-child(1) a')
                 ->waitForText('Nom')
                 ->assertSee('Nom')
                 ->assertSee('Email')
@@ -84,11 +86,12 @@ class UserTest extends DuskTestCase
 
             $browser->visit('/admin/users');
 
-            $browser->click('#users table tbody tr:nth-last-child(2) .actions form.with-delete-confirm button')
-                ->waitForDialog($seconds = null)
-                ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
-                ->acceptDialog()
-                ->waitForText('Compte utilisateur supprimé')
+            $browser->waitFor('#users table tbody tr:nth-last-child(2) .actions form.with-delete-confirm button');
+            $this->stubConfirmAndClick(
+                $browser,
+                '#users table tbody tr:nth-last-child(2) .actions form.with-delete-confirm button'
+            );
+            $browser->waitForText('Compte utilisateur supprimé')
                 ->assertSee('Compte utilisateur supprimé')
                 ->assertPathIs('/admin/users');
         });
@@ -108,7 +111,8 @@ class UserTest extends DuskTestCase
             $browser->visit(new Profile)
                 ->profile();
 
-            $browser->assertDisabled('name')
+            $browser->waitFor('input[name="name"]')
+                ->assertDisabled('name')
                 ->assertDisabled('email')
                 ->assertDisabled('type');
 
@@ -136,7 +140,8 @@ class UserTest extends DuskTestCase
             $browser->visit(new Profile)
                 ->profile();
 
-            $browser->type('old_password', 'password')
+            $browser->waitFor('input[name="old_password"]')
+                ->type('old_password', 'password')
                 ->type('new_password', 'password1')
                 ->type('password_confirm', 'password1')
                 ->press('Mettre à jour le compte')

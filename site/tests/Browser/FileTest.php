@@ -39,7 +39,8 @@ class FileTest extends DuskTestCase
 
             $browser->visit('/admin/files');
 
-            $browser->assertSee('Test video file')
+            $browser->waitFor('#files table tbody')
+                ->assertSee('Test video file')
                 ->assertSee('Test audio file')
                 ->assertSee('Failed file')
                 ->assertSee('Used file')
@@ -61,7 +62,8 @@ class FileTest extends DuskTestCase
             $browser->on(new Course('Second space'))
                 ->filesIndex();
 
-            $browser->assertSee('Test video file')
+            $browser->waitFor('#files table tbody')
+                ->assertSee('Test video file')
                 ->assertDontSee('Test audio file')
                 ->assertSee('Failed file')
                 ->assertSee('Used file')
@@ -83,6 +85,7 @@ class FileTest extends DuskTestCase
             $browser->on(new Course('Second space'))
                 ->filesIndex();
 
+            $browser->waitFor('#files table tbody tr.ready.used span.base-popover');
             $browser->with('#files table tbody tr.ready.used', function ($used) {
                 $used->click('span.base-popover');
             });
@@ -106,7 +109,9 @@ class FileTest extends DuskTestCase
 
             $browser->visit('/admin/files');
 
-            $browser->click('#files table tbody tr.ready .actions span:nth-child(1) a')
+            $browser->waitFor('#files table tbody tr.ready .actions span:nth-child(1) a')
+                ->click('#files table tbody tr.ready .actions span:nth-child(1) a')
+                ->waitForText('Test video file')
                 ->assertInputValue('status', 'ready')
                 ->assertSourceHas('Url du fichier');
         });
@@ -125,7 +130,9 @@ class FileTest extends DuskTestCase
 
             $browser->visit('/admin/files');
 
-            $browser->click('#files table tbody tr.failed .actions span:nth-child(1) a')
+            $browser->waitFor('#files table tbody tr.failed .actions span:nth-child(1) a')
+                ->click('#files table tbody tr.failed .actions span:nth-child(1) a')
+                ->waitForText('Failed file')
                 ->assertInputValue('status', 'failed')
                 ->assertSourceMissing('Url du fichier');
         });
@@ -144,7 +151,9 @@ class FileTest extends DuskTestCase
 
             $browser->visit('/admin/files');
 
-            $browser->click('#files table tbody tr.transcoding .actions span:nth-child(1) a')
+            $browser->waitFor('#files table tbody tr.transcoding .actions span:nth-child(1) a')
+                ->click('#files table tbody tr.transcoding .actions span:nth-child(1) a')
+                ->waitForText('Test audio file')
                 ->assertInputValue('status', 'transcoding')
                 ->assertSourceMissing('Url du fichier');
         });
@@ -163,7 +172,9 @@ class FileTest extends DuskTestCase
 
             $browser->visit('/admin/files');
 
-            $browser->click('#files table tbody tr.ready.used .actions span:nth-child(1) a')
+            $browser->waitFor('#files table tbody tr.ready.used .actions span:nth-child(1) a')
+                ->click('#files table tbody tr.ready.used .actions span:nth-child(1) a')
+                ->waitForText('Test card with file')
                 ->assertSee('Test card with file')
                 ->click('#rct-single-course-select')
                 ->assertDontSee('First space');
@@ -183,12 +194,11 @@ class FileTest extends DuskTestCase
 
             $browser->visit('/admin/files');
 
-            $browser->with('#files table tbody tr.unused', function ($unused) {
-                $unused->click('form.with-delete-confirm button')
-                    ->waitForDialog($seconds = null)
-                    ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
-                    ->acceptDialog();
-            });
+            $browser->waitFor('#files table tbody tr.unused form.with-delete-confirm button');
+            $this->stubConfirmAndClick(
+                $browser,
+                '#files table tbody tr.unused form.with-delete-confirm button'
+            );
             $browser->waitForText('Fichier supprimé.')
                 ->assertSee('Fichier supprimé.');
         });

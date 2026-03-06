@@ -69,8 +69,11 @@ abstract class DuskTestCase extends BaseTestCase
      */
     protected function stubConfirmAndClick(Browser $browser, string $selector): Browser
     {
-        $browser->script('window.confirm = function() { return true; }');
-        $browser->click($selector);
+        $jsonSelector = json_encode($selector);
+        $browser->script(
+            "window.confirm = function() { return true; };" .
+            "document.querySelector({$jsonSelector}).click();"
+        );
 
         return $browser;
     }

@@ -61,11 +61,11 @@ class UserTest extends DuskTestCase
             $browser->visit('/admin/users/create');
 
             $browser->waitForText('Créer un nouvel utilisateur local')
-                ->waitFor('#name')
                 ->type('name', 'Test create user')
                 ->type('email', 'test-create-user@example.com')
                 ->type('password', 'password')
                 ->type('password_confirmation', 'password')
+                ->scrollIntoView('button[type="submit"]')
                 ->press('Créer un nouvel utilisateur')
                 ->waitForText('Compte utilisateur créé: test-create-user@example.com')
                 ->assertSee('Compte utilisateur créé: test-create-user@example.com')
@@ -92,6 +92,7 @@ class UserTest extends DuskTestCase
                 ->type('email', 'test-create-user-with-error@example.com')
                 ->type('password', 'password1')
                 ->type('password_confirmation', 'password2')
+                ->scrollIntoView('button[type="submit"]')
                 ->press('Créer un nouvel utilisateur')
                 ->waitForText('Le champ de confirmation password ne correspond pas.')
                 ->assertSee('Le champ de confirmation password ne correspond pas.')
@@ -119,6 +120,7 @@ class UserTest extends DuskTestCase
                 ->type('old_password', 'password')
                 ->type('new_password', 'password_updated')
                 ->type('password_confirm', 'password_updated')
+                ->scrollIntoView('@user-update-button')
                 ->press('Mettre à jour le compte')
                 ->waitForText('Compte utilisateur mis à jour')
                 ->assertSee('Compte utilisateur mis à jour')
@@ -148,6 +150,7 @@ class UserTest extends DuskTestCase
                 ->type('old_password', 'password')
                 ->type('new_password', 'password1')
                 ->type('password_confirm', 'password2')
+                ->scrollIntoView('@user-update-button')
                 ->press('Mettre à jour le compte')
                 ->waitForText('doivent être identiques.')
                 ->assertSee('doivent être identiques.');
@@ -156,7 +159,7 @@ class UserTest extends DuskTestCase
                 ->type('email', 'test-update-user-with-errors@example.com')
                 ->type('old_password', 'password-with-errors');
 
-            $browser->scrollTo('@user-update-button') // Scroll to avoid "Element is not clickable at point" error
+            $browser->scrollIntoView('@user-update-button')
                 ->press('Mettre à jour le compte')
                 ->waitForText('Vous avez entré le mauvais mot de passe')
                 ->assertSee('Vous avez entré le mauvais mot de passe');
@@ -180,6 +183,7 @@ class UserTest extends DuskTestCase
             $browser->visit("/admin/users/{$userId}/edit")
                 ->waitForText('Invalid user')
                 ->assertSee('Expiré')
+                ->scrollIntoView('#edit-user .card .card-header a.extend-validity')
                 ->click('#edit-user .card .card-header a.extend-validity')
                 ->waitForText('Prolongation de la validité du compte de l\'utilisateur')
                 ->assertSee('Prolongation de la validité du compte de l\'utilisateur')

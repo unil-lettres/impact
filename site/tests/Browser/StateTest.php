@@ -141,7 +141,8 @@ class StateTest extends DuskTestCase
                 ->waitForText('Nouvel état créé.')
                 ->assertSee('nouvel état');
 
-            $stateId = \App\State::where('name', 'nouvel état')->value('id');
+            $stateId = \App\State::where('name', 'nouvel état')
+                ->value('id');
             $browser->waitFor("div[state-id='{$stateId}'] form.with-delete-confirm button");
             $this->stubConfirmAndClick(
                 $browser,

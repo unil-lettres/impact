@@ -173,7 +173,8 @@ class InvitationTest extends DuskTestCase
             $browser->visit(new Invitations)
                 ->invitations();
 
-            $invitationId = \App\Invitation::where('email', 'test-invitation-user@example.com')->value('id');
+            $invitationId = \App\Invitation::where('email', 'test-invitation-user@example.com')
+                ->value('id');
             $browser->waitFor("@show-link-invitation-{$invitationId}")
                 ->click("@show-link-invitation-{$invitationId}")
                 ->waitForText('Lien de l\'invitation')
@@ -197,7 +198,8 @@ class InvitationTest extends DuskTestCase
 
             $browser->waitForText(trans('invitations.pending'))
                 ->assertSee(trans('invitations.pending'));
-            $invitationId = \App\Invitation::where('email', 'test-invitation-user@example.com')->value('id');
+            $invitationId = \App\Invitation::where('email', 'test-invitation-user@example.com')
+                ->value('id');
             $browser->waitFor("@send-mail-invitation-{$invitationId}")
                 ->click("@send-mail-invitation-{$invitationId}")
                 ->waitForText('Mail d\'invitation envoyé')

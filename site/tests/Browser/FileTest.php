@@ -107,7 +107,8 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $fileId = \App\File::where('name', 'Test video file')->value('id');
+            $fileId = \App\File::where('name', 'Test video file')
+                ->value('id');
             $browser->visit("/admin/files/{$fileId}/edit")
                 ->waitForText('Test video file')
                 ->assertInputValue('status', 'ready')
@@ -126,7 +127,8 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $fileId = \App\File::where('name', 'Failed file')->value('id');
+            $fileId = \App\File::where('name', 'Failed file')
+                ->value('id');
             $browser->visit("/admin/files/{$fileId}/edit")
                 ->waitForText('Failed file')
                 ->assertInputValue('status', 'failed')
@@ -145,7 +147,8 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $fileId = \App\File::where('name', 'Test audio file')->value('id');
+            $fileId = \App\File::where('name', 'Test audio file')
+                ->value('id');
             $browser->visit("/admin/files/{$fileId}/edit")
                 ->waitForText('Test audio file')
                 ->assertInputValue('status', 'transcoding')
@@ -164,7 +167,8 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $fileId = \App\File::where('name', 'Used file')->value('id');
+            $fileId = \App\File::where('name', 'Used file')
+                ->value('id');
             $browser->visit("/admin/files/{$fileId}/edit")
                 ->waitForText('Test card with file')
                 ->assertSee('Test card with file')

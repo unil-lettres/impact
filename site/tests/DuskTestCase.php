@@ -71,7 +71,7 @@ abstract class DuskTestCase extends BaseTestCase
     {
         $jsonSelector = json_encode($selector);
         $browser->script(
-            "window.confirm = function() { return true; };" .
+            'window.confirm = function() { return true; };'.
             "document.querySelector({$jsonSelector}).click();"
         );
 

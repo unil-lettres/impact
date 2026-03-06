@@ -85,7 +85,7 @@ class UserTest extends DuskTestCase
             $browser->visit('/admin/users');
 
             $userId = \App\User::where('email', 'first-user@example.com')->value('id');
-            $browser->waitFor("#users table tbody");
+            $browser->waitFor('#users table tbody');
             $this->stubConfirmAndClick(
                 $browser,
                 "form[action$='/admin/users/{$userId}'].with-delete-confirm button"

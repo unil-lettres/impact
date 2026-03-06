@@ -39,9 +39,10 @@ class Login extends Page
     /**
      * Login as a specific user.
      *
-     * @param string $login
-     * @param string $password
+     * @param  string  $login
+     * @param  string  $password
      * @return void
+     *
      * @throws TimeoutException
      */
     public function loginAsUser(Browser $browser, $login, $password)

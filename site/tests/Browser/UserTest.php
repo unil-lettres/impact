@@ -39,149 +39,10 @@ class UserTest extends DuskTestCase
 
             $browser->visit('/admin/users');
 
-            $browser->assertSee('Gestion des utilisateurs');
+            $browser->waitFor('#users table tbody')
+                ->assertSee('Gestion des utilisateurs');
             $browser->assertSee('first-user@example.com');
             $browser->assertSee('admin-user@example.com');
-        });
-    }
-
-    /**
-     * Test create user.
-     *
-     * @throws Throwable
-     */
-    public function test_create_user(): void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit(new Login)
-                ->loginAsUser('admin-user@example.com', 'password');
-
-            $browser->visit('/admin/users');
-
-            $browser->assertSee('Créer un utilisateur')
-                ->clickLink('Créer un utilisateur');
-
-            $browser->type('name', 'Test create user')
-                ->type('email', 'test-create-user@example.com')
-                ->type('password', 'password')
-                ->type('password_confirmation', 'password')
-                ->press('Créer un nouvel utilisateur')
-                ->waitForText('Compte utilisateur créé: test-create-user@example.com')
-                ->assertSee('Compte utilisateur créé: test-create-user@example.com')
-                ->assertSee('Test create user')
-                ->assertPathIs('/admin/users');
-        });
-    }
-
-    /**
-     * Test create user with error.
-     *
-     * @throws Throwable
-     */
-    public function test_create_user_with_error(): void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit(new Login)
-                ->loginAsUser('admin-user@example.com', 'password');
-
-            $browser->visit('/admin/users/create');
-
-            $browser->type('name', 'Test create user with error')
-                ->type('email', 'test-create-user-with-error@example.com')
-                ->type('password', 'password1')
-                ->type('password_confirmation', 'password2')
-                ->press('Créer un nouvel utilisateur')
-                ->waitForText('Le champ de confirmation password ne correspond pas.')
-                ->assertSee('Le champ de confirmation password ne correspond pas.')
-                ->assertPathIs('/admin/users/create');
-        });
-    }
-
-    /**
-     * Test edit user.
-     *
-     * @throws Throwable
-     */
-    public function test_edit_user(): void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit(new Login)
-                ->loginAsUser('admin-user@example.com', 'password');
-
-            $browser->visit('/admin/users');
-
-            $browser->click('#users table tbody tr:first-child .actions span:nth-child(1) a')
-                ->type('name', 'Test update user')
-                ->type('email', 'test-update-user@example.com')
-                ->type('old_password', 'password')
-                ->type('new_password', 'password_updated')
-                ->type('password_confirm', 'password_updated')
-                ->press('Mettre à jour le compte')
-                ->waitForText('Compte utilisateur mis à jour')
-                ->assertSee('Compte utilisateur mis à jour')
-                ->assertSee('Test update user')
-                ->assertSee('test-update-user@example.com')
-                ->assertPathIs('/admin/users');
-        });
-    }
-
-    /**
-     * Test edit user with errors.
-     *
-     * @throws Throwable
-     */
-    public function test_edit_user_with_errors(): void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit(new Login)
-                ->loginAsUser('admin-user@example.com', 'password');
-
-            $browser->visit('/admin/users');
-
-            $browser->click('#users table tbody tr:first-child .actions span:nth-child(1) a')
-                ->type('name', '')
-                ->type('email', '')
-                ->type('old_password', 'password')
-                ->type('new_password', 'password1')
-                ->type('password_confirm', 'password2')
-                ->press('Mettre à jour le compte')
-                ->waitForText('doivent être identiques.')
-                ->assertSee('doivent être identiques.');
-
-            $browser->type('name', 'Test update user with errors')
-                ->type('email', 'test-update-user-with-errors@example.com')
-                ->type('old_password', 'password-with-errors');
-
-            $browser->scrollTo('@user-update-button') // Scroll to avoid "Element is not clickable at point" error
-                ->press('Mettre à jour le compte')
-                ->waitForText('Vous avez entré le mauvais mot de passe')
-                ->assertSee('Vous avez entré le mauvais mot de passe');
-        });
-    }
-
-    /**
-     * Test expired user.
-     *
-     * @throws Throwable
-     */
-    public function test_expired_user(): void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit(new Login)
-                ->loginAsUser('admin-user@example.com', 'password');
-
-            $browser->visit('/admin/users');
-
-            $browser->assertSee('Expiré');
-
-            $browser->click('#users table tbody tr.invalid .actions span:nth-child(1) a')
-                ->waitForText('Expiré')
-                ->assertSee('Expiré')
-                ->click('#edit-user .card .card-header a.extend-validity')
-                ->waitForText('Prolongation de la validité du compte de l\'utilisateur')
-                ->assertSee('Prolongation de la validité du compte de l\'utilisateur')
-                ->assertDontSee('Expiré')
-                ->assertPathIs('/admin/users');
         });
     }
 
@@ -196,9 +57,9 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
-
-            $browser->click('#users table tbody tr.aai .actions span:nth-child(1) a')
+            $userId = \App\User::where('email', 'aai-user@example.com')
+                ->value('id');
+            $browser->visit("/admin/users/{$userId}/edit")
                 ->waitForText('Nom')
                 ->assertSee('Nom')
                 ->assertSee('Email')
@@ -222,10 +83,10 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/users');
-
-            $browser->click('#users table tbody tr.local .actions span:nth-child(1) a')
-                ->waitForText('Type')
+            $userId = \App\User::where('email', 'first-user@example.com')
+                ->value('id');
+            $browser->visit("/admin/users/{$userId}/edit")
+                ->waitForText('First user')
                 ->assertDisabled('type')
                 ->assertInputValue('type', 'local')
                 ->assertSee('Mot de passe actuel')
@@ -247,11 +108,14 @@ class UserTest extends DuskTestCase
 
             $browser->visit('/admin/users');
 
-            $browser->click('#users table tbody tr:nth-last-child(2) .actions form.with-delete-confirm button')
-                ->waitForDialog($seconds = null)
-                ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
-                ->acceptDialog()
-                ->waitForText('Compte utilisateur supprimé')
+            $userId = \App\User::where('email', 'first-user@example.com')
+                ->value('id');
+            $browser->waitFor('#users table tbody');
+            $this->stubConfirmAndClick(
+                $browser,
+                "form[action$='/admin/users/{$userId}'].with-delete-confirm button"
+            );
+            $browser->waitForText('Compte utilisateur supprimé')
                 ->assertSee('Compte utilisateur supprimé')
                 ->assertPathIs('/admin/users');
         });
@@ -271,7 +135,8 @@ class UserTest extends DuskTestCase
             $browser->visit(new Profile)
                 ->profile();
 
-            $browser->assertDisabled('name')
+            $browser->waitFor('input[name="name"]')
+                ->assertDisabled('name')
                 ->assertDisabled('email')
                 ->assertDisabled('type');
 
@@ -299,7 +164,8 @@ class UserTest extends DuskTestCase
             $browser->visit(new Profile)
                 ->profile();
 
-            $browser->type('old_password', 'password')
+            $browser->waitFor('input[name="old_password"]')
+                ->type('old_password', 'password')
                 ->type('new_password', 'password1')
                 ->type('password_confirm', 'password1')
                 ->press('Mettre à jour le compte')

@@ -109,6 +109,7 @@
                                         @if($invitation->getLink())
                                             <span>
                                                 <button type="button"
+                                                        dusk="show-link-invitation-{{ $invitation->id }}"
                                                         class="btn btn-primary base-popover"
                                                         title="{{ trans('invitations.link') }}"
                                                         data-bs-html="true"
@@ -123,6 +124,7 @@
                                     @can('mail', $invitation)
                                         <span>
                                             <a href="{{ route('send.invite', $invitation->id) }}"
+                                               dusk="send-mail-invitation-{{ $invitation->id }}"
                                                data-bs-toggle="tooltip"
                                                data-placement="top"
                                                class="btn btn-primary"

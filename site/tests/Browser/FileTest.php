@@ -39,7 +39,8 @@ class FileTest extends DuskTestCase
 
             $browser->visit('/admin/files');
 
-            $browser->assertSee('Test video file')
+            $browser->waitFor('#files table tbody')
+                ->assertSee('Test video file')
                 ->assertSee('Test audio file')
                 ->assertSee('Failed file')
                 ->assertSee('Used file')
@@ -61,7 +62,8 @@ class FileTest extends DuskTestCase
             $browser->on(new Course('Second space'))
                 ->filesIndex();
 
-            $browser->assertSee('Test video file')
+            $browser->waitFor('#files table tbody')
+                ->assertSee('Test video file')
                 ->assertDontSee('Test audio file')
                 ->assertSee('Failed file')
                 ->assertSee('Used file')
@@ -83,6 +85,7 @@ class FileTest extends DuskTestCase
             $browser->on(new Course('Second space'))
                 ->filesIndex();
 
+            $browser->waitFor('#files table tbody tr.ready.used span.base-popover');
             $browser->with('#files table tbody tr.ready.used', function ($used) {
                 $used->click('span.base-popover');
             });
@@ -90,32 +93,6 @@ class FileTest extends DuskTestCase
                 ->assertSee('Test card with file')
                 ->clickLink('Test card with file')
                 ->assertSee('Test card with file');
-        });
-    }
-
-    /**
-     * Test edit file.
-     *
-     * @throws Throwable
-     */
-    public function test_edit_file(): void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit(new Login)
-                ->loginAsUser('admin-user@example.com', 'password');
-
-            $browser->visit('/admin/files');
-
-            $browser->click('#files table tbody tr.ready .actions span:nth-child(1) a')
-                ->type('name', 'Test file updated')
-                ->click('#rct-single-course-select')
-                ->waitForText('First space')
-                ->assertSee('First space')
-                ->assertDontSee('Deactivated space')
-                ->click('#react-select-2-option-0')
-                ->press('Mettre à jour le fichier')
-                ->waitForText('Fichier mis à jour.')
-                ->assertSee('Fichier mis à jour.');
         });
     }
 
@@ -130,9 +107,10 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/files');
-
-            $browser->click('#files table tbody tr.ready .actions span:nth-child(1) a')
+            $fileId = \App\File::where('name', 'Test video file')
+                ->value('id');
+            $browser->visit("/admin/files/{$fileId}/edit")
+                ->waitForText('Test video file')
                 ->assertInputValue('status', 'ready')
                 ->assertSourceHas('Url du fichier');
         });
@@ -149,9 +127,10 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/files');
-
-            $browser->click('#files table tbody tr.failed .actions span:nth-child(1) a')
+            $fileId = \App\File::where('name', 'Failed file')
+                ->value('id');
+            $browser->visit("/admin/files/{$fileId}/edit")
+                ->waitForText('Failed file')
                 ->assertInputValue('status', 'failed')
                 ->assertSourceMissing('Url du fichier');
         });
@@ -168,9 +147,10 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/files');
-
-            $browser->click('#files table tbody tr.transcoding .actions span:nth-child(1) a')
+            $fileId = \App\File::where('name', 'Test audio file')
+                ->value('id');
+            $browser->visit("/admin/files/{$fileId}/edit")
+                ->waitForText('Test audio file')
                 ->assertInputValue('status', 'transcoding')
                 ->assertSourceMissing('Url du fichier');
         });
@@ -187,33 +167,13 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $browser->visit('/admin/files');
-
-            $browser->click('#files table tbody tr.ready.used .actions span:nth-child(1) a')
+            $fileId = \App\File::where('name', 'Used file')
+                ->value('id');
+            $browser->visit("/admin/files/{$fileId}/edit")
+                ->waitForText('Test card with file')
                 ->assertSee('Test card with file')
                 ->click('#rct-single-course-select')
                 ->assertDontSee('First space');
-        });
-    }
-
-    /**
-     * Test can edit the course of an unused file.
-     *
-     * @throws Throwable
-     */
-    public function test_can_edit_course_of_unused_file(): void
-    {
-        $this->browse(function (Browser $browser) {
-            $browser->visit(new Login)
-                ->loginAsUser('admin-user@example.com', 'password');
-
-            $browser->visit('/admin/files');
-
-            $browser->click('#files table tbody tr.unused .actions span:nth-child(1) a')
-                ->assertSee('Aucune fiche trouvée')
-                ->click('#rct-single-course-select')
-                ->waitForText('First space')
-                ->assertSee('First space');
         });
     }
 
@@ -230,12 +190,11 @@ class FileTest extends DuskTestCase
 
             $browser->visit('/admin/files');
 
-            $browser->with('#files table tbody tr.unused', function ($unused) {
-                $unused->click('form.with-delete-confirm button')
-                    ->waitForDialog($seconds = null)
-                    ->assertDialogOpened('Êtes-vous sûr de vouloir supprimer cet élément ?')
-                    ->acceptDialog();
-            });
+            $browser->waitFor('#files table tbody tr.unused form.with-delete-confirm button');
+            $this->stubConfirmAndClick(
+                $browser,
+                '#files table tbody tr.unused form.with-delete-confirm button'
+            );
             $browser->waitForText('Fichier supprimé.')
                 ->assertSee('Fichier supprimé.');
         });

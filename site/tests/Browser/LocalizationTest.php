@@ -34,12 +34,14 @@ class LocalizationTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/');
-            $browser->assertSee('Connexion avec SWITCHaai');
-            $browser->assertSee('Connexion locale');
+            $browser->waitForText('Connexion avec SWITCHaai')
+                ->assertSee('Connexion avec SWITCHaai')
+                ->assertSee('Connexion locale');
 
             $browser->visit(new Localization('en'));
-            $browser->assertSee('Connection with SWITCHaai');
-            $browser->assertSee('Local connection');
+            $browser->waitForText('Connection with SWITCHaai')
+                ->assertSee('Connection with SWITCHaai')
+                ->assertSee('Local connection');
         });
     }
 }

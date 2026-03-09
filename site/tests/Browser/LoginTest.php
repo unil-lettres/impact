@@ -70,8 +70,10 @@ class LoginTest extends DuskTestCase
     public function test_invalid_user(): void
     {
         $this->browse(function (Browser $browser) {
-            $browser->visit(new Login)
-                ->loginAsUser('invalid-user@example.com', 'password');
+            $browser->visit('/login')
+                ->type('email', 'invalid-user@example.com')
+                ->type('password', 'password')
+                ->press('Se connecter');
 
             $browser->waitForText('Ces identifiants ne correspondent pas à nos enregistrements')
                 ->assertSee('Ces identifiants ne correspondent pas à nos enregistrements')

@@ -40,8 +40,7 @@ services:
       - impact-net
     container_name: impact-mailhog
   impact-selenium:
-    # TODO: use latest image tag as soon as the chrome issue is fixed
-    image: selenium/standalone-chromium:133.0
+    image: selenium/standalone-chromium:latest
     shm_size: 2gb
     ports:
       - "127.0.0.1:4444:4444"

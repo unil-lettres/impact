@@ -72,7 +72,6 @@ jobs:
         id: app-php-style
         working-directory: ./site
         run: ./vendor/bin/pint --test -v
-        continue-on-error: true
 
       - name: Install Chrome driver
         working-directory: ./site

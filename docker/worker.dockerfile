@@ -6,7 +6,7 @@ ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 ENV TZ=Europe/Zurich
 
-ENV COMPOSER_VERSION=2.8.12
+ENV COMPOSER_VERSION=2.9.8
 
 # Update repositories & install additional packages
 RUN apt-get update && apt-get install -y \

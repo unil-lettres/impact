@@ -108,6 +108,11 @@ RUN apt-get install -y \
 # Enable needed Apache modules
 RUN a2enmod rewrite ssl shib
 
+# Forward Shibboleth logs to stdout
+RUN mkdir -p /var/log/shibboleth && \
+    ln -sf /dev/stdout /var/log/shibboleth/shibd.log && \
+    ln -sf /dev/stdout /var/log/shibboleth/shibd_warn.log.log
+
 # Generate Shibboleth configurations files
 RUN curl --output /etc/shibboleth/shibboleth2.xml \
     "https://help.switch.ch/aai/docs/shibboleth/SWITCH/$SHIBBOLETH_VERSION/sp/deployment/download/customize.php/shibboleth2.xml?osType=nonwindows&hostname=myhost.com&targetURL=https%3A%2F%2Fmyhost.com%2FShibboleth.sso%2FSession&keyPath=%2Fetc%2Fshibboleth%2Fsp-key.pem&certPath=%2Fetc%2Fshibboleth%2Fsp-cert.pem&federation=SWITCHaai&supportEmail=aai%40myhost.com&wayfURL=https%3A%2F%2Fwayf.switch.ch%2FSWITCHaai%2FWAYF&metadataURL=http%3A%2F%2Fmetadata.aai.switch.ch%2Fmetadata.switchaai%2Bidp.xml&metadataFile=metadata.switchaai%2Bidp.xml&eduIDEntityID=https%3A%2F%2Feduid.ch%2Fidp%2Fshibboleth&hide=windows-only,metadataattributespart1,metadataattributespart2,eduid-only,interfederation,"

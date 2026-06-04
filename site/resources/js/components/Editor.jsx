@@ -160,7 +160,8 @@ export default class Editor extends Component {
 
     updateEditorConfiguration(data) {
         editorConfiguration.translations = data.locale === 'fr' ? coreTranslationsFr : coreTranslationsEn;
-        editorConfiguration.placeholder = data.placeholder ?? '';
+        editorConfiguration.root = editorConfiguration.root || {};
+        editorConfiguration.root.placeholder = data.placeholder ?? '';
     }
 
     initVariables(data) {

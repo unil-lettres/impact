@@ -10,6 +10,8 @@ return [
 
     'app_url' => env('APP_URL', 'http://impact.lan:8025'),
 
+    'codespace_name' => env('CODESPACE_NAME'),
+
     'pagination' => [
         'per' => env('PAGINATION_PER', 25),
     ],

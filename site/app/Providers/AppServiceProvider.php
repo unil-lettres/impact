@@ -94,8 +94,8 @@ class AppServiceProvider extends ServiceProvider
          * Here, we check if the CODESPACE_NAME environment variable is set, which indicates that
          * we're running in a Codespace.
          */
-        if (env('CODESPACE_NAME')) {
-            URL::forceRootUrl(config('const.app_url'));
+        if (config('const.codespace_name')) {
+            URL::useOrigin(config('const.app_url'));
         }
     }
 }

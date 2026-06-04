@@ -31,7 +31,7 @@ return Application::configure(basePath: dirname(__DIR__))
             'is_valid' => \App\Http\Middleware\IsValid::class,
         ]);
 
-        $middleware->replaceInGroup('web', \Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class, \App\Http\Middleware\VerifyCsrfToken::class);
+        $middleware->replaceInGroup('web', \Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class, \App\Http\Middleware\VerifyCsrfToken::class);
 
         $middleware->alias([
             'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

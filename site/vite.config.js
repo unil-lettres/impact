@@ -19,12 +19,6 @@ export default defineConfig({
             ]
         })
     ],
-    esbuild: {
-        // Allow JSX syntax inside .js files within resources/js
-        loader: 'jsx',
-        include: /resources\/js\/.*\.js$/,
-        exclude: [],
-    },
     define: {
         // Avoid "process is not defined" console error
         'process.platform': JSON.stringify('linux'),

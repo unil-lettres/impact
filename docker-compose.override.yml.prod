@@ -14,7 +14,6 @@ services:
     volumes:
       - uploads-data:/var/www/impact/storage/app/public/uploads
       - exports-data:/var/www/impact/storage/app/public/exports
-      - logs-data:/var/www/impact/storage/logs
       - shibboleth-data:/etc/shibboleth
     restart: unless-stopped
     deploy:
@@ -33,7 +32,6 @@ services:
     volumes:
       - uploads-data:/var/www/impact/storage/app/public/uploads
       - exports-data:/var/www/impact/storage/app/public/exports
-      - logs-data:/var/www/impact/storage/logs
     restart: unless-stopped
     deploy:
       mode: global
@@ -51,5 +49,4 @@ services:
 volumes:
   uploads-data:
   exports-data:
-  logs-data:
   shibboleth-data:

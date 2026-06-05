@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use App\User;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
@@ -57,7 +58,7 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $userId = \App\User::where('email', 'aai-user@example.com')
+            $userId = User::where('email', 'aai-user@example.com')
                 ->value('id');
             $browser->visit("/admin/users/{$userId}/edit")
                 ->waitForText('Nom')
@@ -83,7 +84,7 @@ class UserTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $userId = \App\User::where('email', 'first-user@example.com')
+            $userId = User::where('email', 'first-user@example.com')
                 ->value('id');
             $browser->visit("/admin/users/{$userId}/edit")
                 ->waitForText('First user')
@@ -108,7 +109,7 @@ class UserTest extends DuskTestCase
 
             $browser->visit('/admin/users');
 
-            $userId = \App\User::where('email', 'first-user@example.com')
+            $userId = User::where('email', 'first-user@example.com')
                 ->value('id');
             $browser->waitFor('#users table tbody');
             $this->stubConfirmAndClick(

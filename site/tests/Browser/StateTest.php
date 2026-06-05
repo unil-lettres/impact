@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use App\State;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
@@ -141,7 +142,7 @@ class StateTest extends DuskTestCase
                 ->waitForText('Nouvel état créé.')
                 ->assertSee('nouvel état');
 
-            $stateId = \App\State::where('name', 'nouvel état')
+            $stateId = State::where('name', 'nouvel état')
                 ->value('id');
             $browser->waitFor("div[state-id='{$stateId}'] form.with-delete-confirm button");
             $this->stubConfirmAndClick(

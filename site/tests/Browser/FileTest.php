@@ -2,6 +2,7 @@
 
 namespace Tests\Browser;
 
+use App\File;
 use Illuminate\Support\Facades\Artisan;
 use Laravel\Dusk\Browser;
 use Laravel\Dusk\Concerns\ProvidesBrowser;
@@ -107,7 +108,7 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $fileId = \App\File::where('name', 'Test video file')
+            $fileId = File::where('name', 'Test video file')
                 ->value('id');
             $browser->visit("/admin/files/{$fileId}/edit")
                 ->waitForText('Test video file')
@@ -127,7 +128,7 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $fileId = \App\File::where('name', 'Failed file')
+            $fileId = File::where('name', 'Failed file')
                 ->value('id');
             $browser->visit("/admin/files/{$fileId}/edit")
                 ->waitForText('Failed file')
@@ -147,7 +148,7 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $fileId = \App\File::where('name', 'Test audio file')
+            $fileId = File::where('name', 'Test audio file')
                 ->value('id');
             $browser->visit("/admin/files/{$fileId}/edit")
                 ->waitForText('Test audio file')
@@ -167,7 +168,7 @@ class FileTest extends DuskTestCase
             $browser->visit(new Login)
                 ->loginAsUser('admin-user@example.com', 'password');
 
-            $fileId = \App\File::where('name', 'Used file')
+            $fileId = File::where('name', 'Used file')
                 ->value('id');
             $browser->visit("/admin/files/{$fileId}/edit")
                 ->waitForText('Test card with file')

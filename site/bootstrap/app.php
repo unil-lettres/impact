@@ -1,16 +1,33 @@
 <?php
 
+use App\Http\Middleware\CheckAai;
+use App\Http\Middleware\CheckForMaintenanceMode;
+use App\Http\Middleware\HasInvitation;
+use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\IsValid;
+use App\Http\Middleware\Localization;
+use App\Http\Middleware\VerifyCsrfToken;
 use App\Providers\AppServiceProvider;
+use Bugsnag\BugsnagLaravel\BugsnagServiceProvider;
+use Bugsnag\BugsnagLaravel\Commands\DeployCommand;
+use Illuminate\Auth\Middleware\Authenticate;
+use Illuminate\Auth\Middleware\Authorize;
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use Illuminate\Foundation\Http\Middleware\PreventRequestForgery;
+use Illuminate\Routing\Middleware\SubstituteBindings;
+use Illuminate\Routing\Middleware\ThrottleRequests;
+use Illuminate\Session\Middleware\AuthenticateSession;
+use Illuminate\Session\Middleware\StartSession;
+use Illuminate\View\Middleware\ShareErrorsFromSession;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withProviders([
-        \Bugsnag\BugsnagLaravel\BugsnagServiceProvider::class,
+        BugsnagServiceProvider::class,
     ])
     ->withCommands([
-        \Bugsnag\BugsnagLaravel\Commands\DeployCommand::class,
+        DeployCommand::class,
     ])
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
@@ -21,33 +38,33 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->redirectGuestsTo(fn () => route('login'));
         $middleware->redirectUsersTo(AppServiceProvider::HOME);
 
-        $middleware->append(\App\Http\Middleware\CheckForMaintenanceMode::class);
+        $middleware->append(CheckForMaintenanceMode::class);
 
-        $middleware->web(\App\Http\Middleware\Localization::class);
+        $middleware->web(Localization::class);
 
         $middleware->throttleApi('60,1');
 
         $middleware->group('app', [
-            'is_valid' => \App\Http\Middleware\IsValid::class,
+            'is_valid' => IsValid::class,
         ]);
 
-        $middleware->replaceInGroup('web', \Illuminate\Foundation\Http\Middleware\PreventRequestForgery::class, \App\Http\Middleware\VerifyCsrfToken::class);
+        $middleware->replaceInGroup('web', PreventRequestForgery::class, VerifyCsrfToken::class);
 
         $middleware->alias([
-            'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            'check_aai' => \App\Http\Middleware\CheckAai::class,
-            'has_invitation' => \App\Http\Middleware\HasInvitation::class,
-            'is_admin' => \App\Http\Middleware\IsAdmin::class,
+            'bindings' => SubstituteBindings::class,
+            'check_aai' => CheckAai::class,
+            'has_invitation' => HasInvitation::class,
+            'is_admin' => IsAdmin::class,
         ]);
 
         $middleware->priority([
-            \Illuminate\Session\Middleware\StartSession::class,
-            \Illuminate\View\Middleware\ShareErrorsFromSession::class,
-            \Illuminate\Auth\Middleware\Authenticate::class,
-            \Illuminate\Routing\Middleware\ThrottleRequests::class,
-            \Illuminate\Session\Middleware\AuthenticateSession::class,
-            \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \Illuminate\Auth\Middleware\Authorize::class,
+            StartSession::class,
+            ShareErrorsFromSession::class,
+            Authenticate::class,
+            ThrottleRequests::class,
+            AuthenticateSession::class,
+            SubstituteBindings::class,
+            Authorize::class,
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {

@@ -20,6 +20,7 @@ use App\State;
 use App\Tag;
 use App\User;
 use Assert\Assert;
+use FFMpeg\Exception\RuntimeException;
 use FFMpeg\FFProbe;
 use Illuminate\Console\Command;
 use Illuminate\Support\Collection;
@@ -711,7 +712,7 @@ class MigrateLegacy extends Command
 
                 try {
                     $mediaProperties = $this->getMediaProperties($absolutePath);
-                } catch (\FFMpeg\Exception\RuntimeException $e) {
+                } catch (RuntimeException $e) {
                     $this->log->warning(''
                         ."Unable to prob file type for '$absolutePath'. "
                         .'Skipping this media for course legacy id '
@@ -791,7 +792,7 @@ class MigrateLegacy extends Command
                         $mimeType,
                         Storage::disk('public')->path($serverPath),
                     );
-                } catch (\FFMpeg\Exception\RuntimeException $e) {
+                } catch (RuntimeException $e) {
                     $this->log->warning(''
                         ."Unable to identify file type for '$serverPath'. "
                         .'Skipping this attachments for card legacy id '

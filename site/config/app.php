@@ -1,13 +1,16 @@
 <?php
 
+use App\Helpers\Helpers;
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\Redis;
+use Illuminate\Support\Number;
 
 return [
 
     'aliases' => Facade::defaultAliases()->merge([
-        'Helpers' => App\Helpers\Helpers::class,
-        'Number' => Illuminate\Support\Number::class,
-        'Redis' => Illuminate\Support\Facades\Redis::class,
+        'Helpers' => Helpers::class,
+        'Number' => Number::class,
+        'Redis' => Redis::class,
     ])->toArray(),
 
 ];

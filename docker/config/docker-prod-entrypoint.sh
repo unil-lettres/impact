@@ -84,4 +84,4 @@ echo "If needed, create the symlink to make storage public..."
 php artisan storage:link
 
 # run commands from dockerfile
-"${@}"
+exec "${@}"

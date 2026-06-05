@@ -28,4 +28,4 @@ echo "Optimize view, routes, events, configs..."
 php artisan optimize
 
 # run commands from dockerfile
-"${@}"
+exec "${@}"

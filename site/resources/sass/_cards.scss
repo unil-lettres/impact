@@ -118,7 +118,7 @@
                     cursor: pointer;
 
                     i {
-                        @extend .fa-solid;
+                        font: var(--fa-font-solid);
                     }
                 }
             }

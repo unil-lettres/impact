@@ -38,7 +38,7 @@
         @can('view', $card)
             <a
                 href="{{ route('cards.show', $card->id) }}"
-                class="text-decoration-none @can('update', $card) blue-500 @else text-black @endcan"
+                class="text-decoration-none @can('update', $card) text-primary @else text-black @endcan"
                 @click.stop
             >
                 <i class="d-inline-block fa-solid fa-file-lines text-center width-large"></i>

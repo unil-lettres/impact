@@ -49,7 +49,7 @@
                 .reduce-button,
                 .expand-button {
                     i {
-                        @extend .fa-solid;
+                        font: var(--fa-font-solid);
                     }
                 }
             }
@@ -119,7 +119,8 @@
     }
 }
 
-@include media-breakpoint-up(md) {
+// Equivalent to @include bs.media-breakpoint-up(md)
+@media (min-width: 768px) {
     #index-courses {
         .flex-table {
             .description {

@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import laravel from 'laravel-vite-plugin';
 import react from '@vitejs/plugin-react';
 import { viteStaticCopy } from 'vite-plugin-static-copy';
+import { NodePackageImporter } from 'sass';
 
 export default defineConfig({
     plugins: [
@@ -13,8 +14,9 @@ export default defineConfig({
         viteStaticCopy({
             targets: [
                 {
-                    src: 'node_modules/@fortawesome/fontawesome-free/webfonts/*',
-                    dest: 'webfonts'
+                    src: 'node_modules/@fortawesome/fontawesome-free/webfonts/*.woff2',
+                    dest: 'webfonts/',
+                    rename: { stripBase: true } 
                 }
             ]
         })
@@ -26,6 +28,7 @@ export default defineConfig({
     css: {
         preprocessorOptions: {
             scss: {
+                importers: [new NodePackageImporter()],
                 quietDeps: true,
             },
         },

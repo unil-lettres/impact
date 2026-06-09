@@ -6,12 +6,12 @@
         }
 
         .selected {
-            background-color: $gray-200!important;
+            background-color: var(--bs-gray-200)!important;
         }
 
         .selected .background-hover:hover,
         .selected.background-hover:hover {
-            background-color: $gray-400!important;
+            background-color: var(--bs-gray-400)!important;
         }
     }
 
@@ -30,7 +30,7 @@
     }
 
     .disabled {
-        color: $gray-500;
+        color: var(--bs-gray-500);
     }
 
     .dropdown-menu {
@@ -46,11 +46,11 @@
         &-asc {
             i.fa-arrow-down {
                 transition: all 0.3s ease;
-                color: $gray-500;
+                color: var(--bs-gray-500);
             }
             &:hover {
                 i.fa-arrow-down {
-                    color: $primary;
+                    color: var(--bs-primary);
                     transform: translateY(2px);
                 }
             }
@@ -59,7 +59,7 @@
         &-desc {
             i.fa-arrow-down {
                 transition: all 0.3s ease;
-                color: $primary;
+                color: var(--bs-primary);
             }
             &:hover {
                 i.fa-arrow-down {
@@ -71,7 +71,7 @@
         &-remove {
             i.fa-arrow-down {
                 transition: all 0.3s ease;
-                color: $primary;
+                color: var(--bs-primary);
                 transform: rotate(180deg);
             }
             &:hover {
@@ -80,7 +80,7 @@
                 }
 
                 i.fa-xmark {
-                    color: $primary;
+                    color: var(--bs-primary);
                     display: inline-block!important;
                 }
             }
@@ -148,13 +148,15 @@
     }
 }
 
-@include media-breakpoint-down(xxl) {
+// Equivalent to @include bootstrap.media-breakpoint-down(xxl)
+@media (max-width: 1400px) {
     .finder .column-medium {
         flex: 0 0 220px;
     }
  }
 
- @include media-breakpoint-down(xl) {
+//  Equivalent to @include bootstrap.media-breakpoint-down(xl)
+@media (max-width: 1200px) {
     .finder .column-medium {
         flex: 0 0 190px;
     }

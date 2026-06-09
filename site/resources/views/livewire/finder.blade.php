@@ -287,7 +287,7 @@
         wire:loading.delay.longer
     >
         <div
-            class="spinner-grow text-niagara position-absolute top-50 start-50 translate-middle"
+            class="spinner-grow text-primary position-absolute top-50 start-50 translate-middle"
             role="status"
         >
             <span class="visually-hidden">Loading...</span>

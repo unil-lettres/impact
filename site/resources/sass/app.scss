@@ -1,61 +1,56 @@
+@use 'sass:meta';
+@use 'pkg:bootstrap/scss/bootstrap' with (
+  $font-family-sans-serif: 'Nunito',
+  $font-size-base: 0.9rem,
+  $line-height-base: 1.6,
+  $min-contrast-ratio: 3,
+  $primary: #05a69d,
+);
+@use 'pkg:@fortawesome/fontawesome-free/scss/fontawesome' as fa;
+@use 'pkg:@fortawesome/fontawesome-free/scss/regular' as fa-regular;
+@use 'pkg:@fortawesome/fontawesome-free/scss/solid' as fa-solid;
+@use 'pkg:@uppy/core/css/style.css' as uppy-core;
+@use 'pkg:@uppy/dashboard/css/style.css' as uppy-dashboard;
+
 // Fonts
 @import url('https://fonts.googleapis.com/css?family=Nunito');
-
-// Variables
-@import 'variables';
-
-// --------------
-// Vendors stylesheets
-// --------------
-
-// Bootstrap
-@import 'bootstrap/scss/bootstrap';
-
-// Font Awesome
-@import '@fortawesome/fontawesome-free/scss/fontawesome';
-@import '@fortawesome/fontawesome-free/scss/regular';
-@import '@fortawesome/fontawesome-free/scss/solid';
-
-// Uppy
-@import '@uppy/core/css/style.css';
-@import '@uppy/dashboard/css/style.css';
 
 // --------------
 // App stylesheets
 // --------------
 
 // Base
-@import 'base';
+@include meta.load-css('base');
 
 // Legacy styles
-@import 'legacy';
+@include meta.load-css('legacy');
 
 // Navbar
-@import 'header';
+@include meta.load-css('header');
 
 // Admin views
-@import 'admin';
+@include meta.load-css('admin');
 
 // Login views
-@import 'login';
+@include meta.load-css('login');
 
 // Invitation views
-@import 'invitations';
+@include meta.load-css('invitations');
 
 // User views
-@import 'users';
+@include meta.load-css('users');
 
 // Courses views
-@import 'courses';
+@include meta.load-css('courses');
 
 // Files views
-@import 'files';
+@include meta.load-css('files');
 
 // Cards views
-@import 'cards';
+@include meta.load-css('cards');
 
 // States views
-@import 'states';
+@include meta.load-css('states');
 
 // Finder views
-@import 'finder';
+@include meta.load-css('finder');

@@ -16,7 +16,7 @@
 .icon-link {
     &.disabled {
         cursor: default;
-        @extend .opacity-50;
+        opacity: .5;
     }
 
     i {
@@ -52,7 +52,7 @@
 }
 
 .expired {
-    color: #9CA3AF;
+    color: var(--bs-gray-500);
     font-style: italic;
 }
 
@@ -78,7 +78,7 @@
         }
     }
 
-    background-color: #05a69d;
+    background-color: var(--bs-primary);
     margin-top: -21px;
     padding: 3px 0;
     margin-bottom: 30px;
@@ -95,11 +95,6 @@
     font-size: 1rem;
 }
 
-.text-niagara {
-    @extend .text-primary;
-    color: $niagara !important;
-}
-
 .dropdown-with-icon .dropdown-item > i {
     width: 25px;
     text-align: center;
@@ -113,12 +108,9 @@
     cursor: pointer;
 }
 
-.blue-500 {
-    color: $blue-500;
-}
-
+// Equivalent to bootstrap's $zindex-modal-backdrop.
 .z-index-backdrop {
-    z-index: $zindex-modal-backdrop;
+    z-index: 1200;
 }
 
 .show-icon-on-hover {
@@ -133,7 +125,7 @@
 
 .table-responsive {
     td, th {
-        @extend .text-nowrap;
+        white-space: nowrap;
         vertical-align: middle;
     }
 }

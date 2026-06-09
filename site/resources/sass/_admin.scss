@@ -15,7 +15,7 @@
             }
 
             .invalid {
-                color: $invalid !important;
+                color: var(--bs-gray-500) !important;
             }
 
             .actions {

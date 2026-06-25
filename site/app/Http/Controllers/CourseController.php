@@ -100,6 +100,7 @@ class CourseController extends Controller
                 ->orderBy('name', 'asc')
                 ->paginate(config('const.pagination.per'))
                 ->appends($request->query()),
+            'breadcrumbs' => collect([])->put('', trans('admin.breadcrumbs_title')),
             'filter' => $filter,
             'search' => $search,
         ]);

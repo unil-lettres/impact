@@ -76,6 +76,7 @@ class InvitationController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->paginate(config('const.pagination.per'))
                 ->appends($request->query()),
+            'breadcrumbs' => collect([])->put('', trans('admin.breadcrumbs_title')),
             'filter' => $filter,
             'search' => $search,
         ]);

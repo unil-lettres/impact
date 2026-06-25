@@ -15,5 +15,6 @@ return [
     'send' => 'Send',
     'filters' => 'Filters',
     'sort' => 'Sort',
+    'breadcrumbs_title' => 'Administration',
 
 ];

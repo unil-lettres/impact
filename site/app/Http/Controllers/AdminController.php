@@ -48,6 +48,7 @@ class AdminController extends Controller
 
         return view('admin.mailing', [
             'subject' => $subject,
+            'breadcrumbs' => collect([])->put('', trans('admin.breadcrumbs_title')),
             'content' => $content,
         ]);
     }

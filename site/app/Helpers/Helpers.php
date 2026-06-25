@@ -167,7 +167,13 @@ class Helpers
     {
         $html = '';
         foreach ($breadcrumbs as $path => $name) {
-            $html .= '<a class="legacy" href="'.$path.'">'.self::truncate($name, 25).'</a>';
+
+            $title = self::truncate($name, 25);
+            if (empty($path)) {
+                $html .= "<span>$title</span>";
+            } else {
+                $html .= "<a class='legacy' href='$path'>$title</a>";
+            }
 
             if ($breadcrumbs->last() !== $name) {
                 $html .= '<span> / </span>';

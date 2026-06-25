@@ -7,7 +7,7 @@
 
         <div class="collapse navbar-collapse" id="navbar-coll">
             @auth
-                <div class="me-auto">
+                <div class="ms-3 me-auto">
                     <!-- Navbar left side -->
                     <ul class="navbar-nav">
                         <li class="nav-item">
@@ -19,7 +19,7 @@
                         </li>
                     </ul>
                     @hasSection('navigation')
-                        <div>
+                        <div class="mt-1">
                             @yield('navigation')
                         </div>
                     @endif

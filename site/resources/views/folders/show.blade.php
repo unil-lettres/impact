@@ -87,7 +87,7 @@
                     onClick="folderUtils.destroyFolder({{$folder->id}})"
                     class="dropdown-item d-flex cursor-pointer align-items-center"
                 >
-                    <i class="fa-regular fa-trash-can me-2"></i>
+                    <i class="fa-solid fa-trash-can me-2"></i>
                     <span class="flex-fill me-5">
                         {{ trans('folders.delete')}}
                     </span>

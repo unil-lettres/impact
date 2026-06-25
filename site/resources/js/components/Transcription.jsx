@@ -886,7 +886,7 @@ export default class Transcription extends Component {
                                                 onClick={ () => this.handleDeleteLineClick(section.index) }
                                                 title={ this.deleteLineActionLabel }
                                             >
-                                                <i className="far fa-times-circle"/>
+                                                <i className="fas fa-times-circle"/>
                                             </span>
                                             <span
                                             className="action-toggle-number"

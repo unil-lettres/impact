@@ -26,7 +26,7 @@
                                data-placement="top"
                                class="btn btn-primary float-end extend-validity"
                                title="{{ trans('users.validity.extend', ['months' => config('const.users.validity')]) }}">
-                                <i class="far fa-clock"></i>
+                                <i class="fas fa-clock"></i>
                             </a>
                         @endcan
                     </div>
@@ -158,7 +158,7 @@
                                 <label for="contact" class="col-md-4 form-label">
                                     {{ trans('users.contact') }}
 
-                                    <i class="far fa-question-circle"
+                                    <i class="fas fa-question-circle"
                                        data-bs-toggle="tooltip"
                                        data-placement="top"
                                        title="{{ trans('users.contact.help') }}">

@@ -15,7 +15,7 @@
                 >
                     {{ trans('cards.complete') }}
                 </button>
-                <i class="far fa-question-circle"
+                <i class="fas fa-question-circle"
                     data-bs-toggle="tooltip"
                     data-placement="top"
                     title="{{ trans('cards.edit.tags_are_auto_save') }}">

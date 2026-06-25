@@ -36,7 +36,7 @@
                                         data-bs-toggle="modal"
                                         data-bs-target="#importModal"
                                         title="{{ trans('cards.import') }}">
-                                    <i class="far fa-arrow-alt-circle-up"></i>
+                                    <i class="fas fa-arrow-alt-circle-up"></i>
                                 </button>
                             </div>
 
@@ -45,7 +45,7 @@
                                         id="export-{{ $reference }}"
                                         format="docx"
                                         title="{{ trans('cards.export') }}">
-                                    <i class="far fa-arrow-alt-circle-down"></i>
+                                    <i class="fas fa-arrow-alt-circle-down"></i>
                                 </button>
                             </div>
 

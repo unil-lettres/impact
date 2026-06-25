@@ -42,7 +42,7 @@
                 @endif
                 <i
                     class="d-inline-block text-center width-large"
-                    :class="openedFolder.includes(key) ? 'fa-regular fa-folder-open' : 'fa-solid fa-folder'">
+                    :class="openedFolder.includes(key) ? 'fa-solid fa-folder-open' : 'fa-solid fa-folder'">
                 </i>
             </div>
             <a class="legacy text-black" href="#" wire:click.stop="openFolder({{$folder->id}})">
@@ -81,7 +81,7 @@
                         x-show.important="!openedFolder.includes(key)"
                         @click="toggleOpen($el, key)"
                     >
-                        <i class="d-inline-block text-center width-large fa-regular fa-folder-open me-2"></i>
+                        <i class="d-inline-block text-center width-large fa-solid fa-folder-open me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.folder.expand')}}
                         </span>
@@ -149,7 +149,7 @@
                             wire:click="destroyFolder({{$folder->id}})"
                             class="dropdown-item d-flex cursor-pointer align-items-center"
                         >
-                            <i class="fa-regular fa-trash-can me-2"></i>
+                            <i class="fa-solid fa-trash-can me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.menu.delete')}}
                             </span>

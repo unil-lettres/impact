@@ -76,7 +76,7 @@
                                                 data-bs-action="{{ route('tags.update', $tag->id) }}"
                                                 data-bs-target="#editTagModal"
                                             >
-                                                <i class="far fa-edit"></i>
+                                                <i class="fas fa-edit"></i>
                                             </button>
                                         </span>
                                         @endcan
@@ -86,7 +86,7 @@
                                                 @method('DELETE')
                                                 @csrf
                                                 <button type="submit" class="btn btn-danger" data-bs-toggle="tooltip" data-placement="top" title="{{ trans('tags.delete') }}">
-                                                    <i class="far fa-trash-alt"></i>
+                                                    <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </form>
                                         </span>

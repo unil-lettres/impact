@@ -74,7 +74,7 @@
             <div class="col-12 mb-3 row">
                 <label for="no_emails" class="col-md-4 form-label">
                     {{ trans('cards.no_emails') }}
-                    <i class="far fa-question-circle"
+                    <i class="fas fa-question-circle"
                        data-bs-toggle="tooltip"
                        data-placement="top"
                        title="{{ trans('cards.send_mails') }}">

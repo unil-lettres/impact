@@ -167,7 +167,7 @@
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         dusk="multi-delete-option"
                     >
-                        <i class="fa-regular fa-trash-can me-2"></i>
+                        <i class="fa-solid fa-trash-can me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.delete')}}
                         </span>

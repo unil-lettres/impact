@@ -78,7 +78,7 @@
                                                        data-placement="top"
                                                        class="btn btn-primary"
                                                        title="{{ trans('files.url') }}">
-                                                        <i class="far fa-share-square"></i>
+                                                        <i class="fas fa-share-square"></i>
                                                     </a>
                                                 </span>
                                             @endcan
@@ -94,7 +94,7 @@
                                                                 data-bs-toggle="tooltip"
                                                                 data-placement="top"
                                                                 title="{{ trans('files.delete') }}">
-                                                            <i class="far fa-trash-alt"></i>
+                                                            <i class="fas fa-trash-alt"></i>
                                                         </button>
                                                     </form>
                                                 </span>

@@ -14,7 +14,7 @@
 <div class="col-12 mb-3 row">
     <label for="action-email-message" class="col-md-3 col-form-label">
         {{ trans('states.email_message') }}
-        <i class="far fa-question-circle"
+        <i class="fas fa-question-circle"
            data-bs-toggle="tooltip"
            data-placement="top"
            title="{{ trans('states.email_message_help') }}">

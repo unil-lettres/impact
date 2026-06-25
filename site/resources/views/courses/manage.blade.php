@@ -148,7 +148,7 @@
                                                            data-placement="top"
                                                            class="btn btn-primary{{ $course->managers(true)->count() > 0 ? '' : ' disabled' }}"
                                                            title="{{ trans('courses.send_confirm_delete') }}">
-                                                            <i class="far fa-paper-plane"></i>
+                                                            <i class="fas fa-paper-plane"></i>
                                                         </a>
                                                     </span>
                                                 @endcan
@@ -159,7 +159,7 @@
                                                            data-placement="top"
                                                            class="btn btn-success"
                                                            title="{{ trans('courses.enable') }}">
-                                                            <i class="far fa-eye"></i>
+                                                            <i class="fas fa-eye"></i>
                                                         </a>
                                                     </span>
                                                 @endcan
@@ -171,7 +171,7 @@
                                                            data-placement="top"
                                                            class="btn btn-primary"
                                                            title="{{ trans('courses.edit') }}">
-                                                            <i class="far fa-edit"></i>
+                                                            <i class="fas fa-edit"></i>
                                                         </a>
                                                     </span>
                                                 @endcan
@@ -187,7 +187,7 @@
                                                                     data-bs-toggle="tooltip"
                                                                     data-placement="top"
                                                                     title="{{ trans('courses.disable') }}">
-                                                                <i class="far fa-eye-slash"></i>
+                                                                <i class="fas fa-eye-slash"></i>
                                                             </button>
                                                         </form>
                                                     </span>
@@ -205,7 +205,7 @@
                                                                 data-bs-toggle="tooltip"
                                                                 data-placement="top"
                                                                 title="{{ trans('courses.delete') }}">
-                                                            <i class="far fa-trash-alt"></i>
+                                                            <i class="fas fa-trash-alt"></i>
                                                         </button>
                                                     </form>
                                                 </span>

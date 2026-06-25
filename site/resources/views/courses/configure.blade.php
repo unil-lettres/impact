@@ -24,7 +24,7 @@
                         data-bs-toggle="tooltip"
                         data-placement="top"
                         title="{{ trans('messages.course.archive.info') }}">
-                    <i class="far fa-folder-open"></i>
+                    <i class="fas fa-folder-open"></i>
                     {{ trans('courses.archive') }}
                 </button>
             </form>
@@ -41,7 +41,7 @@
                         data-bs-toggle="tooltip"
                         data-placement="top"
                         title="{{ trans('messages.course.delete.info') }}">
-                    <i class="far fa-trash-alt"></i>
+                    <i class="fas fa-trash-alt"></i>
                     {{ trans('courses.delete') }}
                 </button>
             </form>

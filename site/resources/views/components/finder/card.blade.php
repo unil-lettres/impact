@@ -123,7 +123,7 @@
                             class="dropdown-item d-flex cursor-pointer align-items-center"
                             wire:click="cloneCard({{$card->id}})"
                         >
-                            <i class="fa-regular fa-copy me-2"></i>
+                            <i class="fa-solid fa-copy me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.menu.copy')}}
                             </span>
@@ -167,7 +167,7 @@
                             wire:click="destroyCard({{$card->id}})"
                             class="dropdown-item d-flex cursor-pointer align-items-center"
                         >
-                            <i class="fa-regular fa-trash-can me-2"></i>
+                            <i class="fa-solid fa-trash-can me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.menu.delete')}}
                             </span>

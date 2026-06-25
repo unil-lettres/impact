@@ -107,10 +107,10 @@
                                     {{ $course->description }}
                                 </div>
                                 <div class="expand-button">
-                                    <i class="fa-regular fa-square-plus"></i>
+                                    <i class="fa-solid fa-square-plus"></i>
                                 </div>
                                 <div class="reduce-button">
-                                    <i class="fa-regular fa-square-minus"></i>
+                                    <i class="fa-solid fa-square-minus"></i>
                                 </div>
                             </div>
                         </div>

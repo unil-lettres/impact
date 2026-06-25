@@ -116,7 +116,7 @@
                                                         data-bs-toggle="popover"
                                                         data-bs-trigger="hover click"
                                                         data-bs-content="<em>{{ $invitation->getLink() }}</em>">
-                                                    <i class="far fa-share-square"></i>
+                                                    <i class="fas fa-share-square"></i>
                                                 </button>
                                             </span>
                                         @endif
@@ -129,7 +129,7 @@
                                                data-placement="top"
                                                class="btn btn-primary"
                                                title="{{ trans('invitations.send') }}">
-                                                <i class="far fa-paper-plane"></i>
+                                                <i class="fas fa-paper-plane"></i>
                                             </a>
                                         </span>
                                     @endcan
@@ -144,7 +144,7 @@
                                                         data-bs-toggle="tooltip"
                                                         data-placement="top"
                                                         title="{{ trans('invitations.delete') }}">
-                                                    <i class="far fa-trash-alt"></i>
+                                                    <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </form>
                                         </span>

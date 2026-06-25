@@ -25,7 +25,7 @@
                                    data-placement="top"
                                    class="btn btn-primary float-end"
                                    title="{{ trans('files.url') }}">
-                                    <i class="far fa-share-square"></i>
+                                    <i class="fas fa-share-square"></i>
                                 </a>
                             @endif
                         </div>
@@ -208,7 +208,7 @@
                                                             data-bs-toggle="tooltip"
                                                             data-placement="top"
                                                             title="{{ trans('cards.unlink') }}">
-                                                        <i class="far fa-trash-can"></i>
+                                                        <i class="fas fa-trash-can"></i>
                                                     </button>
                                                 </form>
                                             @endcan

@@ -43,7 +43,7 @@
                        aria-controls="collapseExternalId">
                         {{ trans('courses.create_from_moodle') }}
                     </a>
-                    <i class="far fa-question-circle"
+                    <i class="fas fa-question-circle"
                        data-bs-toggle="tooltip"
                        data-placement="top"
                        title="{{ trans('courses.external.help') }}">

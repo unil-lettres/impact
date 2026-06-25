@@ -26,7 +26,7 @@
                                         title="{{ trans('files.delete') }}"
                                         wire:confirm="{{ trans('messages.confirm.delete') }}"
                                         wire:click="delete({{ $attachment->id }})">
-                                    <i class="far fa-trash-alt"></i>
+                                    <i class="fas fa-trash-alt"></i>
                                 </button>
                             @endcan
 

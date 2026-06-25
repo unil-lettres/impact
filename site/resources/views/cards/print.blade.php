@@ -11,7 +11,7 @@
             print dialog (it won't be loaded because of the d-none).
             Otherwise it won't show up.
         -->
-        <i class="far fa-eye-slash" style="height: 0; overflow: hidden;"></i>
+        <i class="fas fa-eye-slash" style="height: 0; overflow: hidden;"></i>
 
         <div class="d-print-none d-flex align-items-center justify-content-center vh-100 text-center">
             <div class="fs-4 ">
@@ -29,7 +29,7 @@
                         <li>
                             {{ $card->title }}
                             @cannot('view', $card)
-                                <i class="far fa-eye-slash"></i>
+                                <i class="fas fa-eye-slash"></i>
                             @endcan
                         </li>
                     @endcan @endforeach

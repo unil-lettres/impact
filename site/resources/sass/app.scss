@@ -7,7 +7,6 @@
   $primary: #05a69d,
 );
 @use 'pkg:@fortawesome/fontawesome-free/scss/fontawesome' as fa;
-@use 'pkg:@fortawesome/fontawesome-free/scss/regular' as fa-regular;
 @use 'pkg:@fortawesome/fontawesome-free/scss/solid' as fa-solid;
 @use 'pkg:@uppy/core/css/style.css' as uppy-core;
 @use 'pkg:@uppy/dashboard/css/style.css' as uppy-dashboard;

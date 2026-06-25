@@ -52,7 +52,7 @@
             <div class="col-12 mb-3 row">
                 <label class="col-md-4 col-form-label">
                     {{ trans('cards.extract') }}
-                    <i class="far fa-question-circle"
+                    <i class="fas fa-question-circle"
                        data-bs-toggle="tooltip"
                        data-placement="top"
                        title="{{ trans('cards.extract_help') }}">

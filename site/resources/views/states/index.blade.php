@@ -72,7 +72,7 @@
                                                             data-placement="top"
                                                             {{ Helpers::isStateReferenced($state) ? 'disabled' : '' }}
                                                             title="{{ trans('states.delete') }}">
-                                                        <i class="far fa-trash-alt"></i>
+                                                        <i class="fas fa-trash-alt"></i>
                                                     </button>
                                                 </form>
                                             </span>
@@ -123,7 +123,7 @@
                                     <div class="col-12 mb-3 row">
                                         <label for="managers_only" class="col-md-3 col-form-label">
                                             {{ trans('states.managers_only') }}
-                                            <i class="far fa-question-circle"
+                                            <i class="fas fa-question-circle"
                                                data-bs-toggle="tooltip"
                                                data-placement="top"
                                                title="{{ trans('states.managers_only_help') }}">

@@ -63,4 +63,9 @@ return [
     'complete' => 'Complete',
     'navigation.previous' => 'Previous card',
     'navigation.next' => 'Next card',
+    'leave_page.title' => 'You are about to leave the page',
+    'leave_page.body' => 'All changes currently being edited will be lost if you don\'t save.',
+    'leave_page.continue_editing' => 'Continue editing',
+    'leave_page.leave_without_saving' => 'Leave without saving',
+    'leave_page.save_and_leave' => 'Save and leave',
 ];

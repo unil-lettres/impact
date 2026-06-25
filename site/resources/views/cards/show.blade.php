@@ -99,6 +99,35 @@
                 </div>
             </div>
         </div>
+
+        {{-- Modal: confirm before leaving the page --}}
+        <div class="modal fade" id="leavePageModal" tabindex="-1" aria-labelledby="leavePageModalLabel" data-bs-backdrop="static" data-bs-keyboard="false">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="leavePageModalLabel">
+                            <i class="fas fa-exclamation-triangle text-warning me-2"></i>
+                            {{ trans('cards.leave_page.title') }}
+                        </h5>
+                    </div>
+                    <div class="modal-body">
+                        {{ trans('cards.leave_page.body') }}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" id="leave-continue-editing">
+                            {{ trans('cards.leave_page.continue_editing') }}
+                        </button>
+                        <button type="button" class="btn btn-danger" id="leave-without-saving">
+                            {{ trans('cards.leave_page.leave_without_saving') }}
+                        </button>
+                        <button type="button" class="btn btn-primary" id="leave-save-and-quit">
+                            <span class="spinner-border spinner-border-sm d-none me-1" role="status" aria-hidden="true" id="leave-save-spinner"></span>
+                            {{ trans('cards.leave_page.save_and_leave') }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     @endsection
 @endcan
 
@@ -159,4 +188,81 @@
         }());
     </script>
     @stack("scripts-boxes")
+
+    <script>
+        (function () {
+            let clickedLink = null;
+            const leavePageModalEl = document.getElementById('leavePageModal');
+            const saveAndQuitBtn = document.getElementById('leave-save-and-quit');
+
+            if (!leavePageModalEl) return;
+
+            leavePageModalEl.addEventListener('shown.bs.modal', function (e) {
+                saveAndQuitBtn.focus();
+            });
+
+            function getLeavePageModal() {
+                return bootstrap.Modal.getOrCreateInstance(leavePageModalEl);
+            }
+
+            function isAnyBoxEditing() {
+                return Object.values(window.editors || {}).some(Boolean);
+            }
+
+            // Intercept all link clicks on the page
+            document.addEventListener('click', function (event) {
+                const link = event.target.closest('a[href]');
+                if (!link) return;
+
+                const href = link.getAttribute('href');
+                if (!href || href === '#') return;
+
+                if (!isAnyBoxEditing()) return;
+
+                event.preventDefault();
+                event.stopPropagation();
+                clickedLink = link;
+                getLeavePageModal().show();
+            }, true);
+
+            document.getElementById('leave-continue-editing').addEventListener('click', function () {
+                getLeavePageModal().hide();
+                clickedLink.focus();
+                clickedLink = null;
+            });
+
+            document.getElementById('leave-without-saving').addEventListener('click', function () {
+                getLeavePageModal().hide();
+                clickedLink.focus();
+                const url = clickedLink.href;
+                clickedLink = null;
+                if (url) window.location.href = url;
+            });
+
+            saveAndQuitBtn.addEventListener('click', async function () {
+                const btn = this;
+                const spinner = document.getElementById('leave-save-spinner');
+                btn.disabled = true;
+                spinner.classList.remove('d-none');
+
+                const savers = window.boxSavers || {};
+                const editingBoxes = Object.entries(window.editors || {})
+                    .filter(([, editing]) => editing)
+                    .map(([ref]) => ref);
+
+                try {
+                    await Promise.all(editingBoxes.map(ref => savers[ref] ? savers[ref]() : Promise.resolve()));
+                    getLeavePageModal().hide();
+                    clickedLink.focus();
+                    const url = clickedLink.href;
+                    clickedLink = null;
+                    if (url) window.location.href = url;
+                } catch (error) {
+                    console.error('Save failed', error);
+                    btn.disabled = false;
+                    spinner.classList.add('d-none');
+                }
+            });
+        }());
+    </script>
 @endsection

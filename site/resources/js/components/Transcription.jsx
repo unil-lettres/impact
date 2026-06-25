@@ -137,6 +137,9 @@ export default class Transcription extends Component {
             );
         }
 
+        window.boxSavers = window.boxSavers || {};
+        window.boxSavers[this.props.reference] = () => this.state.editable ? this.save() : Promise.resolve();
+
         this.componentDidMountOrUpdate();
     }
 
@@ -193,8 +196,14 @@ export default class Transcription extends Component {
         // If the user is not in edit mode, we enter it.
         // Otherwise, we save the transcription.
         if (this.state.editable) {
-            this.setState({ editable: false });
-            this.save();
+            this.save().then(response => {
+                this.setState({
+                    editable: false,
+                    original: _.cloneDeep(this.state.lines)
+                });
+            }).catch(error => {
+                this.editorErrorMsg.classList.remove("d-none");
+            });
         } else {
             this.enterEditMode();
         }
@@ -220,22 +229,10 @@ export default class Transcription extends Component {
         this.setState({ ...newState });
     }
 
-    save() {
-        axios.put('/cards/' + this.card.id + '/transcription', {
+    async save() {
+        return axios.put('/cards/' + this.card.id + '/transcription', {
             transcription: this.state.lines,
             box: this.props.reference
-        }).then(response => {
-            console.log(response);
-            this.setState({
-                // We copy the saved content to the original state
-                original: _.cloneDeep(this.state.lines)
-            });
-        }).catch(error => {
-            console.log(error);
-            // Display an error message to the user
-            this.editorErrorMsg
-                .classList
-                .remove("d-none");
         });
     }
 

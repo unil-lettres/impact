@@ -149,6 +149,9 @@ export default class Editor extends Component {
         if(this.cancelButton) {
             this.cancelButton.addEventListener('click', this.cancel, false);
         }
+
+        window.boxSavers = window.boxSavers || {};
+        window.boxSavers[this.props.reference] = () => this.state.editable ? this.save() : Promise.resolve();
     }
 
     componentDidUpdate() {
@@ -185,74 +188,67 @@ export default class Editor extends Component {
         let editorEmptyTranscriptionMsg = document.getElementById(this.editorEmptyTranscriptionMsgId);
 
         if(this.editButton) {
-            switch (this.state.editable) {
-                case true:
-                    editorErrorMsgId.classList.add('d-none');
-                    editorEmptyTranscriptionMsg.classList.add('d-none');
-                    editor.classList.add('editing');
-                    this.editButton.classList.remove("btn-primary");
-                    this.editButton.classList.add('btn-success');
-                    this.editButton.innerText = this.saveLabel;
-                    this.cancelButton.classList.remove("d-none");
-                    this.hideButton?.classList.add("d-none");
-                    break;
-                case false:
-                default:
-                    editor.classList.remove("editing");
-                    this.editButton.classList.remove("btn-success");
-                    this.editButton.classList.add('btn-primary');
-                    this.editButton.textContent = this.editLabel;
-                    this.cancelButton.classList.add("d-none");
-                    this.hideButton?.classList.remove("d-none");
+            if (this.state.editable) {
+                editorErrorMsgId.classList.add('d-none');
+                editorEmptyTranscriptionMsg.classList.add('d-none');
+                editor.classList.add('editing');
+                this.editButton.classList.remove("btn-primary");
+                this.editButton.classList.add('btn-success');
+                this.editButton.innerText = this.saveLabel;
+                this.cancelButton.classList.remove("d-none");
+                this.hideButton?.classList.add("d-none");
+            } else {
+                editor.classList.remove("editing");
+                this.editButton.classList.remove("btn-success");
+                this.editButton.classList.add('btn-primary');
+                this.editButton.textContent = this.editLabel;
+                this.cancelButton.classList.add("d-none");
+                this.hideButton?.classList.remove("d-none");
 
-                    // If editor is empty, then add the empty message
-                    if(!this.state.html) {
-                        editorEmptyTranscriptionMsg.classList.remove('d-none');
-                    }
+                // If editor is empty, then add the empty message
+                if(!this.state.html) {
+                    editorEmptyTranscriptionMsg.classList.remove('d-none');
+                }
             }
         }
     }
 
     edit() {
-        switch (!this.state.editable) {
-            case false:
-                flushSync(() => {
-                    this.setState({
-                        editable: false
-                    })
-                });
+        if (this.state.editable) {
+            // Leave edit mode and save content
 
-                this.save();
-                break;
-            case true:
-            default:
-                flushSync(() => {
-                    this.setState({
-                        editable: true
-                    })
+            flushSync(() => {
+                this.setState({
+                    editable: false
+                })
+            });
+
+            this.save().then(response => {
+                this.setState({
+                    original: _.cloneDeep(this.state.html)
                 });
+            }).catch(error => {
+                document.getElementById(this.editorErrorMsgId)
+                    .classList
+                    .remove("d-none");
+            });
+        } else {
+            // Enter edit mode
+
+            flushSync(() => {
+                this.setState({
+                    editable: true
+                })
+            });
         }
 
         this.updateUi(this.editor.isReadOnly);
     }
 
-    save() {
-        axios.put('/cards/' + this.cardId + '/editor', {
+    async save() {
+        return axios.put('/cards/' + this.cardId + '/editor', {
             html: this.state.html,
             box: this.props.reference
-        }).then(response => {
-            console.log(response);
-            this.setState({
-                // We copy the saved html to the original state
-                // We use cloneDeep to avoid a reference
-                original: _.cloneDeep(this.state.html)
-            });
-        }).catch(error => {
-            console.log(error)
-            // Display an error message to the user
-            document.getElementById(this.editorErrorMsgId)
-                .classList
-                .remove("d-none");
         });
     }
 
@@ -260,10 +256,7 @@ export default class Editor extends Component {
         if(this.state.editable) {
             flushSync(() => {
                 this.setState({
-                        // We restore the html initially loaded from the db
-                        // We use cloneDeep to avoid a reference
                         html: _.cloneDeep(this.state.original ?? ''),
-                        // We disable the edition mode
                         editable: false
                     },
                     () => this.updateUi()

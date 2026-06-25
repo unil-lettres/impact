@@ -64,4 +64,9 @@ return [
     'complete' => 'Terminer',
     'navigation.previous' => 'Fiche précédente',
     'navigation.next' => 'Fiche suivante',
+    'leave_page.title' => 'Vous êtes sur le point de quitter la page',
+    'leave_page.body' => 'Toutes vos modifications en cours d\'édition seront perdues si vous n\'enregistrez pas.',
+    'leave_page.continue_editing' => 'Continuer à éditer',
+    'leave_page.leave_without_saving' => 'Quitter sans enregistrer',
+    'leave_page.save_and_leave' => 'Enregistrer et quitter',
 ];

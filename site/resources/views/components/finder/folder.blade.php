@@ -34,7 +34,7 @@
                 @endfor
                 @if ($items->count() > 0)
                     <i
-                        class="fa-solid fa-caret-down d-inline-block text-center width-small transition-transform"
+                        class="fas fa-caret-down d-inline-block text-center width-small transition-transform"
                         :class="openedFolder.includes(key) || 'rotate'"
                     ></i>
                 @else
@@ -42,7 +42,7 @@
                 @endif
                 <i
                     class="d-inline-block text-center width-large"
-                    :class="openedFolder.includes(key) ? 'fa-solid fa-folder-open' : 'fa-solid fa-folder'">
+                    :class="openedFolder.includes(key) ? 'fas fa-folder-open' : 'fas fa-folder'">
                 </i>
             </div>
             <a class="legacy text-black" href="#" wire:click.stop="openFolder({{$folder->id}})">
@@ -64,14 +64,14 @@
                     aria-expanded="false"
                     @click.stop="openMenu($el)"
                 >
-                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                    <i class="fas fa-ellipsis-vertical"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-with-icon">
                     <li
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         wire:click="openFolder({{$folder->id}})"
                     >
-                        <i class="fa-solid fa-square-arrow-up-right me-2"></i>
+                        <i class="fas fa-square-arrow-up-right me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.open')}}
                         </span>
@@ -81,7 +81,7 @@
                         x-show.important="!openedFolder.includes(key)"
                         @click="toggleOpen($el, key)"
                     >
-                        <i class="d-inline-block text-center width-large fa-solid fa-folder-open me-2"></i>
+                        <i class="d-inline-block text-center width-large fas fa-folder-open me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.folder.expand')}}
                         </span>
@@ -94,7 +94,7 @@
                         x-show.important="openedFolder.includes(key)"
                         @click="toggleOpen($el, key)"
                     >
-                        <i class="fa-solid fa-folder me-2"></i>
+                        <i class="fas fa-folder me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.folder.collapse')}}
                         </span>
@@ -110,7 +110,7 @@
                             data-bs-target="#{{$modalMoveId}}"
                             :data-bs-keys="[key]"
                         >
-                            <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
+                            <i class="fas fa-arrow-right-to-bracket me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.move_in')}}
                             </span>
@@ -119,7 +119,7 @@
                             class="dropdown-item d-flex cursor-pointer align-items-center"
                             wire:click="cloneFolder({{$folder->id}})"
                         >
-                            <i class="fa-solid fa-clone me-2"></i>
+                            <i class="fas fa-clone me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.menu.copy')}}
                             </span>
@@ -130,7 +130,7 @@
                             data-bs-target="#{{$modalCloneId}}"
                             :data-bs-keys="[key]"
                         >
-                            <i class="fa-solid fa-file-import me-2"></i>
+                            <i class="fas fa-file-import me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.clone_in')}}
                             </span>
@@ -139,7 +139,7 @@
                             class="dropdown-item d-flex cursor-pointer align-items-center"
                             @click="renameFolder({{$folder->id}}, '{{addslashes($folder->title)}}')"
                         >
-                            <i class="fa-solid fa-i-cursor me-2"></i>
+                            <i class="fas fa-i-cursor me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.menu.rename')}}
                             </span>
@@ -149,7 +149,7 @@
                             wire:click="destroyFolder({{$folder->id}})"
                             class="dropdown-item d-flex cursor-pointer align-items-center"
                         >
-                            <i class="fa-solid fa-trash-can me-2"></i>
+                            <i class="fas fa-trash-can me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.menu.delete')}}
                             </span>
@@ -163,7 +163,7 @@
                         @endif
                     >
                         <span class="flex-fill me-5">
-                            <i class="fa-solid fa-print me-2"></i>
+                            <i class="fas fa-print me-2"></i>
                             {{ trans('courses.finder.menu.print')}}
                         </span>
                     </li>

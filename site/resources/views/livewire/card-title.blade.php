@@ -7,7 +7,7 @@
                 wire:click="edit()"
             >
                 {{ $card->title }}
-                <i wire:loading.remove class="fs-6 fa-solid fa-pen"></i>
+                <i wire:loading.remove class="fs-6 fas fa-pen"></i>
                 <div wire:loading class="spinner-border text-primary spinner-border-sm fs-5" role="status">
                     <span class="visually-hidden">Loading...</span>
                 </div>

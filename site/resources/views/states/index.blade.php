@@ -51,10 +51,10 @@
                                          class="d-flex align-items-center list-group-item gap-2 {{ $state->id == $activeState->id ? 'selected-bg ' : '' }} {{ !Helpers::isStateReadOnly($state) ? 'drag' : '' }}">
                                         @can('view', $state)
                                             @if (Helpers::isStateReadOnly($state))
-                                                <i class="fa-solid fa-grip-lines"></i>
+                                                <i class="fas fa-grip-lines"></i>
                                                 <span class="text-muted lh-lg">{{ $state->name }}</span>
                                             @else
-                                                <i class="fa-solid fa-bars"></i>
+                                                <i class="fas fa-bars"></i>
                                                 <a class="legacy flex-fill lh-sm" href="{{ route('courses.configure.states', [$course->id, 'state' => $state->id]) }}">
                                                     {{ $state->name }}
                                                 </a>

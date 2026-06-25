@@ -11,7 +11,7 @@
                                     <a href="{{ route('files.download', ['file' => $card->file->id, 'card' => $card->id]) }}"
                                        class="btn btn-primary"
                                        title="{{ trans('files.download') }}">
-                                        <i class="fa-solid fa-download"></i>
+                                        <i class="fas fa-download"></i>
                                     </a>
                                 </span>
                             @endcan

@@ -18,7 +18,7 @@
         href="{{ $previousCard ? route('cards.show', $previousCard->id) : '#' }}"
         dusk="navigation-previous-card"
     >
-        <i class="fa-solid fa-arrow-left icon-link-hover-left"></i>
+        <i class="fas fa-arrow-left icon-link-hover-left"></i>
         {{ trans('cards.navigation.previous') }}
     </a>
     <span class="text-light">|</span>
@@ -28,7 +28,7 @@
         dusk="navigation-next-card"
     >
         {{ trans('cards.navigation.next') }}
-        <i class="fa-solid fa-arrow-right"></i>
+        <i class="fas fa-arrow-right"></i>
     </a>
 @endsection
 
@@ -42,7 +42,7 @@
                         data-bs-toggle="tooltip"
                         data-placement="top"
                         title="{{ trans('cards.hide_boxes') }}">
-                    <i class="fa-solid fa-video"></i>
+                    <i class="fas fa-video"></i>
                 </button>
             @endcan
             @can('update', $card)

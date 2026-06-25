@@ -38,7 +38,7 @@
                 aria-expanded="false"
                 @click="disabledPrint = !document.getElementsByClassName('finder-card').length"
             >
-                <i class="fa-solid fa-ellipsis-vertical"></i>
+                <i class="fas fa-ellipsis-vertical"></i>
             </button>
             <ul class="dropdown-menu dropdown-with-icon">
                 <li
@@ -47,7 +47,7 @@
                     :class="disabledPrint && 'disabled'"
                     data-trigger-print="{{ route('cards.print', ['course' => $course->id])}}"
                 >
-                    <i class="fa-solid fa-print me-2"></i>
+                    <i class="fas fa-print me-2"></i>
                     <span class="flex-fill me-5">
                         {{ trans('courses.print')}}
                     </span>

@@ -32,7 +32,7 @@
                                            type="button"
                                            id="button-clear-file"
                                            href="{{ route('admin.files.manage', ['filter' => $filter]) }}">
-                                            <i class="fa-solid fa-xmark"></i>
+                                            <i class="fas fa-xmark"></i>
                                         </a>
                                     @endif
 
@@ -54,7 +54,7 @@
                                aria-haspopup="true"
                                aria-expanded="false">
                                 {{ trans('admin.filters') }}
-                                <i class="fa-solid{{ $filter ? ' fa-check' : '' }}"></i>
+                                <i class="fas{{ $filter ? ' fa-check' : '' }}"></i>
                             </a>
                             <div class="dropdown-menu" aria-labelledby="dropdownFilesFiltersLink">
                                 <a class="dropdown-item" href="{{ route('admin.files.manage', ['search' => $search]) }}">
@@ -143,7 +143,7 @@
                                                        data-placement="top"
                                                        class="btn btn-primary"
                                                        title="{{ trans('files.download') }}">
-                                                        <i class="fa-solid fa-download"></i>
+                                                        <i class="fas fa-download"></i>
                                                     </a>
                                                 </span>
                                             @endcan

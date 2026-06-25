@@ -84,7 +84,7 @@
             </div>
         </div>
         <div x-show.important="selectedItems.length > 0" class="bg-light rounded-pill px-3 py-1 d-flex align-items-center" @click.stop>
-            <a href="#" class="me-2 text-body" @click="selectedItems = []"><i class="fa-solid fa-xmark"></i></a>
+            <a href="#" class="me-2 text-body" @click="selectedItems = []"><i class="fas fa-xmark"></i></a>
             <span>
                 <strong x-text="selectedItems.length"></strong>
                 {{ trans('courses.finder.selected') }}
@@ -99,7 +99,7 @@
                     aria-expanded="false"
                     @click.stop="openMenu($el, true)"
                 >
-                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                    <i class="fas fa-ellipsis-vertical"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-with-icon">
                     <li
@@ -121,7 +121,7 @@
                         :data-bs-keys="selectedItems"
                         dusk="multi-movein-option"
                     >
-                        <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
+                        <i class="fas fa-arrow-right-to-bracket me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.move_in')}}
                         </span>
@@ -131,7 +131,7 @@
                         wire:click="cloneMultiple(selectedItems)"
                         dusk="multi-copy-option"
                     >
-                        <i class="fa-solid fa-clone me-2"></i>
+                        <i class="fas fa-clone me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.copy')}}
                         </span>
@@ -143,7 +143,7 @@
                         :data-bs-keys="selectedItems"
                         dusk="multi-clonein-option"
                     >
-                        <i class="fa-solid fa-file-import me-2"></i>
+                        <i class="fas fa-file-import me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.clone_in')}}
                         </span>
@@ -156,7 +156,7 @@
                         :data-bs-cards="selectedItems.filter(key => key.includes('card')).map(key => key.replace('card-', ''))"
                         dusk="multi-updatestate-option"
                     >
-                        <i class="fa-solid fa-timeline me-2"></i>
+                        <i class="fas fa-timeline me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.dialog.update_state.title')}}
                         </span>
@@ -167,7 +167,7 @@
                         class="dropdown-item d-flex cursor-pointer align-items-center"
                         dusk="multi-delete-option"
                     >
-                        <i class="fa-solid fa-trash-can me-2"></i>
+                        <i class="fas fa-trash-can me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.delete')}}
                         </span>
@@ -179,7 +179,7 @@
                         :class="hasCardsInSelection() || 'disabled'"
                         @click="closeAllDropDowns(); window.printable.open(generatePrintUrl());"
                     >
-                        <i class="fa-solid fa-print me-2"></i>
+                        <i class="fas fa-print me-2"></i>
                         <span class="flex-fill me-5">
                             {{ trans('courses.finder.menu.print')}}
                         </span>
@@ -200,8 +200,8 @@
                 <div {!! Helpers::finderSortHTMLAttributes('title', $this->sortColumn, $this->sortDirection) !!}>
                     <div>{{ trans('courses.finder.name') }}</div>
                     <div>
-                        <i class="fa-solid fa-arrow-down"></i>
-                        <i class="fa-solid fa-xmark d-none"></i>
+                        <i class="fas fa-arrow-down"></i>
+                        <i class="fas fa-xmark d-none"></i>
                     </div>
                 </div>
                 <button class="btn ms-3" @click="expandAll()">
@@ -216,8 +216,8 @@
             <div {!! Helpers::finderSortHTMLAttributes('state_name', $this->sortColumn, $this->sortDirection) !!}>
                 <div>{{ trans('courses.finder.state') }}</div>
                 <div>
-                    <i class="fa-solid fa-arrow-down"></i>
-                    <i class="fa-solid fa-xmark d-none"></i>
+                    <i class="fas fa-arrow-down"></i>
+                    <i class="fas fa-xmark d-none"></i>
                 </div>
             </div>
         </div>
@@ -225,8 +225,8 @@
             <div {!! Helpers::finderSortHTMLAttributes('created_at', $this->sortColumn, $this->sortDirection) !!}>
                 <div>{{ trans('courses.finder.created') }}</div>
                 <div>
-                    <i class="fa-solid fa-arrow-down"></i>
-                    <i class="fa-solid fa-xmark d-none"></i>
+                    <i class="fas fa-arrow-down"></i>
+                    <i class="fas fa-xmark d-none"></i>
                 </div>
             </div>
         </div>
@@ -234,8 +234,8 @@
             <div {!! Helpers::finderSortHTMLAttributes('holders_list', $this->sortColumn, $this->sortDirection) !!}>
                 <div>{{ trans('courses.finder.holders') }}</div>
                 <div>
-                    <i class="fa-solid fa-arrow-down"></i>
-                    <i class="fa-solid fa-xmark d-none"></i>
+                    <i class="fas fa-arrow-down"></i>
+                    <i class="fas fa-xmark d-none"></i>
                 </div>
             </div>
         </div>
@@ -243,8 +243,8 @@
             <div {!! Helpers::finderSortHTMLAttributes('tags_list', $this->sortColumn, $this->sortDirection) !!}>
                 <div>{{ trans('courses.finder.tags') }}</div>
                 <div>
-                    <i class="fa-solid fa-arrow-down"></i>
-                    <i class="fa-solid fa-xmark d-none"></i>
+                    <i class="fas fa-arrow-down"></i>
+                    <i class="fas fa-xmark d-none"></i>
                 </div>
             </div>
         </div>

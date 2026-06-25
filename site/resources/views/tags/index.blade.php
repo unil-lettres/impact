@@ -47,13 +47,13 @@
                                 <th scope="col">
                                     <a href="{{route('courses.configure.tags', ['course' => $course, 'tag_order' => 'name', 'tag_direction' => $tagColumns['name']])}}" class="icon-link link-dark link-underline-opacity-0">
                                         {{ trans("tags.name") }}
-                                        <i class="fa-solid fa-sort-{{['asc' => 'down', 'desc' => 'up'][$tagColumns['name']]}}"></i>
+                                        <i class="fas fa-sort-{{['asc' => 'down', 'desc' => 'up'][$tagColumns['name']]}}"></i>
                                     </a>
                                 </th>
                                 <th scope="col" class="text-end">
                                     <a href="{{route('courses.configure.tags', ['course' => $course, 'tag_order' => 'cards_count', 'tag_direction' => $tagColumns['cards_count']])}}" class="icon-link link-dark link-underline-opacity-0">
                                         {{ trans("tags.cards_count") }}
-                                        <i class="fa-solid fa-sort-{{['asc' => 'down', 'desc' => 'up'][$tagColumns['cards_count']]}}"></i>
+                                        <i class="fas fa-sort-{{['asc' => 'down', 'desc' => 'up'][$tagColumns['cards_count']]}}"></i>
                                     </a>
                                 </th>
                                 <th></th>

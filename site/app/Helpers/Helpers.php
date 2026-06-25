@@ -494,7 +494,7 @@ class Helpers
             return '';
         }
 
-        return '<i class="fa-solid fa-check"></i>';
+        return '<i class="fas fa-check"></i>';
     }
 
     /**

@@ -4,7 +4,7 @@
             @if(Helpers::isFileStatus($card->file, \App\Enums\FileStatus::Ready))
                 <div class="fa-2x">
                     <a href="#" onClick="window.location.reload()">
-                        <i class="fa-solid fa-rotate-right text-secondary"></i>
+                        <i class="fas fa-rotate-right text-secondary"></i>
                     </a>
                 </div>
 

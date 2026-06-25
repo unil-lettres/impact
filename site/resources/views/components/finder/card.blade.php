@@ -41,7 +41,7 @@
                 class="text-decoration-none @can('update', $card) text-primary @else text-black @endcan"
                 @click.stop
             >
-                <i class="d-inline-block fa-solid fa-file-lines text-center width-large"></i>
+                <i class="d-inline-block fas fa-file-lines text-center width-large"></i>
             </a>
             <a
                 href="{{ route('cards.show', $card->id) }}"
@@ -51,7 +51,7 @@
                 {{ $card->title }}
             </a>
         @else
-            <i class="d-inline-block fa-solid fa-file-lines text-center width-large"></i>
+            <i class="d-inline-block fas fa-file-lines text-center width-large"></i>
             <span class="text-secondary">{{ $card->title }}</span>
         @endcan
     </div>
@@ -93,14 +93,14 @@
                     aria-expanded="false"
                     @click.stop="openMenu($el)"
                 >
-                    <i class="fa-solid fa-ellipsis-vertical"></i>
+                    <i class="fas fa-ellipsis-vertical"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-with-icon">
                     @can('view', $card)
                         <li class="dropdown-item d-flex cursor-pointer align-items-center"
                             @click="window.location = '{{ route('cards.show', $card->id) }}'"
                         >
-                            <i class="fa-solid fa-square-arrow-up-right me-2"></i>
+                            <i class="fas fa-square-arrow-up-right me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.menu.open')}}
                             </span>
@@ -114,7 +114,7 @@
                             data-bs-target="#{{$modalMoveId}}"
                             :data-bs-keys="[key]"
                         >
-                            <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
+                            <i class="fas fa-arrow-right-to-bracket me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.move_in')}}
                             </span>
@@ -123,7 +123,7 @@
                             class="dropdown-item d-flex cursor-pointer align-items-center"
                             wire:click="cloneCard({{$card->id}})"
                         >
-                            <i class="fa-solid fa-copy me-2"></i>
+                            <i class="fas fa-copy me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.menu.copy')}}
                             </span>
@@ -134,7 +134,7 @@
                             data-bs-target="#{{$modalCloneId}}"
                             :data-bs-keys="[key]"
                         >
-                            <i class="fa-solid fa-file-import me-2"></i>
+                            <i class="fas fa-file-import me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.clone_in')}}
                             </span>
@@ -147,7 +147,7 @@
                                 data-bs-cards="{{ $card->id }}"
                                 data-bs-state="{{ $card->state->id }}"
                             >
-                                <i class="fa-solid fa-timeline me-2"></i>
+                                <i class="fas fa-timeline me-2"></i>
                                 <span class="flex-fill me-5">
                                     {{ trans('courses.finder.dialog.update_state.title')}}
                                 </span>
@@ -156,7 +156,7 @@
                                 class="dropdown-item d-flex cursor-pointer align-items-center"
                                 @click="renameCard({{$card->id}}, '{{addslashes($card->title)}}')"
                             >
-                                <i class="fa-solid fa-i-cursor me-2"></i>
+                                <i class="fas fa-i-cursor me-2"></i>
                                 <span class="flex-fill me-5">
                                     {{ trans('courses.finder.menu.rename')}}
                                 </span>
@@ -167,7 +167,7 @@
                             wire:click="destroyCard({{$card->id}})"
                             class="dropdown-item d-flex cursor-pointer align-items-center"
                         >
-                            <i class="fa-solid fa-trash-can me-2"></i>
+                            <i class="fas fa-trash-can me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.menu.delete')}}
                             </span>
@@ -179,7 +179,7 @@
                             class="dropdown-item d-flex cursor-pointer align-items-center"
                             @click="closeAllDropDowns(); window.printable.open('{{ route('cards.print', ['cards' => [$card->id]])}}');"
                         >
-                            <i class="fa-solid fa-print me-2"></i>
+                            <i class="fas fa-print me-2"></i>
                             <span class="flex-fill me-5">
                                 {{ trans('courses.finder.menu.print')}}
                             </span>

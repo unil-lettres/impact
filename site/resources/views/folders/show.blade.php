@@ -1,7 +1,7 @@
 @extends('layouts.app-base')
 
 @section('title')
-    <i class="fa-solid fa-folder"></i>
+    <i class="fas fa-folder"></i>
     {{ $folder->title }}
 @endsection
 @can('view', $folder)
@@ -38,7 +38,7 @@
                 aria-expanded="false"
                 @click="disabledPrint = !document.getElementsByClassName('finder-card').length"
             >
-                <i class="fa-solid fa-ellipsis-vertical"></i>
+                <i class="fas fa-ellipsis-vertical"></i>
             </button>
             <ul class="dropdown-menu dropdown-with-icon">
                 @can('manage', $folder)
@@ -49,7 +49,7 @@
                     data-bs-reload
                     class="dropdown-item d-flex cursor-pointer align-items-center"
                 >
-                    <i class="fa-solid fa-arrow-right-to-bracket me-2"></i>
+                    <i class="fas fa-arrow-right-to-bracket me-2"></i>
                     <span class="flex-fill me-5">
                         {{ trans('folders.move') }}
                     </span>
@@ -58,7 +58,7 @@
                     class="dropdown-item d-flex cursor-pointer align-items-center"
                     onClick="folderUtils.dispatchCustomEvent('finder-clone-folder', {folderId: {{$folder->id}}})"
                 >
-                    <i class="fa-solid fa-clone me-2"></i>
+                    <i class="fas fa-clone me-2"></i>
                     <span class="flex-fill me-5">
                         {{ trans('folders.copy')}}
                     </span>
@@ -69,7 +69,7 @@
                     data-bs-target="#modalCloneIn"
                     data-bs-keys="folder-{{$folder->id}}"
                 >
-                    <i class="fa-solid fa-file-import me-2"></i>
+                    <i class="fas fa-file-import me-2"></i>
                     <span class="flex-fill me-5">
                         {{ trans('folders.clone_in')}}
                     </span>
@@ -78,7 +78,7 @@
                     class="dropdown-item d-flex cursor-pointer align-items-center"
                     onClick="folderUtils.dispatchCustomEvent('finder-rename-folder', {folderId: {{$folder->id}}, title: '{{addslashes($folder->title)}}'})"
                 >
-                    <i class="fa-solid fa-i-cursor me-2"></i>
+                    <i class="fas fa-i-cursor me-2"></i>
                     <span class="flex-fill me-5">
                         {{ trans('folders.rename') }}
                     </span>
@@ -87,7 +87,7 @@
                     onClick="folderUtils.destroyFolder({{$folder->id}})"
                     class="dropdown-item d-flex cursor-pointer align-items-center"
                 >
-                    <i class="fa-solid fa-trash-can me-2"></i>
+                    <i class="fas fa-trash-can me-2"></i>
                     <span class="flex-fill me-5">
                         {{ trans('folders.delete')}}
                     </span>
@@ -99,7 +99,7 @@
                     data-trigger-print="{{ route('cards.print', ['folder' => $folder->id])}}"
                     :class="disabledPrint && 'disabled'"
                 >
-                    <i class="fa-solid fa-print me-2"></i>
+                    <i class="fas fa-print me-2"></i>
                     <span class="flex-fill me-5">
                         {{ trans('folders.print')}}
                     </span>

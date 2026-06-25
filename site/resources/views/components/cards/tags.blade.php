@@ -31,7 +31,7 @@
             <div>{{ trans('cards.tags') }}:</div>
             <span x-text="tagsInline"></span>
             <div x-show="loading" x-cloak class="spinner-border text-primary spinner-border-sm fs-5 align-self-center"></div>
-            <i x-show="canEdit" x-cloak class="fs-6 fa-solid fa-pen align-self-center"></i>
+            <i x-show="canEdit" x-cloak class="fs-6 fas fa-pen align-self-center"></i>
         </div>
     </div>
 </div>

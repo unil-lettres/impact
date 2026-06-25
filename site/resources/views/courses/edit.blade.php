@@ -28,7 +28,7 @@
                                             data-bs-toggle="tooltip"
                                             data-placement="top"
                                             title="{{ trans('courses.unsync') }}">
-                                        <i class="fa-solid fa-link-slash"></i>
+                                        <i class="fas fa-link-slash"></i>
                                     </button>
                                 </form>
                             @endcan

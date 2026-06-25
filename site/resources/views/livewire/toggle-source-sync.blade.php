@@ -4,7 +4,7 @@
     wire:click="toggle"
 >
     <div wire:loading.remove>
-        <i class="fa-solid fa-arrow-right-arrow-left"></i>
+        <i class="fas fa-arrow-right-arrow-left"></i>
     </div>
 
     <div wire:loading class="spinner-border text-light spinner-border-sm fs-5" role="status">

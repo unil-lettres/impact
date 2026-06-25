@@ -15,7 +15,7 @@
                aria-haspopup="true"
                aria-expanded="false">
                 {{ trans('admin.filters') }}
-                <i class="fa-solid{{ $params['filter'] ? ' fa-check' : '' }}"></i>
+                <i class="fas{{ $params['filter'] ? ' fa-check' : '' }}"></i>
             </a>
             <div class="dropdown-menu" aria-labelledby="dropdownCoursesFiltersLink">
                 <a class="dropdown-item" href="{{ route('home', array_filter(array_merge($params, ['filter' => null]))) }}">
@@ -38,7 +38,7 @@
             aria-haspopup="true"
             aria-expanded="false">
             @if($currentSort = Helpers::getCurrentCoursesSortOption($params['sort'], $params['direction']))
-                {{ $currentSort['label'] }} <i class="fa-solid {{ $currentSort['icon'] }}"></i>
+                {{ $currentSort['label'] }} <i class="fas {{ $currentSort['icon'] }}"></i>
             @else
                 {{ trans('admin.sort') }}
             @endif
@@ -50,7 +50,7 @@
             @foreach(Helpers::getCoursesSortOptions() as $option)
                 <a class="dropdown-item"
                     href="{{ route('home', array_merge($params, ['sort' => $option['sort'], 'direction' => $option['direction']])) }}">
-                    {{ $option['label'] }} <i class="fa-solid {{ $option['icon'] }}"></i>
+                    {{ $option['label'] }} <i class="fas {{ $option['icon'] }}"></i>
                 </a>
             @endforeach
         </div>
@@ -107,10 +107,10 @@
                                     {{ $course->description }}
                                 </div>
                                 <div class="expand-button">
-                                    <i class="fa-solid fa-square-plus"></i>
+                                    <i class="fas fa-square-plus"></i>
                                 </div>
                                 <div class="reduce-button">
-                                    <i class="fa-solid fa-square-minus"></i>
+                                    <i class="fas fa-square-minus"></i>
                                 </div>
                             </div>
                         </div>

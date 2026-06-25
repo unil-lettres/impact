@@ -31,7 +31,7 @@
                                        type="button"
                                        id="button-clear-user"
                                        href="{{ route('admin.users.manage', ['filter' => $filter]) }}">
-                                        <i class="fa-solid fa-xmark"></i>
+                                        <i class="fas fa-xmark"></i>
                                     </a>
                                 @endif
 
@@ -53,7 +53,7 @@
                            aria-haspopup="true"
                            aria-expanded="false">
                             {{ trans('admin.filters') }}
-                            <i class="fa-solid{{ $filter ? ' fa-check' : '' }}"></i>
+                            <i class="fas{{ $filter ? ' fa-check' : '' }}"></i>
                         </a>
                         <div class="dropdown-menu" aria-labelledby="dropdownUsersFiltersLink">
                             <a class="dropdown-item" href="{{ route('admin.users.manage', ['search' => $search]) }}">

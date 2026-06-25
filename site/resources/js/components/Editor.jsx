@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { createRoot } from "react-dom/client";
-import { flushSync } from 'react-dom';
 
 import axios from "axios";
 import _ from "lodash";
@@ -138,7 +137,6 @@ export default class Editor extends Component {
 
         this.updateEditorConfiguration(data);
         this.initVariables(data);
-        this.updateUi();
     }
 
     componentDidMount() {
@@ -152,6 +150,8 @@ export default class Editor extends Component {
 
         window.boxSavers = window.boxSavers || {};
         window.boxSavers[this.props.reference] = () => this.state.editable ? this.save() : Promise.resolve();
+
+        this.updateUi();
     }
 
     componentDidUpdate() {
@@ -159,6 +159,8 @@ export default class Editor extends Component {
             ...(window.editors || []),
             [this.props.reference]: this.state.editable,
         };
+
+        this.updateUi();
     }
 
     updateEditorConfiguration(data) {
@@ -216,16 +218,10 @@ export default class Editor extends Component {
     edit() {
         if (this.state.editable) {
             // Leave edit mode and save content
-
-            flushSync(() => {
-                this.setState({
-                    editable: false
-                })
-            });
-
             this.save().then(response => {
                 this.setState({
-                    original: _.cloneDeep(this.state.html)
+                    original: _.cloneDeep(this.state.html),
+                    editable: false 
                 });
             }).catch(error => {
                 document.getElementById(this.editorErrorMsgId)
@@ -234,15 +230,8 @@ export default class Editor extends Component {
             });
         } else {
             // Enter edit mode
-
-            flushSync(() => {
-                this.setState({
-                    editable: true
-                })
-            });
+            this.setState({ editable: true });
         }
-
-        this.updateUi(this.editor.isReadOnly);
     }
 
     async save() {
@@ -254,13 +243,9 @@ export default class Editor extends Component {
 
     cancel() {
         if(this.state.editable) {
-            flushSync(() => {
-                this.setState({
-                        html: _.cloneDeep(this.state.original ?? ''),
-                        editable: false
-                    },
-                    () => this.updateUi()
-                )
+            this.setState({
+                html: _.cloneDeep(this.state.original ?? ''),
+                editable: false
             });
         }
     }

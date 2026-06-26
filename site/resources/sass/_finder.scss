@@ -30,7 +30,7 @@
     }
 
     .disabled {
-        color: var(--bs-gray-500);
+        color: var(--disabled-color);
     }
 
     .dropdown-menu {
@@ -46,7 +46,7 @@
         &-asc {
             i.fa-arrow-down {
                 transition: all 0.3s ease;
-                color: var(--bs-gray-500);
+                color: var(--disabled-color);
             }
             &:hover {
                 i.fa-arrow-down {

@@ -1,33 +1,31 @@
-<div class="course-configuration-menu">
-    <ul class="nav justify-content-center">
-        @can('editConfiguration', $course)
-            <li class="nav-item {{ Route::is('courses.configure') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('courses.configure', $course->id) }}">{{ trans('courses.configuration') }}</a>
-            </li>
-        @endcan
+<ul class="nav">
+    @can('editConfiguration', $course)
+        <x-sub-menu-item href="{{ route('courses.configure', $course->id) }}" :active="Route::is('courses.configure')">
+            {{ trans('courses.configuration') }}
+        </x-sub-menu-item>
+    @endcan
 
-        @can('viewAny', [\App\Tag::class, $course])
-            <li class="nav-item {{ Route::is('courses.configure.tags*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('courses.configure.tags', $course->id) }}">{{ trans('courses.tags') }}</a>
-            </li>
-        @endcan
+    @can('viewAny', [\App\Tag::class, $course])
+        <x-sub-menu-item href="{{ route('courses.configure.tags', $course->id) }}" :active="Route::is('courses.configure.tags*')">
+            {{ trans('courses.tags') }}
+        </x-sub-menu-item>
+    @endcan
 
-        @can('viewAny', [\App\User::class, $course])
-            <li class="nav-item {{ Route::is('courses.configure.registrations*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('courses.configure.registrations', $course->id) }}">{{ trans('users.registrations') }}</a>
-            </li>
-        @endcan
+    @can('viewAny', [\App\User::class, $course])
+        <x-sub-menu-item href="{{ route('courses.configure.registrations', $course->id) }}" :active="Route::is('courses.configure.registrations*')">
+            {{ trans('users.registrations') }}
+        </x-sub-menu-item>
+    @endcan
 
-        @can('viewAny', [\App\File::class, $course])
-            <li class="nav-item {{ Route::is('courses.configure.files*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('courses.configure.files', $course->id) }}">{{ trans('files.files') }}</a>
-            </li>
-        @endcan
+    @can('viewAny', [\App\File::class, $course])
+        <x-sub-menu-item href="{{ route('courses.configure.files', $course->id) }}" :active="Route::is('courses.configure.files*')">
+            {{ trans('files.files') }}
+        </x-sub-menu-item>
+    @endcan
 
-        @can('viewAny', [\App\State::class, $course])
-            <li class="nav-item {{ Route::is('courses.configure.states*') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('courses.configure.states', $course->id) }}">{{ trans('states.states') }}</a>
-            </li>
-        @endcan
-    </ul>
-</div>
+    @can('viewAny', [\App\State::class, $course])
+        <x-sub-menu-item href="{{ route('courses.configure.states', $course->id) }}" :active="Route::is('courses.configure.states*')">
+            {{ trans('states.states') }}
+        </x-sub-menu-item>
+    @endcan
+</ul>

@@ -1,7 +1,7 @@
 @extends('layouts.app-base')
 
 @section('menu')
-@include('courses.menu')
+    @include('courses.menu')
 @endsection
 
 @section('title')

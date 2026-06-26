@@ -10,16 +10,20 @@
     <body>
         <div id='app'>
             @include('includes.header.header')
+            @if(View::hasSection('menu'))
+                <div class="mb-3 border-bottom">
+                    <div class="container">
+                        @yield('menu')
+                    </div>
+                </div>
+            @endif
 
-            <div id="content" class="container">
-                @yield('menu')
-
+            <div id="content" class="container mt-4">
                 @if(false
                     || View::hasSection('title')
                     || View::hasSection('actions')
                     || View::hasSection('sub-title')
                 )
-                    <div class="container">
                         <div class="d-flex flex-wrap gap-2 align-items-center">
                             <div class="flex-fill">
                                 <div class="h2 mb-0">@yield('title')</div>
@@ -34,18 +38,17 @@
                         </div>
 
                         <hr>
-                    </div>
                 @endif
 
-                <div class="container messages-content">
+                <div class="messages-content">
                     @include('includes.messages')
                 </div>
 
-                <div class="container main-content">
+                <div class="main-content">
                     @yield('content')
                 </div>
 
-                <div class="container footer-content">
+                <div class="footer-content">
                     <footer>
                             @include('includes.footer')
                     </footer>

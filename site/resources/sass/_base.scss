@@ -39,10 +39,6 @@
     animation: pulsate 1s infinite;
 }
 
-.navbar {
-    margin-bottom: 20px;
-}
-
 .footer-content {
     margin-top: 30px;
 }
@@ -54,36 +50,6 @@
 .expired {
     color: var(--bs-gray-500);
     font-style: italic;
-}
-
-.admin-menu,
-.course-configuration-menu {
-    .nav {
-        li.active {
-            border: 1px dotted white;
-        }
-
-        .nav-item {
-            a {
-                color: white;
-            }
-
-            a:hover {
-                color: black;
-            }
-
-            a.disabled {
-                color: rgba(255, 255, 255, 0.40);
-            }
-        }
-    }
-
-    background-color: var(--bs-primary);
-    margin-top: -21px;
-    padding: 3px 0;
-    margin-bottom: 30px;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
 }
 
 .selected-bg {

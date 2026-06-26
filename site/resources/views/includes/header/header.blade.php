@@ -39,7 +39,3 @@
         </div>
     </div>
 </nav>
-
-<div class="container">
-    @yield('admin.menu')
-</div>

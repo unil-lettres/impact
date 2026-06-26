@@ -2,7 +2,9 @@
 
 return [
 
-    'states' => 'États',
+    'menu_title' => 'États',
+    'list' => 'États disponibles',
+    'page_title' => 'Gestion des états',
     'private' => 'privé',
     'private_description' => 'La fiche n\'est visible et éditable que par le-s titulaire-s.',
     'open' => 'ouvert',
@@ -20,7 +22,7 @@ return [
     'permission5' => 'Visible par tous, modifiable par les responsable(s) seulement',
     'permission6' => 'Visible et modifiable par le(s) responsable(s) seulement',
     'permissions' => 'Permissions',
-    'add' => 'Ajouter un état',
+    'add' => 'Créer un état',
     'update' => 'Mettre à jour l\'état',
     'delete' => 'Supprimer l\'état',
     'general' => 'Général',

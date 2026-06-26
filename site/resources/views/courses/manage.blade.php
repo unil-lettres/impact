@@ -3,8 +3,8 @@
 @section('admin.content')
     <div id="courses">
         <div class="card">
-            <div class="card-header d-flex justify-content-between gap-2">
-                <div class="title">
+            <div class="card-header d-flex justify-content-between align-items-center gap-2">
+                <div class="fs-5">
                     {{ trans('courses.manage') }}
                     <span class="badge bg-secondary">
                         {{ $courses->total() }}

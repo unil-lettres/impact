@@ -14,8 +14,8 @@
                     </div><br />
                 @endif
                 <div class="card">
-                    <div class="card-header">
-                        <span class="title">{{ $user->name ? $user->name : $user->email }}</span>
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <span class="fs-5">{{ $user->name ? $user->name : $user->email }}</span>
                         @unless ($user->isValid())
                             <span class="badge bg-danger">{{ trans('users.expired') }}</span>
                         @endunless
@@ -189,7 +189,7 @@
             <div class="col-md-12 col-lg-5">
                 <div class="card">
                     <div class="card-header">
-                        <span class="title">{{ trans('enrollments.enrollments') }}</span>
+                        <span class="fs-5">{{ trans('enrollments.enrollments') }}</span>
                     </div>
                     <div class="card-body">
                         {{ trans('enrollments.as_manager') }}

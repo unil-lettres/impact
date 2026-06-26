@@ -89,8 +89,8 @@ class StateTest extends DuskTestCase
                 ->statesIndex();
 
             $browser->waitFor('#states-list')
-                ->assertSee('Ajouter un état')
-                ->press('Ajouter un état')
+                ->assertSee('Créer un état')
+                ->press('Créer un état')
                 ->waitForText('Nouvel état créé.')
                 ->assertSee('nouvel état');
         });
@@ -137,8 +137,8 @@ class StateTest extends DuskTestCase
 
             // Create a new state
             $browser->waitFor('#states-list')
-                ->assertSee('Ajouter un état')
-                ->press('Ajouter un état')
+                ->assertSee('Créer un état')
+                ->press('Créer un état')
                 ->waitForText('Nouvel état créé.')
                 ->assertSee('nouvel état');
 

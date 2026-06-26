@@ -14,8 +14,8 @@
                     </div><br/>
                 @endif
                 <div class="card">
-                    <div class="card-header">
-                        <span class="title">{{ $user->name ?: $user->email }}</span>
+                    <div class="card-header fs-5">
+                        {{ $user->name ?: $user->email }}
                     </div>
                     <div class="card-body">
                         <form method="post"
@@ -136,7 +136,7 @@
             <div class="col-md-12 col-lg-4">
                 <div class="card">
                     <div class="card-header">
-                        <span class="title">{{ trans('enrollments.enrollments') }}</span>
+                        <span class="fs-5">{{ trans('enrollments.enrollments') }}</span>
                     </div>
                     <div class="card-body">
                         @if ($user->enrollments()->count() > 0)
@@ -174,7 +174,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <span class="title">{{ trans('cards.my_cards') }}</span>
+                        <span class="fs-5">{{ trans('cards.my_cards') }}</span>
                     </div>
                     <div class="card-body">
                         @if ($user->cards()->isNotEmpty())

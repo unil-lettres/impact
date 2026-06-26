@@ -108,10 +108,8 @@
         @if($clonableCourses->isNotEmpty())
         <div class="col-md-12 col-lg-4">
             <div class="card">
-                <div class="card-header">
-                    <span class="title">
-                        {{ trans('tags.clone_tags_label') }}
-                    </span>
+                <div class="card-header fs-5">
+                    {{ trans('tags.clone_tags_label') }}
                 </div>
                 <div class="card-body">
                     <div>

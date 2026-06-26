@@ -25,7 +25,7 @@
 
     @can('viewAny', [\App\State::class, $course])
         <x-sub-menu-item href="{{ route('courses.configure.states', $course->id) }}" :active="Route::is('courses.configure.states*')">
-            {{ trans('states.states') }}
+            {{ trans('states.menu_title') }}
         </x-sub-menu-item>
     @endcan
 </ul>

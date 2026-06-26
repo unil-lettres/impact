@@ -5,7 +5,7 @@
 @endsection
 
 @section('title')
-    {{ trans('states.states') }}
+    {{ trans('states.page_title') }}
 @endsection
 
 @can('viewAny', [\App\State::class, $course])
@@ -18,6 +18,7 @@
                 @csrf
                 <button type="submit"
                         class="btn btn-primary">
+                    <i class="fas fa-add"></i>
                     {{ trans('states.add') }}
                 </button>
             </form>
@@ -37,10 +38,8 @@
             <div class="row">
                 <div class="col-md-12 col-lg-3">
                     <div class="card">
-                        <div class="card-header">
-                            <span class="title">
-                                {{ trans('states.states') }}
-                            </span>
+                        <div class="card-header fs-5">
+                            {{ trans('states.list') }}
                         </div>
                         <div class="card-body">
                             <div id="states-list"
@@ -91,7 +90,7 @@
                             @method('PUT')
                             <div class="card">
                                 <div class="card-header">
-                                    <span class="title">
+                                    <span class="fs-5">
                                         {{ trans('states.general') }}
                                     </span>
                                 </div>
@@ -144,7 +143,7 @@
                             </div>
                             <div class="card">
                                 <div class="card-header">
-                                    <span class="title">
+                                    <span class="fs-5">
                                         {{ trans('states.permissions') }}
                                     </span>
                                 </div>
@@ -213,7 +212,7 @@
                             </div>
                             <div class="card">
                                 <div class="card-header">
-                                    <span class="title">
+                                    <span class="fs-5">
                                         {{ trans('states.action') }}
                                     </span>
 

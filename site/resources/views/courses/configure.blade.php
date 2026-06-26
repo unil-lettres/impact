@@ -69,10 +69,8 @@
             <div class="row">
                 <div class="col-md-12 col-lg-6">
                     <div class="card">
-                        <div class="card-header">
-                            <span class="title">
-                                {{ trans('courses.transcription.type') }}
-                            </span>
+                        <div class="card-header fs-5">
+                            {{ trans('courses.transcription.type') }}
                         </div>
                         <div class="card-body">
                             <label for="type">{{ trans('courses.transcription.type.help') }}</label>

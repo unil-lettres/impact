@@ -16,7 +16,7 @@
                     @endif
                     <div class="card">
                         <div class="card-header d-flex justify-content-between align-items-center">
-                            <span class="title">{{ $course->name }}</span>
+                            <span class="fs-5">{{ $course->name }}</span>
 
                             @can('unsync', $course)
                                 <form class="with-unlink-confirm" method="post"
@@ -73,7 +73,7 @@
                 <div class="col-md-12 col-lg-5">
                     <div class="card">
                         <div class="card-header">
-                            <span class="title">{{ trans('enrollments.enrollments') }}</span>
+                            <span class="fs-5">{{ trans('enrollments.enrollments') }}</span>
                         </div>
                         <div class="card-body">
                             <div class="form-text">{{ trans('users.edit.enrollments_are_auto_save') }}</div>

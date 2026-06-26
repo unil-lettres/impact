@@ -14,8 +14,8 @@
             <div class="row">
                 <div class="col-md-12 col-lg-6">
                     <div class="card">
-                        <div class="card-header">
-                            <span class="title">{{ trans('enrollments.as_manager') }}</span>
+                        <div class="card-header fs-5">
+                            {{ trans('enrollments.as_manager') }}
                         </div>
                         <div class="card-body">
                             <div id="rct-multi-user-manager-select"
@@ -27,8 +27,8 @@
                 </div>
                 <div class="col-md-12 col-lg-6">
                     <div class="card">
-                        <div class="card-header">
-                            <span class="title">{{ trans('enrollments.as_member') }}</span>
+                        <div class="card-header fs-5">
+                            {{ trans('enrollments.as_member') }}
                         </div>
                         <div class="card-body">
                             <div id="rct-multi-user-member-select"

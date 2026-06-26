@@ -15,8 +15,8 @@
                         </div><br />
                     @endif
                     <div class="card">
-                        <div class="card-header">
-                            <span class="title">{{ $file->name }}</span>
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="fs-5">{{ $file->name }}</span>
 
                             @if(Helpers::isFileStatus($file, \App\Enums\FileStatus::Ready))
                                 <a href="{{ Helpers::fileUrl($file->filename) }}"
@@ -187,7 +187,7 @@
                 <div class="col-md-12 col-lg-4">
                     <div class="card">
                         <div class="card-header">
-                            <span class="title">{{ trans('cards.cards') }}</span>
+                            <span class="fs-5">{{ trans('cards.cards') }}</span>
                         </div>
                         <div class="card-body">
                             @if($cards->isNotEmpty())

@@ -2,7 +2,7 @@
 
 return [
 
-    'states' => 'States',
+    'states' => 'Manage states',
     'private' => 'private',
     'private_description' => 'The card is visible and editable only by the holder(s).',
     'open' => 'open',
@@ -20,7 +20,7 @@ return [
     'permission5' => 'Visible to all, editable by manager(s) only',
     'permission6' => 'Visible and editable by manager(s) only',
     'permissions' => 'Permissions',
-    'add' => 'Add state',
+    'add' => 'Create a state',
     'update' => 'Update state',
     'delete' => 'Delete state',
     'general' => 'General information',

@@ -180,7 +180,7 @@
         renameFolder(folderId, title, reloadAfterSave = false) {
             const newName = prompt("{{ trans('courses.finder.menu.rename_prompt') }}", title);
             if (newName !== null) {
-                $wire.call("renameFolder", folderId, newName, reloadAfterSave);
+                $wire.renameFolder(folderId, newName, reloadAfterSave);
             }
         },
 
@@ -191,7 +191,7 @@
         renameCard(cardId, title) {
             const newName = prompt("{{ trans('courses.finder.menu.rename_prompt') }}", title);
             if (newName !== null) {
-                $wire.call("renameCard", cardId, newName);
+                $wire.renameCard(cardId, newName);
             }
         },
 

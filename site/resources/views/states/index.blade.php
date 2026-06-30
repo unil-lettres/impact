@@ -60,21 +60,19 @@
                                             @endif
                                         @endcan
                                         @can('forceDelete', $state)
-                                            <span class="actions">
-                                                <form class="with-delete-confirm" method="post"
-                                                        action="{{ route('courses.destroy.state', [$course->id, $state->id]) }}">
-                                                    @method('DELETE')
-                                                    @csrf
-                                                    <button type="submit"
-                                                            class="btn btn-sm btn-danger"
-                                                            data-bs-toggle="tooltip"
-                                                            data-placement="top"
-                                                            {{ Helpers::isStateReferenced($state) ? 'disabled' : '' }}
-                                                            title="{{ trans('states.delete') }}">
-                                                        <i class="fas fa-trash-alt"></i>
-                                                    </button>
-                                                </form>
-                                            </span>
+                                            <form class="with-delete-confirm" method="post"
+                                                    action="{{ route('courses.destroy.state', [$course->id, $state->id]) }}">
+                                                @method('DELETE')
+                                                @csrf
+                                                <button type="submit"
+                                                        class="btn btn-sm btn-danger"
+                                                        data-bs-toggle="tooltip"
+                                                        data-placement="top"
+                                                        {{ Helpers::isStateReferenced($state) ? 'disabled' : '' }}
+                                                        title="{{ trans('states.delete') }}">
+                                                    <i class="fas fa-trash-alt"></i>
+                                                </button>
+                                            </form>
                                         @endcan
                                     </div>
                                 @endforeach
@@ -211,12 +209,12 @@
                                 </div>
                             </div>
                             <div class="card">
-                                <div class="card-header">
-                                    <span class="fs-5">
+                                <div class="card-header d-flex gap-2 align-items-center">
+                                    <span class="fs-5 me-auto">
                                         {{ trans('states.action') }}
                                     </span>
 
-                                    <div class="col-md-4 col-6 float-end">
+                                    <div class="col-md-4 col-6">
                                         <select id="action-type"
                                                 name="action-type"
                                                 class="form-control form-select"

@@ -1,20 +1,11 @@
 #edit-file {
-    .card-header {
-        .title {
-            font-size: 1.5em;
-        }
-    }
     .card-body {
-        .badge {
-            font-size: 1em;
-            margin-bottom: 20px;
-        }
         .processing,
         .transcoding {
-            color: orange;
+            color: var(--bs-warning);
         }
         .failed {
-            color: red;
+            color: var(--bs-danger);
         }
     }
 }

@@ -15,8 +15,8 @@
                         </div><br />
                     @endif
                     <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <span class="fs-5">{{ $course->name }}</span>
+                        <div class="card-header d-flex align-items-center">
+                            <span class="fs-5 me-auto">{{ $course->name }}</span>
 
                             @can('unsync', $course)
                                 <form class="with-unlink-confirm" method="post"
@@ -35,7 +35,7 @@
                         </div>
                         <div class="card-body">
                             @unless (Helpers::isCourseLocal($course))
-                                <span class="badge bg-secondary">{{ trans('courses.moodle_id', ['id' => $course->external_id]) }}</span>
+                                <span class="badge fs-6 mb-3 bg-secondary">{{ trans('courses.moodle_id', ['id' => $course->external_id]) }}</span>
                             @endunless
                             <form method="post"
                                   action="{{ route('admin.courses.update', $course->id) }}">

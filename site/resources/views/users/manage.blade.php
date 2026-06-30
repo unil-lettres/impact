@@ -3,8 +3,8 @@
 @section('admin.content')
     <div id="users">
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center gap-2">
-                <div class="fs-5">
+            <div class="card-header d-flex align-items-center gap-2 flex-column flex-lg-row">
+                <div class="fs-5 me-auto">
                     {{ trans('users.manage') }}
                     <span class="badge bg-secondary">
                         {{ $users->total() }}
@@ -106,7 +106,7 @@
                         <tbody>
                             @foreach ($users->items() as $user)
                                 @can('view', $user)
-                                    <tr class="{{ $user->type }}{{ $user->isValid() ? '' : ' invalid' }}">
+                                    <tr class="{{ $user->type }}">
                                         <td>
                                             {{ $user->email }}
                                             @if ($user->admin)
@@ -119,7 +119,7 @@
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->created_at->format('d/m/Y H:i:s') }}</td>
                                         <td>{{ $user->type }}</td>
-                                        <td class="actions">
+                                        <x-td-actions>
                                             @can('update', $user)
                                                 <span>
                                                     <a href="{{ route('admin.users.edit', $user->id) }}"
@@ -158,7 +158,7 @@
                                                     </form>
                                                 </span>
                                             @endcan
-                                        </td>
+                                        </x-td-actions>
                                     </tr>
                                 @endcan
                             @endforeach

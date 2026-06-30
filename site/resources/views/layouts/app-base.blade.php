@@ -48,7 +48,7 @@
                     @yield('content')
                 </div>
 
-                <div class="footer-content">
+                <div class="mt-6">
                     <footer>
                             @include('includes.footer')
                     </footer>

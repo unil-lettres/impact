@@ -57,7 +57,7 @@
                                             </span>
                                         </td>
                                         <td>{{ $file->created_at->format('d/m/Y H:i:s') }}</td>
-                                        <td class="actions">
+                                        <x-td-actions>
                                             @can('download', $file)
                                                 <span>
                                                     <a href="{{ route('files.download', ['file' => $file->id]) }}"
@@ -99,7 +99,7 @@
                                                     </form>
                                                 </span>
                                             @endcan
-                                        </td>
+                                        </x-td-actions>
                                     </tr>
                                 @endcan
                             @endforeach

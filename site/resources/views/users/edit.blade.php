@@ -14,17 +14,19 @@
                     </div><br />
                 @endif
                 <div class="card">
-                    <div class="card-header d-flex justify-content-between align-items-center">
-                        <span class="fs-5">{{ $user->name ? $user->name : $user->email }}</span>
-                        @unless ($user->isValid())
-                            <span class="badge bg-danger">{{ trans('users.expired') }}</span>
-                        @endunless
+                    <div class="card-header d-flex align-items-center">
+                        <div class="me-auto">
+                            <span class="fs-5">{{ $user->name ? $user->name : $user->email }}</span>
+                            @unless ($user->isValid())
+                                <span class="badge bg-danger">{{ trans('users.expired') }}</span>
+                            @endunless
+                        </div>
 
                         @can('extend', $user)
                             <a href="{{ route('admin.users.extend', $user->id) }}"
                                data-bs-toggle="tooltip"
                                data-placement="top"
-                               class="btn btn-primary float-end extend-validity"
+                               class="btn btn-primary extend-validity"
                                title="{{ trans('users.validity.extend', ['months' => config('const.users.validity')]) }}">
                                 <i class="fas fa-clock"></i>
                             </a>
@@ -94,7 +96,7 @@
                                                    type="text"
                                                    name="validity"
                                                    value="{{ $user->validity->format('d/m/Y H:i:s') }}"
-                                                   class="form-control disabled {{ $user->isValid() ? '' : 'account-expired' }}"
+                                                   class="form-control disabled {{ $user->isValid() ? '' : 'text-danger' }}"
                                                    disabled
                                             >
                                         </div>

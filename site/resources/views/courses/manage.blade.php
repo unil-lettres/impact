@@ -3,8 +3,8 @@
 @section('admin.content')
     <div id="courses">
         <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center gap-2">
-                <div class="fs-5">
+            <div class="card-header d-flex align-items-center gap-2 flex-column flex-lg-row">
+                <div class="fs-5 me-auto">
                     {{ trans('courses.manage') }}
                     <span class="badge bg-secondary">
                         {{ $courses->total() }}
@@ -104,7 +104,7 @@
                         <tbody>
                             @foreach ($courses->items() as $course)
                                 @can('view', $course)
-                                    <tr class="{{ $course->type }}{{ !$course->isActive() ? ' invalid' : '' }}">
+                                    <tr class="{{ $course->type }}">
                                         <td title="{{ $course->name }}">
                                             @if(($course->isActive()))
                                                 <a href="{{ route('courses.show', $course->id) }}">
@@ -139,7 +139,7 @@
                                             <div>{{ trans('cards.cards') }}: {{ $course->cards()->withTrashed()->count() }}</div>
                                             <div>{{ trans('enrollments.enrollments') }}: {{ $course->enrollments()->withTrashed()->count() }}</div>
                                         </td>
-                                        <td class="actions">
+                                        <x-td-actions>
                                             @unless($course->isActive())
                                                 @can('mailConfirmDelete', $course)
                                                     <span>
@@ -210,7 +210,7 @@
                                                     </form>
                                                 </span>
                                             @endcan
-                                        </td>
+                                        </x-td-actions>
                                     </tr>
                                 @endcan
                             @endforeach

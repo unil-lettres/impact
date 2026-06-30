@@ -1,7 +1,7 @@
 <div id="invitations">
     <div class="card">
-        <div class="card-header d-flex justify-content-between align-items-center gap-2">
-            <div class="fs-5">
+        <div class="card-header d-flex align-items-center gap-2 flex-column flex-lg-row">
+            <div class="fs-5 me-auto">
                 {{ trans('invitations.pending') }}
                 <span class="badge bg-secondary">
                     {{ $invitations->total() }}
@@ -104,7 +104,7 @@
                                     {{ Helpers::truncate($invitation->course->name, 25) }}
                                 </td>
                                 <td>{{ $invitation->type }}</td>
-                                <td class="actions">
+                                <x-td-actions>
                                     @can('view', $invitation)
                                         @if($invitation->getLink())
                                             <span>
@@ -149,7 +149,7 @@
                                             </form>
                                         </span>
                                     @endcan
-                                </td>
+                                </x-td-actions>
                             </tr>
                         @endcan
                     @endforeach

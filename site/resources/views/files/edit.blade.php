@@ -15,15 +15,15 @@
                         </div><br />
                     @endif
                     <div class="card">
-                        <div class="card-header d-flex justify-content-between align-items-center">
-                            <span class="fs-5">{{ $file->name }}</span>
+                        <div class="card-header d-flex align-items-center">
+                            <span class="fs-5 me-auto">{{ $file->name }}</span>
 
                             @if(Helpers::isFileStatus($file, \App\Enums\FileStatus::Ready))
                                 <a href="{{ Helpers::fileUrl($file->filename) }}"
                                    target="_blank"
                                    data-bs-toggle="tooltip"
                                    data-placement="top"
-                                   class="btn btn-primary float-end"
+                                   class="btn btn-primary"
                                    title="{{ trans('files.url') }}">
                                     <i class="fas fa-share-square"></i>
                                 </a>

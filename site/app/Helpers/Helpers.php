@@ -126,9 +126,9 @@ class Helpers
     public static function fileStatusBadge(File $file): string
     {
         return match ($file->status) {
-            FileStatus::Ready => '<span class="badge bg-success">'.self::fileStatus($file->status).'</span>',
-            FileStatus::Failed => '<span class="badge bg-danger">'.self::fileStatus($file->status).'</span>',
-            default => '<span class="badge bg-warning">'
+            FileStatus::Ready => '<span class="badge fs-6 bg-success">'.self::fileStatus($file->status).'</span>',
+            FileStatus::Failed => '<span class="badge fs-6 bg-danger">'.self::fileStatus($file->status).'</span>',
+            default => '<span class="badge fs-6 bg-warning">'
                 .self::fileStatus($file->status)
                 .($file->progress ? ' ('.$file->progress.'%)' : '')
                 .'</span>',

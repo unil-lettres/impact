@@ -8,12 +8,12 @@
             padding: 10px;
             column-gap: 10px;
             row-gap: 2px;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid var(--bs-border-color);
             align-items: flex-start;
         }
 
         .flex-row:nth-child(even) {
-            background-color: #f2f2f2;
+            background-color: var(--bs-gray-100);
         }
 
         .flex-row.header {
@@ -92,30 +92,16 @@
 
         .deleted {
             .name a {
-                color: #dc3545;
+                color: var(--bs-danger-text-emphasis);
                 font-weight: normal;
             }
 
-            background-color: #f8d7da !important;
+            background-color: var(--bs-danger-bg-subtle) !important;
         }
     }
 
     .d-box {
         display: -webkit-box!important;
-    }
-}
-
-#edit-course {
-    .card-header {
-        .title {
-            font-size: 1.5em;
-        }
-    }
-    .card-body {
-        .badge {
-            font-size: 1em;
-            margin-bottom: 20px;
-        }
     }
 }
 

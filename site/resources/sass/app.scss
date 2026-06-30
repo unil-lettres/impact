@@ -32,18 +32,6 @@
 // Navbar
 @include meta.load-css('header');
 
-// Admin views
-@include meta.load-css('admin');
-
-// Login views
-@include meta.load-css('login');
-
-// Invitation views
-@include meta.load-css('invitations');
-
-// User views
-@include meta.load-css('users');
-
 // Courses views
 @include meta.load-css('courses');
 

@@ -4,8 +4,8 @@
     @can('manage', \App\File::class)
         <div id="files">
             <div class="card">
-                <div class="card-header d-flex justify-content-between align-items-center gap-2">
-                    <div class="fs-5">
+                <div class="card-header d-flex align-items-center gap-2 flex-column flex-lg-row">
+                    <div class="fs-5 me-auto">
                         {{ trans('files.files') }}
                         <span class="badge bg-secondary">
                             {{ $files->total() }}
@@ -123,14 +123,14 @@
                                             {{ $file->course ? Helpers::truncate($file->course->name, 25) : '-' }}
                                         </td>
                                         <td>{{ $file->created_at->format('d/m/Y H:i:s') }}</td>
-                                        <td class="actions">
+                                        <x-td-actions>
                                             @can('update', $file)
                                                 <span>
                                                     <a href="{{ route('admin.files.edit', $file->id) }}"
-                                                       data-bs-toggle="tooltip"
-                                                       data-placement="top"
-                                                       class="btn btn-primary"
-                                                       title="{{ trans('files.edit') }}">
+                                                        data-bs-toggle="tooltip"
+                                                        data-placement="top"
+                                                        class="btn btn-primary"
+                                                        title="{{ trans('files.edit') }}">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                 </span>
@@ -139,10 +139,10 @@
                                             @can('download', $file)
                                                 <span>
                                                     <a href="{{ route('files.download', ['file' => $file->id]) }}"
-                                                       data-bs-toggle="tooltip"
-                                                       data-placement="top"
-                                                       class="btn btn-primary"
-                                                       title="{{ trans('files.download') }}">
+                                                        data-bs-toggle="tooltip"
+                                                        data-placement="top"
+                                                        class="btn btn-primary"
+                                                        title="{{ trans('files.download') }}">
                                                         <i class="fas fa-download"></i>
                                                     </a>
                                                 </span>
@@ -151,11 +151,11 @@
                                             @can('url', $file)
                                                 <span>
                                                     <a href="{{ Helpers::fileUrl($file->filename) }}"
-                                                       target="_blank"
-                                                       data-bs-toggle="tooltip"
-                                                       data-placement="top"
-                                                       class="btn btn-primary"
-                                                       title="{{ trans('files.url') }}">
+                                                        target="_blank"
+                                                        data-bs-toggle="tooltip"
+                                                        data-placement="top"
+                                                        class="btn btn-primary"
+                                                        title="{{ trans('files.url') }}">
                                                         <i class="fas fa-share-square"></i>
                                                     </a>
                                                 </span>
@@ -164,7 +164,7 @@
                                             @can('forceDelete', $file)
                                                 <span>
                                                     <form class="with-delete-confirm" method="post"
-                                                          action="{{ route('admin.files.destroy', $file->id) }}">
+                                                        action="{{ route('admin.files.destroy', $file->id) }}">
                                                         @method('DELETE')
                                                         @csrf
                                                         <button type="submit"
@@ -177,7 +177,7 @@
                                                     </form>
                                                 </span>
                                             @endcan
-                                        </td>
+                                        </x-td-actions>
                                     </tr>
                                 @endcan
                             @endforeach

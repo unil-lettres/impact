@@ -13,11 +13,9 @@
 
                         @can('upload', [\App\Policies\AttachmentPolicy::class, $course, $card])
                             <!-- boxIsEditable check already included in the policy -->
-                            <div class="float-end">
-                                <div id="rct-attachments" class="float-end"
-                                    data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.add'), 'filenameLabel' => trans('files.filename.label'), 'maxNumberOfFiles' => 5, 'course_id' => $course->id, 'card_id' => $card->id]) }}'
-                                ></div>
-                            </div>
+                            <div id="rct-attachments"
+                                data='{{ json_encode(['locale' => Helpers::currentLocal(), 'label' => trans('files.add'), 'filenameLabel' => trans('files.filename.label'), 'maxNumberOfFiles' => 5, 'course_id' => $course->id, 'card_id' => $card->id]) }}'
+                            ></div>
                         @endcan
                     </div>
                 </div>

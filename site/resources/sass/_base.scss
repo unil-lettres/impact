@@ -24,6 +24,14 @@
     }
 }
 
+.w-1 {
+    width: 1%;
+}
+
+.min-w-content {
+    min-width: max-content;
+}
+
 .icon-link-hover:hover:not(.disabled) {
 
     i {
@@ -39,10 +47,6 @@
     animation: pulsate 1s infinite;
 }
 
-.footer-content {
-    margin-top: 30px;
-}
-
 .card {
     margin-bottom: 20px;
 }
@@ -53,11 +57,11 @@
 }
 
 .selected-bg {
-    background-color: #80808014;
+    background-color: var(--bs-primary-bg-subtle);
 }
 
-.h2 span.secondary-title {
-    color: grey;
+.secondary-title {
+    color: var(--bs-gray-600);
     font-size: 1rem;
 }
 

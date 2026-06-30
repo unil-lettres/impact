@@ -1,9 +1,9 @@
-<div class="attachments-list list-group" {{ $card->boxIsEditable($reference) ? 'wire:poll' : '' }}>
+<div class="d-flex flex-column" {{ $card->boxIsEditable($reference) ? 'wire:poll' : '' }}>
     @if ($card->attachments->isNotEmpty())
         @foreach ($card->attachments as $attachment)
             @can('view', [\App\Policies\AttachmentPolicy::class, $attachment])
-                <div class="attachment">
-                    <span class="align-middle">
+                <div class="d-flex align-items-center">
+                    <div class="me-auto">
                         @if(Helpers::isFileStatus($attachment, \App\Enums\FileStatus::Ready))
                             <a href="{{ Helpers::fileUrl($attachment->filename) }}"
                                title="{{ trans('files.url') }}"
@@ -16,26 +16,26 @@
                         @else
                             {{ Str::limit($attachment->name, 40) }}
                         @endif
-                    </span>
+                    </div>
+                    <div>
+                        @can('forceDelete', [\App\Policies\AttachmentPolicy::class, $attachment])
+                            <button type="submit"
+                                    class="btn btn-sm btn-danger hide-on-read-only"
+                                    title="{{ trans('files.delete') }}"
+                                    wire:confirm="{{ trans('messages.confirm.delete') }}"
+                                    wire:click="delete({{ $attachment->id }})">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        @endcan
 
-                    <span class="actions">
-                        <span class="float-end">
-                            @can('forceDelete', [\App\Policies\AttachmentPolicy::class, $attachment])
-                                <button type="submit"
-                                        class="btn btn-sm btn-danger hide-on-read-only"
-                                        title="{{ trans('files.delete') }}"
-                                        wire:confirm="{{ trans('messages.confirm.delete') }}"
-                                        wire:click="delete({{ $attachment->id }})">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            @endcan
-
-                            @if(Helpers::isFileStatus($attachment, \App\Enums\FileStatus::Processing) || Helpers::isFileStatus($attachment, \App\Enums\FileStatus::Transcoding))
-                                {!! Helpers::fileStatusBadge($attachment) !!}
-                            @endif
-                        </span>
-                    </span>
+                        @if(Helpers::isFileStatus($attachment, \App\Enums\FileStatus::Processing) || Helpers::isFileStatus($attachment, \App\Enums\FileStatus::Transcoding))
+                            {!! Helpers::fileStatusBadge($attachment) !!}
+                        @endif
+                    </div>
                 </div>
+                @if (!$loop->last)
+                    <hr class="my-1">
+                @endif
             @endcan
         @endforeach
     @else

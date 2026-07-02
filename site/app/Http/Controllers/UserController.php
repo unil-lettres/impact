@@ -64,11 +64,11 @@ class UserController extends Controller
             ->select('users.*');
 
         // If the filter parameter is set, filter the users by type
-        $filter = $request->get('filter');
+        $filter = $request->input('filter');
         $users = $this->filter($users, $filter);
 
         // If the search parameter is set, filter the users by name and email
-        $search = $request->get('search');
+        $search = $request->input('search');
         $users = $this->search($users, $search);
 
         return view('users.manage', [

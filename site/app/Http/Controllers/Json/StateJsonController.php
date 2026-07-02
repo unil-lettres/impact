@@ -23,7 +23,7 @@ class StateJsonController extends Controller
 
         $this->authorize('position', $state);
 
-        $newOrder = $request->get('newOrder');
+        $newOrder = $request->input('newOrder');
 
         State::setNewOrder($newOrder, 1);
 

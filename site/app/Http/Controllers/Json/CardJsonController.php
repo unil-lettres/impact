@@ -23,7 +23,7 @@ class CardJsonController extends Controller
     public function editor(UpdateCardEditor $request, int $id)
     {
         $card = Card::find($id);
-        $box = $request->get('box');
+        $box = $request->input('box');
 
         $this->authorize('box', [
             Card::class,
@@ -37,9 +37,9 @@ class CardJsonController extends Controller
             CardBox::Box2 => $this->initBox2Data(
                 $card,
                 TranscriptionType::Text,
-                $request->get('html')
+                $request->input('html')
             ),
-            default => $request->get('html'),
+            default => $request->input('html'),
         };
 
         $card->update([
@@ -61,7 +61,7 @@ class CardJsonController extends Controller
     public function transcription(UpdateCardTranscription $request, int $id)
     {
         $card = Card::find($id);
-        $box = $request->get('box');
+        $box = $request->input('box');
 
         $this->authorize('box', [
             Card::class,
@@ -73,7 +73,7 @@ class CardJsonController extends Controller
             $box => $this->initBox2Data(
                 $card,
                 TranscriptionType::Icor,
-                $request->get('transcription')
+                $request->input('transcription')
             ),
         ]);
 

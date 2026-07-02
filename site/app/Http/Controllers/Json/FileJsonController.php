@@ -24,11 +24,11 @@ class FileJsonController extends Controller
      */
     public function upload(StoreUpload $request): JsonResponse
     {
-        $course = $request->get('course_id') ?
-            Course::find($request->get('course_id')) : null;
-        $card = $request->get('card_id') ?
-            Card::find($request->get('card_id')) : null;
-        $attachment = $request->get('attachment');
+        $course = $request->input('course_id') ?
+            Course::find($request->input('course_id')) : null;
+        $card = $request->input('card_id') ?
+            Card::find($request->input('card_id')) : null;
+        $attachment = $request->input('attachment');
 
         $this->authorize('upload', [
             // We use a different policy for attachments

@@ -121,26 +121,26 @@ class CardController extends Controller
         $this->authorize('update', $card);
 
         $options = $card->options ?? json_decode(Card::OPTIONS, true);
-        $options['box1']['hidden'] = (bool) $request->get('box1-hidden');
-        $options['box1']['link'] = $request->get('box1-link');
-        $options['box1']['start'] = (int) $request->get('box1-start');
-        $options['box1']['end'] = (int) $request->get('box1-end');
-        $options['box2']['hidden'] = (bool) $request->get('box2-hidden');
-        $options['box2']['sync'] = (bool) $request->get('box2-sync');
-        $options['box3']['hidden'] = (bool) $request->get('box3-hidden');
-        $options['box3']['title'] = $request->get('box3-title');
-        $options['box3']['fixed'] = $request->get('box3-fixed');
-        $options['box4']['hidden'] = (bool) $request->get('box4-hidden');
-        $options['box4']['title'] = $request->get('box4-title');
-        $options['box4']['fixed'] = $request->get('box4-fixed');
-        $options['box5']['hidden'] = (bool) $request->get('box5-hidden');
-        $options['no_emails'] = (bool) $request->get('no_emails');
-        $options['presentation_date'] = $request->get('presentation_date');
+        $options['box1']['hidden'] = (bool) $request->input('box1-hidden');
+        $options['box1']['link'] = $request->input('box1-link');
+        $options['box1']['start'] = (int) $request->input('box1-start');
+        $options['box1']['end'] = (int) $request->input('box1-end');
+        $options['box2']['hidden'] = (bool) $request->input('box2-hidden');
+        $options['box2']['sync'] = (bool) $request->input('box2-sync');
+        $options['box3']['hidden'] = (bool) $request->input('box3-hidden');
+        $options['box3']['title'] = $request->input('box3-title');
+        $options['box3']['fixed'] = $request->input('box3-fixed');
+        $options['box4']['hidden'] = (bool) $request->input('box4-hidden');
+        $options['box4']['title'] = $request->input('box4-title');
+        $options['box4']['fixed'] = $request->input('box4-fixed');
+        $options['box5']['hidden'] = (bool) $request->input('box5-hidden');
+        $options['no_emails'] = (bool) $request->input('no_emails');
+        $options['presentation_date'] = $request->input('presentation_date');
 
         $card->update([
-            'title' => $request->get('title'),
-            'file_id' => $request->get('box1-file'),
-            'state_id' => $request->get('state'),
+            'title' => $request->input('title'),
+            'file_id' => $request->input('box1-file'),
+            'state_id' => $request->input('state'),
             'options' => $options,
         ]);
 
@@ -200,7 +200,7 @@ class CardController extends Controller
     public function export(CreateCardExport $request, int $id)
     {
         $card = Card::find($id);
-        $box = $request->get('box');
+        $box = $request->input('box');
 
         $this->authorize('box', [
             Card::class,
@@ -208,7 +208,7 @@ class CardController extends Controller
             $box,
         ]);
 
-        $format = $request->get('format');
+        $format = $request->input('format');
 
         $service = new ExportBoxService($card, $box, $format);
 
@@ -223,9 +223,9 @@ class CardController extends Controller
     {
         // Authorizations are done in the view.
 
-        $course = Course::find($request->get('course'));
-        $folder = Folder::find($request->get('folder'));
-        $cards = Card::findMany($request->get('cards'));
+        $course = Course::find($request->input('course'));
+        $folder = Folder::find($request->input('folder'));
+        $cards = Card::findMany($request->input('cards'));
         $cards = $cards->count() > 0 ? $cards : null;
 
         // Check that only one of the three parameters is set.

@@ -22,8 +22,8 @@ class TagController extends Controller
     {
         $this->authorize('viewAny', [Tag::class, $course]);
 
-        $tagOrder = $request->get('tag_order') ?? 'name';
-        $tagDirection = $request->get('tag_direction') ?? 'asc';
+        $tagOrder = $request->input('tag_order') ?? 'name';
+        $tagDirection = $request->input('tag_direction') ?? 'asc';
 
         $tags = Tag::withCount('cards')
             ->with('course')

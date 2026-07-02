@@ -58,11 +58,11 @@ class FileController extends Controller
         $files = File::query()->with('course', 'cards');
 
         // If the filter parameter is set, filter the files by status
-        $filter = $request->get('filter');
+        $filter = $request->input('filter');
         $files = $this->filter($files, $filter);
 
         // If the search parameter is set, filter the files by name
-        $search = $request->get('search');
+        $search = $request->input('search');
         $files = $this->search($files, $search);
 
         return view('files.manage', [
@@ -112,14 +112,14 @@ class FileController extends Controller
         $this->authorize('update', $file);
 
         $file->update([
-            'name' => $request->get('name'),
+            'name' => $request->input('name'),
         ]);
 
         // The file can be linked to a(nother) course only
         // if no card(s) are already linked to the file
         if ($file->cards->isEmpty()) {
-            $course = $request->get('course') ?
-                Course::findOrFail($request->get('course')) : null;
+            $course = $request->input('course') ?
+                Course::findOrFail($request->input('course')) : null;
 
             if ($course) {
                 // Determine whether the user can move the file to a specific course
@@ -171,13 +171,13 @@ class FileController extends Controller
      */
     public function download(DownloadFile $request): BinaryFileResponse
     {
-        $fileId = $request->get('file');
+        $fileId = $request->input('file');
 
         $file = File::find($fileId);
 
         $this->authorize('download', $file);
 
-        $cardId = $request->get('card');
+        $cardId = $request->input('card');
 
         // If a card id is given in the request, use the card title.
         // Otherwise, use the file name from the database.

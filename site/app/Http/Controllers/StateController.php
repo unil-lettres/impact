@@ -86,27 +86,27 @@ class StateController extends Controller
         $this->authorize('update', $state);
 
         $permissions = $state->permissions ?? json_decode(State::PERMISSIONS, true);
-        $permissions['box1'] = (int) $request->get('box1');
-        $permissions['box2'] = (int) $request->get('box2');
-        $permissions['box3'] = (int) $request->get('box3');
-        $permissions['box4'] = (int) $request->get('box4');
-        $permissions['box5'] = (int) $request->get('box5');
+        $permissions['box1'] = (int) $request->input('box1');
+        $permissions['box2'] = (int) $request->input('box2');
+        $permissions['box3'] = (int) $request->input('box3');
+        $permissions['box4'] = (int) $request->input('box4');
+        $permissions['box5'] = (int) $request->input('box5');
 
         $actions = $state->actions ?? json_decode(State::ACTIONS, true);
-        $actions['data'] = match ($request->get('action-type')) {
+        $actions['data'] = match ($request->input('action-type')) {
             ActionType::Email => [
                 State::buildEmailAction(
-                    $request->get('action-email-subject'),
-                    $request->get('action-email-message')
+                    $request->input('action-email-subject'),
+                    $request->input('action-email-message')
                 ),
             ],
             default => [],
         };
 
         $state->update([
-            'name' => $request->get('name'),
-            'description' => $request->get('description'),
-            'managers_only' => (bool) $request->get('managers_only'),
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
+            'managers_only' => (bool) $request->input('managers_only'),
             'permissions' => $permissions,
             'actions' => $actions,
         ]);

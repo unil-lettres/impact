@@ -65,11 +65,11 @@ class InvitationController extends Controller
         $invitations = Invitation::active()->with('course');
 
         // If the filter parameter is set, filter the invitations by type
-        $filter = $request->get('filter');
+        $filter = $request->input('filter');
         $invitations = $this->filter($invitations, $filter);
 
         // If the search parameter is set, filter the invitations by email
-        $search = $request->get('search');
+        $search = $request->input('search');
         $invitations = $this->search($invitations, $search);
 
         return view('invitations.manage', [
@@ -132,7 +132,7 @@ class InvitationController extends Controller
         ]);
 
         $type = InvitationType::Local;
-        $email = $request->get('email');
+        $email = $request->input('email');
 
         // If the Switch service is configured, check if the email is
         // registered as a SWITCHaai user through the Switch API.
@@ -198,7 +198,7 @@ class InvitationController extends Controller
     {
         $this->authorize('register', Invitation::class);
 
-        $invitation_token = $request->get('token');
+        $invitation_token = $request->input('token');
         $invitation = Invitation::where('invitation_token', $invitation_token)
             ->firstOrFail();
 

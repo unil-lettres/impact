@@ -70,8 +70,8 @@ class AdminController extends Controller
                 ->send(
                     new ManagersMailing(
                         Auth::user(),
-                        $request->get('subject'),
-                        $request->get('content'),
+                        $request->input('subject'),
+                        $request->input('content'),
                         $courses
                     )
                 );

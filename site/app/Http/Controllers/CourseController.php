@@ -42,9 +42,9 @@ class CourseController extends Controller
     {
         $this->authorize('viewAny', Course::class);
 
-        $filter = $request->get('filter');
-        $sort = $request->get('sort');
-        $direction = $request->get('direction');
+        $filter = $request->input('filter');
+        $sort = $request->input('sort');
+        $direction = $request->input('direction');
 
         $courses = Course::query()
             ->with('managersEnrollments.user')
@@ -88,11 +88,11 @@ class CourseController extends Controller
             ->select('courses.*');
 
         // If the filter parameter is set, filter the users by type
-        $filter = $request->get('filter');
+        $filter = $request->input('filter');
         $courses = $this->filter($courses, $filter);
 
         // If the search parameter is set, filter the courses by name, description and external_id
-        $search = $request->get('search');
+        $search = $request->input('search');
         $courses = $this->search($courses, $search);
 
         return view('courses.manage', [
@@ -139,7 +139,7 @@ class CourseController extends Controller
     {
         $this->authorize('create', Course::class);
 
-        $externalId = $request->get('external_id') ?: null;
+        $externalId = $request->input('external_id') ?: null;
 
         if ($externalId) {
             // If external space already exists, return with error
@@ -255,8 +255,8 @@ class CourseController extends Controller
         $this->authorize('update', $course);
 
         $course->update([
-            'name' => $request->get('name'),
-            'description' => $request->get('description'),
+            'name' => $request->input('name'),
+            'description' => $request->input('description'),
         ]);
 
         return redirect()
@@ -292,7 +292,7 @@ class CourseController extends Controller
         $this->authorize('updateConfiguration', $course);
 
         $course->update([
-            'transcription' => $request->get('type'),
+            'transcription' => $request->input('type'),
         ]);
 
         return redirect()
@@ -354,7 +354,7 @@ class CourseController extends Controller
         $course->delete();
 
         return redirect()
-            ->route($request->get('redirect'))
+            ->route($request->input('redirect'))
             ->with('success', trans('messages.course.disabled'));
     }
 

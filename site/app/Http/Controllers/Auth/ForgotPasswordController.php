@@ -39,7 +39,7 @@ class ForgotPasswordController extends Controller
         $this->validateEmail($request);
 
         // Disable reset password for AAI users
-        $user = User::where('email', $request->get('email'))
+        $user = User::where('email', $request->input('email'))
             ->first();
         if (! $user) {
             return redirect()->back()

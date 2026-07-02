@@ -107,7 +107,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            @foreach ($files->items() as $file)
+                            @foreach ($files as $file)
                                 @can('view', $file)
                                     <tr class="{{ $file->type }} {{ $file->status }} {{ Helpers::fileState($file) }}">
                                         <td title="{{ $file->name }}">{{ Helpers::truncate($file->name, 25) }}</td>

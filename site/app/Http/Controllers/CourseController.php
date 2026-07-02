@@ -98,6 +98,14 @@ class CourseController extends Controller
         return view('courses.manage', [
             'courses' => $courses
                 ->orderBy('name', 'asc')
+                ->withCount([
+                    'cards' => function (Builder $query) {
+                        $query->withTrashed();
+                    },
+                    'enrollments' => function (Builder $query) {
+                        $query->withTrashed();
+                    },
+                ])
                 ->paginate(config('const.pagination.per'))
                 ->appends($request->query()),
             'breadcrumbs' => collect([])->put('', trans('admin.breadcrumbs_title')),

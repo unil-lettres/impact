@@ -28,7 +28,8 @@ class StateController extends Controller
 
         $this->authorize('viewAny', [State::class, $course]);
 
-        $states = State::where('course_id', $course->id)
+        $states = State::with('course', 'cards')
+            ->where('course_id', $course->id)
             ->ordered() // Order by position (asc)
             ->get();
 

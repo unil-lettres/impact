@@ -14,7 +14,7 @@ class InvitationPolicy
     /**
      * Authorize all actions for admins.
      */
-    public function before($user, $ability): ?bool
+    public function before(User $user, $ability): ?bool
     {
         if ($user->admin) {
             return true;

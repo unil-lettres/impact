@@ -26,6 +26,7 @@ class TagController extends Controller
         $tagDirection = $request->get('tag_direction') ?? 'asc';
 
         $tags = Tag::withCount('cards')
+            ->with('course')
             ->where('course_id', $course->id)
             ->orderBy($tagOrder, $tagDirection)
             ->orderBy('name', 'asc')

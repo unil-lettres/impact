@@ -95,7 +95,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @foreach ($invitations->items() as $invitation)
+                    @foreach ($invitations as $invitation)
                         @can('view', $invitation)
                             <tr>
                                 <td>{{ $invitation->email }}</td>

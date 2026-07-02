@@ -143,7 +143,7 @@
                             @if ($user->enrollmentsAsManager()->isNotEmpty())
                                 {{ trans('enrollments.as_manager') }}
                                 <ul>
-                                    @foreach ($user->enrollmentsAsManager() as $enrollment)
+                                    @foreach ($user->enrollmentsAsManager('course') as $enrollment)
                                         <li>
                                             <a href="{{ route('courses.show', $enrollment->course->id) }}">
                                                 {{ $enrollment->course->name }}
@@ -155,7 +155,7 @@
                             @if ($user->enrollmentsAsMember()->isNotEmpty())
                                 {{ trans('enrollments.as_member') }}
                                 <ul>
-                                    @foreach ($user->enrollmentsAsMember() as $enrollment)
+                                    @foreach ($user->enrollmentsAsMember('course') as $enrollment)
                                         <li>
                                             <a href="{{ route('courses.show', $enrollment->course->id) }}">
                                                 {{ $enrollment->course->name }}

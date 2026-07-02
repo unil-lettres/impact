@@ -102,7 +102,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($courses->items() as $course)
+                            @foreach ($courses as $course)
                                 @can('view', $course)
                                     <tr class="{{ $course->type }}">
                                         <td title="{{ $course->name }}">
@@ -136,8 +136,8 @@
                                             {{ Helpers::courseType($course->type) }}
                                         </td>
                                         <td>
-                                            <div>{{ trans('cards.cards') }}: {{ $course->cards()->withTrashed()->count() }}</div>
-                                            <div>{{ trans('enrollments.enrollments') }}: {{ $course->enrollments()->withTrashed()->count() }}</div>
+                                            <div>{{ trans('cards.cards') }}: {{ $course->cards_count }}</div>
+                                            <div>{{ trans('enrollments.enrollments') }}: {{ $course->enrollments_count }}</div>
                                         </td>
                                         <x-td-actions>
                                             @unless($course->isActive())

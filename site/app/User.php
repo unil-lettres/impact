@@ -98,9 +98,14 @@ class User extends Authenticatable
     /**
      * Get the user enrollments with a teaching role.
      */
-    public function enrollmentsAsManager(): Collection
+    public function enrollmentsAsManager(null|array|string $with = null): Collection
     {
-        return $this->enrollments()
+        $enrollments = $this->enrollments();
+        if (! is_null($with)) {
+            $enrollments = $enrollments->with($with);
+        }
+
+        return $enrollments
             ->where('role', EnrollmentRole::Manager)
             ->orderBy('created_at', 'desc')
             ->get();
@@ -109,9 +114,14 @@ class User extends Authenticatable
     /**
      * Get the user enrollments with a member role.
      */
-    public function enrollmentsAsMember(): Collection
+    public function enrollmentsAsMember(null|array|string $with = null): Collection
     {
-        return $this->enrollments()
+        $enrollments = $this->enrollments();
+        if (! is_null($with)) {
+            $enrollments = $enrollments->with($with);
+        }
+
+        return $enrollments
             ->where('role', EnrollmentRole::Member)
             ->orderBy('created_at', 'desc')
             ->get();

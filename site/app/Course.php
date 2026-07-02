@@ -135,7 +135,7 @@ class Course extends Model
             default => $this->enrollments(),
         };
 
-        return $enrollments->get()
+        return $enrollments->with('user')->get()
             ->map(function ($enrollment) {
                 return $enrollment->user;
             });

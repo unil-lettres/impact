@@ -77,7 +77,14 @@ class File extends Model
      */
     public function isUsed(): bool
     {
-        return $this->cards()->exists() || $this->card()->exists();
+        // Check if the cards relationship is loaded to avoid unnecessary queries.
+        $hasCards = $this->relationLoaded('cards')
+            ? $this->cards->isNotEmpty()
+            : $this->cards()->exists();
+
+        $hasCard = $this->card !== null;
+
+        return $hasCards || $hasCard;
     }
 
     /**

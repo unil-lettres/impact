@@ -41,6 +41,7 @@ class InvitationController extends Controller
         $this->authorize('viewAny', Invitation::class);
 
         $invitations = Invitation::active()
+            ->with('course')
             ->where('creator_id', Auth::user()->id)
             ->orderBy('created_at', 'desc')
             ->paginate(config('const.pagination.per'));
@@ -61,7 +62,7 @@ class InvitationController extends Controller
     {
         $this->authorize('manage', Invitation::class);
 
-        $invitations = Invitation::active();
+        $invitations = Invitation::active()->with('course');
 
         // If the filter parameter is set, filter the invitations by type
         $filter = $request->get('filter');
@@ -100,7 +101,7 @@ class InvitationController extends Controller
             $courses = Course::local()
                 ->get();
         } else {
-            $courses = Auth::user()->enrollmentsAsManager()
+            $courses = Auth::user()->enrollmentsAsManager('course')
                 ->filter(function ($enrollment) {
                     return $enrollment->course->type === CourseType::Local;
                 })

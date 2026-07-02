@@ -151,12 +151,12 @@ class UserController extends Controller
 
         $this->authorize('update', $user);
 
-        $coursesAsManager = $user->enrollmentsAsManager()
+        $coursesAsManager = $user->enrollmentsAsManager('course')
             ->map(function ($enrollment) {
                 return $enrollment->course;
             });
 
-        $coursesAsMember = $user->enrollmentsAsMember()
+        $coursesAsMember = $user->enrollmentsAsMember('course')
             ->map(function ($enrollment) {
                 return $enrollment->course;
             });

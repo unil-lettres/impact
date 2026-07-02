@@ -31,7 +31,8 @@ class FileController extends Controller
     {
         $this->authorize('viewAny', [File::class, $course]);
 
-        $files = File::where('course_id', $course->id)
+        $files = File::with('cards')
+            ->where('course_id', $course->id)
             ->orderBy('created_at', 'desc')
             ->paginate(config('const.pagination.per'));
 
@@ -54,7 +55,7 @@ class FileController extends Controller
     {
         $this->authorize('manage', File::class);
 
-        $files = File::query();
+        $files = File::query()->with('course', 'cards');
 
         // If the filter parameter is set, filter the files by status
         $filter = $request->get('filter');

@@ -233,7 +233,6 @@ class CourseController extends Controller
 
         return view('courses.edit', [
             'course' => $course,
-            'users' => User::all(),
             'managerRole' => EnrollmentRole::Manager,
             'usersAsManager' => $course->managers(),
             'memberRole' => EnrollmentRole::Member,

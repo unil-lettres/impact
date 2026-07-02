@@ -19,7 +19,7 @@
                         </div>
                         <div class="card-body">
                             <div id="rct-multi-user-manager-select"
-                                 data='{{ json_encode(['record' => $course, 'role' => $managerRole, 'options' => $users, 'defaults' => $usersAsManager, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
+                                 data='{{ json_encode(['record' => $course, 'role' => $managerRole, 'defaults' => $usersAsManager, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
                             ></div>
                             <div class="form-text">{{ trans('users.edit.enrollments_are_auto_save') }}</div>
                         </div>
@@ -32,7 +32,7 @@
                         </div>
                         <div class="card-body">
                             <div id="rct-multi-user-member-select"
-                                 data='{{ json_encode(['record' => $course, 'role' => $memberRole, 'options' => $users, 'defaults' => $usersAsMember, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
+                                 data='{{ json_encode(['record' => $course, 'role' => $memberRole, 'defaults' => $usersAsMember, 'isDisabled' => Helpers::isCourseExternal($course)]) }}'
                             ></div>
                             <div class="form-text">{{ trans('users.edit.enrollments_are_auto_save') }}</div>
                         </div>

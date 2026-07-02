@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 
 import Select from "react-select";
 import CreatableSelect from 'react-select/creatable';
+import AsyncSelect from 'react-select/async';
+import AsyncCreatableSelect from 'react-select/async-creatable';
 import makeAnimated from 'react-select/animated';
 import _ from "lodash";
 
@@ -43,6 +45,37 @@ export default class MultiSelect extends Component {
         };
 
         this.updateReference(this.state.values);
+
+        // Debounce the loading of options while the user is typing, to
+        // avoid firing a request on every keystroke.
+        this.debouncedLoadOptions = _.debounce((inputValue, callback) => {
+            this.loadOptions(inputValue)
+                .then((options) => callback(options))
+                .catch((error) => {
+                    console.error(error);
+                    callback([]);
+                });
+        }, 300);
+    }
+
+    /**
+     * Whether the options of this component should be lazily loaded from
+     * the server (as the user types) instead of using a static list given
+     * upfront. Override to enable asynchronous loading.
+     *
+     * @returns {boolean}
+     */
+    isAsync = () => false;
+
+    /**
+     * Called to lazily load the options matching the given search term,
+     * when isAsync() returns true. Override to define behavior.
+     *
+     * @param {string} inputValue The term currently typed by the user.
+     * @returns A Promise resolving to the list of options.
+     */
+    loadOptions = (inputValue) => {
+        return Promise.resolve(this.state.options);
     }
 
     /**
@@ -230,6 +263,16 @@ export default class MultiSelect extends Component {
             attributes.noOptionsMessage = () => this.props.noOptionsMessage;
         }
 
+        // Lazily load the options from the server as the user types,
+        // instead of relying on the static list.
+        const isAsync = this.isAsync();
+        if (isAsync) {
+            delete attributes.options;
+            attributes.loadOptions = this.debouncedLoadOptions;
+            attributes.cacheOptions = true;
+            attributes.defaultOptions = true;
+        }
+
         if (this.props.canCreate) {
 
             if (this.props.createLabel) {
@@ -237,12 +280,17 @@ export default class MultiSelect extends Component {
             }
 
             attributes.onCreateOption = this.handleCreate;
+
+            if (isAsync) {
+                return <AsyncCreatableSelect {...attributes} />;
+            }
+
             return <CreatableSelect {...attributes} />;
         }
 
         return(
             <div>
-                <Select {...attributes} />
+                {isAsync ? <AsyncSelect {...attributes} /> : <Select {...attributes} />}
                 {this.state.message && (
                     // Available types: https://getbootstrap.com/docs/5.0/utilities/colors/#colors
                     <div className={this.state.message.type}>{this.state.message.content}</div>

@@ -40,7 +40,6 @@ class UserController extends Controller
             'course' => $course,
             'breadcrumbs' => $course
                 ->breadcrumbs(true),
-            'users' => User::all(),
             'managerRole' => EnrollmentRole::Manager,
             'usersAsManager' => $course->managers(),
             'memberRole' => EnrollmentRole::Member,
@@ -163,8 +162,6 @@ class UserController extends Controller
 
         return view('users.edit', [
             'user' => $user,
-            'courses' => Course::local()
-                ->get(),
             'managerRole' => EnrollmentRole::Manager,
             'coursesAsManager' => $coursesAsManager,
             'memberRole' => EnrollmentRole::Member,

@@ -12,20 +12,41 @@ class MultiEnrollmentSelect extends MultiSelect {
 
         this.role = data.role;
 
-        // Override options & values state properties to
-        // add an "isFixed" or "isExpired" property when needed.
-        const mapOption = (opt) => ({
-            value: opt.id,
-            label: opt.name,
-            isExpired: opt.validity && new Date(opt.validity) < new Date(),
-            isFixed: this.props.context === 'course' && opt.type === 'external',
-        });
-
         this.state = {
             ...this.state,
-            options: _.map(data.options, mapOption),
-            values: _.map(data.defaults, mapOption),
+            values: _.map(data.defaults, this.mapOption),
         };
+    }
+
+    /**
+     * Override options & values state properties to
+     * add an "isFixed" or "isExpired" property when needed.
+     */
+    mapOption = (opt) => ({
+        value: opt.id,
+        label: opt.name,
+        isExpired: opt.validity && new Date(opt.validity) < new Date(),
+        isFixed: this.props.context === 'course' && opt.type === 'external',
+    });
+
+    /**
+     * Both selects (courses for a user, or users for a course) lazily
+     * load their options from the server, since either list can be huge.
+     */
+    isAsync = () => true;
+
+    loadOptions = (inputValue) => {
+        const url = {
+            'course': `/users/${this.state.record.id}/courses/search`,
+            'user': `/courses/${this.state.record.id}/users/search`,
+        }[this.props.context];
+
+        return axios.get(url, {
+            params: { q: inputValue },
+        }).then((response) => _.map(
+            response.data.courses ?? response.data.users,
+            this.mapOption
+        ));
     }
 
     select = (record, option) => {

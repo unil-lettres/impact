@@ -18,10 +18,12 @@ use App\Http\Controllers\FileController;
 use App\Http\Controllers\FolderController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\Json\CardJsonController;
+use App\Http\Controllers\Json\CourseJsonController;
 use App\Http\Controllers\Json\EnrollmentJsonController;
 use App\Http\Controllers\Json\FileJsonController;
 use App\Http\Controllers\Json\StateJsonController;
 use App\Http\Controllers\Json\TagJsonController;
+use App\Http\Controllers\Json\UserJsonController;
 use App\Http\Controllers\LegacyController;
 use App\Http\Controllers\LocalizationController;
 use App\Http\Controllers\StateController;
@@ -65,6 +67,10 @@ Route::middleware(['auth', 'app'])->group(function () {
         ->name('users.profile');
     Route::put('users/{user}/update', [UserController::class, 'update'])
         ->name('users.profile.update');
+    Route::get('courses/{course}/users/search', [UserJsonController::class, 'search'])
+        ->name('courses.users.search');
+    Route::get('users/{user}/courses/search', [CourseJsonController::class, 'search'])
+        ->name('users.courses.search');
 
     // Cards
     Route::get('cards/print', [CardController::class, 'print'])

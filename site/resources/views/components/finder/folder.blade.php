@@ -10,7 +10,7 @@
     @mouseout.stop="mouseover = false"
     @click.stop="toggleSelect($event, $el)"
     wire:key='{{ $folder->getFinderItemType() }}-{{ $folder->id }}'
-    {{ $lockedMove ? 'locked-move' : '' }}
+    wire:sort:item="{{ $folder->getFinderItemType() }}-{{ $folder->id }}"
 >
     <div
         class="d-flex background-hover"
@@ -175,7 +175,9 @@
         class="finder-selectable-list"
         x-show="openedFolder.includes(key)"
         x-transition
-        x-init="initSortable($el)"
+        @can('massActionsForCardAndFolder', $folder->course)
+            wire:sort="handleSort"
+        @endcan
     >
         @foreach ($items as $item)
             @if ($item->getFinderItemType() === ('App\\Enums\\FinderItemType')::Folder)
@@ -184,7 +186,6 @@
                     :sort-column="$sortColumn"
                     :sort-direction="$sortDirection"
                     :depth="$depth + 1"
-                    :locked-move="$lockedMove"
                     :filters="$filters"
                     :$filterSearchBoxes
                     :$modalCloneId
@@ -194,7 +195,6 @@
                 <x-finder.card
                     :card="$item"
                     :depth="$depth + 1"
-                    :locked-move="$lockedMove"
                     :$modalCloneId
                     :$modalMoveId
                 />

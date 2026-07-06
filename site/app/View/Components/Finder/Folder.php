@@ -33,7 +33,6 @@ class Folder extends Component
         public string $sortColumn = 'position',
         public string $sortDirection = 'asc',
         public int $depth = 0,
-        public bool $lockedMove = false,
     ) {
         $this->items = Helpers::getFolderItems(
             $folder->course,

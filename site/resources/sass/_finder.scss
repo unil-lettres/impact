@@ -1,5 +1,5 @@
 .finder {
-    &:not(.hide-select) {
+    body:not(.sorting) & {
 
         .background-hover:hover {
             background-color: var(--bs-gray-200);
@@ -15,7 +15,7 @@
         }
     }
 
-    &.hide-select {
+    body.sorting & {
         [type="checkbox"] {
             opacity: 0 !important;
         }

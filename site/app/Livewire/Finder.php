@@ -148,26 +148,6 @@ class Finder extends Component
     }
 
     #[Computed]
-    public function lockedMove(): bool
-    {
-        return false
-            // Should be the default sort order.
-            || $this->sortColumn != self::DEFAULT_SORT_COLUMN
-            || $this->sortDirection != self::DEFAULT_SORT_DIRECTION
-
-            // No filter must be selected.
-            || ! $this->filters->every(
-                fn (Collection $value) => $value->isEmpty()
-            )
-
-            // Must have the authorization.
-            || Auth::user()->cannot(
-                'massActionsForCardAndFolder',
-                $this->course,
-            );
-    }
-
-    #[Computed]
     public function holders(): Collection
     {
         // Return the list of holders for all cards of the course.
@@ -181,22 +161,45 @@ class Finder extends Component
             ->unique('id');
     }
 
-    #[On('sort-updated')]
-    public function move(int $id, string $type, int $position): void
+    /**
+     * Handler for the `wire:sort` directive. $key is the dragged item's
+     * identifier (formatted as "{type}-{id}", see `wire:sort:item`) and
+     * $position is its new zero-based position in the list.
+     */
+    public function handleSort(string $key, int $position): void
     {
-        if ($this->lockedMove()) {
+        $lockedSort = false
+            // Should be the default sort order.
+            || $this->sortColumn != self::DEFAULT_SORT_COLUMN
+            || $this->sortDirection != self::DEFAULT_SORT_DIRECTION
+
+            // No filter must be selected.
+            || ! $this->filters->every(
+                fn (Collection $value) => $value->isEmpty()
+            );
+
+        if ($lockedSort) {
+            $this->flashMessage(
+                trans('courses.finder.move.disabled'),
+                'text-bg-danger',
+            );
+
             return;
         }
 
         $this->authorize('massActionsForCardAndFolder', $this->course);
 
+        [$type, $id] = explode('-', $key, 2) + [null, null];
+
         $success = $this->validateAndFlash(
             [
                 'type' => $type,
+                'id' => $id,
                 'position' => $position,
             ],
             [
                 'position' => 'required|integer',
+                'id' => 'required|integer',
                 'type' => 'required|string|in:'.FinderItemType::Card.','.FinderItemType::Folder,
             ],
         );
@@ -211,9 +214,26 @@ class Finder extends Component
             : Card::findOrFail($id)
         );
 
-        $entity->update([
-            'position' => $position,
-        ]);
+        // Get the current siblings (same parent), without the moved entity,
+        // preserving their current order.
+        $siblings = FinderItemsService::getItems(
+            $this->course,
+            $this->filters,
+            $this->filterSearchBoxes,
+            $type === FinderItemType::Folder ? $entity->parent : $entity->folder,
+            $this->sortColumn,
+            $this->sortDirection,
+        )->reject(
+            fn ($item) => $item->getFinderItemType() === $type && $item->id === $entity->id
+        )->values();
+
+        // Re-insert the moved entity at its new position and re-assign the
+        // position of every item to match the new order.
+        $siblings->splice($position, 0, [$entity]);
+
+        $siblings->each(
+            fn ($item, $index) => $item->update(['position' => $index])
+        );
     }
 
     #[On('add-element-to-filter')]

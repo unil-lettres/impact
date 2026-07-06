@@ -221,52 +221,6 @@
                 return `{{ route('cards.print') }}?${encodedUrl}`;
             }
         },
-
-        /**
-         * Initialize the Sortable plugin.
-         */
-        initSortable(list) {
-            Sortable.create(list, {
-                disabled: {{Auth::user()->cannot('massActionsForCardAndFolder', $this->course) ? 'true' : 'false'}},
-                onStart: (evt) => {
-                    // Display a message if the user cannot move items.
-                    if (evt.item.hasAttribute('locked-move')) {
-                        this.$dispatch(
-                            'flash-message',
-                            {
-                                lines: ["{{ trans('courses.finder.move.disabled') }}"],
-                                bsClass: 'text-bg-danger',
-                            },
-                        );
-                    }
-
-                    // Hide selected elements while dragging.
-                    list.closest('.finder').classList.add('hide-select');
-                },
-                onEnd: () => {
-                    // Display again selected elements when dragging end.
-                    list.closest('.finder').classList.remove('hide-select');
-                },
-                onMove: (evt) => {
-                    // Disable sorting when item has locked-move attribute.
-                    return !evt.dragged.hasAttribute('locked-move');
-                },
-                onUpdate: (evt) => {
-                    _.each(evt.item.parentNode.children, (item, index) => {
-                        item.dispatchEvent(new CustomEvent('sort-updated', {
-                            bubbles: true,
-                            cancelable: false,
-                            detail: {
-                                id: item.getAttribute('data-id'),
-                                type: item.getAttribute('data-type'),
-                                position: index,
-                            },
-                        }));
-                    });
-                },
-                animation: 150,
-            });
-        }
     };
 
     Alpine.data('finderData', () => finderDataObject);

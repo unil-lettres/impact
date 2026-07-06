@@ -253,13 +253,14 @@
     <ul
         class="finder-selectable-list"
         @click.outside="selectedItems = []"
-        x-init="initSortable($el)"
+        @can('massActionsForCardAndFolder', $course)
+            wire:sort="handleSort"
+        @endcan
     >
         @forelse ($this->items as $item)
             @if ($item->getFinderItemType() === ('App\\Enums\\FinderItemType')::Folder)
                 <x-finder.folder
                     :folder="$item"
-                    :locked-move="$this->lockedMove"
                     :$sortColumn
                     :$sortDirection
                     :filters="$this->filters"
@@ -270,7 +271,6 @@
             @else
                 <x-finder.card
                     :card="$item"
-                    :locked-move="$this->lockedMove"
                     :$modalCloneId
                     :$modalMoveId
                 />

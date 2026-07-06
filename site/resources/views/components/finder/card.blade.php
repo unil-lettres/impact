@@ -3,7 +3,6 @@
     'modalCloneId',
     'modalMoveId',
     'selected' => false,
-    'lockedMove' => false,
     'depth' => 0,
 ])
 
@@ -19,7 +18,7 @@
     @click.stop="toggleSelect($event, $el)"
     :class="!selectedItems.includes(key) || 'selected'"
     wire:key='{{ $card->getFinderItemType() }}-{{ $card->id }}'
-    {{ $lockedMove ? 'locked-move' : '' }}
+    wire:sort:item="{{ $card->getFinderItemType() }}-{{ $card->id }}"
 >
     <div
         class='flex-fill text-truncate px-1 position-relative'

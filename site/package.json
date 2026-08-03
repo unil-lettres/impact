@@ -27,7 +27,7 @@
         "mime-types": "^3.0.2",
         "path": "^0.12.7",
         "popper.js": "^1.16.1",
-        "postcss": "^8.5.14",
+        "postcss": "^8.5.25",
         "raw-loader": "^4.0.2",
         "react": "^19.0.0",
         "react-datepicker": "^9.1.0",

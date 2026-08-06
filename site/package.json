@@ -34,7 +34,7 @@
         "react-dom": "^19.0.0",
         "react-select": "^5.4.0",
         "resolve-url-loader": "^5.0.0",
-        "sanitize-html": "^2.7.1",
+        "sanitize-html": "^2.17.5",
         "sass": "^1.54.0",
         "sass-loader": "^17.0.0",
         "sortablejs": "^1.15.0",

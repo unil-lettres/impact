@@ -16,7 +16,7 @@
     },
     // forward ports for the main application (8787), phpmyadmin (9898), and mailhog (8025)
     "forwardPorts": [8787, 9898, 8025],
-    "initializeCommand": "cp docker/example.env docker/.env",
+    "initializeCommand": "cp docker/db.env.example docker/db.env",
     "postCreateCommand": "/bin/bash .devcontainer/post-create.sh",
     "customizations": {
         "vscode": {

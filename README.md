@@ -22,9 +22,9 @@ A working [Docker](https://docs.docker.com/engine/install/) installation is mand
 
 ## Environment files
 
-Please make sure to copy & rename the **example.env** file to **.env**.
+Please make sure to copy & rename the **db.env.example** file to **db.env**.
 
-``cp docker/example.env docker/.env``
+``cp docker/db.env.example docker/db.env``
 
 You can replace the values if needed, but the default ones should work for local development.
 
@@ -137,7 +137,7 @@ To view the integration tests running in the browser, go to [http://impact.lan:4
 Copy and rename the following environment files.
 
 ```
-cp docker/example.env docker/.env
+cp docker/db.env.example docker/db.env
 cp docker/shibboleth.env.example docker/shibboleth.env
 cp site/.env.example site/.env
 ```

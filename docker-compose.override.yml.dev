@@ -24,7 +24,7 @@ services:
   impact-mysql-testing:
     image: mariadb:11.4
     env_file:
-      - ./docker/.env
+      - ./docker/db.env
     volumes:
       - dusk-data:/var/lib/mysql
       - ./docker/config/my-testing.cnf:/etc/mysql/conf.d/99-my-testing.cnf

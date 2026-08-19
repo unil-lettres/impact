@@ -90,12 +90,31 @@ jobs:
         with:
           ref: development
 
+      - name: Find apache-shibboleth latest DockerHub tag
+        id: find_shib_tag
+        continue-on-error: true
+        uses: unil-lettres/actions/latest-tag@main
+        with:
+          image_repository: ${{ vars.DOCKERHUB_SHIB_REPOSITORY }}
+          dockerhub_username: ${{ secrets.DOCKERHUB_USERNAME }}
+          dockerhub_token: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Prepare commit values
+        run: |
+          if [[ "${{ steps.find_shib_tag.outcome }}" == "success" ]]; then
+            echo "VERSIONS=${{ needs.merge-app.outputs.tag }},${{ needs.merge-worker.outputs.tag }},${{ steps.find_shib_tag.outputs.tag }}" >> $GITHUB_ENV
+            echo "VERSION_KEYS=app_image_tag,worker_image_tag,shib_image_tag" >> $GITHUB_ENV
+          else
+            echo "VERSIONS=${{ needs.merge-app.outputs.tag }},${{ needs.merge-worker.outputs.tag }}" >> $GITHUB_ENV
+            echo "VERSION_KEYS=app_image_tag,worker_image_tag" >> $GITHUB_ENV
+          fi
+
       - name: Update image
         uses: unil-lettres/actions/commit-version@main
         with:
           file_path: impact/values-stage.yaml
-          versions: "${{ needs.merge-app.outputs.tag }}, ${{ needs.merge-worker.outputs.tag }}"
-          version_keys: "app_image_tag, worker_image_tag"
+          versions: "${{ env.VERSIONS }}"
+          version_keys: "${{ env.VERSION_KEYS }}"
           token: ${{ secrets.PAT_TOKEN }}
           repository: unil-lettres/k8s
           branch: main

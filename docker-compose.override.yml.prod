@@ -14,13 +14,39 @@ services:
     volumes:
       - uploads-data:/var/www/impact/storage/app/public/uploads
       - exports-data:/var/www/impact/storage/app/public/exports
-      - shibboleth-data:/etc/shibboleth
     restart: unless-stopped
     deploy:
       mode: global
       resources:
         limits:
           memory: 1000M
+  impact-shibboleth:
+    image: unillett/apache-shibboleth:latest
+    env_file:
+      - ./docker/shibboleth.env
+    ports:
+      - "127.0.0.1:8787:8080"
+    volumes:
+      - ./docker/config/apache-shibboleth.conf:/etc/apache2/vhost.d/custom.conf:ro
+      - shibboleth-certs:/var/lib/shibboleth
+    depends_on:
+      impact-app:
+        condition: service_healthy
+    healthcheck:
+      test: [ "CMD-SHELL", "curl -f http://localhost:8080 || exit 1" ]
+      interval: 10s
+      timeout: 2s
+      retries: 5
+      start_period: 30s
+    restart: unless-stopped
+    deploy:
+      mode: global
+      resources:
+        limits:
+          memory: 100M
+    networks:
+      - impact-net
+    container_name: impact-shibboleth
   impact-worker:
     image: unillett/impact:worker-latest
     build:
@@ -49,4 +75,4 @@ services:
 volumes:
   uploads-data:
   exports-data:
-  shibboleth-data:
+  shibboleth-certs:

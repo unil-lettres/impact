@@ -31,46 +31,6 @@ check_vars_exist \
   DB_PORT \
   DB_USERNAME
 
-# Check if SHIB_HOSTNAME and SHIB_CONTACT are set
-if [ -n "$SHIB_HOSTNAME" ] && [ -n "$SHIB_CONTACT" ]; then
-  # Copy Shibboleth configuration files from backup if the files do not exist
-  if [ ! -f /etc/shibboleth/shibboleth2.xml ]; then
-    echo "Copying Shibboleth config files from backup."
-    cp -af /etc/shibboleth-backup/. /etc/shibboleth/
-    echo "Files copied successfully."
-  fi
-
-  # Update Shibboleth main configuration file (shibboleth2.xml)
-  if grep -q "myhost.com" "/etc/shibboleth/shibboleth2.xml"; then
-    sed -i "s|myhost.com|$SHIB_HOSTNAME|g" "/etc/shibboleth/shibboleth2.xml"
-    echo "Replaced all occurrences of DNS placeholder by $SHIB_HOSTNAME in Shibboleth configuration."
-
-    sed -i "s|aai@$SHIB_HOSTNAME|$SHIB_CONTACT|g" "/etc/shibboleth/shibboleth2.xml"
-    echo "Replaced contact email address in Shibboleth configuration."
-  else
-    echo "Shibboleth already configured. No action needed."
-  fi
-
-  # Check if Shibboleth key or certificate file exists, if not generate them
-  if [[ ! -f /etc/shibboleth/sp-key.pem && ! -f /etc/shibboleth/sp-cert.pem ]]; then
-    echo "Shibboleth key and certificate files missing. Generated new key and certificate for $SHIB_HOSTNAME hostname"
-    shib-keygen -f -u _shibd -h $SHIB_HOSTNAME -y 10 -o /etc/shibboleth
-  else
-    echo "Shibboleth key and certificate files already exist. No action needed."
-  fi
-
-  # Update Apache configuration file (000-default.conf)
-  # https://shibboleth.atlassian.net/wiki/spaces/SHIB2/pages/2577072242/SPReverseProxy
-  if grep -q "ServerName impact" "/etc/apache2/sites-available/000-default.conf"; then
-    sed -i "s|ServerName impact|ServerName https://$SHIB_HOSTNAME:443|g" "/etc/apache2/sites-available/000-default.conf"
-    echo "Replaced ServerName by $SHIB_HOSTNAME in Apache configuration."
-  else
-    echo "Apache already configured. No action needed."
-  fi
-else
-  echo "Shibboleth environment variables are not set. Skipping Shibboleth configuration."
-fi
-
 echo "Optimize view, routes, events, configs..."
 php artisan optimize
 

@@ -9,6 +9,8 @@ services:
       context: ./
       dockerfile: ./docker/app.dockerfile
       target: dev
+    ports:
+      - "127.0.0.1:8787:80"
     volumes:
       - ./site:/var/www/impact
   impact-worker:

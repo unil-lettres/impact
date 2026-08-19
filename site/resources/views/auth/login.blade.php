@@ -3,6 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center login-forms">
+        @if (config('const.shibboleth_auth_enabled'))
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">{{ trans('login.aai') }}</div>
@@ -25,6 +26,7 @@
                 </div>
             </div>
         </div>
+        @endif
         <div class="col-md-6">
             <div class="card">
                 <div class="card-header">{{ trans('login.local') }}</div>

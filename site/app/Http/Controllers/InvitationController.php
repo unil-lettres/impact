@@ -134,9 +134,10 @@ class InvitationController extends Controller
         $type = InvitationType::Local;
         $email = $request->input('email');
 
-        // If the Switch service is configured, check if the email is
-        // registered as a SWITCHaai user through the Switch API.
-        if (SwitchService::isConfigured()) {
+        // If the AAI authentication is enabled and the Switch service is
+        // configured, check if the email is registered as a SWITCHaai user
+        // through the Switch API.
+        if (config('const.shibboleth_auth_enabled') && SwitchService::isConfigured()) {
             try {
                 $type = (new SwitchService)
                     ->isEmailRegistered($email) ? InvitationType::Aai : InvitationType::Local;

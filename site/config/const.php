@@ -12,6 +12,8 @@ return [
 
     'codespace_name' => env('CODESPACE_NAME'),
 
+    'shibboleth_auth_enabled' => env('SHIBBOLETH_AUTH_ENABLED', false),
+
     'pagination' => [
         'per' => env('PAGINATION_PER', 25),
     ],

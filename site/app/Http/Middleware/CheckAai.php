@@ -28,7 +28,7 @@ class CheckAai
         }
 
         // Check if the user is authenticated by SwitchAAI
-        if (RequestFacade::header('X-Shib-Identity-Provider')) {
+        if (config('const.shibboleth_auth_enabled') && RequestFacade::header('X-Shib-Identity-Provider')) {
             // Check if the user can be found in the database
             $user = User::where(
                 'email',

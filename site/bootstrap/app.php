@@ -76,11 +76,9 @@ return Application::configure(basePath: dirname(__DIR__))
         // The host is under client control, both in the Host header preserved by
         // the proxies and in the now trusted X-Forwarded-Host. Enabling this
         // middleware is what restricts it to the APP_URL host & its subdomains,
-        // which it trusts on its own, keeping a forged host out of the generated
-        // URLs such as the password reset links. Only localhost is added, for the
-        // container healthcheck, which requests the app without the public host.
-        // Patterns are unanchored regexes.
-        $middleware->trustHosts(at: ['^localhost$']);
+        // which it trusts on its own, plus the TRUSTED_HOSTS ones, keeping a
+        // forged host out of the generated URLs such as the password reset links.
+        $middleware->trustHosts(at: fn () => config('const.trusted_hosts'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

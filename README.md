@@ -22,9 +22,9 @@ A working [Docker](https://docs.docker.com/engine/install/) installation is mand
 
 ## Environment files
 
-Please make sure to copy & rename the **example.env** file to **.env**.
+Please make sure to copy & rename the **db.env.example** file to **db.env**.
 
-``cp docker/example.env docker/.env``
+``cp docker/db.env.example docker/db.env``
 
 You can replace the values if needed, but the default ones should work for local development.
 
@@ -137,19 +137,26 @@ To view the integration tests running in the browser, go to [http://impact.lan:4
 Copy and rename the following environment files.
 
 ```
-cp docker/example.env docker/.env
+cp docker/db.env.example docker/db.env
+cp docker/shibboleth.env.example docker/shibboleth.env
 cp site/.env.example site/.env
 ```
 
 You should replace the values since the default ones are not ready for production.
 
-To authenticate with Shibboleth, don't forget to uncomment and set the `SHIB_HOSTNAME` and `SHIB_CONTACT` variables in `site/.env`, otherwise you only be abel to use the local authentication.
+To authenticate with Shibboleth, set `SHIB_HOSTNAME` and `SHIB_CONTACT` in `docker/shibboleth.env`, and set `SHIBBOLETH_AUTH_ENABLED` to `true` in `site/.env`. If `SHIBBOLETH_AUTH_ENABLED` is set to `false`, you will only be able to use the local authentication.
 
 Please also make sure to copy & rename the **docker-compose.override.yml.prod** file to **docker-compose.override.yml**.
 
 `cp docker-compose.override.yml.prod docker-compose.override.yml`
 
 You can replace the values if needed, but the default ones should work for production.
+
+## Shibboleth certificates
+
+On first startup the proxy generates a service provider key & certificate and persists them in the `shibboleth-certs` volume. That certificate must be registered on the [AAI Resource Registry](https://rr.aai.switch.ch/) before authentication works.
+
+To reuse an already registered certificate instead, set `SHIB_SP_KEY` and `SHIB_SP_CERT` in `docker/shibboleth.env`.
 
 ## Installation & configuration
 
@@ -159,7 +166,7 @@ Build & run all the containers for this project.
 
 ## Reverse proxy
 
-Use a reverse proxy configuration to map the url to port `8787`.
+Use a reverse proxy configuration to map the url to port `8787`, which is served by the Shibboleth proxy. SWITCHaai requires HTTPS, so the reverse proxy must terminate TLS.
 
 # Docker images
 

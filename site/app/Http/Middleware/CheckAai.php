@@ -28,11 +28,11 @@ class CheckAai
         }
 
         // Check if the user is authenticated by SwitchAAI
-        if ($this->getServerVariable('Shib-Identity-Provider')) {
+        if (config('const.shibboleth_auth_enabled') && RequestFacade::header('X-Shib-Identity-Provider')) {
             // Check if the user can be found in the database
             $user = User::where(
                 'email',
-                $this->getServerVariable('mail')
+                RequestFacade::header('X-Shib-Mail')
             )->first();
 
             if (! $user) {
@@ -57,9 +57,9 @@ class CheckAai
     private function createAaiUser(): User
     {
         $user = User::create([
-            'name' => $this->getServerVariable('givenName').' '.
-                $this->getServerVariable('surname'),
-            'email' => $this->getServerVariable('mail'),
+            'name' => RequestFacade::header('X-Shib-GivenName').' '.
+                RequestFacade::header('X-Shib-Surname'),
+            'email' => RequestFacade::header('X-Shib-Mail'),
             'type' => UserType::Aai,
         ]);
 
@@ -90,13 +90,5 @@ class CheckAai
                 'registered_at' => Carbon::now(),
             ]);
         }
-    }
-
-    /**
-     * Wrapper function to be able to retrieve server variables.
-     */
-    private function getServerVariable(string $variableName): ?string
-    {
-        return RequestFacade::server($variableName) ?? RequestFacade::server('REDIRECT_'.$variableName);
     }
 }

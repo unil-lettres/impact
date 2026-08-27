@@ -26,3 +26,6 @@
 /site/public/build/*
 
 /site/bootstrap/cache/*
+
+/docker/*.env
+/docker/*.env.example

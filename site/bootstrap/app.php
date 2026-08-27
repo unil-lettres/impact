@@ -66,6 +66,19 @@ return Application::configure(basePath: dirname(__DIR__))
             SubstituteBindings::class,
             Authorize::class,
         ]);
+
+        // TLS is terminated by the host Apache, so the request reaching the app
+        // is a plain one: without the X-Forwarded-* headers reported by the
+        // proxies, the generated URLs fall back to http and browsers block them
+        // as mixed content.
+        $middleware->trustProxies(at: '*');
+
+        // The host is under client control, both in the Host header preserved by
+        // the proxies and in the now trusted X-Forwarded-Host. Enabling this
+        // middleware is what restricts it to the APP_URL host & its subdomains,
+        // which it trusts on its own, plus the TRUSTED_HOSTS ones, keeping a
+        // forged host out of the generated URLs such as the password reset links.
+        $middleware->trustHosts(at: fn () => config('const.trusted_hosts'));
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

@@ -93,47 +93,8 @@ CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
 
 FROM base AS prod
 
-ENV SHIBBOLETH_VERSION=3.4
-
 # Copy Apache configuration file
 COPY docker/config/vhost-prod.conf /etc/apache2/sites-available/000-default.conf
-
-# Install additional packages needed for production
-RUN apt-get install -y \
-    ntpsec \
-    libapache2-mod-shib \
-    shibboleth-sp-common \
-    shibboleth-sp-utils
-
-# Enable needed Apache modules
-RUN a2enmod rewrite ssl shib
-
-# Forward Shibboleth logs to stdout
-RUN mkdir -p /var/log/shibboleth && \
-    ln -sf /dev/stdout /var/log/shibboleth/shibd.log && \
-    ln -sf /dev/stdout /var/log/shibboleth/shibd_warn.log.log
-
-# Generate Shibboleth configurations files
-RUN curl --output /etc/shibboleth/shibboleth2.xml \
-    "https://help.switch.ch/aai/docs/shibboleth/SWITCH/$SHIBBOLETH_VERSION/sp/deployment/download/customize.php/shibboleth2.xml?osType=nonwindows&hostname=myhost.com&targetURL=https%3A%2F%2Fmyhost.com%2FShibboleth.sso%2FSession&keyPath=%2Fetc%2Fshibboleth%2Fsp-key.pem&certPath=%2Fetc%2Fshibboleth%2Fsp-cert.pem&federation=SWITCHaai&supportEmail=aai%40myhost.com&wayfURL=https%3A%2F%2Fwayf.switch.ch%2FSWITCHaai%2FWAYF&metadataURL=http%3A%2F%2Fmetadata.aai.switch.ch%2Fmetadata.switchaai%2Bidp.xml&metadataFile=metadata.switchaai%2Bidp.xml&eduIDEntityID=https%3A%2F%2Feduid.ch%2Fidp%2Fshibboleth&hide=windows-only,metadataattributespart1,metadataattributespart2,eduid-only,interfederation,"
-RUN curl --output /etc/shibboleth/attribute-map.xml \
-    "https://help.switch.ch/aai/docs/shibboleth/SWITCH/$SHIBBOLETH_VERSION/sp/deployment/download/customize.php/attribute-map.xml?osType=nonwindows&hide=eduid-only,"
-RUN curl --output /etc/shibboleth/attribute-policy.xml \
-    "https://help.switch.ch/aai/docs/shibboleth/SWITCH/$SHIBBOLETH_VERSION/sp/deployment/download/customize.php/attribute-policy.xml?osType=nonwindows&hide="
-RUN curl --output /etc/shibboleth/SWITCHaaiRootCA.crt.pem \
-    https://ca.aai.switch.ch/SWITCHaaiRootCA.crt.pem
-
-# Set handlerSSL to false in Shibboleth configuration file
-# https://shibboleth.atlassian.net/wiki/spaces/SHIB2/pages/2577072242/SPReverseProxy
-RUN sed -i "s|handlerSSL=\"true\"|handlerSSL=\"false\"|g" "/etc/shibboleth/shibboleth2.xml"
-
-# Create a backup directory & copy all files from /etc/shibboleth/ to the backup directory
-RUN mkdir -p /etc/shibboleth-backup
-RUN cp -a /etc/shibboleth/. /etc/shibboleth-backup/
-
-# Create a directory for the Shibboleth Unix domain socket
-# Avoid "failed to bind to socket" issue
-RUN mkdir -p /var/run/shibboleth/
 
 # Copy the application, except data listed in dockerignore
 COPY site/ /var/www/impact

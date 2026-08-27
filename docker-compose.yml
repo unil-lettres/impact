@@ -6,8 +6,6 @@ name: impact
 
 services:
   impact-app:
-    ports:
-      - "127.0.0.1:8787:80"
     depends_on:
       impact-mysql:
         condition: service_healthy
@@ -32,7 +30,7 @@ services:
   impact-mysql:
     image: mariadb:11.4
     env_file:
-      - ./docker/.env
+      - ./docker/db.env
     volumes:
       - mysql-data:/var/lib/mysql
     ports:

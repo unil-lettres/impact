@@ -13,6 +13,7 @@ use App\Services\Clone\CloneCardService;
 use App\Services\Clone\CloneFolderService;
 use App\Services\Clone\MassCloneService;
 use App\Services\FinderItemsService;
+use App\Services\FinderTree;
 use App\Services\MoveService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -124,7 +125,7 @@ class Finder extends Component
     #[On('items-updated')]
     public function refreshItems(): void
     {
-        unset($this->items);
+        unset($this->tree, $this->items);
     }
 
     #[Computed]
@@ -134,17 +135,26 @@ class Finder extends Component
             ->map(fn ($value) => collect($value));
     }
 
+    /**
+     * The content of the whole course, loaded once and shared with the folder
+     * components so that they don't each walk the tree again.
+     */
     #[Computed]
-    public function items(): Collection
+    public function tree(): FinderTree
     {
-        return FinderItemsService::getItems(
+        return FinderTree::build(
             Course::find($this->course->id),
             $this->filters,
             $this->filterSearchBoxes,
-            $this->folder,
             $this->sortColumn,
             $this->sortDirection,
         );
+    }
+
+    #[Computed]
+    public function items(): Collection
+    {
+        return $this->tree->items($this->folder);
     }
 
     #[Computed]

@@ -2,18 +2,17 @@
 
 namespace App\Services;
 
-use App\Card;
 use App\Course;
-use App\Enums\CardBox;
-use App\Enums\FinderItemType;
-use App\Enums\TranscriptionType;
 use App\Folder;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 
 /**
  * Manage the content (cards or folders) of courses and folders with filters
  * and sort.
+ *
+ * These helpers load the content of the course on every call. When several
+ * folders of the same course are needed, as when the finder renders a folder
+ * and its descendants, build a FinderTree once and query it instead.
  */
 class FinderItemsService
 {
@@ -51,103 +50,13 @@ class FinderItemsService
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
     ): Collection {
-
-        $cards = Card::with('tags')->with('state')->with('folder')->with('course')
-            ->where('course_id', $course->id)
-            ->where('folder_id', $folder?->id)
-            ->where(function ($query) use ($filters) {
-                // Filter specified tags id.
-                $filterTags = $filters->get('tag');
-                if ($filterTags->isNotEmpty()) {
-                    return $query->whereHas('tags', function ($query) use ($filterTags) {
-                        $query->whereIn('tag_id', $filterTags);
-                    });
-                }
-
-                return $query;
-            })
-            ->where(function ($query) use ($filters) {
-                // Filter specified states id.
-                $filterStates = $filters->get('state');
-                if ($filterStates->isNotEmpty()) {
-                    return $query->whereIn('state_id', $filterStates);
-                }
-
-                return $query;
-            })
-            ->get();
-
-        // Filter specified holders id.
-        // Due to how holders are implemented, we do this directly in the
-        // collection.
-        if ($filters->get('holder')->isNotEmpty()) {
-            $cards = $cards->filter(
-                fn ($card) => $card
-                    ->holders()
-                    ->pluck('id')
-                    ->intersect($filters->get('holder'))
-                    ->isNotEmpty()
-            );
-        }
-
-        // Filter specified search terms.
-        $checkedBoxes = collect($filterSearchBoxes)->filter(fn ($box) => $box)->keys();
-
-        if ($checkedBoxes->isNotEmpty() && $filters->get('search')->isNotEmpty()) {
-            $cards = $cards->filter(
-                function ($card) use ($course, $filters, $checkedBoxes) {
-                    // Get each contents of the card associated to the corresponding
-                    // checked boxes (name: title, box2: ICOR or text, etc.).
-                    $contents = collect([
-                        'name' => $card->title,
-                        CardBox::Box2 => match ($course->transcription) {
-                            // Transform ICOR transcription into plain text.
-                            TranscriptionType::Icor => collect([])
-                                ->concat(collect($card->box2[TranscriptionType::Icor])->pluck('speaker'))
-                                ->concat(collect($card->box2[TranscriptionType::Icor])->pluck('speech'))
-                                ->join(''),
-                            default => $card->box2[TranscriptionType::Text] ?? '',
-                        },
-                        CardBox::Box3 => $card->box3 ?? '',
-                        CardBox::Box4 => $card->box4 ?? '',
-                    ]);
-
-                    // Get only the contents associated to the checked boxes.
-                    $contents = $contents->filter(
-                        fn ($value, $key) => $checkedBoxes->contains($key),
-                    );
-
-                    // Search for the search term in each contents.
-                    $found = $filters
-                        ->get('search')
-                        ->some(fn ($searchTerm) => $contents->some(
-                            fn ($content) => static::searchTerm($content, $searchTerm)
-                        ));
-
-                    return $found;
-                }
-            );
-        }
-
-        // Filter cards by user permissions.
-        $user = Auth::user();
-        $cards = $cards->filter(fn ($card) => $user->can('index', $card));
-
-        $results = $cards
-            ->concat(
-                // Get all folders, folders are not affected by filters.
-                Folder::with('course')
-                    ->where('course_id', $course->id)
-                    ->where('parent_id', $folder?->id)
-                    ->get()
-            )
-            ->sortBy([
-                [$sortColumn, $sortDirection],
-                ['id', 'asc'],
-            ])
-            ->values();
-
-        return $results;
+        return FinderTree::build(
+            $course,
+            $filters,
+            $filterSearchBoxes,
+            $sortColumn,
+            $sortDirection,
+        )->items($folder);
     }
 
     /**
@@ -161,42 +70,12 @@ class FinderItemsService
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
     ): int {
-        $content = static::getItems(
+        return FinderTree::build(
             $folder->course,
             $filters,
             $filterSearchBoxes,
-            $folder,
             $sortColumn,
             $sortDirection,
-        );
-        $count = $content
-            ->countBy(fn ($item) => $item->getFinderItemType())
-            ->get(FinderItemType::Card, 0);
-
-        foreach ($folder->children as $child) {
-            $count += static::countCardsRecursive(
-                $child,
-                $filters,
-                $filterSearchBoxes,
-                $sortColumn,
-                $sortDirection,
-            );
-        }
-
-        return $count;
-    }
-
-    /**
-     * Search $term inside $text. Case insensitive and without spaces.
-     * HTML tags are stripped in $text.
-     *
-     * Return if the term is found or not.
-     */
-    private static function searchTerm(string $text, string $term): bool
-    {
-        return str_contains(
-            strtoupper(str_replace(' ', '', strip_tags($text))),
-            strtoupper(str_replace(' ', '', $term)),
-        );
+        )->countCardsRecursive($folder);
     }
 }

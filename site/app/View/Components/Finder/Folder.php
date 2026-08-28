@@ -3,7 +3,7 @@
 namespace App\View\Components\Finder;
 
 use App\Folder as AppFolder;
-use App\Helpers\Helpers;
+use App\Services\FinderTree;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
@@ -22,34 +22,24 @@ class Folder extends Component
     public int $countCards;
 
     /**
+     * Whether the folder contains cards to print, ignoring the filters and the
+     * permissions of the user.
+     */
+    public bool $hasCardsToPrint;
+
+    /**
      * Create a new component instance.
      */
     public function __construct(
         public AppFolder $folder,
-        public Collection $filters,
-        public array $filterSearchBoxes,
+        public FinderTree $tree,
         public string $modalCloneId,
         public string $modalMoveId,
-        public string $sortColumn = 'position',
-        public string $sortDirection = 'asc',
         public int $depth = 0,
     ) {
-        $this->items = Helpers::getFolderItems(
-            $folder->course,
-            $filters,
-            $filterSearchBoxes,
-            $folder,
-            $sortColumn,
-            $sortDirection,
-        );
-
-        $this->countCards = Helpers::numberOfItemsInFolder(
-            $folder,
-            $filters,
-            $filterSearchBoxes,
-            $sortColumn,
-            $sortDirection,
-        );
+        $this->items = $tree->items($folder);
+        $this->countCards = $tree->countCardsRecursive($folder);
+        $this->hasCardsToPrint = $tree->hasCardsRecursive($folder);
     }
 
     /**
@@ -67,10 +57,8 @@ class Folder extends Component
      */
     public function shouldRender()
     {
-        $hasFilters = $this->filters->some(fn ($filter) => $filter->isNotEmpty());
-
         $hasFolderUpdateRights = auth()->user()->can('update', $this->folder);
 
-        return $this->countCards > 0 || ! $hasFilters && $hasFolderUpdateRights;
+        return $this->countCards > 0 || ! $this->tree->hasFilters() && $hasFolderUpdateRights;
     }
 }

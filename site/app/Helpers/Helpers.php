@@ -12,7 +12,6 @@ use App\Enums\UserType;
 use App\File;
 use App\Folder;
 use App\Scopes\ValidityScope;
-use App\Services\FinderItemsService;
 use App\Services\MoodleService;
 use App\State;
 use App\User;
@@ -412,46 +411,6 @@ class Helpers
 
                 return $folder;
             },
-        );
-    }
-
-    /**
-     * Helper for FinderItemsService::getItems(...) function.
-     */
-    public static function getFolderItems(
-        Course $course,
-        Collection $filters,
-        array $filterSearchBoxes,
-        ?Folder $folder = null,
-        string $sortColumn = 'position',
-        string $sortDirection = 'asc',
-    ): Collection {
-        return FinderItemsService::getItems(
-            $course,
-            $filters,
-            $filterSearchBoxes,
-            $folder,
-            $sortColumn,
-            $sortDirection,
-        );
-    }
-
-    /**
-     * Helper for FinderItemsService::countCardsRecursive(...) function.
-     */
-    public static function numberOfItemsInFolder(
-        Folder $folder,
-        Collection $filters,
-        array $filterSearchBoxes,
-        string $sortColumn = 'position',
-        string $sortDirection = 'asc',
-    ): int {
-        return FinderItemsService::countCardsRecursive(
-            $folder,
-            $filters,
-            $filterSearchBoxes,
-            $sortColumn,
-            $sortDirection,
         );
     }
 

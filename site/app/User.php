@@ -96,7 +96,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Get the user enrollments with a teaching role.
+     * Get the user enrollments with a manager role.
      */
     public function enrollmentsAsManager(null|array|string $with = null): Collection
     {
@@ -156,11 +156,23 @@ class User extends Authenticatable
      */
     public function cards(): Collection
     {
+        return Card::findMany($this->heldCardIds());
+    }
+
+    /**
+     * Get the ids of the cards held by the user.
+     *
+     * The ids are already stored in the 'cards' column of the enrollments, so
+     * they are read from there instead of loading the Card models.
+     */
+    public function heldCardIds(): Collection
+    {
         return $this->enrollments
-            ->map(function ($enrollment) {
-                return Card::findMany($enrollment->cards);
-            })
-            ->flatten();
+            ->pluck('cards')
+            ->filter()
+            ->flatten()
+            ->unique()
+            ->values();
     }
 
     /**
@@ -172,8 +184,7 @@ class User extends Authenticatable
             return true;
         }
 
-        return $this->cards()
-            ->contains('id', $card->id);
+        return $this->heldCardIds()->contains($card->id);
     }
 
     /**
@@ -185,8 +196,7 @@ class User extends Authenticatable
             return true;
         }
 
-        return $this->enrollmentsAsManager()
-            ->contains('course_id', $course->id);
+        return $this->hasEnrollment($course, EnrollmentRole::Manager);
     }
 
     /**
@@ -198,8 +208,23 @@ class User extends Authenticatable
             return true;
         }
 
-        return $this->enrollmentsAsMember()
-            ->contains('course_id', $course->id);
+        return $this->hasEnrollment($course, EnrollmentRole::Member);
+    }
+
+    /**
+     * Check if the user has an enrollment with the given role in the given
+     * course.
+     *
+     * These checks run once per card and per folder of a finder listing, so
+     * they filter the enrollments relation (loaded once) instead of querying
+     * the enrollments again on every call.
+     */
+    private function hasEnrollment(Course $course, string $role): bool
+    {
+        return $this->enrollments->contains(
+            fn ($enrollment) => $enrollment->role === $role
+                && $enrollment->course_id === $course->id
+        );
     }
 
     /**

@@ -54,6 +54,14 @@ If you want completely wipe your database and populate it with fresh data, you c
 
 ``docker exec impact-app php artisan migrate:fresh --seed``
 
+### Performance data
+
+A separate seeder adds a course big enough to measure the performance of the finder: 1000 cards spread over 120 folders on three levels, 150 enrolled users the cards are assigned to, and 30 tags. It is not part of the seeders above, and adds a new course every time it is run without touching the existing data.
+
+``docker exec impact-app php artisan db:seed --class=PerformanceTableSeeder``
+
+The users of that course are ``perf<course_id>-user<n>@example.com / password``, the first five being the managers. The volumes are constants at the top of ``database/seeders/PerformanceTableSeeder.php``.
+
 ## Assets
 
 Assets are compiled when the container is built, but if you want to recompile them, you can use the following command.

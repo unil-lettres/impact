@@ -4,6 +4,7 @@ namespace App;
 
 use App\Enums\EnrollmentRole;
 use App\Enums\StateType;
+use App\Scopes\ValidityScope;
 use App\Traits\IsLegacy;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -66,6 +67,17 @@ class Course extends Model
     public function enrollments(): HasMany
     {
         return $this->hasMany(Enrollment::class)
+            ->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * Get the enrollments of this course, including the ones whose user is
+     * not valid anymore.
+     */
+    public function enrollmentsWithInvalidUsers(): HasMany
+    {
+        return $this->hasMany(Enrollment::class)
+            ->withoutGlobalScope(ValidityScope::class)
             ->orderBy('created_at', 'desc');
     }
 

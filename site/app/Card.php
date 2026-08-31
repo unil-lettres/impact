@@ -8,7 +8,6 @@ use App\Enums\StatePermission;
 use App\Enums\StateType;
 use App\Enums\TranscriptionType;
 use App\Scopes\HideAttachmentsScope;
-use App\Scopes\ValidityScope;
 use App\Traits\IsLegacy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -181,25 +180,19 @@ class Card extends Model
      */
     public function enrollments(bool $withInvalidUsers = false, bool $withUsers = false): Collection
     {
-        static $cachedEnrollments = [];
+        // These are read once per card of a listing, so they rely on the
+        // relation being loaded once on the course, which is shared by every
+        // card of that course.
+        $enrollments = match ($withInvalidUsers) {
+            true => $this->course->enrollmentsWithInvalidUsers,
+            default => $this->course->enrollments,
+        };
 
-        $key = md5(serialize([$this->course->id, $withInvalidUsers, $withUsers]));
-        if (! isset($cachedEnrollments[$key])) {
-
-            $enrollments = match ($withInvalidUsers) {
-                true => $this->course->enrollments()
-                    ->withoutGlobalScope(ValidityScope::class),
-                default => $this->course->enrollments(),
-            };
-
-            if ($withUsers) {
-                $enrollments->with('user');
-            }
-
-            $cachedEnrollments[$key] = $enrollments->get();
+        if ($withUsers) {
+            $enrollments->loadMissing('user');
         }
 
-        return $cachedEnrollments[$key]->filter(function ($enrollment) {
+        return $enrollments->filter(function ($enrollment) {
             return $enrollment->hasCard($this);
         });
     }

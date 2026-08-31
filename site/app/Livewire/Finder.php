@@ -149,6 +149,8 @@ class Finder extends Component
             $this->course,
             $this->filters,
             $this->filterSearchBoxes,
+            // Only the folder being displayed is listed, with its descendants.
+            $this->folder,
             $this->sortColumn,
             $this->sortDirection,
         );

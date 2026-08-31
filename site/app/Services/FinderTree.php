@@ -59,6 +59,10 @@ class FinderTree
      * Load the content of the course and keep the cards matching the filters
      * that the user is allowed to list.
      *
+     * The finder lists a folder along with its descendants, so when a folder
+     * is given only its own content is loaded, the rest of the course being
+     * of no use to that listing.
+     *
      * See FinderItemsService::getItems() for the format of $filters and
      * $filterSearchBoxes.
      */
@@ -66,21 +70,27 @@ class FinderTree
         Course $course,
         Collection $filters,
         array $filterSearchBoxes,
+        ?Folder $folder = null,
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
     ): static {
         $tree = new static($filters, $sortColumn, $sortDirection);
 
-        // The cards and the folders of the course are loaded up front, with
-        // the relations the listing reads, and the filters are applied in
-        // memory so that both the filtered and the unfiltered content stay
-        // available.
-        $cards = Card::with('tags')->with('state')->with('folder')->with('course')
+        // Folders are few and needed to know what the listed folder contains,
+        // so they are all loaded.
+        $folders = Folder::with('course')
             ->where('course_id', $course->id)
             ->get();
 
-        $folders = Folder::with('course')
+        // The cards are loaded up front, with the relations the listing reads,
+        // and the filters are applied in memory so that both the filtered and
+        // the unfiltered content stay available.
+        $cards = Card::with('tags')->with('state')->with('folder')->with('course')
             ->where('course_id', $course->id)
+            ->when($folder, fn ($query) => $query->whereIn(
+                'folder_id',
+                static::descendantIds($folders, $folder),
+            ))
             ->get();
 
         $tree->resolveHolders($course, $cards);
@@ -186,6 +196,26 @@ class FinderTree
             + $this->folders($folder)->sum(
                 fn ($child) => $this->countAllCardsRecursive($child)
             );
+    }
+
+    /**
+     * Return the id of the given folder and of all its descendants, so that
+     * the cards it contains can be loaded in one query.
+     */
+    private static function descendantIds(Collection $folders, Folder $folder): array
+    {
+        $byParent = $folders->groupBy(fn ($child) => $child->parent_id ?? 0);
+
+        $ids = [$folder->id];
+        $queue = [$folder->id];
+        while ($queue) {
+            foreach ($byParent->get(array_shift($queue), collect()) as $child) {
+                $ids[] = $child->id;
+                $queue[] = $child->id;
+            }
+        }
+
+        return $ids;
     }
 
     /**

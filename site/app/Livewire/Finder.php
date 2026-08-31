@@ -143,7 +143,10 @@ class Finder extends Component
     public function tree(): FinderTree
     {
         return FinderTree::build(
-            Course::find($this->course->id),
+            // The course of the component, so that the enrollments it loads
+            // are the ones holders() reads, and not those of a second
+            // instance of the same course.
+            $this->course,
             $this->filters,
             $this->filterSearchBoxes,
             $this->sortColumn,
@@ -161,6 +164,8 @@ class Finder extends Component
     public function holders(): Collection
     {
         // Return the list of holders for all cards of the course.
+        $this->course->enrollments->loadMissing('user');
+
         return $this->course->enrollments
             ->filter(function ($enrollment) {
                 return ! empty($enrollment->cards);

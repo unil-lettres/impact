@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Card;
 use App\Course;
 use App\Folder;
 use Illuminate\Support\Collection;
@@ -10,9 +11,9 @@ use Illuminate\Support\Collection;
  * Manage the content (cards or folders) of courses and folders with filters
  * and sort.
  *
- * These helpers load the content of the course on every call. When several
- * folders of the same course are needed, as when the finder renders a folder
- * and its descendants, build a FinderTree once and query it instead.
+ * This only reads the content of one folder. Rendering a folder along with its
+ * descendants, as the finder does, should build a FinderTree instead, which
+ * loads the course once and answers for every folder of it.
  */
 class FinderItemsService
 {
@@ -50,32 +51,26 @@ class FinderItemsService
         string $sortColumn = 'position',
         string $sortDirection = 'asc',
     ): Collection {
-        return FinderTree::build(
-            $course,
-            $filters,
-            $filterSearchBoxes,
-            $sortColumn,
-            $sortDirection,
-        )->items($folder);
-    }
+        $cards = Card::with('tags')->with('state')->with('folder')->with('course')
+            ->where('course_id', $course->id)
+            ->where('folder_id', $folder?->id)
+            ->get();
 
-    /**
-     * Return the number of cards contained in the given folder and its
-     * children recursively.
-     */
-    public static function countCardsRecursive(
-        Folder $folder,
-        Collection $filters,
-        array $filterSearchBoxes,
-        string $sortColumn = 'position',
-        string $sortDirection = 'asc',
-    ): int {
-        return FinderTree::build(
-            $folder->course,
-            $filters,
-            $filterSearchBoxes,
+        // Get all folders, folders are not affected by filters.
+        $folders = Folder::with('course')
+            ->where('course_id', $course->id)
+            ->where('parent_id', $folder?->id)
+            ->get();
+
+        return FinderTree::sortItems(
+            FinderTree::keepListableCards(
+                $course,
+                $cards,
+                $filters,
+                $filterSearchBoxes,
+            )->concat($folders),
             $sortColumn,
             $sortDirection,
-        )->countCardsRecursive($folder);
+        );
     }
 }

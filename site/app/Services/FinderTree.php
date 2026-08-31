@@ -71,8 +71,9 @@ class FinderTree
     ): static {
         $tree = new static($filters, $sortColumn, $sortDirection);
 
-        // The whole course is loaded in two queries, the filters are applied
-        // in memory so that both the filtered and the unfiltered content stay
+        // The cards and the folders of the course are loaded up front, with
+        // the relations the listing reads, and the filters are applied in
+        // memory so that both the filtered and the unfiltered content stay
         // available.
         $cards = Card::with('tags')->with('state')->with('folder')->with('course')
             ->where('course_id', $course->id)
@@ -88,7 +89,7 @@ class FinderTree
         $tree->foldersByParent = $tree->groupByParent($folders, 'parent_id');
 
         $tree->cardsByFolder = $tree->groupByParent(
-            $tree->keepListableCards($course, $cards, $filterSearchBoxes),
+            static::keepListableCards($course, $cards, $filters, $filterSearchBoxes),
             'folder_id',
         );
 
@@ -103,11 +104,24 @@ class FinderTree
      */
     public function items(?Folder $folder = null): Collection
     {
-        return $this
-            ->cards($folder)
-            ->concat($this->folders($folder))
+        return static::sortItems(
+            $this->cards($folder)->concat($this->folders($folder)),
+            $this->sortColumn,
+            $this->sortDirection,
+        );
+    }
+
+    /**
+     * Sort the given cards and folders the way the finder lists them.
+     */
+    public static function sortItems(
+        Collection $items,
+        string $sortColumn,
+        string $sortDirection,
+    ): Collection {
+        return $items
             ->sortBy([
-                [$this->sortColumn, $this->sortDirection],
+                [$sortColumn, $sortDirection],
                 ['id', 'asc'],
             ])
             ->values();
@@ -211,15 +225,17 @@ class FinderTree
     }
 
     /**
-     * Keep the cards matching the filters that the user is allowed to list.
+     * Keep the cards matching the given filters that the user is allowed to
+     * list.
      */
-    private function keepListableCards(
+    public static function keepListableCards(
         Course $course,
         Collection $cards,
+        Collection $filters,
         array $filterSearchBoxes,
     ): Collection {
         // Filter specified tags id.
-        $filterTags = $this->filters->get('tag');
+        $filterTags = $filters->get('tag');
         if ($filterTags->isNotEmpty()) {
             $cards = $cards->filter(
                 fn ($card) => $card->tags
@@ -230,7 +246,7 @@ class FinderTree
         }
 
         // Filter specified states id.
-        $filterStates = $this->filters->get('state');
+        $filterStates = $filters->get('state');
         if ($filterStates->isNotEmpty()) {
             $cards = $cards->filter(
                 fn ($card) => $filterStates->contains($card->state_id)
@@ -238,7 +254,7 @@ class FinderTree
         }
 
         // Filter specified holders id.
-        $filterHolders = $this->filters->get('holder');
+        $filterHolders = $filters->get('holder');
         if ($filterHolders->isNotEmpty()) {
             $cards = $cards->filter(
                 fn ($card) => $card
@@ -252,9 +268,9 @@ class FinderTree
         // Filter specified search terms.
         $checkedBoxes = collect($filterSearchBoxes)->filter(fn ($box) => $box)->keys();
 
-        if ($checkedBoxes->isNotEmpty() && $this->filters->get('search')->isNotEmpty()) {
+        if ($checkedBoxes->isNotEmpty() && $filters->get('search')->isNotEmpty()) {
             $cards = $cards->filter(
-                fn ($card) => $this->matchesSearch($course, $card, $checkedBoxes)
+                fn ($card) => static::matchesSearch($course, $card, $filters, $checkedBoxes)
             );
         }
 
@@ -268,9 +284,10 @@ class FinderTree
      * Return whether one of the search terms is found in the contents of the
      * card associated to the checked boxes.
      */
-    private function matchesSearch(
+    private static function matchesSearch(
         Course $course,
         Card $card,
+        Collection $filters,
         Collection $checkedBoxes,
     ): bool {
         // Get each contents of the card associated to the corresponding
@@ -295,7 +312,7 @@ class FinderTree
         );
 
         // Search for the search term in each contents.
-        return $this->filters
+        return $filters
             ->get('search')
             ->some(fn ($searchTerm) => $contents->some(
                 fn ($content) => static::searchTerm($content, $searchTerm)

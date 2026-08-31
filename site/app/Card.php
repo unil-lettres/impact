@@ -102,6 +102,11 @@ class Card extends Model
         'options' => self::OPTIONS,
     ];
 
+    /**
+     * Holders of this card once resolved, see holders().
+     */
+    private ?Collection $holders = null;
+
     protected function casts(): array
     {
         return [
@@ -199,14 +204,27 @@ class Card extends Model
 
     /**
      * Get the holders of this card.
+     *
+     * Resolving them means looking for this card in every enrollment of the
+     * course, so a caller listing many cards of the same course should resolve
+     * them in one pass and hand them over with setHolders().
      */
     public function holders(): Collection
     {
-        return $this->enrollments(withUsers: true)
+        return $this->holders ??= $this->enrollments(withUsers: true)
             ->map(function ($enrollment) {
                 return $enrollment->user;
             })
             ->sortBy('name');
+    }
+
+    /**
+     * Set the holders of this card, resolved by a caller that has them at
+     * hand. They are the ones holders() would have returned.
+     */
+    public function setHolders(Collection $holders): void
+    {
+        $this->holders = $holders;
     }
 
     /**

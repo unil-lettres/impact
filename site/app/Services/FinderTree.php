@@ -82,6 +82,8 @@ class FinderTree
             ->where('course_id', $course->id)
             ->get();
 
+        $tree->resolveHolders($course, $cards);
+
         $tree->allCardsByFolder = $tree->groupByParent($cards, 'folder_id');
         $tree->foldersByParent = $tree->groupByParent($folders, 'parent_id');
 
@@ -170,6 +172,33 @@ class FinderTree
             + $this->folders($folder)->sum(
                 fn ($child) => $this->countAllCardsRecursive($child)
             );
+    }
+
+    /**
+     * Resolve the holders of every card of the course in one pass.
+     *
+     * Asking a card for its holders means looking for it in every enrollment
+     * of the course, so listing a course would walk them again for each of its
+     * cards. The enrollments are walked once here instead, and every card is
+     * given the holders it would have resolved on its own.
+     */
+    private function resolveHolders(Course $course, Collection $cards): void
+    {
+        $enrollments = $course->enrollments;
+        $enrollments->loadMissing('user');
+
+        $holders = [];
+        foreach ($enrollments as $enrollment) {
+            foreach ($enrollment->cards ?? [] as $cardId) {
+                $holders[$cardId][] = $enrollment->user;
+            }
+        }
+
+        foreach ($cards as $card) {
+            $card->setHolders(
+                collect($holders[$card->id] ?? [])->sortBy('name')
+            );
+        }
     }
 
     /**

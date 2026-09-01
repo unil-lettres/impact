@@ -142,13 +142,9 @@ class Finder extends Component
     public function tree(): FinderTree
     {
         return FinderTree::build(
-            // The course of the component, so that the enrollments it loads
-            // are the ones holders() reads, and not those of a second
-            // instance of the same course.
             $this->course,
             $this->filters,
             $this->filterSearchBoxes,
-            // Only the folder being displayed is listed, with its descendants.
             $this->folder,
             $this->sortColumn,
             $this->sortDirection,
@@ -238,7 +234,6 @@ class Finder extends Component
             fn ($item) => $item->getFinderItemType() === $type && $item->id === (int) $id
         );
 
-        // The item is not one of those listed, there is nothing to reorder.
         if (! $entity) {
             return;
         }

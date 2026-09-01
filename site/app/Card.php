@@ -185,9 +185,6 @@ class Card extends Model
      */
     public function enrollments(bool $withInvalidUsers = false, bool $withUsers = false): Collection
     {
-        // These are read once per card of a listing, so they rely on the
-        // relation being loaded once on the course, which is shared by every
-        // card of that course.
         $enrollments = match ($withInvalidUsers) {
             true => $this->course->enrollmentsWithInvalidUsers,
             default => $this->course->enrollments,
@@ -207,7 +204,7 @@ class Card extends Model
      *
      * Resolving them means looking for this card in every enrollment of the
      * course, so a caller listing many cards of the same course should resolve
-     * them in one pass and hand them over with setHolders().
+     * them in one pass and hand them over with setHolders() (see FinderTree::resolveHolders()).
      */
     public function holders(): Collection
     {

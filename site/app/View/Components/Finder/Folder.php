@@ -23,7 +23,7 @@ class Folder extends Component
 
     /**
      * Whether the folder contains cards to print, ignoring the filters and the
-     * permissions of the user.
+     * permissions of the user (there are done later in the view).
      */
     public bool $hasCardsToPrint;
 

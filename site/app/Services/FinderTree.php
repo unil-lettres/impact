@@ -12,12 +12,6 @@ use Illuminate\Support\Facades\Auth;
 
 /**
  * The cards and folders of a course, loaded once and arranged as a tree.
- *
- * The finder renders a folder and all its descendants, and needs the content
- * and the recursive card count of every folder it displays. Asking for them
- * folder by folder makes each ancestor walk again the subtree its children
- * just walked, so the whole course is loaded once here and the counts are
- * computed from the children up.
  */
 class FinderTree
 {
@@ -89,16 +83,11 @@ class FinderTree
     ): static {
         $tree = new static($filters, $sortColumn, $sortDirection);
 
-        // Folders are few and tell what the listed folder contains, so they
-        // are all loaded and grouped first.
         $tree->foldersByParent = $tree->groupByParent(
             Folder::with('course')->where('course_id', $course->id)->get(),
             'parent_id',
         );
 
-        // The cards are loaded up front, with the relations the listing reads,
-        // and the filters are applied in memory so that both the filtered and
-        // the unfiltered content stay available.
         $cards = Card::with('tags')->with('state')->with('folder')->with('course')
             ->where('course_id', $course->id)
             ->when($folder, fn ($query) => $query->whereIn(

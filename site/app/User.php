@@ -161,9 +161,6 @@ class User extends Authenticatable
 
     /**
      * Get the ids of the cards held by the user.
-     *
-     * The ids are already stored in the 'cards' column of the enrollments, so
-     * they are read from there instead of loading the Card models.
      */
     public function heldCardIds(): Collection
     {
@@ -214,10 +211,6 @@ class User extends Authenticatable
     /**
      * Check if the user has an enrollment with the given role in the given
      * course.
-     *
-     * These checks run once per card and per folder of a finder listing, so
-     * they filter the enrollments relation (loaded once) instead of querying
-     * the enrollments again on every call.
      */
     private function hasEnrollment(Course $course, string $role): bool
     {

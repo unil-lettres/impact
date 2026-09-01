@@ -63,8 +63,21 @@ class FinderTree
      * is given only its own content is loaded, the rest of the course being
      * of no use to that listing.
      *
-     * See FinderItemsService::getItems() for the format of $filters and
-     * $filterSearchBoxes.
+     * $filters is a collection with the given format:
+     *   [
+     *      'tag' => [tag_id,...],
+     *      'state' => [state_id,...],
+     *      'holder' => [holder_id,...],
+     *      'search' => [terms (string),...],
+     *   ]
+     *
+     * $filterSearchBoxes is an array with the given format:
+     *   [
+     *      'name' => bool,
+     *      'box2' => bool,
+     *      'box3' => bool,
+     *      'box4' => bool,
+     *   ]
      */
     public static function build(
         Course $course,
@@ -76,11 +89,12 @@ class FinderTree
     ): static {
         $tree = new static($filters, $sortColumn, $sortDirection);
 
-        // Folders are few and needed to know what the listed folder contains,
-        // so they are all loaded.
-        $folders = Folder::with('course')
-            ->where('course_id', $course->id)
-            ->get();
+        // Folders are few and tell what the listed folder contains, so they
+        // are all loaded and grouped first.
+        $tree->foldersByParent = $tree->groupByParent(
+            Folder::with('course')->where('course_id', $course->id)->get(),
+            'parent_id',
+        );
 
         // The cards are loaded up front, with the relations the listing reads,
         // and the filters are applied in memory so that both the filtered and
@@ -89,17 +103,16 @@ class FinderTree
             ->where('course_id', $course->id)
             ->when($folder, fn ($query) => $query->whereIn(
                 'folder_id',
-                static::descendantIds($folders, $folder),
+                $tree->listedFolderIds($folder),
             ))
             ->get();
 
         $tree->resolveHolders($course, $cards);
 
         $tree->allCardsByFolder = $tree->groupByParent($cards, 'folder_id');
-        $tree->foldersByParent = $tree->groupByParent($folders, 'parent_id');
 
         $tree->cardsByFolder = $tree->groupByParent(
-            static::keepListableCards($course, $cards, $filters, $filterSearchBoxes),
+            $tree->keepListableCards($course, $cards, $filterSearchBoxes),
             'folder_id',
         );
 
@@ -114,24 +127,19 @@ class FinderTree
      */
     public function items(?Folder $folder = null): Collection
     {
-        return static::sortItems(
-            $this->cards($folder)->concat($this->folders($folder)),
-            $this->sortColumn,
-            $this->sortDirection,
+        return $this->sortItems(
+            $this->cards($folder)->concat($this->folders($folder))
         );
     }
 
     /**
      * Sort the given cards and folders the way the finder lists them.
      */
-    public static function sortItems(
-        Collection $items,
-        string $sortColumn,
-        string $sortDirection,
-    ): Collection {
+    private function sortItems(Collection $items): Collection
+    {
         return $items
             ->sortBy([
-                [$sortColumn, $sortDirection],
+                [$this->sortColumn, $this->sortDirection],
                 ['id', 'asc'],
             ])
             ->values();
@@ -180,7 +188,16 @@ class FinderTree
      */
     private function folders(?Folder $folder): Collection
     {
-        return $this->foldersByParent->get($folder?->id ?? 0, collect());
+        return $this->foldersIn($folder?->id ?? 0);
+    }
+
+    /**
+     * Return the folders whose parent has the given id, 0 being the root of
+     * the course.
+     */
+    private function foldersIn(int $parent): Collection
+    {
+        return $this->foldersByParent->get($parent, collect());
     }
 
     /**
@@ -199,17 +216,15 @@ class FinderTree
     }
 
     /**
-     * Return the id of the given folder and of all its descendants, so that
-     * the cards it contains can be loaded in one query.
+     * Return the id of the given folder and of all its descendants, which are
+     * the folders the finder lists when that folder is displayed.
      */
-    private static function descendantIds(Collection $folders, Folder $folder): array
+    private function listedFolderIds(Folder $folder): array
     {
-        $byParent = $folders->groupBy(fn ($child) => $child->parent_id ?? 0);
-
         $ids = [$folder->id];
-        $queue = [$folder->id];
-        while ($queue) {
-            foreach ($byParent->get(array_shift($queue), collect()) as $child) {
+
+        for ($queue = [$folder->id]; $queue;) {
+            foreach ($this->foldersIn(array_shift($queue)) as $child) {
                 $ids[] = $child->id;
                 $queue[] = $child->id;
             }
@@ -255,17 +270,15 @@ class FinderTree
     }
 
     /**
-     * Keep the cards matching the given filters that the user is allowed to
-     * list.
+     * Keep the cards matching the filters that the user is allowed to list.
      */
-    public static function keepListableCards(
+    private function keepListableCards(
         Course $course,
         Collection $cards,
-        Collection $filters,
         array $filterSearchBoxes,
     ): Collection {
         // Filter specified tags id.
-        $filterTags = $filters->get('tag');
+        $filterTags = $this->filters->get('tag');
         if ($filterTags->isNotEmpty()) {
             $cards = $cards->filter(
                 fn ($card) => $card->tags
@@ -276,7 +289,7 @@ class FinderTree
         }
 
         // Filter specified states id.
-        $filterStates = $filters->get('state');
+        $filterStates = $this->filters->get('state');
         if ($filterStates->isNotEmpty()) {
             $cards = $cards->filter(
                 fn ($card) => $filterStates->contains($card->state_id)
@@ -284,7 +297,7 @@ class FinderTree
         }
 
         // Filter specified holders id.
-        $filterHolders = $filters->get('holder');
+        $filterHolders = $this->filters->get('holder');
         if ($filterHolders->isNotEmpty()) {
             $cards = $cards->filter(
                 fn ($card) => $card
@@ -298,9 +311,9 @@ class FinderTree
         // Filter specified search terms.
         $checkedBoxes = collect($filterSearchBoxes)->filter(fn ($box) => $box)->keys();
 
-        if ($checkedBoxes->isNotEmpty() && $filters->get('search')->isNotEmpty()) {
+        if ($checkedBoxes->isNotEmpty() && $this->filters->get('search')->isNotEmpty()) {
             $cards = $cards->filter(
-                fn ($card) => static::matchesSearch($course, $card, $filters, $checkedBoxes)
+                fn ($card) => $this->matchesSearch($course, $card, $checkedBoxes)
             );
         }
 
@@ -314,10 +327,9 @@ class FinderTree
      * Return whether one of the search terms is found in the contents of the
      * card associated to the checked boxes.
      */
-    private static function matchesSearch(
+    private function matchesSearch(
         Course $course,
         Card $card,
-        Collection $filters,
         Collection $checkedBoxes,
     ): bool {
         // Get each contents of the card associated to the corresponding
@@ -342,7 +354,7 @@ class FinderTree
         );
 
         // Search for the search term in each contents.
-        return $filters
+        return $this->filters
             ->get('search')
             ->some(fn ($searchTerm) => $contents->some(
                 fn ($content) => static::searchTerm($content, $searchTerm)

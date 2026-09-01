@@ -2,6 +2,7 @@
 
 namespace Tests\Feature\Livewire;
 
+use App\Card;
 use App\Course;
 use App\Livewire\Finder;
 use App\User;
@@ -88,5 +89,44 @@ class FinderTest extends TestCase
             ->test(Finder::class, ['course' => $course])
             ->dispatch('add-element-to-filter', filter: $stateId, type: 'state')
             ->assertSet('arrayFilters', $emptyFilters);
+    }
+
+    public function test_handle_sort_reorders_the_listing(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $course = Course::factory()->create();
+
+        $cards = collect(range(0, 2))->map(
+            fn ($position) => Card::factory()->create([
+                'course_id' => $course->id,
+                'position' => $position,
+            ])
+        );
+
+        Livewire::actingAs($admin)
+            ->test(Finder::class, ['course' => $course])
+            ->call('handleSort', 'card-'.$cards->first()->id, 2);
+
+        // The first card moved to the last position, the others moved up.
+        $this->assertSame(2, $cards->first()->fresh()->position);
+        $this->assertSame(0, $cards->get(1)->fresh()->position);
+        $this->assertSame(1, $cards->get(2)->fresh()->position);
+    }
+
+    public function test_handle_sort_ignores_an_item_that_is_not_listed(): void
+    {
+        $admin = User::factory()->admin()->create();
+        $course = Course::factory()->create();
+        $card = Card::factory()->create(['course_id' => $course->id, 'position' => 0]);
+
+        // A card of another course is not part of the listing.
+        $other = Card::factory()->create(['position' => 5]);
+
+        Livewire::actingAs($admin)
+            ->test(Finder::class, ['course' => $course])
+            ->call('handleSort', 'card-'.$other->id, 0);
+
+        $this->assertSame(5, $other->fresh()->position);
+        $this->assertSame(0, $card->fresh()->position);
     }
 }

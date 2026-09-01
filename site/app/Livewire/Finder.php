@@ -12,7 +12,6 @@ use App\Http\Requests\UpdateCard;
 use App\Services\Clone\CloneCardService;
 use App\Services\Clone\CloneFolderService;
 use App\Services\Clone\MassCloneService;
-use App\Services\FinderItemsService;
 use App\Services\FinderTree;
 use App\Services\MoveService;
 use Illuminate\Support\Collection;
@@ -225,23 +224,29 @@ class Finder extends Component
             return;
         }
 
-        $entity = (
+        $parent = (
             $type === FinderItemType::Folder
-            ? Folder::findOrFail($id)
-            : Card::findOrFail($id)
+            ? Folder::findOrFail($id)->parent
+            : Card::findOrFail($id)->folder
         );
+
+        // Read the listing from the tree, so that re-assigning the position of
+        // its items below is seen when the finder renders.
+        $items = $this->tree->items($parent);
+
+        $entity = $items->first(
+            fn ($item) => $item->getFinderItemType() === $type && $item->id === (int) $id
+        );
+
+        // The item is not one of those listed, there is nothing to reorder.
+        if (! $entity) {
+            return;
+        }
 
         // Get the current siblings (same parent), without the moved entity,
         // preserving their current order.
-        $siblings = FinderItemsService::getItems(
-            $this->course,
-            $this->filters,
-            $this->filterSearchBoxes,
-            $type === FinderItemType::Folder ? $entity->parent : $entity->folder,
-            $this->sortColumn,
-            $this->sortDirection,
-        )->reject(
-            fn ($item) => $item->getFinderItemType() === $type && $item->id === $entity->id
+        $siblings = $items->reject(
+            fn ($item) => $item === $entity
         )->values();
 
         // Re-insert the moved entity at its new position and re-assign the

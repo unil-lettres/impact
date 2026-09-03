@@ -10,7 +10,7 @@ rm .env.dusk.testing
 composer install --no-interaction
 
 # Install js dependencies & compile
-npm install
+npm ci
 npm run prod
 
 # Run migrations & seed data

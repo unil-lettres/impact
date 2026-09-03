@@ -105,7 +105,7 @@ RUN cd /var/www/impact && \
 
 # Install js dependencies & compile
 RUN cd /var/www/impact && \
-    npm install && \
+    npm ci && \
     npm run prod && \
     npm cache clean --force && \
     rm -rf /root/.npm && \

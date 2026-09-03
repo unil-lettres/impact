@@ -11,7 +11,7 @@ echo "Install php dependencies..."
 composer install --no-interaction
 
 echo "Install js dependencies & compile for local dev..."
-npm install
+npm ci
 npm run dev
 
 echo "Starting Migration..."

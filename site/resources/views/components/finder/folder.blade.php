@@ -157,8 +157,8 @@
                         <li><hr class="dropdown-divider"></li>
                     @endcan
                     <li
-                        class="dropdown-item d-flex cursor-pointer align-items-center @if($folder->getCardsRecursive()->isEmpty()) disabled @endif"
-                        @if ($folder->getCardsRecursive()->isNotEmpty())
+                        class="dropdown-item d-flex cursor-pointer align-items-center @unless($hasCardsToPrint) disabled @endunless"
+                        @if ($hasCardsToPrint)
                             @click="closeAllDropDowns(); window.printable.open('{{ route('cards.print', ['folder' => $folder->id])}}');"
                         @endif
                     >
@@ -183,11 +183,8 @@
             @if ($item->getFinderItemType() === ('App\\Enums\\FinderItemType')::Folder)
                 <x-finder.folder
                     :folder="$item"
-                    :sort-column="$sortColumn"
-                    :sort-direction="$sortDirection"
+                    :$tree
                     :depth="$depth + 1"
-                    :filters="$filters"
-                    :$filterSearchBoxes
                     :$modalCloneId
                     :$modalMoveId
                 />

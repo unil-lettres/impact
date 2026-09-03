@@ -8,7 +8,6 @@ use App\Enums\StatePermission;
 use App\Enums\StateType;
 use App\Enums\TranscriptionType;
 use App\Scopes\HideAttachmentsScope;
-use App\Scopes\ValidityScope;
 use App\Traits\IsLegacy;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -103,6 +102,11 @@ class Card extends Model
         'options' => self::OPTIONS,
     ];
 
+    /**
+     * Holders of this card once resolved, see holders().
+     */
+    private ?Collection $holders = null;
+
     protected function casts(): array
     {
         return [
@@ -181,39 +185,43 @@ class Card extends Model
      */
     public function enrollments(bool $withInvalidUsers = false, bool $withUsers = false): Collection
     {
-        static $cachedEnrollments = [];
+        $enrollments = match ($withInvalidUsers) {
+            true => $this->course->enrollmentsWithInvalidUsers,
+            default => $this->course->enrollments,
+        };
 
-        $key = md5(serialize([$this->course->id, $withInvalidUsers, $withUsers]));
-        if (! isset($cachedEnrollments[$key])) {
-
-            $enrollments = match ($withInvalidUsers) {
-                true => $this->course->enrollments()
-                    ->withoutGlobalScope(ValidityScope::class),
-                default => $this->course->enrollments(),
-            };
-
-            if ($withUsers) {
-                $enrollments->with('user');
-            }
-
-            $cachedEnrollments[$key] = $enrollments->get();
+        if ($withUsers) {
+            $enrollments->loadMissing('user');
         }
 
-        return $cachedEnrollments[$key]->filter(function ($enrollment) {
+        return $enrollments->filter(function ($enrollment) {
             return $enrollment->hasCard($this);
         });
     }
 
     /**
      * Get the holders of this card.
+     *
+     * Resolving them means looking for this card in every enrollment of the
+     * course, so a caller listing many cards of the same course should resolve
+     * them in one pass and hand them over with setHolders() (see FinderTree::resolveHolders()).
      */
     public function holders(): Collection
     {
-        return $this->enrollments(withUsers: true)
+        return $this->holders ??= $this->enrollments(withUsers: true)
             ->map(function ($enrollment) {
                 return $enrollment->user;
             })
             ->sortBy('name');
+    }
+
+    /**
+     * Set the holders of this card, resolved by a caller that has them at
+     * hand. They are the ones holders() would have returned.
+     */
+    public function setHolders(Collection $holders): void
+    {
+        $this->holders = $holders;
     }
 
     /**

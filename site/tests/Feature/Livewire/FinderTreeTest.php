@@ -6,13 +6,13 @@ use App\Card;
 use App\Course;
 use App\Enums\CardBox;
 use App\Enums\TranscriptionType;
-use App\Services\FinderItemsService;
+use App\Services\FinderTree;
 use App\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Collection;
 use Tests\TestCase;
 
-class FinderItemServiceTest extends TestCase
+class FinderTreeTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -32,7 +32,7 @@ class FinderItemServiceTest extends TestCase
 
     protected function getItemsHelperForSearch(array $terms, string $box): Collection
     {
-        return FinderItemsService::getItems(
+        return FinderTree::build(
             $this->course,
             collect([
                 'tag' => collect([]),
@@ -46,7 +46,7 @@ class FinderItemServiceTest extends TestCase
                 CardBox::Box3 => $box === 'box3',
                 CardBox::Box4 => $box === 'box4',
             ],
-        );
+        )->items();
     }
 
     public function test_search(): void

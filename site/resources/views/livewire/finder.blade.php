@@ -261,10 +261,7 @@
             @if ($item->getFinderItemType() === ('App\\Enums\\FinderItemType')::Folder)
                 <x-finder.folder
                     :folder="$item"
-                    :$sortColumn
-                    :$sortDirection
-                    :filters="$this->filters"
-                    :$filterSearchBoxes
+                    :tree="$this->tree"
                     :$modalCloneId
                     :$modalMoveId
                 />

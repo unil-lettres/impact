@@ -12,7 +12,7 @@ use App\Http\Requests\UpdateCard;
 use App\Services\Clone\CloneCardService;
 use App\Services\Clone\CloneFolderService;
 use App\Services\Clone\MassCloneService;
-use App\Services\FinderItemsService;
+use App\Services\FinderTree;
 use App\Services\MoveService;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Auth;
@@ -124,7 +124,7 @@ class Finder extends Component
     #[On('items-updated')]
     public function refreshItems(): void
     {
-        unset($this->items);
+        unset($this->tree, $this->items);
     }
 
     #[Computed]
@@ -134,11 +134,15 @@ class Finder extends Component
             ->map(fn ($value) => collect($value));
     }
 
+    /**
+     * The content of the whole course, loaded once and shared with the folder
+     * components so that they don't each walk the tree again.
+     */
     #[Computed]
-    public function items(): Collection
+    public function tree(): FinderTree
     {
-        return FinderItemsService::getItems(
-            Course::find($this->course->id),
+        return FinderTree::build(
+            $this->course,
             $this->filters,
             $this->filterSearchBoxes,
             $this->folder,
@@ -148,9 +152,17 @@ class Finder extends Component
     }
 
     #[Computed]
+    public function items(): Collection
+    {
+        return $this->tree->items($this->folder);
+    }
+
+    #[Computed]
     public function holders(): Collection
     {
         // Return the list of holders for all cards of the course.
+        $this->course->enrollments->loadMissing('user');
+
         return $this->course->enrollments
             ->filter(function ($enrollment) {
                 return ! empty($enrollment->cards);
@@ -208,23 +220,28 @@ class Finder extends Component
             return;
         }
 
-        $entity = (
+        $parent = (
             $type === FinderItemType::Folder
-            ? Folder::findOrFail($id)
-            : Card::findOrFail($id)
+            ? Folder::findOrFail($id)->parent
+            : Card::findOrFail($id)->folder
         );
+
+        // Read the listing from the tree, so that re-assigning the position of
+        // its items below is seen when the finder renders.
+        $items = $this->tree->items($parent);
+
+        $entity = $items->first(
+            fn ($item) => $item->getFinderItemType() === $type && $item->id === (int) $id
+        );
+
+        if (! $entity) {
+            return;
+        }
 
         // Get the current siblings (same parent), without the moved entity,
         // preserving their current order.
-        $siblings = FinderItemsService::getItems(
-            $this->course,
-            $this->filters,
-            $this->filterSearchBoxes,
-            $type === FinderItemType::Folder ? $entity->parent : $entity->folder,
-            $this->sortColumn,
-            $this->sortDirection,
-        )->reject(
-            fn ($item) => $item->getFinderItemType() === $type && $item->id === $entity->id
+        $siblings = $items->reject(
+            fn ($item) => $item === $entity
         )->values();
 
         // Re-insert the moved entity at its new position and re-assign the

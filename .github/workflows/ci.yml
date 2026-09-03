@@ -15,7 +15,7 @@ jobs:
       matrix:
         php-versions: [ '8.5' ]
         composer-version: [ '2.9' ]
-        mariadb-version: [ '11.4' ]
+        mariadb-version: [ '12.3' ]
         node-version: [ '22' ]
 
     services:

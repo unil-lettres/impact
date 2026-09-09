@@ -66,11 +66,11 @@ The users of that course are ``perf<course_id>-user<n>@example.com / password``,
 
 Assets are compiled when the container is built, but if you want to recompile them, you can use the following command.
 
-``docker exec impact-app npm run dev``
+``docker exec impact-app pnpm run dev``
 
 or if you want to watch for changes.
 
-``docker exec impact-app npm run watch``
+``docker exec impact-app pnpm run watch``
 
 ## Frontends
 

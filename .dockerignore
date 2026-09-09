@@ -1,9 +1,11 @@
 .git
 .idea
+.vscode
 .DS_Store
 
 /site/vendor
 /site/node_modules
+/site/.pnpm-store
 
 /site/.env
 /site/.env.backup

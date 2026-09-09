@@ -10,8 +10,8 @@ rm .env.dusk.testing
 composer install --no-interaction
 
 # Install js dependencies & compile
-npm ci
-npm run prod
+pnpm install --frozen-lockfile
+pnpm run prod
 
 # Run migrations & seed data
 php artisan migrate:fresh --seed

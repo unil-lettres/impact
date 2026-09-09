@@ -17,6 +17,7 @@ jobs:
         composer-version: [ '2.9' ]
         mariadb-version: [ '12.3' ]
         node-version: [ '24' ]
+        pnpm-version: [ '12' ]
 
     services:
       mariadb:
@@ -39,6 +40,14 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
+      - name: pnpm Setup
+        uses: pnpm/setup@v2.1.0
+        with:
+          version: ${{ matrix.pnpm-version }}
+          working-directory: site
+          install: false
+          cache: true
+
       - name: PHP Setup
         uses: shivammathur/setup-php@v2
         with:
@@ -51,7 +60,7 @@ jobs:
         run: php -v
 
       - name: Cache composer
-        uses: actions/cache@v5
+        uses: actions/cache@v6
         with:
           path: ~/.cache/composer
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}

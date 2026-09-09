@@ -11,8 +11,8 @@ echo "Install php dependencies..."
 composer install --no-interaction
 
 echo "Install js dependencies & compile for local dev..."
-npm ci
-npm run dev
+pnpm install --frozen-lockfile
+pnpm run dev
 
 echo "Starting Migration..."
 php artisan migrate --force

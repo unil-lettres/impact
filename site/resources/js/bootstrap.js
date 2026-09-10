@@ -13,9 +13,6 @@ window._ = _;
 import $ from 'jquery';
 window.$ = window.jQuery = $;
 
-import Popper from 'popper.js';
-window.Popper = Popper;
-
 // Bootstrap 5 (no jQuery plugins). Expose its APIs globally for Blade scripts.
 import * as bootstrap from 'bootstrap';
 window.bootstrap = bootstrap;

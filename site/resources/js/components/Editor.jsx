@@ -221,7 +221,7 @@ export default class Editor extends Component {
             this.save().then(response => {
                 this.setState({
                     original: _.cloneDeep(this.state.html),
-                    editable: false 
+                    editable: false
                 });
             }).catch(error => {
                 document.getElementById(this.editorErrorMsgId)
@@ -270,14 +270,14 @@ export default class Editor extends Component {
                     editor={ InlineEditor }
                     data={ this.state.html }
                     config={ editorConfiguration }
-                    watchdogConfig={{
-                        minimumNonErrorTimePeriod: 5000,
-                        crashNumberLimit: 3,
-                        saveInterval: 5000
-                    }}
-                    disableWatchdog={ !this.state.editable }
                     onReady={ editor => {
                         this.editor = editor
+                    }}
+                    onError={ (error, details) => {
+                        console.error(
+                            '[CKEditor] error ' + details.phase + ' (' + this.props.reference + ')',
+                            error
+                        );
                     }}
                     disabled={ !this.state.editable }
                     onChange={ this.onEditorChange }

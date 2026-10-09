@@ -23,10 +23,10 @@ class FileStorageService
         Storage::disk('public')
             ->makeDirectory(StoragePath::UploadTemp);
 
-        $this->fullTempPath = Storage::disk('public')
-            ->path('uploads/tmp/');
-        $this->fullStandardPath = Storage::disk('public')
-            ->path('uploads/files/');
+        $this->fullTempPath = rtrim(Storage::disk('public')
+            ->path('uploads/tmp/'), '/').'/';
+        $this->fullStandardPath = rtrim(Storage::disk('public')
+            ->path('uploads/files/'), '/').'/';
     }
 
     /**

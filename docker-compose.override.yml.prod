@@ -16,7 +16,6 @@ services:
       - exports-data:/var/www/impact/storage/app/public/exports
     restart: unless-stopped
     deploy:
-      mode: global
       resources:
         limits:
           memory: 1000M
@@ -40,7 +39,6 @@ services:
       start_period: 30s
     restart: unless-stopped
     deploy:
-      mode: global
       resources:
         limits:
           memory: 100M
@@ -60,14 +58,12 @@ services:
       - exports-data:/var/www/impact/storage/app/public/exports
     restart: unless-stopped
     deploy:
-      mode: global
       resources:
         limits:
           memory: 1000M
   impact-mysql:
     restart: unless-stopped
     deploy:
-      mode: global
       resources:
         limits:
           memory: 500M

@@ -193,6 +193,6 @@ All the immutable tags are committed to the [k8s](https://github.com/unil-lettre
 
 [https://www.bugsnag.com](https://www.bugsnag.com)
 
-# Helm
+# Helm charts
 
 The Helm charts for this project are available at [https://github.com/unil-lettres/k8s](https://github.com/unil-lettres/k8s), in the ``impact`` directory.
